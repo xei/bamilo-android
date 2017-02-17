@@ -433,6 +433,9 @@
     <string name="checkout_submit_voucher">ثبت کد تخفیف</string>
     <string name="checkout_confirmation_next_step">ثبت سفارش</string>
 
+    <string name="checkout_time_delivery">زمان تحویل</string>
+    <string name="checkout_delivery_address">ادرس تحویل گیرنده</string>
+    <string name="checkout_card_summery">خلاصه خرید</string>
     <string name="rial_currency">ريال</string>
     <string name="cart_total_quantity">جمع نهایی (%d کالا)</string>
     <string name="cart_item_size">اندازه:</string>

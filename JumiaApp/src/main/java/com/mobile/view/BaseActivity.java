@@ -1584,6 +1584,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         switch (checkoutStep) {
             case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
             case ConstantsCheckout.CHECKOUT_BILLING:
+            case ConstantsCheckout.CHECKOUT_CONFIRMATION:
             case ConstantsCheckout.CHECKOUT_SHIPPING:
             case ConstantsCheckout.CHECKOUT_PAYMENT:
                 //377-7 selectCheckoutStep(checkoutStep);

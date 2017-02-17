@@ -438,9 +438,15 @@
     <!--checkout confirm-->
 
     <string name="checkout_sum_header">Sum</string>
+
+
+
+    <string name="checkout_time_delivery">Delivery Time</string>
+    <string name="checkout_delivery_address">Delivery Address</string>
     <string name="checkout_voucher_title">Voucher Code</string>
     <string name="checkout_submit_voucher">Submit Voucher</string>
     <string name="checkout_confirmation_next_step">checkout order</string>
+    <string name="checkout_card_summery">Card Summery</string>
 
     <string name="rial_currency">Rial</string>
     <string name="cart_total_quantity">Total (%d product(s))</string>

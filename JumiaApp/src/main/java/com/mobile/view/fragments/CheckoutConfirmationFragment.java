@@ -6,9 +6,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.NestedScrollView;
+
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,14 +76,18 @@ import java.util.List;
  * @author sergiopereira
  *
  */
-public class CheckoutConfirmationFragment extends BaseFragment implements View.OnClickListener ,IResponseCallback{
- Button next;
+public class CheckoutConfirmationFragment extends NewBaseFragment implements View.OnClickListener ,IResponseCallback{
+ TextView next;
+
     Switch voucher_switch;
     LinearLayout voucher_layer;
     private EditText mVoucherView;
     private Button couponButton;
     private boolean removeVoucher = false;
     private String mVoucherCode;
+    private List<CardChoutItem> cardList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private CardCheckOutAdapter mAdapter;
     private static final String TAG = CheckoutConfirmationFragment.class.getSimpleName();
 
 
@@ -91,11 +96,14 @@ public class CheckoutConfirmationFragment extends BaseFragment implements View.O
      * Empty constructor
      */
     public CheckoutConfirmationFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.BASKET,
+
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
+                NavigationAction.CHECKOUT,
                 R.layout.checkout_confirmation,
-                R.string.checkout_confirmation,
-                ADJUST_CONTENT);
+                R.string.checkout_label,
+                ADJUST_CONTENT,
+                ConstantsCheckout.CHECKOUT_CONFIRMATION);
+
     }
     @Override
     public void onAttach(Activity activity) {
@@ -103,23 +111,34 @@ public class CheckoutConfirmationFragment extends BaseFragment implements View.O
         Print.i(TAG, "ON ATTACH");
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout._def_checkout_confirmation, container, false);
         return  view;
     }
 
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Print.i(TAG, "ON VIEW CREATED");
-        //super.setCheckoutStep(view, 2);
-        next = (Button) view.findViewById(R.id.checkout_confirmation_btn);
+
+        super.setCheckoutStep(view, 2);
+        next = (TextView) view.findViewById(R.id.checkout_confirmation_btn);
         voucher_switch = (Switch) view.findViewById(R.id.voucher_switch);
         voucher_layer = (LinearLayout) view.findViewById(R.id.voucher_layout);
         mVoucherView = (EditText) view.findViewById(R.id.voucher_name);
         couponButton = (Button) view.findViewById(R.id.checkout_button_enter);
         next.setOnClickListener(this);
 
+        recyclerView = (RecyclerView) view.findViewById(R.id.cheackout_recycler_view);
+
+        mAdapter = new CardCheckOutAdapter(cardList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+        prepareCardData();
         voucher_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -134,6 +153,16 @@ public class CheckoutConfirmationFragment extends BaseFragment implements View.O
             }
         });
 
+    }
+
+
+    private void prepareCardData() {
+        CardChoutItem card = new CardChoutItem("پارس خزر", "جاروبرقی شارٰی 500 وات", "2000000 ریال","2");
+        cardList.add(card);
+
+        card = new CardChoutItem("Samsung ", "هدفون سامسونگ مدل In-Ear Fit", "49,000 تومان","4");
+        cardList.add(card);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void validateCoupon() {
@@ -210,4 +239,5 @@ public class CheckoutConfirmationFragment extends BaseFragment implements View.O
     public void onRequestError(BaseResponse baseResponse) {
 
     }
+
 }

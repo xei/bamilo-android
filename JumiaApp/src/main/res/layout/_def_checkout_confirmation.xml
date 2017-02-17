@@ -1,40 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/shoppingcart_nested_scroll"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <com.mobile.components.ScrollViewReachable android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_above="@+id/checkout_confirmation_btn"
-        android:layout_alignParentTop="true">
-<!--    <include
-        layout="@layout/new_checkout_header"
-        />-->
-    <LinearLayout
+<LinearLayout android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"  android:layout_width="match_parent"/>
+<!--
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+    android:orientation="vertical">
 
-        <com.mobile.components.customfontviews.TextView
-        android:layout_width="match_parent"
-        android:background="@color/black_400"
-        android:textSize="13sp"
-        android:paddingTop="@dimen/dimen_15dp"
-        android:paddingBottom="@dimen/dimen_15dp"
-        android:paddingLeft="@dimen/dimen_10dp"
-        android:paddingRight="@dimen/dimen_10dp"
-        android:layout_height="wrap_content"
-        android:text="@string/checkout_sum_header"
-        android:textColor="@color/black"/>
-
-        <View style="@style/Divider" android:layout_marginTop="@dimen/dimen_3dp"/>
-
-
-        <LinearLayout
-            android:orientation="vertical"
+        <ScrollView
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_above="@+id/checkout_confirmation_btn">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/new_checkout_header"
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_alignParentTop="true"
+                />
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:background="@color/black_400"
+                android:textSize="13sp"
+                android:paddingTop="@dimen/dimen_15dp"
+                android:paddingBottom="@dimen/dimen_15dp"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:paddingRight="@dimen/dimen_10dp"
+                android:layout_height="wrap_content"
+                android:text="@string/checkout_sum_header"
+                android:textColor="@color/black"/>
+
+            <View style="@style/Divider" android:layout_marginTop="@dimen/dimen_3dp"/>
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
@@ -50,211 +55,236 @@
                     android:id="@+id/voucher_switch" />
 
                 <com.mobile.components.customfontviews.TextView
-                    android:text="@string/checkout_submit_voucher"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView3"
-                    android:padding="@dimen/dimen_10dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+
+                android:text="@string/checkout_voucher_title"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:padding="@dimen/dimen_10dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
             </LinearLayout>
+
+
+            <View
+                style="@style/Divider"
+                android:layout_marginTop="@dimen/dimen_3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/view34" />
+
 
             <LinearLayout
                 android:id="@+id/voucher_layout"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:animateLayoutChanges="true"
-                android:visibility="gone"
-                android:layout_height="match_parent">
 
-                <View
-                    style="@style/Divider"
-                    android:layout_marginTop="@dimen/dimen_3dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/view" />
+            android:visibility="gone"
+            android:layout_height="match_parent">
 
-                <com.mobile.components.customfontviews.EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:id="@+id/voucher_name" />
+            <View
+                style="@style/Divider"
+                android:layout_marginTop="@dimen/dimen_3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/view" />
 
-                <com.mobile.components.customfontviews.Button
-                    android:text="Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/checkout_button_enter" />
-            </LinearLayout>
+            <com.mobile.components.customfontviews.EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+            android:id="@+id/voucher_name" />
 
+
+
+            <com.mobile.components.customfontviews.Button
+                android:text="@string/checkout_submit_voucher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkout_button_enter"
+                android:textColor="@color/black_47" />
         </LinearLayout>
 
-        <View
-            style="@style/Divider"
-            android:layout_marginTop="@dimen/dimen_3dp"
+    </LinearLayout>
+
+    <View
+        style="@style/Divider"
+        android:layout_marginTop="@dimen/dimen_3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="2 کالا به مجموع"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="2 کالا به مجموع"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:text="500000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:text="ریال"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="2 کالا به مجموع"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:text="500000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:text="ریال"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="2 کالا به مجموع"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:text="500000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:text="ریال"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-        </LinearLayout>
-
-        <View
-            style="@style/Divider"
-            android:layout_marginTop="@dimen/dimen_3dp"
-            android:layout_width="wrap_content"
-            android:id="@+id/view5"
-            android:layout_weight="1"
-            android:layout_height="3dp" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="2 کالا به مجموع"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView11"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:text="500000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView10"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:text="ریال"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView9"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
-        </LinearLayout>
-
-        <com.mobile.components.customfontviews.TextView
-            android:layout_width="match_parent"
-            android:background="@color/black_400"
-            android:textSize="13sp"
-            android:paddingTop="@dimen/dimen_15dp"
-            android:paddingBottom="@dimen/dimen_15dp"
-            android:paddingLeft="@dimen/dimen_10dp"
-            android:paddingRight="@dimen/dimen_10dp"
             android:layout_height="wrap_content"
-            android:text="@string/checkout_sum_header"
-            android:textColor="@color/black"
-            android:id="@+id/textView12"
-            android:layout_weight="1" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:layout_width="match_parent"
-            android:textSize="13sp"
-            android:paddingTop="@dimen/dimen_15dp"
-            android:paddingBottom="@dimen/dimen_15dp"
-            android:paddingLeft="@dimen/dimen_10dp"
-            android:paddingRight="@dimen/dimen_10dp"
-            android:layout_height="wrap_content"
-            android:text="@string/checkout_sum_header"
-            android:id="@+id/textView14"
             android:layout_weight="1"
             android:textColor="@color/black" />
 
+        <TextView
+            android:text="500000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:text="ریال"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="2 کالا به مجموع"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:text="500000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:text="ریال"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="2 کالا به مجموع"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:text="500000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:text="ریال"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+
+    <View
+        style="@style/Divider"
+        android:layout_marginTop="@dimen/dimen_3dp"
+        android:layout_marginBottom="@dimen/dimen_3dp"
+
+    android:layout_width="wrap_content"
+    android:id="@+id/view5"
+    android:layout_weight="1"
+    android:layout_height="3dp" />
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp">
+
+            <TextView
+                android:text="2 کالا به مجموع"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+            android:id="@+id/textView11"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+
+            <TextView
+                android:text="500000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+            android:id="@+id/textView10"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+
+            <TextView
+                android:text="ریال"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+            android:id="@+id/textView9"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+        </LinearLayout>
+
         <com.mobile.components.customfontviews.TextView
             android:layout_width="match_parent"
             android:background="@color/black_400"
             android:textSize="13sp"
-            android:paddingTop="@dimen/dimen_15dp"
-            android:paddingBottom="@dimen/dimen_15dp"
-            android:paddingLeft="@dimen/dimen_10dp"
-            android:paddingRight="@dimen/dimen_10dp"
-            android:layout_height="wrap_content"
-            android:text="@string/checkout_sum_header"
-            android:textColor="@color/black"
-            android:id="@+id/textView18"
-            android:layout_weight="1" />
+
+        android:paddingTop="@dimen/dimen_10dp"
+        android:paddingBottom="@dimen/dimen_10dp"
+        android:paddingLeft="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/checkout_time_delivery"
+        android:textColor="@color/black"
+        android:id="@+id/textView12"
+        android:layout_weight="1" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:layout_width="match_parent"
+            android:textSize="13sp"
+        android:paddingTop="@dimen/dimen_10dp"
+        android:paddingBottom="@dimen/dimen_10dp"
+
+        android:paddingLeft="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/checkout_sum_header"
+        android:id="@+id/textView14"
+        android:layout_weight="1"
+        android:textColor="@color/black" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:layout_width="match_parent"
+            android:background="@color/black_400"
+            android:textSize="13sp"
+
+        android:paddingTop="@dimen/dimen_10dp"
+        android:paddingBottom="@dimen/dimen_10dp"
+        android:paddingLeft="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/checkout_card_summery"
+        android:textColor="@color/black"
+        android:id="@+id/textView18"
+        android:layout_weight="1" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -266,6 +296,17 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textView17" />
         </RelativeLayout>
+        &lt;!&ndash;   <include layout="@layout/_def_checkout_confirmation_product"></include>&ndash;&gt;
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/cheackout_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none" />
+        </RelativeLayout>
+        >>>>>>> Stashed changes
 
         <com.mobile.components.customfontviews.TextView
             android:layout_width="match_parent"
@@ -276,10 +317,11 @@
             android:paddingLeft="@dimen/dimen_10dp"
             android:paddingRight="@dimen/dimen_10dp"
             android:layout_height="wrap_content"
-            android:text="@string/checkout_sum_header"
-            android:textColor="@color/black"
-            android:id="@+id/textView16"
-            android:layout_weight="1" />
+        android:text="@string/checkout_delivery_address"
+          android:textColor="@color/black"
+        android:id="@+id/textView16"
+        android:layout_weight="1" />
+
 
         <LinearLayout
             android:orientation="vertical"
@@ -316,13 +358,60 @@
         </LinearLayout>
 
     </LinearLayout>
-    </com.mobile.components.ScrollViewReachable>
 
-    <com.mobile.components.customfontviews.Button
-        android:text="@string/checkout_confirmation_next_step"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/checkout_confirmation_btn" />
-</RelativeLayout>
+
+<LinearLayout
+android:orientation="vertical"
+android:padding="@dimen/dimen_10dp"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+
+<TextView
+    android:text="نغمه حیامنش"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:id="@+id/textView26"
+    android:textColor="@color/abc_input_method_navigation_guard"
+    android:textStyle="normal|bold" />
+<TextView
+    android:text="آدرس"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:paddingTop="@dimen/dimen_5dp"
+    android:paddingBottom="@dimen/dimen_5dp"
+    android:id="@+id/textView28"
+    android:textColor="@color/abc_input_method_navigation_guard" />
+<TextView
+    android:text="تلفن"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:paddingTop="@dimen/dimen_5dp"
+    android:paddingBottom="@dimen/dimen_5dp"
+    android:id="@+id/textView27"
+    android:textColor="@color/abc_input_method_navigation_guard" />
+
+</LinearLayout>
+
+
+
+
+    </ScrollView>
+<com.mobile.components.customfontviews.TextView
+android:text="@string/checkout_confirmation_next_step"
+android:layout_alignParentBottom="true"
+android:background="@color/color_accent"
+android:layout_width="match_parent"
+android:layout_height="48dp"
+android:id="@+id/checkout_confirmation_btn" />
+    </LinearLayout>
+
+-->
