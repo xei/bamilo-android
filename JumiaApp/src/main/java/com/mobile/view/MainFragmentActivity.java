@@ -39,13 +39,11 @@ import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountAboutFragment;
-import com.mobile.view.fragments.MyAccountAddressesFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
 import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
-import com.mobile.view.fragments.MyNewAccountFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -313,10 +311,6 @@ public class MainFragmentActivity extends DebugActivity {
             case MY_ACCOUNT:
                 removeEntries = true;
                 fragment = newFragmentInstance(MyAccountFragment.class, bundle);
-                break;
-            case MY_NEW_ACCOUNT:
-                removeEntries = true;
-                fragment = newFragmentInstance(MyNewAccountFragment.class, bundle);
                 break;
             case MY_USER_DATA:
                 fragment = newFragmentInstance(MyAccountUserDataFragment.class, bundle);

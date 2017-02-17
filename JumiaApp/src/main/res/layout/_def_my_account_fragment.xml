@@ -14,8 +14,9 @@
             android:id="@+id/middle_myaccount_list"
             style="@style/MyAccountSection">
 
-            <com.mobile.components.customfontviews.TextView
-                style="@style/MyAccountHeaderStyle"/>
+      <!--      <com.mobile.components.customfontviews.TextView
+                style="@style/MyAccountHeaderStyle"
+                android:textColor="@color/red_1" />-->
 
         </android.support.v7.widget.LinearLayoutCompat>
 
@@ -25,8 +26,8 @@
             android:id="@+id/notification_list"
             style="@style/MyAccountSection">
 
-            <com.mobile.components.customfontviews.TextView
-                style="@style/MyAccountHeaderStyle"/>
+<!--            <com.mobile.components.customfontviews.TextView
+                style="@style/MyAccountHeaderStyle"/>-->
 
         </android.support.v7.widget.LinearLayoutCompat>
 
@@ -36,9 +37,11 @@
             android:id="@+id/language_list"
             style="@style/MyAccountSection">
 
+<!--
             <com.mobile.components.customfontviews.TextView
                 style="@style/MyAccountHeaderStyle"
                 />
+-->
         </android.support.v7.widget.LinearLayoutCompat>
 
         <!-- MORE SETTINGS -->
@@ -47,9 +50,9 @@
             android:id="@+id/more_info_container"
             style="@style/MyAccountSection">
 
-            <com.mobile.components.customfontviews.TextView
+        <!--    <com.mobile.components.customfontviews.TextView
                 style="@style/MyAccountHeaderStyle"
-                android:text="@string/more" />
+                android:text="@string/more" />-->
         </android.support.v7.widget.LinearLayoutCompat>
 
         <!-- SHARE SETTINGS -->
@@ -58,8 +61,8 @@
             android:id="@+id/middle_app_sharing_list"
             style="@style/MyAccountSection">
 
-            <com.mobile.components.customfontviews.TextView
-                style="@style/MyAccountHeaderStyle"         />
+            <!--<com.mobile.components.customfontviews.TextView-->
+                <!--style="@style/MyAccountHeaderStyle"         />-->
 
         </android.support.v7.widget.LinearLayoutCompat>
 
