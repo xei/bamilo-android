@@ -432,4 +432,20 @@
     <string name="checkout_address">Address</string>
     <string name="checkout_review">Review</string>
     <string name="checkout_payment">Payment</string>
+
+    <string name="rial_currency">Rial</string>
+    <string name="cart_total_quantity">Total (%d product(s))</string>
+    <string name="cart_item_size">Size:</string>
+    <string name="cart_item_color">Color:</string>
+    <string name="cart_item_count">Count:</string>
+    <string name="cart_item_price">Price:</string>
+    <string name="favourite">Favourites</string>
+    <string name="reached_max_quantity">you reached the max quantity %d</string>
+    <string name="reached_min_quantity">reached minimum Quantity</string>
+    <string name="remove_item_from_cart_title">Remove item</string>
+    <string name="remove_item_from_cart_question">Are you sure to remove?</string>
+    <string name="cart_total_amount">Total</string>
+    <string name="cart_total_discount">Total discount</string>
+    <string name="cart_product_discount">Products discount</string>
+
 </resources>

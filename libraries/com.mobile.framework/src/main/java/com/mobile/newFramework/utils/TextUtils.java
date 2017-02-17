@@ -1,5 +1,6 @@
 package com.mobile.newFramework.utils;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
@@ -169,5 +170,16 @@ public class TextUtils {
         }
         csv = csv.substring(0, csv.length()-1);
         return csv;
+    }
+
+    public static String getResourceString(Context context, int resId)
+    {
+        return context.getResources().getString(resId);
+    }
+
+    public static String getResourceString(Context context, int resId, Integer[] args)
+    {
+        String str = context.getResources().getString(resId);
+        return String.format(str, args);
     }
 }

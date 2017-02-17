@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- CONTAINER -->
+
+    <ViewStub
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- LOADING LAYOUT -->
+
+    <ViewStub
+        android:id="@+id/fragment_stub_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/fragment_loading_stub_inflate"
+        android:layout="@layout/fragment_root_loading" />
+
+    <!-- RETRY LAYOUT -->
+
+    <ViewStub
+        android:id="@+id/fragment_stub_retry"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/fragment_retry_stub_inflate"
+        android:layout="@layout/fragment_root_error" />
+
+    <!-- HOME FALL BACK LAYOUT -->
+
+    <ViewStub
+        android:id="@+id/fragment_stub_home_fall_back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/fragment_fall_back_stub_inflate"
+        android:layout="@layout/fragment_root_home_fall_back" />
+
+    <!-- MAINTENANCE PAGE LAYOUT -->
+
+    <ViewStub
+        android:id="@+id/fragment_stub_maintenance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/fragment_maintenance_stub_inflate"
+        android:layout="@layout/fragment_root_maintenance" />
+
+</FrameLayout>
