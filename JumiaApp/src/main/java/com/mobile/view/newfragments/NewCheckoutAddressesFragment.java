@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.FrameLayout;
 
 import com.mobile.adapters.AddressAdapter;
@@ -26,6 +27,7 @@ import com.mobile.helpers.checkout.SetStepAddressesHelper;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.checkout.MultiStepAddresses;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
@@ -52,7 +54,11 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     private int mSelectedAddress;
 
     public NewCheckoutAddressesFragment() {
-        super(true);
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
+                NavigationAction.CHECKOUT,
+                R.layout.new_checkout_my_addresses,
+                R.string.checkout_label,
+                ConstantsCheckout.CHECKOUT_BILLING,true);
     }
 
     /*
@@ -64,9 +70,13 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         Print.i(TAG, "ON CREATE");
     }
 
-    @Nullable
+/*    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+       *//* View view =super.onCreateView(inflater, container, savedInstanceState);
+        ViewStub contentContainer = (ViewStub) view.findViewById(R.id.content_container);
+        contentContainer.setLayoutResource(R.layout.new_checkout_my_addresses);
+        view = contentContainer.inflate();*//*
         View view = inflater.inflate(R.layout.new_checkout_my_addresses, container, false);
         //mAddressView = (RecyclerView) view.findViewById(R.id.address_recycler_view);
         //RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -77,12 +87,17 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         mAddressView.setLayoutManager(llm);
         return view;
-    }
+    }*/
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
+        mAddressView = (RecyclerView) view.findViewById(R.id.address_recycler_view);
+        mAddressView.setHasFixedSize(true);
+
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        mAddressView.setLayoutManager(llm);
         mCheckoutTotalBar = view.findViewById(R.id.address_continue);
         fabNewAddress = (FloatingActionButton) view.findViewById(R.id.fab_new_address);
 
@@ -91,20 +106,9 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         fabNewAddress.setOnClickListener(onClickCreateAddressButton);
 
         mSelectedAddress = -1;
+        super.setCheckoutStep(view, 1);
 
-
-
-        // Get sections
-        /*mShippingView = (ViewGroup) view.findViewById(R.id.checkout_addresses_section_shipping);
-        mBillingView = (ViewGroup) view.findViewById(R.id.checkout_addresses_section_billing);
-        mOthersView = (ViewGroup) view.findViewById(R.id.checkout_addresses_section_other);
-        // Set buttons
-        view.findViewById(R.id.checkout_addresses_button_add_top).setOnClickListener(this);
-        mButtonBottom = view.findViewById(R.id.checkout_addresses_button_add_bottom);
-        mButtonBottom.setOnClickListener(this);*/
     }
-
-
 
     @Override
     public void onStart() {
@@ -117,12 +121,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Get addresses
-        //if(mAddresses == null) {
             triggerGetForm();
-        //}
-        /* else {
-            showFragmentContentContainer();
-        }*/
     }
 
     @Override
@@ -163,9 +162,6 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
     };
 
-
-
-
     /**
      * Process the click on add button.
      */
@@ -183,7 +179,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
     @Override
     protected void triggerGetAddresses() {
-        triggerContentEvent(new GetStepAddressesHelper(), null, this);
+        triggerContentEventProgress(new GetStepAddressesHelper(), null, this);
     }
 
     /*
@@ -210,12 +206,14 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 //CheckoutStepManager.setTotalBar(mCheckoutTotalBar, multiStepAddresses.getOrderSummary());
                 //super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, multiStepAddresses.getOrderSummary());
                 super.showAddresses(multiStepAddresses.getAddresses(), mSelectedAddress);
+                hideActivityProgress();
                 break;
             case SET_MULTI_STEP_ADDRESSES:
                 // Get next step
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextFragment = nextStepStruct.getFragmentType();
-                nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_SHIPPING;
+                //DROID-65 nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_SHIPPING;
+                nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_PAYMENT;
                 getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
             default:
@@ -225,6 +223,33 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-
+        /*if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Generic error
+        if (super.handleErrorEvent(baseResponse)) {
+            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+            return;
+        }*/
+        EventType eventType = baseResponse.getEventType();
+        int errorCode = baseResponse.getError().getCode();
+        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
+        switch (eventType) {
+            case GET_MULTI_STEP_ADDRESSES:
+                // Show retry
+                super.showFragmentErrorRetry();
+                break;
+            case SET_MULTI_STEP_ADDRESSES:
+                if (errorCode == ErrorCode.REQUEST_ERROR) {
+                    showWarningErrorMessage(baseResponse.getValidateMessage());
+                } else {
+                    super.showUnexpectedErrorWarning();
+                }
+                showFragmentContentContainer();
+                break;
+            default:
+                break;
+        }
     }
 }

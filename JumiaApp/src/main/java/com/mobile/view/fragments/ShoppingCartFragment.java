@@ -72,6 +72,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     private static final String cartValue = "";
     private long mBeginRequestMillis;
+    // DROID-10
+    private long mGABeginRequestMillis;
+    private PurchaseCartItem mQuantityChangedItem;
     private List<PurchaseCartItem> items;
     private ViewGroup mCartItemsContainer;
     private View mTotalContainer;
@@ -147,6 +150,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         super.onResume();
         Print.i(TAG, "ON RESUME");
         mBeginRequestMillis = System.currentTimeMillis();
+        mGABeginRequestMillis = System.currentTimeMillis();
         // Case deep link
         if (!TextUtils.isEmpty(mItemsToCartDeepLink)) addItemsToCart(mItemsToCartDeepLink);
         // Case normal
@@ -429,6 +433,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         TrackerDelegator.trackAddToCartGTM(item, quantity, mItemRemovedCartValue);
         item.setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
+        mGABeginRequestMillis = System.currentTimeMillis();
+        mQuantityChangedItem = item;
         //
         triggerContentEventProgress(new ShoppingCartChangeItemQuantityHelper(), ShoppingCartChangeItemQuantityHelper.createBundle(item.getConfigSimpleSKU(), quantity), this);
     }
@@ -510,7 +516,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 params.putDouble(TrackerDelegator.RATING_KEY, mItemRemovedRating);
                 params.putString(TrackerDelegator.CARTVALUE_KEY, mItemRemovedCartValue);
                 TrackerDelegator.trackProductRemoveFromCart(params);
-                TrackerDelegator.trackLoadTiming(params);
+                // DROID-10 TrackerDelegator.trackLoadTiming(params);
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaRemoveItemFromShoppingCart, mGABeginRequestMillis, mItemRemovedSku);
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                 hideActivityProgress();
                 break;
@@ -519,7 +526,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 params = new Bundle();
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-                TrackerDelegator.trackLoadTiming(params);
+                // DROID-10 TrackerDelegator.trackLoadTiming(params);
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaChangeItemQuantityInShoppingCart, mGABeginRequestMillis, mQuantityChangedItem.getSku());
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:
@@ -528,7 +536,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 params = new Bundle();
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-                TrackerDelegator.trackLoadTiming(params);
+                //DROID-10 TrackerDelegator.trackLoadTiming(params);
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaShoppingCart, mGABeginRequestMillis, TextUtils.joinCartItemSKUes(purchaseEntity));
                 params.clear();
                 params.putParcelable(AdjustTracker.CART, purchaseEntity);
                 TrackerDelegator.trackPage(TrackingPage.CART_LOADED, getLoadTime(), false);
@@ -542,8 +551,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 params = new Bundle();
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-                TrackerDelegator.trackLoadTiming(params);
-                displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
+                //DROID-10 TrackerDelegator.trackLoadTiming(params);
+                PurchaseEntity defPurchaseEntity = (PurchaseEntity) baseResponse.getMetadata().getData();
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaShoppingCart, mGABeginRequestMillis, TextUtils.joinCartItemSKUes(defPurchaseEntity));
+                displayShoppingCart(defPurchaseEntity);
                 break;
         }
     }
@@ -608,6 +619,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 break;
         }
         mBeginRequestMillis = System.currentTimeMillis();
+        mGABeginRequestMillis = System.currentTimeMillis();
     }
 
 
@@ -777,6 +789,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Validate position
         if (position < items.size()) {
             mBeginRequestMillis = System.currentTimeMillis();
+            mGABeginRequestMillis = System.currentTimeMillis();
             triggerRemoveItem(items.get(position));
         }
     }

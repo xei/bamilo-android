@@ -2,7 +2,6 @@
 <resources>
     <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">حساب کاربری من ‎</string>
-    <string name="new_account_name">حساب کاربری من 2‎</string>
     <string name="action_label_add_address">اضافه کردن آدرس جدید</string>
     <string name="action_label_basket">سبد کالا</string>
     <string name="action_label_search_hint"> جستجو در بامیلو</string>
@@ -401,6 +400,8 @@
 
     <string name="checkout_address_title">لطفا آدرس خود را انتخاب کنید.</string>
     <string name="telephone">تلفن:</string>
+    <string name="checkout_payment_title">نحوه پرداخت</string>
+
     <string name="filter_toggle_text">فقط با تخفیف ها</string>
     <!--about page-->
     <string name="about_contactus_header">با ما در ارتباط باشید</string>
@@ -411,5 +412,34 @@
     <string name="about_bugreport">گزارش مشکلات برنامه</string>
     <string name="account_about">درباره ما‎</string>
     <string name="my_about_label">تماس با ما</string>
+
+    <string name="delete_address_question">آیا از حذف آدرس خود اطمینان دارید؟</string>
+    <string name="delete_address_label">حذف آدرس</string>
+
+
+    <string name="default_address_question">از تغییر آدرس پیش فرض خود اطمینان دارید؟</string>
+    <string name="default_address_label">تعیین آدرس پیش فرض</string>
+
+    <string name="checkout_address">آدرس</string>
+    <string name="checkout_review">بررسی</string>
+    <string name="checkout_payment">پرداخت</string>
+
+    <string name="rial_currency">ريال</string>
+    <string name="cart_total_quantity">جمع نهایی (%d کالا)</string>
+    <string name="cart_item_size">اندازه:</string>
+    <string name="cart_item_color">رنگ:</string>
+    <string name="cart_item_count">تعداد:</string>
+    <string name="cart_item_price">قیمت:</string>
+    <string name="favourite">علاقه مندی ها</string>
+    <string name="reached_max_quantity">سقف خرید این کالا در هر سفارش %d عدد است</string>
+    <string name="reached_min_quantity">حداقل تعداد قابل سفارش</string>
+    <string name="remove_item_from_cart_title">حذف از سبد خرید</string>
+    <string name="remove_item_from_cart_question"> از حذف کالا از سبد خریدتان اطمینان دارید؟</string>
+    <string name="cart_total_amount">مجموع خرید</string>
+    <string name="cart_total_discount">مجموع تخفیف</string>
+    <string name="cart_product_discount">تخفیف کالاها</string>
+    <string name="basket_confirm_button">تایید</string>
+    <string name="register_label">عضویت</string>
+
 
 </resources>

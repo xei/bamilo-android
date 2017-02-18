@@ -3,6 +3,8 @@ package com.mobile.view.fragments;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import com.mobile.view.R;
 import com.mobile.view.newfragments.NewBaseFragment;
 
 import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Class used to perform login via Facebook,
@@ -25,8 +28,8 @@ import java.util.EnumSet;
 public class RegisterNewMainFragment extends NewBaseFragment implements IResponseCallback{
 
 
-    public RegisterNewMainFragment() {
-        // Required empty public constructor
+    public RegisterNewMainFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState) {
+        super(enabledMenuItems, action, layoutResId, titleResId, adjustState);
     }
 
     @Override

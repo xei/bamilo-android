@@ -39,13 +39,11 @@ import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountAboutFragment;
-import com.mobile.view.fragments.MyAccountAddressesFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
 import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
-import com.mobile.view.fragments.MyNewAccountFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -59,7 +57,6 @@ import com.mobile.view.fragments.ReviewsFragment;
 import com.mobile.view.fragments.SessionForgotPasswordFragment;
 import com.mobile.view.fragments.SessionLoginEmailFragment;
 import com.mobile.view.fragments.SessionLoginMainFragment;
-import com.mobile.view.fragments.SessionLoginNewMainFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.StaticPageFragment;
@@ -73,6 +70,10 @@ import com.mobile.view.fragments.order.OrderReturnStepsMain;
 import com.mobile.view.fragments.order.OrderStatusFragment;
 import com.mobile.view.newfragments.NewBaseFragment;
 import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
+import com.mobile.view.newfragments.NewCheckoutPaymentMethodsFragment;
+import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
+import com.mobile.view.newfragments.NewSessionLoginMainFragment;
+import com.mobile.view.newfragments.NewShoppingCartFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -87,8 +88,8 @@ public class MainFragmentActivity extends DebugActivity {
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
 
     private BaseFragment fragment;
-    private NewBaseFragment newFragment;
-    private boolean isNewFragment = false;
+    //DROID-63 private NewBaseFragment newFragment;
+    //DROID-63 private boolean isNewFragment = false;
 
     private FragmentType mCurrentFragmentType;
 
@@ -250,7 +251,7 @@ public class MainFragmentActivity extends DebugActivity {
         hideKeyboard();
         // Remove entries from back stack
         boolean removeEntries = false;
-        isNewFragment = false;
+        //DROID-63 isNewFragment = false;
         // Validate fragment type
         switch (type) {
             case HOME:
@@ -287,8 +288,7 @@ public class MainFragmentActivity extends DebugActivity {
                 type = FragmentType.getUniqueIdentifier(type, fragment);
                 break;
             case PRODUCT_INFO:
-                fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);
-                break;
+                fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);break;
             case PRODUCT_GALLERY:
                 fragment = newFragmentInstance(ProductImageGalleryFragment.class, bundle);
                 break;
@@ -302,7 +302,7 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(ReviewFragment.class, bundle);
                 break;
             case SHOPPING_CART:
-                fragment = newFragmentInstance(ShoppingCartFragment.class, bundle);
+                fragment = newFragmentInstance(NewShoppingCartFragment.class, bundle);
                 break;
             case STATIC_PAGE:
                 fragment = newFragmentInstance(StaticPageFragment.class, bundle);
@@ -313,10 +313,6 @@ public class MainFragmentActivity extends DebugActivity {
             case MY_ACCOUNT:
                 removeEntries = true;
                 fragment = newFragmentInstance(MyAccountFragment.class, bundle);
-                break;
-            case MY_NEW_ACCOUNT:
-                removeEntries = true;
-                fragment = newFragmentInstance(MyNewAccountFragment.class, bundle);
                 break;
             case MY_USER_DATA:
                 fragment = newFragmentInstance(MyAccountUserDataFragment.class, bundle);
@@ -337,8 +333,8 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);
                 break;
             case LOGIN:
-                //fragment = newFragmentInstance(SessionLoginMainFragment.class, bundle);
-                fragment = newFragmentInstance(SessionLoginNewMainFragment.class, bundle);
+                fragment = newFragmentInstance(SessionLoginMainFragment.class, bundle);
+                //fragment = newFragmentInstance(NewSessionLoginMainFragment.class, bundle);
                 break;
             case LOGIN_EMAIL:
                 fragment = newFragmentInstance(SessionLoginEmailFragment.class, bundle);
@@ -350,9 +346,9 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(SessionForgotPasswordFragment.class, bundle);
                 break;
             case CHECKOUT_MY_ADDRESSES:
-                isNewFragment = true;
-                newFragment = newNewFragmentInstance(NewCheckoutAddressesFragment.class, bundle);
-               // fragment = newFragmentInstance(CheckoutAddressesFragment.class, bundle);
+                //DROID-63 isNewFragment = true;
+                //DROID-63 newFragment = newNewFragmentInstance(NewCheckoutAddressesFragment.class, bundle);
+                fragment = newFragmentInstance(NewCheckoutAddressesFragment.class, bundle);
                 break;
             case CHECKOUT_CREATE_ADDRESS:
                 fragment = newFragmentInstance(CheckoutCreateAddressFragment.class, bundle);
@@ -364,7 +360,7 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(CheckoutShippingMethodsFragment.class, bundle);
                 break;
             case CHECKOUT_PAYMENT:
-                fragment = newFragmentInstance(CheckoutPaymentMethodsFragment.class, bundle);
+                fragment = newFragmentInstance(NewCheckoutPaymentMethodsFragment.class, bundle);
                 break;
             case CHECKOUT_FINISH:
                 fragment = newFragmentInstance(CheckoutFinishFragment.class, bundle);
@@ -399,7 +395,9 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(ProductOffersFragment.class, bundle);
                 break;
             case MY_ACCOUNT_MY_ADDRESSES:
-                fragment = newFragmentInstance(MyAccountAddressesFragment.class, bundle);
+                //DROID-63 isNewFragment = true;
+                //DROID-63 newFragment = newNewFragmentInstance(NewMyAccountAddressesFragment.class, bundle);
+                fragment = newFragmentInstance(NewMyAccountAddressesFragment.class, bundle);
                 break;
             case MY_ACCOUNT_CREATE_ADDRESS:
                 fragment = newFragmentInstance(MyAccountCreateAddressFragment.class, bundle);
@@ -443,6 +441,9 @@ public class MainFragmentActivity extends DebugActivity {
         // Save the current state
         mCurrentFragmentType = type;
 
+        fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
+
+/* DROID-63
         // Transition
         if (!isNewFragment) {
             fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
@@ -451,6 +452,7 @@ public class MainFragmentActivity extends DebugActivity {
         {
             fragmentManagerTransition(R.id.app_content, newFragment, type, addToBackStack);
         }
+*/
     }
 
     /**
@@ -460,9 +462,11 @@ public class MainFragmentActivity extends DebugActivity {
         return BaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
     }
 
+/* DROID-63
     private  NewBaseFragment newNewFragmentInstance(@NonNull Class<? extends NewBaseFragment> fragmentClass, @Nullable Bundle arguments) {
         return NewBaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
     }
+*/
 
     /**
      * Fragment communication.<br>
@@ -530,6 +534,7 @@ public class MainFragmentActivity extends DebugActivity {
                 Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
             }
         }
+/* DROID-63
         else
         {
             newFragment = (NewBaseFragment) frag;
@@ -555,6 +560,7 @@ public class MainFragmentActivity extends DebugActivity {
                 Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
             }
         }
+*/
     }
 
     /**

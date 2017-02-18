@@ -1,3 +1,4 @@
+/*
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -58,11 +59,13 @@ import java.util.List;
 
 import static com.mobile.view.fragments.BaseFragment.ADJUST_CONTENT;
 
+*/
 /**
  * Class used to perform login via Facebook,
  * @author sergiopereira
- */
-public class SessionLoginNewMainFragment extends BaseFragment implements IResponseCallback {
+ *//*
+
+public class SessionLoginNewMainFragment extends NewBaseFragment implements IResponseCallback {
 
     private static final String TAG = SessionLoginNewMainFragment.class.getSimpleName();
 
@@ -75,9 +78,11 @@ public class SessionLoginNewMainFragment extends BaseFragment implements IRespon
 
     private boolean isInCheckoutProcess;
 
-    /**
+    */
+/**
      * Empty constructor
-     */
+     *//*
+
     public SessionLoginNewMainFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LOGIN_OUT,
@@ -86,22 +91,26 @@ public class SessionLoginNewMainFragment extends BaseFragment implements IRespon
                 ADJUST_CONTENT);
     }
 
-    /*
+    */
+/*
      * (non-Javadoc)
      * 
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
-     */
+     *//*
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
     }
 
-    /*
+    */
+/*
      * (non-Javadoc)
      * 
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
+     *//*
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -168,12 +177,14 @@ public class SessionLoginNewMainFragment extends BaseFragment implements IRespon
 
 
 
-    /*
+    */
+/*
          * (non-Javadoc)
          *
          * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View,
          * android.os.Bundle)
-         */
+         *//*
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -207,22 +218,26 @@ public class SessionLoginNewMainFragment extends BaseFragment implements IRespon
         Print.i(TAG, "ON VIEW CREATED");
     }
 
-    /*
+    */
+/*
      * (non-Javadoc)
      * 
      * @see android.support.v4.app.Fragment#onStart()
-     */
+     *//*
+
     @Override
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
     }
 
-    /*
+    */
+/*
      * (non-Javadoc)
      * 
      * @see android.support.v4.app.Fragment#onResume()
-     */
+     *//*
+
     @Override
     public void onResume() {
         super.onResume();
@@ -230,26 +245,32 @@ public class SessionLoginNewMainFragment extends BaseFragment implements IRespon
 
     }
 
-    /*
+    */
+/*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
-     */
+     *//*
 
-    /*
+
+    */
+/*
      * (non-Javadoc)
      * 
      * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
+     *//*
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
-    /*
+    */
+/*
      * (non-Javadoc)
      * 
      * @see android.support.v4.app.Fragment#onPause()
-     */
+     *//*
+
     @Override
     public void onPause() {
         super.onPause();
@@ -257,21 +278,25 @@ public class SessionLoginNewMainFragment extends BaseFragment implements IRespon
     getBaseActivity().hideKeyboard();
     }
 
-    /*
+    */
+/*
      * (non-Javadoc)
      * 
      * @see android.support.v4.app.Fragment#onStop()
-     */
+     *//*
+
     @Override
     public void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
     }
 
-    /*
+    */
+/*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onDestroyView()
-     */
+     *//*
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -279,10 +304,12 @@ public class SessionLoginNewMainFragment extends BaseFragment implements IRespon
 
     }
 
-    /*
+    */
+/*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onDestroy()
-     */
+     *//*
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -299,3 +326,4 @@ public class SessionLoginNewMainFragment extends BaseFragment implements IRespon
 
     }
 }
+*/

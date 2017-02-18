@@ -1,3 +1,4 @@
+/*
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -31,10 +32,12 @@ import com.mobile.view.newfragments.NewBaseFragment;
 
 import java.util.EnumSet;
 
+*/
 /**
  * Class used to perform login via Facebook,
  * @author sergiopereira
- */
+ *//*
+
 public class LoginNewMainFragment extends NewBaseFragment implements  IResponseCallback, View.OnClickListener {
 
     private static final String TAG = LoginNewMainFragment.class.getSimpleName();
@@ -47,6 +50,7 @@ public class LoginNewMainFragment extends NewBaseFragment implements  IResponseC
     private FragmentType mNextStepFromParent;
     private boolean istrue;
     public LoginNewMainFragment() {
+        super();
         // Required empty public constructor
 
     }
@@ -170,3 +174,4 @@ public class LoginNewMainFragment extends NewBaseFragment implements  IResponseC
 
 
 }
+*/

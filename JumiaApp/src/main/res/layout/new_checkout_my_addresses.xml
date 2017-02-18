@@ -1,60 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:orientation="vertical"
     >
 
-        <LinearLayout
-            android:id="@+id/header"
-            android:layout_alignParentTop="true"
+        <include
+            layout="@layout/new_checkout_header"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="@color/black">
-            <RelativeLayout
-                android:layout_width="@dimen/dimen_0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:id="@+id/address"
-                    android:layout_width="@dimen/dimen_25dp"
-                    android:layout_height="@dimen/dimen_25dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/checkout_address"
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="@dimen/dimen_0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:id="@+id/review"
-                    android:layout_width="@dimen/dimen_25dp"
-                    android:layout_height="@dimen/dimen_25dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/checkout_confirm_off"
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="@dimen/dimen_0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:id="@+id/payment"
-                    android:layout_width="@dimen/dimen_25dp"
-                    android:layout_height="@dimen/dimen_25dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/checkout_payment_off"
-                    />
-            </RelativeLayout>
-        </LinearLayout>
-
+            android:layout_alignParentTop="true"
+            />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/title"
@@ -70,23 +27,25 @@
             android:text="@string/checkout_address_title"/>
 
         <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/address_separator"/>
-        <LinearLayout
+            android:id="@+id/separator"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="1dp"
             android:layout_below="@+id/title"
-            android:layout_alignParentBottom="true">
+            android:background="@color/address_separator"/>
 
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/separator"
+    android:layout_above="@+id/address_continue">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/address_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
+                android:layout_below="@+id/separator"
                  />
-
-    </LinearLayout>
+</ScrollView>
+<!--    </LinearLayout>-->
 
 
         <android.support.design.widget.FloatingActionButton
@@ -95,29 +54,20 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/address_continue"
             app:fabSize="mini"
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_add_white_48dp" />
-    </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/footer"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
 
-        >
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/address_continue"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
             android:textSize="20sp"
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@color/color_accent"
             android:text="@string/next_button"/>
-        <!--<include
-            layout="@layout/checkout_total_layout" />-->
-    </LinearLayout>
-</android.support.v7.widget.LinearLayoutCompat>
+
+</RelativeLayout>

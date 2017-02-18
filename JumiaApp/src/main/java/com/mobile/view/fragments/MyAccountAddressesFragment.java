@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -15,6 +16,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
@@ -27,7 +29,8 @@ import java.util.EnumSet;
 public class MyAccountAddressesFragment extends BaseAddressesFragment {
 
     private static final String TAG = MyAccountAddressesFragment.class.getSimpleName();
-
+    //DROID-10
+    private long mGABeginRequestMillis;
     /**
      * Constructor
      */
@@ -46,6 +49,7 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
+        mGABeginRequestMillis = System.currentTimeMillis();
     }
 
     @Override
@@ -154,12 +158,14 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
         switch (eventType) {
             case GET_CUSTOMER_ADDRESSES_EVENT:
                 super.showAddresses((Addresses) baseResponse.getContentData());
+                //DROID-10
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaAddress, mGABeginRequestMillis,
+                        JumiaApplication.CUSTOMER==null?"":""+JumiaApplication.CUSTOMER.getId());
                 break;
             default:
                 break;
         }
     }
-
     /*
      * (non-Javadoc)
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)

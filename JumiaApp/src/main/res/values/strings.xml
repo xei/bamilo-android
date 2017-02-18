@@ -2,7 +2,6 @@
 <resources>
     <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">My Account</string>
-    <string name="new_account_name">My Account 2</string>
     <string name="action_label_add_address">Add New Address</string>
     <string name="action_label_basket">Basket</string>
     <string name="action_label_search_hint">Search on %s</string>
@@ -409,6 +408,8 @@
 
     <string name="checkout_address_title">Please choose your address</string>
     <string name="telephone">Tel:</string>
+    <string name="checkout_payment_title">Payment method</string>
+
     <string name="filter_toggle_text">Search</string>
     <!--about page-->
     <string name="about_contactus_header">با ما در ارتباط باشید</string>
@@ -419,6 +420,38 @@
     <string name="about_bugreport">گزارش مشکلات برنامه</string>
     <string name="account_about">درباره ما‎</string>
     <string name="my_about_label">تماس با ما</string>
+
+
+    <string name="delete_address_question">Are you sure you want to delete this address?</string>
+    <string name="delete_address_label">Delete address</string>
+
+    <string name="default_address_question">Are you sure you want to set this address to your default address?</string>
+    <string name="default_address_label">Set default address</string>
+
+    <string name="address_item_key_1"></string>
+    <string name="address_item_key_2"></string>
+
+
+    <string name="checkout_address">Address</string>
+    <string name="checkout_review">Review</string>
+    <string name="checkout_payment">Payment</string>
+
+    <string name="rial_currency">Rial</string>
+    <string name="cart_total_quantity">Total (%d product(s))</string>
+    <string name="cart_item_size">Size:</string>
+    <string name="cart_item_color">Color:</string>
+    <string name="cart_item_count">Count:</string>
+    <string name="cart_item_price">Price:</string>
+    <string name="favourite">Favourites</string>
+    <string name="reached_max_quantity">you reached the max quantity %d</string>
+    <string name="reached_min_quantity">reached minimum Quantity</string>
+    <string name="remove_item_from_cart_title">Remove item</string>
+    <string name="remove_item_from_cart_question">Are you sure to remove?</string>
+    <string name="cart_total_amount">Total</string>
+    <string name="cart_total_discount">Total discount</string>
+    <string name="cart_product_discount">Products discount</string>
+    <string name="basket_confirm_button">Confirm</string>
+    <string name="register_label">Register</string>
 
 
 </resources>

@@ -7,7 +7,6 @@
 
     <!-- WARNING: DISABLE SINGLE SHOP ONLY FOR DEV-->
     <bool name="is_single_shop_country">true</bool>
-    <string name="single_shop_country_url">www.bamilo.com</string>
-    <string name="countries_url">http://bms.bamilo.com/mobile</string>
+    <string name="countries_url">http://bms.bamilo.com/mobile</string>-
 
 </resources>

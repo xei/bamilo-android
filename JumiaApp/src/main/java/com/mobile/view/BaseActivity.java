@@ -149,6 +149,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private boolean initialCountry = false;
     private Menu mCurrentMenu;
     private long beginInMillis;
+    //DROID-10
+    private long mGABeginInMillis;
+
     private ActionBar mSupportActionBar;
     private boolean isBackButtonEnabled = false;
     private TabLayout mTabLayout;
@@ -409,6 +412,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     };
 
+
     /**
      * Handles clicks on Checkout Header
      * Verifies if click is available for this header position, if so, will select position and then mCheckoutOnTabSelectedListener will handle next steps.
@@ -420,7 +424,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     };
 
-    
+
     /*
      * ############## CONTENT VIEWS ##############
      */
@@ -1091,6 +1095,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     private void getSuggestions() {
         beginInMillis = System.currentTimeMillis();
+        mGABeginInMillis = System.currentTimeMillis();
         final String text = mSearchAutoComplete.getText().toString();
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
         SearchSuggestionClient mSearchSuggestionClient = new SearchSuggestionClient();
@@ -1191,7 +1196,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Bundle params = new Bundle();
         params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
-        TrackerDelegator.trackLoadTiming(params);
+        //DROID-10 TrackerDelegator.trackLoadTiming(params);
+        TrackerDelegator.trackScreenLoadTiming(R.string.gaSearchSuggestions, mGABeginInMillis, requestQuery);
         SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
         searchSuggestionsAdapter.setOnViewHolderClickListener(this);
         mSearchListView.setAdapter(searchSuggestionsAdapter);
@@ -1351,11 +1357,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         // MY ACCOUNT
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
                         onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        break;
-                    case NavigationAction.MY_NEW_ACCOUNT:
-                        // MY ACCOUNT
-                       // TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
-                        onSwitchFragment(FragmentType.MY_NEW_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.MY_ORDERS:
                         // TRACK ORDER
