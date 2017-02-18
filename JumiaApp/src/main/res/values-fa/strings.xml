@@ -432,7 +432,6 @@
     <string name="checkout_voucher_title">کد تخفیف</string>
     <string name="checkout_submit_voucher">ثبت کد تخفیف</string>
     <string name="checkout_confirmation_next_step">ثبت سفارش</string>
-
     <string name="checkout_time_delivery">زمان تحویل</string>
     <string name="checkout_delivery_address">ادرس تحویل گیرنده</string>
     <string name="checkout_card_summery">خلاصه خرید</string>
