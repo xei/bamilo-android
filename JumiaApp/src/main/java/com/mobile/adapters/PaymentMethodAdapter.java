@@ -111,6 +111,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         if (position == 0 && methodSelection.get(0).isSelected() && holder.checkBox.isChecked()) {
             lastChecked = holder.checkBox;
             lastCheckedPos = 0;
+            holder.text.setVisibility(View.VISIBLE);
         }
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {

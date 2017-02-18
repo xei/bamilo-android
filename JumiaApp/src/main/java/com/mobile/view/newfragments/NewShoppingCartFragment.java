@@ -645,18 +645,14 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     @Override
     public void onRequestError(BaseResponse baseResponse) {
 
-/* DROID-63
-        // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-*/
 
         hideActivityProgress();
         EventType eventType = baseResponse.getEventType();
 
-/* DROID-63
         // Validate generic errors
         if (super.handleErrorEvent(baseResponse)) {
             if(eventType == EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT ){
@@ -664,7 +660,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             }
             return;
         }
-*/
 
         switch (eventType) {
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
@@ -677,6 +672,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                     hideNoItems();
                 }
                 break;
+            case REMOVE_PRODUCT_FROM_WISH_LIST:
+            case ADD_PRODUCT_TO_WISH_LIST:
             default:
                 break;
         }

@@ -21,6 +21,7 @@ import com.mobile.helpers.checkout.SetStepAddressesHelper;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.checkout.MultiStepAddresses;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -208,12 +209,12 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
                 super.showFragmentErrorRetry();
                 break;
             case SET_MULTI_STEP_ADDRESSES:
-                /*if (errorCode == ErrorCode.REQUEST_ERROR) {
+                if (errorCode == ErrorCode.REQUEST_ERROR) {
                     showWarningErrorMessage(baseResponse.getValidateMessage());
                 } else {
                     super.showUnexpectedErrorWarning();
                 }
-                showFragmentContentContainer();*/
+                showFragmentContentContainer();
                 break;
             default:
                 break;

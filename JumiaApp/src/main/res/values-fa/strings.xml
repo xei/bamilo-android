@@ -438,6 +438,7 @@
     <string name="cart_total_amount">مجموع خرید</string>
     <string name="cart_total_discount">مجموع تخفیف</string>
     <string name="cart_product_discount">تخفیف کالاها</string>
+    <string name="basket_confirm_button">تایید</string>
 
 
 </resources>

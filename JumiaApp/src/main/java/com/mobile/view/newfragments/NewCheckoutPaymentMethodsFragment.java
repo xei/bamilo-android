@@ -3,6 +3,7 @@ package com.mobile.view.newfragments;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -90,6 +91,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     private String mVoucherCode;
 
     private boolean removeVoucher = false;
+    private View mTotalContainer;
 
     private Bundle mSavedState;
 
@@ -162,6 +164,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         mScrollView = (RecyclerView) view.findViewById(R.id.payment_scroll);
         LinearLayoutManager llmanager = new LinearLayoutManager(getActivity());
         mScrollView.setLayoutManager(llmanager);
+        mTotalContainer = view.findViewById(R.id.total_container);
         // Buttons
         view.findViewById(R.id.payment_continue).setOnClickListener(this);
         super.setCheckoutStep(view, 3);
@@ -456,7 +459,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();
 
             LoadMethods(responseData);
-
+            setTotal(responseData.getOrderSummary());
             // Form
             //DROID-65 loadForm(responseData.getForm());
             // Set the checkout total bar
@@ -576,14 +579,13 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
     private void LoadMethods(MultiStepPayment payment)
     {
-
-
         LinkedHashMap<String, String> paymentMethods = new LinkedHashMap<>();
         ArrayList<PaymentMethod> methodList= new ArrayList<>();
         HashMap<String, PaymentInfo> paymentInfoMap = null;
         PaymentAction = payment.getForm().getAction();
         PaymentFieldName= payment.getForm().getFields().get(0).getName();
-        try {
+        try
+        {
             paymentInfoMap = payment.getForm().getFieldKeyMap().get(RestConstants.PAYMENT_METHOD).getPaymentInfoList();
             paymentMethods = payment.getForm().getFields().get(0).getDataSet();
             HashMap<String, PaymentInfo> infoList = payment.getForm().getFields().get(0).getPaymentInfoList();
@@ -647,5 +649,17 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
+    private void setTotal(@NonNull PurchaseEntity cart) {
+        Print.d(TAG, "SET THE TOTAL VALUE");
+        // Get views
+        TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
+        TextView quantityValue = (TextView) mTotalContainer.findViewById(R.id.total_quantity);
+        // Set views
+        totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
+        quantityValue.setText(R.string.cart_total_amount);
 
+
+        mTotalContainer.setVisibility(View.VISIBLE);
+
+    }
 }

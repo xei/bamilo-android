@@ -449,5 +449,6 @@
     <string name="cart_total_amount">Total</string>
     <string name="cart_total_discount">Total discount</string>
     <string name="cart_product_discount">Products discount</string>
+    <string name="basket_confirm_button">Confirm</string>
 
 </resources>

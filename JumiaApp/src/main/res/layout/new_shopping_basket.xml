@@ -6,10 +6,15 @@
         android:background="#F0F0F0"
 
         >
-<!--    <ScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >-->
+        android:fillViewport="true"
+        android:layout_marginBottom="?attr/actionBarSize"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/shoppingcart_list"
             android:layout_width="match_parent"
@@ -17,7 +22,7 @@
             android:layout_alignParentTop="true"
             android:layout_above="@+id/discount_container_shadow"
             />
-<!--    </ScrollView>-->
+
 
     <LinearLayout
         android:id="@+id/discount_container_shadow"
@@ -40,7 +45,7 @@
           android:id="@+id/total_container"
           layout="@layout/new_shopping_basket_total_element"
           android:layout_width="match_parent"
-          android:layout_height="60dp"
+          android:layout_height="@dimen/checkout_totalbar_height"
             android:layout_above="@+id/checkout_button"
              />
 
@@ -48,11 +53,13 @@
         android:id="@+id/checkout_button"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_height="48dp"
-        android:textSize="16sp"
+        android:layout_height="@dimen/checkout_footer_height"
+        android:textSize="@dimen/checkout_footer_font_size"
         android:textColor="@color/white"
         android:gravity="center"
         android:background="@color/color_accent"
-        android:text="@string/next_button"/>
+        android:text="@string/basket_confirm_button"/>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>
 
