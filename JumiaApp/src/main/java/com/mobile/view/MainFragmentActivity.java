@@ -286,8 +286,7 @@ public class MainFragmentActivity extends DebugActivity {
                 type = FragmentType.getUniqueIdentifier(type, fragment);
                 break;
             case PRODUCT_INFO:
-                fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);
-                break;
+                fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);break;
             case PRODUCT_GALLERY:
                 fragment = newFragmentInstance(ProductImageGalleryFragment.class, bundle);
                 break;

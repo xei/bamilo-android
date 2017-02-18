@@ -139,7 +139,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
         moreInfoContainer = (ViewGroup)view.findViewById(R.id.more_info_container);
         if(targets != null){
-            showMoreInfo();
+          //  showMoreInfo();
         } else {
             triggerFaqAndTerms();
         }
@@ -424,7 +424,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         // Case GET_FAQ_TERMS
         if (eventType == EventType.GET_FAQ_TERMS) {
             setTargets((MobileAbout) baseResponse.getMetadata().getData());
-            showMoreInfo();
+           // showMoreInfo();
         }
     }
 
@@ -439,7 +439,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         }
         // Case GET_FAQ_TERMS
         if (eventType == EventType.GET_FAQ_TERMS) {
-            showMoreInfo();
+            //showMoreInfo();
             showFragmentContentContainer();
         }
     }
