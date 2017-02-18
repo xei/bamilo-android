@@ -399,6 +399,7 @@
 
     <string name="checkout_address_title">لطفا آدرس خود را انتخاب کنید.</string>
     <string name="telephone">تلفن:</string>
+    <string name="checkout_payment_title">نحوه پرداخت</string>
 
     <string name="filter_toggle_text">فقط با تخفیف ها</string>
     <!--about page-->
@@ -436,6 +437,7 @@
     <string name="cart_total_amount">مجموع خرید</string>
     <string name="cart_total_discount">مجموع تخفیف</string>
     <string name="cart_product_discount">تخفیف کالاها</string>
+    <string name="basket_confirm_button">تایید</string>
 
 
 </resources>

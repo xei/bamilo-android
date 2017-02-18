@@ -407,6 +407,7 @@
 
     <string name="checkout_address_title">Please choose your address</string>
     <string name="telephone">Tel:</string>
+    <string name="checkout_payment_title">Payment method</string>
 
     <string name="filter_toggle_text">Search</string>
     <!--about page-->
@@ -447,5 +448,6 @@
     <string name="cart_total_amount">Total</string>
     <string name="cart_total_discount">Total discount</string>
     <string name="cart_product_discount">Products discount</string>
+    <string name="basket_confirm_button">Confirm</string>
 
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,6 +20,10 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             app:fabSize="normal"
+            android:layout_gravity="bottom|end|right"
+            app:layout_anchor="@+id/address_recycler_view"
+            app:layout_anchorGravity="bottom|right|end"
             android:layout_margin="@dimen/fab_margin"
+            app:layout_behavior="com.mobile.view.newfragments.FABScrollBehavior"
             android:src="@drawable/ic_add_white_48dp" />
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

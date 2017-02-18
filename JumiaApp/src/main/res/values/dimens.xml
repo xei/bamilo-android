@@ -557,4 +557,9 @@
     <dimen name="cart_brand_font_size">10sp</dimen>
     <dimen name="cart_name_font_size">12sp</dimen>
     <dimen name="cart_price_font_size">12sp</dimen>
+    <dimen name="payment_header_title">14sp</dimen>
+    <dimen name="payment_text">10sp</dimen>
+    <dimen name="checkout_footer_font_size">16sp</dimen>
+    <dimen name="checkout_footer_height">57dp</dimen>
+    <dimen name="checkout_totalbar_height">50dp</dimen>
 </resources>
