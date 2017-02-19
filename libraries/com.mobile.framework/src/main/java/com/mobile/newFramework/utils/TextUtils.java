@@ -6,10 +6,13 @@ import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
 
+import com.mobile.framework.R;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TextUtils {
 
@@ -182,4 +185,6 @@ public class TextUtils {
         String str = context.getResources().getString(resId);
         return String.format(str, args);
     }
+
+
 }

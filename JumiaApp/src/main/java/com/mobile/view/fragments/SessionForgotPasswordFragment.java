@@ -258,11 +258,13 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
                 if (null != form) {
                     this.formResponse = form;
                     displayForm(form);
+
                 } else {
                     showFragmentErrorRetry();
                 }
                 break;
             default:
+                getBaseActivity().onBackPressed();
                 break;
         }
     }

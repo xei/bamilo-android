@@ -215,6 +215,7 @@
     <string name="remove_label">Remove</string>
     <string name="use_label">Use</string>
     <string name="write_comment">Write a Review</string>
+    <string name="write_comment_title">Review</string>
     <string name="write_full_review">Write a full review</string>
     <string name="writereview_send">Send Review</string>
     <string name="yes_label">Yes</string>
@@ -452,6 +453,16 @@
     <string name="cart_product_discount">Products discount</string>
     <string name="basket_confirm_button">Confirm</string>
     <string name="register_label">Register</string>
+    <string name="national_id">National code</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="new_password">New password</string>
+    <string name="phone">Phone</string>
+    <string name="error_isrequired">Is required</string>
+    <string name="normal_string_regex">[0-9a-zA-Z-]*</string>
+    <string name="email_regex">[a-zA-Z0-9äöüÄÖÜ_+.-]+@[a-zA-Z0-9äöüÄÖÜ][a-zA-Z0-9-äöüÄÖÜ.]+\\.([a-zA-Z]{2,6})</string>
+    <string name="email_password_invalid">email/password is not correct</string>
 
 
 </resources>

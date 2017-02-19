@@ -72,7 +72,7 @@
     <string name="fallback_maintenance_text_bottom">ما در حال بررسی مشکل هستیم، شما می توانید بعدا دوباره اقدام نمایید.</string>
     <string name="fallback_mobile">تلفن های همراه</string>
     <string name="fallback_welcome">خوش آمدید به</string>
-    <string name="fgt_pass">آیا رمز عبور خود را فراموش کرده اید؟</string>
+    <string name="fgt_pass">کلمه عبور خود را فراموش کرده ام</string>
     <string name="filters_label">فیلترها</string>
     <string name="forgotpass_header">بازیابی کلمه عبور</string>
     <string name="forgotten_password">لطفا پست الکترونیکی خود را وارد کنید</string>
@@ -157,7 +157,7 @@
     <string name="rating_quality">کیفیت</string>
     <string name="rating_question">آیا از این کالا استفاده کرده اید؟ به آن امتیاز دهید.</string>
     <string name="recent_searches">جستجوهای اخیر</string>
-    <string name="recently_viewed">کالاهای اخیرا مشاهده شده</string>
+    <string name="recently_viewed">اخیرا مشاهده شده ها</string>
     <string name="recentlyview_clear_viewed">پاک کردن کالاهای مشاهده شده</string>
     <string name="recentsearch_clear_searches">پاک کردن جستجوها</string>
     <string name="recentsearch_no_searches">جستجویی وجود ندارد</string>
@@ -215,6 +215,7 @@
     <string name="remove_label">پاک کردن</string>
     <string name="use_label">استفاده</string>
     <string name="write_comment">نقد و بررسی خود را ثبت کنید</string>
+    <string name="write_comment_title">نقد و بررسی</string>
     <string name="write_full_review">بررسی کامل خود را بنویسید</string>
     <string name="writereview_send">ارسال نقد و بررسی</string>
     <string name="yes_label">آری</string>
@@ -439,7 +440,15 @@
     <string name="cart_total_discount">مجموع تخفیف</string>
     <string name="cart_product_discount">تخفیف کالاها</string>
     <string name="basket_confirm_button">تایید</string>
-    <string name="register_label">عضویت</string>
+    <string name="register_label">ثبت نام</string>
+    <string name="national_id">کد ملی</string>
+    <string name="first_name">نام</string>
+    <string name="last_name">نام خانوادگی</string>
+    <string name="email">ایمیل</string>
+    <string name="new_password">رمز عبور جدید</string>
+    <string name="phone">تلفن</string>
+    <string name="error_isrequired">تکمیل این گزینه الزامی می باشد</string>
+    <string name="email_password_invalid">ایمیل/رمز عبور نادرست است</string>
 
 
 </resources>
