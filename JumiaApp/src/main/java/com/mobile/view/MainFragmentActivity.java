@@ -72,6 +72,7 @@ import com.mobile.view.newfragments.NewBaseFragment;
 import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
 import com.mobile.view.newfragments.NewCheckoutPaymentMethodsFragment;
 import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
+import com.mobile.view.newfragments.NewSessionLoginMainFragment;
 import com.mobile.view.newfragments.NewShoppingCartFragment;
 
 import java.util.ArrayList;
@@ -332,7 +333,8 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);
                 break;
             case LOGIN:
-                fragment = newFragmentInstance(SessionLoginMainFragment.class, bundle);
+                //fragment = newFragmentInstance(SessionLoginMainFragment.class, bundle);
+                fragment = newFragmentInstance(NewSessionLoginMainFragment.class, bundle);
                 break;
             case LOGIN_EMAIL:
                 fragment = newFragmentInstance(SessionLoginEmailFragment.class, bundle);

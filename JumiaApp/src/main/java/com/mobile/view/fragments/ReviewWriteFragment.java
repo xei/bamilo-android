@@ -98,7 +98,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.PRODUCT,
                 R.layout.review_write_fragment,
-                R.string.write_comment,
+                R.string.write_comment_title,
                 ADJUST_CONTENT);
     }
 

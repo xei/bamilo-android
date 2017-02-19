@@ -41,6 +41,8 @@
                 style="@style/Widget.Custom.ActionBarTab"
                 android:visibility="gone" />
 
+
+
         </android.support.design.widget.AppBarLayout>
 
         <!-- SCROLLABLE CONTAINER -->
@@ -80,7 +82,7 @@
                 android:id="@+id/warning"
                 layout="@layout/warning"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="70dp"
                 android:visibility="gone" />
 
             <!--CONFIGURABLE CART VIEW -->

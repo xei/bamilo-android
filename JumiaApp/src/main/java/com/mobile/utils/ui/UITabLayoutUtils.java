@@ -43,6 +43,8 @@ public class UITabLayoutUtils {
         tabLayout.setOnTabSelectedListener(listener);
     }
 
+
+
     @SuppressWarnings("all")
     private static void setTabCustomView(@NonNull TabLayout tabLayout, @LayoutRes int view, @Nullable Object tag, @Nullable View.OnClickListener clickListener) {
         TabLayout.Tab tab = tabLayout.newTab();

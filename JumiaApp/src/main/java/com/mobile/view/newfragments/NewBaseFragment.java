@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.helpers.SuperBaseHelper;
@@ -33,6 +34,8 @@ import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CheckoutSummaryFragment;
 
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Arash on 1/23/2017.
@@ -257,4 +260,53 @@ public abstract class NewBaseFragment extends BaseFragment {
         }
     }
 
+    public boolean validateStringToPattern(Context context, int label, EditText editText, String text, boolean isRequired, int min, int max, int regex, String errorMessage) {
+
+            return validateStringToPattern(context, context.getResources().getString(label), editText, text, isRequired, min, max, context.getResources().getString(regex), errorMessage);
+        }
+
+        public boolean validateStringToPattern(Context context, String label, EditText editText, String text, boolean isRequired, int min, int max, String regex, String errorMessage) {
+        boolean result = true;
+
+        String space = " ";
+        // Case empty
+        if (isRequired && android.text.TextUtils.isEmpty(text)) {
+            errorMessage = context.getString(R.string.error_isrequired);
+
+            editText.setError(errorMessage + space);
+            //setErrorText(errorMessage + space);
+            result=false;
+        }
+        // Case too short
+        else if (min > 0 && text.length() < min) {
+            editText.setError(label + " " + context.getResources().getString(R.string.form_texttoshort) + space);
+            result = false;
+        }
+        // Case too long
+        else if (max > 0 && text.length() > max) {
+            editText.setError(label + " " + context.getResources().getString(R.string.form_texttolong) + space);
+            result = false;
+        }
+        // Case no match regex
+        else {
+
+            Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+            // = ""; //this.entry.getValidation().getRegexErrorMessage();
+            /**
+             * This is a fallback in case API don't return the error message
+             * for the Regex. Will be fixed in https://jira.africainternetgroup.com/browse/NAFAMZ-16927
+             */
+            if(com.mobile.newFramework.utils.TextUtils.isEmpty(errorMessage)){
+                errorMessage = context.getString(R.string.error_ismandatory) + " " + label;
+            }
+
+            Matcher matcher = pattern.matcher(text);
+            result = matcher.find();
+            if (!result)
+            {
+                editText.setError(errorMessage + space);
+            }
+        }
+        return result;
+    }
 }

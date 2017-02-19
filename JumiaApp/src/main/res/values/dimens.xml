@@ -101,7 +101,7 @@
     <!-- dimen name="text_description">10sp</dimen -->
     <dimen name="text_button">16.67sp</dimen>
     <dimen name="text_button_item">10.67sp</dimen>
-    <dimen name="warning_text_size">16sp</dimen>
+    <dimen name="warning_text_size">14sp</dimen>
     <dimen name="text_info">8.67sp</dimen>
 
 
@@ -562,4 +562,5 @@
     <dimen name="checkout_footer_font_size">16sp</dimen>
     <dimen name="checkout_footer_height">57dp</dimen>
     <dimen name="checkout_totalbar_height">50dp</dimen>
+    <dimen name="register_font_size">14sp</dimen>
 </resources>

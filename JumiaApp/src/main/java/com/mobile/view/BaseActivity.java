@@ -412,6 +412,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     };
 
+
     /**
      * Handles clicks on Checkout Header
      * Verifies if click is available for this header position, if so, will select position and then mCheckoutOnTabSelectedListener will handle next steps.
@@ -423,7 +424,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     };
 
-    
+
     /*
      * ############## CONTENT VIEWS ##############
      */
