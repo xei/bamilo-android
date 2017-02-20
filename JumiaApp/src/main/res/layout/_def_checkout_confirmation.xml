@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ScrollView
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_above="@+id/checkout_confirmation_btn3"
-        >
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_above="@+id/checkout_confirmation_btn"
+        android:id="@+id/checkout_scrollview">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,8 +42,8 @@
             android:layout_height="match_parent"
             android:paddingRight="@dimen/dimen_15dp"
             android:paddingLeft="@dimen/dimen_15dp"
-            android:paddingTop="@dimen/dimen_10dp"
-            android:paddingBottom="@dimen/dimen_10dp">
+            android:paddingTop="@dimen/dimen_5dp"
+            android:paddingBottom="@dimen/dimen_5dp">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -79,17 +81,24 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:animateLayoutChanges="true"
-                android:visibility="visible"
-
+                android:visibility="gone"
                 android:layout_height="match_parent">
 
                 <com.mobile.components.customfontviews.EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    style="@style/FormTextField"
                     android:hint="@string/checkout_voucher_title"
-                    android:id="@+id/voucher_name" />
+                    style="@style/FormTextField"
+                    android:id="@+id/voucher_codename" />
+
+                <com.mobile.components.customfontviews.TextView
+                    android:text="کد تخفیف را وارد کنید"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/error_message_mandatory"
+                    android:textColor="@color/red_basic"
+                    android:visibility="gone"/>
 
                 <com.mobile.components.customfontviews.Button
                     android:text="@string/checkout_submit_voucher"
@@ -104,44 +113,150 @@
         <View
             style="@style/Divider"
             android:layout_marginTop="@dimen/dimen_3dp"
+            android:layout_marginBottom="@dimen/dimen_3dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:id="@+id/view5"
+            android:layout_weight="1"
+            android:layout_height="1dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_height="45dp">
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:id="@+id/checkout_order_count_title"
+                android:textStyle="normal|bold" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textAlignment="textEnd"
+                android:id="@+id/checkout_order_price"
+                android:textStyle="normal|bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_height="45dp">
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:text="مجموع تخفیف ها" />
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:id="@+id/checkout_order_all_discount"
+                android:textAlignment="textEnd"
+                android:textSize="13sp" />
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:visibility="gone"
+            android:layout_height="45dp"
+            android:id="@+id/voucher_value_title">
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:text="تخفیف  کوپن" />
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:id="@+id/checkout_order_voucher_price"
+                android:textAlignment="textEnd"
+                android:textSize="13sp" />
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_height="45dp">
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:text="هزینه ارسال" />
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:id="@+id/checkout_order_ship_price"
+                android:textAlignment="textEnd"
+                android:textSize="13sp" />
+
+
+
+        </LinearLayout>
         <View
             style="@style/Divider"
             android:layout_marginTop="@dimen/dimen_3dp"
             android:layout_marginBottom="@dimen/dimen_3dp"
             android:layout_width="wrap_content"
-            android:id="@+id/view5"
             android:layout_weight="1"
-            android:layout_height="3dp" />
+            android:layout_height="2dp" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:paddingTop="@dimen/dimen_10dp"
             android:paddingRight="15dp"
-            android:paddingLeft="15dp">
-
-            <TextView
-                android:text="2 کالا به مجموع"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:layout_height="45dp">
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:text="هزینه کل خرید"
+                android:textStyle="normal|bold" />
 
-            <TextView
-                android:text="500000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:text="5555555555"
+                android:textAlignment="textEnd"
+                android:id="@+id/checkout_order_all_price"
+                android:textStyle="normal|bold" />
 
-            <TextView
-                android:text="ریال"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/black" />
+
         </LinearLayout>
+
 
 
 
@@ -167,8 +282,7 @@
             android:paddingLeft="@dimen/dimen_10dp"
             android:paddingRight="@dimen/dimen_10dp"
             android:layout_height="wrap_content"
-            android:text="@string/checkout_sum_header"
-            android:id="@+id/textView14"
+            android:id="@+id/checkout_order_ship_time"
             android:layout_weight="1"
             android:textColor="@color/black" />
 
@@ -217,17 +331,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:text="نغمه حیامنش"
+             <com.mobile.components.customfontviews.TextView
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:id="@+id/textView26"
+                android:id="@+id/checkout_user_reciver"
                 android:textColor="@color/abc_input_method_navigation_guard"
                 android:textStyle="normal|bold" />
-             <TextView
+             <com.mobile.components.customfontviews.TextView
                  android:text="آدرس"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
@@ -236,9 +350,9 @@
                  android:layout_alignParentStart="true"
                  android:paddingTop="@dimen/dimen_5dp"
                  android:paddingBottom="@dimen/dimen_5dp"
-                 android:id="@+id/textView28"
+                 android:id="@+id/checkout_address"
                  android:textColor="@color/abc_input_method_navigation_guard" />
-             <TextView
+             <com.mobile.components.customfontviews.TextView
                  android:text="تلفن"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
@@ -247,7 +361,7 @@
                  android:layout_alignParentStart="true"
                  android:paddingTop="@dimen/dimen_5dp"
                  android:paddingBottom="@dimen/dimen_5dp"
-                 android:id="@+id/textView27"
+                 android:id="@+id/checkout_telephone"
                  android:textColor="@color/abc_input_method_navigation_guard" />
 
         </LinearLayout>
@@ -260,7 +374,12 @@
         android:text="@string/checkout_confirmation_next_step"
         android:layout_alignParentBottom="true"
         android:background="@color/color_accent"
+        android:layout_gravity="center_vertical|center_horizontal|center"
+        android:gravity="center|center_horizontal|center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:padding="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/action_bar_height"
+        android:layout_height="57dp"
+        android:textSize="16sp"
         android:id="@+id/checkout_confirmation_btn" />
 </LinearLayout>

@@ -15,6 +15,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
+import com.crashlytics.android.Crashlytics;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -44,6 +45,7 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * <p> This class creates a splash screen. It also initializes hockey and the backend </p> <p/> <p> Copyright (C) 2012 Rocket Internet - All Rights Reserved
@@ -87,6 +89,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
         // Disable Accengage rich push notifications
         Ad4PushTracker.get().setPushNotificationLocked(true);
