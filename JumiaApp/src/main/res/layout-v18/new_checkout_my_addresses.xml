@@ -63,9 +63,9 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/address_continue"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/checkout_footer_height"
             android:layout_alignParentBottom="true"
-            android:textSize="20sp"
+            android:textSize="@dimen/checkout_footer_font_size"
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@color/color_accent"
