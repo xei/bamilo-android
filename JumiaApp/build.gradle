@@ -116,8 +116,8 @@ android {
         productFlavors {
         bamilo {
             applicationId "com.bamilo.android"
-            versionName "2.2.1"
-            versionCode getAppVersionCode(20)
+            versionName "2.4.0"
+            versionCode getAppVersionCode(23)
             signingConfig signingConfigs.bamiloSigning
             resConfigs "fa"
         }
