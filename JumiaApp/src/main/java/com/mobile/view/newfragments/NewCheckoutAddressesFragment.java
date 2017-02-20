@@ -188,7 +188,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
     private void triggerSetMultiStepAddresses(int billing, int shipping) {
         Print.d(TAG, "TRIGGER SET BILLING");
-        triggerContentEvent(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
+        triggerContentEventProgress(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
     }
 
     @Override
@@ -213,6 +213,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextFragment = nextStepStruct.getFragmentType();
                 nextFragment = FragmentType.CHECKOUT_CONFIRMATION;
+                nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_PAYMENT;
                 getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
             default:
@@ -240,12 +241,12 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 super.showFragmentErrorRetry();
                 break;
             case SET_MULTI_STEP_ADDRESSES:
-                /*if (errorCode == ErrorCode.REQUEST_ERROR) {
+                if (errorCode == ErrorCode.REQUEST_ERROR) {
                     showWarningErrorMessage(baseResponse.getValidateMessage());
                 } else {
                     super.showUnexpectedErrorWarning();
                 }
-                showFragmentContentContainer();*/
+                showFragmentContentContainer();
                 break;
             default:
                 break;

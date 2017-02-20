@@ -95,7 +95,7 @@
         <com.mobile.components.customfontviews.TextView
             style="@style/TextBase.Caption.Black_800"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dimen_36dp"
+            android:layout_height="@dimen/dimen_48dp"
             android:layout_weight="@dimen/reviews_rating_group_left_percentage"
             android:gravity="center"
             android:lineSpacingExtra="@dimen/margin_padding_xs"

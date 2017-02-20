@@ -21,6 +21,7 @@ import com.mobile.helpers.checkout.SetStepAddressesHelper;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.checkout.MultiStepAddresses;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -153,24 +154,16 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
 
     @Override
     protected void triggerGetAddresses() {
-        triggerContentEvent(new GetMyAddressesHelper(), null, this);
+        triggerContentEventProgress(new GetMyAddressesHelper(), null, this);
     }
 
-    /*
-     * Trigger to set the billing form
-     */
-
-    private void triggerSetMultiStepAddresses(int billing, int shipping) {
-        Print.d(TAG, "TRIGGER SET BILLING");
-        triggerContentEvent(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
-    }
-
-    @Override
+       @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         /*if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }*/
+           hideActivityProgress();
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
@@ -208,12 +201,12 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
                 super.showFragmentErrorRetry();
                 break;
             case SET_MULTI_STEP_ADDRESSES:
-                /*if (errorCode == ErrorCode.REQUEST_ERROR) {
+                if (errorCode == ErrorCode.REQUEST_ERROR) {
                     showWarningErrorMessage(baseResponse.getValidateMessage());
                 } else {
                     super.showUnexpectedErrorWarning();
                 }
-                showFragmentContentContainer();*/
+                showFragmentContentContainer();
                 break;
             default:
                 break;

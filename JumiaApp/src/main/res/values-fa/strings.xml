@@ -2,8 +2,11 @@
 <resources>
     <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">حساب کاربری من ‎</string>
+<<<<<<< HEAD
     <string name="new_account_name">حساب کاربری من 2‎</string>
     <string name="checkout_confirmation">بررسی نهایی سفارش</string>
+=======
+>>>>>>> 5fb909e56c0e8ee8ba2c02af1ab3a5fff709921c
     <string name="action_label_add_address">اضافه کردن آدرس جدید</string>
     <string name="action_label_basket">سبد کالا</string>
     <string name="action_label_search_hint"> جستجو در بامیلو</string>
@@ -74,11 +77,11 @@
     <string name="fallback_maintenance_text_bottom">ما در حال بررسی مشکل هستیم، شما می توانید بعدا دوباره اقدام نمایید.</string>
     <string name="fallback_mobile">تلفن های همراه</string>
     <string name="fallback_welcome">خوش آمدید به</string>
-    <string name="fgt_pass">آیا رمز عبور خود را فراموش کرده اید؟</string>
+    <string name="fgt_pass">کلمه عبور خود را فراموش کرده ام</string>
     <string name="filters_label">فیلترها</string>
-    <string name="forgotpass_header">بازیابی رمز عبور</string>
+    <string name="forgotpass_header">بازیابی کلمه عبور</string>
     <string name="forgotten_password">لطفا پست الکترونیکی خود را وارد کنید</string>
-    <string name="forgotten_password_examplemail">abcd1234@example.com</string>
+    <string name="forgotten_password_examplemail">ایمیل</string>
     <string name="forgotten_password_sub_text">به منظور تغییر رمز عبور لینکی برای شما ارسال خواهد شد.</string>
     <string name="forgotten_password_successtext">پست الکترونیکی ارسال شد.</string>
     <string name="form_passwordsnomatch">رمز عبور اشتباه است.</string>
@@ -159,7 +162,7 @@
     <string name="rating_quality">کیفیت</string>
     <string name="rating_question">آیا از این کالا استفاده کرده اید؟ به آن امتیاز دهید.</string>
     <string name="recent_searches">جستجوهای اخیر</string>
-    <string name="recently_viewed">کالاهای اخیرا مشاهده شده</string>
+    <string name="recently_viewed">اخیرا مشاهده شده ها</string>
     <string name="recentlyview_clear_viewed">پاک کردن کالاهای مشاهده شده</string>
     <string name="recentsearch_clear_searches">پاک کردن جستجوها</string>
     <string name="recentsearch_no_searches">جستجویی وجود ندارد</string>
@@ -168,6 +171,7 @@
     <string name="register_text_terms_a">من موافقم با</string>
     <string name="register_text_terms_b">شرایط و ضوابط</string>
     <string name="register_title">ساخت حساب کاربری</string>
+    <string name="register_login_title">ورود / ثبت نام</string>
     <string name="review">نقد و بررسی</string>
     <string name="save_changes_label">ذخیره تغییرات</string>
     <string name="save_label">ذخیره</string>
@@ -184,7 +188,7 @@
     <string name="choose_quantity">تعداد را مشخص کنید</string>
     <string name="delete_label">پاک کردن</string>
     <string name="quantity_label">تعداد</string>
-    <string name="sign_in">ورود</string>
+    <string name="sign_in">ورود / ثبت نام</string>
     <string name="sign_out">خروج</string>
     <string name="size_guide_label">راهنمای انتخاب سایز</string>
     <string name="size_label">اندازه</string>
@@ -216,6 +220,7 @@
     <string name="remove_label">پاک کردن</string>
     <string name="use_label">استفاده</string>
     <string name="write_comment">نقد و بررسی خود را ثبت کنید</string>
+    <string name="write_comment_title">نقد و بررسی</string>
     <string name="write_full_review">بررسی کامل خود را بنویسید</string>
     <string name="writereview_send">ارسال نقد و بررسی</string>
     <string name="yes_label">آری</string>
@@ -401,6 +406,7 @@
 
     <string name="checkout_address_title">لطفا آدرس خود را انتخاب کنید.</string>
     <string name="telephone">تلفن:</string>
+    <string name="checkout_payment_title">نحوه پرداخت</string>
 
     <string name="filter_toggle_text">فقط با تخفیف ها</string>
     <!--about page-->
@@ -450,4 +456,15 @@
     <string name="cart_total_discount">مجموع تخفیف</string>
     <string name="cart_product_discount">تخفیف کالاها</string>
     <string name="checkout_count_title">کالا به مجموع</string>
+    <string name="basket_confirm_button">تایید</string>
+    <string name="register_label">ثبت نام</string>
+    <string name="national_id">کد ملی</string>
+    <string name="first_name">نام</string>
+    <string name="last_name">نام خانوادگی</string>
+    <string name="email">ایمیل</string>
+    <string name="new_password">رمز عبور جدید</string>
+    <string name="phone">تلفن</string>
+    <string name="error_isrequired">تکمیل این گزینه الزامی می باشد</string>
+    <string name="email_password_invalid">ایمیل/رمز عبور نادرست است</string>
+
 </resources>

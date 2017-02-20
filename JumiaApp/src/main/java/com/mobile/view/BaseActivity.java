@@ -412,6 +412,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     };
 
+
     /**
      * Handles clicks on Checkout Header
      * Verifies if click is available for this header position, if so, will select position and then mCheckoutOnTabSelectedListener will handle next steps.
@@ -423,7 +424,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     };
 
-    
+
     /*
      * ############## CONTENT VIEWS ##############
      */
@@ -1356,11 +1357,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         // MY ACCOUNT
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
                         onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        break;
-                    case NavigationAction.MY_NEW_ACCOUNT:
-                        // MY ACCOUNT
-                       // TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
-                        onSwitchFragment(FragmentType.MY_NEW_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.MY_ORDERS:
                         // TRACK ORDER

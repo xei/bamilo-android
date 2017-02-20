@@ -40,13 +40,11 @@ import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountAboutFragment;
-import com.mobile.view.fragments.MyAccountAddressesFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
 import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
-import com.mobile.view.fragments.MyNewAccountFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -73,7 +71,9 @@ import com.mobile.view.fragments.order.OrderReturnStepsMain;
 import com.mobile.view.fragments.order.OrderStatusFragment;
 import com.mobile.view.newfragments.NewBaseFragment;
 import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
+import com.mobile.view.newfragments.NewCheckoutPaymentMethodsFragment;
 import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
+import com.mobile.view.newfragments.NewSessionLoginMainFragment;
 import com.mobile.view.newfragments.NewShoppingCartFragment;
 
 import java.util.ArrayList;
@@ -289,8 +289,7 @@ public class MainFragmentActivity extends DebugActivity {
                 type = FragmentType.getUniqueIdentifier(type, fragment);
                 break;
             case PRODUCT_INFO:
-                fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);
-                break;
+                fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);break;
             case PRODUCT_GALLERY:
                 fragment = newFragmentInstance(ProductImageGalleryFragment.class, bundle);
                 break;
@@ -316,10 +315,6 @@ public class MainFragmentActivity extends DebugActivity {
                 removeEntries = true;
                 fragment = newFragmentInstance(MyAccountFragment.class, bundle);
                 break;
-            case MY_NEW_ACCOUNT:
-                removeEntries = true;
-                fragment = newFragmentInstance(MyNewAccountFragment.class, bundle);
-                break;
             case MY_USER_DATA:
                 fragment = newFragmentInstance(MyAccountUserDataFragment.class, bundle);
                 break;
@@ -339,7 +334,8 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);
                 break;
             case LOGIN:
-                fragment = newFragmentInstance(SessionLoginMainFragment.class, bundle);
+                //fragment = newFragmentInstance(SessionLoginMainFragment.class, bundle);
+                fragment = newFragmentInstance(NewSessionLoginMainFragment.class, bundle);
                 break;
             case LOGIN_EMAIL:
                 fragment = newFragmentInstance(SessionLoginEmailFragment.class, bundle);
@@ -368,7 +364,7 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(CheckoutShippingMethodsFragment.class, bundle);
                 break;
             case CHECKOUT_PAYMENT:
-                fragment = newFragmentInstance(CheckoutPaymentMethodsFragment.class, bundle);
+                fragment = newFragmentInstance(NewCheckoutPaymentMethodsFragment.class, bundle);
                 break;
             case CHECKOUT_FINISH:
                 fragment = newFragmentInstance(CheckoutFinishFragment.class, bundle);

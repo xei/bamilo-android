@@ -288,7 +288,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
             Print.d(TAG, "Loading Url complete: " + ResNum + "  " );
 
-            String uri = Uri.parse("http://staging.bamilo.com/androidpayment/sep/")
+            String uri = Uri.parse("http://" + getResources().getString(R.string.single_shop_country_url).concat("/androidpayment/sep/"))
                     .buildUpon()
                     .appendQueryParameter("ResNum", ResNum)
                     .appendQueryParameter("setDevice", "mobile")
@@ -300,7 +300,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
 
 
-        } else if (mPaymentSubmitted.getContentValues() != null) {
+        } /*else if (mPaymentSubmitted.getContentValues() != null) {
             Set<Entry<String, Object>> mValues = mPaymentSubmitted.getContentValues().valueSet();
             //setProxy();
             for (Entry<String, Object> entry : mValues) {
@@ -315,7 +315,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
             //setProxy();
             webview.loadUrl(paymentUrl);
         }
-
+*/
         isRequestedPage = true;
     }
 

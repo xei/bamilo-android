@@ -30,7 +30,7 @@ public class Address implements IJSONSerializable, Parcelable {
     private String additionalPhone;
     private String region;
     private boolean isValid;
-
+    private boolean isDefault;
     /**
      * Constructor
      */
@@ -66,7 +66,7 @@ public class Address implements IJSONSerializable, Parcelable {
         additionalPhone = dataObject.optString(RestConstants.ADDITIONAL_PHONE);
 
         isValid = dataObject.optBoolean(RestConstants.IS_VALID,true);
-
+        isDefault = false;
         return true;
     }
 
@@ -122,6 +122,12 @@ public class Address implements IJSONSerializable, Parcelable {
     public boolean isValid() {
         return isValid;
     }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean value){isDefault = value;}
 
     /**
      * ########### PARCEL ###########

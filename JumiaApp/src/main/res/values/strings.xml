@@ -2,7 +2,6 @@
 <resources>
     <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">My Account</string>
-    <string name="new_account_name">My Account 2</string>
     <string name="checkout_confirmation">Checkout Confirmation</string>
     <string name="action_label_add_address">Add New Address</string>
     <string name="action_label_basket">Basket</string>
@@ -168,6 +167,7 @@
     <string name="register_text_terms_a">I agree with the</string>
     <string name="register_text_terms_b">Terms and Conditions</string>
     <string name="register_title">Create Account</string>
+    <string name="register_login_title">Login / SignUp</string>
     <string name="review">Review</string>
     <string name="save_changes_label">Save Changes</string>
     <string name="save_label">Save</string>
@@ -184,7 +184,7 @@
     <string name="choose_quantity">Choose Quantity</string>
     <string name="delete_label">Delete</string>
     <string name="quantity_label">Quantity</string>
-    <string name="sign_in">Sign In</string>
+    <string name="sign_in">Sign In / Register</string>
     <string name="sign_out">Sign Out</string>
     <string name="size_guide_label">Size Guide</string>
     <string name="size_label">Size</string>
@@ -216,6 +216,7 @@
     <string name="remove_label">Remove</string>
     <string name="use_label">Use</string>
     <string name="write_comment">Write a Review</string>
+    <string name="write_comment_title">Review</string>
     <string name="write_full_review">Write a full review</string>
     <string name="writereview_send">Send Review</string>
     <string name="yes_label">Yes</string>
@@ -409,6 +410,7 @@
 
     <string name="checkout_address_title">Please choose your address</string>
     <string name="telephone">Tel:</string>
+    <string name="checkout_payment_title">Payment method</string>
 
     <string name="filter_toggle_text">Search</string>
     <!--about page-->
@@ -420,6 +422,7 @@
     <string name="about_bugreport">گزارش مشکلات برنامه</string>
     <string name="account_about">درباره ما‎</string>
     <string name="my_about_label">تماس با ما</string>
+
 
     <string name="delete_address_question">Are you sure you want to delete this address?</string>
     <string name="delete_address_label">Delete address</string>
@@ -459,5 +462,22 @@
     <string name="cart_total_amount">Total</string>
     <string name="cart_total_discount">Total discount</string>
     <string name="cart_product_discount">Products discount</string>
+<<<<<<< HEAD
     <string name="checkout_count_title" >All product</string>
+=======
+    <string name="basket_confirm_button">Confirm</string>
+    <string name="register_label">Register</string>
+    <string name="national_id">National code</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="new_password">New password</string>
+    <string name="phone">Phone</string>
+    <string name="error_isrequired">Is required</string>
+    <string name="normal_string_regex">[0-9a-zA-Z-]*</string>
+    <string name="email_regex">[a-zA-Z0-9äöüÄÖÜ_+.-]+@[a-zA-Z0-9äöüÄÖÜ][a-zA-Z0-9-äöüÄÖÜ.]+\\.([a-zA-Z]{2,6})</string>
+    <string name="email_password_invalid">email/password is not correct</string>
+
+
+>>>>>>> 5fb909e56c0e8ee8ba2c02af1ab3a5fff709921c
 </resources>

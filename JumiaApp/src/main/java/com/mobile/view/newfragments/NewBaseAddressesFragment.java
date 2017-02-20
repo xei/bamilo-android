@@ -143,17 +143,21 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
     protected void showAddresses(Addresses addresses, int mSelectedAddressId) {
         // Save addresses
         mAddresses = addresses;
+        Address tmp = new Address();
         ArrayList<Address> addressList = new ArrayList<Address>();
-        Log.d("mAddresses", "" + mAddresses.getAddresses().size());
-        addressList.add((Address)addresses.getShippingAddress());
+        tmp = addresses.getShippingAddress();
+        tmp.setDefault(true);
+        addressList.add(tmp);
         for (LinkedHashMap.Entry<String, Address> item : addresses.getAddresses().entrySet()) {
-            Address otherAddress = (Address)item.getValue();
+            Address otherAddress = item.getValue();
+            otherAddress.setDefault(false);
             addressList.add(otherAddress);
         }
 
 
         AddressAdapter mAddressAdapter = new AddressAdapter(addressList, mIsCheckout, mSelectedAddressId, onClickDeleteAddressButton, this);
         mAddressAdapter.baseFragment = this;
+        mAddressView.removeAllViews();
         mAddressView.setAdapter(mAddressAdapter);
 
         showFragmentContentContainer();
@@ -218,11 +222,11 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
      * Trigger to get the address form
      */
     protected void triggerDeleteAddressForm(int mAddressId){
-        triggerContentEvent(new GetFormDeleteAddressHelper(), GetFormDeleteAddressHelper.createBundle(mAddressId), this);
+        triggerContentEventProgress(new GetFormDeleteAddressHelper(), GetFormDeleteAddressHelper.createBundle(mAddressId), this);
     }
 
     protected void triggerDefaultAddressForm(int mAddressId){
-        triggerContentEvent(new SetDefaultShippingAddressHelper(), SetDefaultShippingAddressHelper.createBundle(mAddressId), this);
+        triggerContentEventProgress(new SetDefaultShippingAddressHelper(), SetDefaultShippingAddressHelper.createBundle(mAddressId), this);
     }
 
     @Override
@@ -231,6 +235,8 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }*/
+        hideActivityProgress();
+
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT_: " + eventType);
         switch (eventType) {

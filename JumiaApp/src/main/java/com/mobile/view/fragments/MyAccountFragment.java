@@ -135,11 +135,11 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         showMyAccount(view);
         showPreferences(view);
         showAppSharing(view);
-       // showChooseLanguage(view);
+        //showChooseLanguage(view);
 
         moreInfoContainer = (ViewGroup)view.findViewById(R.id.more_info_container);
         if(targets != null){
-           // showMoreInfo();
+          //  showMoreInfo();
         } else {
             triggerFaqAndTerms();
         }
@@ -265,10 +265,10 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         new AdapterBuilder(chooseLanguageList, countrySettingsAdapter, this).buildLayout();
     }
 
- /*   private void showMoreInfo() {
+   private void showMoreInfo() {
         MyAccountMoreInfoAdapter moreInfoAdapter = new MyAccountMoreInfoAdapter(targets, getActivity());
         new AdapterBuilder(moreInfoContainer, moreInfoAdapter, this).buildLayout();
-    }*/
+    }
 
     private void handleOnChooseLanguageItemClick(ViewGroup parent, int position) {
         // Case country
@@ -424,7 +424,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         // Case GET_FAQ_TERMS
         if (eventType == EventType.GET_FAQ_TERMS) {
             setTargets((MobileAbout) baseResponse.getMetadata().getData());
-            //showMoreInfo();
+           // showMoreInfo();
         }
     }
 

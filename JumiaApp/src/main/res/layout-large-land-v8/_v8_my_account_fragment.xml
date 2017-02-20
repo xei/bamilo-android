@@ -22,9 +22,9 @@
                 android:id="@+id/more_info_container"
                 style="@style/MyAccountSection">
 
-                <com.mobile.components.customfontviews.TextView
+                <!--<com.mobile.components.customfontviews.TextView
                     style="@style/HeaderStyle"
-                    android:text="@string/more" />
+                    android:text="@string/more" />-->
             </android.support.v7.widget.LinearLayoutCompat>
 
             <!-- SHARE SETTINGS -->
@@ -33,9 +33,9 @@
                 android:id="@+id/middle_app_sharing_list"
                 style="@style/MyAccountSection">
 
-                <com.mobile.components.customfontviews.TextView
+          <!--      <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderStyle"
-                    android:text="@string/app_social" />
+                    android:text="@string/app_social" />-->
 
             </android.support.v7.widget.LinearLayoutCompat>
 
@@ -58,9 +58,9 @@
                 android:id="@+id/middle_myaccount_list"
                 style="@style/MyAccountSection">
 
-                <com.mobile.components.customfontviews.TextView
+              <!--  <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderStyle"
-                    android:text="@string/section_title_account" />
+                    android:text="@string/section_title_account" />-->
 
             </android.support.v7.widget.LinearLayoutCompat>
 
@@ -70,9 +70,9 @@
                 android:id="@+id/notification_list"
                 style="@style/MyAccountSection">
 
-                <com.mobile.components.customfontviews.TextView
+    <!--            <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderStyle"
-                    android:text="@string/section_title_notification" />
+                    android:text="@string/section_title_notification" />-->
 
             </android.support.v7.widget.LinearLayoutCompat>
 
@@ -82,9 +82,9 @@
                 android:id="@+id/language_list"
                 style="@style/MyAccountSection">
 
-                <com.mobile.components.customfontviews.TextView
+               <!-- <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderStyle"
-                    android:text="@string/shop_settings" />
+                    android:text="@string/shop_settings" />-->
             </android.support.v7.widget.LinearLayoutCompat>
         </android.support.v7.widget.LinearLayoutCompat>
     </ScrollView>

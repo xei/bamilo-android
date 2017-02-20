@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="140dp"
     card_view:cardCornerRadius="4dp"
     android:layout_margin="5dp">
 
@@ -23,7 +23,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/dimen_16dp"
+        android:layout_marginTop="@dimen/dimen_8dp"
         android:layout_marginLeft="@dimen/dimen_16dp"
         android:layout_marginStart="@dimen/dimen_16dp"
         android:theme="@style/RadioButtonTheme"
@@ -32,7 +32,7 @@
     <View
         android:id="@+id/vertical_separator"
         android:layout_width="1dp"
-        android:layout_height="200dp"
+        android:layout_height="140dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -89,7 +89,7 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/checkout_address_item_radio_btn"
             android:layout_toEndOf="@+id/checkout_address_item_radio_btn"
-            android:layout_marginTop="@dimen/dimen_16dp"
+            android:layout_marginTop="@dimen/dimen_8dp"
             android:layout_marginLeft="@dimen/dimen_16dp"
             android:layout_marginRight="@dimen/dimen_16dp"
             android:text="name"
@@ -106,7 +106,7 @@
             android:layout_alignEnd="@+id/vertical_separator"
             android:layout_toRightOf="@+id/checkout_address_item_radio_btn"
             android:layout_toEndOf="@+id/checkout_address_item_radio_btn"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginRight="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"
             android:ellipsize="end"
@@ -120,27 +120,27 @@
             style="@style/TextBase.Address"
             android:layout_width="wrap_content"
             android:textSize="@dimen/address_header_street"
-            android:layout_below="@+id/checkout_address_item_street"
+            android:layout_alignParentBottom="true"
             android:layout_alignLeft="@+id/checkout_address_item_name"
             android:layout_alignStart="@+id/checkout_address_item_name"
-            android:layout_marginTop="16dp"
-
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="@dimen/dimen_8dp"
             android:text="@string/telephone"/>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/checkout_address_item_phone"
             style="@style/TextBase.Address"
             android:textSize="@dimen/address_header_street"
-            android:layout_below="@+id/checkout_address_item_street"
+            android:layout_alignParentBottom="true"
             android:layout_toRightOf="@+id/checkout_address_item_tel"
             android:layout_toEndOf="@+id/checkout_address_item_tel"
             android:layout_alignRight="@+id/vertical_separator"
             android:layout_alignEnd="@+id/vertical_separator"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginLeft="@dimen/margin_16dp"
             android:layout_marginStart="@dimen/margin_16dp"
-            android:layout_marginBottom="@dimen/dimen_16dp"
-            android:text="dsdcsdcs"
+            android:layout_marginBottom="@dimen/dimen_8dp"
+            android:text="5555"
             />
     
 
