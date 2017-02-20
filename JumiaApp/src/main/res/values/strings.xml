@@ -462,9 +462,7 @@
     <string name="cart_total_amount">Total</string>
     <string name="cart_total_discount">Total discount</string>
     <string name="cart_product_discount">Products discount</string>
-<<<<<<< HEAD
     <string name="checkout_count_title" >All product</string>
-=======
     <string name="basket_confirm_button">Confirm</string>
     <string name="register_label">Register</string>
     <string name="national_id">National code</string>
@@ -478,6 +476,4 @@
     <string name="email_regex">[a-zA-Z0-9äöüÄÖÜ_+.-]+@[a-zA-Z0-9äöüÄÖÜ][a-zA-Z0-9-äöüÄÖÜ.]+\\.([a-zA-Z]{2,6})</string>
     <string name="email_password_invalid">email/password is not correct</string>
 
-
->>>>>>> 5fb909e56c0e8ee8ba2c02af1ab3a5fff709921c
 </resources>

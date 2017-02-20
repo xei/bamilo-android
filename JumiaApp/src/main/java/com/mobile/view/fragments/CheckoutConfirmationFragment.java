@@ -224,7 +224,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         int viewId = view.getId();
         if (viewId== R.id.checkout_confirmation_btn)
         {
-            //getBaseActivity().onSwitchFragment(EventType.CHECKOUT_PAYMENT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+           getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_PAYMENT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
         else if (viewId == R.id.checkout_button_enter) {
             if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(couponButton.getText(), getString(R.string.remove_label))) {
