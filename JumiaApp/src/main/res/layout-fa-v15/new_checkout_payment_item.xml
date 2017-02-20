@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checkout_address_item_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <!-- SELECTION RADIOBUTTON -->
+
+    <com.mobile.components.customfontviews.RadioButton
+        android:id="@+id/checkout_payment_item_radio_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:layout_marginRight="@dimen/dimen_16dp"
+        android:theme="@style/RadioButtonTheme"
+         />
+
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_payment_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/payment_header_title"
+            android:textColor="@color/black"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/checkout_payment_item_radio_btn"
+            android:layout_alignBaseline="@+id/checkout_payment_item_radio_btn"
+            android:layout_marginLeft="@dimen/dimen_16dp"
+            android:layout_marginRight="@dimen/dimen_16dp"
+            android:text="name"
+            />
+
+        <RelativeLayout
+            android:id="@+id/payment_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="25dp"
+            android:paddingLeft="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/checkout_payment_item_name"
+            android:background="@drawable/new_payment_item_border">
+
+            <ImageView
+                android:id="@+id/method_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                />
+
+        </RelativeLayout>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/checkout_payment_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/payment_text"
+        android:textColor="@color/black_800"
+        android:layout_below="@+id/payment_logo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/dimen_16dp"
+        android:layout_marginRight="@dimen/dimen_16dp"
+        android:text="text"
+        android:visibility="gone"
+        />
+
+
+</RelativeLayout>
+

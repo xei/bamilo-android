@@ -125,6 +125,7 @@
             android:layout_alignStart="@+id/checkout_address_item_name"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="@dimen/dimen_8dp"
+
             android:text="@string/telephone"/>
 
         <com.mobile.components.customfontviews.TextView
@@ -140,7 +141,7 @@
             android:layout_marginLeft="@dimen/margin_16dp"
             android:layout_marginStart="@dimen/margin_16dp"
             android:layout_marginBottom="@dimen/dimen_8dp"
-            android:text="5555"
+            android:text="555"
             />
     
 

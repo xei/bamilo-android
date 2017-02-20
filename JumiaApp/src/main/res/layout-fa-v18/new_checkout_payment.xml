@@ -4,8 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0F0"
-
     >
 
         <include
@@ -26,7 +24,7 @@
             android:textColor="@color/black_47"
             android:background="@color/black_300"
             android:gravity="center_vertical"
-            android:text="@string/checkout_address_title"/>
+            android:text="@string/checkout_payment_title"/>
 
         <View
             android:id="@+id/separator"
@@ -35,40 +33,41 @@
             android:layout_below="@+id/title"
             android:background="@color/address_separator"/>
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/separator"
-    android:layout_above="@+id/address_continue">
-            <android.support.v7.widget.RecyclerView
+<!--            <android.support.v7.widget.RecyclerView
                 android:id="@+id/address_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/separator"
-                 />
-</ScrollView>
-<!--    </LinearLayout>-->
+                android:layout_alignParentBottom="true"
+                 />-->
 
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_new_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_above="@+id/address_continue"
-            app:fabSize="mini"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_add_white_48dp" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/address_continue"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/separator"
+        android:layout_above="@+id/total_container">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/payment_scroll"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:textSize="20sp"
+            android:layout_height="match_parent"/>
+
+
+
+    </ScrollView>
+    <include
+        android:id="@+id/total_container"
+        layout="@layout/new_shopping_basket_total_element"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/checkout_totalbar_height"
+        android:layout_above="@+id/payment_continue"
+        />
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/payment_continue"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/checkout_footer_height"
+            android:textSize="@dimen/checkout_footer_font_size"
             android:textColor="@color/white"
             android:gravity="center"
+            android:layout_alignParentBottom="true"
             android:background="@color/color_accent"
             android:text="@string/next_button"/>
 

@@ -114,8 +114,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         holder.editButton.setTag(address.getId());
         holder.deleteButton.setOnClickListener(mOnClickDeleteAddressButton);
         holder.deleteButton.setTag(address.getId());
+        holder.buttons.setVisibility(View.VISIBLE);
 
-        if (position == 0)
+        if (address.isDefault())
         {
             holder.buttons.setVisibility(View.INVISIBLE);
         }

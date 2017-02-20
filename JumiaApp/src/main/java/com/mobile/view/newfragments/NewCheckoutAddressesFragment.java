@@ -188,7 +188,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
     private void triggerSetMultiStepAddresses(int billing, int shipping) {
         Print.d(TAG, "TRIGGER SET BILLING");
-        triggerContentEvent(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
+        triggerContentEventProgress(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
     }
 
     @Override
