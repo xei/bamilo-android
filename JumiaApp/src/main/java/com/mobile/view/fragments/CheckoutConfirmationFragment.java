@@ -61,6 +61,7 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -80,7 +81,7 @@ import java.util.List;
  *
  */
 public class CheckoutConfirmationFragment extends NewBaseFragment implements View.OnClickListener ,IResponseCallback{
-    TextView next , address , telephone , user , order_count_title , order_price ,ship_price,voucher_price,all_price,ship_time,all_voucher ,voucher_error;
+    TextView next , address , telephone , user , order_count_title , order_price ,ship_price,voucher_price,all_price,ship_time,all_voucher ,voucher_error,all_price_title;
     Switch voucher_switch;
     LinearLayout voucher_lay;
     private ShippingMethodFormBuilder mFormResponse;
@@ -146,6 +147,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         voucher_price = (TextView) view.findViewById(R.id.checkout_order_voucher_price);
         all_price = (TextView) view.findViewById(R.id.checkout_order_all_price);
         ship_time = (TextView) view.findViewById(R.id.checkout_order_ship_time);
+        all_price_title = (TextView) view.findViewById(R.id.all_price_total_title);
         all_voucher = (TextView) view.findViewById(R.id.checkout_order_all_discount);
         voucher_error = (TextView) view.findViewById(R.id.error_message_mandatory);
         voucher_switch = (Switch) view.findViewById(R.id.voucher_switch);
@@ -263,14 +265,15 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     }
 
     private void showOrderdetail() {
-        all_price.setText(mOrderFinish.getTotal()+" ریال ");
+        all_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
         order_count_title.setText(mOrderFinish.getCartCount()+" "+getContext().getString(R.string.checkout_count_title));
-        order_price.setText(mOrderFinish.getSubTotalUnDiscounted()+" ریال ");
-        all_price.setTextColor(Color.GREEN);
-        all_voucher.setText(mOrderFinish.getSubTotalUnDiscounted()-mOrderFinish.getTotal()+" ریال ");
+        all_price_title.setText("هزینه کل خرید"+mOrderFinish.getCartCount()+"کالا");
+        order_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted()));
+        all_price.setTextColor(getResources().getColor(R.color.checkout_order_green));
+        all_voucher.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted()-mOrderFinish.getTotal()));
         if (mOrderFinish.hasCouponDiscount()){
             voucher_lay.setVisibility(View.VISIBLE);
-        voucher_price.setText(mOrderFinish.getCouponDiscount()+" ریال ");
+        voucher_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getCouponDiscount()));
         }
         else{
             voucher_lay.setVisibility(View.GONE);
@@ -305,11 +308,11 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
         if (mOrderFinish.hasFreeShipping()||mOrderFinish.getShippingValue()==0){
             ship_price.setText("رایگان");
-            ship_price.setTextColor(Color.GREEN);
+            ship_price.setTextColor(getResources().getColor(R.color.checkout_order_green));
         }
         else {
-            ship_price.setText(mOrderFinish.getShippingValue()+" ریال ");//hazineh haml kol
-            ship_price.setTextColor(Color.BLACK);
+            ship_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingValue()));
+            ship_price.setTextColor(getResources().getColor(R.color.black));
         }
 
     }
@@ -326,23 +329,6 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, purchaseEntity);
     }
 
-    private void prepareCouponView() {
-
-      /*  if (!TextUtils.isEmpty(mVoucherCode)) {
-            mVoucherView.setText(mVoucherCode);
-        } triggerSubmitVoucher(mVoucherCode);
-        UIUtils.scrollToViewByClick(mScrollView, mVoucherView);
-        couponButton = (TextView) mVoucherContainer.findViewById(R.id.voucher_btn);
-        if (removeVoucher) {
-            couponButton.setText(getString(R.string.remove_label));
-        }
-        couponButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validateCoupon();
-            }
-        });*/
-    }
 
 
     /**
@@ -426,6 +412,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
                      mVoucherView.setText("");
                      mVoucherView.setFocusable(true);
                      mVoucherView.setFocusableInTouchMode(true);
+                     voucher_switch.setChecked(false);
                  }
                 break;
 

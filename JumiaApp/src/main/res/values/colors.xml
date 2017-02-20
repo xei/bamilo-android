@@ -90,6 +90,7 @@
     <color name="address_border">#9C9C9C</color>
 
     <color name="checkout_circle_green">#009600</color>
+    <color name="checkout_order_green">#31a830</color>
     <color name="checkout_line_gray">#D9D9D9</color>
     <color name="checkout_text_color">#8E8E8E</color>
     <color name="checkout_header">#ffffff</color>
