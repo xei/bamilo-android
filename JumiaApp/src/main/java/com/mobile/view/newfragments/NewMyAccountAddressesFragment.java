@@ -60,24 +60,7 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
         Print.i(TAG, "ON CREATE");
     }
 
-    /*@Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       *//* View view =super.onCreateView(inflater, container, savedInstanceState);
-        ViewStub contentContainer = (ViewStub) view.findViewById(R.id.content_container);
-        contentContainer.setLayoutResource(R.layout.new_checkout_my_addresses);
-        view = contentContainer.inflate();*//*
-        View view = inflater.inflate(R.layout.new_my_account_addresses, container, false);
-        //mAddressView = (RecyclerView) view.findViewById(R.id.address_recycler_view);
-        //RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-       // mAddressView.setLayoutManager(mLayoutManager);
-        mAddressView = (RecyclerView) view.findViewById(R.id.address_recycler_view);
-        mAddressView.setHasFixedSize(true);
 
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        mAddressView.setLayoutManager(llm);
-        return view;
-    }*/
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

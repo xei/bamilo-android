@@ -325,33 +325,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     }
 
     /**
-     * Show the use voucher layout
-     */
-/* DROID-63
-    private void showUseVoucher() {
-        Print.d(TAG, "SHOWING USE VOUCHER");
-        mVoucherView.setText(TextUtils.isNotEmpty(mVoucherCode) ? mVoucherCode : "");
-        mVoucherView.setFocusable(true);
-        mVoucherView.setFocusableInTouchMode(true);
-        mCouponButton.setText(getString(R.string.use_label));
-
-    }
-*/
-
-    /**
-     * Show the remove voucher layout
-     */
-/* DROID-63
-    private void showRemoveVoucher() {
-        Print.d(TAG, "SHOWING REMOVE VOUCHER");
-        mVoucherView.setText(mVoucherCode);
-        mVoucherView.setFocusable(false);
-        mVoucherView.setFocusableInTouchMode(false);
-        mCouponButton.setText(getString(R.string.remove_label));
-    }
-*/
-
-    /**
      * Set the total value
      */
     private void setTotal(@NonNull PurchaseEntity cart) {
@@ -382,32 +355,12 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, getLoadTime(), false);
     }
 
-    /**
-     *
-     */
-/* DROID-63
-    public void setListeners() {
-        // Set checkout listeners
-        mCheckoutButton.setOnClickListener(this);
-        // Get phone number from country configs
-        mPhone2Call = CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity());
-        // Show Call To Order if available on the device
-        PackageManager pm = getActivity().getPackageManager();
-        if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY) && !TextUtils.isEmpty(mPhone2Call)) {
-            mCallToOrderButton.setVisibility(View.VISIBLE);
-            mCallToOrderButton.setSelected(true);
-            mCallToOrderButton.setOnClickListener(this);
-        } else {
-            mCallToOrderButton.setVisibility(View.GONE);
-        }
-    }
-*/
 
     /*
      * ####### LISTENER #######
      */
 
-/* DROID-63*/
+
     @Override
     public void onClick(View view) {
         // Get id
@@ -425,14 +378,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      * Process the click on checkout button.
      */
     private void onClickCheckoutButton() {
-/* DROID-63
-        // Case has voucher to submit
-        if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(mCouponButton.getText(), getString(R.string.remove_label))) {
-            onClickVoucherButton();
-        }
-        // Case checkout
-        else
-*/
+
         if (items != null && items.size() > 0) {
             TrackerDelegator.trackCheckout(items);
             Bundle bundle = new Bundle();
@@ -710,7 +656,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         // Case valid state
         items = cart.getCartItems();
         mCartItemsCount = items.size();
-        CartItemAdapter mItemsAdapter = new CartItemAdapter(getBaseActivity(), items, onQuantityChangeClickListener, onRemoveItemClickListener, cart, onClickWishListButton);
+        CartItemAdapter mItemsAdapter = new CartItemAdapter(getBaseActivity(), items, onQuantityChangeClickListener, onRemoveItemClickListener, cart, onClickWishListButton, onProdcutClickListener);
         mItemsAdapter.baseFragment = this;
         mCartRecycler.setAdapter(mItemsAdapter);
         setTotal(cart);
@@ -1040,5 +986,24 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             de.akquinet.android.androlog.Log.i(TAG, "NPE ON UPDATE WISH LIST VALUE");
         }
     }
+
+
+
+
+    View.OnClickListener onProdcutClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String sku = (String)view.getTag(R.id.target_sku);
+            if (!TextUtils.isEmpty(sku)) {
+                Bundle bundle = new Bundle();
+                bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
+                bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
+                bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            }
+        }
+    };
+
+
 
 }

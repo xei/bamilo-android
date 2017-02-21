@@ -475,5 +475,7 @@
     <string name="normal_string_regex">[0-9a-zA-Z-]*</string>
     <string name="email_regex">[a-zA-Z0-9äöüÄÖÜ_+.-]+@[a-zA-Z0-9äöüÄÖÜ][a-zA-Z0-9-äöüÄÖÜ.]+\\.([a-zA-Z]{2,6})</string>
     <string name="email_password_invalid">email/password is not correct</string>
+    <string name="address_next_button">Continue</string>
+    <string name="payment_next_button">Continue and Payment</string>
 
 </resources>
