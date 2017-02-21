@@ -6,9 +6,12 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,6 +125,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     private int crrQuantity;
 
     View mClickedFavourite;
+    private AppBarLayout.LayoutParams  startParams;
 
     /**
      * Empty constructor
@@ -131,7 +135,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 NavigationAction.BASKET,
                 R.layout.new_shopping_basket,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     @Override
@@ -175,6 +179,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 
         mCheckoutButton = view.findViewById(R.id.checkout_button);
         mCheckoutButton.setOnClickListener(this);
+
     }
 
     RecyclerView.OnScrollListener scrollChanged = new RecyclerView.OnScrollListener() {
@@ -237,6 +242,10 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         else triggerGetShoppingCart();
         // Track page
         TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
+        /*Toolbar toolbar = (Toolbar) getBaseActivity().findViewById(R.id.toolbar);  // or however you need to do it for your code
+        startParams = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        AppBarLayout.LayoutParams params = startParams;
+        params.setScrollFlags(0);*/
     }
 
     @Override

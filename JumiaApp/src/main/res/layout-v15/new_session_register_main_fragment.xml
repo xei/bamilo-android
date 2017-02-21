@@ -49,8 +49,7 @@
                 android:id="@+id/password"
                 style="@style/Register_Edittext"
                 android:inputType="textPassword"
-                android:textAlignment="textStart"
-                android:gravity="start|left"
+                android:gravity="right"
                 android:hint="@string/new_password"/>
 
             <com.mobile.components.customfontviews.EditText

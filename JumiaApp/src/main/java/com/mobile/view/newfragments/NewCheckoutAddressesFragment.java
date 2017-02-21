@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +61,8 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 R.layout.new_checkout_my_addresses,
                 R.string.checkout_label,
                 ConstantsCheckout.CHECKOUT_BILLING,true);
+
+        //getBaseActivity().mAppBarLayout.setExpanded(true, true);
     }
 
     /*
@@ -68,26 +72,12 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+        /*Toolbar toolbar = (Toolbar) getBaseActivity().findViewById(R.id.toolbar);  // or however you need to do it for your code
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        params.setScrollFlags(0);*/
     }
 
-/*    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       *//* View view =super.onCreateView(inflater, container, savedInstanceState);
-        ViewStub contentContainer = (ViewStub) view.findViewById(R.id.content_container);
-        contentContainer.setLayoutResource(R.layout.new_checkout_my_addresses);
-        view = contentContainer.inflate();*//*
-        View view = inflater.inflate(R.layout.new_checkout_my_addresses, container, false);
-        //mAddressView = (RecyclerView) view.findViewById(R.id.address_recycler_view);
-        //RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-       // mAddressView.setLayoutManager(mLayoutManager);
-        mAddressView = (RecyclerView) view.findViewById(R.id.address_recycler_view);
-        mAddressView.setHasFixedSize(true);
 
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        mAddressView.setLayoutManager(llm);
-        return view;
-    }*/
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -107,6 +97,8 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
         mSelectedAddress = -1;
         super.setCheckoutStep(view, 1);
+
+
 
     }
 

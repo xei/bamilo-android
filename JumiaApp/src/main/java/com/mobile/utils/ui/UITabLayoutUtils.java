@@ -147,6 +147,7 @@ public class UITabLayoutUtils {
                 action != NavigationAction.HOME &&
                 action != NavigationAction.CATALOG &&
                 action != NavigationAction.CAMPAIGN &&
+                //action != NavigationAction.CHECKOUT &&
                 view != null) {
             TypedValue tv = new TypedValue();
             Context context = view.getContext();

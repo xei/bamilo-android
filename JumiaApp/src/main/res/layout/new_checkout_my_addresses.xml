@@ -40,6 +40,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@+id/separator"
     android:layout_above="@+id/address_continue">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/address_recycler_view"
                 android:layout_width="match_parent"
@@ -47,7 +48,7 @@
                 android:layout_below="@+id/separator"
                  />
 </ScrollView>
-<!--    </LinearLayout>-->
+
 
 
         <android.support.design.widget.FloatingActionButton
@@ -64,12 +65,12 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/address_continue"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/checkout_footer_height"
             android:layout_alignParentBottom="true"
-            android:textSize="20sp"
+            android:textSize="@dimen/checkout_footer_font_size"
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@color/color_accent"
-            android:text="@string/next_button"/>
+            android:text="@string/address_next_button"/>
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.InputType;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -156,21 +157,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        // Get info
-        /*String text = String.format(getString(R.string.login_main_info), getString(R.string.app_name));
-        final LoginHeaderComponent loginHeaderComponent = (LoginHeaderComponent) view.findViewById(R.id.login_component);
-        loginHeaderComponent.setSubTitle(text);
 
-        AuthInfo authInfo = CountryPersistentConfigs.getAuthInfo(getContext());
-        loginHeaderComponent.showAuthInfo(LoginHeaderComponent.CHECK_EMAIL, authInfo, text);
-        View divider = view.findViewById(R.id.login_divider);*/
 
-        // Get email
 
-        ViewPager viewPager = (ViewPager)view.findViewById(R.id.viewpager);
-        // Get and set guest button
-        //setGuestButton(view.findViewById(R.id.login_button_guest), isInCheckoutProcess && mParentFragmentType != FragmentType.MY_ACCOUNT);
-        //setupViewPager(viewPager);
         loginFragment = new LoginFragment();
         registerFragment = new RegisterFragment();
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.login_tabs);
@@ -223,8 +212,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
-        //tabRegister.select();
-        //tabLogin.select();
     }
 
     /*
@@ -238,8 +225,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         Print.i(TAG, "ON RESUME");
         // Tracking
         TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGN_UP, getLoadTime(), false);
-        //tabRegister.select();
-        //tabLogin.select();
+
         // Case auto login
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
             triggerAutoLogin();
@@ -397,12 +383,23 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         mCustomerEmail = mEmailView.getText().toString();
         mCustomerPassword = mPasswordView.getText().toString();
         // Trigger to check email
-        if(TextUtils.isNotEmpty(mCustomerEmail) && Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
+        if(TextUtils.isNotEmpty(mCustomerEmail) && TextUtils.isNotEmpty(mCustomerPassword) && Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
             triggerEmailCheck(mCustomerEmail);
-            mErrorMessage.setVisibility(View.GONE);
+            mEmailView.setError("");
+            mPasswordView.setError("");
+            //mErrorMessage.setVisibility(View.GONE);
         } else {
-            mErrorMessage.setText(getString(R.string.error_invalid_email));
-            mErrorMessage.setVisibility(View.VISIBLE);
+            if (!TextUtils.isNotEmpty(mCustomerEmail))
+            {
+                mEmailView.setError(getString(R.string.error_invalid_email));
+            }
+            if (!TextUtils.isNotEmpty(mCustomerPassword))
+            {
+                mPasswordView.setError(getString(R.string.error_ismandatory));
+            }
+
+            //mErrorMessage.setText(getString(R.string.error_invalid_email));
+            //mErrorMessage.setVisibility(View.VISIBLE);
         }
     }
 
@@ -471,6 +468,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
                 break;
             case AUTO_LOGIN_EVENT:
+                hideActivityProgress();
                 // Get Customer
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
@@ -528,12 +526,14 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 break;
             default:
+                hideActivityProgress();
                 break;
         }
     }
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -619,6 +619,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
             super.onViewCreated(view, savedInstanceState);
             mEmailView = (EditText) view.findViewById(R.id.login_email);
             mPasswordView = (EditText) view.findViewById(R.id.login_password);
+            mEmailView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             // Get error message
             mErrorMessage = (TextView) view.findViewById(R.id.login_text_error_message);
             // Get continue button
@@ -647,6 +648,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
             mPasswordRView = (EditText) view.findViewById(R.id.password);
             mPhoneView = (EditText) view.findViewById(R.id.phone);
             view.findViewById(R.id.register_button_create).setOnClickListener(NewSessionLoginMainFragment.this);
+            mEmailRView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         }
     }
 
