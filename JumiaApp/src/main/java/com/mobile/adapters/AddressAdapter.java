@@ -54,7 +54,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         public RadioButton checkBox;
         public ImageView editButton;
         public ImageView deleteButton;
-        public RelativeLayout root;
+        public RelativeLayout root, editButton_Rl;
         public View vertical;
         public View buttons;
 
@@ -65,6 +65,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             phone = (TextView) view.findViewById(R.id.checkout_address_item_phone);
             checkBox = (RadioButton) view.findViewById(R.id.checkout_address_item_radio_btn);
             editButton = (ImageView) view.findViewById(R.id.checkout_address_item_btn_edit);
+            editButton_Rl = (RelativeLayout) view.findViewById(R.id.checkout_address_item_btn_edit_rl);
             deleteButton = (ImageView) view.findViewById(R.id.checkout_address_item_btn_delete);
             root = (RelativeLayout)view.findViewById(R.id.checkout_address_item_content);
             vertical = (View) view.findViewById(R.id.vertical_separator);
@@ -112,6 +113,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         holder.phone.setText(address.getPhone());
         holder.editButton.setOnClickListener(onClickEditAddressButton);
         holder.editButton.setTag(address.getId());
+        holder.editButton_Rl.setOnClickListener(onClickEditAddressButton);
+        holder.editButton_Rl.setTag(address.getId());
         holder.deleteButton.setOnClickListener(mOnClickDeleteAddressButton);
         holder.deleteButton.setTag(address.getId());
         holder.buttons.setVisibility(View.VISIBLE);

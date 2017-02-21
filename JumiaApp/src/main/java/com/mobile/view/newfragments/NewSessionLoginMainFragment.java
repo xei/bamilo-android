@@ -471,6 +471,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
                 break;
             case AUTO_LOGIN_EVENT:
+                hideActivityProgress();
                 // Get Customer
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
@@ -528,12 +529,14 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 break;
             default:
+                hideActivityProgress();
                 break;
         }
     }
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");

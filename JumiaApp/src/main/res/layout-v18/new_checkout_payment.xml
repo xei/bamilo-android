@@ -69,6 +69,6 @@
             android:gravity="center"
             android:layout_alignParentBottom="true"
             android:background="@color/color_accent"
-            android:text="@string/next_button"/>
+            android:text="@string/payment_next_button"/>
 
 </RelativeLayout>

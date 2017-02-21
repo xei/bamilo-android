@@ -49,6 +49,7 @@
         android:paddingRight="@dimen/margin_16dp"
         android:orientation="vertical">
         <RelativeLayout
+            android:id="@+id/checkout_address_item_btn_edit_rl"
             android:layout_width="16dp"
             android:layout_height="0dp"
             android:layout_weight="1"

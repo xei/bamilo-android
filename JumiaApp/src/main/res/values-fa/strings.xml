@@ -111,6 +111,8 @@
     <string name="new_arrival_badge">جدید</string>
     <string name="newsletter_label">خبرنامه</string>
     <string name="next_button">ادامه</string>
+    <string name="address_next_button">ادامه خرید</string>
+    <string name="payment_next_button">ادامه و پرداخت</string>
     <string name="no_internet_access_warning_title">اتصال به اینترنت وجود ندارد!</string>
     <string name="no_label">خیر</string>
     <string name="notifications">اعلان ها</string>
@@ -220,7 +222,7 @@
     <string name="write_comment_title">نقد و بررسی</string>
     <string name="write_full_review">بررسی کامل خود را بنویسید</string>
     <string name="writereview_send">ارسال نقد و بررسی</string>
-    <string name="yes_label">آری</string>
+    <string name="yes_label">بله</string>
     <string name="install_android">نصب نرم افزار ‎%s‎ در یک چشم بهم زدن</string>
     <string name="share_the_app">برنامه را به اشتراک بگذار</string>
     <string name="app_social">آیکون شبکه های اجتماعی</string>
@@ -434,7 +436,7 @@
     <string name="checkout_sum_header">مجموع کل</string>
     <string name="checkout_voucher_title">کد تخفیف</string>
     <string name="checkout_submit_voucher">ثبت کد تخفیف</string>
-    <string name="checkout_confirmation_next_step">ثبت سفارش</string>
+    <string name="checkout_confirmation_next_step">تایید و ادامه</string>
     <string name="checkout_time_delivery">زمان تحویل</string>
     <string name="checkout_delivery_address">ادرس تحویل گیرنده</string>
     <string name="checkout_card_summery">خلاصه خرید</string>
@@ -453,7 +455,7 @@
     <string name="cart_total_discount">مجموع تخفیف</string>
     <string name="cart_product_discount">تخفیف کالاها</string>
     <string name="checkout_count_title">کالا به مجموع</string>
-    <string name="basket_confirm_button">تایید</string>
+    <string name="basket_confirm_button">ثبت سفارش</string>
     <string name="register_label">ثبت نام</string>
     <string name="national_id">کد ملی</string>
     <string name="first_name">نام</string>
