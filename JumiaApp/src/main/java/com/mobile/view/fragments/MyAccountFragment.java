@@ -139,7 +139,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
         moreInfoContainer = (ViewGroup)view.findViewById(R.id.more_info_container);
         if(targets != null){
-          //  showMoreInfo();
+            //showMoreInfo();
         } else {
             triggerFaqAndTerms();
         }
