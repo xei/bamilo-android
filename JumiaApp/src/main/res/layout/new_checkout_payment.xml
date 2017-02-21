@@ -33,18 +33,12 @@
             android:layout_below="@+id/title"
             android:background="@color/address_separator"/>
 
-<!--            <android.support.v7.widget.RecyclerView
-                android:id="@+id/address_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                 />-->
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/separator"
         android:layout_above="@+id/total_container">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/payment_scroll"
             android:layout_width="match_parent"
