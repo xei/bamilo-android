@@ -39,7 +39,7 @@
             android:id="@+id/payment_logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/dimen_30dp"
+            android:minHeight="75dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingRight="25dp"

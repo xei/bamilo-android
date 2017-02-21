@@ -40,6 +40,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private View.OnClickListener mOnAddQuantityClickListener;
     private View.OnClickListener mOnRemoveItemClickListener;
     private View.OnClickListener mOnChangeFavouriteClickListener;
+    private View.OnClickListener mOnProductClickListener;
     PurchaseEntity mCart;
     Context mContext;
 
@@ -86,13 +87,15 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public CartItemAdapter(Context context, List<PurchaseCartItem> itemsList, View.OnClickListener onAddQuantityClickListener,
                            View.OnClickListener onRemoveItemClickListener, PurchaseEntity cart,
-                           View.OnClickListener onChangeFavouriteClickListener) {
+                           View.OnClickListener onChangeFavouriteClickListener,
+                           View.OnClickListener onProductClickListener) {
         this.itemsList = itemsList;
         mContext = context;
         mOnAddQuantityClickListener = onAddQuantityClickListener;
         mOnRemoveItemClickListener = onRemoveItemClickListener;
         mCart = cart;
         mOnChangeFavouriteClickListener = onChangeFavouriteClickListener;
+        mOnProductClickListener = onProductClickListener;
     }
 
 
@@ -122,7 +125,11 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ItemViewHolder vh = (ItemViewHolder)holder;
             PurchaseCartItem item = itemsList.get(position);
             vh.cart_item_name.setText(item.getName());
+            vh.cart_item_name.setTag(R.id.target_sku, item.getSku());
+            vh.cart_item_image.setTag(R.id.target_sku, item.getSku());
             vh.cart_item_brand.setText(item.getBrandName());
+            vh.cart_item_name.setOnClickListener(mOnProductClickListener);
+            vh.cart_item_image.setOnClickListener(mOnProductClickListener);
             vh.cart_item_option1_value.setText("");
             vh.cart_item_option2_value.setText("");
             double price = item.getSpecialPrice();
