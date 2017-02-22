@@ -11,16 +11,15 @@
             android:layout_width="65dp"
             android:layout_margin="@dimen/dimen_8dp"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentRight="true"
+            />
 
         <com.mobile.components.customfontviews.TextView
             android:text="product name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/checkout_product_image"
-            android:layout_toRightOf="@+id/checkout_product_image"
-            android:layout_toEndOf="@+id/checkout_product_image"
+            android:layout_toLeftOf="@+id/checkout_product_image"
             android:id="@+id/checkout_product"
             android:layout_margin="@dimen/dimen_8dp"
             android:textColor="@color/abc_input_method_navigation_guard" />
@@ -30,12 +29,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/checkout_product"
-            android:layout_toRightOf="@+id/checkout_product_image"
-            android:layout_toEndOf="@+id/checkout_product_image"
-            android:layout_marginEnd="8dp"
+            android:layout_toLeftOf="@+id/checkout_product_image"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="0dp"
             android:id="@+id/checkout_brand"
             android:textColor="@color/abc_input_method_navigation_guard" />
@@ -44,11 +40,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/checkout_count"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
             android:id="@+id/checkout_price"
             android:textColor="@color/abc_input_method_navigation_guard"
-            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
@@ -59,15 +53,12 @@
         <com.mobile.components.customfontviews.TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="0dp"
             android:id="@+id/checkout_count"
             android:textColor="@color/abc_input_method_navigation_guard"
             android:layout_below="@+id/checkout_product"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
             android:paddingRight="@dimen/dimen_8dp" />
 </RelativeLayout>

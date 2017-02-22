@@ -266,8 +266,8 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
     private void showOrderdetail() {
         all_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
-        order_count_title.setText(mOrderFinish.getCartCount()+" "+getContext().getString(R.string.checkout_count_title));
-        all_price_title.setText("هزینه کل خرید"+mOrderFinish.getCartCount()+"کالا");
+       // order_count_title.setText(mOrderFinish.getCartCount()+" "+getContext().getString(R.string.checkout_count_title));
+        all_price_title.setText("جمع نهایی("+mOrderFinish.getCartCount()+" کالا)");
         order_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted()));
         all_price.setTextColor(getResources().getColor(R.color.checkout_order_green));
         all_voucher.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted()-mOrderFinish.getTotal()));
@@ -283,8 +283,18 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     private void showProducts() {
         cardList = new ArrayList<CardChoutItem>();
         for (PurchaseCartItem item : mOrderFinish.getCartItems()) {
-            CardChoutItem card = new CardChoutItem(item.getBrandName().toString(), item.getName().toString(), item.getPrice()+"",item.getQuantity()+"",item.getImageUrl());
-            cardList.add(card);
+            CardChoutItem card;
+            if (item.hasDiscount())
+            {
+              card = new CardChoutItem(item.getBrandName().toString(), item.getName().toString(), item.getSpecialPrice()+"",item.getQuantity()+"",item.getImageUrl());
+
+            }
+            else
+            {
+                card = new CardChoutItem(item.getBrandName().toString(), item.getName().toString(), item.getPrice()+"",item.getQuantity()+"",item.getImageUrl());
+
+            }
+                  cardList.add(card);
         }
         mAdapter = new CardCheckOutAdapter(cardList);
 

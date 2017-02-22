@@ -117,7 +117,7 @@ android {
         bamilo {
             applicationId "com.bamilo.android"
             versionName "2.4.0"
-            versionCode getAppVersionCode(23)
+            versionCode getAppVersionCode(24)
             signingConfig signingConfigs.bamiloSigning
             resConfigs "fa"
         }

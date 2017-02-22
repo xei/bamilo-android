@@ -89,6 +89,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:hint="@string/checkout_voucher_title"
+                    android:textSize="13sp"
                     style="@style/FormTextField"
                     android:id="@+id/voucher_codename" />
 
@@ -132,7 +133,8 @@
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 android:id="@+id/checkout_order_count_title"
-                android:textStyle="normal|bold" />
+                android:textStyle="normal|bold"
+                android:text="مجموع کالاها" />
 
             <com.mobile.components.customfontviews.TextView
                 android:layout_width="match_parent"

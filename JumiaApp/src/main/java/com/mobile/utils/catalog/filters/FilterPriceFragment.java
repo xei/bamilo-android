@@ -115,8 +115,12 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         mMaxValueTxt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                Long mymin= Long.parseLong(PersinConvertor.toEnglishNumber(mMinValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
                 Long mymax= Long.parseLong(PersinConvertor.toEnglishNumber(mMaxValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
                 if(!hasFocus){
+                    if(mymax>mymin){
+
+
                     if (mymax<=mMaxRang &&Integer.MAX_VALUE>mymax) {
 
                         //mMaxValueTxt.setText(PersinConvertor.toPersianNumber(mMaxValueTxt.getText().toString()).toString());
@@ -128,23 +132,34 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
                         mCurrMaxValue = mMax;
                     }
                 }
-
+                    else{
+                        mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
+                        mMaxValueTxt.setText(mCurrMaxValue+"");
+                    }
+            }
             }
         });
 
         mMinValueTxt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                Long mymin= Long.parseLong(PersinConvertor.toEnglishNumber(mMinValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
+                Long mymin , mintemp;
+                mymin =mintemp= Long.parseLong(PersinConvertor.toEnglishNumber(mMinValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
                 Long mymax= Long.parseLong(PersinConvertor.toEnglishNumber(mMaxValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
                 if(!hasFocus){
-                    if (mymin<=mMaxRang &&Integer.MAX_VALUE>mymin) {
-                        setIntervalText((int) mymin.longValue(),mCurrMaxValue);
-                        mRangeBar.setSelectedMinValue(getMaxIntervalValue((int) mymin.longValue()));
-                        mCurrMinValue =mymin.intValue() ;
+                    if(mymax>mymin) {
+                        if (mymin <= mMaxRang && Integer.MAX_VALUE > mymin) {
+                            setIntervalText((int) mymin.longValue(), mCurrMaxValue);
+                            mRangeBar.setSelectedMinValue(getMaxIntervalValue((int) mymin.longValue()));
+                            mCurrMinValue = mymin.intValue();
+                        } else {
+                            mCurrMinValue = mMin;
+                        }
                     }
-                    else {
-                        mCurrMinValue = mMin;
+                    else
+                    {
+                        mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
+                        mMinValueTxt.setText(mCurrMinValue+"");
                     }
                 }
 
