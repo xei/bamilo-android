@@ -94,6 +94,15 @@
         <item name="android:drawablePadding">5dp</item>
     </style>
 
+    <style name="FormTextErrorField17" parent="TextBase.Body">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/red_basic</item>
+        <item name="android:paddingRight">@dimen/form_padding</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
+        <item name="android:drawableRight">@drawable/indicator_input_error</item>
+        <item name="android:drawablePadding">5dp</item>
+    </style>
     <!-- CHECK BOX -->
 
     <style name="FormCheckBox" parent="SingleLineStyle" />

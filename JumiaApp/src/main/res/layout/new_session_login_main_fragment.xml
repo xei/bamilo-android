@@ -25,9 +25,11 @@
         android:ems="10"
         android:id="@+id/login_email" />
     <com.mobile.components.customfontviews.TextView
+        android:fontFamily="@string/bamilo_font"
         android:id="@+id/login_text_error_message"
-        style="@style/FormTextErrorField"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:textAlignment="textStart"
+        style="@style/FormTextErrorField"/>
     <com.mobile.components.customfontviews.EditText
         android:layout_width="match_parent"
         style="@style/BlueFormTextField"
@@ -39,8 +41,10 @@
         android:textSize="12sp" />
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/password_text_error_message"
-        style="@style/FormTextErrorField"
-        android:visibility="gone"/>
+        android:fontFamily="@string/bamilo_font"
+        android:visibility="gone"
+        android:textAlignment="textStart"
+        style="@style/FormTextErrorField"/>
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_20dp" />
