@@ -337,12 +337,12 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     {
         Context context = getBaseActivity();
 
-        boolean result = validateStringToPattern(context, R.string.national_id, mNationalIdView, mNationalIdView.getText().toString(), true, 10, 10, R.string.normal_string_regex, "");
-        result = validateStringToPattern(context, R.string.first_name, mFirstNameView, mFirstNameView.getText().toString(), true, 2, 50, R.string.normal_string_regex, "") && result;
-        result = validateStringToPattern(context, R.string.last_name, mLastNameView, mLastNameView.getText().toString(), true, 2, 50, R.string.normal_string_regex, "") && result;
-        result = validateStringToPattern(context, R.string.email, mEmailRView, mEmailRView.getText().toString(), true, 0, 40, R.string.email_regex, getResources().getString(R.string.error_invalid_email)) && result;
-        result = validateStringToPattern(context, R.string.new_password, mPasswordRView, mPasswordRView.getText().toString(), true, 6, 50, R.string.normal_string_regex, "") && result;
-        result = validateStringToPattern(context, R.string.phone, mPhoneView, mPhoneView.getText().toString(), true, 0, 40, R.string.normal_string_regex, "") && result;
+        boolean result = validateStringToPattern(context, R.string.national_id, mNationalIdView, mNationalIdView.getText().toString(), true, 10, 10, R.string.normal_string_regex, "", R.id.national_id_error_message);
+        result = validateStringToPattern(context, R.string.first_name, mFirstNameView, mFirstNameView.getText().toString(), true, 2, 50, R.string.normal_string_regex, "", R.id.first_name_error_message) && result;
+        result = validateStringToPattern(context, R.string.last_name, mLastNameView, mLastNameView.getText().toString(), true, 2, 50, R.string.normal_string_regex, "", R.id.last_name_error_message) && result;
+        result = validateStringToPattern(context, R.string.email, mEmailRView, mEmailRView.getText().toString(), true, 0, 40, R.string.email_regex, getResources().getString(R.string.error_invalid_email), R.id.email_error_message) && result;
+        result = validateStringToPattern(context, R.string.new_password, mPasswordRView, mPasswordRView.getText().toString(), true, 6, 50, R.string.normal_string_regex, "", R.id.password_error_message) && result;
+        result = validateStringToPattern(context, R.string.phone, mPhoneView, mPhoneView.getText().toString(), true, 0, 40, R.string.normal_string_regex, "", R.id.phone_error_message) && result;
         return result;
     }
     void requestRegister() {

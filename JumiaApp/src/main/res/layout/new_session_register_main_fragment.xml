@@ -30,7 +30,7 @@
                 android:fontFamily="@string/bamilo_font"
                 android:id="@+id/national_id_error_message"
                 android:visibility="gone"
-                android:textAlignment="textStart"
+                android:gravity="start|left"
                 style="@style/FormTextErrorField"/>
             <com.mobile.components.customfontviews.EditText
                 android:id="@+id/first_name"
@@ -41,7 +41,7 @@
                 android:fontFamily="@string/bamilo_font"
                 android:id="@+id/first_name_error_message"
                 android:visibility="gone"
-                android:textAlignment="textStart"
+                android:gravity="start|left"
                 style="@style/FormTextErrorField"/>
 
             <com.mobile.components.customfontviews.EditText
@@ -53,7 +53,7 @@
                 android:fontFamily="@string/bamilo_font"
                 android:id="@+id/last_name_error_message"
                 android:visibility="gone"
-                android:textAlignment="textStart"
+                android:gravity="start|left"
                 style="@style/FormTextErrorField"/>
             <com.mobile.components.customfontviews.EditText
                 android:id="@+id/email"
@@ -64,21 +64,20 @@
                 android:fontFamily="@string/bamilo_font"
                 android:id="@+id/email_error_message"
                 android:visibility="gone"
-                android:textAlignment="textStart"
+                android:gravity="start|left"
                 style="@style/FormTextErrorField"/>
 
             <com.mobile.components.customfontviews.EditText
                 android:id="@+id/password"
                 style="@style/Register_Edittext"
                 android:inputType="textPassword"
-                android:textAlignment="textStart"
-                android:gravity="start|left"
+                android:gravity="right"
                 android:hint="@string/new_password"/>
             <com.mobile.components.customfontviews.TextView
                 android:fontFamily="@string/bamilo_font"
                 android:id="@+id/password_error_message"
                 android:visibility="gone"
-                android:textAlignment="textStart"
+                android:gravity="start|left"
                 style="@style/FormTextErrorField"/>
 
             <com.mobile.components.customfontviews.EditText
@@ -90,7 +89,7 @@
                 android:fontFamily="@string/bamilo_font"
                 android:id="@+id/phone_error_message"
                 android:visibility="gone"
-                android:textAlignment="textStart"
+                android:gravity="start|left"
                 style="@style/FormTextErrorField"/>
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/register_button_create"

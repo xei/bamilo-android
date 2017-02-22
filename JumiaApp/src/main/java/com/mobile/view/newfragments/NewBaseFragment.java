@@ -260,31 +260,35 @@ public abstract class NewBaseFragment extends BaseFragment {
         }
     }
 
-    public boolean validateStringToPattern(Context context, int label, EditText editText, String text, boolean isRequired, int min, int max, int regex, String errorMessage) {
+    public boolean validateStringToPattern(Context context, int label, EditText editText, String text, boolean isRequired, int min, int max, int regex, String errorMessage, int textViewId) {
 
-            return validateStringToPattern(context, context.getResources().getString(label), editText, text, isRequired, min, max, context.getResources().getString(regex), errorMessage);
+            return validateStringToPattern(context, context.getResources().getString(label), editText, text, isRequired, min, max, context.getResources().getString(regex), errorMessage, textViewId);
         }
 
-        public boolean validateStringToPattern(Context context, String label, EditText editText, String text, boolean isRequired, int min, int max, String regex, String errorMessage) {
+        public boolean validateStringToPattern(Context context, String label, EditText editText, String text, boolean isRequired, int min, int max, String regex, String errorMessage, int textViewId) {
         boolean result = true;
-
+        TextView textView = (TextView) ((Activity)context).findViewById(textViewId);
+            textView.setVisibility(View.GONE);
         String space = " ";
         // Case empty
         if (isRequired && android.text.TextUtils.isEmpty(text)) {
             errorMessage = context.getString(R.string.error_isrequired);
-
-            editText.setError(errorMessage + space);
+            textView.setText(errorMessage + space);
+            textView.setVisibility(View.VISIBLE);
+            //editText.setError(errorMessage + space);
             //setErrorText(errorMessage + space);
             result=false;
         }
         // Case too short
         else if (min > 0 && text.length() < min) {
-            editText.setError(label + " " + context.getResources().getString(R.string.form_texttoshort) + space);
+            textView.setText(label + " " + context.getResources().getString(R.string.form_texttoshort) + space);
+            textView.setVisibility(View.VISIBLE);
             result = false;
         }
         // Case too long
         else if (max > 0 && text.length() > max) {
-            editText.setError(label + " " + context.getResources().getString(R.string.form_texttolong) + space);
+            textView.setText(label + " " + context.getResources().getString(R.string.form_texttolong) + space);
+            textView.setVisibility(View.VISIBLE);
             result = false;
         }
         // Case no match regex
@@ -304,7 +308,8 @@ public abstract class NewBaseFragment extends BaseFragment {
             result = matcher.find();
             if (!result)
             {
-                editText.setError(errorMessage + space);
+                textView.setText(errorMessage + space);
+                textView.setVisibility(View.VISIBLE);
             }
         }
         return result;

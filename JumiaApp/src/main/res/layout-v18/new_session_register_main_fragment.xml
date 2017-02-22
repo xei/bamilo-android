@@ -71,14 +71,13 @@
                 android:id="@+id/password"
                 style="@style/Register_Edittext"
                 android:inputType="textPassword"
-                android:textAlignment="textStart"
-                android:gravity="start|left"
+                android:gravity="right"
                 android:hint="@string/new_password"/>
             <com.mobile.components.customfontviews.TextView
                 android:fontFamily="@string/bamilo_font"
                 android:id="@+id/password_error_message"
                 android:visibility="gone"
-                android:textAlignment="textStart"
+                android:gravity="right"
                 style="@style/FormTextErrorField"/>
 
             <com.mobile.components.customfontviews.EditText
