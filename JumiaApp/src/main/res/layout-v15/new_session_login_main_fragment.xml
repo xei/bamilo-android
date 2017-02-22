@@ -26,7 +26,7 @@
         android:id="@+id/login_email" />
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/login_text_error_message"
-        style="@style/FormTextErrorField"
+        style="@style/FormTextErrorField17"
         android:visibility="gone"/>
     <com.mobile.components.customfontviews.EditText
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
         android:textSize="12sp" />
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/password_text_error_message"
-        style="@style/FormTextErrorField"
+        style="@style/FormTextErrorField17"
         android:visibility="gone"/>
     <Space
         android:layout_width="match_parent"

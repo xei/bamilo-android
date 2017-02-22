@@ -1,5 +1,6 @@
 package com.mobile.view.newfragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -91,7 +92,8 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
     private boolean isInCheckoutProcess;
 
-    private TextView mErrorMessage;
+    private TextView mLoginErrorMessage , mPasswordErrorMessage;
+    private TextView national_id_error_message,first_name_error_message,last_name_error_message,email_error_message,password_error_message,phone_error_message;
     TabLayout.Tab tabLogin;
     TabLayout.Tab tabRegister;
     //DROID-10
@@ -382,20 +384,34 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         // Get email
         mCustomerEmail = mEmailView.getText().toString();
         mCustomerPassword = mPasswordView.getText().toString();
+        mLoginErrorMessage.setVisibility(View.GONE);
+        mPasswordErrorMessage.setVisibility(View.GONE);
         // Trigger to check email
         if(TextUtils.isNotEmpty(mCustomerEmail) && TextUtils.isNotEmpty(mCustomerPassword) && Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
             triggerEmailCheck(mCustomerEmail);
-            mEmailView.setError("");
-            mPasswordView.setError("");
+            mLoginErrorMessage.setVisibility(View.GONE);
+            mPasswordErrorMessage.setVisibility(View.GONE);
+        /*    mEmailView.setError("");
+            mPasswordView.setError("");*/
+
             //mErrorMessage.setVisibility(View.GONE);
         } else {
-            if (!TextUtils.isNotEmpty(mCustomerEmail) || !Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches())
+
+            if (!TextUtils.isNotEmpty(mCustomerEmail)){
+                mLoginErrorMessage.setText(getResources().getString(R.string.error_ismandatory));
+                mLoginErrorMessage.setVisibility(View.VISIBLE);
+            }
+            else if( !Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches())
             {
-                mEmailView.setError(getString(R.string.error_invalid_email));
+                //mEmailView.setError(getString(R.string.error_invalid_email));
+                mLoginErrorMessage.setText(getResources().getString(R.string.error_invalid_email));
+                mLoginErrorMessage.setVisibility(View.VISIBLE);
             }
             if (!TextUtils.isNotEmpty(mCustomerPassword))
             {
-                mPasswordView.setError(getString(R.string.error_ismandatory));
+               // mPasswordView.setError(getString(R.string.error_ismandatory));
+                mPasswordErrorMessage.setText(getResources().getString(R.string.error_ismandatory));
+                mPasswordErrorMessage.setVisibility(View.VISIBLE);
             }
 
             //mErrorMessage.setText(getString(R.string.error_invalid_email));
@@ -449,7 +465,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaLogin, mGABeginRequestMillis, mCustomerEmail);
                 hideActivityProgress();
-
+                mLoginErrorMessage.setVisibility(View.GONE);
                 // Get value
                 boolean exist = ((CustomerEmailCheck) baseResponse.getMetadata().getData()).exist();
                 if (exist)
@@ -549,7 +565,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         switch (eventType) {
             case EMAIL_CHECK:
                 // Show warning
-                showWarningErrorMessage(getString(R.string.error_invalid_email));
+                mLoginErrorMessage.setText(getResources().getString(R.string.error_invalid_email));
+                mLoginErrorMessage.setVisibility(View.VISIBLE);
+                //showWarningErrorMessage(getString(R.string.error_invalid_email));
                 // Show content
                 showFragmentContentContainer();
                 break;
@@ -576,27 +594,40 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
     private void showValidateMessages(BaseResponse baseResponse) {
         Map map = baseResponse.getValidateMessages();
+        national_id_error_message.setVisibility(View.GONE);
+        first_name_error_message.setVisibility(View.GONE);
+        last_name_error_message.setVisibility(View.GONE);
+        email_error_message.setVisibility(View.GONE);
+        password_error_message.setVisibility(View.GONE);
+        phone_error_message.setVisibility(View.GONE);
+
         if (CollectionUtils.isNotEmpty(map)) {
             for (Object key : map.keySet()) {
                 switch (key.toString())
                 {
                     case "national_id":
-                        mNationalIdView.setError(map.get(key).toString());
+                        national_id_error_message.setVisibility(View.VISIBLE);
+                        national_id_error_message.setText("5151515"+map.get(key).toString());
                         break;
                     case "first_name":
-                        mFirstNameView.setError(map.get(key).toString());
+                        first_name_error_message.setVisibility(View.VISIBLE);
+                        first_name_error_message.setText(map.get(key).toString());
                         break;
                     case "last_name":
-                        mLastNameView.setError(map.get(key).toString());
+                        last_name_error_message.setVisibility(View.VISIBLE);
+                        last_name_error_message.setText(map.get(key).toString());
                         break;
                     case "email":
-                        mEmailRView.setError(map.get(key).toString());
+                        email_error_message.setVisibility(View.VISIBLE);
+                        email_error_message.setText(map.get(key).toString());
                         break;
                     case "password":
-                        mPasswordRView.setError(map.get(key).toString());
+                        password_error_message.setVisibility(View.VISIBLE);
+                        password_error_message.setText(map.get(key).toString());
                         break;
                     case "phone":
-                        mPhoneView.setError(map.get(key).toString());
+                        phone_error_message.setVisibility(View.VISIBLE);
+                        phone_error_message.setText(map.get(key).toString());
                         break;
                 }
 
@@ -605,6 +636,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     }
 
 
+    @SuppressLint("ValidFragment")
     class LoginFragment extends Fragment
     {
         @Nullable
@@ -621,7 +653,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
             mPasswordView = (EditText) view.findViewById(R.id.login_password);
             mEmailView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             // Get error message
-            mErrorMessage = (TextView) view.findViewById(R.id.login_text_error_message);
+            mLoginErrorMessage = (TextView) view.findViewById(R.id.login_text_error_message);
+            mPasswordErrorMessage = (TextView) view.findViewById(R.id.password_text_error_message);
+
             // Get continue button
             view.findViewById(R.id.login_button_continue).setOnClickListener(NewSessionLoginMainFragment.this);
             view.findViewById(R.id.login_email_button_password).setOnClickListener(NewSessionLoginMainFragment.this);
@@ -629,6 +663,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
     }
 
+    @SuppressLint("ValidFragment")
     class RegisterFragment extends Fragment
     {
         @Nullable
@@ -647,6 +682,13 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
             mEmailRView = (EditText) view.findViewById(R.id.email);
             mPasswordRView = (EditText) view.findViewById(R.id.password);
             mPhoneView = (EditText) view.findViewById(R.id.phone);
+            phone_error_message = (TextView) view.findViewById(R.id.phone_error_message);
+            national_id_error_message = (TextView) view.findViewById(R.id.national_id_error_message);
+            first_name_error_message = (TextView) view.findViewById(R.id.first_name_error_message);
+            last_name_error_message = (TextView) view.findViewById(R.id.last_name_error_message);
+            email_error_message = (TextView) view.findViewById(R.id.email_error_message);
+            password_error_message = (TextView) view.findViewById(R.id.password_error_message);
+            phone_error_message = (TextView) view.findViewById(R.id.phone_error_message);
             view.findViewById(R.id.register_button_create).setOnClickListener(NewSessionLoginMainFragment.this);
             mEmailRView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         }
