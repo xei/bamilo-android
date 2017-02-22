@@ -8,12 +8,21 @@
               >
 
     <com.mobile.components.AnimatedExpandableListView
+        android:id="@+id/nav_sub_categories_grid2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:groupIndicator="@null"
+        android:visibility="gone"
+        android:listSelector="@android:color/transparent" />
+
+    <pl.openrnd.multilevellistview.MultiLevelListView
         android:id="@+id/nav_sub_categories_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:groupIndicator="@null"
-        android:listSelector="@android:color/transparent" />
+        android:listSelector="@android:color/transparent"/>
 
     <com.mobile.components.customfontviews.Button
         android:id="@+id/partial_error_button"

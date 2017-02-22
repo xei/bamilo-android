@@ -23,6 +23,7 @@
         android:text=""
         android:hint="@string/email_address"
         android:ems="10"
+        android:layoutDirection="rtl"
         android:id="@+id/login_email" />
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/login_text_error_message"

@@ -389,7 +389,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
             mPasswordView.setError("");
             //mErrorMessage.setVisibility(View.GONE);
         } else {
-            if (!TextUtils.isNotEmpty(mCustomerEmail))
+            if (!TextUtils.isNotEmpty(mCustomerEmail) || !Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches())
             {
                 mEmailView.setError(getString(R.string.error_invalid_email));
             }
