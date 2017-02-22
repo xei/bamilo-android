@@ -212,6 +212,9 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
                                 // Goto edit address
                                 triggerDefaultAddressForm(addressId);
                             }
+                            else {
+                                showAddresses(mAddresses, -1);
+                            }
                             dialogLogout.dismiss();
                         }
                     });
