@@ -215,6 +215,7 @@
         android:layout_marginStart="@dimen/dimen_8dp"
         android:orientation="horizontal">
         <RelativeLayout
+            android:id="@+id/cart_item_minus_rl"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
@@ -248,6 +249,7 @@
             android:layout_height="match_parent"
             android:background="@color/cart_item_fav_border"/>
         <RelativeLayout
+            android:id="@+id/cart_item_plus_rl"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
