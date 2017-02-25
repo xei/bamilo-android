@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="36dp"
-    android:background="@color/white_transparent"
+    android:background="@color/white"
     >
 
     <com.mobile.components.customfontviews.TextView

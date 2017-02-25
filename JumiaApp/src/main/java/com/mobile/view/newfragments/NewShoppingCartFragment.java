@@ -198,6 +198,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 {
                     mTotalContainer.setVisibility(View.GONE);
                     mDiscountContainerShadow.setVisibility(View.GONE);
+                   
                 }
             }
             else

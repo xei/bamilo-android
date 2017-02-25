@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="4dp"
-    android:background="@color/transparent"
     android:layout_margin="5dp">
 
 <LinearLayout
@@ -14,7 +13,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/transparent"
     >
 
 

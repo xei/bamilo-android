@@ -102,7 +102,7 @@
     <color name="cart_item_fav_border">#E8E8E8</color>
     <color name="cart_item_sep">#F1F1F1</color>
     <color name="payment_item_image_border">#d0d0d0</color>
-    <color name="white_transparent">#ffffff</color>
+    <color name="white_transparent">#80ffffff</color>
     <color name="cart_item_total">#D9D9D9</color>
 
 </resources>
