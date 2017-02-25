@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.Toast;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
@@ -43,7 +44,9 @@ public class CardCheckOutAdapter  extends RecyclerView.Adapter<CardCheckOutAdapt
         holder.price.setText(CurrencyFormatter.formatCurrency(carditem.getPrice()));
         holder.count.setText("تعداد : "+carditem.getCount());
         holder.product.setText(carditem.getProduct());
-        RocketImageLoader.instance.loadImage(carditem.getImageUrl(), holder.img, null, R.drawable.no_image_small);
+
+        RocketImageLoader.instance.loadImage(carditem.getImageUrl().replace("-cart.jpg","-catalog_grid_3.jpg"), holder.img, null, R.drawable.no_image_small);
+
     }
 
     @Override
