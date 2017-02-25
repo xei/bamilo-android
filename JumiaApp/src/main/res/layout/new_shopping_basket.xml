@@ -4,6 +4,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F0F0F0"
+    android:animateLayoutChanges="true"
 
         >
     <ScrollView
@@ -36,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/cart_discout_shadow_height"
 
                     />
         </LinearLayout>
@@ -47,6 +48,7 @@
           android:layout_width="match_parent"
           android:layout_height="@dimen/checkout_totalbar_height"
             android:layout_above="@+id/checkout_button"
+        android:visibility="gone"
              />
 
     <com.mobile.components.customfontviews.TextView

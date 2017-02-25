@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -186,6 +187,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
+            mTotalContainer.setVisibility(View.VISIBLE);
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 mDiscountContainerShadow.setVisibility(View.VISIBLE);
 
@@ -194,7 +196,9 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 
                 if (lastVisiblePosition >= mCartItemsCount)
                 {
+                    mTotalContainer.setVisibility(View.GONE);
                     mDiscountContainerShadow.setVisibility(View.GONE);
+                   
                 }
             }
             else
@@ -202,6 +206,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 mDiscountContainerShadow.setVisibility(View.GONE);
             }
         }
+
+
     };
 
     @Override
@@ -311,15 +317,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         mDiscountContainer = (ViewGroup) view.findViewById(R.id.discount_container);
         mDiscountContainerShadow = (ViewGroup) view.findViewById(R.id.discount_container_shadow);
 
-/* DROID-63
-        // Set nested scroll and voucher view
-        mVoucherView = (EditText) view.findViewById(R.id.voucher_name);
-        NestedScrollView mNestedScroll = (NestedScrollView) view.findViewById(R.id.shoppingcart_nested_scroll);
-        UIUtils.scrollToViewByClick(mNestedScroll, mVoucherView);
-        // Set voucher button
-        mCouponButton = (TextView) view.findViewById(R.id.voucher_btn);
-        mCouponButton.setOnClickListener(this);
-*/
+
         // Get free shipping
         mFreeShippingView = view.findViewById(R.id.cart_total_text_shipping);
     }
@@ -662,6 +660,14 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         setTotal(cart);
         setDiscount(cart);
 
+        LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());
+        int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
+
+        if (lastVisiblePosition >= mCartItemsCount)
+        {
+            mTotalContainer.setVisibility(View.GONE);
+            mDiscountContainerShadow.setVisibility(View.GONE);
+        }
 
 /*
         // Get views
@@ -741,7 +747,9 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());
         int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
 
-        mCartRecycler.addOnScrollListener(scrollChanged);
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            mCartRecycler.addOnScrollListener(scrollChanged);
+        }
 
     }
 

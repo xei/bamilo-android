@@ -127,7 +127,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         if (mIsCheckout) {
             holder.buttons.setVisibility(View.GONE);
         }
-            holder.checkBox.setVisibility(View.VISIBLE);
+            //holder.checkBox.setVisibility(View.VISIBLE);
             holder.checkBox.setChecked(addressSelection.get(position).isSelected());
             holder.checkBox.setTag(R.string.address_item_key_1, new Integer(position));
             holder.checkBox.setTag(R.string.address_item_key_2, address.getId());

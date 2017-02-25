@@ -215,7 +215,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        /*if (isOnStoppingProcess) {
+        if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
@@ -223,12 +223,14 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
-        }*/
+        }
+        hideActivityProgress();
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         switch (eventType) {
             case GET_MULTI_STEP_ADDRESSES:
+
                 // Show retry
                 super.showFragmentErrorRetry();
                 break;

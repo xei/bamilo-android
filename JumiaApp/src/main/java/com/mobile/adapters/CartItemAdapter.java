@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -50,6 +51,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public TextView cart_item_option1_label, cart_item_option2_label, cart_fav_label;
         public ImageView cart_item_remove, cart_item_plus, cart_item_minus, cart_fav_icon, cart_item_image;
         public CardView root;
+        public RelativeLayout cart_item_minus_rl, cart_item_plus_rl, cart_item_remove_rl;
 
 
         public ItemViewHolder(View view) {
@@ -65,10 +67,13 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cart_item_count = (TextView) view.findViewById(R.id.cart_item_count);
             cart_fav_label = (TextView) view.findViewById(R.id.cart_fav_label);
             cart_item_remove = (ImageView) view.findViewById(R.id.cart_item_remove);
+            cart_item_remove_rl = (RelativeLayout) view.findViewById(R.id.cart_item_remove_rl);
             cart_item_plus = (ImageView) view.findViewById(R.id.cart_item_plus);
             cart_item_minus = (ImageView) view.findViewById(R.id.cart_item_minus);
             cart_fav_icon = (ImageView) view.findViewById(R.id.cart_fav_icon);
             cart_item_image = (ImageView) view.findViewById(R.id.cart_item_image);
+            cart_item_plus_rl = (RelativeLayout) view.findViewById(R.id.cart_item_plus_rl);
+            cart_item_minus_rl = (RelativeLayout) view.findViewById(R.id.cart_item_minus_rl);
 
             root = (CardView)view.findViewById(R.id.card_view);
         }
@@ -149,16 +154,28 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             vh.cart_item_count.setText(""+item.getQuantity());
             vh.cart_item_remove.setTag(R.id.item_position, position);
             vh.cart_item_remove.setOnClickListener(mOnRemoveItemClickListener);
+            vh.cart_item_remove_rl.setTag(R.id.item_position, position);
+            vh.cart_item_remove_rl.setOnClickListener(mOnRemoveItemClickListener);
             vh.cart_item_plus.setTag(R.id.item_max, item.getMaxQuantity());
             vh.cart_item_plus.setTag(R.id.item_position, position);
             vh.cart_item_plus.setTag(R.id.item_change, 1);
             vh.cart_item_plus.setTag(R.id.item_quantity, item.getQuantity());
             vh.cart_item_plus.setOnClickListener(mOnAddQuantityClickListener);
+            vh.cart_item_plus_rl.setTag(R.id.item_max, item.getMaxQuantity());
+            vh.cart_item_plus_rl.setTag(R.id.item_position, position);
+            vh.cart_item_plus_rl.setTag(R.id.item_change, 1);
+            vh.cart_item_plus_rl.setTag(R.id.item_quantity, item.getQuantity());
+            vh.cart_item_plus_rl.setOnClickListener(mOnAddQuantityClickListener);
             vh.cart_item_minus.setTag(R.id.item_max, item.getMaxQuantity());
             vh.cart_item_minus.setTag(R.id.item_position, position);
             vh.cart_item_minus.setTag(R.id.item_change, -1);
             vh.cart_item_minus.setTag(R.id.item_quantity, item.getQuantity());
             vh.cart_item_minus.setOnClickListener(mOnAddQuantityClickListener);
+            vh.cart_item_minus_rl.setTag(R.id.item_max, item.getMaxQuantity());
+            vh.cart_item_minus_rl.setTag(R.id.item_position, position);
+            vh.cart_item_minus_rl.setTag(R.id.item_change, -1);
+            vh.cart_item_minus_rl.setTag(R.id.item_quantity, item.getQuantity());
+            vh.cart_item_minus_rl.setOnClickListener(mOnAddQuantityClickListener);
             vh.cart_fav_icon.setSelected(item.isWishList());
             vh.cart_fav_icon.setTag(R.id.sku, item.getSku());
             vh.cart_fav_icon.setTag(R.id.cart_fav_icon, vh.cart_fav_icon);
@@ -212,16 +229,25 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             vh.root.addView(discountView);
 
 
-            if (mCart.getPriceRules() == null || mCart.getPriceRules().size()==0) return;
-            for (Map.Entry<String, String> entry : mCart.getPriceRules().entrySet())
+            if (!(mCart.getPriceRules() == null || mCart.getPriceRules().size()==0))
             {
-                discountView = LayoutInflater.from(mContext).inflate(R.layout.new_shopping_basket_discount_element, vh.root, false);
-                label = (TextView) discountView.findViewById(R.id.discount_label);
-                value = (TextView) discountView.findViewById(R.id.discount_amount);
-                label.setText(entry.getKey());
-                value.setText(CurrencyFormatter.formatCurrency(entry.getValue()));
-                vh.root.addView(discountView);
+                for (Map.Entry<String, String> entry : mCart.getPriceRules().entrySet()) {
+                    discountView = LayoutInflater.from(mContext).inflate(R.layout.new_shopping_basket_discount_element, vh.root, false);
+                    label = (TextView) discountView.findViewById(R.id.discount_label);
+                    value = (TextView) discountView.findViewById(R.id.discount_amount);
+                    label.setText(entry.getKey());
+                    value.setText(CurrencyFormatter.formatCurrency(entry.getValue()));
+                    vh.root.addView(discountView);
+                }
             }
+
+            View finalView = LayoutInflater.from(mContext).inflate(R.layout.new_shopping_basket_total_element_adapter, vh.root, false);
+            TextView totalValue = (TextView) finalView.findViewById(R.id.total_value);
+            TextView quantityValue = (TextView) finalView.findViewById(R.id.total_quantity);
+            // Set views
+            totalValue.setText(CurrencyFormatter.formatCurrency(mCart.getTotal()));
+            quantityValue.setText(TextUtils.getResourceString(mContext, R.string.cart_total_quantity, new Integer[] {mCart.getCartCount()}));
+            vh.root.addView(finalView);
 
         }
     }
