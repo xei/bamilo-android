@@ -33,5 +33,6 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/warning_text_size"
         android:maxLines="2"
+        android:textDirection="rtl"
         android:ellipsize="end"/>
 </RelativeLayout>

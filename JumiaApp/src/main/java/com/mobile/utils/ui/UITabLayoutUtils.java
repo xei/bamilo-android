@@ -1,6 +1,7 @@
 package com.mobile.utils.ui;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -147,7 +148,6 @@ public class UITabLayoutUtils {
                 action != NavigationAction.HOME &&
                 action != NavigationAction.CATALOG &&
                 action != NavigationAction.CAMPAIGN &&
-                //action != NavigationAction.CHECKOUT &&
                 view != null) {
             TypedValue tv = new TypedValue();
             Context context = view.getContext();
@@ -157,6 +157,18 @@ public class UITabLayoutUtils {
                 params.bottomMargin += actionBarHeight;
             }
         }
+
+        if (action == NavigationAction.BASKET && android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1)
+        {
+            TypedValue tv = new TypedValue();
+            Context context = view.getContext();
+            if (context.getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
+                int actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,context.getResources().getDisplayMetrics());
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                params.bottomMargin += actionBarHeight;
+            }
+        }
+
     }
 
     public static void updateTabCartInfo(TabLayout mTabLayout) {

@@ -82,19 +82,25 @@
             android:text="Brand"
             />
 
-        <ImageView
-            android:id="@+id/cart_item_remove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:id="@+id/cart_item_remove_rl"
+
+            android:layout_width="@dimen/dimen_25dp"
+            android:layout_height="@dimen/dimen_25dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/dimen_8dp"
             android:layout_marginEnd="@dimen/dimen_8dp"
-            android:layout_marginRight="@dimen/dimen_8dp"
-            android:src="@drawable/cart_item_remove"
-            />
-
+            android:layout_marginRight="@dimen/dimen_8dp">
+            <ImageView
+                android:id="@+id/cart_item_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/cart_item_remove"
+                />
+        </RelativeLayout>
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/cart_item_name"
             android:layout_width="wrap_content"
@@ -278,7 +284,7 @@
             android:layout_marginStart="@dimen/dimen_8dp"
             android:gravity="end|right"
             android:textSize="@dimen/cart_brand_font_size"
-            android:textColor="@color/cart_brand"
+            android:textColor="@color/cart_discount"
             android:text="@string/cart_item_price"
 
             />
@@ -291,13 +297,17 @@
             android:layout_alignTop="@+id/cart_item_price_label"
             android:layout_toRightOf="@+id/cart_item_price_label"
             android:layout_toEndOf="@+id/cart_item_price_label"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dimen_32dp"
+            android:layout_marginEnd="@dimen/dimen_32dp"
             android:layout_marginLeft="@dimen/dimen_16dp"
             android:layout_marginStart="@dimen/dimen_16dp"
             android:textSize="@dimen/cart_price_font_size"
-            android:textColor="@color/cart_name"
+            android:textColor="@color/cart_discount"
             android:text="555,555,555"
             android:layout_alignBaseline="@+id/cart_item_count_ll"
-            android:gravity="center"
+            android:gravity="end|right"
 
             />
 
@@ -309,9 +319,13 @@
             android:layout_toRightOf="@+id/cart_item_price_label"
             android:layout_toEndOf="@+id/cart_item_price_label"
             android:layout_marginTop="@dimen/dimen_5dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dimen_32dp"
+            android:layout_marginEnd="@dimen/dimen_32dp"
             android:layout_alignLeft="@+id/cart_item_price_value"
             android:layout_alignRight="@+id/cart_item_price_value"
-            android:gravity="center"
+            android:gravity="end|right"
             android:textSize="@dimen/cart_brand_font_size"
             android:textColor="@color/cart_brand"
             android:text="555,555,555"

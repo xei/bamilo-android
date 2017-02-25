@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/cart_discout_shadow_height"
 
                     />
         </LinearLayout>
@@ -47,8 +47,9 @@
           layout="@layout/new_shopping_basket_total_element"
           android:layout_width="match_parent"
           android:layout_height="@dimen/checkout_totalbar_height"
-            android:layout_above="@+id/checkout_button"
-             />
+          android:layout_above="@+id/checkout_button"
+        android:visibility="gone"
+          />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_button"

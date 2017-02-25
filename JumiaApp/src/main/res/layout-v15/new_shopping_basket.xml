@@ -1,67 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0F0"
-
+    android:layout_marginBottom="50dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
     >
-<!--    <ScrollView
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
+        >
 
-        >-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/shoppingcart_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_above="@+id/discount_container_shadow"
-                />
-
-
-            <LinearLayout
-                android:id="@+id/discount_container_shadow"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/new_shadow_gradiant"
-                android:layout_above="@+id/total_container">
-                <LinearLayout
-                    android:id="@+id/discount_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="8dp"
-
-                    />
-            </LinearLayout>
-
-            <include
-                android:id="@+id/total_container"
-                layout="@layout/new_shopping_basket_total_element"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/checkout_totalbar_height"
-                android:layout_above="@+id/checkout_button"
+                android:layout_alignParentTop="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_anchor="@+id/app_bar"
                 />
 
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/checkout_button"
-                android:layout_width="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_height="80dp"
-                android:textSize="@dimen/checkout_footer_font_size"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:background="@color/color_accent"
-                android:text="@string/basket_confirm_button"/>
-        </RelativeLayout>
-    <!--</ScrollView>-->
 
+    <LinearLayout
+        android:id="@+id/discount_container_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/new_shadow_gradiant"
+        android:layout_below="@+id/shoppingcart_list">
+        <LinearLayout
+            android:id="@+id/discount_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/cart_discout_shadow_height"
+
+            />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/total_container"
+        layout="@layout/new_shopping_basket_total_element"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/checkout_totalbar_height"
+        android:layout_below="@+id/discount_container_shadow"
+        android:visibility="gone"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/checkout_button"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/total_container"
+        android:layout_height="57dp"
+        android:textSize="@dimen/checkout_footer_font_size"
+        android:textColor="@color/white"
+        android:paddingTop="20dp"
+        android:gravity="center|top"
+        app:layout_anchor="@+id/app_bar"
+        android:layout_marginBottom="57dp"
+        app:layout_anchorGravity="bottom|right|end"
+        android:background="@color/color_accent"
+        android:text="@string/basket_confirm_button"/>
 </RelativeLayout>
 
+</ScrollView>

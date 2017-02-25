@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="36dp"
-    android:background="@color/white"
-    android:elevation="5dp"
+    android:background="@color/white_transparent"
     >
 
     <com.mobile.components.customfontviews.TextView
@@ -17,6 +16,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginStart="@dimen/dimen_16dp"
         android:layout_marginLeft="@dimen/dimen_16dp"
+        android:textSize="@dimen/cart_price_font_size"
         android:text="@string/cart_total_quantity"/>
 
     <com.mobile.components.customfontviews.TextView
@@ -29,7 +29,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginEnd="@dimen/dimen_32dp"
         android:layout_marginRight="@dimen/dimen_32dp"
-        android:text="1000"/>
+        android:textSize="@dimen/cart_price_font_size"
+        />
 
 
 
