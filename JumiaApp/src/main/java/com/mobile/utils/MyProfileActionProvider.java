@@ -246,7 +246,7 @@ public class MyProfileActionProvider extends ActionProvider {
                     break;
                 case NavigationAction.ABOUT:
                     title.setText(R.string.about_us_label);
-                    icon.setImageResource(R.drawable.ico_dropdown_order);
+                    icon.setImageResource(R.drawable.ico_dropdown_contact_us);
 
                     break;
                 default:

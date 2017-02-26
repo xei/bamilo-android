@@ -6,6 +6,7 @@
     android:layout_marginLeft="@dimen/dimen_16dp"
     android:layout_marginRight="@dimen/dimen_16dp"
     android:layout_marginStart="@dimen/dimen_16dp"
+    android:paddingTop="@dimen/dimen_10dp"
     android:layout_marginEnd="@dimen/dimen_16dp">
 
 
@@ -16,9 +17,11 @@
             android:layout_width="65dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
+            style="@style/myImageView"
             />
 
         <com.mobile.components.customfontviews.TextView
+            android:padding="5dp"
             android:text="product name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
