@@ -1368,7 +1368,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         break;
                     case NavigationAction.FAQ:
                         // FAQ
-                        @TargetLink.Type String link = TargetLink.SHOP_IN_SHOP.concat("::help");
+                        @TargetLink.Type String link = TargetLink.SHOP_IN_SHOP.concat("::help-android");
                         new TargetLink(getWeakBaseActivity(), link)
                                 .addTitle(R.string.faq)
                                 .setOrigin(TeaserGroupType.MAIN_TEASERS)
