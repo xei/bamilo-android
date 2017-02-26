@@ -64,7 +64,7 @@
                     android:id="@+id/textView3"
                     android:padding="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:textColor="@color/black"
+                    android:textColor="#737373"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -131,7 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="#737373"
                 android:id="@+id/checkout_order_count_title"
                 android:textStyle="normal|bold"
                 android:text="مجموع کالاها" />
@@ -140,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="#737373"
                 android:textAlignment="textEnd"
                 android:id="@+id/checkout_order_price"
                 android:textStyle="normal|bold" />
@@ -158,13 +158,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="#737373"
                 android:text="مجموع تخفیف ها" />
             <com.mobile.components.customfontviews.TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="#737373"
                 android:id="@+id/checkout_order_all_discount"
                 android:textAlignment="textEnd"
                 android:textSize="13sp" />
@@ -185,13 +185,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="#737373"
                 android:text="کد تخفیف" />
             <com.mobile.components.customfontviews.TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="#737373"
                 android:id="@+id/checkout_order_voucher_price"
                 android:textAlignment="textEnd"
                 android:textSize="13sp" />
@@ -210,13 +210,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="#737373"
                 android:text="هزینه ارسال" />
             <com.mobile.components.customfontviews.TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="#737373"
                 android:id="@+id/checkout_order_ship_price"
                 android:textAlignment="textEnd"
                 android:textSize="13sp" />
@@ -242,7 +242,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="#737373"
                 android:text="هزینه کل خرید"
                 android:textStyle="normal|bold"
                 android:id="@+id/all_price_total_title" />
@@ -251,7 +251,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="#737373"
                 android:text="5555555555"
                 android:textAlignment="textEnd"
                 android:id="@+id/checkout_order_all_price"
@@ -345,7 +345,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:id="@+id/checkout_user_reciver"
-                android:textColor="@color/abc_input_method_navigation_guard"
+                 android:textColor="#505050"
                 android:textStyle="normal|bold" />
              <com.mobile.components.customfontviews.TextView
                  android:text="آدرس"
@@ -356,8 +356,10 @@
                  android:layout_alignParentStart="true"
                  android:paddingTop="@dimen/dimen_5dp"
                  android:paddingBottom="@dimen/dimen_5dp"
+                 android:paddingLeft="@dimen/dimen_16dp"
+                 android:paddingRight="@dimen/dimen_16dp"
                  android:id="@+id/checkout_address"
-                 android:textColor="@color/abc_input_method_navigation_guard" />
+                 android:textColor="#737373" />
              <com.mobile.components.customfontviews.TextView
                  android:text="تلفن"
                  android:layout_width="wrap_content"
@@ -370,7 +372,7 @@
                  android:paddingLeft="@dimen/dimen_16dp"
                  android:paddingRight="@dimen/dimen_16dp"
                  android:id="@+id/checkout_telephone"
-                 android:textColor="@color/abc_input_method_navigation_guard" />
+                 android:textColor="#737373" />
 
         </LinearLayout>
 
@@ -390,5 +392,5 @@
         android:layout_height="57dp"
         android:textSize="16sp"
         android:id="@+id/checkout_confirmation_btn"
-        android:visibility="gone" />
+        android:visibility="visible" />
 </LinearLayout>
