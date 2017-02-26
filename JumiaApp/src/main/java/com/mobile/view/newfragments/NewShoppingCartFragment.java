@@ -188,24 +188,32 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             mTotalContainer.setVisibility(View.VISIBLE);
+            SetAnimation(mTotalContainer, View.VISIBLE);
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 mDiscountContainerShadow.setVisibility(View.VISIBLE);
                 mDiscountContainer.setVisibility(View.VISIBLE);
+                SetAnimation(mDiscountContainer, View.VISIBLE);
+                SetAnimation(mDiscountContainerShadow, View.VISIBLE);
                 LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());
                 int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
 
                 if (lastVisiblePosition >= mCartItemsCount)
                 {
-                    mTotalContainer.setVisibility(View.GONE);
-                    mDiscountContainerShadow.setVisibility(View.GONE);
-                    mDiscountContainer.setVisibility(View.GONE);
-
+                    //mTotalContainer.setVisibility(View.GONE);
+                    //mDiscountContainer.setVisibility(View.GONE);
+                    //mDiscountContainerShadow.setVisibility(View.GONE);
+                    SetAnimation(mTotalContainer, View.GONE);
+                    SetAnimation(mDiscountContainer, View.GONE);
+                    SetAnimation(mDiscountContainerShadow, View.GONE);
                 }
             }
             else
             {
-                mDiscountContainer.setVisibility(View.GONE);
-                mDiscountContainerShadow.setVisibility(View.GONE);
+                //mDiscountContainer.setVisibility(View.GONE);
+                //mDiscountContainerShadow.setVisibility(View.GONE);
+
+                SetAnimation(mDiscountContainer, View.GONE);
+                SetAnimation(mDiscountContainerShadow, View.GONE);
             }
         }
 
@@ -333,7 +341,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
         TextView quantityValue = (TextView) mTotalContainer.findViewById(R.id.total_quantity);
         // Set views
-        totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
+        totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()-cart.getShippingValue()));
         quantityValue.setText(TextUtils.getResourceString(getBaseActivity(), R.string.cart_total_quantity, new Integer[] {cart.getCartCount()}));
 
 
@@ -667,9 +675,9 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 
         if (lastVisiblePosition >= mCartItemsCount)
         {
-            mTotalContainer.setVisibility(View.GONE);
-            mDiscountContainer.setVisibility(View.GONE);
-            mDiscountContainerShadow.setVisibility(View.GONE);
+            //mTotalContainer.setVisibility(View.GONE);
+            //mDiscountContainer.setVisibility(View.GONE);
+            //mDiscountContainerShadow.setVisibility(View.GONE);
             SetAnimation(mTotalContainer, View.GONE);
             SetAnimation(mDiscountContainer, View.GONE);
             SetAnimation(mDiscountContainerShadow, View.GONE);
@@ -697,7 +705,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         TextView label = (TextView) discountView.findViewById(R.id.discount_label);
         TextView value = (TextView) discountView.findViewById(R.id.discount_amount);
         label.setText(R.string.cart_total_discount);
-        value.setText(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted()-cart.getTotal()));
+        value.setText(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted()-cart.getTotal()+cart.getShippingValue()));
         mDiscountContainer.addView(discountView);
 
         LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());
@@ -973,11 +981,11 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     {
         if (visibility == View.GONE)
         {
-            view.animate().translationY(view.getHeight()).setDuration(500);;
+            view.animate().alpha(0.0f).setDuration(400);;
         }
         else
         {
-            view.animate().translationY(0).setDuration(500);;
+            view.animate().alpha(1.0f).setDuration(400);;
         }
     }
 

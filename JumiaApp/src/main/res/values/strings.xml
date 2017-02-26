@@ -477,5 +477,6 @@
     <string name="email_password_invalid">email/password is not correct</string>
     <string name="address_next_button">Continue</string>
     <string name="payment_next_button">Continue and Payment</string>
+    <string name="coupon_label">Coupon</string>
 
 </resources>

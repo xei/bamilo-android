@@ -465,5 +465,6 @@
     <string name="phone">تلفن</string>
     <string name="error_isrequired">تکمیل این گزینه الزامی می باشد</string>
     <string name="email_password_invalid">ایمیل/رمز عبور نادرست است</string>
+    <string name="coupon_label">کد تحفیف</string>
 
 </resources>
