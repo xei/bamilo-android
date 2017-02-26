@@ -29,7 +29,7 @@
             android:layout_toEndOf="@+id/checkout_product_image"
             android:id="@+id/checkout_product"
             android:layout_margin="0dp"
-            android:textColor="@color/abc_input_method_navigation_guard" />
+            android:textColor="#737373" />
 
         <com.mobile.components.customfontviews.TextView
             android:text="brand"
@@ -44,7 +44,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="@dimen/dimen_5dp"
             android:id="@+id/checkout_brand"
-            android:textColor="@color/abc_input_method_navigation_guard" />
+            android:textColor="#929292"/>
 
         <com.mobile.components.customfontviews.TextView
             android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:id="@+id/checkout_price"
-            android:textColor="@color/abc_input_method_navigation_guard"
+            android:textColor="#737373"
             android:layout_marginEnd="0dp"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
@@ -72,7 +72,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="5dp"
             android:id="@+id/checkout_count"
-            android:textColor="@color/abc_input_method_navigation_guard"
+            android:textColor="#737373"
             android:layout_below="@+id/checkout_product"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"

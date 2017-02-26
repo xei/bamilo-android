@@ -111,8 +111,6 @@ android {
         }
     }
 
-
-
         productFlavors {
         bamilo {
             applicationId "com.bamilo.android"
@@ -121,7 +119,6 @@ android {
             signingConfig signingConfigs.bamiloSigning
             resConfigs "fa"
         }
-
     }
 
     lintOptions {
