@@ -173,7 +173,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         step1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onCheckoutCircleClick(1);
+                onCheckoutCircleClick(3,1);
             }
         });
 
@@ -181,7 +181,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         step2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onCheckoutCircleClick(2);
+                onCheckoutCircleClick(3, 2);
             }
         });
 

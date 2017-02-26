@@ -47,12 +47,14 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         public TextView name, text;
         public RadioButton checkBox;
         public ImageView method_logo;
+        public RelativeLayout payment_logo;
 
         public MethodViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.checkout_payment_item_name);
             checkBox = (RadioButton) view.findViewById(R.id.checkout_payment_item_radio_btn);
             method_logo = (ImageView) view.findViewById(R.id.method_logo);
+            payment_logo = (RelativeLayout) view.findViewById(R.id.payment_logo);
             text = (TextView) view.findViewById(R.id.checkout_payment_item_text);
         }
     }
@@ -89,17 +91,33 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
     @Override
     public void onBindViewHolder(final MethodViewHolder holder, int position) {
         PaymentMethod method = methodsList.get(position);
-        holder.name.setText(method.getTitle());
+        String method_name = method.getTitle();
+        holder.name.setText(method_name);
         holder.text.setText(method.getText());
 
-        String imageUrl = method.getImageUrl();
+        /*String imageUrl = method.getImageUrl();
         Print.d("IMAGEURL", imageUrl);
         if (TextUtils.isNotEmpty(imageUrl)) {
             RocketImageLoader.instance.loadImage(imageUrl, holder.method_logo, null, 0);
         } else {
             holder.method_logo.setVisibility(View.GONE);
         }
+*/
 
+        if (method_name.contains("پارسیان"))
+        {
+            holder.payment_logo.setVisibility(View.VISIBLE);
+            holder.method_logo.setImageResource(R.drawable.parsian_logo);
+        }
+        else if (method_name.contains("سامان"))
+        {
+            holder.payment_logo.setVisibility(View.VISIBLE);
+            holder.method_logo.setImageResource(R.drawable.saman_logo);
+        }
+        else
+        {
+            holder.payment_logo.setVisibility(View.GONE);
+        }
 
         holder.checkBox.setVisibility(View.VISIBLE);
         holder.checkBox.setChecked(methodSelection.get(position).isSelected());

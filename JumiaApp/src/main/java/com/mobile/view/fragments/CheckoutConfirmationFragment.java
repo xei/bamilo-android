@@ -200,7 +200,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         step1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onCheckoutCircleClick(1);
+                onCheckoutCircleClick(2,1);
             }
         });
 

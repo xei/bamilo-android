@@ -317,18 +317,22 @@ public abstract class NewBaseFragment extends BaseFragment {
         return result;
     }
 
-    public void onCheckoutCircleClick(int step)
+    public void onCheckoutCircleClick(int currentstep, int nextstep)
     {
-        switch (step)
+        for(int s=0;s<currentstep-nextstep;s++) {
+            getBaseActivity().onBackPressed();
+        }
+        //getBaseActivity().onBackPressed();
+        /*switch (nextstep)
         {
             case 1:
-                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, FragmentController.NO_BUNDLE, false);
                 break;
             case 2:
-                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_CONFIRMATION, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_CONFIRMATION, FragmentController.NO_BUNDLE, false);
                 break;
 
-        }
+        }*/
 
     }
 }

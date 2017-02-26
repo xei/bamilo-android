@@ -161,6 +161,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             vh.cart_item_plus.setTag(R.id.item_change, 1);
             vh.cart_item_plus.setTag(R.id.item_quantity, item.getQuantity());
             vh.cart_item_plus.setOnClickListener(mOnAddQuantityClickListener);
+            vh.cart_item_plus.setImageResource(item.getQuantity() == item.getMaxQuantity()? R.drawable.ic_categories_plus: R.drawable.ic_categories_plus_n);
             vh.cart_item_plus_rl.setTag(R.id.item_max, item.getMaxQuantity());
             vh.cart_item_plus_rl.setTag(R.id.item_position, position);
             vh.cart_item_plus_rl.setTag(R.id.item_change, 1);
@@ -171,6 +172,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             vh.cart_item_minus.setTag(R.id.item_change, -1);
             vh.cart_item_minus.setTag(R.id.item_quantity, item.getQuantity());
             vh.cart_item_minus.setOnClickListener(mOnAddQuantityClickListener);
+            vh.cart_item_minus.setImageResource(item.getQuantity() == 1 ? R.drawable.ic_categories_minus: R.drawable.ic_categories_minus_n);
             vh.cart_item_minus_rl.setTag(R.id.item_max, item.getMaxQuantity());
             vh.cart_item_minus_rl.setTag(R.id.item_position, position);
             vh.cart_item_minus_rl.setTag(R.id.item_change, -1);

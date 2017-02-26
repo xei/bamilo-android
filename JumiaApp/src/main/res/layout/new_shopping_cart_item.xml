@@ -232,7 +232,7 @@
             android:layout_height="wrap_content"
 
             android:textColor="@color/cart_brand"
-            android:background="@drawable/ic_categories_minus"
+            android:background="@drawable/ic_categories_minus_n"
             />
         </RelativeLayout>
         <View
@@ -265,7 +265,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/cart_brand"
-                android:background="@drawable/ic_categories_plus"
+                android:background="@drawable/ic_categories_plus_n"
                 />
         </RelativeLayout>
 

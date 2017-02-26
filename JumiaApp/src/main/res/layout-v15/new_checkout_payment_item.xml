@@ -44,7 +44,7 @@
             android:paddingBottom="10dp"
             android:paddingRight="25dp"
             android:paddingLeft="25dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="40dp"
             android:layout_marginLeft="40dp"
@@ -72,6 +72,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/dimen_16dp"
         android:layout_marginRight="@dimen/dimen_16dp"
+        android:layout_marginTop="10dp"
         android:text="text"
         android:visibility="gone"
         />
