@@ -31,7 +31,8 @@
             android:layout_height="6dp"
             android:orientation="vertical"
             android:background="@drawable/new_shadow_gradiant"
-            android:layout_above="@+id/discount_container">
+            android:layout_below="@+id/shoppingcart_list"
+            android:visibility="gone">
 
         </LinearLayout>
 
@@ -41,7 +42,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white_transparent"
             android:orientation="vertical"
-            android:layout_above="@+id/total_container"
+            android:visibility="gone"
             />
 
     <include
