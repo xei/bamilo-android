@@ -126,16 +126,16 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
         if (mIsCheckout) {
             holder.buttons.setVisibility(View.GONE);
+            holder.checkBox.setVisibility(View.VISIBLE);
         }
-            //holder.checkBox.setVisibility(View.VISIBLE);
             holder.checkBox.setChecked(addressSelection.get(position).isSelected());
             holder.checkBox.setTag(R.string.address_item_key_1, new Integer(position));
             holder.checkBox.setTag(R.string.address_item_key_2, address.getId());
 
             //for default check in first item
-            if (position == 0 && addressSelection.get(0).isSelected() && holder.checkBox.isChecked()) {
+            if (/*position == 0 && addressSelection.get(0).isSelected() &&*/ holder.checkBox.isChecked()) {
                 lastChecked = holder.checkBox;
-                lastCheckedPos = 0;
+                lastCheckedPos = position;
             }
 
             holder.checkBox.setOnClickListener(new View.OnClickListener() {

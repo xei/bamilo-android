@@ -18,6 +18,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
@@ -100,7 +101,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     private long mGABeginRequestMillis;
     private LoginFragment loginFragment;
     private RegisterFragment registerFragment;
-
+    private LinearLayout loginRoot;
     /**
      * Empty constructor
      */
@@ -160,7 +161,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
 
-
+        loginRoot = (LinearLayout) view.findViewById(R.id.login_root);
 
         loginFragment = new LoginFragment();
         registerFragment = new RegisterFragment();
@@ -230,6 +231,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
         // Case auto login
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+            loginRoot.setVisibility(View.GONE);
             triggerAutoLogin();
         }
         // Case show content
@@ -328,6 +330,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
             super.onClick(view);
         }
     }
+
 
     private void onClickForgotPassword() {
         getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -464,7 +467,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
             case EMAIL_CHECK:
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaLogin, mGABeginRequestMillis, mCustomerEmail);
-                hideActivityProgress();
                 mLoginErrorMessage.setVisibility(View.GONE);
                 // Get value
                 boolean exist = ((CustomerEmailCheck) baseResponse.getMetadata().getData()).exist();
@@ -478,13 +480,14 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                 }
                 else
                 {
+                    hideActivityProgress();
+
                     getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.email_password_invalid));
 
                 }
 
                 break;
             case AUTO_LOGIN_EVENT:
-                hideActivityProgress();
                 // Get Customer
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
@@ -510,6 +513,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                 }
                 // Case unknown checkout step
                 else {
+                    hideActivityProgress();
                     // Show layout to call to order
                     showFragmentUnknownCheckoutStepError();
                 }

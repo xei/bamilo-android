@@ -77,7 +77,15 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         params.setScrollFlags(0);*/
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if ((savedInstanceState != null)
+                && (savedInstanceState.getInt("mSelectedAddress", -1) != -1)) {
+            mSelectedAddress = savedInstanceState.getInt("mSelectedAddress", -1);
+        }
 
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -96,10 +104,23 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         fabNewAddress.setOnClickListener(onClickCreateAddressButton);
 
         mSelectedAddress = -1;
+
+        if ((savedInstanceState != null)
+                     && (savedInstanceState.getInt("mSelectedAddress", -1) != -1)) {
+            mSelectedAddress = savedInstanceState.getInt("mSelectedAddress", -1);
+               }
+
         super.setCheckoutStep(view, 1);
 
 
 
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("mSelectedAddress", mSelectedAddress);
     }
 
     @Override
@@ -197,6 +218,14 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 MultiStepAddresses multiStepAddresses = (MultiStepAddresses) baseResponse.getContentData();
                 //CheckoutStepManager.setTotalBar(mCheckoutTotalBar, multiStepAddresses.getOrderSummary());
                 //super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, multiStepAddresses.getOrderSummary());
+                try
+                    {
+                        mSelectedAddress = multiStepAddresses.getOrderSummary().getShippingAddress().getId();
+                    }
+                catch (Exception ex)
+            {
+                mSelectedAddress = -1;
+            }
                 super.showAddresses(multiStepAddresses.getAddresses(), mSelectedAddress);
                 hideActivityProgress();
                 break;
