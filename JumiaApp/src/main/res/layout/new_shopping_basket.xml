@@ -4,8 +4,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F0F0F0"
-    android:animateLayoutChanges="true"
-
         >
     <ScrollView
         android:layout_width="match_parent"
@@ -25,22 +23,24 @@
             />
 
 
-    <LinearLayout
-        android:id="@+id/discount_container_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/new_shadow_gradiant"
-        android:layout_above="@+id/total_container">
-                <LinearLayout
-                    android:id="@+id/discount_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/cart_discout_shadow_height"
+            <LinearLayout
+                android:id="@+id/discount_container_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:orientation="vertical"
+                android:background="@drawable/new_shadow_gradiant"
+                android:layout_above="@+id/discount_container">
 
-                    />
-        </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/discount_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_transparent"
+                android:orientation="vertical"
+                android:layout_above="@+id/total_container"
+                />
 
     <include
           android:id="@+id/total_container"

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="50dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:animateLayoutChanges="true"
     >
 
 
@@ -26,22 +25,24 @@
                 />
 
 
-    <LinearLayout
-        android:id="@+id/discount_container_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/new_shadow_gradiant"
-        android:layout_below="@+id/shoppingcart_list">
+        <LinearLayout
+            android:id="@+id/discount_container_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:orientation="vertical"
+            android:background="@drawable/new_shadow_gradiant"
+            android:layout_above="@+id/discount_container">
+
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/discount_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white_transparent"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/cart_discout_shadow_height"
-
+            android:layout_above="@+id/total_container"
             />
-    </LinearLayout>
 
     <include
         android:id="@+id/total_container"

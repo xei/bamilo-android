@@ -71,6 +71,7 @@ import com.mobile.utils.ui.FulfillmentUiBuilder;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 import com.mobile.view.newfragments.NewBaseFragment;
+import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -192,6 +193,14 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
                     triggerRemoveVoucher();
                 }
 
+            }
+        });
+
+        TextView step1 = (TextView)view.findViewById(R.id.step1);
+        step1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCheckoutCircleClick(1);
             }
         });
 

@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 
 import com.mobile.adapters.AddressAdapter;
 import com.mobile.components.customfontviews.BamiloLinearLayoutManager;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -111,6 +112,8 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                }
 
         super.setCheckoutStep(view, 1);
+
+
 
 
 

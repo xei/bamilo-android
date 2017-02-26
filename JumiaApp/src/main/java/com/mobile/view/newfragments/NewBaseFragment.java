@@ -18,6 +18,8 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
@@ -313,5 +315,20 @@ public abstract class NewBaseFragment extends BaseFragment {
             }
         }
         return result;
+    }
+
+    public void onCheckoutCircleClick(int step)
+    {
+        switch (step)
+        {
+            case 1:
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                break;
+            case 2:
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_CONFIRMATION, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                break;
+
+        }
+
     }
 }

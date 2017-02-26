@@ -169,6 +169,22 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         view.findViewById(R.id.payment_continue).setOnClickListener(this);
         super.setCheckoutStep(view, 3);
 
+        TextView step1 = (TextView)view.findViewById(R.id.step1);
+        step1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCheckoutCircleClick(1);
+            }
+        });
+
+        TextView step2 = (TextView)view.findViewById(R.id.step2);
+        step2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCheckoutCircleClick(2);
+            }
+        });
+
 /*  DROID-65
         // Voucher
         mVoucherContainer = view.findViewById(R.id.voucher_container);

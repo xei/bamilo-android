@@ -190,7 +190,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             mTotalContainer.setVisibility(View.VISIBLE);
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 mDiscountContainerShadow.setVisibility(View.VISIBLE);
-
+                mDiscountContainer.setVisibility(View.VISIBLE);
                 LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());
                 int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
 
@@ -198,11 +198,13 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 {
                     mTotalContainer.setVisibility(View.GONE);
                     mDiscountContainerShadow.setVisibility(View.GONE);
-                   
+                    mDiscountContainer.setVisibility(View.GONE);
+
                 }
             }
             else
             {
+                mDiscountContainer.setVisibility(View.GONE);
                 mDiscountContainerShadow.setVisibility(View.GONE);
             }
         }
@@ -661,70 +663,24 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         setDiscount(cart);
 
         LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());
-        int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
+        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
 
         if (lastVisiblePosition >= mCartItemsCount)
         {
             mTotalContainer.setVisibility(View.GONE);
+            mDiscountContainer.setVisibility(View.GONE);
             mDiscountContainerShadow.setVisibility(View.GONE);
+            SetAnimation(mTotalContainer, View.GONE);
+            SetAnimation(mDiscountContainer, View.GONE);
+            SetAnimation(mDiscountContainerShadow, View.GONE);
         }
 
-/*
-        // Get views
-        TextView subTotal = (TextView) getView().findViewById(R.id.price_total);
-        TextView subTotalUnreduced = (TextView) getView().findViewById(R.id.price_unreduced);
-        TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
-        TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
-        TextView vatIncludedLabel = (TextView) getView().findViewById(R.id.vat_included_label);
-        TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
-        View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
-        View shippingContainer = getView().findViewById(R.id.shipping_container);
-        TextView shippingValue = (TextView) getView().findViewById(R.id.shipping_value);
-        TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
-        final View voucherContainer = getView().findViewById(R.id.voucher_info_container);
-        // Get and set the cart value
-        // Set voucher
-        if (cart.hasCouponDiscount() && cart.getCouponDiscount() >= 0) {
-            // Set voucher value
-            String discount = String.format(getString(R.string.placeholder_discount), CurrencyFormatter.formatCurrency(cart.getCouponDiscount()));
-            voucherValue.setText(discount);
-            voucherContainer.setVisibility(View.VISIBLE);
-            // Set voucher code
-            mVoucherCode = cart.getCouponCode();
-            showRemoveVoucher();
-        } else {
-            // Set voucher
-            voucherContainer.setVisibility(View.GONE);
-            showUseVoucher();
-        }
-        // Set VAT
-        UICartUtils.showVatInfo(cart, vatIncludedLabel, vatValue);
-        // Set shipping free possible
-        UICartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);
-        // Set number of items
-        articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfItems, cart.getCartCount(), cart.getCartCount()));
-        // Add all items
-        mCartItemsContainer = (ViewGroup) getView().findViewById(R.id.shoppingcart_list);
-        mCartItemsContainer.removeAllViewsInLayout();
-        for (int i = 0; i < items.size(); i++) {
-            PurchaseCartItem item = items.get(i);
-            mCartItemsContainer.addView(createCartItemView(i, mCartItemsContainer, LayoutInflater.from(getBaseActivity()), item));
-        }
-        // Set sub total and sub total unreduced
-        UICartUtils.setSubTotal(cart, subTotal, subTotalUnreduced);
-        // Cart price rules
-        LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
-        CheckoutStepManager.showPriceRules(getActivity(), priceRulesContainer, cart.getPriceRules());
-        // Tracking
-        TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
-        TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(), false);*/
-        // Show content
         showFragmentContentContainer();
 
     }
 
     private void setDiscount(PurchaseEntity cart) {
-
+        mDiscountContainer.setVisibility(View.GONE);
         mDiscountContainerShadow.setVisibility(View.GONE);
         mCartRecycler.removeOnScrollListener(scrollChanged);
         mDiscountContainer.removeAllViews();
@@ -1013,5 +969,16 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     };
 
 
+    private void SetAnimation(View view, int visibility)
+    {
+        if (visibility == View.GONE)
+        {
+            view.animate().translationY(view.getHeight()).setDuration(500);;
+        }
+        else
+        {
+            view.animate().translationY(0).setDuration(500);;
+        }
+    }
 
 }
