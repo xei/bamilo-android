@@ -611,7 +611,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                 {
                     case "national_id":
                         national_id_error_message.setVisibility(View.VISIBLE);
-                        national_id_error_message.setText("5151515"+map.get(key).toString());
+                        national_id_error_message.setText(map.get(key).toString());
                         break;
                     case "first_name":
                         first_name_error_message.setVisibility(View.VISIBLE);
@@ -634,7 +634,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                         phone_error_message.setText(map.get(key).toString());
                         break;
                 }
-
             }
         }
     }
