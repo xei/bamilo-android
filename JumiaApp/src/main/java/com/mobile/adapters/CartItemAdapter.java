@@ -253,11 +253,20 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 vh.root.addView(discountView);
             }
 
+            if (mCart.getShippingValue() != 0)
+            {
+                discountView = LayoutInflater.from(mContext).inflate(R.layout.new_shopping_basket_discount_element, vh.root, false);
+                label = (TextView) discountView.findViewById(R.id.discount_label);
+                value = (TextView) discountView.findViewById(R.id.discount_amount);
+                label.setText(R.string.order_summary_shipping_fee_label);
+                value.setText(CurrencyFormatter.formatCurrency(mCart.getShippingValue()));
+                vh.root.addView(discountView);
+            }
             View finalView = LayoutInflater.from(mContext).inflate(R.layout.new_shopping_basket_total_element_adapter, vh.root, false);
             TextView totalValue = (TextView) finalView.findViewById(R.id.total_value);
             TextView quantityValue = (TextView) finalView.findViewById(R.id.total_quantity);
             // Set views
-            totalValue.setText(CurrencyFormatter.formatCurrency(mCart.getTotal()-mCart.getShippingValue()));
+            totalValue.setText(CurrencyFormatter.formatCurrency(mCart.getTotal()));
             quantityValue.setText(TextUtils.getResourceString(mContext, R.string.cart_total_quantity, new Integer[] {mCart.getCartCount()}));
             vh.root.addView(finalView);
 

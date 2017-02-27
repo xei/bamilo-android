@@ -341,7 +341,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
         TextView quantityValue = (TextView) mTotalContainer.findViewById(R.id.total_quantity);
         // Set views
-        totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()-cart.getShippingValue()));
+        totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
         quantityValue.setText(TextUtils.getResourceString(getBaseActivity(), R.string.cart_total_quantity, new Integer[] {cart.getCartCount()}));
 
 
@@ -705,7 +705,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         TextView label = (TextView) discountView.findViewById(R.id.discount_label);
         TextView value = (TextView) discountView.findViewById(R.id.discount_amount);
         label.setText(R.string.cart_total_discount);
-        value.setText(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted()-cart.getTotal()+cart.getShippingValue()));
+        value.setText(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted()+cart.getShippingValue()-cart.getTotal()));
         mDiscountContainer.addView(discountView);
 
         LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());

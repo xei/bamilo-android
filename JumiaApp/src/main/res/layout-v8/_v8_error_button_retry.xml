@@ -22,12 +22,11 @@
         android:layout_height="wrap_content"
         android:clickable="false"
         android:ellipsize="end"
-        android:fontFamily="@string/bamilo_bold_font"
         android:singleLine="true"
         android:text="@string/try_again_retry"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_m"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible" />
 
     <ImageView
