@@ -115,7 +115,7 @@ android {
         bamilo {
             applicationId "com.bamilo.android"
             versionName "2.4.0"
-            versionCode getAppVersionCode(28)
+            versionCode getAppVersionCode(30)
             signingConfig signingConfigs.bamiloSigning
             resConfigs "fa"
         }
@@ -169,6 +169,9 @@ dependencies {
     liveCompile debugToolsDependencies
     stagingCompile debugToolsDependencies
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
+        transitive = true;
+    }
+    compile('com.crashlytics.sdk.android:crashlytics-ndk:1.1.6@aar') {
         transitive = true;
     }
 
@@ -876,3 +879,8 @@ def sendEmailToTeam(String subject, String content) {
     executeWaitAndPrintCmd(['sh', '-c', 'mail -s "[Jumia] - ' + subject + '" ' + recipients + ' < ' + TEMP_FILE])
 }
 */
+crashlytics {
+    enableNdk true
+    androidNdkOut 'src/main/obj'
+    androidNdkLibsOut 'src/main/libs'
+}

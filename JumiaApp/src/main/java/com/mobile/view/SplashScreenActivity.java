@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.ndk.CrashlyticsNdk;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -89,6 +90,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
         //Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
         // Disable Accengage rich push notifications
@@ -109,6 +111,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         shouldHandleEvent = true;
         // Initialize application
         JumiaApplication.INSTANCE.init(initializationHandler);
+
+          /*  throw new RuntimeException("This is a crash");*/
+
+
     }
 
     /*
