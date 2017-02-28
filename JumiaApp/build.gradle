@@ -93,6 +93,7 @@ android {
     }
 
         productFlavors {
+
             live {
 
             }
@@ -100,6 +101,7 @@ android {
             staging {
 
             }
+
     }
 
     lintOptions {
@@ -148,6 +150,9 @@ dependencies {
     /** ############### DEBUG TOOLS ############### **/
     debugCompile debugToolsDependencies
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
+        transitive = true;
+    }
+    compile('com.crashlytics.sdk.android:crashlytics-ndk:1.1.6@aar') {
         transitive = true;
     }
 
@@ -226,4 +231,10 @@ task testCalabash << {
     //testCalabash -Pcountry=NG
     //calabash-android run /home/mobile/rocket/jenkins/workspace/Jumia_Calabash_2.2_NG/AutomatedTests/pt.rocket.jumia.dev/bin/JumiaDev-debug.apk --t @Calabash_Tests country=${COUNTRY} -f json -o cucumber.json -f html -o test.html -f pretty
     executeWaitAndPrintCmd(['calabash-android', 'run', './JumiaApp/build/outputs/apk/JumiaApp-jumia-debug.apk', '--t', '@Calabash_Tests', 'country=$country'])
+}
+
+crashlytics {
+    enableNdk true
+    androidNdkOut 'src/main/obj'
+    androidNdkLibsOut 'src/main/libs'
 }

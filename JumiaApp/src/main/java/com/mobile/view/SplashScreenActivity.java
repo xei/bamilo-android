@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.ndk.CrashlyticsNdk;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -93,19 +94,18 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-
-        if (com.mobile.framework.BuildConfig.FLAVOR.compareTo("live")==0)
+        if (com.mobile.view.BuildConfig.FLAVOR.compareTo("live")==0)
         {
             NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
                     .start(this);
         }
-        else
+        if (com.mobile.view.BuildConfig.FLAVOR.compareTo("staging")==0)
         {
             NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
                     .withCrashReportingEnabled(false)
                     .start(this);
+
+            Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
         }
 
 
@@ -129,6 +129,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         shouldHandleEvent = true;
         // Initialize application
         JumiaApplication.INSTANCE.init(initializationHandler);
+
+          /*  throw new RuntimeException("This is a crash");*/
+
+
     }
 
     /*
