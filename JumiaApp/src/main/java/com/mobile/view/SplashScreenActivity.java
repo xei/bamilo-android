@@ -33,6 +33,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
+import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
@@ -45,6 +46,8 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.newrelic.agent.android.NewRelic;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -89,6 +92,23 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
+        if (com.mobile.framework.BuildConfig.FLAVOR.compareTo("live")==0)
+        {
+            NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
+                    .start(this);
+        }
+        else
+        {
+            NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
+                    .withCrashReportingEnabled(false)
+                    .start(this);
+        }
+
+
         //Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
         // Disable Accengage rich push notifications
