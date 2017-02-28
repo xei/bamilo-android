@@ -348,10 +348,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         result = validateStringToPattern(context, R.string.phone, mPhoneView, mPhoneView.getText().toString(), true, 0, 40, R.string.normal_string_regex, "", R.id.phone_error_message) && result;
         return result;
     }
+
+
     void requestRegister() {
-
-
-
         // Get values
         ContentValues values = new ContentValues();
         values.put("customer[national_id]", mNationalIdView.getText().toString());

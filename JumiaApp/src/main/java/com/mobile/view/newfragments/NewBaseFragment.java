@@ -283,13 +283,13 @@ public abstract class NewBaseFragment extends BaseFragment {
         }
         // Case too short
         else if (min > 0 && text.length() < min) {
-            textView.setText(label + " " + context.getResources().getString(R.string.form_texttoshort) + space);
+            textView.setText(label + " " + String.format(context.getResources().getString(R.string.form_textminlen), min) + space);
             textView.setVisibility(View.VISIBLE);
             result = false;
         }
         // Case too long
         else if (max > 0 && text.length() > max) {
-            textView.setText(label + " " + context.getResources().getString(R.string.form_texttolong) + space);
+            textView.setText(label + " " + String.format(context.getResources().getString(R.string.form_textmaxlen), max) + space);
             textView.setVisibility(View.VISIBLE);
             result = false;
         }
