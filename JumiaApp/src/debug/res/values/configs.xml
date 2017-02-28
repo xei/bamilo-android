@@ -19,10 +19,10 @@
     <item name="hockeyapp_enable_dev" type="bool">true</item>
 
     <!-- DEEP LINK -->
-    <string name="dp_package_id">com.bamilo.android.dev</string>
+    <string name="dp_package_id">com.bamilo.android</string>
     <string name="dp_app_name_uppercase">BAMILO</string>
     <string name="dp_app_name_lowercase">bamilo</string>
-    <string name="dp_intent_label">Bamilo Dev</string>
+    <string name="dp_intent_label">Bamilo</string>
 
     <!-- ACCENGAGE -->
     <item name="ad4push_enabled" type="bool">true</item>

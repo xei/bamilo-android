@@ -2,7 +2,7 @@
 <resources>
     <string name="single_shop_country_url">www.bamilo.com</string>
     <string name="global_restbase_path">mobapi</string>
-    <string name="global_api_version">mobapi/v2.2</string>
+    <string name="global_api_version">mobapi/v2.3</string>
 
 
     <string name="newrelic_token">AA6a03eec79880a5384ac8401ff0203befd6184638</string>
