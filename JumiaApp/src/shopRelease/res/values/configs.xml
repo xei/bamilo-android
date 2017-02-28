@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-
-    <!-- MERGE FROM shop -->
-
-    <item name="adjust_is_production_env" type="bool">true</item>
-
-</resources>
