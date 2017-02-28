@@ -55,7 +55,7 @@ public class MaintenancePage {
      */
     public static void setMaintenancePageWithChooseCountry(Activity activity, EventType eventType, OnClickListener onClickRetryButton, OnClickListener onClickChooseCountry) {
 
-        try {
+       /* try {
 
             // Get prefs
             SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -121,7 +121,7 @@ public class MaintenancePage {
 
         } catch (NullPointerException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**
@@ -130,7 +130,7 @@ public class MaintenancePage {
      * @modified sergiopereira
      */
     public static void setMaintenancePageBaseActivity(Activity activity, OnClickListener listener) {
-        try {
+       /* try {
             // Get retry button
             Button retry = (Button) activity.findViewById(R.id.fragment_root_retry_maintenance);
             retry.setText(R.string.try_again);
@@ -184,7 +184,7 @@ public class MaintenancePage {
 
         } catch (NullPointerException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 

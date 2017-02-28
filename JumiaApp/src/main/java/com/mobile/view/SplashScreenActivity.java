@@ -580,7 +580,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (ShopSelector.isRtl()) {
             MaintenancePage.setMaintenancePageBamilo(getWindow().getDecorView(), this);
         } else {
-            MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, this);
+            //MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, this);
         }
     }
     

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="single_shop_country_url">staging.bamilo.com</string>
+    <string name="global_restbase_path">mobapi</string>
+    <string name="global_api_version">mobapi/v2.3</string>
+
+
+    <string name="newrelic_token">AA791f8cbfdaad28617a60ff7e02fbec1ec1e87ad5</string>
+
+
+</resources>

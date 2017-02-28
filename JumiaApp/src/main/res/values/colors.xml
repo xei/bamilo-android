@@ -106,5 +106,6 @@
     <color name="payment_item_image_border">#d0d0d0</color>
     <color name="white_transparent">#B3FFFFFF</color>
     <color name="cart_item_total">#D9D9D9</color>
+    <color name="splash_backgroung_color">@android:color/white</color>
 
 </resources>

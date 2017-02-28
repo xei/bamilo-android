@@ -22,8 +22,6 @@
     <string name="dp_app_name_lowercase">bamilo</string>
     <string name="dp_intent_label">Bamilo</string>
 
-    <!-- NEW RELIC -->
-    <string name="newrelic_token">AA55031c37ca1a1c324d8d7e92de9b51723114e240</string>
 
     <!-- ACCENGAGE -->
     <item name="ad4push_enabled" type="bool">true</item>

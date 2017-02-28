@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- NAVIGATION MENU ITEMS -->
-    <string-array name="navigation_items">
-        <item>/shop/</item>
-    </string-array>
-
-</resources>
