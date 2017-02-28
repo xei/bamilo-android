@@ -348,10 +348,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         result = validateStringToPattern(context, R.string.phone, mPhoneView, mPhoneView.getText().toString(), true, 0, 40, R.string.normal_string_regex, "", R.id.phone_error_message) && result;
         return result;
     }
+
+
     void requestRegister() {
-
-
-
         // Get values
         ContentValues values = new ContentValues();
         values.put("customer[national_id]", mNationalIdView.getText().toString());
@@ -611,7 +610,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                 {
                     case "national_id":
                         national_id_error_message.setVisibility(View.VISIBLE);
-                        national_id_error_message.setText("5151515"+map.get(key).toString());
+                        national_id_error_message.setText(map.get(key).toString());
                         break;
                     case "first_name":
                         first_name_error_message.setVisibility(View.VISIBLE);
@@ -634,7 +633,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                         phone_error_message.setText(map.get(key).toString());
                         break;
                 }
-
             }
         }
     }
