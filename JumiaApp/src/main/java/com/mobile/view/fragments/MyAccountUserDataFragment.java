@@ -88,6 +88,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         Print.i(TAG, "ON CREATE");
         // Saved form state
         mFormSavedState = savedInstanceState;
+        hideActivityProgress();
     }
 
     /*
