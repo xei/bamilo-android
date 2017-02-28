@@ -2,14 +2,11 @@
 <resources>
 
     <!-- APP -->
-    <bool name="rtl_enabled">false</bool>
 
 	<!-- CHECK VERSION -->
     <item name="check_version_enabled" type="bool">true</item>
 
 	<!-- SERVER CONFS -->
-    <string name="global_server_shop_name">@string/global_shopname</string>
-    <string name="global_server_host">@string/global_server</string>
     <string name="global_server_restbase_path">@string/global_restbase_path</string>
     <string name="global_server_api_version">@string/global_api_version</string>
 
@@ -19,23 +16,73 @@
     <item name="default_led" type="bool">true</item>
     <item name="default_sound" type="bool">true</item>
 
-    <!-- HOCKEY APP -->
-    <string name="hockey_app_id"/>
-    <item name="hockeyapp_enable_dev" type="bool">false</item>
 
-    <!-- DEEP LINK APP INDEXING -->
-    <string name="dp_app_index_prefix">/JUMIA</string>
-
-    <string name="app_name_placeholder">Jumia</string>
 
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool">true</item>
-    <string name="adjust_app_token">tx59byfttp6z</string>
+    <string name="adjust_app_token">5ktqpxh59vp4</string>
     <item name="adjust_is_production_env" type="bool">false</item>
 
     <!-- MARKET -->
     <string name="market_store_uri">market://details?id=%s</string>
     <string name="market_store_external_uri">https://play.google.com/store/apps/details?id=%s</string>
-    <string name="id_market">com.jumia.android</string>
+    <string name="id_market">com.bamilo.android</string>
+
+    ////////////////////////////////////////////////
+
+    <!-- APP -->
+    <item name="is_bamilo_specific" type="bool">true</item>
+    <bool name="is_force_http">true</bool>
+    <bool name="rtl_enabled">true</bool>
+    <bool name="is_layout_rtl">true</bool>
+
+    <!-- COUNTRIES -->
+    <!-- country.xml -->
+
+    <!-- GA -->
+    <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes.
+    <integer name="ga_dispatchPeriod">0</integer>
+    -->
+
+    <!-- HOCKEY APP -->
+    <string name="hockey_app_id">ff6f925528a2c72ef85cac8908c7ee94</string>
+    <item name="hockeyapp_enable_dev" type="bool">true</item>
+
+    <!-- DEEP LINK -->
+    <string name="dp_package_id">com.bamilo.android.live</string>
+    <string name="dp_app_name_uppercase">BAMILO</string>
+    <string name="dp_app_name_lowercase">bamilo</string>
+    <string name="dp_intent_label">Bamilo Live</string>
+
+    <!-- NEW RELIC -->
+    <string name="newrelic_token">AA55031c37ca1a1c324d8d7e92de9b51723114e240</string>
+
+    <!-- ACCENGAGE -->
+    <item name="ad4push_enabled" type="bool">false</item>
+    <string name="ad4push_partner_id"/>
+    <string name="ad4push_private_key"/>
+
+    <!-- ADJUST -->
+
+
+    <!-- APPTIMIZE -->
+    <item name="apptimize_enabled" type="bool">false</item>
+    <string name="apptimize_apikey"/>
+
+    <!-- GTM -->
+    <item name="gtm_debug" type="bool">false</item>
+
+    <!-- FACEBOOK -->
+    <string name="facebook_app_id"/>
+
+    <!--<string name="app_name_placeholder">بامیلو</string>-->
+    <string name="app_name_placeholder">Bamilo</string>
+
+    <!-- DEEP LINK APP INDEXING -->
+    <string name="dp_app_index_prefix">/BAMILO</string>
+
+    <!-- MARKET -->
+
+
 
 </resources>
