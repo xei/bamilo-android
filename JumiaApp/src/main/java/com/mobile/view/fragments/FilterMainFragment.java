@@ -253,13 +253,20 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
      */
     private void processOnClickClean(){
         Print.d(TAG, "CLICKED ON: CLEAR");
+        if (currentFragment instanceof FilterPriceFragment) {
+           ((FilterPriceFragment) currentFragment).mMinValueTxt.clearFocus();
+           ((FilterPriceFragment) currentFragment).mMaxValueTxt.clearFocus();
+           ((FilterPriceFragment) currentFragment).mMinValueTxt.setText(((FilterPriceFragment) currentFragment).mMinRang+"");
+           ((FilterPriceFragment) currentFragment).mMaxValueTxt.setText(((FilterPriceFragment) currentFragment).mMaxRang+"");
 
+        }
         filterSelectionController.initAllInitialFilterValues();
-
         // Clean all saved values
         filterSelectionController.cleanAllFilters();
-        // reset switch
-        mDiscountBox.setChecked(false);
+        // Reset discount box
+        if (mDiscountBox.isChecked()) {
+            mDiscountBox.setChecked(false);
+        }
         // Update adapter
         ((BaseAdapter) filtersKey.getAdapter()).notifyDataSetChanged();
         if(currentFragment != null) {
@@ -276,6 +283,12 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         Print.d(TAG, "CLICKED ON: DONE");
         // Get parent unique tag
         String parentCatalogBackStackTag = FragmentController.getParentBackStackTag(this);
+
+        if (currentFragment instanceof FilterPriceFragment) {
+            ((FilterPriceFragment) currentFragment).mMinValueTxt.clearFocus();
+            ((FilterPriceFragment) currentFragment).mMaxValueTxt.clearFocus();
+
+        }
         // Communicate with parent
         toCancelFilters = false;
         Bundle bundle = new Bundle();

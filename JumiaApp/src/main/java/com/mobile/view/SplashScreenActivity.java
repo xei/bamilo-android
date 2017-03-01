@@ -90,7 +90,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
+        /*Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());*/
         //Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
         // Disable Accengage rich push notifications
