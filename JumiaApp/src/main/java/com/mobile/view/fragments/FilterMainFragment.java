@@ -258,6 +258,8 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
         // Clean all saved values
         filterSelectionController.cleanAllFilters();
+        // reset switch
+        mDiscountBox.setChecked(false);
         // Update adapter
         ((BaseAdapter) filtersKey.getAdapter()).notifyDataSetChanged();
         if(currentFragment != null) {
