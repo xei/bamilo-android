@@ -209,9 +209,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
 
 
     private OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
-
-
-
         @Override
         public void onItemClicked(MultiLevelListView parent, View view, Object item, ItemInfo itemInfo) {
             Category category = (Category) item;
@@ -224,7 +221,9 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
                 }
 
             } else {
-                goToCatalog(category);
+                if (!category.isSection()) {
+                    goToCatalog(category);
+                }
             }
 
 
