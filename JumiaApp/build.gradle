@@ -91,17 +91,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-market.txt'
         }
     }
-
         productFlavors {
-
             live {
 
             }
-
             staging {
 
             }
-
     }
 
     lintOptions {

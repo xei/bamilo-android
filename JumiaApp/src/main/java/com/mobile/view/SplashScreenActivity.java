@@ -87,13 +87,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
         if (com.mobile.view.BuildConfig.FLAVOR.compareTo("live")==0)
         {
             NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
@@ -107,8 +107,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
             Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
         }
-
-
         //Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
         // Disable Accengage rich push notifications
@@ -137,7 +135,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.FragmentActivity#onStart()
      */
     @Override
@@ -168,7 +166,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.FragmentActivity#onPause()
      */
     @Override
@@ -183,7 +181,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.FragmentActivity#onStop()
      */
     @Override
@@ -196,7 +194,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.FragmentActivity#onDestroy()
      */
     @Override
@@ -295,7 +293,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle
      * )
@@ -490,7 +488,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
@@ -607,7 +605,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             //MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, this);
         }
     }
-    
+
     /*
      * ########### RETRY ###########
      */

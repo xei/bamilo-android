@@ -79,6 +79,7 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
         if (savedInstanceState != null) {
             mSavedState = savedInstanceState;
         }
+        hideActivityProgress();
     }
 
     /*

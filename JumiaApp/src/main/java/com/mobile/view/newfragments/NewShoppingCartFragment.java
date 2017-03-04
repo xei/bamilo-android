@@ -711,8 +711,13 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());
         int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
 
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1 && cart.getCartItems().size() > 1) {
             mCartRecycler.addOnScrollListener(scrollChanged);
+        }
+
+        if (cart.getCartItems().size() == 1)
+        {
+            mTotalContainer.setVisibility(View.GONE);
         }
 
     }
