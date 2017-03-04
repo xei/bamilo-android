@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 public enum FragmentType {
     UNKNOWN,
     LOGIN,
+    ABOUT_US,
     REGISTER,
     FORGOT_PASSWORD,
     POPULARITY,
@@ -46,6 +47,7 @@ public enum FragmentType {
     CHECKOUT_CREATE_ADDRESS,
     CHECKOUT_EDIT_ADDRESS,
     CHECKOUT_SHIPPING,
+    CHECKOUT_CONFIRMATION,
     CHECKOUT_PAYMENT,
     CHECKOUT_FINISH,
     CHECKOUT_EXTERNAL_PAYMENT,

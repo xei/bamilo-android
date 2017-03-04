@@ -4,6 +4,7 @@ import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.ReturnReasonForm;
 import com.mobile.newFramework.objects.ExternalLinksSection;
+import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
@@ -217,10 +218,6 @@ public interface AigApiInterface {
     void getOrdersList(@Path(value="path", encode=false) String path, Callback<BaseResponse<MyOrder>> callback);
     String getOrdersList = "getOrdersList";
 
-    @GET("/{path}")
-    void emailCheck(@Path(value="path", encode=false) String path, Callback<BaseResponse<CustomerEmailCheck>> callback);
-    String emailCheck = "emailCheck";
-
     @GET("/")
     void getPhonePrefixes(Callback<BaseResponse<PhonePrefixes>> callback);
     String getPhonePrefixes = "getPhonePrefixes";
@@ -301,6 +298,11 @@ public interface AigApiInterface {
     @POST("/")
     void getEditAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Form>> callback);
     String getEditAddressForm = "getEditAddressForm";
+
+    @FormUrlEncoded
+    @BODY_DELETE("/")
+    void removeCustomerAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String removeCustomerAddressForm = "removeCustomerAddressForm";
 
     @FormUrlEncoded
     @POST("/")
@@ -416,6 +418,11 @@ public interface AigApiInterface {
     @POST("/")
     void setReturnFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<OrderStatus>> callback);
     String setReturnFinish = "setReturnFinish";
+
+    @FormUrlEncoded
+    @POST("/")
+    void emailCheck(@FieldMap Map<String, String> data, Callback<BaseResponse<CustomerEmailCheck>> callback);
+    String emailCheck = "emailCheck";
 
     /*
      * ########## HTTP PUT ##########  TODO : ADD HERE NEW MOB API INTERFACE v2.0

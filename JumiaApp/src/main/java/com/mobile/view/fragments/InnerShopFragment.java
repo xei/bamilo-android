@@ -29,6 +29,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
 import com.mobile.view.R;
@@ -59,6 +60,9 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     private int mWebViewScrollPosition = 0;
 
+    //DROID-10
+    private long mGABeginRequestMillis;
+
     /**
      * Empty constructor.
      */
@@ -79,6 +83,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         // Get data from arguments
+        mGABeginRequestMillis = System.currentTimeMillis();
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if (arguments != null) {
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
@@ -187,6 +192,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             // Load featured box
             loadFeaturedBox(staticPage);
             // Load html and show container
+            mWebView.requestFocus(View.FOCUS_DOWN);
             loadHtml(staticPage);
             // Show container after load delay
             mScrollView.postDelayed(new Runnable() {
@@ -212,9 +218,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         // Validate html
         if (staticPage.hasHtml()) {
             // Load the html response, striped two times
+            mWebView.requestFocus(View.FOCUS_DOWN);
             mWebView.loadData(TextUtils.stripHtml(staticPage.getHtml()));
         } else {
             // Hide web view
+            mWebView.requestFocus(View.FOCUS_DOWN);
             mWebView.setVisibility(View.GONE);
         }
     }
@@ -378,6 +386,8 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         }
         // Get static page
         StaticPage mShopPage = (StaticPage) baseResponse.getContentData();
+        //DROID-10
+        TrackerDelegator.trackScreenLoadTiming(R.string.gaStaticPage, mGABeginRequestMillis, "");
         //  Case valid success response
         if (mShopPage != null) {
             onLoadShopData(mShopPage);

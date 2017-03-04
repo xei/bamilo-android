@@ -62,6 +62,7 @@ import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -148,6 +149,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private boolean initialCountry = false;
     private Menu mCurrentMenu;
     private long beginInMillis;
+    //DROID-10
+    private long mGABeginInMillis;
+
     private ActionBar mSupportActionBar;
     private boolean isBackButtonEnabled = false;
     private TabLayout mTabLayout;
@@ -408,6 +412,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     };
 
+
     /**
      * Handles clicks on Checkout Header
      * Verifies if click is available for this header position, if so, will select position and then mCheckoutOnTabSelectedListener will handle next steps.
@@ -419,7 +424,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     };
 
-    
+
     /*
      * ############## CONTENT VIEWS ##############
      */
@@ -1090,6 +1095,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     private void getSuggestions() {
         beginInMillis = System.currentTimeMillis();
+        mGABeginInMillis = System.currentTimeMillis();
         final String text = mSearchAutoComplete.getText().toString();
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
         SearchSuggestionClient mSearchSuggestionClient = new SearchSuggestionClient();
@@ -1190,7 +1196,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Bundle params = new Bundle();
         params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
-        TrackerDelegator.trackLoadTiming(params);
+        //DROID-10 TrackerDelegator.trackLoadTiming(params);
+        TrackerDelegator.trackScreenLoadTiming(R.string.gaSearchSuggestions, mGABeginInMillis, requestQuery);
         SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
         searchSuggestionsAdapter.setOnViewHolderClickListener(this);
         mSearchListView.setAdapter(searchSuggestionsAdapter);
@@ -1358,6 +1365,25 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         break;
                     case NavigationAction.COUNTRY:
                         onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.FAQ:
+                        // FAQ
+                        @TargetLink.Type String link = TargetLink.SHOP_IN_SHOP.concat("::help-android");
+                        new TargetLink(getWeakBaseActivity(), link)
+                                .addTitle(R.string.faq)
+                                .setOrigin(TeaserGroupType.MAIN_TEASERS)
+                                //.addAppendListener(this)
+                                //.addCampaignListener(this)
+                                .retainBackStackEntries()
+                                .enableWarningErrorMessage()
+                                .run();
+                        //TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAQ);
+                        //onSwitchFragment(FragmentType.STATIC_PAGE, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.ABOUT:
+                        // MY ABOUT
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
+                        onSwitchFragment(FragmentType.ABOUT_US, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     default:
                         Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
@@ -1554,10 +1580,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         switch (checkoutStep) {
             case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
             case ConstantsCheckout.CHECKOUT_BILLING:
+            case ConstantsCheckout.CHECKOUT_CONFIRMATION:
             case ConstantsCheckout.CHECKOUT_SHIPPING:
             case ConstantsCheckout.CHECKOUT_PAYMENT:
-                selectCheckoutStep(checkoutStep);
-                updateBaseComponentsInCheckout(View.VISIBLE);
+                //377-7 selectCheckoutStep(checkoutStep);
+                updateBaseComponentsInCheckout(View.GONE);
                 break;
             case ConstantsCheckout.CHECKOUT_ORDER:
             case ConstantsCheckout.CHECKOUT_THANKS:

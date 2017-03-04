@@ -16,131 +16,72 @@
             android:id="@+id/no_results_search_error_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_veryhuge"
+            android:layout_marginBottom="@dimen/dimen_0dp"
             android:layout_marginEnd="@dimen/margin_veryhuge"
             android:layout_marginLeft="@dimen/margin_veryhuge"
             android:layout_marginRight="@dimen/margin_veryhuge"
             android:layout_marginStart="@dimen/margin_veryhuge"
-            android:layout_marginTop="@dimen/no_results_top_margin"
+            android:layout_marginTop="20dp"
             android:drawablePadding="@dimen/no_results_bottom_margin"
             android:drawableTop="@drawable/ico_nosearchresults"
             android:fontFamily="roboto"
             android:gravity="center"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_l"
+            android:textColor="@color/grey_dark"
+            android:textSize="11sp"
             android:visibility="visible" />
-
-        <View style="@style/DividerHorizontal.Black_400" />
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/no_results_search_error_message_guide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="@dimen/margin_veryhuge"
+            android:layout_marginLeft="@dimen/margin_veryhuge"
+            android:layout_marginRight="@dimen/margin_veryhuge"
+            android:layout_marginStart="@dimen/margin_veryhuge"
+            android:layout_marginTop="3dp"
+            android:drawablePadding="@dimen/no_results_bottom_margin"
+            android:fontFamily="roboto"
+            android:gravity="center"
+            android:textColor="@color/grey_middledark"
+            android:textSize="12sp"
+            android:visibility="visible" />
 
         <RelativeLayout
             android:id="@+id/no_results_search_tips_layout"
-            android:layout_width="@dimen/no_results_search_tips_width"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingBottom="@dimen/margin_huge"
-            android:paddingEnd="@dimen/margin_midhuge"
-            android:paddingLeft="@dimen/margin_midhuge"
-            android:paddingRight="@dimen/margin_midhuge"
-            android:paddingStart="@dimen/margin_midhuge"
-            android:paddingTop="@dimen/margin_huge"
-            android:visibility="gone">
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/no_results_search_tips_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="roboto_bold"
-                android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_m"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/no_results_search_tips_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/no_results_search_tips_title"
-                android:fontFamily="roboto"
-                android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_s"
-                android:visibility="gone" />
-        </RelativeLayout>
-
-        <View style="@style/DividerHorizontal.Black_400" />
-
-        <RelativeLayout
-            android:id="@+id/featured_products"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/teaser_recently_viewed_height"
-            android:visibility="gone">
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/featured_products_title"
-                style="@style/activity_sectionheader_text"
-                android:layout_marginBottom="@dimen/margin_mid"
-                android:layout_marginLeft="@dimen/margin_huge"
-                android:layout_marginStart="@dimen/margin_huge" />
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/featured_products_viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/featured_products_title"
-                android:visibility="gone" />
-
-            <RelativeLayout
-                android:id="@+id/loading_featured_products"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
-
-                <include layout="@layout/loading_bar_simple" />
-            </RelativeLayout>
-        </RelativeLayout>
-
-        <View style="@style/DividerHorizontal.Black_400" />
-
-        <RelativeLayout
-            android:id="@+id/featured_brands"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/no_results_brands_height"
-            android:visibility="gone">
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/featured_brands_title"
-                style="@style/activity_sectionheader_text"
-                android:layout_marginBottom="@dimen/margin_mid"
-                android:layout_marginLeft="@dimen/margin_huge"
-                android:layout_marginStart="@dimen/margin_huge" />
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/featured_brands_viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/featured_brands_title"
-                android:visibility="gone" />
-
-            <RelativeLayout
-                android:id="@+id/loading_featured_brands"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
-
-                <include layout="@layout/loading_bar_simple" />
-            </RelativeLayout>
-        </RelativeLayout>
-
-        <View style="@style/DividerHorizontal.Black_400" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/no_results_search_notice_message"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_veryhuge"
-            android:fontFamily="roboto"
-            android:gravity="center"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_s" />
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:paddingEnd="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:paddingStart="0dp"
+            android:paddingTop="0dp"
+            android:visibility="visible">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/db1_root"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|bottom"
+                android:orientation="vertical" >
+                <com.mobile.view.ExpandableHeightListView
+                    android:dividerHeight="@dimen/dimen_1dp"
+                    android:divider="#D6D6D6"
+                    android:footerDividersEnabled="true"
+                    android:headerDividersEnabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dimen_50dp"
+                    android:id="@+id/search_listview"
+                    android:gravity="center|bottom"/>
+
+
+
+                </LinearLayout>
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 </com.mobile.utils.AigScrollViewWithHorizontal>

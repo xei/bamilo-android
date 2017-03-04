@@ -1,9 +1,18 @@
 package com.mobile.newFramework.utils;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
+
+import com.mobile.framework.R;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TextUtils {
 
@@ -152,4 +161,30 @@ public class TextUtils {
     public static String unEscape(String literal){
         return literal.replaceAll("\\\\n", "\n");
     }
+
+    public static String joinCartItemSKUes(PurchaseEntity purchaseEntity)
+    {
+        String csv="";
+        if (purchaseEntity == null) return csv;
+        ArrayList<PurchaseCartItem> items = purchaseEntity.getCartItems();
+        if (items == null || items.size() == 0) return csv;
+        for (PurchaseCartItem item : items) {
+            csv = csv.concat(item.getSku()).concat(",");
+        }
+        csv = csv.substring(0, csv.length()-1);
+        return csv;
+    }
+
+    public static String getResourceString(Context context, int resId)
+    {
+        return context.getResources().getString(resId);
+    }
+
+    public static String getResourceString(Context context, int resId, Integer[] args)
+    {
+        String str = context.getResources().getString(resId);
+        return String.format(str, args);
+    }
+
+
 }

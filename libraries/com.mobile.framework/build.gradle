@@ -2,8 +2,8 @@ apply plugin: 'com.android.library'
 
 android {
 
-    compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     useLibrary 'org.apache.http.legacy'
 
@@ -29,11 +29,11 @@ sourceSets {
 dependencies {
     // https://wiki.jira.rocket-internet.de/pages/viewpage.action?title=Android+app+SDKs+and+libraries&spaceKey=NAFAMZ
     /** REMOTE MAVEN LIBS **/
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.android.support:cardview-v7:23.1.1'
-    compile 'com.android.support:support-annotations:23.1.1'
+    compile "com.android.support:design:$supportLibVersion"
+    compile "com.android.support:appcompat-v7:$supportLibVersion"
+    compile "com.android.support:recyclerview-v7:$supportLibVersion"
+    compile "com.android.support:cardview-v7:$supportLibVersion"
+    compile "com.android.support:support-annotations:$supportLibVersion"
     // https://github.com/mcxiaoke/android-volley
     compile 'com.mcxiaoke.volley:library:1.0.19'
     /** FRAMEWORK **/
@@ -41,9 +41,10 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.6.0'
     /** GOOGLE PLAY SERVICE **/
     compile 'com.google.android.gms:play-services-analytics:7.5.0'
-    compile 'com.google.android.gms:play-services-location:7.5.0'
-    compile 'com.google.android.gms:play-services-ads:7.5.0'
-    compile 'com.google.android.gms:play-services-wearable:7.5.0'
+    /*compile "com.google.android.gms:play-services-analytics:$playServicesVersion"*/
+    compile "com.google.android.gms:play-services-location:$playServicesVersion"
+    compile "com.google.android.gms:play-services-ads:$playServicesVersion"
+    compile "com.google.android.gms:play-services-wearable:$playServicesVersion"
     /** SOCIALS **/
     // https://developers.facebook.com/docs/android
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
@@ -62,6 +63,7 @@ dependencies {
     compile fileTree(dir: 'libs', exclude: ['json.jar'], include: ['*.jar'])
     // https://bintray.com/accengage/maven/A4SSDK/
     compile files('libs/A4SSDK-GooglePlayServices-1.6.jar')
+    compile group: "pl.openrnd.android", name: "multi-level-listview", version: "1.0.1"
     /** TESTS **/
     testCompile 'junit:junit:4.12'
     testCompile files('libs/json.jar')

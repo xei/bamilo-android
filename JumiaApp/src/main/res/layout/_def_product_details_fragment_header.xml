@@ -28,7 +28,7 @@
         android:layout_below="@id/product_detail_name"
         android:layout_marginEnd="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
-        android:fontFamily="roboto_bold"
+        android:fontFamily="@string/bamilo_bold_font"
         tools:text="Discount Price"
         android:textColor="@color/black" />
 

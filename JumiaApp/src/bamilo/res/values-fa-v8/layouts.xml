@@ -10,6 +10,7 @@
     <item name="single_line_with_check"                 type="layout">@layout/_v8_single_line_with_check</item>
 
     <!-- CHECKOUT -->
+    <item name="checkout_confirmation"                  type="layout">@layout/_def_checkout_confirmation</item>
     <item name="checkout_my_order_billing_address"      type="layout">@layout/_v8_checkout_my_order_billing_address</item>
     <item name="checkout_my_order_payment_options"      type="layout">@layout/_v8_checkout_my_order_payment_options</item>
     <item name="checkout_my_order_product_item"         type="layout">@layout/_v8_checkout_my_order_product_item</item>

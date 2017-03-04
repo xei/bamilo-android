@@ -72,7 +72,7 @@ public class FilterColorFragment extends FilterCheckFragment {
                 final GradientDrawable gradient = new GradientDrawable();
                 gradient.setShape(GradientDrawable.OVAL);
                 gradient.setColor(Color.parseColor(((CatalogColorFilterOption) option).getHexValue()));
-                gradient.setStroke(1, convertView.getResources().getColor(R.color.black_400));
+                gradient.setStroke(1, convertView.getResources().getColor(R.color.black_700));
                 // Set color box
                 final View itemColorBox = convertView.findViewById(R.id.dialog_item_color_box);
                 if (DeviceInfoHelper.isPosJellyBean()) {

@@ -6,7 +6,7 @@
     <style name="TextBase">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
         <item name="android:gravity">left|start|center_vertical</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
@@ -48,7 +48,8 @@
 
     <style name="TextBase.Title_2">
         <item name="android:textSize">20sp</item>
-        <item name="android:fontFamily">roboto_medium</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
+        <!--<item name="android:fontFamily">roboto_medium</item>-->
     </style>
 
     <style name="TextBase.Title_1">
@@ -60,8 +61,9 @@
     </style>
 
     <style name="TextBase.Title">
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">roboto_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
+        <!--<item name="android:fontFamily">roboto_medium</item>-->
     </style>
 
     <style name="TextBase.Title.Black">
@@ -69,7 +71,7 @@
     </style>
 
     <style name="TextBase.List">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="TextBase.List.Black">
@@ -85,11 +87,11 @@
     <style name="TextBase.HeadLine">
         <item name="android:textSize">12sp</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:fontFamily">@string/bamilo_bold_font</item>
     </style>
 
     <style name="TextBase.SubHead">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TextBase.SubHead.Orange">
@@ -97,7 +99,7 @@
     </style>
 
     <style name="TextBase.Body">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">11sp</item>
     </style>
 
     <style name="TextBase.Body.Black">
@@ -111,7 +113,7 @@
     </style>
 
     <style name="TextBase.Caption">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">9sp</item>
     </style>
 
     <style name="TextBase.Caption.Black">
@@ -119,7 +121,7 @@
     </style>
 
     <style name="TextBase.Caption.Italic">
-        <item name="android:fontFamily">roboto_italic</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
         <item name="android:textStyle">italic</item>
     </style>
 
@@ -130,26 +132,28 @@
     </style>
 
     <style name="TextBase.Menu">
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">roboto_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
+        <!--<item name="android:fontFamily">roboto_medium</item>-->
     </style>
 
     <style name="TextBase.Button_1">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:fontFamily">@string/bamilo_bold_font</item>
         <item name="android:gravity">center</item>
         <item name="android:clickable">true</item>
     </style>
 
     <style name="TextBase.Button_2" parent="TextBase.Button_1">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">11sp</item>
     </style>
 
     <style name="TextBase.Badge">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">9sp</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:fontFamily">roboto_medium</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
+<!--        <item name="android:fontFamily">roboto_medium</item>-->
     </style>
 
     <style name="TextBase.Badge.Black">
@@ -167,5 +171,9 @@
     <style name="TextBase.Button.Switch" parent="TextBase.Title_1.Black"/>
 
     <!-- TODO : ADD HERE BASE STYLES -->
+
+    <style name="TextBase.Address">
+        <item name="android:textColor">@color/black_75</item>
+    </style>
 
 </resources>

@@ -102,6 +102,7 @@ public class FilterSelectionController {
         for (CatalogFilter filter : catalogFilters) {
             filter.cleanFilter();
         }
+
     }
 
     /**

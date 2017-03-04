@@ -15,6 +15,7 @@ import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -31,7 +32,8 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     private Bundle mStaticPageBundle;
     private String mTitle;
     private String mContentId;
-
+    //DROID-10
+    private long mGABeginRequestMillis;
     /**
      * Empty constructor
      */
@@ -52,6 +54,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
+        mGABeginRequestMillis = System.currentTimeMillis();
     }
 
     /*
@@ -172,6 +175,8 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         }
         showFragmentContentContainer();
         textView.setText(((StaticPage)baseResponse.getMetadata().getData()).getHtml());
+        //DROID-10
+        TrackerDelegator.trackScreenLoadTiming(R.string.gaStaticPage, mGABeginRequestMillis, "");
     }
 
     @Override

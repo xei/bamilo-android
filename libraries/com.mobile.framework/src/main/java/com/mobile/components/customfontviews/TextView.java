@@ -8,6 +8,7 @@ import android.util.TypedValue;
 
 import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
 import com.mobile.framework.R;
+import com.mobile.newFramework.utils.PersinConvertor;
 
 public class TextView extends android.widget.TextView implements FontStyleProvider {
     private String mFontFamily;
@@ -139,9 +140,17 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
         TextView.setFontStyle(this, fontFamily, fontStyle);
     }
 
+
+
     @Override
     public void setTextAppearance(Context context, int resid) {
         TextView.setTextAppearance(this, context, resid);
     }
 
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        String newText = text.toString();
+        newText = PersinConvertor.toPersianNumber(newText);
+        super.setText(newText, type);
+    }
 }

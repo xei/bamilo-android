@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mobile.utils.SingleLineComponent xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layoutType="checkBox"
-    app:useSelector="true" />
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/country_icon"
+        android:layout_width="@dimen/dimen_28dp"
+        android:layout_height="@dimen/dimen_43dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp" />
+
+    <com.mobile.utils.SingleLineComponent
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        app:layoutType="checkBox"
+        app:useSelector="true"
+        />
+
+</LinearLayout>

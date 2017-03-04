@@ -6,7 +6,7 @@
     android:layout_height="45dp"
     android:background="@drawable/selector_clickableitem_highlight"
     android:ellipsize="marquee"
-    android:fontFamily="roboto_regular"
+    android:fontFamily="@string/bamilo_regular_font"
     android:gravity="right|center_vertical"
     android:paddingRight="@dimen/margin_mid"
     android:singleLine="true"

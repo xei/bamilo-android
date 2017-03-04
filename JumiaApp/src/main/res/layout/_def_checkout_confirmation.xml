@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_above="@+id/checkout_confirmation_btn"
+        android:id="@+id/checkout_scrollview">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include layout="@layout/new_checkout_header"
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            />
+        <com.mobile.components.customfontviews.TextView
+        android:layout_width="match_parent"
+        android:background="@color/black_400"
+        android:textSize="13sp"
+        android:paddingTop="@dimen/dimen_15dp"
+        android:paddingBottom="@dimen/dimen_15dp"
+        android:paddingLeft="@dimen/dimen_16dp"
+        android:paddingRight="@dimen/dimen_16dp"
+        android:layout_height="wrap_content"
+        android:text="@string/checkout_sum_header"
+        android:textColor="@color/black"/>
+
+        <View style="@style/Divider" android:layout_marginTop="@dimen/dimen_3dp"/>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="@dimen/dimen_15dp"
+            android:paddingLeft="@dimen/dimen_15dp"
+            android:paddingTop="@dimen/dimen_5dp"
+            android:paddingBottom="@dimen/dimen_5dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dimen_5dp"
+                    android:paddingRight="@dimen/dimen_5dp"
+                    android:id="@+id/voucher_switch" />
+
+                <com.mobile.components.customfontviews.TextView
+                    android:text="@string/checkout_voucher_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView3"
+                    android:padding="@dimen/dimen_10dp"
+                    android:layout_weight="1"
+                    android:textColor="#737373"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <View
+                style="@style/Divider"
+                android:layout_marginTop="@dimen/dimen_1dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dimen_5dp"
+                android:id="@+id/view" />
+
+            <LinearLayout
+                android:id="@+id/voucher_layout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:animateLayoutChanges="true"
+                android:visibility="gone"
+                android:layout_height="match_parent">
+
+                <com.mobile.components.customfontviews.EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="@string/checkout_voucher_title"
+                    android:textSize="13sp"
+                    style="@style/FormTextField"
+                    android:id="@+id/voucher_codename" />
+
+                <com.mobile.components.customfontviews.TextView
+                    android:text="کد تخفیف را وارد کنید"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/error_message_mandatory"
+                    android:textColor="@color/red_basic"
+                    android:visibility="gone"/>
+
+                <com.mobile.components.customfontviews.Button
+                    android:text="@string/checkout_submit_voucher"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/checkout_button_enter"
+                    android:textColor="@color/black_47" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            style="@style/Divider"
+            android:layout_marginTop="@dimen/dimen_3dp"
+            android:layout_marginBottom="@dimen/dimen_3dp"
+            android:layout_width="wrap_content"
+            android:id="@+id/view5"
+            android:layout_weight="1"
+            android:layout_height="1dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_height="45dp">
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#737373"
+                android:id="@+id/checkout_order_count_title"
+                android:textStyle="normal|bold"
+                android:text="مجموع کالاها" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#737373"
+                android:textAlignment="textEnd"
+                android:id="@+id/checkout_order_price"
+                android:textStyle="normal|bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_height="45dp">
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#737373"
+                android:text="مجموع تخفیف ها" />
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#737373"
+                android:id="@+id/checkout_order_all_discount"
+                android:textAlignment="textEnd"
+                android:textSize="13sp" />
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:visibility="gone"
+            android:layout_height="45dp"
+            android:id="@+id/voucher_value_title">
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#737373"
+                android:text="کد تخفیف" />
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#737373"
+                android:id="@+id/checkout_order_voucher_price"
+                android:textAlignment="textEnd"
+                android:textSize="13sp" />
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_height="45dp">
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#737373"
+                android:text="هزینه ارسال" />
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#737373"
+                android:id="@+id/checkout_order_ship_price"
+                android:textAlignment="textEnd"
+                android:textSize="13sp" />
+
+
+
+        </LinearLayout>
+        <View
+            style="@style/Divider"
+            android:layout_marginTop="@dimen/dimen_3dp"
+            android:layout_marginBottom="@dimen/dimen_3dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="2dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_height="45dp">
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#737373"
+                android:text="هزینه کل خرید"
+                android:textStyle="normal|bold"
+                android:id="@+id/all_price_total_title" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#737373"
+                android:text="5555555555"
+                android:textAlignment="textEnd"
+                android:id="@+id/checkout_order_all_price"
+                android:textStyle="normal|bold" />
+
+
+        </LinearLayout>
+
+
+
+
+        <com.mobile.components.customfontviews.TextView
+            android:layout_width="match_parent"
+            android:background="@color/black_400"
+            android:textSize="13sp"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingBottom="@dimen/dimen_10dp"
+            android:paddingLeft="@dimen/dimen_16dp"
+            android:paddingRight="@dimen/dimen_16dp"
+            android:layout_height="wrap_content"
+            android:text="@string/checkout_time_delivery"
+            android:textColor="@color/black"
+            android:id="@+id/textView12"
+            android:layout_weight="1" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:layout_width="match_parent"
+            android:textSize="13sp"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingBottom="@dimen/dimen_10dp"
+            android:paddingLeft="@dimen/dimen_16dp"
+            android:paddingRight="@dimen/dimen_16dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkout_order_ship_time"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textStyle="normal|bold" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:layout_width="match_parent"
+            android:background="@color/black_400"
+            android:textSize="13sp"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingBottom="@dimen/dimen_10dp"
+            android:paddingLeft="@dimen/dimen_16dp"
+            android:paddingRight="@dimen/dimen_16dp"
+            android:layout_height="wrap_content"
+            android:text="@string/checkout_card_summery"
+            android:textColor="@color/black"
+            android:id="@+id/textView18"
+            android:layout_weight="1" />
+
+   <!--   <include layout="@layout/_def_checkout_confirmation_product"></include>-->
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cheackout_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" />
+</RelativeLayout>
+
+        <com.mobile.components.customfontviews.TextView
+            android:layout_width="match_parent"
+            android:background="@color/black_400"
+            android:textSize="13sp"
+            android:paddingTop="@dimen/dimen_15dp"
+            android:paddingBottom="@dimen/dimen_15dp"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:paddingRight="@dimen/dimen_10dp"
+            android:layout_height="wrap_content"
+            android:text="@string/checkout_delivery_address"
+            android:textColor="@color/black"
+            android:id="@+id/textView16"
+            android:layout_weight="1" />
+
+         <LinearLayout
+            android:orientation="vertical"
+             android:padding="@dimen/dimen_10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+             <com.mobile.components.customfontviews.TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:paddingRight="@dimen/dimen_16dp"
+                 android:paddingLeft="@dimen/dimen_16dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/checkout_user_reciver"
+                 android:textColor="#505050"
+                android:textStyle="normal|bold" />
+             <com.mobile.components.customfontviews.TextView
+                 android:text="آدرس"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentTop="true"
+                 android:layout_alignParentLeft="true"
+                 android:layout_alignParentStart="true"
+                 android:paddingTop="@dimen/dimen_5dp"
+                 android:paddingBottom="@dimen/dimen_5dp"
+                 android:paddingLeft="@dimen/dimen_16dp"
+                 android:paddingRight="@dimen/dimen_16dp"
+                 android:id="@+id/checkout_address"
+                 android:textColor="#737373" />
+             <com.mobile.components.customfontviews.TextView
+                 android:text="تلفن"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentTop="true"
+                 android:layout_alignParentLeft="true"
+                 android:layout_alignParentStart="true"
+                 android:paddingTop="@dimen/dimen_5dp"
+                 android:paddingBottom="@dimen/dimen_5dp"
+                 android:paddingLeft="@dimen/dimen_16dp"
+                 android:paddingRight="@dimen/dimen_16dp"
+                 android:id="@+id/checkout_telephone"
+                 android:textColor="#737373" />
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    </ScrollView>
+    <com.mobile.components.customfontviews.TextView
+        android:text="@string/checkout_confirmation_next_step"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_accent"
+        android:layout_gravity="center_vertical|center_horizontal|center"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:layout_width="match_parent"
+        android:padding="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/action_bar_height"
+        android:layout_height="57dp"
+        android:textSize="16sp"
+        android:id="@+id/checkout_confirmation_btn"
+        android:visibility="visible" />
+</LinearLayout>

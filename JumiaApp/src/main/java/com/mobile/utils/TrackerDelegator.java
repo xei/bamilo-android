@@ -568,6 +568,16 @@ public class TrackerDelegator {
     }
 
     /**
+     * Tracking timing of screen loading
+     */
+    public static void trackScreenLoadTiming(int screenNameId, long start, String label) {
+       // int location = params.getInt(LOCATION_KEY);
+       // long start = params.getLong(START_TIME_KEY);
+        // GA
+        AnalyticsGoogle.get().trackLoadTimingNew(R.string.gaScreen, start, screenNameId, label);
+    }
+
+    /**
      * Tracking a page
      *
      */

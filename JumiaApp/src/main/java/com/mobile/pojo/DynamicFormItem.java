@@ -1881,20 +1881,13 @@ public class DynamicFormItem {
         // Get mandatory
         TextView mandatory = (TextView) container.findViewById(R.id.text_field_mandatory);
         // Get icon
-        ImageView icon = (ImageView) container.findViewById(R.id.text_field_icon);
         // Get password eye
         CheckBox box = (CheckBox) container.findViewById(R.id.text_field_password_check_box);
         // Set disabled
         if (this.parent.getForm().getType() == FormConstants.USER_DATA_FORM && this.entry.isDisabledField()) {
             disableView(text);
         }
-        // Set icon
-        if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM
-                || this.parent.getForm().getType() == FormConstants.LOGIN_FORM
-                || this.parent.getForm().getType() == FormConstants.USER_DATA_FORM) {
-            UIUtils.setDrawableByString(icon, ICON_PREFIX + this.entry.getKey());
-            icon.setVisibility(View.VISIBLE);
-        }
+
         // Set hint
         if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
             text.setHint(this.entry.getLabel());

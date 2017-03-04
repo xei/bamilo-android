@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="myImageView">
+        <!-- 3dp so the background border to be visible -->
+        <item name="android:padding">3dp</item>
+        <item name="android:background">@drawable/new_background_cart_item_image_border</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+
 
     <!-- TEXT STYLES -->
 
@@ -96,7 +105,7 @@
         <item name="android:layout_marginStart">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginEnd">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginTop">@dimen/rounded_margin_mid</item>
-        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
@@ -115,12 +124,20 @@
         <item name="android:paddingBottom">@dimen/rounded_margin_mid</item>
     </style>
 
+<!--divider-->
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/black_700</item>
+    </style>
+
+
     <!-- TEXT STYLES -->
 
     <style name="text_regular">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
         <item name="android:textColor">@color/black_800</item>
     </style>
 
@@ -135,7 +152,7 @@
     </style>
 
     <style name="text_title" parent="_base_text">
-        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:fontFamily">@string/bamilo_bold_font</item>
         <item name="android:textSize">@dimen/text_title</item>
     </style>
 
@@ -148,12 +165,12 @@
     </style>
 
     <style name="text_header_light" parent="text_header">
-        <item name="android:fontFamily">roboto_light</item>
+        <item name="android:fontFamily">@string/bamilo_light_font</item>
     </style>
 
     <style name="text_price" parent="_base_text">
         <item name="android:textSize">@dimen/text_title</item>
-        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:fontFamily">@string/bamilo_bold_font</item>
         <item name="android:textColor">@color/red_basic</item>
         <item name="android:ellipsize">marquee</item>
     </style>
@@ -275,4 +292,25 @@
         <item name="android:layout_marginTop">@dimen/dimen_4dp</item>
     </style>
 
+    <style name="Register_Edittext">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/register_font_size</item>
+        <item name="android:textColor">@color/register_font_color</item>
+        <item name="android:background">@drawable/_gen_selector_text_field</item>
+        <item name="android:textColorHint">@color/black_700</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:paddingLeft">@dimen/form_padding</item>
+        <item name="android:paddingRight">@dimen/form_padding</item>
+        <item name="android:textCursorDrawable" targetApi="12">@null</item>
+        <item name="android:inputType">textEmailAddress</item>
+        <item name="met_floatingLabel">highlight</item>
+        <item name="met_underlineColor">@color/black_700</item>
+        <item name="met_primaryColor">@color/blue_2</item>
+        <item name="met_floatingLabelSidePadding">@dimen/form_padding</item>
+    </style>
+
+    <color name="register_font_color">#000000</color>
 </resources>

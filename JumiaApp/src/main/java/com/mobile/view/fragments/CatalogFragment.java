@@ -117,6 +117,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private String mKey;
 
+    //DROID-10
+    private long mGABeginRequestMillis;
+
     /**
      * Empty constructor
      */
@@ -140,6 +143,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+        mGABeginRequestMillis = System.currentTimeMillis();
         // Load line to active top button
         mTopButtonActivateLine = setButtonActiveLine(mLevel);
         // Get data from arguments (Home/Categories/Deep link)
@@ -932,6 +936,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             case GET_CATALOG_EVENT:
             default:
                 onRequestCatalogSuccess(baseResponse);
+                //DROID-10
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaCatalog, mGABeginRequestMillis, mTitle);
                 break;
         }
     }

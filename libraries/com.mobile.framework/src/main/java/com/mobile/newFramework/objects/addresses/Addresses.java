@@ -52,6 +52,8 @@ public class Addresses implements IJSONSerializable, Parcelable {
         if (jsonShip != null) {
             shippingAddress = new Address();
             shippingAddress.initialize(jsonShip);
+            billingAddress = new Address();
+            billingAddress.initialize(jsonShip);
         } else {
             throw new JSONException("");
         }
@@ -61,7 +63,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
             billingAddress = new Address();
             billingAddress.initialize(jsonBil);
         } else {
-            throw new JSONException("");
+           //377-51 throw new JSONException("");
         }
         // Get other addresses
         JSONArray jsonOthersArray = jsonObject.optJSONArray(RestConstants.OTHER);

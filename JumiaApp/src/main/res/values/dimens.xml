@@ -101,7 +101,7 @@
     <!-- dimen name="text_description">10sp</dimen -->
     <dimen name="text_button">16.67sp</dimen>
     <dimen name="text_button_item">10.67sp</dimen>
-    <dimen name="warning_text_size">16sp</dimen>
+    <dimen name="warning_text_size">14sp</dimen>
     <dimen name="text_info">8.67sp</dimen>
 
 
@@ -131,6 +131,11 @@
     <dimen name="text_l">18sp</dimen>
     <dimen name="text_xl">20sp</dimen>
     <dimen name="text_16sp">16sp</dimen>
+
+    <!--list size-->
+    <dimen name="list_icon_h">32sp</dimen>
+    <dimen name="list_h">50sp</dimen>
+
 
     <!-- MARGIN AND PADDING -->
     <dimen name="margin_padding_xxl">20dp</dimen>
@@ -225,7 +230,7 @@
 
     <!-- NO RESULTS PAGE -->
     <dimen name="no_results_top_margin">40dp</dimen>
-    <dimen name="no_results_bottom_margin">33.33dp</dimen>
+    <dimen name="no_results_bottom_margin">25dp</dimen>
     <dimen name="no_results_search_tips_width">@dimen/match_parent</dimen>
     <dimen name="no_results_brands_height">147dp</dimen>
 
@@ -516,4 +521,47 @@
     <item name="reviews_rating_group_left_percentage" format="float" type="dimen">.45</item>
     <item name="reviews_rating_group_right_percentage" format="float" type="dimen">.55</item>
 
+
+    <!-- Category Navigation -->
+    <dimen name="tx_single_line_text_text_size">11sp</dimen>
+
+
+    <!-- Product Detail Rating Title -->
+    <dimen name="pdv_fragment_rating_font_size">9sp</dimen>
+
+    <!--Dynamic Form Text Size -->
+    <dimen name="form_checkbox_text_size">12sp</dimen>
+
+
+    <!-- Checkout Address -->
+    <dimen name="address_header_title">14sp</dimen>
+    <dimen name="address_header_street">12sp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Dialog -->
+    <dimen name="dialog_text_header">14sp</dimen>
+    <dimen name="dialog_text">14sp</dimen>
+
+    <!-- Checkout Header -->
+    <dimen name="circle_diameter">30dp</dimen>
+    <dimen name="line_margin_start">10dp</dimen>
+    <dimen name="line_margin_end">15dp</dimen>
+    <dimen name="label_margin">5dp</dimen>
+    <dimen name="label_text_size">9sp</dimen>
+    <dimen name="step_text_size">11sp</dimen>
+    <dimen name="checkout_header_lines">50dp</dimen>
+
+
+    <!-- Cart Item -->
+    <dimen name="cart_brand_font_size">10sp</dimen>
+    <dimen name="cart_name_font_size">12sp</dimen>
+    <dimen name="cart_price_font_size">12sp</dimen>
+    <dimen name="payment_header_title">14sp</dimen>
+    <dimen name="payment_text">10sp</dimen>
+    <dimen name="checkout_footer_font_size">16sp</dimen>
+    <dimen name="checkout_footer_height">57dp</dimen>
+    <dimen name="checkout_totalbar_height">50dp</dimen>
+    <dimen name="register_font_size">14sp</dimen>
+    <dimen name="cart_discout_shadow_height">5dp</dimen>
 </resources>

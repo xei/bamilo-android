@@ -27,15 +27,17 @@ public class ConstantsCheckout {
     public static final int CHECKOUT_ABOUT_YOU = 0;
     public static final int CHECKOUT_BILLING = 1;
     public static final int CHECKOUT_SHIPPING = 2;
-    public static final int CHECKOUT_PAYMENT = 3;
-    public static final int CHECKOUT_ORDER = 4;
-    public static final int CHECKOUT_THANKS = 5;
+    public static final int CHECKOUT_CONFIRMATION = 3;
+    public static final int CHECKOUT_PAYMENT = 4;
+    public static final int CHECKOUT_ORDER = 5;
+    public static final int CHECKOUT_THANKS = 6;
     public static final int NO_CHECKOUT = -1;
 
     @IntDef({
             CHECKOUT_ABOUT_YOU,
             CHECKOUT_BILLING,
             CHECKOUT_SHIPPING,
+            CHECKOUT_CONFIRMATION,
             CHECKOUT_PAYMENT,
             CHECKOUT_ORDER,
             CHECKOUT_THANKS,
@@ -61,6 +63,9 @@ public class ConstantsCheckout {
                 break;
             case CHECKOUT_PAYMENT:
                 fragmentType = FragmentType.CHECKOUT_PAYMENT;
+                break;
+            case CHECKOUT_CONFIRMATION:
+                fragmentType = FragmentType.CHECKOUT_CONFIRMATION;
                 break;
             case CHECKOUT_ORDER:
                 fragmentType = FragmentType.CHECKOUT_FINISH;

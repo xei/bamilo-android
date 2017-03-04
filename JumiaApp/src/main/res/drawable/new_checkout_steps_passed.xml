@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <shape
+            android:shape="oval">
+
+            <solid
+                android:color="@color/checkout_circle_green"/>
+
+            <size
+                android:width="@dimen/circle_diameter"
+                android:height="@dimen/circle_diameter"/>
+        </shape>
+    </item>
+    <item android:drawable="@drawable/tick"
+        android:top="10dp"
+        android:bottom="10dp"
+        android:right="10dp"
+        android:left="10dp"
+        />
+
+</layer-list>
+

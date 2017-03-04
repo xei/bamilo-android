@@ -44,6 +44,8 @@ public class Category implements IJSONSerializable, Parcelable {
 
     private boolean isExternalLinkType;
 
+    private int mLevel;
+
     private String mMainCategory;   //content category
     /**
      * Category empty constructor.
@@ -154,7 +156,13 @@ public class Category implements IJSONSerializable, Parcelable {
         return mMainCategory;
     }
 
+    public int getLevel() {
+        return mLevel;
+    }
 
+    public void setLevel(int level) {
+        this.mLevel = level;
+    }
     /*
      * (non-Javadoc)
      *

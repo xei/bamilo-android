@@ -109,7 +109,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         Print.i(TAG, "ON VIEW CREATED");
         // Set title view
         ((TextView) view.findViewById(R.id.order_status_title_nr)).setText(getString(R.string.order_number, mOrderNumber));
-        ((TextView) view.findViewById(R.id.order_status_title_date)).setText(mOrderDate);
+        if (mOrderDate != null) ((TextView) view.findViewById(R.id.order_status_title_date)).setText(mOrderDate);
         // Get info view
         mInfoView = (ViewGroup) view.findViewById(R.id.order_status_info);
         // Get payment container

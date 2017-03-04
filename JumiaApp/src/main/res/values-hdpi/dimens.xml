@@ -7,6 +7,19 @@
     <dimen name="teaser_banners_group_height">@dimen/teaser_banners_group_height_sw320dp</dimen>
 
 
+    <dimen name="text_xs">12sp</dimen>
+    <dimen name="text_s">14sp</dimen>
+    <dimen name="text_m">16sp</dimen>
+    <dimen name="text_l">18sp</dimen>
+    <dimen name="text_xl">20sp</dimen>
+    <dimen name="text_16sp">16sp</dimen>
+
+    <!--list size-->
+    <dimen name="search_icon_size">10sp</dimen>
+    <dimen name="search_title">14sp</dimen>
+    <dimen name="list_icon_h">32sp</dimen>
+    <dimen name="list_h">50dp</dimen>
+
     <!-- DATE PICKER -->
     <dimen name="date_picker_component_width">270dp</dimen>
     <dimen name="date_picker_header_height">30dp</dimen>

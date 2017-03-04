@@ -47,6 +47,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_CREATE_ADDRESS);
+        hideActivityProgress();
     }
 
     @Override

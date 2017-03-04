@@ -132,7 +132,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     }
 
     /**
-     * ################## CONFIGS ################## 
+     * ################## CONFIGS ##################
      */
 
     /**
@@ -184,7 +184,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     }
 
     /*
-     * ################## BASE GA TRACKING (v4) ################## 
+     * ################## BASE GA TRACKING (v4) ##################
      */
 
     /**
@@ -334,7 +334,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     }
 
     /**
-     * ################## SPECIFIC TRACKING ################## 
+     * ################## SPECIFIC TRACKING ##################
      */
 
     /**
@@ -412,6 +412,25 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         String name = mContext.getString(nameId);
         // Track
         trackTiming(category, name, milliseconds, "duration for event");
+    }
+
+    public void trackLoadTimingNew(int categoryId, long beginMillis, int nameId, String label) {
+        // Validation
+        if (!isEnabled) return;
+        // Data
+        long milliseconds = System.currentTimeMillis();
+        if ( milliseconds < beginMillis || beginMillis <= 0 ) {
+            Print.d(TAG, "trackTiming ERROR : start -> " + beginMillis);
+            return;
+        }
+        milliseconds = milliseconds - beginMillis;
+        //int nameId = R.string.gload;
+        // Data
+        String category = mContext.getString(categoryId);
+        String name = mContext.getString(nameId);
+        if (label.trim().compareTo("") == 0) label = "Duration";
+        // Track
+        trackTiming(category, name, milliseconds, label);
     }
 
     /**
@@ -532,7 +551,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     public void trackGenericPage(String page){
         // Validate
         if (!isEnabled) return;
-        // Data		
+        // Data
         trackPage(page);
     }
 
