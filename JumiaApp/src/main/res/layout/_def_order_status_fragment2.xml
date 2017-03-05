@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/return_button_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- HEADER ORDER -->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/order_status_title_nr2"
+                    style="@style/HeaderStyle"
+                    android:text="@string/order_number"
+                    android:layout_width="wrap_content" />
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/order_status_title_date2"
+                    style="@style/TextBase.Caption.Black_800"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/black_300"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/margin_padding_xxl"
+                    android:layout_marginRight="@dimen/margin_padding_xxl" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+            </RelativeLayout>
+
+            <TextView
+                android:text="vaziat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView8"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:text="nahveh pardakht"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView9"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:text="mablaghe kol sefaresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView10"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:text="tedad :5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView13"
+                android:textColor="@color/black" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="107dp">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="85dp"
+                    app:srcCompat="@drawable/campaign_promobadge"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="12dp"
+                    android:id="@+id/imageView3" />
+
+                <TextView
+                    android:text="onvan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imageView3"
+                    android:layout_toLeftOf="@+id/imageView3"
+                    android:layout_toStartOf="@+id/imageView3"
+                    android:layout_marginRight="13dp"
+                    android:layout_marginEnd="13dp"
+                    android:id="@+id/textView14"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:text="tedad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView15"
+                    android:textColor="@color/black"
+                    android:layout_below="@+id/textView14"
+                    android:layout_alignRight="@+id/textView14"
+                    android:layout_alignEnd="@+id/textView14" />
+
+                <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/textView14"
+                    android:layout_alignParentLeft="true"
+                    android:background="@color/black_700"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:id="@+id/textView19" />
+
+                <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView15"
+                    android:background="@color/black_700"
+                    android:layout_alignLeft="@+id/textView19"
+                    android:layout_alignStart="@+id/textView19"
+                    android:id="@+id/textView20" />
+
+            </RelativeLayout>
+
+            <!-- INFO AND PAYMENT -->
+
+            <!-- DIVIDER -->
+
+            <!-- ADDRESSES -->
+
+            <!-- HEADER ITEMS -->
+
+            <!-- ITEMS -->
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

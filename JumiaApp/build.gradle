@@ -46,10 +46,10 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        applicationId "com.bamilo.android"
-        versionName "2.4.0"
-        versionCode getAppVersionCode(28)
-        resConfigs "fa"
+            applicationId "com.bamilo.android"
+            versionName "2.4.1"
+            versionCode getAppVersionCode(1)
+            resConfigs "fa"
     }
 
     dexOptions {
