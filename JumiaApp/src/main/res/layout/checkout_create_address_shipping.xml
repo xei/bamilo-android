@@ -24,4 +24,128 @@
         android:paddingLeft="@dimen/margin_padding_l"
         android:paddingRight="@dimen/margin_padding_l" />
 
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView14" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="نام"
+        android:ems="50"
+        android:minEms="2"
+        android:id="@+id/editText"
+        android:textColor="?attr/colorPrimary" />
+
+    <TextView
+        android:text="تکمیل این گزینه الزامی می‌باشد"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:visibility="gone"
+        android:textColor="@color/design_textinput_error_color_light" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="نام خانوادگی"
+        android:ems="50"
+        android:minEms="2"
+        android:id="@+id/editText2"
+        android:textColor="?attr/colorPrimary" />
+
+    <TextView
+        android:text="تکمیل این گزینه الزامی می‌باشد"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView6"
+        android:visibility="gone"
+        android:textColor="@color/design_textinput_error_color_light" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="تلفن همراه"
+        android:ems="10"
+        android:id="@+id/editText4"
+        android:textColor="?attr/colorPrimary" />
+
+    <TextView
+        android:text="تکمیل این گزینه الزامی می‌باشد"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView8"
+        android:visibility="gone"
+        android:textColor="@color/design_textinput_error_color_light" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="تلفن ثابت"
+        android:ems="10"
+        android:id="@+id/editText5"
+        android:textColor="?attr/colorPrimary" />
+
+    <TextView
+        android:text="تکمیل این گزینه الزامی می‌باشد"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView9"
+        android:visibility="gone"
+        android:textColor="@color/design_textinput_error_color_light" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:prompt=""
+        />
+
+
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+
+
+    <Spinner
+        android:id="@+id/spinner3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="نشانی"
+        android:ems="255"
+        android:minEms="2"
+        android:id="@+id/editText3"
+        android:textColor="?attr/colorPrimary" />
+
+    <TextView
+        android:text="تکمیل این گزینه الزامی می‌باشد"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5"
+        android:visibility="gone"
+        android:textColor="@color/design_textinput_error_color_light" />
+
+    <Button
+        android:text="Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button5" />
+
 </LinearLayout>

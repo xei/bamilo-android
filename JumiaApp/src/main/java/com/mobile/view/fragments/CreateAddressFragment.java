@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
@@ -49,6 +50,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -133,6 +135,25 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         mShippingFormContainer = (ViewGroup) view.findViewById(R.id.checkout_address_form_shipping_container);
         // Next button
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
+
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+        // Spinner Drop down elements
+        List<String> categories = new ArrayList<String>();
+        categories.add("Automobile");
+        categories.add("Business Services");
+        categories.add("Computers");
+        categories.add("Education");
+        categories.add("Personal");
+        categories.add("Travel");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
     }
 
     /*
