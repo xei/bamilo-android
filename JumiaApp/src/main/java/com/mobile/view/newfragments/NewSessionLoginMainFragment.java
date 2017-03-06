@@ -56,6 +56,7 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.LoginHeaderComponent;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.WarningFactory;
@@ -521,17 +522,25 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                 hideActivityProgress();
                 // Get customer
                 nextStepStruct = (NextStepStruct) baseResponse.getContentData();
+
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                 // Set hide change password
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
                 // Finish
-                getActivity().onBackPressed();
+
                 if (isInCheckoutProcess)
                 {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
+                    getActivity().onBackPressed();
                 }
+                else
+                {
+                    getActivity().onBackPressed();
+                }
+
+
                 return;
             case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
