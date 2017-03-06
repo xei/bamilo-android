@@ -1,5 +1,6 @@
 package com.mobile.view.fragments;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -22,6 +23,10 @@ import android.widget.Toast;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.helpers.categories.GetCategoriesHelper;
+import com.mobile.helpers.categories.GetSubCategoriesHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.ExternalLinksSection;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
@@ -29,8 +34,14 @@ import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.newFramework.objects.catalog.filters.FilterOptionInterface;
 import com.mobile.newFramework.objects.catalog.filters.FilterSelectionController;
+import com.mobile.newFramework.objects.category.Categories;
+import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -40,6 +51,10 @@ import com.mobile.utils.catalog.filters.FilterFragment;
 import com.mobile.utils.catalog.filters.FilterPriceFragment;
 import com.mobile.utils.catalog.filters.FilterRatingFragment;
 import com.mobile.view.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -57,7 +72,7 @@ import java.util.List;
  *
  *
  */
-public class FilterMainFragment extends BaseFragment implements View.OnClickListener{
+public class FilterMainFragment extends BaseFragment implements View.OnClickListener {
 
     private static final String TAG = FilterMainFragment.class.getSimpleName();
 
@@ -75,13 +90,15 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     private boolean toCancelFilters;
 
+    public final static String FILTER_CATEGORY = "catalog_category";
+
     public final static String FILTER_TAG = "catalog_filters";
 
     public final static String FILTER_POSITION_TAG = "filters_position";
 
     public final static String INITIAL_FILTER_VALUES = "initial_filter_values";
 
-    private  TextView mTxFilterTitle;
+    private TextView mTxFilterTitle;
 
     /**
      * Empty constructor
@@ -123,6 +140,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         filtersKey = (ListView)view.findViewById(R.id.filters_key);
         mTxFilterTitle = (TextView) view.findViewById(R.id.filter_title);
         mDiscountBox = (SwitchCompat) view.findViewById(R.id.dialog_filter_check_discount);
+
         filtersKey.setAdapter(new FiltersArrayAdapter(this.getActivity(), mFilters));
         filtersKey.setSelection(currentFilterPosition);
         loadFilterFragment(currentFilterPosition);
@@ -143,12 +161,12 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         }
 
 
-      if(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption() != null){
+        if(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption() != null){
             mDiscountBox.setVisibility(View.VISIBLE);
            /* mDiscountBox.setText(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption().getLabel());*/
             mDiscountBox.setChecked(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption().isSelected());
-          final int finalY = y;
-          mDiscountBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            final int finalY = y;
+            mDiscountBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     ((CatalogPriceFilter)mFilters.get(finalY)).getOption().getCheckBoxOption().setSelected(isChecked);
@@ -277,10 +295,14 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         // Communicate with parent
         toCancelFilters = false;
         Bundle bundle = new Bundle();
+        bundle.putString(FILTER_CATEGORY, "women_tops_tshirts");
         bundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
         getBaseActivity().communicateBetweenFragments(parentCatalogBackStackTag, bundle);
         getBaseActivity().onBackPressed();
     }
+
+
+
 
     private class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {
 
@@ -336,4 +358,9 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         }
         return super.allowBackPressed();
     }
+
+
+
+
+
 }

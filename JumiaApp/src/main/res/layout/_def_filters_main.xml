@@ -11,6 +11,7 @@
         android:layout_above="@+id/buttons"
         android:orientation="horizontal">
 
+
         <ListView
             android:id="@+id/filters_key"
             android:layout_width="0dp"

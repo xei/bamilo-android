@@ -94,7 +94,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (com.mobile.view.BuildConfig.FLAVOR.compareTo("live")==0)
+        /*if (com.mobile.view.BuildConfig.FLAVOR.compareTo("live")==0)
         {
             NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
                     .start(this);
@@ -104,9 +104,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
                     .withCrashReportingEnabled(false)
                     .start(this);
+            if (BuildConfig.BUILD_TYPE.compareTo("release") == 0)
+            {
+                Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
+            }
+        }*/
 
-            Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
-        }
 
 
         //Fabric.with(this, new Crashlytics());

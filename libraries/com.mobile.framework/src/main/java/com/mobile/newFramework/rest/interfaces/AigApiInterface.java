@@ -296,6 +296,11 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
+    void getSubCategoriesPaginated(@FieldMap Map<String, String> data, Callback<BaseResponse<Categories>> callback);
+    String getSubCategoriesPaginated = "getSubCategoriesPaginated";
+
+    @FormUrlEncoded
+    @POST("/")
     void getEditAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Form>> callback);
     String getEditAddressForm = "getEditAddressForm";
 

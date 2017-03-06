@@ -74,7 +74,6 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix ".dev"
             debuggable true
             // # Building Apps with Over 65K Methods
             // 1. Using multi dex support
