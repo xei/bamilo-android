@@ -56,6 +56,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        hideActivityProgress();
         // Set total bar
         CheckoutStepManager.setTotalBarWithFullButton(view);
         // Hide order summary

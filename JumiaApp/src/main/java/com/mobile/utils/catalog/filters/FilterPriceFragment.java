@@ -36,8 +36,8 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     private static final String TAG = FilterPriceFragment.class.getSimpleName();
 
     private TextView mRangeValues;
-    private EditText mMinValueTxt;
-    private EditText mMaxValueTxt;
+    public EditText mMinValueTxt;
+    public EditText mMaxValueTxt;
 
     private CheckBox mDiscountBox;
 
@@ -45,9 +45,9 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
 
     private int mMax;
 
-    private int mCurrMinValue ,mMinRang;
+    public int mCurrMinValue ,mMinRang;
 
-    private int mCurrMaxValue, mMaxRang;
+    public int mCurrMaxValue, mMaxRang;
 
     private RangeSeekBar<Integer> mRangeBar;
 
@@ -127,14 +127,20 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
                         setIntervalText(mCurrMaxValue,(int) mymax.longValue());
                         mRangeBar.setSelectedMaxValue(getMaxIntervalValue((int) mymax.longValue()));
                         mCurrMaxValue =mymax.intValue() ;
+                        mFilter.getOption().setRangeMin(mCurrMinValue);
+                        mFilter.getOption().setRangeMax(mCurrMaxValue);
                     }
                     else {
                         mCurrMaxValue = mMax;
+                        mFilter.getOption().setRangeMin(mCurrMinValue);
+                        mFilter.getOption().setRangeMax(mCurrMaxValue);
                     }
                 }
                     else{
                         mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
                         mMaxValueTxt.setText(mCurrMaxValue+"");
+                        mFilter.getOption().setRangeMin(mCurrMinValue);
+                        mFilter.getOption().setRangeMax(mCurrMaxValue);
                     }
             }
             }
@@ -152,14 +158,21 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
                             setIntervalText((int) mymin.longValue(), mCurrMaxValue);
                             mRangeBar.setSelectedMinValue(getMaxIntervalValue((int) mymin.longValue()));
                             mCurrMinValue = mymin.intValue();
+                            mFilter.getOption().setRangeMin(mCurrMinValue);
+                            mFilter.getOption().setRangeMax(mCurrMaxValue);
                         } else {
                             mCurrMinValue = mMin;
+                            mFilter.getOption().setRangeMin(mCurrMinValue);
+                            mFilter.getOption().setRangeMax(mCurrMaxValue);
                         }
                     }
                     else
                     {
                         mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
+                        mFilter.getOption().setRangeMin(mCurrMinValue);
+                        mFilter.getOption().setRangeMax(mCurrMaxValue);
                         mMinValueTxt.setText(mCurrMinValue+"");
+
                     }
                 }
 
@@ -237,8 +250,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
         // Reset text
         setIntervalText(mCurrMinValue, mCurrMaxValue);
-        // Reset discount box
-        mDiscountBox.setChecked(false);
+
         // Clean saved values
         mFilter.cleanFilter();
 //        mFilter.setRangeWithDiscount(false);
@@ -260,10 +272,6 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
             mFilter.getOption().setRangeMin(mCurrMinValue);
             mFilter.getOption().setRangeMax(mCurrMaxValue);
         }
-        // Validate discount check
-//        mFilter.setRangeWithDiscount(mDiscountBox.isChecked());
-        // Goto back
-//        mParent.allowBackPressed();
     }
     
     /**

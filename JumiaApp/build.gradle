@@ -47,8 +47,8 @@ android {
         minSdkVersion 15
         targetSdkVersion 22
         applicationId "com.bamilo.android"
-        versionName "2.4.0"
-        versionCode getAppVersionCode(28)
+        versionName "2.4.1"
+        versionCode getAppVersionCode(36)
         resConfigs "fa"
     }
 
@@ -90,17 +90,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-market.txt'
         }
     }
-
         productFlavors {
-
             live {
 
             }
-
             staging {
 
             }
-
     }
 
     lintOptions {
