@@ -129,9 +129,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     //DROID-10
     private long mGABeginRequestMillis;
 
-    private Categories mCategories;
-    private CatalogFilter mCategoryFilter;
-
 
     /**
      * Empty constructor
@@ -341,10 +338,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if(bundle != null && bundle.containsKey(FilterMainFragment.FILTER_TAG)){
             onSubmitFilterValues((ContentValues) bundle.getParcelable(FilterMainFragment.FILTER_TAG));
         }
-        if(bundle != null && bundle.containsKey(FilterMainFragment.FILTER_CATEGORY)){
+        /*if(bundle != null && bundle.containsKey(FilterMainFragment.FILTER_CATEGORY)){
             mQueryValues.remove("category");
             mQueryValues.put("category", bundle.getString(FilterMainFragment.FILTER_CATEGORY));
-        }
+        }*/
 
     }
 
@@ -681,9 +678,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         try {
             // Show dialog
             Bundle bundle = new Bundle();
-            bundle.putString(FilterMainFragment.FILTER_CATEGORY, ""+(mQueryValues.get("category")==null?"":mQueryValues.get("category")));
-
-            ArrayList<CatalogFilter> filters = addCategoryFilter();
+            bundle.putString("category_url", mKey);
+            ArrayList<CatalogFilter> filters = mCatalogPage.getFilters();
             bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, filters);
             getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
@@ -929,10 +925,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
-    private void triggerGetCategories(String name) {
-        // Trigger
-        triggerContentEventProgress(new GetSubCategoriesHelper(), GetSubCategoriesHelper.createBundle(name), this);
-    }
+
 
     /*
      * ############## RESPONSES ##############
@@ -959,45 +952,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             case ADD_PRODUCT_TO_WISH_LIST:
                 updateWishListProduct();
                 break;
-            case GET_SUBCATEGORIES_EVENT:
-                // Get categories
-                mCategories = (Categories) baseResponse.getContentData();
-
-                try {
-                    JSONObject object = new JSONObject();
-                    object.put("id", "category");
-                    object.put("name", "زیر مجموعه ها");
-                    object.put("multi", false);
-                    object.put("type", "checkbox");
-                    object.put("filter_separator", "--");
-
-                    JSONArray jArray = new JSONArray();
-
-                    for (Category cat: mCategories
-                            ) {
-                        JSONObject option = new JSONObject();
-                        option.put("label", cat.getName());
-                        option.put("val", cat.getUrlKey());
-                        option.put("total_products", 0);
-                        jArray.put(option);
-                    }
-                    object.put("option", jArray);
-
-                    mCategoryFilter = new CatalogCheckFilter(object);
-
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-                break;
 
             case GET_CATALOG_EVENT:
             default:
                 onRequestCatalogSuccess(baseResponse);
-                triggerGetCategories(mKey);
 
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaCatalog, mGABeginRequestMillis, mTitle);
@@ -1189,13 +1147,5 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     }
 
-    private ArrayList<CatalogFilter> addCategoryFilter()
-    {
-        ArrayList<CatalogFilter> filters = mCatalogPage.getFilters();
-        if (mCategoryFilter != null && !filters.contains(mCategoryFilter)) filters.add(0, mCategoryFilter);
-
-
-        return filters;
-    }
 
 }

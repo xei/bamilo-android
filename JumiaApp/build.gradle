@@ -57,8 +57,8 @@ android {
         javaMaxHeapSize "4G"
     }
 
-     signingConfigs {
-         release {
+    signingConfigs {
+        release {
             storeFile file("keystores/bamilo_android.keystore")
             storePassword "bamiloandroid"
             keyAlias "bamilo_android"
@@ -90,13 +90,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-market.txt'
         }
     }
-        productFlavors {
-            live {
+    productFlavors {
+        live {
 
-            }
-            staging {
+        }
+        staging {
 
-            }
+        }
     }
 
     lintOptions {
@@ -115,7 +115,6 @@ android {
         }
     }
 }
-
 
 /**
  * List of debug tools used only for debuggable apps.
@@ -151,6 +150,7 @@ dependencies {
         transitive = true;
     }
 
+    compile 'com.android.support:support-v4:23.4.0'
 }
 
 /**

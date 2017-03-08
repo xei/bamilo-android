@@ -75,6 +75,7 @@ import com.mobile.view.newfragments.NewCheckoutPaymentMethodsFragment;
 import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
 import com.mobile.view.newfragments.NewSessionLoginMainFragment;
 import com.mobile.view.newfragments.NewShoppingCartFragment;
+import com.mobile.view.newfragments.SubCategoryFilterFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -417,6 +418,9 @@ public class MainFragmentActivity extends DebugActivity {
                 break;
             case FILTERS:
                 fragment = newFragmentInstance(FilterMainFragment.class, bundle);
+                break;
+            case Sub_CATEGORY_FILTERS:
+                fragment = newFragmentInstance(SubCategoryFilterFragment.class, bundle);
                 break;
             case VARIATIONS:
                 fragment = newFragmentInstance(VariationsFragment.class, bundle);
