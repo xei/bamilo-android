@@ -1,10 +1,13 @@
 package com.mobile.view.fragments;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +25,11 @@ import android.widget.Toast;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.categories.GetCategoriesHelper;
+import com.mobile.helpers.categories.GetSubCategoriesHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.ExternalLinksSection;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
@@ -29,17 +37,31 @@ import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.newFramework.objects.catalog.filters.FilterOptionInterface;
 import com.mobile.newFramework.objects.catalog.filters.FilterSelectionController;
+import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
+import com.mobile.newFramework.objects.category.Categories;
+import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.filters.FilterCheckFragment;
 import com.mobile.utils.catalog.filters.FilterColorFragment;
 import com.mobile.utils.catalog.filters.FilterFragment;
 import com.mobile.utils.catalog.filters.FilterPriceFragment;
 import com.mobile.utils.catalog.filters.FilterRatingFragment;
 import com.mobile.view.R;
+import com.mobile.view.newfragments.SubCategoryFilterFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -57,7 +79,7 @@ import java.util.List;
  *
  *
  */
-public class FilterMainFragment extends BaseFragment implements View.OnClickListener{
+public class FilterMainFragment extends BaseFragment implements IResponseCallback, View.OnClickListener {
 
     private static final String TAG = FilterMainFragment.class.getSimpleName();
 
@@ -75,14 +97,20 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     private boolean toCancelFilters;
 
+    //public final static String FILTER_CATEGORY = "catalog_category";
+
     public final static String FILTER_TAG = "catalog_filters";
 
     public final static String FILTER_POSITION_TAG = "filters_position";
 
     public final static String INITIAL_FILTER_VALUES = "initial_filter_values";
 
-    private  TextView mTxFilterTitle;
+    TextView mSubCatFilter;
+    private View mSubCategoryLayout;
 
+    private TextView mTxFilterTitle;
+    private Categories mCategories;
+    private String mCategoryKey;
     /**
      * Empty constructor
      */
@@ -105,15 +133,20 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
             currentFilterPosition = savedInstanceState.getInt(FILTER_POSITION_TAG);
             Parcelable[] filterOptions = savedInstanceState.getParcelableArray(INITIAL_FILTER_VALUES);
             filterSelectionController = filterOptions instanceof FilterOptionInterface[] ? new FilterSelectionController(mFilters, (FilterOptionInterface[]) filterOptions) : new FilterSelectionController(mFilters);
+            mCategoryKey = savedInstanceState.getString("category_url");
         }
         // Received arguments
         else {
             mFilters = bundle.getParcelableArrayList(FILTER_TAG);
             currentFilterPosition = IntConstants.DEFAULT_POSITION;
             filterSelectionController = new FilterSelectionController(mFilters);
+            mCategoryKey = bundle.getString("category_url");
         }
         //
         toCancelFilters = true;
+        //TODO: add category url_key
+        triggerGetCategories(mCategoryKey);
+
     }
 
     @Override
@@ -123,6 +156,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         filtersKey = (ListView)view.findViewById(R.id.filters_key);
         mTxFilterTitle = (TextView) view.findViewById(R.id.filter_title);
         mDiscountBox = (SwitchCompat) view.findViewById(R.id.dialog_filter_check_discount);
+        mSubCategoryLayout = view.findViewById(R.id.subcateories_layout);
         filtersKey.setAdapter(new FiltersArrayAdapter(this.getActivity(), mFilters));
         filtersKey.setSelection(currentFilterPosition);
         loadFilterFragment(currentFilterPosition);
@@ -132,6 +166,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
                 onFiltersKeyItemClick(position);
             }
         });
+
         int y=0;
         for (CatalogFilter x :mFilters)
         {
@@ -143,12 +178,12 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         }
 
 
-      if(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption() != null){
+        if(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption() != null){
             mDiscountBox.setVisibility(View.VISIBLE);
            /* mDiscountBox.setText(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption().getLabel());*/
             mDiscountBox.setChecked(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption().isSelected());
-          final int finalY = y;
-          mDiscountBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            final int finalY = y;
+            mDiscountBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     ((CatalogPriceFilter)mFilters.get(finalY)).getOption().getCheckBoxOption().setSelected(isChecked);
@@ -158,7 +193,8 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
         view.findViewById(R.id.dialog_filter_button_cancel).setOnClickListener(this);
         view.findViewById(R.id.dialog_filter_button_done).setOnClickListener(this);
-
+        mSubCatFilter = (TextView) view.findViewById(R.id.subcateories_text);
+        mSubCatFilter.setOnClickListener(this);
     }
 
     @Override
@@ -245,6 +281,22 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         else if (id == R.id.dialog_filter_button_done){
             processOnClickDone();
         }
+        else if (id == R.id.subcateories_text)
+        {
+            processOnSubCategoryClick();
+        }
+    }
+
+    private void processOnSubCategoryClick() {
+
+/*        ArrayList<MultiFilterOptionInterface> lst = new ArrayList<>();
+        for (Category cat: mCategories) {
+        }*/
+
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(SubCategoryFilterFragment.SUBCATEGORIES, mCategories);
+        getBaseActivity().onSwitchFragment(FragmentType.Sub_CATEGORY_FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -292,10 +344,14 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         // Communicate with parent
         toCancelFilters = false;
         Bundle bundle = new Bundle();
+       // bundle.putString(FILTER_CATEGORY, "women_tops_tshirts");
         bundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
         getBaseActivity().communicateBetweenFragments(parentCatalogBackStackTag, bundle);
         getBaseActivity().onBackPressed();
     }
+
+
+
 
     private class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {
 
@@ -351,4 +407,64 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         }
         return super.allowBackPressed();
     }
+
+    private void triggerGetCategories(String name) {
+        // Trigger
+        triggerContentEventProgress(new GetSubCategoriesHelper(), GetSubCategoriesHelper.createBundle(name), this);
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        // Validate fragment state
+        if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        super.handleSuccessEvent(baseResponse);
+        // Hide dialog progress
+        hideActivityProgress();
+        // Validate event type
+        switch (eventType) {
+            case GET_SUBCATEGORIES_EVENT:
+                // Get categories
+                mCategories = (Categories) baseResponse.getContentData();
+
+                if (!mCategories.get(1).hasChildren())
+                {
+                    mSubCategoryLayout.setVisibility(View.GONE);
+                }
+                else
+                {
+                    mSubCategoryLayout.setVisibility(View.VISIBLE);
+                }
+
+
+
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        Print.i(TAG, "ON ERROR");
+        // Get error code
+        EventType eventType = baseResponse.getEventType();
+        // Validate fragment state
+        if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Validate event type
+        switch (eventType) {
+            case GET_SUBCATEGORIES_EVENT:
+                hideActivityProgress();
+                mSubCategoryLayout.setVisibility(View.GONE);
+
+                break;
+
+        }
+    }
+
 }

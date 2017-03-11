@@ -3,9 +3,11 @@ package com.mobile.newFramework.objects.category;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
  * @modified Paulo Carvalho
  *
  */
-public class Category implements IJSONSerializable, Parcelable {
+public class Category implements IJSONSerializable, Parcelable, MultiFilterOptionInterface {
 
     private String mType;
 
@@ -47,6 +49,9 @@ public class Category implements IJSONSerializable, Parcelable {
     private int mLevel;
 
     private String mMainCategory;   //content category
+
+
+    protected boolean selected;
     /**
      * Category empty constructor.
      */
@@ -285,4 +290,25 @@ public class Category implements IJSONSerializable, Parcelable {
     };
 
 
+    @Override
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    @NonNull
+    @Override
+    public String getLabel() {
+        return getName();
+    }
+
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
+
+    @NonNull
+    @Override
+    public String getVal() {
+        return getUrlKey();
+    }
 }

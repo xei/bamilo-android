@@ -22,6 +22,8 @@ public enum EventType {
 
     GET_CATEGORIES_EVENT("http:/catalog/categories/", AigRestContract.MAX_CACHE_TIME),
 
+    GET_SUBCATEGORIES_EVENT("http:/catalog/categoryByUrlKey/", AigRestContract.MAX_CACHE_TIME),
+
     GET_CATALOG_EVENT("http:/search/find/"),
 
     LOGIN_EVENT("https:/customer/login/"),

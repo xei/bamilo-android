@@ -397,7 +397,6 @@
     <string name="invalid_address_other">This address is not correct.</string>
 
 
-
     <string name="faq">FAQ</string>
     <string name="about_us_label">About US</string>
 
@@ -462,7 +461,7 @@
     <string name="cart_total_amount">Total</string>
     <string name="cart_total_discount">Total discount</string>
     <string name="cart_product_discount">Products discount</string>
-    <string name="checkout_count_title" >All product</string>
+    <string name="checkout_count_title">All product</string>
     <string name="basket_confirm_button">Confirm</string>
     <string name="register_label">Register</string>
     <string name="national_id">National code</string>
@@ -478,5 +477,10 @@
     <string name="address_next_button">Continue</string>
     <string name="payment_next_button">Continue and Payment</string>
     <string name="coupon_label">Coupon</string>
+    <string name="sub_categories">SubCategories</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="confirm_filter">Confirm</string>
 
 </resources>

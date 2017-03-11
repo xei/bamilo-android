@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textColor="@color/blue_new"
             />
 
         <LinearLayout
@@ -34,6 +35,7 @@
                 android:padding="@dimen/dimen_5dp"
                 android:paddingTop="10dp"
                 android:checked="false"
+                android:theme="@style/BlueSwitchStyle"
                 android:id="@+id/dialog_filter_check_discount" />
 
             <com.mobile.components.customfontviews.TextView
@@ -49,7 +51,8 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_filter_button_done"
         style="@style/DialogFilterButtonSubmit"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"
+        android:background="@color/blue_new"/>
 
 
 </LinearLayout>

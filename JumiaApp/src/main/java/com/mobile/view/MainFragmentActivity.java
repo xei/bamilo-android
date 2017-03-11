@@ -75,6 +75,7 @@ import com.mobile.view.newfragments.NewCheckoutPaymentMethodsFragment;
 import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
 import com.mobile.view.newfragments.NewSessionLoginMainFragment;
 import com.mobile.view.newfragments.NewShoppingCartFragment;
+import com.mobile.view.newfragments.SubCategoryFilterFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -275,6 +276,12 @@ public class MainFragmentActivity extends DebugActivity {
                     removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 }
+
+                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.SUB_CATEGORY_FILTER))
+                {
+                    removeEntries = false;
+                }
+
                 // Put the target type
                 bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
                 // Create instance
@@ -417,6 +424,9 @@ public class MainFragmentActivity extends DebugActivity {
                 break;
             case FILTERS:
                 fragment = newFragmentInstance(FilterMainFragment.class, bundle);
+                break;
+            case Sub_CATEGORY_FILTERS:
+                fragment = newFragmentInstance(SubCategoryFilterFragment.class, bundle);
                 break;
             case VARIATIONS:
                 fragment = newFragmentInstance(VariationsFragment.class, bundle);

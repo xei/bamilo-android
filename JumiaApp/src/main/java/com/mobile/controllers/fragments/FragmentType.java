@@ -77,7 +77,8 @@ public enum FragmentType {
     ORDER_RETURN_CONDITIONS,
     ORDER_RETURN_STEPS,
     ORDER_RETURN_CALL,
-    STATIC_WEBVIEW_PAGE;
+    STATIC_WEBVIEW_PAGE,
+    Sub_CATEGORY_FILTERS;
 
     private int id;
     private final static String DIVIDER = ":";
