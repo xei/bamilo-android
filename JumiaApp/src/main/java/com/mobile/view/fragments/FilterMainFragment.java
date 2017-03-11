@@ -61,6 +61,7 @@ import com.mobile.view.newfragments.SubCategoryFilterFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -103,6 +104,9 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     public final static String FILTER_POSITION_TAG = "filters_position";
 
     public final static String INITIAL_FILTER_VALUES = "initial_filter_values";
+
+    TextView mSubCatFilter;
+    private View mSubCategoryLayout;
 
     private TextView mTxFilterTitle;
     private Categories mCategories;
@@ -152,7 +156,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         filtersKey = (ListView)view.findViewById(R.id.filters_key);
         mTxFilterTitle = (TextView) view.findViewById(R.id.filter_title);
         mDiscountBox = (SwitchCompat) view.findViewById(R.id.dialog_filter_check_discount);
-
+        mSubCategoryLayout = view.findViewById(R.id.subcateories_layout);
         filtersKey.setAdapter(new FiltersArrayAdapter(this.getActivity(), mFilters));
         filtersKey.setSelection(currentFilterPosition);
         loadFilterFragment(currentFilterPosition);
@@ -189,8 +193,8 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
 
         view.findViewById(R.id.dialog_filter_button_cancel).setOnClickListener(this);
         view.findViewById(R.id.dialog_filter_button_done).setOnClickListener(this);
-        view.findViewById(R.id.subcateories_text).setOnClickListener(this);
-
+        mSubCatFilter = (TextView) view.findViewById(R.id.subcateories_text);
+        mSubCatFilter.setOnClickListener(this);
     }
 
     @Override
@@ -285,9 +289,9 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
 
     private void processOnSubCategoryClick() {
 
-        ArrayList<MultiFilterOptionInterface> lst = new ArrayList<>();
+/*        ArrayList<MultiFilterOptionInterface> lst = new ArrayList<>();
         for (Category cat: mCategories) {
-            FilterOp
+        }*/
 
 
         Bundle bundle = new Bundle();
@@ -427,6 +431,14 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
                 // Get categories
                 mCategories = (Categories) baseResponse.getContentData();
 
+                if (!mCategories.get(1).hasChildren())
+                {
+                    mSubCategoryLayout.setVisibility(View.GONE);
+                }
+                else
+                {
+                    mSubCategoryLayout.setVisibility(View.VISIBLE);
+                }
 
 
 
@@ -448,6 +460,8 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         switch (eventType) {
             case GET_SUBCATEGORIES_EVENT:
                 hideActivityProgress();
+                mSubCategoryLayout.setVisibility(View.GONE);
+
                 break;
 
         }

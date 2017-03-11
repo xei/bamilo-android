@@ -8,12 +8,18 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.mobile.adapters.SubCategoryArrayAdapter;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.R;
+import com.mobile.view.fragments.CatalogFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -31,6 +37,8 @@ public class SubCategoryFilterFragment extends NewBaseFragment {
     private ArrayList<Category> mSubcategories;
 
     private ListView mListView;
+    private TextView mConfirmButton;
+
 
     public SubCategoryFilterFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
@@ -76,7 +84,42 @@ public class SubCategoryFilterFragment extends NewBaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mListView = (ListView)view.findViewById(R.id.subcategory_listview);
-        SubCategoryArrayAdapter adapter = new SubCategoryArrayAdapter(getBaseActivity(), mSubcategories);
+        SubCategoryArrayAdapter adapter = new SubCategoryArrayAdapter(getBaseActivity(), mSubcategories.get(1).getChildren());
         mListView.setAdapter(adapter);
+        mListView.setOnItemClickListener(adapter);
+
+        mConfirmButton = (TextView) view.findViewById(R.id.confirm_button);
+        mConfirmButton.setOnClickListener(onConfirmClick);
+
     }
+
+    View.OnClickListener onConfirmClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            getBaseActivity().fragmentManagerBackPressed();
+            getBaseActivity().fragmentManagerBackPressed();
+            //getBaseActivity().onSwitchFragment(FragmentType.CATALOG, );
+            Category selectedCategory = ((SubCategoryArrayAdapter)mListView.getAdapter()).getSelected();
+            goToCatalog(selectedCategory);
+        }
+    };
+
+    private void goToCatalog(Category category) {
+        // Update counter for tracking
+        CategoriesTableHelper.updateCategoryCounter(category.getUrlKey(), category.getName());
+        // Close navigation
+        //getBaseActivity().closeNavigationDrawer();
+        //mCategory = category;
+        @TargetLink.Type String link = category.getTargetLink();
+
+        // Parse target link
+        new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(category.getName())
+                .setIsSubCategoryFilter()
+                //.addAppendListener(this)
+                .enableWarningErrorMessage()
+                .run();
+    }
+
+
 }

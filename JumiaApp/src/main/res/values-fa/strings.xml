@@ -472,5 +472,6 @@
     <string name="email_password_invalid">ایمیل/رمز عبور نادرست است</string>
     <string name="coupon_label">کد تحفیف</string>
     <string name="sub_categories">زیر مجموعه ها</string>
+    <string name="confirm_filter">ثبت</string>
 
 </resources>

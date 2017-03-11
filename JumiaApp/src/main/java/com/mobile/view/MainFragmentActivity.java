@@ -276,6 +276,12 @@ public class MainFragmentActivity extends DebugActivity {
                     removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 }
+
+                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.SUB_CATEGORY_FILTER))
+                {
+                    removeEntries = false;
+                }
+
                 // Put the target type
                 bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
                 // Create instance

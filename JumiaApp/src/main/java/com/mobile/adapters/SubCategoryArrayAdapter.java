@@ -39,7 +39,7 @@ import java.util.ArrayList;
     public SubCategoryArrayAdapter(Context context, ArrayList<Category> categories) {
         super(context, R.layout.list_sub_item_2, categories);
         this.mCategories = categories;
-        //this.mCurrentSelectedOptions = catalogCheckFilter.getSelectedFilterOptions();
+        this.mCurrentSelectedOptions = new SparseArray<>(categories.size());
     }
 
     /*
@@ -63,8 +63,9 @@ import java.util.ArrayList;
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        if(catalogFilter.isMulti()) processMultiSelection(parent, position);
-        else processSingleSelection(parent, position);
+        //if(catalogFilter.isMulti()) processMultiSelection(parent, position);
+        //else
+        processSingleSelection(parent, position);
 
         ((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
     }
@@ -139,15 +140,15 @@ import java.util.ArrayList;
 
     protected void setCheckboxBehavior(CheckBox checkBox, MultiFilterOptionInterface option){
         checkBox.setVisibility(View.VISIBLE);
-        if(catalogFilter.isMulti()){
+/*        if(catalogFilter.isMulti()){
             checkBox.setChecked(option.isSelected());
-        } else {
+        } else {*/
             if(option.isSelected()){
                 checkBox.setChecked(true);
             } else {
                 checkBox.setVisibility(View.INVISIBLE);
             }
-        }
+        //}
     }
 
     protected void setProductsCount(TextView textView, MultiFilterOptionInterface option){
@@ -157,5 +158,11 @@ import java.util.ArrayList;
         } else {
             textView.setVisibility(View.GONE);
         }*/
+    }
+
+    public Category getSelected()
+    {
+        if (mCurrentSelectedOptions.size() == 0) return null;
+        return (Category)mCurrentSelectedOptions.valueAt(0);
     }
 }

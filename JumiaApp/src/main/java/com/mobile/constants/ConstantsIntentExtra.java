@@ -104,6 +104,6 @@ public class ConstantsIntentExtra {
     // ########## RICH RELEVANCE ############
     public static final String RICH_RELEVANCE_HASH = mPackage + "RichRelevanceHash";
 
-
+    public static final String SUB_CATEGORY_FILTER="SubCategoryFilter";
 
 }
