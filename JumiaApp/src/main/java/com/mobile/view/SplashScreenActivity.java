@@ -94,6 +94,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         if (com.mobile.view.BuildConfig.BUILD_TYPE.compareTo("release") == 0)
         {
 
@@ -107,7 +108,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                         .start(this);
 
                 Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
-
             }
         }
 

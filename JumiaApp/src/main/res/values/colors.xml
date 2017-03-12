@@ -107,5 +107,6 @@
     <color name="white_transparent">#B3FFFFFF</color>
     <color name="cart_item_total">#D9D9D9</color>
     <color name="splash_backgroung_color">@android:color/white</color>
+    <color name="blue_new">#4990e2</color>
 
 </resources>

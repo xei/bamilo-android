@@ -18,6 +18,7 @@ import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.categories.GetSubCategoriesHelper;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
@@ -26,6 +27,10 @@ import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
+import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
+import com.mobile.newFramework.objects.category.Categories;
+import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -52,6 +57,10 @@ import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListe
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -119,6 +128,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     //DROID-10
     private long mGABeginRequestMillis;
+
 
     /**
      * Empty constructor
@@ -328,6 +338,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if(bundle != null && bundle.containsKey(FilterMainFragment.FILTER_TAG)){
             onSubmitFilterValues((ContentValues) bundle.getParcelable(FilterMainFragment.FILTER_TAG));
         }
+        /*if(bundle != null && bundle.containsKey(FilterMainFragment.FILTER_CATEGORY)){
+            mQueryValues.remove("category");
+            mQueryValues.put("category", bundle.getString(FilterMainFragment.FILTER_CATEGORY));
+        }*/
+
     }
 
     /*
@@ -663,7 +678,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         try {
             // Show dialog
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, mCatalogPage.getFilters());
+            bundle.putString("category_url", mKey);
+            ArrayList<CatalogFilter> filters = mCatalogPage.getFilters();
+            bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, filters);
             getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
@@ -908,6 +925,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
+
+
     /*
      * ############## RESPONSES ##############
      */
@@ -933,9 +952,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             case ADD_PRODUCT_TO_WISH_LIST:
                 updateWishListProduct();
                 break;
+
             case GET_CATALOG_EVENT:
             default:
                 onRequestCatalogSuccess(baseResponse);
+
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaCatalog, mGABeginRequestMillis, mTitle);
                 break;
@@ -996,6 +1017,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                     showUnexpectedErrorWarning();
                 }
                 break;
+            case GET_SUBCATEGORIES_EVENT:
+                hideActivityProgress();
+                break;
+
             case GET_CATALOG_EVENT:
             default:
                 onRequestCatalogError(baseResponse);
@@ -1121,5 +1146,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
 
     }
+
 
 }
