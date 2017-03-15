@@ -7,7 +7,7 @@
         android:color="@color/grey_pending"/>
 
     <size
-        android:width="@dimen/circle_diameter"
-        android:height="@dimen/circle_diameter"/>
+        android:width="@dimen/order_circle_diameter"
+        android:height="@dimen/order_circle_diameter"/>
 
 </shape>
