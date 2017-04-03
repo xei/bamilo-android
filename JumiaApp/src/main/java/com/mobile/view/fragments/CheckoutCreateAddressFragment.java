@@ -60,11 +60,11 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     public void onResume() {
         super.onResume();
         // Get and show form
-        if (mFormShipping != null && orderSummary != null && regions != null) {
+       /* if (mFormShipping != null && orderSummary != null && regions != null) {
             loadCreateAddressForm(mFormShipping);
         } else {
             triggerCreateAddressForm();
-        }
+        }*/
     }
 
     @Override
