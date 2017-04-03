@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/margin_padding_l">
+
+    <!-- TITLE -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/checkout_address_form_shipping_title"
+        style="@style/HeaderStyle"
+        android:text="@string/action_label_add_address"
+        android:textStyle="bold" />
+
+    <!-- FORM -->
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp"
+        android:layout_height="match_parent">
+
+        <com.mobile.components.customfontviews.EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="50"
+            style="@style/BlueFormTextField"
+            android:minEms="2"
+            android:id="@+id/address_name"
+            android:hint="@string/first_name"
+            android:textColor="?attr/colorPrimary" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:text="تکمیل این گزینه الزامی می‌باشد"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/address_name_error"
+            android:visibility="gone"
+            android:textColor="@color/design_textinput_error_color_light" />
+
+        <com.mobile.components.customfontviews.EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="50"
+            style="@style/BlueFormTextField"
+            android:minEms="2"
+            android:id="@+id/address_family"
+            android:hint="@string/last_name"
+            android:textColor="?attr/colorPrimary" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:text="تکمیل این گزینه الزامی می‌باشد"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/address_last_name_error"
+            android:visibility="gone"
+            android:textColor="@color/design_textinput_error_color_light" />
+
+        <com.mobile.components.customfontviews.EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="50"
+            style="@style/BlueFormTextField"
+            android:minEms="2"
+            android:id="@+id/address_national_id"
+            android:hint="@string/national_id"
+            android:textColor="?attr/colorPrimary" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:text="تکمیل این گزینه الزامی می‌باشد"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/address_national_id_error"
+            android:visibility="gone"
+            android:textColor="@color/design_textinput_error_color_light" />
+
+        <Spinner
+            android:id="@+id/address_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/delivery_neighbourhood"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:minHeight="@dimen/dimen_50dp"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"
+            style="@style/spinnerItemStyle"
+            />
+
+        <com.mobile.components.customfontviews.EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="50"
+            style="@style/BlueFormTextField"
+            android:minEms="2"
+            android:id="@+id/address_cell"
+            android:hint="@string/cellphone"
+            android:textColor="?attr/colorPrimary" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:text="تکمیل این گزینه الزامی می‌باشد"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/address_cellphone_error"
+            android:visibility="gone"
+            android:textColor="@color/design_textinput_error_color_light" />
+
+        <Spinner
+            android:id="@+id/address_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/delivery_state"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:minHeight="@dimen/dimen_50dp"
+            style="@style/spinnerItemStyle"
+            android:spinnerMode="dropdown"
+            />
+
+        <Spinner
+            android:id="@+id/address_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/delivery_city"
+            android:textSize="20sp"
+            android:minHeight="@dimen/dimen_50dp"
+            style="@style/spinnerItemStyle"
+            android:spinnerMode="dropdown"
+            />
+
+        <Spinner
+            android:id="@+id/address_postal_region"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/delivery_neighbourhood"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:minHeight="@dimen/dimen_50dp"
+            android:spinnerMode="dropdown"
+            style="@style/spinnerItemStyle"
+            />
+
+        <com.mobile.components.customfontviews.EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="50"
+            style="@style/BlueFormTextField"
+            android:minEms="2"
+            android:id="@+id/address_direction"
+            android:hint="@string/delivery_address"
+            android:textColor="?attr/colorPrimary" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:text="تکمیل این گزینه الزامی می‌باشد"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/address_text_error"
+            android:visibility="gone"
+            android:textColor="@color/design_textinput_error_color_light" />
+
+        <com.mobile.components.customfontviews.EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="50"
+            style="@style/BlueFormTextField"
+            android:minEms="2"
+            android:id="@+id/address_postal_code"
+            android:hint="@string/deliver_postal_code"
+            android:textColor="?attr/colorPrimary" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:text="تکمیل این گزینه الزامی می‌باشد"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/address_postal_error"
+            android:visibility="gone"
+            android:textColor="@color/design_textinput_error_color_light" />
+
+        <com.mobile.components.customfontviews.Button
+            android:text="Button"
+            android:background="#4990e2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_address_btn" />
+    </LinearLayout>
+
+</ScrollView>
+</LinearLayout>
