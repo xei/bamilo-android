@@ -83,16 +83,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected PurchaseEntity orderSummary;
     private Bundle mShippingFormSavedState;
     private Bundle mSavedRegionCitiesPositions;
-    Spinner address_spinner ,city_spinner,postal_spinner,gender_spinner;
+    IcsSpinner address_spinner ,city_spinner,postal_spinner,gender_spinner;
     TextView name_error , family_error , national_error,postal_error,cellphone_error ,address_error;
     EditText name;
     EditText family;
     EditText address;
     EditText national_id;
     EditText postal_code;
-    Spinner city;
-    Spinner region;
-    EditText gender;
+
     EditText cellphone;
     private Button add;
     String n , t;
@@ -153,12 +151,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         name = (EditText) view.findViewById(R.id.address_name);
         family = (EditText) view.findViewById(R.id.address_family);
         national_id = (EditText) view.findViewById(R.id.address_national_id);
-        gender_spinner = (Spinner) view.findViewById(R.id.address_gender);
+        gender_spinner = (IcsSpinner) view.findViewById(R.id.address_gender);
         cellphone = (EditText) view.findViewById(R.id.address_cell);
         address = (EditText) view.findViewById(R.id.address_direction);
-        address_spinner = (Spinner) view.findViewById(R.id.address_state);
-        city_spinner = (Spinner) view.findViewById(R.id.address_city);
-        postal_spinner = (Spinner) view.findViewById(R.id.address_postal_region);
+        address_spinner = (IcsSpinner) view.findViewById(R.id.address_state);
+        city_spinner = (IcsSpinner) view.findViewById(R.id.address_city);
+        postal_spinner = (IcsSpinner) view.findViewById(R.id.address_postal_region);
         postal_code = (EditText) view.findViewById(R.id.address_postal_code);
         add = (Button) view.findViewById(R.id.add_address_btn);
 
@@ -393,15 +391,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     protected void setCitiesOnSelectedRegion(String requestedRegionAndFields, final ArrayList<AddressCity> cities) {
 
-            ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item, cities);
-            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-            PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-            promptAdapter.setPrompt("شهر");
-            city_spinner.setAdapter(promptAdapter);
-            city_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item, cities);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
+        promptAdapter.setPrompt("شهر");
+        city_spinner.setAdapter(promptAdapter);
+        city_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //triggerGetCities(n, regions.get(position).getValue(), regions.get(position).getValue() + "");
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position==0){
                     city_Id = cities.get(position).getValue();
                     triggerGetPostalCodes(t,city_Id, String.valueOf(city_Id));
@@ -412,13 +409,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
         });
-            hideActivityProgress();
-            showFragmentContentContainer();
+        hideActivityProgress();
+        showFragmentContentContainer();
+
+
+
 
 
 
@@ -435,14 +431,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
             promptAdapter.setPrompt("محله");
             postal_spinner.setAdapter(promptAdapter);
-            postal_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            postal_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
                     post_id = postalCodes.get(position).getValue();
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+                public void onNothingSelected(IcsAdapterView<?> parent) {
 
                 }
             });
@@ -593,7 +589,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     private void onClickCreateAddressButton() {
         Print.i(TAG, "ON CLICK: CREATE");
-       // Validate
+        // Validate
         if (formValidated()==false) {
             Print.i(TAG, "SAME FORM: INVALID");
 
@@ -647,8 +643,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                     // Request the cities for this region id
                     int regionId = ((AddressRegion) object).getValue();
                     // Save the selected region on the respective variable
-                        selectedRegionOnShipping = "" + regionId;
-                        triggerGetCities(field.getApiCall(), regionId, selectedRegionOnShipping);
+                    selectedRegionOnShipping = "" + regionId;
+                    triggerGetCities(field.getApiCall(), regionId, selectedRegionOnShipping);
                 }
                 // Case text or other
                 else {
@@ -668,8 +664,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                     // Request the postal codes for this city id
                     int cityId = ((AddressCity) object).getValue();
                     // Save the selected city on the respective variable
-                        selectedCityOnShipping = "" + cityId;
-                        triggerGetPostalCodes(field.getApiCall(), cityId, selectedCityOnShipping);
+                    selectedCityOnShipping = "" + cityId;
+                    triggerGetPostalCodes(field.getApiCall(), cityId, selectedCityOnShipping);
                 }
             }
         }
@@ -693,7 +689,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         national_error.setVisibility(View.GONE);
         if (name.getText().length()>=0) {
           /*  */
-             if (name.getText().length()<2)
+            if (name.getText().length()<2)
             {
                 name_error.setVisibility(View.VISIBLE);
                 name_error.setText("تکمیل این گزینه الزامی می باشد");
@@ -864,30 +860,28 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         AddressForms form = (AddressForms) baseResponse.getContentData();
 
         ///////////////////////////////
-         action = ((AddressForms) baseResponse.getContentData()).getBillingForm().getAction();
+        action = ((AddressForms) baseResponse.getContentData()).getBillingForm().getAction();
         List<FormField> fields = ((AddressForms) baseResponse.getContentData()).getShippingForm() .getFields();
 
         String m="";
         n="";
         int i =0;
-            for ( FormField field :fields)
-            {
-                i++;
-                if (i == 7) {
+        for ( FormField field :fields)
+        {
+            i++;
+            if (i == 7) {
                 n=field.getApiCall();
-                }
-                if(i==6){
-                String id = field.getId();
-                String name =field.getName();
-               String options =field.getLinkHtml() ;
-                     m = field.getApiCall();
-                    continue;
-                }
-                if (i == 8) {
-                    t=field.getApiCall();
-                }
+            }
+            if(i==6){
+
+                m = field.getApiCall();
                 continue;
             }
+            if (i == 8) {
+                t=field.getApiCall();
+            }
+            continue;
+        }
 
 
 
@@ -897,7 +891,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
         triggerGetRegions(m);
 
-       // mFormShipping = form.getShippingForm();
+        // mFormShipping = form.getShippingForm();
         // Load form
         //loadCreateAddressForm(mFormShipping);
     }
@@ -915,18 +909,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt("استان");
         address_spinner.setAdapter(promptAdapter);
-        address_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        address_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
 
-                if (position!=0) {
-                   region_Id = regions.get(position-1).getValue();
-                    triggerGetCities(n, region_Id, String.valueOf(region_Id));
-                }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(IcsAdapterView<?> parent) {
 
             }
         });

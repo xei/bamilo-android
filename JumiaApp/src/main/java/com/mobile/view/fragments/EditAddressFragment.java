@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
+import com.mobile.components.absspinner.PromptSpinnerAdapter;
+import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
@@ -20,6 +24,7 @@ import com.mobile.helpers.address.GetFormEditAddressHelper;
 import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormInputType;
@@ -45,6 +50,7 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -70,6 +76,17 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     protected PurchaseEntity orderSummary;
     protected boolean isCityIdAnEditText = false;
     private Bundle mFormSavedState;
+    IcsSpinner address_spinner ,city_spinner,postal_spinner,gender_spinner;
+    TextView name_error , family_error , national_error,postal_error,cellphone_error ,address_error;
+    EditText name;
+    EditText family;
+    EditText address;
+    EditText national_id;
+    EditText postal_code;
+    EditText cellphone;
+    private Button add;
+    String action;
+    String id , nameVal , familyVal , address1 ,address2,region , city, postcode,phone ,shipping ,billing;
 
     /**
      * Constructor
@@ -77,6 +94,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state, @ConstantsCheckout.CheckoutType int titleCheckout) {
         super(enabledMenuItems, action, R.layout.checkout_edit_address_main, titleResId, adjust_state, titleCheckout);
     }
+    /*public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state, @ConstantsCheckout.CheckoutType int titleCheckout) {
+        super(enabledMenuItems, action, R.layout.checkout_edit_address_shipping2, titleResId, adjust_state, titleCheckout);
+    }*/
 
     /*
      * (non-Javadoc)
@@ -105,14 +125,40 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
+        name = (EditText) view.findViewById(R.id.address_name);
+        family = (EditText) view.findViewById(R.id.address_family);
+        national_id = (EditText) view.findViewById(R.id.address_national_id);
+        gender_spinner = (IcsSpinner) view.findViewById(R.id.address_gender);
+        cellphone = (EditText) view.findViewById(R.id.address_cell);
+        address = (EditText) view.findViewById(R.id.address_direction);
+        address_spinner = (IcsSpinner) view.findViewById(R.id.address_state);
+        city_spinner = (IcsSpinner) view.findViewById(R.id.address_city);
+        postal_spinner = (IcsSpinner) view.findViewById(R.id.address_postal_region);
+        postal_code = (EditText) view.findViewById(R.id.address_postal_code);
+        add = (Button) view.findViewById(R.id.add_address_btn);
+
+        name_error = (TextView) view.findViewById(R.id.address_name_error);
+        family_error = (TextView) view.findViewById(R.id.address_last_name_error);
+        national_error = (TextView) view.findViewById(R.id.address_national_id_error);
+        cellphone_error = (TextView) view.findViewById(R.id.address_cellphone_error);
+        postal_error = (TextView) view.findViewById(R.id.address_postal_error);
+        address_error = (TextView) view.findViewById(R.id.address_text_error);
+       /* // Spinner Drop down elements
+        ArrayList<AddressCity> city = new ArrayList<AddressCity>();
+        city.add(new AddressCity(0,"شهر"));
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item,city);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
+        promptAdapter.setPrompt("شهر");
+        city_spinner.setAdapter(promptAdapter);*/
         // Container
-        mEditFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
+       /* mEditFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
         // Next button
         view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener(this);
         //Validate current address
         if (mAddressId == INVALID_ADDRESS_ID) {
             showFragmentErrorRetry();
-        }
+        }*/
     }
 
     /*
@@ -206,11 +252,58 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     protected void loadEditAddressForm(Form form) {
         Print.i(TAG, "LOAD EDIT ADDRESS FORM");
         // Edit form
-        mEditFormGenerator = FormFactory.create(FormConstants.ADDRESS_FORM, getBaseActivity(), form);
+       String action = form.getAction();
+        int x = form.getFields().size();
+        List<FormField> fields = form.getFields();
+        int i =0;
+
+        for (FormField field : fields)
+        {
+            if(field.getKey().equals("id")) {
+               id = form.getFields().get(i).getValue();
+            }
+            if(field.getKey().equals("first_name")) {
+                nameVal = form.getFields().get(i).getValue();
+            }
+            if(field.getKey().equals("last_name")) {
+                familyVal = form.getFields().get(i).getValue();
+            }
+            if(field.getKey().equals("address1")) {
+                address1= form.getFields().get(i).getValue();
+            }
+            if(field.getKey().equals("address2")) {
+                address2 = form.getFields().get(i).getValue();
+            }
+            if(field.getKey().equals("region")) {
+                region = form.getFields().get(i).getValue();
+            }
+            if(field.getKey().equals("city")) {
+                city = form.getFields().get(i).getValue();
+            }
+            if(field.getKey().equals("postcode")) {
+                postcode = form.getFields().get(i).getValue();
+            }
+            if(field.getKey().equals("phone")) {
+                phone= form.getFields().get(i).getValue();
+            }
+            if(field.getKey().equals("is_default_shipping")) {
+                shipping= form.getFields().get(i).getValue();
+            }
+            if(field.getKey().equals("is_default_billing")) {
+                billing = form.getFields().get(i).getValue();
+            }
+
+
+        i++;
+        }
+
+        /*List<FormField> fields = ((AddressForms) form.getContentData()).getShippingForm() .getFields();
+*/
+       /* mEditFormGenerator = FormFactory.create(FormConstants.ADDRESS_FORM, getBaseActivity(), form);
         mEditFormContainer.removeAllViews();
         mEditFormGenerator.loadSaveFormState(mFormSavedState);
         mEditFormContainer.addView(mEditFormGenerator.getContainer());
-        mEditFormContainer.refreshDrawableState();
+        mEditFormContainer.refreshDrawableState();*/
         // Validate Regions
         if(mRegions == null) {
             FormField field = form.getFieldKeyMap().get(RestConstants.REGION);
@@ -220,10 +313,10 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             setRegions(mEditFormGenerator, mRegions);
         }
         // Define if CITY is a List or Text
-        DynamicFormItem item = mEditFormGenerator.getItemByKey(RestConstants.CITY);
+       /* DynamicFormItem item = mEditFormGenerator.getItemByKey(RestConstants.CITY);
         isCityIdAnEditText = item != null && item.getDataControl() instanceof EditText;
         // Show selected address content
-        mEditFormContainer.refreshDrawableState();
+        mEditFormContainer.refreshDrawableState();*/
     }
 
     /**
@@ -232,25 +325,23 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     private void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions){
         Print.d(TAG, "SET REGIONS REGIONS: ");
         // Get region item
-        DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.REGION);
+     /*   DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.REGION);
         // Clean group
         ViewGroup group = formItem.getControl();
-        group.removeAllViews();
+        group.removeAllViews();*/
         // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
-        spinner.setLayoutParams(group.getLayoutParams());
+         address_spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= spinner.getCount()) {
-            spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
+        address_spinner.setAdapter(adapter);
+        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= address_spinner.getCount()) {
+            address_spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
         } else {
-            spinner.setSelection(getDefaultPosition(formItem, regions));
+            address_spinner.setSelection(Integer.parseInt(city));
         }
-        spinner.setOnItemSelectedListener(this);
-        formItem.setDataControl(spinner);
-        group.addView(spinner);
+        address_spinner.setOnItemSelectedListener(this);
+hideActivityProgress();
         // Show invisible content to trigger spinner listeners
         showGhostFragmentContentContainer();
     }
@@ -259,52 +350,40 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Method used to set the cities on the respective form
      */
     private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities){
-        // Get city item
-        DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.CITY);
-        // Clean group
-        ViewGroup group = formItem.getControl();
-        group.removeAllViews();
-        // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
-        spinner.setLayoutParams(group.getLayoutParams());
+        address_spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         // Create adapter
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.CITY) <= spinner.getCount()) {
-            spinner.setSelection(mFormSavedState.getInt(RestConstants.CITY));
+        city_spinner.setAdapter(adapter);
+        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= city_spinner.getCount()) {
+            city_spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
         } else {
-            spinner.setSelection(getDefaultPosition(formItem, cities));
+            city_spinner.setSelection(Integer.parseInt(city));
         }
-        spinner.setOnItemSelectedListener(this);
-        formItem.setDataControl(spinner);
-        group.addView(spinner);
+        city_spinner.setOnItemSelectedListener(this);
+        hideActivityProgress();
+        // Show invisible content to trigger spinner listeners
+        showGhostFragmentContentContainer();
     }
 
     /**
      * Method used to set the postalCodes on the respective form
      */
     private void setPostalCodes(DynamicForm dynamicForm, ArrayList<AddressPostalCode> postalCodes){
-        // Get postal code item
-        DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.POSTCODE);
-        // Clean group
-        ViewGroup group = formItem.getControl();
-        group.removeAllViews();
-        // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
-        spinner.setLayoutParams(group.getLayoutParams());
+        postal_spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         // Create adapter
-        ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
+        ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.POSTCODE) <= spinner.getCount()) {
-            spinner.setSelection(mFormSavedState.getInt(RestConstants.POSTCODE));
+        postal_spinner.setAdapter(adapter);
+        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= city_spinner.getCount()) {
+            postal_spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
         } else {
-            spinner.setSelection(getDefaultPosition(formItem, postalCodes));
+            postal_spinner.setSelection(Integer.parseInt(city));
         }
-        spinner.setOnItemSelectedListener(this);
-        formItem.setDataControl(spinner);
-        group.addView(spinner);
+        postal_spinner.setOnItemSelectedListener(this);
+        hideActivityProgress();
+        // Show invisible content to trigger spinner listeners
+        showGhostFragmentContentContainer();
     }
 
     /**
@@ -325,6 +404,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         }
         return 0;
     }
+
+
 
     /**
      * ############# CLICK LISTENER #############
@@ -498,10 +579,13 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 mRegions = (AddressRegions) baseResponse.getContentData();
                 if (CollectionUtils.isNotEmpty(mRegions)) {
                     setRegions(mEditFormGenerator, mRegions);
+                    hideActivityProgress();
                 } else {
                     Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
                     super.showFragmentErrorRetry();
+                    hideActivityProgress();
                 }
+                hideActivityProgress();
                 break;
             case GET_CITIES_EVENT:
                 Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
