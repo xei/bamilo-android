@@ -331,7 +331,7 @@
     <string name="delivered_label">تحویل داده شد</string>
     <string name="order_number">شمار سفارش ‎%s‎</string>
     <string name="billing">صورت حساب</string>
-    <string name="first_space_second_placeholder">‎%1$s‎‎%2$s‎</string>
+    <string name="first_space_second_placeholder">‎%1$s‎ ‎%2$s‎</string>
     <string name="first_slash_second_placeholder">‎%1$s‎/‎%2$s‎</string>
     <string name="first_new_line_second_placeholder">%1$s\n%2$s</string>
     <string name="first_x_second_placeholder">اندازه ‎%1$s‎تعداد‎%2$s‎</string>
