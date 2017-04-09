@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.PutDataMapRequest;
+/*import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.PutDataMapRequest;*/
 import com.mobile.newFramework.utils.output.Print;
 
 /**
@@ -54,7 +54,7 @@ public class GWearManager {
      */
     public void informWearOfNotification (int index, Bundle bundle) {
         // Log.i(TAG, "code1wear index : " + index + " name: " + title + " content : " + content);
-        PutDataMapRequest putRequest = PutDataMapRequest.create("/notification_received");
+     /*   PutDataMapRequest putRequest = PutDataMapRequest.create("/notification_received");
         DataMap map = putRequest.getDataMap();
         map.putInt(EXTRA_INDEX, index);
         for (String key : bundle.keySet()) {
@@ -62,7 +62,7 @@ public class GWearManager {
             if (value != null) {
                 map.putString(key, value.toString());
             }
-        }
-        new JumiaWearableListenerService.SendFilesTask().execute(putRequest, putRequest);
+        }*/
+/*        new JumiaWearableListenerService.SendFilesTask().execute(putRequest, putRequest);*/
     }
 }
