@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -37,6 +38,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
+import com.pushwoosh.PushManager;
+import com.pushwoosh.internal.PushManagerImpl;
 
 import java.util.EnumSet;
 
@@ -220,6 +223,9 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 // Get Customer
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
+
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getId()+"");
+
                 // Case valid next step
                 if(nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
@@ -258,6 +264,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
                 // Finish
                 getActivity().onBackPressed();
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getId()+"");
                 if (isInCheckoutProcess)
                 {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
@@ -278,6 +285,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 hideActivityProgress();
                 break;
         }
+
     }
 
     @Override

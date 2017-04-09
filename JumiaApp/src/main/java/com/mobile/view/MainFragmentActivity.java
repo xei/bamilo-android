@@ -1,13 +1,20 @@
 package com.mobile.view;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.mobile.app.DebugActivity;
@@ -76,16 +83,23 @@ import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
 import com.mobile.view.newfragments.NewSessionLoginMainFragment;
 import com.mobile.view.newfragments.NewShoppingCartFragment;
 import com.mobile.view.newfragments.SubCategoryFilterFragment;
+import com.pushwoosh.BasePushMessageReceiver;
+import com.pushwoosh.BaseRegistrationReceiver;
+import com.pushwoosh.PushManager;
+import com.pushwoosh.fragment.PushEventListener;
+import com.pushwoosh.fragment.PushFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import static com.pushwoosh.BasePushMessageReceiver.JSON_DATA_KEY;
+
 /**
  * @author sergiopereira
  */
 @UseA4S
-public class MainFragmentActivity extends DebugActivity {
+public class MainFragmentActivity extends DebugActivity implements PushEventListener {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
 
@@ -104,6 +118,96 @@ public class MainFragmentActivity extends DebugActivity {
         super(NavigationAction.UNKNOWN, EnumSet.noneOf(MyMenuItem.class), IntConstants.ACTION_BAR_NO_TITLE);
     }
 
+    //Registration receiver
+    BroadcastReceiver mBroadcastReceiver = new BaseRegistrationReceiver() {
+        @Override
+        public void onRegisterActionReceive(Context context, Intent intent) {
+            checkMessage(intent);
+        }
+    };
+
+    //Push message receiver
+    private BroadcastReceiver mReceiver = new BasePushMessageReceiver() {
+        @Override
+        protected void onMessageReceive(Intent intent) {
+//JSON_DATA_KEY contains JSON payload of push notification.
+            showMessage("push message is " + intent.getExtras().getString(JSON_DATA_KEY));
+        }
+    };
+
+    //Registration of the receivers
+    public void registerReceivers() {
+        IntentFilter intentFilter = new IntentFilter(getPackageName() + ".action.PUSH_MESSAGE_RECEIVE");
+        registerReceiver(mReceiver, intentFilter, getPackageName() + ".permission.C2D_MESSAGE", null);
+        registerReceiver(mBroadcastReceiver, new IntentFilter(getPackageName() + "." + PushManager.REGISTER_BROAD_CAST_ACTION));
+    }
+
+    public void unregisterReceivers() {
+//Unregister receivers on pause
+        try {
+            unregisterReceiver(mReceiver);
+        } catch (Exception e) {
+// pass.
+        }try {
+            unregisterReceiver(mBroadcastReceiver);
+        } catch (Exception e) {
+//pass through
+        }
+    }
+
+
+    private void checkMessage(Intent intent) {
+        if (null != intent) {
+            if (intent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
+                showMessage("push message is " + intent.getExtras().getString(PushManager.PUSH_RECEIVE_EVENT));}
+            else if (intent.hasExtra(PushManager.REGISTER_EVENT)) {
+                showMessage("register");
+            }
+            else if (intent.hasExtra(PushManager.UNREGISTER_EVENT)) {
+                showMessage("unregister");
+            }
+            else if (intent.hasExtra(PushManager.REGISTER_ERROR_EVENT)) {
+                showMessage("register error");
+            }
+            else if(intent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
+                showMessage("unregister error");
+            }
+            resetIntentValues();
+        }
+    }
+
+    private void resetIntentValues() {
+        Intent mainAppIntent = getIntent();
+        if (mainAppIntent != null) {
+            if (mainAppIntent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
+                mainAppIntent.removeExtra(PushManager.PUSH_RECEIVE_EVENT);}
+            else if (mainAppIntent.hasExtra(PushManager.REGISTER_EVENT)) {
+                mainAppIntent.removeExtra(PushManager.REGISTER_EVENT);
+            }
+            else if (mainAppIntent.hasExtra(PushManager.UNREGISTER_EVENT)) {
+                mainAppIntent.removeExtra(PushManager.UNREGISTER_EVENT);
+            }
+            else if (mainAppIntent.hasExtra(PushManager.REGISTER_ERROR_EVENT)) {
+                mainAppIntent.removeExtra(PushManager.REGISTER_ERROR_EVENT);
+            }
+            else if (mainAppIntent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
+                mainAppIntent.removeExtra(PushManager.UNREGISTER_ERROR_EVENT);
+            }
+            setIntent(mainAppIntent);
+        }
+    }
+
+    private void showMessage(String message) {
+        Log.i("AndroidBash",message);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+        setIntent(intent);checkMessage(intent);
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -114,6 +218,23 @@ public class MainFragmentActivity extends DebugActivity {
         super.onCreate(savedInstanceState);
         Print.d(TAG, "ON CREATE");
         // Enable Accengage rich push notifications
+
+        //Init Pushwoosh fragment
+        PushFragment.init(this);
+
+        //Pushwoosh Begin Register receivers for push notifications
+        registerReceivers();
+//Create and start push manager
+        PushManager pushManager = PushManager.getInstance(this);//Start push manager, this will count app open for Pushwoosh stats as well
+        try {
+            pushManager.onStartup(this);
+        } catch (Exception e) {
+//push notifications are not available or AndroidManifest.xml is not configured properly
+        }
+//Register for push!
+        pushManager.registerForPushNotifications();
+        checkMessage(getIntent());
+//PushwooshEnd in onCreate
         Ad4PushTracker.get().setPushNotificationLocked(false);
         // ON ORIENTATION CHANGE
         if (savedInstanceState == null) {
@@ -157,14 +278,22 @@ public class MainFragmentActivity extends DebugActivity {
      * 
      * @see com.mobile.utils.BaseActivity#onNewIntent(android.content.Intent)
      */
-    @Override
+/*    @Override
     protected void onNewIntent(Intent intent) {
+
         Print.d(TAG, "ON NEW INTENT");
-        // For AD4 - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
+       *//*
+        // For AD4 - http://wiki.accengage.com/*//*android/doku.php?id=sub-classing-any-activity-type
         this.setIntent(intent);
         // Validate deep link
         DeepLinkManager.onSwitchToDeepLink(this, intent);
-    }
+*//*
+        super.onNewIntent(intent);
+
+        //Check if we've got new intent with a push notification
+        PushFragment.onNewIntent(this ,intent);
+    }*/
+
 
     /*
      * (non-Javadoc)
@@ -175,6 +304,7 @@ public class MainFragmentActivity extends DebugActivity {
     public void onResume() {
         super.onResume();
         Print.d(TAG, "ON RESUME");
+        registerReceivers();
     }
 
     /*
@@ -186,6 +316,7 @@ public class MainFragmentActivity extends DebugActivity {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
+        unregisterReceivers();
     }
 
     /*
@@ -608,6 +739,34 @@ public class MainFragmentActivity extends DebugActivity {
         return isInMaintenance;
     }
 
+    @Override
+    public void doOnRegistered(String registrationId)
+    {
+        Log.i(TAG, "Registered for pushes: " + registrationId);
+    }
 
+    @Override
+    public void doOnRegisteredError(String errorId)
+    {
+        Log.e(TAG, "Failed to register for pushes: " + errorId);
+    }
+
+    @Override
+    public void doOnMessageReceive(String message)
+    {
+        Log.i(TAG, "Notification opened: " + message);
+    }
+
+    @Override
+    public void doOnUnregistered(final String message)
+    {
+        Log.i(TAG, "Unregistered from pushes: " + message);
+    }
+
+    @Override
+    public void doOnUnregisteredError(String errorId)
+    {
+        Log.e(TAG, "Failed to unregister from pushes: " + errorId);
+    }
 
 }
