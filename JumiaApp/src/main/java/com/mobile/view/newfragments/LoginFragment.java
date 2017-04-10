@@ -21,6 +21,8 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.EmarsysMobileEngage;
+import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
@@ -256,6 +258,16 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
+                //Emarsys
+                EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
+                    @Override
+                    public void EmarsysMobileEngageResponse(boolean success) {
+
+                    }
+                };
+                EmarsysMobileEngage emarsysMobileEngage = new EmarsysMobileEngage(getBaseActivity());
+
+                emarsysMobileEngage.sendLogin("dvfdf", emarsysMobileEngageResponse);
                 // Finish
                 getActivity().onBackPressed();
                 if (isInCheckoutProcess)
