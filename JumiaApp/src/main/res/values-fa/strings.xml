@@ -344,6 +344,7 @@
     <string name="an_error_occurred">خطایی رخ داده است.</string>
     <string name="customer_service_info">برای اطلاعات بیشتر، لطفاً با خدمات مشتریان تماس بگیرید.</string>
     <string name="phone_contact">شماره تلفن:</string>
+    <string name="cellphone">موبایل :</string>
     <string name="email_contact">آدرس ایمیل</string>
     <string name="logout_success">از حساب کاربری خارج شدید</string>
     <string name="percentage_placeholder">‎%s‎ درصد</string>
@@ -431,10 +432,15 @@
     <string name="default_address_label">تعیین آدرس پیش فرض</string>
 
     <string name="checkout_address">آدرس</string>
+    <string name="delivery_address">نشانی (به فارسی)</string>
+    <string name="deliver_postal_code">کد پستی</string>
     <string name="checkout_review">بررسی</string>
     <string name="checkout_payment">پرداخت</string>
 
-
+    <!--delivery -->
+    <string name="delivery_state">استان</string>
+    <string name="delivery_city">شهر</string>
+    <string name="delivery_neighbourhood">محله</string>
 
     <!--checkout confirm-->
 
