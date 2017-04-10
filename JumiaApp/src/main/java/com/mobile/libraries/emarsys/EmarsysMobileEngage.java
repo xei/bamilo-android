@@ -5,6 +5,7 @@ import android.telephony.TelephonyManager;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.view.R;
+import com.pushwoosh.PushManager;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class EmarsysMobileEngage {
 
             DataCompletion response = new DataCompletion() {
                 @Override
-                public void completion(Object data, EmarsysError errorMessages) {
+                public void completion(Object data, ArrayList<String> errorMessages) {
                     completion.EmarsysMobileEngageResponse(errorMessages == null);
                 }
             };
@@ -49,67 +50,58 @@ public class EmarsysMobileEngage {
 
             DataCompletion response = new DataCompletion() {
                 @Override
-                public void completion(Object data, EmarsysError errorMessages) {
-                    //handleEmarsysMobileEngageResponse(data, errorMessages,
-                    /*completion:^(id data, NSError *error) {
-                        [self handleEmarsysMobileEngageResponse:data error:error completion:completion];
-                    }];*/
+                public void completion(Object data, ArrayList<String> errorMessages) {
+                    handleEmarsysMobileEngageResponse(data, errorMessages, completion);
+
                 }
             };
 
-            EmarsysDataManager.sharedInstance(context).anonymousLogin((EmarsysPushIdentifier) getIdentifier(pushToken), response);
+            sharedInstance().anonymousLogin((EmarsysPushIdentifier) getIdentifier(pushToken), response);
 
         }
     }
 
-    public void sendOpen(String sid, EmarsysMobileEngageResponse completion) {
+    public void sendOpen(String sid, final EmarsysMobileEngageResponse completion) {
         DataCompletion response = new DataCompletion() {
             @Override
-            public void completion(Object data, EmarsysError errorMessages) {
-                //handleEmarsysMobileEngageResponse(data, errorMessages,
-                    /*completion:^(id data, NSError *error) {
-                        [self handleEmarsysMobileEngageResponse:data error:error completion:completion];
-                        }];*/
+            public void completion(Object data, ArrayList<String> errorMessages) {
+                handleEmarsysMobileEngageResponse(data, errorMessages, completion);
+
             }
         };
-        EmarsysDataManager.sharedInstance(context).openMessageEvent((EmarsysContactIdentifier)getIdentifier(null), sid, response);
+        sharedInstance().openMessageEvent((EmarsysContactIdentifier)getIdentifier(null), sid, response);
 
     }
 
-    public void sendCustomEvent(String event, Map<String, String> attributes, EmarsysMobileEngageResponse completion) {
+    public void sendCustomEvent(String event, Map<String, String> attributes, final EmarsysMobileEngageResponse completion) {
 
         DataCompletion response = new DataCompletion() {
             @Override
-            public void completion(Object data, EmarsysError errorMessages) {
-                //handleEmarsysMobileEngageResponse(data, errorMessages,
-                    /*completion:^(id data, NSError *error) {
-            [self handleEmarsysMobileEngageResponse:data error:error completion:completion];
-        }];*/
+            public void completion(Object data, ArrayList<String> errorMessages) {
+                handleEmarsysMobileEngageResponse(data, errorMessages, completion);
+
             }
         };
 
-        EmarsysDataManager.sharedInstance(context).customEvent((EmarsysContactIdentifier)getIdentifier(null), event, attributes, response);
+        sharedInstance().customEvent((EmarsysContactIdentifier)getIdentifier(null), event, attributes, response);
     }
 
-    public void sendLogout(EmarsysMobileEngageResponse completion) {
+    public void sendLogout(final EmarsysMobileEngageResponse completion) {
         DataCompletion response = new DataCompletion() {
             @Override
-            public void completion(Object data, EmarsysError errorMessages) {
-                //handleEmarsysMobileEngageResponse(data, errorMessages,
-                    /*completion:^(id data, NSError *error) {
-                        [self handleEmarsysMobileEngageResponse:data error:error completion:completion];        }];*/
+            public void completion(Object data, ArrayList<String> errorMessages) {
+                handleEmarsysMobileEngageResponse(data, errorMessages, completion);
+
             }
         };
 
-        EmarsysDataManager.sharedInstance(context).logout((EmarsysContactIdentifier)getIdentifier(null), response);
+        sharedInstance().logout((EmarsysContactIdentifier)getIdentifier(null), response);
     }
 
     Object getIdentifier(String pushToken) {
 
-        String appId = context.getResources().getString(R.string.Emarsys_ApplicationCode);
-
-        TelephonyManager mngr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        String hwid = mngr.getDeviceId();
+        String appId = context.getResources().getString(R.string.PW_APPID);
+        String hwid = PushManager.getPushwooshHWID(context);
 
         if(pushToken != null) {
             return new EmarsysPushIdentifier(appId, hwid, pushToken);

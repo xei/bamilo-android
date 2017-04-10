@@ -197,8 +197,8 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
         if(statusCode == HTTPStatusCode.CREATED.getValue() || statusCode == HTTPStatusCode.SUCCESSFUL.getValue()) {
             completion.completion(data, null);
         } else {
-            EmarsysError emarsysError = new EmarsysError("com.bamilo.android", "" + statusCode, errorMessages.get(0));
-            completion.completion(null, emarsysError);
+            //EmarsysError emarsysError = new EmarsysError("com.bamilo.android", "" + statusCode, errorMessages.get(0));
+            completion.completion(null, errorMessages);
 
         }
     }

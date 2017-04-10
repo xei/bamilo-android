@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -199,12 +200,7 @@ public class EmarsysRequestManager extends RequestManager {
                 switch (method) {
                     case HttpVerbPOST: {
                         urlConnection.setRequestMethod("POST");
-                        /*OutputStream os = urlConnection.getOutputStream();
-                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                        writer.write(getQuery(params));
-                        writer.flush();
-                        writer.close();
-                        os.close();*/
+                        urlConnection.setDoOutput(true);
                         byte[] postData = getQuery(params).getBytes( StandardCharsets.UTF_8 );
                         int postDataLength = postData.length;
                         urlConnection.setRequestProperty("charset", "utf-8");
@@ -228,9 +224,7 @@ public class EmarsysRequestManager extends RequestManager {
                                     sb.append(line);
                                 }
                                 br.close();
-                                //JSONObject jsonObject = null;
-
-                                //jsonObject = new JSONObject(sb.toString());
+                                Log.d("Emarsys", sb.toString());
                                 handleEmarsysMobileEngageResponse(status, urlConnection.getInputStream(), null, completion);
                                 break;
                             default:
@@ -253,8 +247,7 @@ public class EmarsysRequestManager extends RequestManager {
         }
 
         protected void onPostExecute(Void feed) {
-            // TODO: check this.exception
-            // TODO: do something with the feed
+
         }
     }
 
