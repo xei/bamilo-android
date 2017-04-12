@@ -151,6 +151,8 @@ dependencies {
     }
 
     compile 'com.android.support:support-v4:23.4.0'
+    /** Emarsys **/
+    compile 'com.scarabresearch:predictsdk:1.0.6'
 }
 
 /**
