@@ -224,7 +224,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
 
-                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getId()+"");
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail()+"");
 
                 // Case valid next step
                 if(nextStepFromApi != FragmentType.UNKNOWN) {
@@ -264,7 +264,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
                 // Finish
                 getActivity().onBackPressed();
-                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getId()+"");
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail()+"");
                 if (isInCheckoutProcess)
                 {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
