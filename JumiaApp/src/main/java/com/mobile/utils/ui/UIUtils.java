@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
@@ -29,7 +31,10 @@ import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
+
+import static com.mobile.newFramework.Darwin.context;
 
 /**
  * A general Class with UI utils such as set the font <p/><br>
@@ -335,6 +340,12 @@ public class UIUtils {
             Toast.makeText(activity,"لطفا ایمیل را نصب کنید",Toast.LENGTH_LONG).show();
 
         }
+
+    }
+    public static String networkType(Context context){
+    ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+       return activeNetwork.getTypeName();
 
     }
 }

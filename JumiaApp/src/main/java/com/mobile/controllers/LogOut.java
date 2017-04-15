@@ -7,6 +7,7 @@ import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.view.BaseActivity;
 
@@ -43,6 +44,7 @@ public class LogOut {
             // Inform activity to update views
             try {
                 baseActivity.onLogOut();
+                PushWooshTracker.logOut(baseActivity,true);
             } catch (IllegalStateException e){
                 e.printStackTrace();
             }
