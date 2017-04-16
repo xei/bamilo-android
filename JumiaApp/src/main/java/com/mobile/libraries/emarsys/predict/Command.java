@@ -12,14 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.mobile.libraries.emarsys.predict;
 
 import android.util.Log;
 
 import com.mobile.libraries.emarsys.predict.RecommendationRequest;
-import com.mobile.libraries.emarsys.predict.RecommendedItem;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.squareup.okhttp.HttpUrl;
 
@@ -27,9 +27,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+*/
 /**
  * Base wrapper class for the commands.
- */
+ *//*
+
 abstract class Command {
 
     List<com.mobile.libraries.emarsys.predict.ErrorParameter> validate() {
@@ -47,9 +49,11 @@ abstract class Command {
 
 }
 
+*/
 /**
  * Base wrapper class for the rules.
- */
+ *//*
+
 abstract class Filter extends com.mobile.libraries.emarsys.predict.Command {
 
     String catalogField;
@@ -68,9 +72,11 @@ abstract class Filter extends com.mobile.libraries.emarsys.predict.Command {
 
 }
 
+*/
 /**
  * Wraps the exclude rules.
- */
+ *//*
+
 class ExcludeCommand extends com.mobile.libraries.emarsys.predict.Filter {
 
     ExcludeCommand(List<String> values, String rule, String catalogField) {
@@ -99,9 +105,11 @@ class ExcludeCommand extends com.mobile.libraries.emarsys.predict.Filter {
 
 }
 
+*/
 /**
  * Wraps the include rules.
- */
+ *//*
+
 class IncludeCommand extends com.mobile.libraries.emarsys.predict.Filter {
 
     IncludeCommand(List<String> values, String rule, String catalogField) {
@@ -130,9 +138,11 @@ class IncludeCommand extends com.mobile.libraries.emarsys.predict.Filter {
 
 }
 
+*/
 /**
  * Wraps the cart command.
- */
+ *//*
+
 class CartCommand extends com.mobile.libraries.emarsys.predict.Command {
 
     private final List<PurchaseCartItem> items;
@@ -175,9 +185,11 @@ class CartCommand extends com.mobile.libraries.emarsys.predict.Command {
 
 }
 
+*/
 /**
  * Base wrapper class for the simple string commands.
- */
+ *//*
+
 class StringCommand extends com.mobile.libraries.emarsys.predict.Command {
 
     String value;
@@ -198,9 +210,11 @@ class StringCommand extends com.mobile.libraries.emarsys.predict.Command {
 
 }
 
+*/
 /**
  * Wraps the availabilityZone command.
- */
+ *//*
+
 class AvailabilityZoneCommand extends com.mobile.libraries.emarsys.predict.StringCommand {
 
     AvailabilityZoneCommand(String value) {
@@ -223,9 +237,11 @@ class AvailabilityZoneCommand extends com.mobile.libraries.emarsys.predict.Strin
 
 }
 
+*/
 /**
  * Wraps the category command.
- */
+ *//*
+
 class CategoryCommand extends com.mobile.libraries.emarsys.predict.StringCommand {
 
     CategoryCommand(String value) {
@@ -248,9 +264,11 @@ class CategoryCommand extends com.mobile.libraries.emarsys.predict.StringCommand
 
 }
 
+*/
 /**
  * Wraps the keyword command.
- */
+ *//*
+
 class KeywordCommand extends com.mobile.libraries.emarsys.predict.StringCommand {
 
     KeywordCommand(String value) {
@@ -273,9 +291,11 @@ class KeywordCommand extends com.mobile.libraries.emarsys.predict.StringCommand 
 
 }
 
+*/
 /**
  * Wraps the tag command.
- */
+ *//*
+
 class TagCommand extends com.mobile.libraries.emarsys.predict.StringCommand {
 
     TagCommand(String value) {
@@ -298,9 +318,11 @@ class TagCommand extends com.mobile.libraries.emarsys.predict.StringCommand {
 
 }
 
+*/
 /**
  * Wraps the purchase command.
- */
+ *//*
+
 class PurchaseCommand extends com.mobile.libraries.emarsys.predict.CartCommand {
 
     PurchaseCommand(String orderId, List<PurchaseCartItem> items) {
@@ -330,9 +352,11 @@ class PurchaseCommand extends com.mobile.libraries.emarsys.predict.CartCommand {
 
 }
 
+*/
 /**
  * Wraps the searchTerm command.
- */
+ *//*
+
 class SearchTermCommand extends com.mobile.libraries.emarsys.predict.StringCommand {
 
     SearchTermCommand(String value) {
@@ -355,9 +379,11 @@ class SearchTermCommand extends com.mobile.libraries.emarsys.predict.StringComma
 
 }
 
+*/
 /**
  * Wraps the view command.
- */
+ *//*
+
 class ViewCommand extends com.mobile.libraries.emarsys.predict.Command {
 
     private final String itemId;
@@ -398,9 +424,11 @@ class ViewCommand extends com.mobile.libraries.emarsys.predict.Command {
 
 }
 
+*/
 /**
  * Wraps the recommend command.
- */
+ *//*
+
 class RecommendCommand extends com.mobile.libraries.emarsys.predict.Command {
 
     RecommendCommand(RecommendationRequest recommendationRequest) {
@@ -457,3 +485,4 @@ class RecommendCommand extends com.mobile.libraries.emarsys.predict.Command {
     }
 
 }
+*/

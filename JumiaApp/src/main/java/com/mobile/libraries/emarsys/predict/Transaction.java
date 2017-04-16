@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.mobile.libraries.emarsys.predict;
 
@@ -21,6 +22,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 
+import com.emarsys.predict.RecommendedItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
@@ -33,9 +35,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * The transaction. Please send transaction instances only once.
- */
+ *//*
+
 public class Transaction {
 
     private static final String TAG = Transaction.class.getSimpleName();
@@ -55,9 +59,11 @@ public class Transaction {
     private final List<ErrorParameter> errors;
     private final Map<String, CompletionHandler> handlers;
 
-    /**
+    */
+/**
      * Creates a transaction.
-     */
+     *//*
+
     public Transaction() {
         availabilityZones = new ArrayList<AvailabilityZoneCommand>();
         carts = new ArrayList<CartCommand>();
@@ -72,11 +78,13 @@ public class Transaction {
         handlers = new HashMap<String, CompletionHandler>();
     }
 
-    /**
+    */
+/**
      * Creates a transaction, if the user comes from selected(clicked) a recommended item.
      *
      * @param item the previously selected item object.
-     */
+     *//*
+
     public Transaction(@NonNull RecommendedItem item) {
         this();
         if (item == null) {
@@ -85,12 +93,14 @@ public class Transaction {
         this.trackedItem = item;
     }
 
-    /**
+    */
+/**
      * Set availability zone.
      * See javascript api reference for more explanation.
      *
      * @param availabilityZone ID of the availability zone.
-     */
+     *//*
+
     public void availabilityZone(@NonNull String availabilityZone) {
         if (availabilityZone == null) {
             throw new NullPointerException("The availabilityZone cannot be null");
@@ -99,14 +109,16 @@ public class Transaction {
         availabilityZones.add(cmd);
     }
 
-    /**
+    */
+/**
      * Report a purchase event.
      * This command should be called on the order confirmation page to report successful purchases.
      * Also make sure all purchased items are passed to the command.
      *
      * @param orderId ID of the purchase.
      * @param items   list of purchased objects.
-     */
+     *//*
+
     public void purchase(@NonNull String orderId,
                          @NonNull List<PurchaseCartItem> items) {
         if (orderId == null) {
@@ -119,12 +131,14 @@ public class Transaction {
         purchases.add(cmd);
     }
 
-    /**
+    */
+/**
      * Set search terms entered by visitor.
      * This call should be placed in the search results page.
      *
      * @param searchTerm search term entered by user.
-     */
+     *//*
+
     public void searchTerm(@NonNull String searchTerm) {
         if (searchTerm == null) {
             throw new NullPointerException("The searchTerm cannot be null");
@@ -133,14 +147,16 @@ public class Transaction {
         searchTerms.add(cmd);
     }
 
-    /**
+    */
+/**
      * Report a product browsed by visitor.
      * This command should be placed in all product pages – i.e. pages showing a single item in
      * detail. Recommender features RELATED and ALSO_BOUGHT depend on this call.
      *
      * @param itemId ID of the viewed item (consistent with the item column specified in the
      *               catalog).
-     */
+     *//*
+
     public void view(@NonNull String itemId) {
         if (itemId == null) {
             throw new NullPointerException("The itemId cannot be null");
@@ -149,25 +165,29 @@ public class Transaction {
         views.add(cmd);
     }
 
-    /**
+    */
+/**
      * Report the list of items in the visitor's shopping cart.
      * This command should be called on every page. Make sure all cart items are passed to the
      * command.
      * If the visitor's cart is empty, send the empty array.
      *
      * @param items list of cart objects.
-     */
+     *//*
+
     public void cart(@Nullable List<PurchaseCartItem> items) {
         CartCommand c = new CartCommand(items);
         carts.add(c);
     }
 
-    /**
+    */
+/**
      * Report the category currently browsed by visitor.
      * Should be called on all category pages. Pass a valid category path.
      *
      * @param category category path.
-     */
+     *//*
+
     public void category(@NonNull String category) {
         if (category == null) {
             throw new NullPointerException("The category cannot be null");
@@ -176,13 +196,15 @@ public class Transaction {
         categories.add(cmd);
     }
 
-    /**
+    */
+/**
      * Report the keyword used by visitors to refine their searches.
      * Brands, locations, price ranges are good examples of such keywords. If your site offers such
      * features, you can pass keywords to the recommender system with this command.
      *
      * @param keyword keyword selected by user.
-     */
+     *//*
+
     public void keyword(@NonNull String keyword) {
         if (keyword == null) {
             throw new NullPointerException("The keyword cannot be null");
@@ -191,12 +213,14 @@ public class Transaction {
         keywords.add(cmd);
     }
 
-    /**
+    */
+/**
      * Add an arbitrary tag to the current event. The tag is collected and can be accessed later
      * from other Emarsys products.
      *
      * @param tag tag selected by user.
-     */
+     *//*
+
     public void tag(@NonNull String tag) {
         if (tag == null) {
             throw new NullPointerException("The tag cannot be null");
@@ -205,23 +229,27 @@ public class Transaction {
         tags.add(cmd);
     }
 
-    /**
+    */
+/**
      * Request recommendations.
      * See usage examples and the list of available recommendation strategies.
      *
      * @param request           recommendation request instance.
-     */
+     *//*
+
     public void recommend(@NonNull RecommendationRequest request) {
         recommend(request, null);
     }
 
-    /**
+    */
+/**
      * Request recommendations.
      * See usage examples and the list of available recommendation strategies.
      *
      * @param request           recommendation request instance.
      * @param completionHandler completion handler
-     */
+     *//*
+
     public void recommend(@NonNull RecommendationRequest request,
                           @Nullable CompletionHandler completionHandler) {
         if (request == null) {
@@ -440,3 +468,4 @@ public class Transaction {
     }
 
 }
+*/

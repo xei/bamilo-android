@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.mobile.libraries.emarsys.predict;
 
@@ -42,9 +43,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * The global session object.
- */
+ *//*
+
 public class Session {
 
     private static final String TAG = Session.class.getSimpleName();
@@ -70,13 +73,15 @@ public class Session {
         return storage;
     }
 
-    /**
+    */
+/**
      * Initialization method.
      *
      * @param storage the Storage for accessing and modifying save and retrieve persistent
      *                key-value pairs
      * @throws IllegalStateException when Session is already initialized
-     */
+     *//*
+
     public static void initialize(Storage storage) {
         if (Session.storage != null) {
             throw new IllegalStateException("The initialize method may only be called once");
@@ -87,20 +92,24 @@ public class Session {
         Session.storage = storage;
     }
 
-    /**
+    */
+/**
      * Returns whether the session is initialized or not.
      *
      * @return true if initialized, otherwise false
-     */
+     *//*
+
     public static boolean isInitialized() {
         return Session.storage != null;
     }
 
-    /**
+    */
+/**
      * Returns the singleton session object.
      *
      * @return session instance
-     */
+     *//*
+
     public static Session getInstance() {
         if (storage == null) {
             throw new RuntimeException("Please call initialize method first");
@@ -108,44 +117,52 @@ public class Session {
         return Holder.INSTANCE;
     }
 
-    /**
+    */
+/**
      * Send Transaction to the recommender server.
      *
      * @param Transaction an Transaction instance to be send
-     */
+     *//*
+
     public void sendTransaction(@NonNull final Transaction Transaction) {
         sendTransaction(Transaction, null, null);
     }
 
-    /**
+    */
+/**
      * Send Transaction to the recommender server.
      *
      * @param Transaction  an Transaction instance to be send
      * @param errorHandler will be called if an error occurs before send the http request
-     */
+     *//*
+
     public void sendTransaction(@NonNull final Transaction Transaction,
                                 @Nullable final ErrorHandler errorHandler) {
         sendTransaction(Transaction, errorHandler, null);
     }
 
-    /**
+    */
+/**
      * Send Transaction to the recommender server.
      *
      * @param Transaction       an Transaction instance to be send
      * @param completionHandler will be called after the background processing finishes
-     */
+     *//*
+
     public void sendTransaction(@NonNull final Transaction Transaction,
                                 @Nullable final CompletionHandler completionHandler) {
         sendTransaction(Transaction, null, completionHandler);
     }
 
-    /**
+    */
+/**
      * Send Transaction to the recommender server.
      *
      * @param Transaction       an Transaction instance to be send
      * @param errorHandler      will be called if an error occurs before send the http request
      * @param completionHandler will be called after the background processing finishes
-     */
+     *//*
+
     public void sendTransaction(@NonNull final Transaction Transaction,
                                 @Nullable final ErrorHandler errorHandler,
                                 @Nullable final CompletionHandler completionHandler) {
@@ -170,21 +187,25 @@ public class Session {
 
     private String merchantId;
 
-    /**
+    */
+/**
      * Returns the Merchant ID.
      *
      * @return merchant ID
-     */
+     *//*
+
     @Nullable
     public String getMerchantId() {
         return merchantId;
     }
 
-    /**
+    */
+/**
      * Sets the Merchant ID.
      *
      * @param merchantId merchant ID
-     */
+     *//*
+
     public void setMerchantId(@NonNull String merchantId) {
         if (merchantId == null) {
             throw new NullPointerException("The merchantId cannot be null");
@@ -194,51 +215,61 @@ public class Session {
 
     private String customerEmail;
 
-    /**
+    */
+/**
      * Returns the Customer email address.
      *
      * @return customer email address
-     */
+     *//*
+
     @Nullable
     public String getCustomerEmail() {
         return customerEmail;
     }
 
-    /**
+    */
+/**
      * Sets the Customer email address.
      *
      * @param customerEmail customer email address
-     */
+     *//*
+
     public void setCustomerEmail(@Nullable String customerEmail) {
         this.customerEmail = customerEmail;
     }
 
     private String customerId;
 
-    /**
+    */
+/**
      * Returns the Customer ID.
      *
      * @return customer ID
-     */
+     *//*
+
     @Nullable
     public String getCustomerId() {
         return customerId;
     }
 
-    /**
+    */
+/**
      * Sets the Customer ID.
      *
      * @param customerId customer ID
-     */
+     *//*
+
     public void setCustomerId(@Nullable String customerId) {
         this.customerId = customerId;
     }
 
-    /**
+    */
+/**
      * Returns the Advertising ID.
      *
      * @return advertising ID
-     */
+     *//*
+
     @Nullable
     public String getAdvertisingId() {
         return IdentifierManager.getInstance().getAdvertisingIdentifier();
@@ -271,20 +302,24 @@ public class Session {
     static boolean secure = true;
     static final String SERVER = "recommender.scarabresearch.com";
 
-    /**
+    */
+/**
      * Set protocol to https if secure otherwise set to http.
      *
      * @param secure <tt>true</tt> if the protocol is https
-     */
+     *//*
+
     public void setSecure(boolean secure) {
         this.secure = secure;
     }
 
-    /**
+    */
+/**
      * Returns true if the communication is secured.
      *
      * @return true if the protocol is https or false if http
-     */
+     *//*
+
     public boolean isSecure() {
         return secure;
     }
@@ -388,3 +423,4 @@ public class Session {
         }
     }
 }
+*/

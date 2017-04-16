@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.mobile.libraries.emarsys.predict;
 
@@ -25,9 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * Processes the server json response.
- */
+ *//*
+
 class ResponseParser {
 
     private static final String TAG = ResponseParser.class.getSimpleName();
@@ -118,3 +121,4 @@ class ResponseParser {
     }
 
 }
+*/

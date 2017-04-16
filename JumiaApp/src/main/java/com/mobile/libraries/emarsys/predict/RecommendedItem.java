@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.mobile.libraries.emarsys.predict;
 
@@ -25,9 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * The result item.
- */
+ *//*
+
 public class RecommendedItem implements Serializable {
 
     private final Map<String, Object> data;
@@ -42,11 +45,13 @@ public class RecommendedItem implements Serializable {
         data.put(key, value);
     }
 
-    /**
+    */
+/**
      * Return the recommended item record. Keys are fields copied from the product catalog.
      *
      * @return data
-     */
+     *//*
+
     @NonNull
     public Map<String, Object> getData() {
         return data;
@@ -66,3 +71,4 @@ public class RecommendedItem implements Serializable {
     }
 
 }
+*/

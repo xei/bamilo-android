@@ -12,24 +12,30 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.mobile.libraries.emarsys.predict;
 
 import android.support.annotation.Nullable;
 
+*/
 /**
  * Interface definition for a callback to be invoked when the background processing finishes.
- */
+ *//*
+
 public interface CompletionHandler {
 
-    /**
+    */
+/**
      * Invoked on the UI thread after the background processing finishes.
      * The result of the background processing is passed as a parameter if the handler passed a
      * transaction.
      *
      * @param recommendationResult if the handler passed a transaction otherwise null
-     */
+     *//*
+
     void onCompletion(@Nullable RecommendationResult recommendationResult);
 
 }
+*/

@@ -3,15 +3,20 @@ package com.mobile.libraries.emarsys.predict.recommended;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.emarsys.predict.CartItem;
+import com.emarsys.predict.CompletionHandler;
+import com.emarsys.predict.Error;
+import com.emarsys.predict.ErrorHandler;
+import com.emarsys.predict.RecommendationRequest;
+import com.emarsys.predict.RecommendationResult;
+import com.emarsys.predict.RecommendedItem;
+import com.emarsys.predict.Session;
+import com.emarsys.predict.Transaction;
 import com.mobile.app.JumiaApplication;
-import com.mobile.libraries.emarsys.predict.CompletionHandler;
-import com.mobile.libraries.emarsys.predict.ErrorHandler;
-import com.mobile.libraries.emarsys.predict.RecommendationRequest;
-import com.mobile.libraries.emarsys.predict.RecommendationResult;
-import com.mobile.libraries.emarsys.predict.RecommendedItem;
-import com.mobile.libraries.emarsys.predict.Session;
-import com.mobile.libraries.emarsys.predict.Transaction;
+
+
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +29,7 @@ public class RecommendManager {
 
     public void buy() {
         Transaction transaction = new Transaction();
-        List<PurchaseCartItem> cartItems = JumiaApplication.INSTANCE.getCart().getCartItems();
+        List<CartItem> cartItems = getCartItems();
         transaction.cart(cartItems);
 
         String uuid = UUID.randomUUID().toString();
@@ -40,7 +45,7 @@ public class RecommendManager {
     public void sendHomeRecommend(final RecommendListCompletionHandler callBack) {
 
         Transaction transaction = new Transaction();
-        transaction.cart(JumiaApplication.INSTANCE.getCart().getCartItems());
+        transaction.cart(getCartItems());
         for (int i = 1; i < 11; i++) {
             String logic = "HOME_" + i;
             RecommendationRequest recommend = new RecommendationRequest(logic);
@@ -57,7 +62,7 @@ public class RecommendManager {
 
                         List<Item> data = new ArrayList<>();
 
-                        for (RecommendedItem next : result.getProducts()) {
+                        for (com.emarsys.predict.RecommendedItem next : result.getProducts()) {
                             Item item = new Item(next);
                             data.add(item);
                         }
@@ -112,7 +117,7 @@ public class RecommendManager {
         Transaction transaction = recommendedItem == null ?
                 new Transaction() :
                 new Transaction(recommendedItem);
-        transaction.cart(JumiaApplication.INSTANCE.getCart().getCartItems());
+        transaction.cart(getCartItems());
 
         if (category != null && !category.isEmpty()) {
             transaction.category(category);
@@ -157,9 +162,33 @@ public class RecommendManager {
         Session.getInstance().sendTransaction(transaction, new ErrorHandler() {
             @Override
             public void onError(@NonNull Error error) {
-                Log.e(TAG, error.toString());
+
             }
+
+
         });
+    }
+
+    private List<CartItem> getCartItems()
+    {
+        List<PurchaseCartItem> cartItems = JumiaApplication.INSTANCE.getCart().getCartItems();
+        if (cartItems == null) return null;
+        List<CartItem> result = new ArrayList<>();
+        for (PurchaseCartItem purchaseCartItem:cartItems) {
+            CartItem item = new CartItem(purchaseCartItem.getSku(), (float)purchaseCartItem.getPrice(), purchaseCartItem.getQuantity());
+            result.add(item);
+        }
+
+        return result;
+    }
+
+    public Item getCartItem(ProductComplete product)
+    {
+        Item item = new Item();
+        item.setItemID(product.getSku());
+
+        return item;
+
     }
 
 }
