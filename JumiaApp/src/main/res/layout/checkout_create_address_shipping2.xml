@@ -84,7 +84,7 @@
             android:visibility="gone"
             android:textColor="@color/design_textinput_error_color_light" />
 
-        <Spinner
+        <com.mobile.components.absspinner.IcsSpinner
             android:id="@+id/address_gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
             android:visibility="gone"
             android:textColor="@color/design_textinput_error_color_light" />
 
-        <Spinner
+        <com.mobile.components.absspinner.IcsSpinner
             android:id="@+id/address_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
             android:spinnerMode="dropdown"
             />
 
-        <Spinner
+        <com.mobile.components.absspinner.IcsSpinner
             android:id="@+id/address_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
             android:spinnerMode="dropdown"
             />
 
-        <Spinner
+        <com.mobile.components.absspinner.IcsSpinner
             android:id="@+id/address_postal_region"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
