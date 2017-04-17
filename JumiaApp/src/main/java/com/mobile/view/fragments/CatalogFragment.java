@@ -1186,13 +1186,16 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                     excludedItems,
                     handler);
 
-        } else {
+        }
+        //else {
 
             ArrayList<String> categories = catalogPage.getBreadcrumb();
+        if (categories != null && categories.size()>0) {
             String category = android.text.TextUtils.join(",", categories);
 
             recommendManager.sendCategoryRecommend(catalogPage.getSearchTerm(), category, handler);
         }
+        //}
     }
 
 }

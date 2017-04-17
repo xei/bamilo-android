@@ -110,13 +110,13 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             mCatalogBanner = banner;
         }
 
-        //breadcrumb = new Dictionary<>();
+        breadcrumb = new ArrayList<>();
         JSONArray breadObjectArray = metadataObject.getJSONArray(RestConstants.Breadcrumb);
         for (int i = 0; i < breadObjectArray.length(); ++i) {
             JSONObject breadObject = breadObjectArray.getJSONObject(i);
             //ProductRegular product = new ProductRegular();
             //product.initialize(productObject);
-            //breadcrumb.add(product);
+            breadcrumb.add(breadObject.getString("title"));
         }
 
         return true;
