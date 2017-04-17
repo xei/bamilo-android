@@ -28,6 +28,9 @@ import com.mobile.helpers.cart.ShoppingCartRemoveItemHelper;
 import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.recommended.Item;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -143,6 +146,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
+
     }
 
     @Override
@@ -633,6 +637,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             showNoItems();
             return;
         }
+
+
+
         // Case invalid view
         if (getView() == null) {
             showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);

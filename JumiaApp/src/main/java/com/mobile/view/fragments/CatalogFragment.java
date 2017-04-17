@@ -24,6 +24,9 @@ import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
+import com.mobile.libraries.emarsys.predict.recommended.Item;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
@@ -64,6 +67,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -957,6 +961,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             default:
                 onRequestCatalogSuccess(baseResponse);
 
+
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaCatalog, mGABeginRequestMillis, mTitle);
                 break;
@@ -969,6 +974,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onRequestCatalogSuccess(BaseResponse baseResponse) {
         // Get the catalog
         CatalogPage catalogPage = ((Catalog) baseResponse.getMetadata().getData()).getCatalogPage();
+        sendRecommend(catalogPage);
         // Case valid success response
         if (catalogPage != null && catalogPage.hasProducts()) {
             // Mark to reload an initial catalog
@@ -1147,5 +1153,49 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     }
 
+    private void sendRecommend(CatalogPage catalogPage) {
+        /*recommendedAdapter.clear();
+        recommendedAdapter.notifyDataSetChanged();
+        recyclerView.invalidate();*/
+        RecommendManager recommendManager = new RecommendManager();
+        RecommendCompletionHandler handler = new RecommendCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(final List<Item> resultData) {
+                /*recommendedAdapter.setData(resultData);
+                recommendedAdapter.notifyDataSetChanged();
+                recyclerView.invalidate();*/
+            }
+        };
+
+
+        ArrayList<ProductRegular> productList = catalogPage.getProducts();
+
+        List<String> excludedItems = null;
+
+        if (productList != null && productList.size() > 0) {
+            if (productList.size() > 1) {
+                excludedItems = new ArrayList<>();
+                for (int i = 1; i > productList.size(); i++) {
+                    excludedItems.add(productList.get(i).getSku());
+                }
+            }
+
+            recommendManager.sendRelatedRecommend(null,
+                    catalogPage.getSearchTerm(),
+                    productList.get(0).getSku(),
+                    excludedItems,
+                    handler);
+
+        }
+        //else {
+
+            ArrayList<String> categories = catalogPage.getBreadcrumb();
+        if (categories != null && categories.size()>0) {
+            String category = android.text.TextUtils.join(",", categories);
+
+            recommendManager.sendCategoryRecommend(catalogPage.getSearchTerm(), category, handler);
+        }
+        //}
+    }
 
 }

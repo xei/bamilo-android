@@ -2,7 +2,9 @@ package com.mobile.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +30,9 @@ import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.recommended.Item;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
@@ -67,6 +72,7 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -453,6 +459,30 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         showFragmentContentContainer();
         // Tracking
         TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath);
+        RecommendCompletionHandler handler = new RecommendCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(final List<Item> resultData) {
+                /*recommendedAdapter.setData(resultData);
+                recommendedAdapter.notifyDataSetChanged();
+                recyclerView.invalidate();*/
+            }
+        };
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseActivity());
+        String logic = sharedPref.getString("", "RELATED");
+        RecommendManager recommendManager = new RecommendManager();
+        Item item = recommendManager.getCartItem(product);
+        if (logic.equals("RELATED")) {
+            recommendManager.sendRelatedRecommend(item.getRecommendedItem(),
+                    null,
+                    item.getItemID(),
+                    null,
+                    handler);
+        } else {
+            recommendManager.sendAlsoBoughtRecommend(item.getRecommendedItem(),
+                    item.getItemID(),
+                    handler);
+        }
     }
 
     /**
