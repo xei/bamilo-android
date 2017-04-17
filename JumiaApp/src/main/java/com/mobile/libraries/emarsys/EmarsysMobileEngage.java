@@ -73,7 +73,7 @@ public class EmarsysMobileEngage {
 
     }
 
-    public void sendCustomEvent(String event, Map<String, String> attributes, final EmarsysMobileEngageResponse completion) {
+    public void sendCustomEvent(String event, Map<String, Object> attributes, final EmarsysMobileEngageResponse completion) {
 
         DataCompletion response = new DataCompletion() {
             @Override

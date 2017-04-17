@@ -38,9 +38,11 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 import com.pushwoosh.PushManager;
+import com.pushwoosh.inapp.InAppFacade;
 import com.pushwoosh.internal.PushManagerImpl;
 
 import java.util.EnumSet;
@@ -226,7 +228,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
 
-                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getId()+"");
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail()+"");
 
                 //Emarsys
                 EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
@@ -242,10 +244,12 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 // Case valid next step
                 if(nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
+                    PushWooshTracker.login(getBaseActivity(),"email",true,JumiaApplication.CUSTOMER.getEmail());
                     // Tracking
                     if (eventType == EventType.GUEST_LOGIN_EVENT) {
                         TrackerDelegator.storeFirstCustomer(customer);
                         TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
+
                         // Set hide change password
                         CustomerUtils.setChangePasswordVisibility(getBaseActivity(),true);
                     } else if (eventType == EventType.AUTO_LOGIN_EVENT) {
@@ -290,6 +294,9 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 // End of Emarsys
                 // Finish
                 getActivity().onBackPressed();
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail()+"");
+                PushWooshTracker.login(getBaseActivity(),"email",true,JumiaApplication.CUSTOMER.getEmail());
+
                 if (isInCheckoutProcess)
                 {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);

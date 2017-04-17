@@ -47,29 +47,29 @@ public class RequestManager implements RequestManagerInterface {
     }
 
     @Override
-    public void asyncGET(String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion) {
+    public void asyncGET(String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion) {
         asyncRequest(HttpVerb.HttpVerbGET, path, params, type, completion);
     }
 
     @Override
-    public void asyncPOST(String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion) {
+    public void asyncPOST(String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion) {
         asyncRequest(HttpVerb.HttpVerbPOST, path, params, type, completion);
 
     }
 
     @Override
-    public void asyncPUT(String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion) {
+    public void asyncPUT(String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion) {
         asyncRequest(HttpVerb.HttpVerbPUT, path, params, type, completion);
     }
 
     @Override
-    public void asyncDELETE(String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion) {
+    public void asyncDELETE(String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion) {
         asyncRequest(HttpVerb.HttpVerbDELETE, path, params, type, completion);
 
     }
 
     @Override
-    public void asyncRequest(HttpVerb method, String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion) {
+    public void asyncRequest(HttpVerb method, String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion) {
 
 
         RunRequest runRequest = new RunRequest(method, path, params, type, completion);
@@ -93,7 +93,7 @@ public class RequestManager implements RequestManagerInterface {
         return String.format("Basic %s", new String(bytesEncoded));
     }
 
-    private String getQuery(Map<String, String> params) throws UnsupportedEncodingException {
+    private String getQuery(Map<String, Object> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
 
@@ -119,11 +119,11 @@ public class RequestManager implements RequestManagerInterface {
 
         HttpVerb method;
         String path;
-        Map<String, String> params;
+        Map<String, Object> params;
         RequestExecutionType type;
         RequestCompletion completion;
 
-        public RunRequest (HttpVerb method, String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion)
+        public RunRequest (HttpVerb method, String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion)
         {
             this.method = method;
             this.path = path;

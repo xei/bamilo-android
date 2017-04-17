@@ -58,6 +58,7 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
@@ -557,6 +558,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 if (mClicked != null) {
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
+                    PushWooshTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             }
@@ -621,6 +623,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             } else {
                 triggerAddToWishList(mWishListItemClicked.getSku());
                 TrackerDelegator.trackAddToFavorites(mWishListItemClicked);
+
+                PushWooshTracker.addToFavorites(getBaseActivity(),true,mMainCategory);
             }
         } else {
             // Save values to end action after login

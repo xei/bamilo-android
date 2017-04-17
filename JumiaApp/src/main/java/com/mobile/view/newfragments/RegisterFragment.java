@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -32,6 +33,7 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -276,6 +278,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 hideActivityProgress();
                 // Tracking
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
+                PushWooshTracker.signUp(getBaseActivity(),"email",true, JumiaApplication.CUSTOMER.getEmail());
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 // Finish
@@ -310,6 +313,8 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 hideActivityProgress();
                 // Tracking
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
+
+               PushWooshTracker.signUp(getBaseActivity(),"email",false, JumiaApplication.CUSTOMER.getEmail());
                 // Validate and show errors
                 showFragmentContentContainer();
                 // Show validate messages

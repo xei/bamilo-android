@@ -26,9 +26,12 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.security.ObscuredSharedPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
+import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
@@ -86,12 +89,15 @@ import com.mobile.view.newfragments.SubCategoryFilterFragment;
 import com.pushwoosh.BasePushMessageReceiver;
 import com.pushwoosh.BaseRegistrationReceiver;
 import com.pushwoosh.PushManager;
+import com.pushwoosh.SendPushTagsCallBack;
 import com.pushwoosh.fragment.PushEventListener;
 import com.pushwoosh.fragment.PushFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.pushwoosh.BasePushMessageReceiver.JSON_DATA_KEY;
 
@@ -306,6 +312,29 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
         super.onResume();
         Print.d(TAG, "ON RESUME");
         registerReceivers();
+        SendPushTagsCallBack callBack = new SendPushTagsCallBack() {
+            @Override
+            public void taskStarted() {
+
+            }
+
+            @Override
+            public void onSentTagsSuccess(Map<String, String> map) {
+                Print.d(TAG, "callback is"+map);
+            }
+
+            @Override
+            public void onSentTagsError(Exception e) {
+
+            }
+        };
+        PushWooshTracker.openApp(MainFragmentActivity.this,true);
+        PushwooshCounter.setAppOpenCount();
+        HashMap<String, Object> open_count = new HashMap<>();
+        open_count.put("AppOpenCount",PushwooshCounter.getAppOpenCount());
+        PushManager.sendTags(MainFragmentActivity.this,open_count,callBack);
+
+
     }
 
     /*
@@ -317,6 +346,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
+        //PushWooshTracker.openApp(,true);
         unregisterReceivers();
     }
 

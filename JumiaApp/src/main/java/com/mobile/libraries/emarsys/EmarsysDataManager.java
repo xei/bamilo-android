@@ -58,13 +58,13 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
 
     @Override
     public void anonymousLogin(EmarsysPushIdentifier contact, DataCompletion completion) {
-        Map<String,String> params = commonLoginParams(mContext, contact);
+        Map<String,Object> params = commonLoginParams(mContext, contact);
         executeLogin(params, completion);
     }
 
     @Override
     public void login(EmarsysPushIdentifier contact, String contactFieldId, String contactFieldValue, DataCompletion completion) {
-        Map<String,String> params = commonLoginParams(mContext, contact);
+        Map<String,Object> params = commonLoginParams(mContext, contact);
         params.put(kContactFieldId, contactFieldId);
         params.put(kContactFieldValue, contactFieldValue);
         executeLogin(params, completion);
@@ -72,15 +72,15 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
 
     @Override
     public void openMessageEvent(EmarsysContactIdentifier contact, String sid, DataCompletion completion) {
-        Map<String,String> map =  new HashMap<String,String>();
+        Map<String,Object> map =  new HashMap<String,Object>();
         map.put(kSID, sid);
         customEvent(contact, "message_open", map, completion);
 
     }
 
     @Override
-    public void customEvent(EmarsysContactIdentifier contact, String event, Map<String,String> attributes, DataCompletion completion) {
-        Map<String, String> params = new HashMap<String, String>();
+    public void customEvent(EmarsysContactIdentifier contact, String event, Map<String,Object> attributes, DataCompletion completion) {
+        Map<String, Object> params = new HashMap<String, Object>();
 
         params.put(kApplicationId, contact.applicationId);
         params.put(kHardwareId, contact.hardwareId);
@@ -90,7 +90,7 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
 
     @Override
     public void logout(EmarsysContactIdentifier contact, DataCompletion completion) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, Object> params = new HashMap<String, Object>();
 
         params.put(kApplicationId, contact.applicationId);
         params.put(kHardwareId, contact.hardwareId);
@@ -107,8 +107,8 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
     }
 
 
-    private Map<String, String> commonLoginParams(Context context, EmarsysPushIdentifier contact) {
-        Map<String, String> params = new HashMap<String, String>();
+    private Map<String, Object> commonLoginParams(Context context, EmarsysPushIdentifier contact) {
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put(kApplicationId, contact.applicationId);
         params.put(kHardwareId, contact.hardwareId);
         params.put(kPlatform, "android");
@@ -156,7 +156,7 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
     }
 
 
-    private void executeLogin(Map<String, String> params, final DataCompletion completion) {
+    private void executeLogin(Map<String, Object> params, final DataCompletion completion) {
 
         RequestCompletion requestCompletion = new RequestCompletion() {
             @Override
@@ -168,7 +168,7 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
         requestManager.asyncPOST("users/login", params, REQUEST_EXEC_IN_BACKGROUND, requestCompletion);
     }
 
-    void executeEvent(String event, Map<String, String> params, final DataCompletion completion) {
+    void executeEvent(String event, Map<String, Object> params, final DataCompletion completion) {
 
         RequestCompletion requestCompletion = new RequestCompletion() {
             @Override
@@ -180,7 +180,7 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
         requestManager.asyncPOST(String.format("events/%s", event), params, REQUEST_EXEC_IN_BACKGROUND, requestCompletion);
     }
 
-    void executeLogout(Map<String, String> params, final DataCompletion completion) {
+    void executeLogout(Map<String, Object> params, final DataCompletion completion) {
 
         RequestCompletion requestCompletion = new RequestCompletion() {
             @Override
