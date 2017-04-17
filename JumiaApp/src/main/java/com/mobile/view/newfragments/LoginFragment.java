@@ -22,6 +22,8 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.EmarsysMobileEngage;
+import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
@@ -228,6 +230,17 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
 
                 PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail()+"");
 
+                //Emarsys
+                EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
+                    @Override
+                    public void EmarsysMobileEngageResponse(boolean success) {
+
+                    }
+                };
+                EmarsysMobileEngage emarsysMobileEngage = new EmarsysMobileEngage(getBaseActivity());
+                emarsysMobileEngage.sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
+                // End of Emarsys
+
                 // Case valid next step
                 if(nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
@@ -266,10 +279,24 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
+
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getId()+"");
+
+                //Emarsys
+                emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
+                    @Override
+                    public void EmarsysMobileEngageResponse(boolean success) {
+
+                    }
+                };
+                emarsysMobileEngage = new EmarsysMobileEngage(getBaseActivity());
+                emarsysMobileEngage.sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
+                // End of Emarsys
                 // Finish
                 getActivity().onBackPressed();
                 PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail()+"");
                 PushWooshTracker.login(getBaseActivity(),"email",true,JumiaApplication.CUSTOMER.getEmail());
+
                 if (isInCheckoutProcess)
                 {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);

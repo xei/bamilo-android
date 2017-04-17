@@ -53,3 +53,4 @@
 ##################################################################################
 
 ## MERGE FROM proguard-project-base.txt #########################################
+-dontwarn com.arellomobile.android.push.**

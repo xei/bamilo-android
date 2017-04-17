@@ -9,36 +9,35 @@
     <!-- ######################################## -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />     <!-- AD4Push | W:SDK6 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- AD4Push | W:SDK6 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /><!-- W:SDK6 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />      <!-- W:SDK6 -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />             <!-- AD4Push-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
-        android:required="false" />                                             <!-- LocationHelper | AD4Push | W:SDK6 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- W:SDK6 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- W:SDK6 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- AD4Push -->
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:required="false" /> <!-- LocationHelper | AD4Push | W:SDK6 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- *W:SDK6 : Android 6.0 Dangerous Permission -->
+
 
     <!-- ############# AD4Push: MESSAGE (Receive) ############# -->
     <permission
         android:name="${applicationId}.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 
     <permission
         android:name="${applicationId}.permission.A4S_SEND"
         android:protectionLevel="signature" />
-    <uses-permission android:name="${applicationId}.permission.A4S_SEND" />
 
+    <uses-permission android:name="${applicationId}.permission.A4S_SEND" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <!-- ##################################### -->
@@ -68,12 +67,12 @@
     <!-- ######################################## -->
     <!-- ############# Application ############## -->
     <!-- ######################################## -->
-
     <application
         android:name="com.mobile.app.JumiaApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        tools:node="replace"
         android:supportsRtl="@bool/rtl_enabled"
         android:theme="@style/Theme.Custom"
         tools:ignore="UnusedAttribute">
@@ -112,6 +111,7 @@
         <activity android:name=".BankActivity">
             <intent-filter>
                 <action android:name="com.payment.browser" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
@@ -157,21 +157,29 @@
         <!-- ######################################## -->
         <!-- ############# Push Woosh############## -->
         <!-- ######################################## -->
+        <meta-data android:name="PW_NOTIFICATION_RECEIVER" android:value="com.mobile.libraries.emarsys.NotificationReceiver"/>
 
-        <meta-data android:name="PW_APPID" android:value="@string/PW_APPID" />
-        <meta-data android:name="PW_PROJECT_ID" android:value="@string/PW_PROJECT_ID" />
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="PW_APPID"
+            android:value="@string/PW_APPID" />
+        <meta-data
+            android:name="PW_PROJECT_ID"
+            android:value="@string/PW_PROJECT_ID" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity android:name="com.pushwoosh.richpages.RichPageActivity" />
-        <!--<activity android:name="com.pushwoosh.MessageActivity" />-->
+        <!-- <activity android:name="com.pushwoosh.MessageActivity" /> -->
         <activity android:name="com.pushwoosh.PushHandlerActivity" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.bamilo.android" />
             </intent-filter>
         </receiver>
@@ -180,26 +188,24 @@
             android:name="com.pushwoosh.GCMListenerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-
         <service
             android:name="com.pushwoosh.GCMInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
-
         <service
             android:name="com.pushwoosh.GCMRegistrationService"
-            android:exported="false">
-        </service>
+            android:exported="false"></service>
 
         <!-- ######################################## -->
         <!-- ############# AD4Push GCM ############## -->
         <!-- ######################################## -->
+
 
         <!-- ############# AD4Push: A4SService ############# -->
         <service
@@ -303,6 +309,11 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="ddde4ad6ad210575fdac10a908040d1a93e74833" />
+
+        <receiver
+            android:name="com.mobile.libraries.emarsys.NotificationReceiver"
+            android:enabled="true"
+            ></receiver>
     </application>
 
 </manifest>
