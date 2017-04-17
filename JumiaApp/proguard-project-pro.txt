@@ -208,7 +208,14 @@
 -keepclassmembers class com.mobile.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface { public *; }
 -keepattributes JavascriptInterface
 #################################################################################
+<<<<<<< HEAD
 -keep class com.pushwoosh.** { *; }
 -keep class com.arellomobile.** { *; }
 -dontwarn com.pushwoosh.**
 -dontwarn com.arellomobile.**
+=======
+-keep class com.pushwoosh.**{ *; }
+-keep class com.arellomobile.** { *; }
+-dontwarn com.pushwoosh.**
+-dontwarn com.arellomobile.**
+>>>>>>> 06eef5a7747bdf6bed46fea1a35b5ec9e8ea5110
