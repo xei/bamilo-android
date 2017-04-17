@@ -83,6 +83,8 @@
     <string name="form_passwordsnomatch">Passwords do not match</string>
     <string name="form_texttolong"> text is too long</string>
     <string name="form_texttoshort"> text is too short</string>
+    <string name="form_textmaxlen">Max length is %d</string>
+    <string name="form_textminlen">Min length is %d</string>
     <string name="free_label">Free</string>
     <string name="got_it">Got it</string>
     <string name="home_label">Home</string>

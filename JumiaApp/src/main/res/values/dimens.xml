@@ -493,7 +493,7 @@
     <integer name="combos_num_columns">1</integer>
 
     <dimen name="combo_bundle_item_with">90dp</dimen>
-    
+
     <dimen name="ratings_average_with">160dp</dimen>
     <dimen name="specs_column_with">120dp</dimen>
 
