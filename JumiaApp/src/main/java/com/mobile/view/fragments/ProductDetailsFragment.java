@@ -487,7 +487,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     item.getItemID(),
                     handler);
         }
-
     }
 
     /**
