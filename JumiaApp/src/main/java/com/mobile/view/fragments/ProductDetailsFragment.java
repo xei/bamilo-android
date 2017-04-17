@@ -65,6 +65,7 @@ import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListLis
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.RelatedProductsAdapter;
 import com.mobile.utils.product.UIProductUtils;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -202,6 +203,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Save for later
         mSaveForLater = (TextView) view.findViewById(R.id.pdv_button_add_to_save);
         mSaveForLater.setOnClickListener(this);
+
     }
 
     /*
@@ -224,6 +226,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 if(JumiaApplication.isCustomerLoggedIn() && mClicked != null){
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
+                    PushWooshTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             }
@@ -459,6 +462,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         showFragmentContentContainer();
         // Tracking
         TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath);
+        PushWooshTracker.viewProduct(getBaseActivity(),mProduct.getCategoryKey(), (long) mProduct.getPrice());
         RecommendCompletionHandler handler = new RecommendCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(final List<Item> resultData) {
@@ -483,6 +487,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     item.getItemID(),
                     handler);
         }
+
     }
 
     /**
@@ -985,6 +990,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 } else {
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
+
+                    PushWooshTracker.addToFavorites(getBaseActivity(),true,mProduct.getCategoryKey());
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO WISH LIST", e);
@@ -1019,6 +1026,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 } else {
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
+
+                    PushWooshTracker.addToFavorites(getBaseActivity(),true,mProduct.getCategoryKey());
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO SAVED", e);

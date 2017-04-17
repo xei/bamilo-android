@@ -31,48 +31,67 @@ public class PushWooshTracker {
 
     public static void login(BaseActivity activity ,String method , boolean success , String email){
         HashMap<String, Object> values = setDefaultAttributes();
+        values.put(PushWooshEvent.Method,method);
+        values.put(PushWooshEvent.Success,success);
+        values.put(PushWooshEvent.EmailDomain,email);
         sendEvent(activity,"Login",values);
     }
 
     public static void signUp(BaseActivity activity ,String method , boolean success , String email){
         HashMap<String, Object> values = setDefaultAttributes();
+        values.put(PushWooshEvent.Method,method);
+        values.put(PushWooshEvent.Success,success);
+        values.put(PushWooshEvent.EmailDomain,email);
         sendEvent(activity,"SignUp",values);
     }
 
     public static void openApp(BaseActivity activity, boolean success){
         HashMap<String, Object> values = setDefaultAttributes();
+        values.put(PushWooshEvent.Success,success);
         sendEvent(activity,"OpenApp",values);
+    }
+
+    public static void addToCart(BaseActivity activity,  boolean success , String sku , Long basketValue){
+        HashMap<String, Object> values = setDefaultAttributes();
+        values.put(PushWooshEvent.Success,success);
+        values.put(PushWooshEvent.SKU,sku);
+        values.put(PushWooshEvent.BasketValue,basketValue);
+        sendEvent(activity,"AddToCart",values);
     }
 
     public static void addToFavorites(BaseActivity activity, boolean success , String categoryUrlKey){
         HashMap<String, Object> values = setDefaultAttributes();
+        values.put(PushWooshEvent.Success,success);
+        values.put(PushWooshEvent.CategoryUrlKey,categoryUrlKey);
         sendEvent(activity,"AddToFavorites",values);
     }
     public static void purchase(BaseActivity activity, boolean success , String categories , Long basketValue){
         HashMap<String, Object> values = setDefaultAttributes();
+        values.put(PushWooshEvent.Success,success);
+        values.put(PushWooshEvent.Categories,categories);
+        values.put(PushWooshEvent.BasketValue,basketValue);
         sendEvent(activity,"Purchase",values);
     }
 
     public static void search(BaseActivity activity,String categoryUrlKey,String keyword){
         HashMap<String, Object> values = setDefaultAttributes();
+        values.put(PushWooshEvent.Keywords,keyword);
+        values.put(PushWooshEvent.CategoryUrlKey,categoryUrlKey);
         sendEvent(activity,"Search",values);
     }
 
     public static void viewProduct(BaseActivity activity,String categoryUrlKey,Long price){
         HashMap<String, Object> values = setDefaultAttributes();
+        values.put(PushWooshEvent.Price,price);
+        values.put(PushWooshEvent.CategoryUrlKey,categoryUrlKey);
         sendEvent(activity,"ViewProduct",values);
     }
 
     public static void logOut(BaseActivity activity, boolean success) {
         HashMap<String, Object> values = setDefaultAttributes();
-        sendEvent(activity,"LogOut",values);
+        values.put(PushWooshEvent.Success,success);
+        sendEvent(activity,"Logout",values);
     }
-
-
-
-
-
-
 
     private static void sendEvent( BaseActivity activity , String eventName,HashMap<String, Object> attributes ){
         InAppFacade.postEvent(activity,eventName,attributes);
