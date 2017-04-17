@@ -205,7 +205,8 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     protected void onNewIntent(Intent intent)
     {
         super.onNewIntent(intent);
-        setIntent(intent);checkMessage(intent);
+        setIntent(intent);
+        checkMessage(intent);
     }
 
     /*
@@ -768,5 +769,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     {
         Log.e(TAG, "Failed to unregister from pushes: " + errorId);
     }
+
+
 
 }

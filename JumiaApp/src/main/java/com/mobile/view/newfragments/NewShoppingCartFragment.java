@@ -42,6 +42,9 @@ import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.recommended.Item;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
@@ -127,6 +130,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 
     View mClickedFavourite;
     private AppBarLayout.LayoutParams  startParams;
+    RecommendManager recommendManager;
 
     /**
      * Empty constructor
@@ -164,6 +168,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 */
 
         selectedPosition = 0;
+        recommendManager = new RecommendManager();
     }
 
     @Override
@@ -386,6 +391,9 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      * Process the click on checkout button.
      */
     private void onClickCheckoutButton() {
+
+        recommendManager.buy();
+        sendRecommend();
 
         if (items != null && items.size() > 0) {
             TrackerDelegator.trackCheckout(items);
@@ -644,6 +652,21 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         mGABeginRequestMillis = System.currentTimeMillis();
     }
 
+    private void sendRecommend() {
+        /*recommendedAdapter.clear();
+        recommendedAdapter.notifyDataSetChanged();
+        recyclerView.invalidate();*/
+
+        recommendManager.sendCartRecommend(new RecommendCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(final List<Item> resultData) {
+                /*recommendedAdapter.setData(resultData);
+                recommendedAdapter.notifyDataSetChanged();
+                recyclerView.invalidate();*/
+            }
+        });
+
+    }
 
     /**
      * Display shopping cart info
@@ -651,7 +674,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     private void displayShoppingCart(PurchaseEntity cart) {
         Print.d(TAG, "displayShoppingCart");
         // Case invalid cart
-
         if (cart == null || CollectionUtils.isEmpty(cart.getCartItems())) {
             showNoItems();
             return;
@@ -661,6 +683,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
             return;
         }
+
         // Case valid state
         items = cart.getCartItems();
         mCartItemsCount = items.size();

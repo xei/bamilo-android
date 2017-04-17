@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 
 /**
  * Class used to represent a catalog page.<br>
@@ -47,6 +48,14 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     private String mSort;
 
     private ArrayList<CatalogFilter> filters;
+
+    public ArrayList<String> getBreadcrumb() {
+        return breadcrumb;
+    }
+
+
+
+    private ArrayList<String> breadcrumb;
 
     /*
      * ########### CONSTRUCTOR ###########
@@ -100,6 +109,16 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             banner.initialize(bannerObject);
             mCatalogBanner = banner;
         }
+
+        breadcrumb = new ArrayList<>();
+        JSONArray breadObjectArray = metadataObject.getJSONArray(RestConstants.Breadcrumb);
+        for (int i = 0; i < breadObjectArray.length(); ++i) {
+            JSONObject breadObject = breadObjectArray.getJSONObject(i);
+            //ProductRegular product = new ProductRegular();
+            //product.initialize(productObject);
+            breadcrumb.add(breadObject.getString("title"));
+        }
+
         return true;
     }
 

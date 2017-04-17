@@ -4,12 +4,16 @@ import android.content.Context;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.recommended.Item;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.TextUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by msilva on 2/8/16.
@@ -39,6 +43,15 @@ public class SearchSuggestionClient {
                 new AlgoliaHelper(context, responseCallback).getSuggestions(searchTerm);
             } else {
                 JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(searchTerm), responseCallback);
+                RecommendManager recommendManager = new RecommendManager();
+                recommendManager.sendPersonalRecommend(searchTerm, new RecommendCompletionHandler() {
+                    @Override
+                    public void onRecommendedRequestComplete(final List<Item> resultData) {
+                        /*recommendedAdapter.setData(resultData);
+                        recommendedAdapter.notifyDataSetChanged();
+                        recyclerView.invalidate();*/
+                    }
+                });
             }
         }
 
