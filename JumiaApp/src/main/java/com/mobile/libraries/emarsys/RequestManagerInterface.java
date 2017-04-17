@@ -14,10 +14,10 @@ public interface RequestManagerInterface {
 
     //-(instancetype) initWithBaseUrl:(NSString *)baseUrl;
 
-    void asyncGET(String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion);
-    void asyncPOST(String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion);
-    void asyncPUT(String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion);
-    void asyncDELETE(String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion);
-    void asyncRequest(HttpVerb method, String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion);
+    void asyncGET(String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion);
+    void asyncPOST(String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion);
+    void asyncPUT(String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion);
+    void asyncDELETE(String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion);
+    void asyncRequest(HttpVerb method, String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion);
 
 }

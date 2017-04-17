@@ -30,6 +30,8 @@ import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.EmarsysMobileEngage;
+import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.libraries.emarsys.predict.recommended.Item;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
@@ -76,6 +78,8 @@ import java.util.EnumSet;
 import java.util.List;
 
 import de.akquinet.android.androlog.Log;
+
+import static com.mobile.newFramework.Darwin.context;
 
 /**
  * This class displays the product detail screen.
@@ -463,6 +467,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Tracking
         TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath);
         PushWooshTracker.viewProduct(getBaseActivity(),mProduct.getCategoryKey(), (long) mProduct.getPrice());
+
         RecommendCompletionHandler handler = new RecommendCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(final List<Item> resultData) {

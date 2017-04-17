@@ -18,7 +18,7 @@ public interface EmarsysDataManagerInterface {
 
     void openMessageEvent(EmarsysContactIdentifier contact, String sid, DataCompletion completion);
 
-    void customEvent(EmarsysContactIdentifier contact, String event, Map<String,String> attributes, DataCompletion completion);
+    void customEvent(EmarsysContactIdentifier contact, String event, Map<String,Object> attributes, DataCompletion completion);
 
     void logout(EmarsysContactIdentifier contact, DataCompletion completion);
 

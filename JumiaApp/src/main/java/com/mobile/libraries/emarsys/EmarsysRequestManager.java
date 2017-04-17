@@ -59,7 +59,7 @@ public class EmarsysRequestManager extends RequestManager {
     }
 
    // @Override
-    public void asyncRequest(HttpVerb method, String path, Map<String, String> params, RequestExecutionType type,
+    public void asyncRequest(HttpVerb method, String path, Map<String, Object> params, RequestExecutionType type,
                       RequestCompletion completion) {
 
         RunRequest runRequest = new RunRequest(method, path, params, type, completion);
@@ -139,7 +139,7 @@ public class EmarsysRequestManager extends RequestManager {
 
         return String.format("Basic %s", new String(bytesEncoded));
     }
-    private String getQuery(Map<String, String> params) throws UnsupportedEncodingException {
+    private String getQuery(Map<String, Object> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
 
@@ -168,11 +168,11 @@ public class EmarsysRequestManager extends RequestManager {
 
         HttpVerb method;
         String path;
-        Map<String, String> params;
+        Map<String, Object> params;
         RequestExecutionType type;
         RequestCompletion completion;
 
-        public RunRequest (HttpVerb method, String path, Map<String, String> params, RequestExecutionType type, RequestCompletion completion)
+        public RunRequest (HttpVerb method, String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion)
         {
             this.method = method;
             this.path = path;
