@@ -80,11 +80,11 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
 
     @Override
     public void customEvent(EmarsysContactIdentifier contact, String event, Map<String,Object> attributes, DataCompletion completion) {
-        Map<String, Object> params = new HashMap<String, Object>();
+        //Map<String, Object> params = new HashMap<String, Object>();
 
-        params.put(kApplicationId, contact.applicationId);
-        params.put(kHardwareId, contact.hardwareId);
-        executeEvent(event, params, completion);
+        attributes.put(kApplicationId, contact.applicationId);
+        attributes.put(kHardwareId, contact.hardwareId);
+        executeEvent(event, attributes, completion);
 
     }
 

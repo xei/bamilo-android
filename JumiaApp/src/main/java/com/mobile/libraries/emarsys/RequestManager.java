@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
 
 import com.mobile.view.R;
 
@@ -71,7 +72,7 @@ public class RequestManager implements RequestManagerInterface {
     @Override
     public void asyncRequest(HttpVerb method, String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion) {
 
-
+        Log.d("Emarsys:", path);
         RunRequest runRequest = new RunRequest(method, path, params, type, completion);
         runRequest.execute();
 

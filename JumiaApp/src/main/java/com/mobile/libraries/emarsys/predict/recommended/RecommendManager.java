@@ -171,9 +171,9 @@ public class RecommendManager {
 
     private List<CartItem> getCartItems()
     {
-        List<PurchaseCartItem> cartItems = JumiaApplication.INSTANCE.getCart().getCartItems();
-        if (cartItems == null) return null;
         List<CartItem> result = new ArrayList<>();
+        List<PurchaseCartItem> cartItems = JumiaApplication.INSTANCE.getCart().getCartItems();
+        if (cartItems == null) return result;
         for (PurchaseCartItem purchaseCartItem:cartItems) {
             CartItem item = new CartItem(purchaseCartItem.getSku(), (float)purchaseCartItem.getPrice(), purchaseCartItem.getQuantity());
             result.add(item);
