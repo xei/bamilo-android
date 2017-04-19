@@ -38,6 +38,7 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -245,6 +246,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 if(nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                     PushWooshTracker.login(getBaseActivity(),"email",true,JumiaApplication.CUSTOMER.getEmail());
+                    EmarsysTracker.login(getBaseActivity(),"email",true,JumiaApplication.CUSTOMER.getEmail());
                     // Tracking
                     if (eventType == EventType.GUEST_LOGIN_EVENT) {
                         TrackerDelegator.storeFirstCustomer(customer);
@@ -296,6 +298,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 getActivity().onBackPressed();
                 PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail()+"");
                 PushWooshTracker.login(getBaseActivity(),"email",true,JumiaApplication.CUSTOMER.getEmail());
+                EmarsysTracker.login(getBaseActivity(),"email",true,JumiaApplication.CUSTOMER.getEmail());
 
                 if (isInCheckoutProcess)
                 {

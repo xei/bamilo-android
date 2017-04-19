@@ -53,6 +53,7 @@ import com.mobile.utils.cart.UICartUtils;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.pushwoosh.PushWooshTracker;
@@ -437,6 +438,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         PurchaseCartItem item = items.get(position);
         TrackerDelegator.trackAddToCartGTM(item, quantity, mItemRemovedCartValue);
         PushWooshTracker.addToFavorites(getBaseActivity(),true,item.getSku());
+        EmarsysTracker.addToFavorites(getBaseActivity(),true,item.getSku());
         item.setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();

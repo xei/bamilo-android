@@ -30,6 +30,7 @@ import com.mobile.newFramework.utils.security.ObscuredSharedPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.view.fragments.BaseFragment;
@@ -329,6 +330,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             }
         };
         PushWooshTracker.openApp(MainFragmentActivity.this,true);
+        EmarsysTracker.openApp(MainFragmentActivity.this,true);
         PushwooshCounter.setAppOpenCount();
         HashMap<String, Object> open_count = new HashMap<>();
         open_count.put("AppOpenCount",PushwooshCounter.getAppOpenCount());
