@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ProductListViewHolder;
@@ -50,7 +51,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         //Show/Hide Shop First
         UIProductUtils.setShopFirst(item,holder.shopFirst);
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+        //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+        //(imageUrl, false, imageView, progressView, placeHolderImageId, false, null, false);
+        ImageManager.getInstance().loadImage(this.mContext, item.getImageUrl(), false, holder.image, holder.progress, R.drawable.no_image_small, false, null, false);
         // Set is favorite image
         setFavourite(holder, item, position);
         // Set rating and reviews
