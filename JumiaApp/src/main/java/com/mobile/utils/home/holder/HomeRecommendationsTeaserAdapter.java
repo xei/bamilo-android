@@ -1,5 +1,6 @@
 package com.mobile.utils.home.holder;
 
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,7 @@ public class HomeRecommendationsTeaserAdapter extends RecyclerView.Adapter<HomeR
         private final TextView mBrand;
         private final TextView mName;
         private final TextView mPrice;
+        private final TextView mOldPrice;
 
         /**
          * Constructor
@@ -54,6 +56,7 @@ public class HomeRecommendationsTeaserAdapter extends RecyclerView.Adapter<HomeR
             mBrand = (TextView) view.findViewById(R.id.brand);
             mName = (TextView) view.findViewById(R.id.name);
             mPrice = (TextView) view.findViewById(R.id.price);
+            mOldPrice = (TextView) view.findViewById(R.id.old_price);
         }
     }
 
@@ -91,9 +94,19 @@ public class HomeRecommendationsTeaserAdapter extends RecyclerView.Adapter<HomeR
         holder.mBrand.setText(""+item.getData().get("brand"));
         // Set name
         // Set price
-        String price = "" + item.getData().get("msrp");
-        String special = "" + item.getData().get("price");
-        holder.mPrice.setText(CurrencyFormatter.formatCurrency(price));
+        double price = (double) item.getData().get("price");
+        double special = (double) item.getData().get("msrp");
+        if (price != special) {
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(special));
+            holder.mOldPrice.setText(CurrencyFormatter.formatCurrency(price));
+            holder.mOldPrice.setPaintFlags(holder.mOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.mOldPrice.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(price));
+            holder.mOldPrice.setVisibility(View.INVISIBLE);
+        }
+
         // Set listener and tags
         //TeaserViewFactory.setClickableView(holder.itemView, item, mOnClickListener, position);
     }

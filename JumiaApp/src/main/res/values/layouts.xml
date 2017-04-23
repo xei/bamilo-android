@@ -127,7 +127,7 @@
     <item name="home_teaser_top_sellers_item"           type="layout">@layout/_def_home_teaser_top_sellers_item</item>
     <item name="home_teaser_recommendation"             type="layout">@layout/_def_home_teaser_recommends</item>
     <item name="home_teaser_recommends_item"            type="layout">@layout/_def_home_teaser_recommends_item</item>
-
+    <item name="home_teaser_recommendation_grid"        type="layout">@layout/_def_home_teaser_recommends_grid</item>
     <!--KICK OUT -->
     <item name="kickout_page"                           type="layout">@layout/_def_kickout_page</item>
 
