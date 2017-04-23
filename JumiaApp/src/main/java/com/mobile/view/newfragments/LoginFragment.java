@@ -48,11 +48,10 @@ import com.pushwoosh.internal.PushManagerImpl;
 
 import java.util.EnumSet;
 
-public class LoginFragment extends NewBaseFragment implements IResponseCallback
-{
+public class LoginFragment extends NewBaseFragment implements IResponseCallback {
     private EditText mEmailView;
     private EditText mPasswordView;
-    private TextView mLoginErrorMessage , mPasswordErrorMessage;
+    private TextView mLoginErrorMessage, mPasswordErrorMessage;
     private String mCustomerEmail;
     private String mCustomerPassword;
     private long mGABeginRequestMillis;
@@ -134,8 +133,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             mEmailView.setText(savedInstanceState.getString("mEmailView"));
             mPasswordView.setText(savedInstanceState.getString("mPasswordView"));
         }
@@ -151,7 +149,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
         mLoginErrorMessage.setVisibility(View.GONE);
         mPasswordErrorMessage.setVisibility(View.GONE);
         // Trigger to check email
-        if(TextUtils.isNotEmpty(mCustomerEmail) && TextUtils.isNotEmpty(mCustomerPassword) && Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
+        if (TextUtils.isNotEmpty(mCustomerEmail) && TextUtils.isNotEmpty(mCustomerPassword) && Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
             triggerEmailCheck(mCustomerEmail);
             mLoginErrorMessage.setVisibility(View.GONE);
             mPasswordErrorMessage.setVisibility(View.GONE);
@@ -161,18 +159,15 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
             //mErrorMessage.setVisibility(View.GONE);
         } else {
 
-            if (!TextUtils.isNotEmpty(mCustomerEmail)){
+            if (!TextUtils.isNotEmpty(mCustomerEmail)) {
                 mLoginErrorMessage.setText(getResources().getString(R.string.error_ismandatory));
                 mLoginErrorMessage.setVisibility(View.VISIBLE);
-            }
-            else if( !Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches())
-            {
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
                 //mEmailView.setError(getString(R.string.error_invalid_email));
                 mLoginErrorMessage.setText(getResources().getString(R.string.error_invalid_email));
                 mLoginErrorMessage.setVisibility(View.VISIBLE);
             }
-            if (!TextUtils.isNotEmpty(mCustomerPassword))
-            {
+            if (!TextUtils.isNotEmpty(mCustomerPassword)) {
                 // mPasswordView.setError(getString(R.string.error_ismandatory));
                 mPasswordErrorMessage.setText(getResources().getString(R.string.error_ismandatory));
                 mPasswordErrorMessage.setVisibility(View.VISIBLE);
@@ -207,16 +202,13 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 mLoginErrorMessage.setVisibility(View.GONE);
                 // Get value
                 boolean exist = ((CustomerEmailCheck) baseResponse.getMetadata().getData()).exist();
-                if (exist)
-                {
+                if (exist) {
                     ContentValues values = new ContentValues();
                     values.put("login[email]", mCustomerEmail);
                     values.put("login[password]", mCustomerPassword);
                     triggerContentEventProgress(new LoginHelper(), LoginHelper.createLoginBundle(values), this);
 
-                }
-                else
-                {
+                } else {
                     hideActivityProgress();
 
                     getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.email_password_invalid));
@@ -229,37 +221,35 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
 
-                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail()+"");
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail() + "");
 
                 //Emarsys
                 EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
                     @Override
                     public void EmarsysMobileEngageResponse(boolean success) {
-
                     }
                 };
-                EmarsysMobileEngage emarsysMobileEngage = new EmarsysMobileEngage(getBaseActivity());
-                emarsysMobileEngage.sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
+                EmarsysMobileEngage.getInstance(getBaseActivity()).sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
                 // End of Emarsys
 
                 // Case valid next step
-                if(nextStepFromApi != FragmentType.UNKNOWN) {
+                if (nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
-                    PushWooshTracker.login(getBaseActivity(),"email",true,JumiaApplication.CUSTOMER.getEmail());
-                    EmarsysTracker.login(getBaseActivity(),"email",true,JumiaApplication.CUSTOMER.getEmail());
+                    PushWooshTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
+                    EmarsysTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
                     // Tracking
                     if (eventType == EventType.GUEST_LOGIN_EVENT) {
                         TrackerDelegator.storeFirstCustomer(customer);
                         TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
 
                         // Set hide change password
-                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(),true);
+                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(), true);
                     } else if (eventType == EventType.AUTO_LOGIN_EVENT) {
                         TrackerDelegator.trackLoginSuccessful(customer, true, false);
                     } else {
                         TrackerDelegator.trackLoginSuccessful(customer, false, true);
                         // Set hide change password
-                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(),true);
+                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(), true);
                     }
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
@@ -282,26 +272,22 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
 
-                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getId()+"");
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getId() + "");
 
                 //Emarsys
                 emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
                     @Override
-                    public void EmarsysMobileEngageResponse(boolean success) {
-
-                    }
+                    public void EmarsysMobileEngageResponse(boolean success) {}
                 };
-                emarsysMobileEngage = new EmarsysMobileEngage(getBaseActivity());
-                emarsysMobileEngage.sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
+                EmarsysMobileEngage.getInstance(getBaseActivity()).sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
                 // End of Emarsys
                 // Finish
                 getActivity().onBackPressed();
-                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail()+"");
-                PushWooshTracker.login(getBaseActivity(),"email",true,JumiaApplication.CUSTOMER.getEmail());
-                EmarsysTracker.login(getBaseActivity(),"email",true,JumiaApplication.CUSTOMER.getEmail());
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail() + "");
+                PushWooshTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
+                EmarsysTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
 
-                if (isInCheckoutProcess)
-                {
+                if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
                 }
                 return;
@@ -378,8 +364,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback
         // Case forgot password
         if (id == R.id.login_button_continue) {
             onClickCheckEmail();
-        }
-        else if (id == R.id.login_email_button_password) {
+        } else if (id == R.id.login_email_button_password) {
             onClickForgotPassword();
         }
         /*else if (id == R.id.register_button_create)

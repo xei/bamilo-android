@@ -132,23 +132,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Intercept event
         shouldHandleEvent = true;
 
-        //Emarsys
-        EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
-            @Override
-            public void EmarsysMobileEngageResponse(boolean success) {
-
-            }
-        };
-        EmarsysMobileEngage emarsysMobileEngage = new EmarsysMobileEngage(SplashScreenActivity.this);
-        emarsysMobileEngage.sendLogin(PushManager.getPushToken(SplashScreenActivity.this), emarsysMobileEngageResponse);
-        // End of Emarsys
-
         // Initialize application
         JumiaApplication.INSTANCE.init(initializationHandler);
 
         // throw new RuntimeException("This is a crash");
-
-
     }
 
     /*

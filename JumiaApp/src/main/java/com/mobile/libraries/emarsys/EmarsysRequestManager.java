@@ -61,11 +61,8 @@ public class EmarsysRequestManager extends RequestManager {
    // @Override
     public void asyncRequest(HttpVerb method, String path, Map<String, Object> params, RequestExecutionType type,
                       RequestCompletion completion) {
-
         RunRequest runRequest = new RunRequest(method, path, params, type, completion);
         runRequest.execute();
-
-
     }
 
     void handleEmarsysMobileEngageResponse(int operation, Object responseObject, InputStream error, RequestCompletion completion)

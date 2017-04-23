@@ -36,15 +36,13 @@ public class NotificationReceiver extends BroadcastReceiver {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//Emarsys
+
+        //Emarsys
         EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
             @Override
-            public void EmarsysMobileEngageResponse(boolean success) {
-
-            }
+            public void EmarsysMobileEngageResponse(boolean success) {}
         };
-        EmarsysMobileEngage emarsysMobileEngage = new EmarsysMobileEngage(context);
-        emarsysMobileEngage.sendOpen(sid, emarsysMobileEngageResponse);
+        EmarsysMobileEngage.getInstance(context).sendOpen(sid, emarsysMobileEngageResponse);
         // End of Emarsys
 
         //Get default launcher intent for clarity

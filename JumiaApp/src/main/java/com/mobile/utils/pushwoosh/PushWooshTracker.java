@@ -99,7 +99,6 @@ public class PushWooshTracker {
         values.put(PushWooshEvent.CategoryUrlKey,categoryUrlKey);
         sendEvent(activity,"ViewProduct",values);
         sendToEmarsys("ViewProduct",values);
-
     }
 
     public static void logOut(BaseActivity activity, boolean success) {
@@ -107,22 +106,17 @@ public class PushWooshTracker {
         values.put(PushWooshEvent.Success,success);
         sendEvent(activity,"Logout",values);
         sendToEmarsys("Logout",values);
-
     }
 
-    private static void sendEvent( BaseActivity activity , String eventName,HashMap<String, Object> attributes ){
+    private static void sendEvent( BaseActivity activity , String eventName,HashMap<String, Object> attributes ) {
         InAppFacade.postEvent(activity,eventName,attributes);
     }
 
-    private static void sendToEmarsys(String event ,HashMap<String, Object> attributes )
-    {
+    private static void sendToEmarsys(String event ,HashMap<String, Object> attributes ) {
         EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
             @Override
-            public void EmarsysMobileEngageResponse(boolean success) {
-
-            }
+            public void EmarsysMobileEngageResponse(boolean success) {}
         };
-        EmarsysMobileEngage emarsysMobileEngage = new EmarsysMobileEngage(context);
-        emarsysMobileEngage.sendCustomEvent(event,attributes,emarsysMobileEngageResponse);
+        EmarsysMobileEngage.getInstance(context).sendCustomEvent(event,attributes,emarsysMobileEngageResponse);
     }
 }

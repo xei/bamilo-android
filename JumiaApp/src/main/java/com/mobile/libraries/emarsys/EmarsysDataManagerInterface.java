@@ -8,10 +8,6 @@ import java.util.Map;
  */
 
 public interface EmarsysDataManagerInterface {
-
-
-
-
     void anonymousLogin(EmarsysPushIdentifier contact, DataCompletion completion);
 
     void login(EmarsysPushIdentifier contact, String contactFieldId, String contactFieldValue, DataCompletion completion);
@@ -21,5 +17,4 @@ public interface EmarsysDataManagerInterface {
     void customEvent(EmarsysContactIdentifier contact, String event, Map<String,Object> attributes, DataCompletion completion);
 
     void logout(EmarsysContactIdentifier contact, DataCompletion completion);
-
 }
