@@ -1,6 +1,7 @@
 package com.mobile.utils.home.holder;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +10,12 @@ import android.view.View;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.VerticalSpaceItemDecoration;
+import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.libraries.emarsys.predict.RecommendationWidgetType;
 import com.mobile.utils.home.TeaserViewFactory;
+import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -60,7 +66,7 @@ public class HomeRecommendationsGridTeaserHolder /*extends BaseTeaserViewHolder 
             // Case top sellers
             if (items != null && items.size()>0) {
                 //if (TextUtils.isNotEmpty(group.getTitle())) sectionTitle.setText(group.getTitle());
-                recyclerView.setAdapter(new HomeRecommendationsTeaserAdapter(items, mParentClickListener));
+                recyclerView.setAdapter(new HomeRecommendationsTeaserAdapter(items, onClickListener, RecommendationWidgetType.Grid));
             }
             /*// Case rich relevance
             else if (CollectionUtils.isNotEmpty(group.getData())) {
@@ -71,37 +77,18 @@ public class HomeRecommendationsGridTeaserHolder /*extends BaseTeaserViewHolder 
         }
     }
 
-    /**
-     * This method requests the rich relevant information of a specific key
-     */
-   /* private void triggerGetRichRelevanceData(String key) {
-        if (TextUtils.isNotEmpty(key)) {
-            JumiaApplication.INSTANCE.sendRequest(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(key), this);
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String sku = (String)view.getTag();
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
+            //bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrandName() + " " + product.getName());
+            bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+            // Goto PDV
+            ((BaseActivity)mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
-    }*/
+    };
 
-    /*
-     * ################# RESPONSE #################
-     */
-    /*
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "SUCCESS RICH RELEVANCE");
-        RichRelevance richRelevanceObject = (RichRelevance) baseResponse.getContentData();
-        ArrayList<ProductRegular> richRelevanceTeaserObjects = richRelevanceObject.getRichRelevanceProducts();
-        if (!CollectionUtils.isEmpty(richRelevanceTeaserObjects) && mParentClickListener != null && recyclerView != null) {
-            recyclerView.setAdapter(new RichRelevanceAdapter(richRelevanceTeaserObjects, mParentClickListener, true));
-            sectionTitle.setText(richRelevanceObject.getTitle());
-        } else {
-            onRequestError(baseResponse);
-        }
-    }
 
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ERROR RICH RELEVANCE");
-        if (recyclerView != null) {
-            ((View) recyclerView.getParent()).setVisibility(View.GONE);
-        }
-    }*/
 }

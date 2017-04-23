@@ -107,13 +107,13 @@ public class RecommendManager {
        sendTransaction(transaction);
    }
 
-    public void sendCartRecommend(final RecommendCompletionHandler callBack) {
+    public void sendCartRecommend(final RecommendListCompletionHandler callBack) {
         sendRecommend(null, "CART", null, null, null, null, callBack);
     }
 
     public void sendCategoryRecommend(String searchTerm,
                                       String category,
-                                      final RecommendCompletionHandler callBack) {
+                                      final RecommendListCompletionHandler callBack) {
         sendRecommend(null, "CATEGORY", category, searchTerm, null, null, callBack);
     }
 
@@ -121,19 +121,19 @@ public class RecommendManager {
                                      String searchTerm,
                                      String itemId,
                                      List<String> excludeItems,
-                                     final RecommendCompletionHandler callBack) {
+                                     final RecommendListCompletionHandler callBack) {
         sendRecommend(item, "RELATED", null, searchTerm, itemId, excludeItems, callBack);
     }
 
     public void sendAlsoBoughtRecommend(RecommendedItem recommendedItem,
                                         String itemId,
-                                        final RecommendCompletionHandler callBack) {
+                                        final RecommendListCompletionHandler callBack) {
         sendRecommend(recommendedItem, "ALSO_BOUGHT", null, null, itemId, null, callBack);
     }
 
 
     public void sendPersonalRecommend(String searchTerm,
-                                      final RecommendCompletionHandler callBack) {
+                                      final RecommendListCompletionHandler callBack) {
         sendRecommend(null, "PERSONAL", null, searchTerm, null, null, callBack);
     }
 
@@ -142,7 +142,7 @@ public class RecommendManager {
                                String searchTerm,
                                String itemId,
                                List<String> excludeItems,
-                               final RecommendCompletionHandler callBack) {
+                               final RecommendListCompletionHandler callBack) {
         final List<Item> data = new ArrayList<>();
 
         Transaction transaction = recommendedItem == null ?
@@ -180,7 +180,7 @@ public class RecommendManager {
                     data.add(item);
                 }
 
-                callBack.onRecommendedRequestComplete(data);
+                callBack.onRecommendedRequestComplete("", result.getProducts());
             }
         });
 

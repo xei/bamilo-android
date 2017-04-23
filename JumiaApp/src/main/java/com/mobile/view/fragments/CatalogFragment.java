@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
+import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
@@ -26,6 +27,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.libraries.emarsys.predict.recommended.Item;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
@@ -1162,12 +1164,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         recommendedAdapter.notifyDataSetChanged();
         recyclerView.invalidate();*/
         RecommendManager recommendManager = new RecommendManager();
-        RecommendCompletionHandler handler = new RecommendCompletionHandler() {
+        RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
             @Override
-            public void onRecommendedRequestComplete(final List<Item> resultData) {
-                /*recommendedAdapter.setData(resultData);
-                recommendedAdapter.notifyDataSetChanged();
-                recyclerView.invalidate();*/
+            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+
             }
         };
 

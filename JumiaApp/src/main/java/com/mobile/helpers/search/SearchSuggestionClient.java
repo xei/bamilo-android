@@ -2,10 +2,12 @@ package com.mobile.helpers.search;
 
 import android.content.Context;
 
+import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.JumiaApplication;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.predict.recommended.Item;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
 import com.mobile.newFramework.objects.search.Suggestion;
@@ -46,12 +48,10 @@ public class SearchSuggestionClient {
 
                 JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(searchTerm), responseCallback);
                 RecommendManager recommendManager = new RecommendManager();
-                recommendManager.sendPersonalRecommend(searchTerm, new RecommendCompletionHandler() {
+                recommendManager.sendPersonalRecommend(searchTerm, new RecommendListCompletionHandler() {
                     @Override
-                    public void onRecommendedRequestComplete(final List<Item> resultData) {
-                        /*recommendedAdapter.setData(resultData);
-                        recommendedAdapter.notifyDataSetChanged();
-                        recyclerView.invalidate();*/
+                    public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+
                     }
                 });
             }
