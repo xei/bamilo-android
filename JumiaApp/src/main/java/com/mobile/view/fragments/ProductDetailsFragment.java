@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.ExpandedGridViewComponent;
 import com.mobile.components.customfontviews.CheckBox;
@@ -65,6 +66,7 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
 import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.RelatedProductsAdapter;
 import com.mobile.utils.product.UIProductUtils;
@@ -1382,7 +1384,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param productBundleItem    - product bundle
      */
     private void fillProductBundleInfo(View view, final ProductBundle productBundleItem) {
-        ImageView mImage = (ImageView) view.findViewById(R.id.image_view);
+        NetworkImageView mImage = (NetworkImageView) view.findViewById(R.id.image_view);
         ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
         final CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);
         mCheck.post(new Runnable() {
@@ -1393,7 +1395,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
         });
 
-        RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+        //RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(this.getContext(), productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());
         TextView mTitle = (TextView) view.findViewById(R.id.item_title);

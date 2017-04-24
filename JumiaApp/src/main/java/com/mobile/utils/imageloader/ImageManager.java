@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.mobile.view.R;
 import com.android.volley.VolleyError;
@@ -29,6 +30,10 @@ public final class ImageManager {
             instance = new ImageManager();
         }
         return instance;
+    }
+
+    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, View progressView, final int placeHolderImageId) {
+        loadImage(context, imageUrl, false, imageView, progressView, placeHolderImageId, false, null, false);
     }
 
     public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, boolean hideView, RocketImageLoader.RocketImageLoaderListener listener) {
