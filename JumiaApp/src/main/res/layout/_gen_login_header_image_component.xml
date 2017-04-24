@@ -7,7 +7,7 @@
      android:paddingRight="@dimen/padding_login_header_images"
     >
 
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

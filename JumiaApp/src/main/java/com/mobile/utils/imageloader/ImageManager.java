@@ -31,6 +31,10 @@ public final class ImageManager {
         return instance;
     }
 
+    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, boolean hideView, RocketImageLoader.RocketImageLoaderListener listener) {
+        loadImage(context, imageUrl, false, imageView, null, -1, hideView, listener, false);
+    }
+
     public void loadImage(Context context, final String imageUrl, boolean isFilePathList, final NetworkImageView imageView, final View progressView, final int placeHolderImageId, final boolean hideImageView, final RocketImageLoader.RocketImageLoaderListener listener, boolean isDraftImage) {
         if (!TextUtils.isEmpty(imageUrl) && imageView !=  null) {
             if(isDraftImage) {
