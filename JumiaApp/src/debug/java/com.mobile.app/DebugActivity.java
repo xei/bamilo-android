@@ -7,6 +7,7 @@ import com.mobile.app.drawer.DebugMobileApiModel;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.BaseActivity;
+import com.pushwoosh.PushManager;
 
 import java.util.Set;
 
@@ -46,6 +47,7 @@ public abstract class DebugActivity extends BaseActivity implements DebugMobileA
         super.onResume();
         // Resume debug drawer
         AbcDebugDrawerView.onResume(mDebugDrawer);
+
     }
 
     @Override

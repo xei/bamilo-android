@@ -86,6 +86,7 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.UITabLayoutUtils;
@@ -1101,6 +1102,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
         SearchSuggestionClient mSearchSuggestionClient = new SearchSuggestionClient();
         PushWooshTracker.search(BaseActivity.this,"" ,text.replace(" ",","));
+        EmarsysTracker.search(BaseActivity.this,"" ,text.replace(" ",","));
         mSearchSuggestionClient.getSuggestions(getApplicationContext(), new IResponseCallback() {
             @Override
             public void onRequestComplete(final BaseResponse baseResponse) {

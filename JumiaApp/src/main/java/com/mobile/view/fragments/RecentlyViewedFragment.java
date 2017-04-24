@@ -35,6 +35,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
@@ -387,6 +388,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         // Tracking
         trackAddToCart(simple.getSku(), product);
         PushWooshTracker.addToCart(getBaseActivity(),true,product.getSku(), (long) product.getPrice());
+        EmarsysTracker.addToCart(getBaseActivity(),true,product.getSku(), (long) product.getPrice());
     }
 
     /**

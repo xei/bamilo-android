@@ -59,6 +59,7 @@ import com.mobile.utils.catalog.UICatalogUtils;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ErrorLayoutFactory;
@@ -563,6 +564,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
                     PushWooshTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
+                    EmarsysTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             }
