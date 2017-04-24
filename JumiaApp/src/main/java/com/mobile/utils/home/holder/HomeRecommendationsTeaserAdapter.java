@@ -112,11 +112,11 @@ public class HomeRecommendationsTeaserAdapter extends RecyclerView.Adapter<HomeR
             holder.mPrice.setText(CurrencyFormatter.formatCurrency(price));
             holder.mOldPrice.setVisibility(View.INVISIBLE);
         }
-        holder.mName.setTag(sku);
-        holder.mImage.setTag(sku);
-        holder.mBrand.setTag(sku);
-        holder.mPrice.setTag(sku);
-        holder.mOldPrice.setTag(sku);
+        holder.mName.setTag(R.id.sku, sku);
+        holder.mImage.setTag(R.id.sku, sku);
+        holder.mBrand.setTag(R.id.sku, sku);
+        holder.mPrice.setTag(R.id.sku, sku);
+        holder.mOldPrice.setTag(R.id.sku, sku);
 
         holder.mName.setOnClickListener(mOnClickListener);
         holder.mImage.setOnClickListener(mOnClickListener);

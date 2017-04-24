@@ -339,8 +339,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         //restoreScrollState();
         // Show mContainer
         showFragmentContentContainer();
-                //recommendedListView = (ListView) view.findViewById(R.id.recommendedListView);
-        recommendedListView.setAdapter(recommendedListAdapter);
+
+        recommendManager = new RecommendManager();
+        sendRecommend();
     }
 
     /**
@@ -365,21 +366,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         recommendManager = new RecommendManager();
         sendRecommend();
 
-        /*recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, mContainer, false) , null );
-        if (recommendationsTeaserHolder != null && !recommendationsTeaserHolderAdded) {
-            // Set view
-            recommendationsTeaserHolder.onBind(null);
-            // Add to container
-            mContainer.addView(recommendationsTeaserHolder.itemView);
-            recommendationsTeaserHolderAdded = true;
-            // Save
-            //mViewHolders.add(holder);
-        }*/
-
-        //mContainer.addView(recommendedListView);
-        //recommendedListView = (ListView) view.findViewById(R.id.recommendedListView);
-        //recommendedListView.setAdapter(recommendedListAdapter);
-        // Show mContainer
         showFragmentContentContainer();
     }
 
@@ -668,21 +654,20 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                     // Set view
                     recommendationsTeaserHolder.onBind(data);
                     // Add to container
-                    if (!recommendationsTeaserHolderAdded) {
+                    try {
+                        //recommendationsTeaserHolder.itemView.
+                        mContainer.removeView(recommendationsTeaserHolder.itemView);
                         mContainer.addView(recommendationsTeaserHolder.itemView, mContainer.getChildCount()-1);
+
                     }
-                    // Save
-                    //mViewHolders.add(holder);
+                    catch (Exception ex) {
+
+                    }
+
                     recommendationsTeaserHolderAdded = true;
 
                 }
-               // recommendationsTeaserHolder.onBind(data);
-               // recommendedListAdapter.addAll(data);// = new RecommendedAdapter(data);
-                //recommendedListAdapter.notifyDataSetChanged();
 
-//                recommendedListView.setAdapter(recommendedListAdapter);
-
-               // recommendedListView.invalidate();
             }
         });
     }

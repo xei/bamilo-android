@@ -80,7 +80,7 @@ public class HomeRecommendationsGridTeaserHolder /*extends BaseTeaserViewHolder 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            String sku = (String)view.getTag();
+            String sku = (String)view.getTag(R.id.sku);
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
             //bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrandName() + " " + product.getName());

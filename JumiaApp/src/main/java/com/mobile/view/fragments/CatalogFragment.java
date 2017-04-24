@@ -540,6 +540,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (FeaturedBoxHelper.show(this, featuredBox)) {
             // Case success show container
             showFragmentContentContainer();
+
+
         } else {
             // Case fail show continue
             Print.e(TAG, "No featureBox!");
