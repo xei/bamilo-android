@@ -23,6 +23,7 @@ public final class ImageManager {
     protected ImageManager() {
         // Exists only to defeat instantiation.
     }
+
     public static ImageManager getInstance() {
         if(instance == null) {
             instance = new ImageManager();
@@ -104,13 +105,13 @@ public final class ImageManager {
 
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                if (response.getBitmap() != null) {
+                /*if (response.getBitmap() != null) {
                     imageView.setImageBitmap(response.getBitmap());
                 } else if (defaultImageResId != 0) {
                     imageView.setImageResource(defaultImageResId);
-                }
+                }*/
 
-                if (null != response.getBitmap() && response.getBitmap().getWidth() != -1) {
+                if (response.getBitmap() != null && response.getBitmap().getWidth() != -1) {
                     if (response.getRequestUrl().equals(imageUrl)) {
                         if (progressView != null) {
                             progressView.setVisibility(View.GONE);
@@ -134,10 +135,9 @@ public final class ImageManager {
                             imageView.setVisibility(View.VISIBLE);
                         }
                     }
-                } else {
+                } else if(defaultImageResId != -1) {
                     //imageView.setImageBitmap(null);
-                    if(defaultImageResId != -1)
-                        imageView.setImageResource(defaultImageResId);
+                    imageView.setImageResource(defaultImageResId);
                 }
             }
         };
