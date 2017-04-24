@@ -6,12 +6,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 
+import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FeaturedItemsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.FeaturedItem;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
@@ -19,6 +23,7 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.home.holder.HomeRecommendationsTeaserHolder;
 import com.mobile.utils.search.NoResSearchAdapter;
 import com.mobile.utils.search.SearchModel;
 import com.mobile.view.ExpandableHeightListView;
@@ -26,6 +31,7 @@ import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -42,7 +48,9 @@ public class FeaturedBoxHelper {
     private static final int ITEMS_PER_PAGE_PORTRAIT = 3;
     
     private static final int ITEMS_PER_PAGE_LANDSCAPE = 5;
-
+    static HomeRecommendationsTeaserHolder recommendationsTeaserHolder;
+    static LinearLayout RecommendationResult;
+    private static boolean recommendationsTeaserHolderAdded = false;
 
     private String mRichRelevanceHash ="";
 
@@ -71,7 +79,13 @@ public class FeaturedBoxHelper {
             // Notice message
             showNoticeMessage(view, featuredBox);
 
-            NoResSearchAdapter adapter = new NoResSearchAdapter(baseFragment.getContext(), searchGenerateData());
+
+            RecommendationResult = (LinearLayout) view.findViewById(R.id.recommendation_result);
+
+            sendRecommend(fragment);
+
+
+            /*NoResSearchAdapter adapter = new NoResSearchAdapter(baseFragment.getContext(), searchGenerateData());
             ExpandableHeightListView searchListView = (ExpandableHeightListView) view.findViewById(R.id.search_listview);
             //ExpandedListView searchListView = (ExpandedListView) view.findViewById(R.id.search_listview);
             searchListView.setAdapter(adapter);
@@ -101,7 +115,7 @@ public class FeaturedBoxHelper {
 
                     }
                 }
-            });
+            });*/
 
             return true;
         } catch (NullPointerException e) {
@@ -109,7 +123,42 @@ public class FeaturedBoxHelper {
             return false;
         }
     }
+    private static void sendRecommend(final BaseFragment fragment) {
+        /*recommendedListAdapter.clear();
+        recommendedListAdapter.notifyDataSetChanged();
+        recommendedListView.invalidate();*/
 
+        RecommendManager recommendManager = new RecommendManager();
+        recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
+                LayoutInflater inflater = LayoutInflater.from(fragment.getBaseActivity());
+
+                if (recommendationsTeaserHolder == null ) {
+                    recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, RecommendationResult, false), null);
+                }
+                if (recommendationsTeaserHolder != null ) {
+                    // Set view
+                    recommendationsTeaserHolder.onBind(data);
+                    // Add to container
+                    if (!recommendationsTeaserHolderAdded) {
+                        RecommendationResult.addView(recommendationsTeaserHolder.itemView);
+                    }
+                    // Save
+                    //mViewHolders.add(holder);
+                    recommendationsTeaserHolderAdded = true;
+
+                }
+                // recommendationsTeaserHolder.onBind(data);
+                // recommendedListAdapter.addAll(data);// = new RecommendedAdapter(data);
+                //recommendedListAdapter.notifyDataSetChanged();
+
+//                recommendedListView.setAdapter(recommendedListAdapter);
+
+                // recommendedListView.invalidate();
+            }
+        });
+    }
 
     private static void onClickBackToHome(){
         // Get user id

@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.emarsys.predict.RecommendedItem;
 import com.google.android.gms.analytics.ecommerce.Product;
 import com.mobile.adapters.AddressAdapter;
 import com.mobile.adapters.CartItemAdapter;
@@ -44,6 +45,7 @@ import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.predict.recommended.Item;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
@@ -658,12 +660,10 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         recommendedAdapter.notifyDataSetChanged();
         recyclerView.invalidate();*/
 
-        recommendManager.sendCartRecommend(new RecommendCompletionHandler() {
+        recommendManager.sendCartRecommend(new RecommendListCompletionHandler() {
             @Override
-            public void onRecommendedRequestComplete(final List<Item> resultData) {
-                /*recommendedAdapter.setData(resultData);
-                recommendedAdapter.notifyDataSetChanged();
-                recyclerView.invalidate();*/
+            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+
             }
         });
 
