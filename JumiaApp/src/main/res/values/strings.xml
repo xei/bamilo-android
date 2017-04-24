@@ -173,6 +173,7 @@
     <string name="review">Review</string>
     <string name="save_changes_label">Save Changes</string>
     <string name="save_label">Save</string>
+    <string name="save_address_label">Save Address</string>
     <string name="search_label">Search</string>
     <string name="section_title_account">Account Settings</string>
     <string name="section_title_notification">Notification Settings</string>
@@ -494,5 +495,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="confirm_filter">Confirm</string>
     <string name="Emarsys_MerchantId">18146DE34FE0B8C9</string>
+    <string name="recommendations">پیشنهادها</string>
 
 </resources>

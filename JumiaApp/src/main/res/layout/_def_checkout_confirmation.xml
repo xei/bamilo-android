@@ -252,7 +252,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textColor="#737373"
-                android:text="5555555555"
                 android:textAlignment="textEnd"
                 android:id="@+id/checkout_order_all_price"
                 android:textStyle="normal|bold" />

@@ -178,6 +178,7 @@
     <string name="review">نقد و بررسی</string>
     <string name="save_changes_label">ذخیره تغییرات</string>
     <string name="save_label">ذخیره</string>
+    <string name="save_address_label">ذخیره آدرس</string>
     <string name="search_label">جستجو</string>
     <string name="section_title_account">تنظیمات حساب کاربری</string>
     <string name="section_title_notification">با ما در ارتباط باشید</string>
@@ -478,5 +479,6 @@
     <string name="coupon_label">کد تحفیف</string>
     <string name="sub_categories">زیر مجموعه ها</string>
     <string name="confirm_filter">ثبت</string>
+    <string name="recommendations">پیشنهادها</string>
 
 </resources>

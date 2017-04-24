@@ -26,6 +26,7 @@ import java.util.UUID;
 public class RecommendManager {
 
     private static final String TAG = "RecommendManager";
+    private static final int RecommendLimit = 15;
 
     public void buy() {
         Transaction transaction = new Transaction();
@@ -42,14 +43,14 @@ public class RecommendManager {
         //sharedCart().clear();
     }
 
-    public void sendHomeRecommend(final RecommendListCompletionHandler callBack) {
+   /* public void sendHomeRecommend(final RecommendListCompletionHandler callBack) {
 
         Transaction transaction = new Transaction();
         transaction.cart(getCartItems());
         for (int i = 1; i < 11; i++) {
             String logic = "HOME_" + i;
             RecommendationRequest recommend = new RecommendationRequest(logic);
-            recommend.setLimit(8);
+            recommend.setLimit(RecommendLimit);
             transaction.recommend(recommend, new CompletionHandler() {
                 @Override
                 public void onCompletion(RecommendationResult result) {
@@ -74,15 +75,45 @@ public class RecommendManager {
         }
 
         sendTransaction(transaction);
-    }
+    }*/
+   public void sendHomeRecommend(final RecommendListCompletionHandler callBack) {
 
-    public void sendCartRecommend(final RecommendCompletionHandler callBack) {
+       Transaction transaction = new Transaction();
+       transaction.cart(getCartItems());
+
+           String logic = "PERSONAL";
+           RecommendationRequest recommend = new RecommendationRequest(logic);
+           recommend.setLimit(RecommendLimit);
+           transaction.recommend(recommend, new CompletionHandler() {
+               @Override
+               public void onCompletion(RecommendationResult result) {
+                   // Process result
+                   Log.d(TAG, result.getFeatureId());
+
+                   String category = result.getTopic();
+
+                       List<Item> data = new ArrayList<>();
+
+                       for (RecommendedItem next : result.getProducts()) {
+                           Item item = new Item(next);
+                           data.add(item);
+                       }
+
+                       callBack.onRecommendedRequestComplete(category, result.getProducts());
+               }
+           });
+
+
+       sendTransaction(transaction);
+   }
+
+    public void sendCartRecommend(final RecommendListCompletionHandler callBack) {
         sendRecommend(null, "CART", null, null, null, null, callBack);
     }
 
     public void sendCategoryRecommend(String searchTerm,
                                       String category,
-                                      final RecommendCompletionHandler callBack) {
+                                      final RecommendListCompletionHandler callBack) {
         sendRecommend(null, "CATEGORY", category, searchTerm, null, null, callBack);
     }
 
@@ -90,19 +121,19 @@ public class RecommendManager {
                                      String searchTerm,
                                      String itemId,
                                      List<String> excludeItems,
-                                     final RecommendCompletionHandler callBack) {
+                                     final RecommendListCompletionHandler callBack) {
         sendRecommend(item, "RELATED", null, searchTerm, itemId, excludeItems, callBack);
     }
 
     public void sendAlsoBoughtRecommend(RecommendedItem recommendedItem,
                                         String itemId,
-                                        final RecommendCompletionHandler callBack) {
+                                        final RecommendListCompletionHandler callBack) {
         sendRecommend(recommendedItem, "ALSO_BOUGHT", null, null, itemId, null, callBack);
     }
 
 
     public void sendPersonalRecommend(String searchTerm,
-                                      final RecommendCompletionHandler callBack) {
+                                      final RecommendListCompletionHandler callBack) {
         sendRecommend(null, "PERSONAL", null, searchTerm, null, null, callBack);
     }
 
@@ -111,7 +142,7 @@ public class RecommendManager {
                                String searchTerm,
                                String itemId,
                                List<String> excludeItems,
-                               final RecommendCompletionHandler callBack) {
+                               final RecommendListCompletionHandler callBack) {
         final List<Item> data = new ArrayList<>();
 
         Transaction transaction = recommendedItem == null ?
@@ -149,7 +180,7 @@ public class RecommendManager {
                     data.add(item);
                 }
 
-                callBack.onRecommendedRequestComplete(data);
+                callBack.onRecommendedRequestComplete("", result.getProducts());
             }
         });
 
@@ -172,6 +203,7 @@ public class RecommendManager {
     private List<CartItem> getCartItems()
     {
         List<CartItem> result = new ArrayList<>();
+        if (JumiaApplication.INSTANCE.getCart() == null) return result;
         List<PurchaseCartItem> cartItems = JumiaApplication.INSTANCE.getCart().getCartItems();
         if (cartItems == null) return result;
         for (PurchaseCartItem purchaseCartItem:cartItems) {

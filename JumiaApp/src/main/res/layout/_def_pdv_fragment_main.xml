@@ -74,9 +74,16 @@
                 layout="@layout/_def_pdv_fragment_combo_main" />
 
             <!-- RELATED ITEMS -->
+            <LinearLayout
+                android:id="@+id/pdv_related_container"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
+<!--
             <include
                 android:id="@+id/pdv_related_container"
                 layout="@layout/_def_pdv_fragment_related_prods" />
+-->
 
         </android.support.v7.widget.LinearLayoutCompat>
 

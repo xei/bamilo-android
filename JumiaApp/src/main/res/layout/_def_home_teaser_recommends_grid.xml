@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/home_teaser_recommendation_section_title"
+        style="@style/HeaderTeaserStyle"
+        android:text="@string/recommendations" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recommendedListView"
+        style="@style/HorizontalListStyle"
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/margin_padding_xs"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

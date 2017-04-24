@@ -111,4 +111,7 @@
     <color name="red_error">#b90f00</color>
     <color name="grey_pending">#dedede</color>
 
+    <color name="recommendation_black">#1b1b1b</color>
+    <color name="recommendation_grey">#a7a7a7</color>
+
 </resources>

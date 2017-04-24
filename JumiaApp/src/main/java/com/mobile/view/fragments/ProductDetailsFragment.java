@@ -17,6 +17,7 @@ import android.widget.RatingBar;
 import android.widget.ScrollView;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.ExpandedGridViewComponent;
 import com.mobile.components.customfontviews.CheckBox;
@@ -35,6 +36,7 @@ import com.mobile.libraries.emarsys.EmarsysMobileEngage;
 import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.libraries.emarsys.predict.recommended.Item;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
@@ -65,6 +67,8 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
+import com.mobile.utils.home.holder.HomeRecommendationsGridTeaserHolder;
+import com.mobile.utils.home.holder.HomeRecommendationsTeaserHolder;
 import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
@@ -121,7 +125,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private String mRelatedRichRelevanceHash;
     private ViewGroup mBrandView;
     private View mPriceContainer;
-
+    private RecommendManager recommendManager;
+    HomeRecommendationsGridTeaserHolder recommendationsGridTeaserHolder;
+    private boolean recommendationsTeaserHolderAdded = false;
     /**
      * Empty constructor
      */
@@ -162,7 +168,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.product_detail_view.View,
      * android.product_detail_os.Bundle)
      */
@@ -215,7 +221,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onResume()
      */
     @Override
@@ -450,6 +456,53 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Save complete product
         mProduct = product;
         mCompleteProductSku = product.getSku();
+        RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+
+                if (recommendationsGridTeaserHolder == null ) {
+                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
+                }
+                if (recommendationsGridTeaserHolder != null ) {
+                    // Set view
+                    recommendationsGridTeaserHolder.onBind(data);
+                    // Add to container
+                    if (!recommendationsTeaserHolderAdded) {
+                        mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount()-1);
+                    }
+                    // Save
+                    //mViewHolders.add(holder);
+                    recommendationsTeaserHolderAdded = true;
+
+                }
+                // recommendationsTeaserHolder.onBind(data);
+                // recommendedListAdapter.addAll(data);// = new RecommendedAdapter(data);
+                //recommendedListAdapter.notifyDataSetChanged();
+
+//                recommendedListView.setAdapter(recommendedListAdapter);
+
+                // recommendedListView.invalidate();
+            }
+
+
+        };
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseActivity());
+        String logic = sharedPref.getString("", "RELATED");
+        RecommendManager recommendManager = new RecommendManager();
+        Item item = recommendManager.getCartItem(product);
+        if (logic.equals("RELATED")) {
+            recommendManager.sendRelatedRecommend(item.getRecommendedItem(),
+                    null,
+                    item.getItemID(),
+                    null,
+                    handler);
+        } else {
+            recommendManager.sendAlsoBoughtRecommend(item.getRecommendedItem(),
+                    item.getItemID(),
+                    handler);
+        }
         // Set layout
         setTitle();
         setSlideShow();
@@ -473,30 +526,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         PushWooshTracker.viewProduct(getBaseActivity(),mProduct.getCategoryKey(), (long) mProduct.getPrice());
         EmarsysTracker.viewProduct(getBaseActivity(),mProduct.getCategoryKey(), (long) mProduct.getPrice());
 
-        RecommendCompletionHandler handler = new RecommendCompletionHandler() {
-            @Override
-            public void onRecommendedRequestComplete(final List<Item> resultData) {
-                /*recommendedAdapter.setData(resultData);
-                recommendedAdapter.notifyDataSetChanged();
-                recyclerView.invalidate();*/
-            }
-        };
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseActivity());
-        String logic = sharedPref.getString("", "RELATED");
-        RecommendManager recommendManager = new RecommendManager();
-        Item item = recommendManager.getCartItem(product);
-        if (logic.equals("RELATED")) {
-            recommendManager.sendRelatedRecommend(item.getRecommendedItem(),
-                    null,
-                    item.getItemID(),
-                    null,
-                    handler);
-        } else {
-            recommendManager.sendAlsoBoughtRecommend(item.getRecommendedItem(),
-                    item.getItemID(),
-                    handler);
-        }
     }
 
     /**
@@ -816,7 +846,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * Method used to create the view
      */
     private void setRelatedItems() {
-        if (CollectionUtils.isNotEmpty(mProduct.getRelatedProducts())) {
+        /*if (CollectionUtils.isNotEmpty(mProduct.getRelatedProducts())) {
             if (mProduct.getRichRelevance() != null && TextUtils.isNotEmpty(mProduct.getRichRelevance().getTitle())) {
                 ((TextView) mRelatedProductsView.findViewById(R.id.pdv_related_title)).setText(mProduct.getRichRelevance().getTitle());
             }
@@ -827,7 +857,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mRelatedProductsView.setVisibility(View.VISIBLE);
         } else {
             mRelatedProductsView.setVisibility(View.GONE);
-        }
+        }*/
     }
 
     /**
@@ -1185,6 +1215,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             richRelevanceHash = TargetLink.getIdFromTargetLink(richRelevanceHash);
 
         triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(sku, richRelevanceHash), this);
+        //recommendManager = new RecommendManager();
+        //sendRecommend();
     }
 
     private void triggerAddItemToCart(String sku) {
@@ -1439,6 +1471,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private void triggerGetProductBundle(String sku) {
         triggerContentEvent(new GetProductBundleHelper(), GetProductBundleHelper.createBundle(sku), this);
+
     }
 
 
@@ -1462,6 +1495,44 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             onClickComboItem(bundleItemView, txTotalComboPrice, bundleList, selectedPosition);
         }
 
+    }
+
+    private void sendRecommend() {
+        /*recommendedListAdapter.clear();
+        recommendedListAdapter.notifyDataSetChanged();
+        recommendedListView.invalidate();*/
+
+        //recommendManager.sendRelatedRecommend(null, "", mCompleteProductSku, null,
+
+        recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
+                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+
+                if (recommendationsGridTeaserHolder == null ) {
+                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
+                }
+                if (recommendationsGridTeaserHolder != null ) {
+                    // Set view
+                    recommendationsGridTeaserHolder.onBind(data);
+                    // Add to container
+                    if (!recommendationsTeaserHolderAdded) {
+                        mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount()-1);
+                    }
+                    // Save
+                    //mViewHolders.add(holder);
+                    recommendationsTeaserHolderAdded = true;
+
+                }
+                // recommendationsTeaserHolder.onBind(data);
+                // recommendedListAdapter.addAll(data);// = new RecommendedAdapter(data);
+                //recommendedListAdapter.notifyDataSetChanged();
+
+//                recommendedListView.setAdapter(recommendedListAdapter);
+
+                // recommendedListView.invalidate();
+            }
+        });
     }
 
 }
