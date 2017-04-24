@@ -193,8 +193,9 @@
             android:textColor="@color/design_textinput_error_color_light" />
 
         <com.mobile.components.customfontviews.Button
-            android:text="Button"
-            android:background="#4990e2"
+            android:text="@string/save_address_label"
+            android:background="@color/orange_1"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/add_address_btn" />
