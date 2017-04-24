@@ -68,6 +68,7 @@ import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
 import com.mobile.utils.home.holder.HomeRecommendationsGridTeaserHolder;
 import com.mobile.utils.home.holder.HomeRecommendationsTeaserHolder;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.RelatedProductsAdapter;
 import com.mobile.utils.product.UIProductUtils;
@@ -237,6 +238,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
                     PushWooshTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
+                    EmarsysTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             }
@@ -520,6 +522,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Tracking
         TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath);
         PushWooshTracker.viewProduct(getBaseActivity(),mProduct.getCategoryKey(), (long) mProduct.getPrice());
+        EmarsysTracker.viewProduct(getBaseActivity(),mProduct.getCategoryKey(), (long) mProduct.getPrice());
 
 
     }
@@ -1026,6 +1029,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     TrackerDelegator.trackAddToFavorites(mProduct);
 
                     PushWooshTracker.addToFavorites(getBaseActivity(),true,mProduct.getCategoryKey());
+                    EmarsysTracker.addToFavorites(getBaseActivity(),true,mProduct.getCategoryKey());
+
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO WISH LIST", e);
@@ -1062,6 +1067,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     TrackerDelegator.trackAddToFavorites(mProduct);
 
                     PushWooshTracker.addToFavorites(getBaseActivity(),true,mProduct.getCategoryKey());
+                    EmarsysTracker.addToFavorites(getBaseActivity(),true,mProduct.getCategoryKey());
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO SAVED", e);

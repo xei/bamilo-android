@@ -30,6 +30,7 @@ import com.mobile.newFramework.utils.security.ObscuredSharedPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.view.fragments.BaseFragment;
@@ -136,7 +137,8 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     private BroadcastReceiver mReceiver = new BasePushMessageReceiver() {
         @Override
         protected void onMessageReceive(Intent intent) {
-//JSON_DATA_KEY contains JSON payload of push notification.
+        //JSON_DATA_KEY contains JSON payload of push notification.
+            checkMessage(intent);
             showMessage("push message is " + intent.getExtras().getString(JSON_DATA_KEY));
         }
     };
@@ -178,6 +180,9 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             else if(intent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
                 showMessage("unregister error");
             }
+            else if(intent.hasExtra(PushManager.REGISTER_BROAD_CAST_ACTION)) {
+                showMessage("REGISTER_BROAD_CAST_ACTION");
+            }
             resetIntentValues();
         }
     }
@@ -204,7 +209,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     }
 
     private void showMessage(String message) {
-        Log.i("AndroidBash",message);
+        Log.d("AndroidBash",message);
     }
 
     @Override
@@ -220,6 +225,9 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
      * 
      * @see com.mobile.utils.MyActivity#onCreate(android.os.Bundle)
      */
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -329,6 +337,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             }
         };
         PushWooshTracker.openApp(MainFragmentActivity.this,true);
+        EmarsysTracker.openApp(MainFragmentActivity.this,true);
         PushwooshCounter.setAppOpenCount();
         HashMap<String, Object> open_count = new HashMap<>();
         open_count.put("AppOpenCount",PushwooshCounter.getAppOpenCount());

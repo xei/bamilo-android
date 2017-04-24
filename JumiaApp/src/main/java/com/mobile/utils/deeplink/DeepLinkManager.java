@@ -241,7 +241,8 @@ public class DeepLinkManager {
                     bundle = processSearchTermLink(segments.get(PATH_DATA_POS));
                     break;
                 case ORDER_OVERVIEW_TAG:
-                    bundle = processOrderStatus(segments.get(PATH_DATA_POS));
+                    //bundle = processOrderStatus(segments.get(PATH_DATA_POS));
+                    bundle = processOrderStatus();
                     break;
                 case CAMPAIGN_TAG:
                     bundle = processCampaignLink(segments.get(PATH_DATA_POS));
@@ -312,12 +313,20 @@ public class DeepLinkManager {
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle processOrderStatus(String orderId) {
+    private static Bundle processOrderStatusById(String orderId) {
         Print.i(TAG, "DEEP LINK TO TRACK ORDER: " + orderId);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.ARG_1, orderId);
         bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.ORDER_STATUS);
+        return bundle;
+    }
+
+    private static Bundle processOrderStatus() {
+        Print.i(TAG, "DEEP LINK TO TRACK ORDER: ");
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.MY_ORDERS);
         return bundle;
     }
 

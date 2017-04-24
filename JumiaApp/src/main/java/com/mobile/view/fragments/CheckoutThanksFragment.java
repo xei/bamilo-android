@@ -33,6 +33,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.home.holder.RichRelevanceAdapter;
 import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.pushwoosh.PushwooshCounter;
@@ -170,6 +171,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             categories += cat.getCategories();
         }
         PushWooshTracker.purchase(getBaseActivity(),true,categories, (long) mGrandTotalValue);
+        EmarsysTracker.purchase(getBaseActivity(),true,categories, (long) mGrandTotalValue);
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
         ImageView imageSuccess = (ImageView) view.findViewById(R.id.success_image);

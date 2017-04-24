@@ -243,7 +243,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textColor="#737373"
-                android:text="هزینه کل خرید"
                 android:textStyle="normal|bold"
                 android:id="@+id/all_price_total_title" />
 
@@ -252,7 +251,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textColor="#737373"
-                android:text="5555555555"
                 android:textAlignment="textEnd"
                 android:id="@+id/checkout_order_all_price"
                 android:textStyle="normal|bold" />
