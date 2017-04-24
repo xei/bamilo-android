@@ -58,7 +58,9 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
         super.onViewCreated(view, savedInstanceState);
         hideActivityProgress();
         // Set total bar
-        CheckoutStepManager.setTotalBarWithFullButton(view);
+        if ( view.findViewById(R.id.checkout_total_label)!=null) {
+            CheckoutStepManager.setTotalBarWithFullButton(view);
+        }
         // Hide order summary
         UIUtils.showOrHideViews(View.GONE, view.findViewById(super.ORDER_SUMMARY_CONTAINER));
     }
