@@ -28,7 +28,7 @@ public class EmarsysTracker {
         return values;
     }
 
-    public static void login(BaseActivity activity ,String method , boolean success , String email) {
+    public static void login(String method , boolean success , String email) {
         HashMap<String, Object> values = setDefaultAttributes();
         values.put(PushWooshEvent.Method,method);
         values.put(PushWooshEvent.Success,success);
@@ -36,7 +36,7 @@ public class EmarsysTracker {
         sendToEmarsys("Login", values);
     }
 
-    public static void signUp(BaseActivity activity ,String method , boolean success , String email) {
+    public static void signUp(String method , boolean success , String email) {
         HashMap<String, Object> values = setDefaultAttributes();
         values.put(PushWooshEvent.Method, method);
         values.put(PushWooshEvent.Success, success);
@@ -44,13 +44,13 @@ public class EmarsysTracker {
         sendToEmarsys("SignUp", values);
     }
 
-    public static void openApp(BaseActivity activity, boolean success) {
+    public static void openApp(boolean success) {
         HashMap<String, Object> values = setDefaultAttributes();
         values.put(PushWooshEvent.Success,success);
         sendToEmarsys("OpenApp",values);
     }
 
-    public static void addToCart(BaseActivity activity,  boolean success , String sku , Long basketValue) {
+    public static void addToCart(boolean success , String sku , Long basketValue) {
         HashMap<String, Object> values = setDefaultAttributes();
         values.put(PushWooshEvent.Success,success);
         values.put(PushWooshEvent.SKU,sku);
@@ -58,14 +58,14 @@ public class EmarsysTracker {
         sendToEmarsys("AddToCart",values);
     }
 
-    public static void addToFavorites(BaseActivity activity, boolean success , String categoryUrlKey) {
+    public static void addToFavorites(boolean success , String categoryUrlKey) {
         HashMap<String, Object> values = setDefaultAttributes();
         values.put(PushWooshEvent.Success,success);
         values.put(PushWooshEvent.CategoryUrlKey,categoryUrlKey);
         sendToEmarsys("AddToFavorites",values);
     }
 
-    public static void purchase(BaseActivity activity, boolean success , String categories , Long basketValue) {
+    public static void purchase(boolean success , String categories , Long basketValue) {
         HashMap<String, Object> values = setDefaultAttributes();
         values.put(PushWooshEvent.Success,success);
         values.put(PushWooshEvent.Categories,categories);
@@ -73,21 +73,21 @@ public class EmarsysTracker {
         sendToEmarsys("Purchase",values);
     }
 
-    public static void search(BaseActivity activity,String categoryUrlKey,String keyword) {
+    public static void search(String categoryUrlKey,String keyword) {
         HashMap<String, Object> values = setDefaultAttributes();
         values.put(PushWooshEvent.Keywords,keyword);
         values.put(PushWooshEvent.CategoryUrlKey,categoryUrlKey);
         sendToEmarsys("Search",values);
     }
 
-    public static void viewProduct(BaseActivity activity, String categoryUrlKey, Long price) {
+    public static void viewProduct(String categoryUrlKey, Long price) {
         HashMap<String, Object> values = setDefaultAttributes();
         values.put(PushWooshEvent.Price,price);
         values.put(PushWooshEvent.CategoryUrlKey,categoryUrlKey);
         sendToEmarsys("ViewProduct",values);
     }
 
-    public static void logOut(BaseActivity activity, boolean success) {
+    public static void logOut(boolean success) {
         HashMap<String, Object> values = setDefaultAttributes();
         values.put(PushWooshEvent.Success,success);
         sendToEmarsys("Logout",values);

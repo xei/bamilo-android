@@ -45,8 +45,8 @@ public class LogOut {
             // Inform activity to update views
             try {
                 baseActivity.onLogOut();
-                PushWooshTracker.logOut(baseActivity,true);
-                EmarsysTracker.logOut(baseActivity,true);
+                PushWooshTracker.logOut(baseActivity, true);
+                EmarsysTracker.logOut(true);
             } catch (IllegalStateException e){
                 e.printStackTrace();
             }

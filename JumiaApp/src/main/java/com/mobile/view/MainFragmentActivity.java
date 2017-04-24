@@ -342,13 +342,11 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             }
         };
         PushWooshTracker.openApp(MainFragmentActivity.this, true);
-        EmarsysTracker.openApp(MainFragmentActivity.this, true);
+        EmarsysTracker.openApp(true);
         PushwooshCounter.setAppOpenCount();
         HashMap<String, Object> open_count = new HashMap<>();
         open_count.put("AppOpenCount", PushwooshCounter.getAppOpenCount());
         PushManager.sendTags(MainFragmentActivity.this, open_count, callBack);
-
-
     }
 
     /*

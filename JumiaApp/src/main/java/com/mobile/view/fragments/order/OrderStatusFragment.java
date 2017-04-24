@@ -32,9 +32,12 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.order.OrderedProductViewHolder;
 import com.mobile.utils.product.UIProductUtils;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragmentAutoState;
@@ -295,7 +298,8 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                 }
 
                 // Set image
-                RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+                //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+                ImageManager.getInstance().loadImage(this.getContext(), item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
                 // Set name
                 holder.name.setText(item.getName());
                 // Set brand

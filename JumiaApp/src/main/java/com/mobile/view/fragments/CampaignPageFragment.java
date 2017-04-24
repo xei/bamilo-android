@@ -46,9 +46,11 @@ import com.mobile.utils.catalog.HeaderFooterInterface;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
@@ -462,6 +464,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             TrackerDelegator.trackProductAddedToCart(bundle);
+            PushWooshTracker.addToCart(getBaseActivity(),true, sku, (long) price);
+            EmarsysTracker.addToCart(true, sku, (long) price);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

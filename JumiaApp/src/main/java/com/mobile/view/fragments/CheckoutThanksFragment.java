@@ -170,8 +170,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         {
             categories += cat.getCategories();
         }
-        PushWooshTracker.purchase(getBaseActivity(),true,categories, (long) mGrandTotalValue);
-        EmarsysTracker.purchase(getBaseActivity(),true,categories, (long) mGrandTotalValue);
+        PushWooshTracker.purchase(getBaseActivity(),true, categories, (long) mGrandTotalValue);
+        EmarsysTracker.purchase(true, categories, (long) mGrandTotalValue);
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
         ImageView imageSuccess = (ImageView) view.findViewById(R.id.success_image);

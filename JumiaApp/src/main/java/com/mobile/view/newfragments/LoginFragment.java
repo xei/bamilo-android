@@ -236,7 +236,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 if (nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                     PushWooshTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
-                    EmarsysTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
+                    EmarsysTracker.login("email", true, JumiaApplication.CUSTOMER.getEmail());
                     // Tracking
                     if (eventType == EventType.GUEST_LOGIN_EVENT) {
                         TrackerDelegator.storeFirstCustomer(customer);
@@ -285,7 +285,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 getActivity().onBackPressed();
                 PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail() + "");
                 PushWooshTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
-                EmarsysTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
+                EmarsysTracker.login("email", true, JumiaApplication.CUSTOMER.getEmail());
 
                 if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
