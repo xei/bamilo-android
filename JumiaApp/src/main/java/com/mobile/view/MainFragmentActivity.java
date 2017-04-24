@@ -137,7 +137,8 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     private BroadcastReceiver mReceiver = new BasePushMessageReceiver() {
         @Override
         protected void onMessageReceive(Intent intent) {
-//JSON_DATA_KEY contains JSON payload of push notification.
+        //JSON_DATA_KEY contains JSON payload of push notification.
+            checkMessage(intent);
             showMessage("push message is " + intent.getExtras().getString(JSON_DATA_KEY));
         }
     };
@@ -179,6 +180,9 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             else if(intent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
                 showMessage("unregister error");
             }
+            else if(intent.hasExtra(PushManager.REGISTER_BROAD_CAST_ACTION)) {
+                showMessage("REGISTER_BROAD_CAST_ACTION");
+            }
             resetIntentValues();
         }
     }
@@ -205,7 +209,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     }
 
     private void showMessage(String message) {
-        Log.i("AndroidBash",message);
+        Log.d("AndroidBash",message);
     }
 
     @Override
@@ -221,6 +225,9 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
      * 
      * @see com.mobile.utils.MyActivity#onCreate(android.os.Bundle)
      */
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
