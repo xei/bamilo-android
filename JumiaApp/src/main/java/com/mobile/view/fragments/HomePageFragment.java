@@ -651,16 +651,20 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                     recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, mContainer, false), null);
                 }
                 if (recommendationsTeaserHolder != null ) {
-                    // Set view
-                    recommendationsTeaserHolder.onBind(data);
-                    // Add to container
                     try {
-                        //recommendationsTeaserHolder.itemView.
+                    // Set view
                         mContainer.removeView(recommendationsTeaserHolder.itemView);
+                        recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, mContainer, false), null);
+
+                        recommendationsTeaserHolder.onBind(data);
+                    // Add to container
+
+                        //recommendationsTeaserHolder.itemView.
                         mContainer.addView(recommendationsTeaserHolder.itemView, mContainer.getChildCount()-1);
 
                     }
                     catch (Exception ex) {
+                        int tmp=1;
 
                     }
 
