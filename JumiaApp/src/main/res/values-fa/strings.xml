@@ -329,7 +329,8 @@
     <string name="recent_searches_empty">اخیراً هیچ کالایی جستجو نکرده‌اید.</string>
     <string name="items_in_your_order">کالاهای سفارش داده شده</string>
     <string name="delivered_label">تحویل داده شد</string>
-    <string name="order_number">شمار سفارش ‎%s‎</string>
+    <string name="order_number">شماره سفارش: ‎%s‎</string>
+    <string name="order_date">تاریخ: %s</string>
     <string name="billing">صورت حساب</string>
     <string name="first_space_second_placeholder">‎%1$s‎ ‎%2$s‎</string>
     <string name="first_slash_second_placeholder">‎%1$s‎/‎%2$s‎</string>
@@ -480,5 +481,7 @@
     <string name="sub_categories">زیر مجموعه ها</string>
     <string name="confirm_filter">ثبت</string>
     <string name="recommendations">پیشنهادها</string>
+    <string name="order_total">مبلغ کل: %s</string>
+    <string name="order_details">جزییات سفارش</string>
 
 </resources>

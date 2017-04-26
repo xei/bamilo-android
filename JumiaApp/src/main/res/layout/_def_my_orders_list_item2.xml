@@ -3,61 +3,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/order_item_container"
     style="@style/SingleLineGroupStyle"
-    android:background="@drawable/_gen_selector_group_selected"
-    android:orientation="vertical"
+    android:background="#f1f1f1"
+    android:orientation="horizontal"
     tools:layout_width="match_parent"
-    android:layout_height="70dp">
+    android:layout_height="wrap_content">
 
-    <!-- PRICE -->
+
+
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:background="@color/black_400"
-        android:layout_height="30dp">
+        android:background="#f1f1f1"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1">
 
         <com.mobile.components.customfontviews.TextView
-            android:text="order_item_number"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/order_item_number"
-            android:layout_weight="1"
-            android:textColor="@color/black_900"
-            android:textStyle="normal|bold" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:text="order_item_date"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:id="@+id/order_item_date"
-            android:layout_weight="1"
-            android:textColor="@color/black_900"
-            android:textStyle="normal|bold" />
-    </LinearLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <com.mobile.components.customfontviews.TextView
-            android:text="order_item_price"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            android:id="@+id/order_item_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#777777"
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            />
+
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_item_price"
-            android:textColor="@color/black_900" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#777777"
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/go_icon"
+        android:layout_width="@dimen/dimen_40dp"
+        android:layout_height="@dimen/dimen_40dp"
+        android:padding="5dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/black_arrow_right_rtl"/>
 
-        <com.mobile.components.customfontviews.TextView
-            android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_below="@+id/order_item_price"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/textView7"
-            android:textColor="@color/black_900" />
-    </RelativeLayout>
 
 </LinearLayout>

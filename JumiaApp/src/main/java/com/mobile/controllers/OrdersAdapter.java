@@ -11,6 +11,7 @@ import com.mobile.newFramework.objects.orders.Order;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.JalaliCalendar;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -56,12 +57,12 @@ public class OrdersAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout._def_my_orders_list_item2, parent, false);
         }
         Order order = getOrders().get(position);
-        // Set data
-        ((TextView) convertView.findViewById(R.id.order_item_price)).setText("مبلغ کل سفارش : "+CurrencyFormatter.formatCurrency(order.getTotal()));
-        ((TextView) convertView.findViewById(R.id.order_item_number)).setText("شماره سفارش : "+String.valueOf(order.getNumber()));
-         //JalaliCalendar.gregorianToJalali()
+
+        ((TextView) convertView.findViewById(R.id.order_item_price)).setText(String.format(context.getResources().getString(R.string.order_total), CurrencyFormatter.formatCurrency(order.getTotal())));
+        ((TextView) convertView.findViewById(R.id.order_item_number)).setText(String.format(context.getResources().getString(R.string.order_number), String.valueOf(order.getNumber())));
+        ((TextView) convertView.findViewById(R.id.order_item_date)).setText(String.format(context.getResources().getString(R.string.order_date), JalaliCalendar.gregorianToJalali(new JalaliCalendar.YearMonthDate(order.getDate()) ).toString()));
         // Show item as selected
-        convertView.findViewById(R.id.order_item_container).setActivated(position == selectedPosition);
+        //convertView.findViewById(R.id.order_item_container).setActivated(position == selectedPosition);
         return convertView;
     }
 

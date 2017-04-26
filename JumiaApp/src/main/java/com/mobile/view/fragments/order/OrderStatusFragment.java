@@ -38,6 +38,7 @@ import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragmentAutoState;
+import com.mobile.view.newfragments.OrderTrackingHeader;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -59,6 +60,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     private ViewGroup mShippingView;
     private ViewGroup mBillingView;
     private ViewGroup mOrderItems;
+    private ViewGroup mHeaderView;
     private View mReturnItemsButton;
     private View mReturnItemsContainer;
     private String mOrderDate;
@@ -110,7 +112,10 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         // Set title view
       ((TextView) view.findViewById(R.id.order_status_title_nr2)).setText(getString(R.string.order_number, mOrderNumber));
           if (mOrderDate != null) ((TextView) view.findViewById(R.id.order_status_title_date2)).setText(mOrderDate);
-     /*   // Get info view
+
+        mHeaderView = (ViewGroup) view.findViewById(R.id.order_tracking_header);
+
+        // Get info view
         mInfoView = (ViewGroup) view.findViewById(R.id.order_status_info);
         // Get payment container
         mPaymentView = (ViewGroup) view.findViewById(R.id.order_status_payment);
@@ -121,13 +126,13 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         // Get order items container
         mOrderItems = (ViewGroup) view.findViewById(R.id.order_status_items);
 
-        // Get return items container
+        /*// Get return items container
         mReturnItemsButton = view.findViewById(R.id.return_selected_button);
         mReturnItemsContainer = view.findViewById(R.id.return_button_container);
-        mReturnItemsButton.setOnClickListener(this);
+        mReturnItemsButton.setOnClickListener(this);*/
 
         // Validate state
-        onValidateState();*/
+        onValidateState();
     }
 
     private void onValidateState() {
@@ -178,6 +183,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
      */
 
     private void showOrderStatus(@NonNull OrderStatus orderStatus) {
+        showHeader(mHeaderView, orderStatus);
         // Set info
         showOrderInfo(mInfoView, orderStatus);
         // Set payment
@@ -190,6 +196,11 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         showOrderItems(mOrderItems, orderStatus.getItems());
         // Show container
         showFragmentContentContainer();
+    }
+
+    private void showHeader(ViewGroup mHeaderView, OrderStatus orderStatus) {
+        OrderTrackingHeader mOrderTrackingHeader = new OrderTrackingHeader(getContext(), mHeaderView);
+        mOrderTrackingHeader.createHeader(getContext());
     }
 
     /**

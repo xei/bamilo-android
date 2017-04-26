@@ -101,6 +101,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             if (com.mobile.view.BuildConfig.FLAVOR.compareTo("live") == 0) {
                 NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
                         .start(this);
+
             }
             if (com.mobile.view.BuildConfig.FLAVOR.compareTo("staging") == 0) {
 

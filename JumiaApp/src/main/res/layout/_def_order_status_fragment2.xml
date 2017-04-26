@@ -15,17 +15,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- HEADER ORDER -->
+            <include
+                android:id="@+id/order_tracking_header"
+                layout="@layout/new_order_tracking_header"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/order_status_detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:minHeight="48dp"
+                android:paddingLeft="@dimen/margin_padding_xl"
+                android:paddingRight="@dimen/margin_padding_xl"
+                android:background="@color/black_300"
+                android:textColor="@color/black"
+                android:text="@string/order_details"
+                 />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/order_status_title_nr2"
-                    style="@style/HeaderStyle"
-                    android:text="@string/order_number"
-                    android:layout_width="wrap_content" />
+
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/order_status_title_date2"
