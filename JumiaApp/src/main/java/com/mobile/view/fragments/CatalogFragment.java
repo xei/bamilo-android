@@ -137,6 +137,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     //DROID-10
     private long mGABeginRequestMillis;
 
+    private boolean showNoResult;
 
     /**
      * Empty constructor
@@ -187,6 +188,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if(arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)){
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             }
+
+            showNoResult = false;
 
         }
 
@@ -270,6 +273,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
         // Verify if is comming from login after trying to add/remove item from cart.
         retryWishListActionLoggedIn();
+
+        if (showNoResult)
+        {
+            int gg=0;
+        }
     }
 
     /*
@@ -541,6 +549,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (FeaturedBoxHelper.show(this, featuredBox)) {
             // Case success show container
             showFragmentContentContainer();
+
+
 
 
         } else {
@@ -1069,6 +1079,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             FeaturedBox featuredBox = catalog.getFeaturedBox();
             // Show no result layout
             showFeaturedBoxNoResult(featuredBox);
+            showNoResult = true;
         }
         // Case network errors except No network
         else if (ErrorCode.isNetworkError(errorCode)

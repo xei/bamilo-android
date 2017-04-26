@@ -23,6 +23,7 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.home.holder.HomeRecommendationsGridTeaserHolder;
 import com.mobile.utils.home.holder.HomeRecommendationsTeaserHolder;
 import com.mobile.utils.search.NoResSearchAdapter;
 import com.mobile.utils.search.SearchModel;
@@ -84,39 +85,6 @@ public class FeaturedBoxHelper {
 
             sendRecommend(fragment);
 
-
-            /*NoResSearchAdapter adapter = new NoResSearchAdapter(baseFragment.getContext(), searchGenerateData());
-            ExpandableHeightListView searchListView = (ExpandableHeightListView) view.findViewById(R.id.search_listview);
-            //ExpandedListView searchListView = (ExpandedListView) view.findViewById(R.id.search_listview);
-            searchListView.setAdapter(adapter);
-            searchListView.setExpanded(true);
-            searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    switch (position){
-                        case 1 :
-                            onClickBackToHome();
-                            break;
-                        case 2 :
-                            onClickNoSearchItem("","shop_in_shop::fashion-lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
-                        case 3 :
-                            onClickNoSearchItem("","shop_in_shop::health_beauty_personal_care_lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
-                        case 4 :
-                            onClickNoSearchItem("","shop_in_shop::smartphone_tablet_mobile_lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
-                        case 5 :
-                            onClickNoSearchItem("","shop_in_shop::electronic_accessories_lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
-                        case 6 :
-                            onClickNoSearchItem("","shop_in_shop::home_furniture_lifestyle_lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
-
-                    }
-                }
-            });*/
-
             return true;
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON SHOW FEATURED BOX", e);
@@ -138,12 +106,21 @@ public class FeaturedBoxHelper {
                     recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, RecommendationResult, false), null);
                 }
                 if (recommendationsTeaserHolder != null ) {
-                    // Set view
+
+                    RecommendationResult.removeView(recommendationsTeaserHolder.itemView);
+                    recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, RecommendationResult, false), null);
+
                     recommendationsTeaserHolder.onBind(data);
+                    // Add to container
+
+                    RecommendationResult.addView(recommendationsTeaserHolder.itemView, RecommendationResult.getChildCount()-1);
+
+                    // Set view
+                    /*recommendationsTeaserHolder.onBind(data);
                     // Add to container
                     if (!recommendationsTeaserHolderAdded) {
                         RecommendationResult.addView(recommendationsTeaserHolder.itemView);
-                    }
+                    }*/
                     // Save
                     //mViewHolders.add(holder);
                     recommendationsTeaserHolderAdded = true;
