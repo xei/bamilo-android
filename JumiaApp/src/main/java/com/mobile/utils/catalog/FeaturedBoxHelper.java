@@ -92,9 +92,7 @@ public class FeaturedBoxHelper {
         }
     }
     private static void sendRecommend(final BaseFragment fragment) {
-        /*recommendedListAdapter.clear();
-        recommendedListAdapter.notifyDataSetChanged();
-        recommendedListView.invalidate();*/
+
 
         RecommendManager recommendManager = new RecommendManager();
         recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
@@ -115,24 +113,11 @@ public class FeaturedBoxHelper {
 
                     RecommendationResult.addView(recommendationsTeaserHolder.itemView, RecommendationResult.getChildCount()-1);
 
-                    // Set view
-                    /*recommendationsTeaserHolder.onBind(data);
-                    // Add to container
-                    if (!recommendationsTeaserHolderAdded) {
-                        RecommendationResult.addView(recommendationsTeaserHolder.itemView);
-                    }*/
-                    // Save
-                    //mViewHolders.add(holder);
+
                     recommendationsTeaserHolderAdded = true;
 
                 }
-                // recommendationsTeaserHolder.onBind(data);
-                // recommendedListAdapter.addAll(data);// = new RecommendedAdapter(data);
-                //recommendedListAdapter.notifyDataSetChanged();
 
-//                recommendedListView.setAdapter(recommendedListAdapter);
-
-                // recommendedListView.invalidate();
             }
         });
     }

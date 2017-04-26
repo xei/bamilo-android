@@ -1494,17 +1494,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         String logic = sharedPref.getString("", "RELATED");
         RecommendManager recommendManager = new RecommendManager();
         Item item = recommendManager.getCartItem(mProduct);
-        if (logic.equals("RELATED")) {
             recommendManager.sendRelatedRecommend(item.getRecommendedItem(),
                     null,
                     item.getItemID(),
                     null,
                     handler);
-        } else {
-            recommendManager.sendAlsoBoughtRecommend(item.getRecommendedItem(),
-                    item.getItemID(),
-                    handler);
-        }
+
 
 
         /*recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {

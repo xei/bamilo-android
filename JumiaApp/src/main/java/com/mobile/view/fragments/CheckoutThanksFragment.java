@@ -18,6 +18,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.RichRelevance;
@@ -72,6 +73,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private String mRelatedRichRelevanceHash;
 
     private static final int ITEMS_MARGIN = 6;
+    RecommendManager recommendManager;
 
     /**
      * Empty constructor
@@ -107,6 +109,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 mRichRelevance = getArguments().getParcelable(RestConstants.RECOMMENDED_PRODUCTS);
             }
         }
+        recommendManager = new RecommendManager();
+
     }
 
     @Override
@@ -170,8 +174,10 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         {
             categories += cat.getCategories();
         }
+        recommendManager.buy();
+        //sendRecommend();
         PushWooshTracker.purchase(getBaseActivity(),true,categories, (long) mGrandTotalValue);
-        EmarsysTracker.purchase(getBaseActivity(),true,categories, (long) mGrandTotalValue);
+        EmarsysTracker.purchase(getBaseActivity(), true, categories, (long) mGrandTotalValue);
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
         ImageView imageSuccess = (ImageView) view.findViewById(R.id.success_image);
