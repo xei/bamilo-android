@@ -278,6 +278,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
        // order_count_title.setText(mOrderFinish.getCartCount()+" "+getContext().getString(R.string.checkout_count_title));
         all_price_title.setText("جمع نهایی("+mOrderFinish.getCartCount()+" کالا)");
         order_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted()));
+        all_price_title.setTextColor(getResources().getColor(R.color.checkout_order_green));
         all_price.setTextColor(getResources().getColor(R.color.checkout_order_green));
         all_voucher.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted()+mOrderFinish.getShippingValue()-mOrderFinish.getTotal()));
         if (mOrderFinish.hasCouponDiscount()){
