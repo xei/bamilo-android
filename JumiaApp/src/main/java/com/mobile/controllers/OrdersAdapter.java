@@ -53,13 +53,13 @@ public class OrdersAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.my_orders_list_item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout._def_my_orders_list_item2, parent, false);
         }
         Order order = getOrders().get(position);
         // Set data
-        ((TextView) convertView.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(order.getTotal()));
-        ((TextView) convertView.findViewById(R.id.order_item_number)).setText(String.valueOf(order.getNumber()));
-        ((TextView) convertView.findViewById(R.id.order_item_date)).setText(order.getDate());
+        ((TextView) convertView.findViewById(R.id.order_item_price)).setText("مبلغ کل سفارش : "+CurrencyFormatter.formatCurrency(order.getTotal()));
+        ((TextView) convertView.findViewById(R.id.order_item_number)).setText("شماره سفارش : "+String.valueOf(order.getNumber()));
+         //JalaliCalendar.gregorianToJalali()
         // Show item as selected
         convertView.findViewById(R.id.order_item_container).setActivated(position == selectedPosition);
         return convertView;

@@ -1,4 +1,4 @@
-package com.mobile.newFramework.utils;
+package com.mobile.newFramework.utils.convertor;
 
 /**
  * Created by shahrooz on 1/30/17.
