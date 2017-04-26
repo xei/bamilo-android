@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.ExpandedGridViewComponent;
@@ -69,6 +70,7 @@ import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListLis
 import com.mobile.utils.home.holder.HomeRecommendationsGridTeaserHolder;
 import com.mobile.utils.home.holder.HomeRecommendationsTeaserHolder;
 import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.RelatedProductsAdapter;
 import com.mobile.utils.product.UIProductUtils;
@@ -166,7 +168,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.product_detail_view.View,
      * android.product_detail_os.Bundle)
      */
@@ -219,7 +221,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onResume()
      */
     @Override
@@ -237,8 +239,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 if(JumiaApplication.isCustomerLoggedIn() && mClicked != null){
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
-                    PushWooshTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
-                    EmarsysTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
+                    PushWooshTracker.addToFavorites(getBaseActivity(), true, mClicked.getCategoryKey());
+                    EmarsysTracker.addToFavorites(true, mClicked.getCategoryKey());
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             }
@@ -481,10 +483,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         showFragmentContentContainer();
         // Tracking
         TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath);
-        PushWooshTracker.viewProduct(getBaseActivity(),mProduct.getCategoryKey(), (long) mProduct.getPrice());
-        EmarsysTracker.viewProduct(getBaseActivity(),mProduct.getCategoryKey(), (long) mProduct.getPrice());
-
-
+        PushWooshTracker.viewProduct(getBaseActivity(), mProduct.getCategoryKey(), (long) mProduct.getPrice());
+        EmarsysTracker.viewProduct(mProduct.getCategoryKey(), (long) mProduct.getPrice());
     }
 
     /**
@@ -959,6 +959,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             triggerAddItemToCart(simple.getSku());
             // Tracking
             TrackerDelegator.trackProductAddedToCart(mProduct, mGroupType);
+            PushWooshTracker.addToCart(getBaseActivity(),true, simple.getSku(), (long) simple.getPrice());
+            EmarsysTracker.addToCart(true, simple.getSku(), (long) simple.getPrice());
         }
         // Case select a simple variation
         else if (mProduct.hasMultiSimpleVariations()) {
@@ -988,8 +990,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
 
-                    PushWooshTracker.addToFavorites(getBaseActivity(),true,mProduct.getCategoryKey());
-                    EmarsysTracker.addToFavorites(getBaseActivity(),true,mProduct.getCategoryKey());
+                    PushWooshTracker.addToFavorites(getBaseActivity(), true, mProduct.getCategoryKey());
+                    EmarsysTracker.addToFavorites(true, mProduct.getCategoryKey());
 
                 }
             } catch (NullPointerException e) {
@@ -1026,8 +1028,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
 
-                    PushWooshTracker.addToFavorites(getBaseActivity(),true,mProduct.getCategoryKey());
-                    EmarsysTracker.addToFavorites(getBaseActivity(),true,mProduct.getCategoryKey());
+                    PushWooshTracker.addToFavorites(getBaseActivity(), true, mProduct.getCategoryKey());
+                    EmarsysTracker.addToFavorites(true, mProduct.getCategoryKey());
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO SAVED", e);
@@ -1374,7 +1376,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param productBundleItem    - product bundle
      */
     private void fillProductBundleInfo(View view, final ProductBundle productBundleItem) {
-        ImageView mImage = (ImageView) view.findViewById(R.id.image_view);
+        NetworkImageView mImage = (NetworkImageView) view.findViewById(R.id.image_view);
         ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
         final CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);
         mCheck.post(new Runnable() {
@@ -1385,7 +1387,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
         });
 
-        RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+        //RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(this.getContext(), productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());
         TextView mTitle = (TextView) view.findViewById(R.id.item_title);

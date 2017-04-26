@@ -569,8 +569,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 if (mClicked != null) {
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
-                    PushWooshTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
-                    EmarsysTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
+                    PushWooshTracker.addToFavorites(getBaseActivity(), true, mClicked.getCategoryKey());
+                    EmarsysTracker.addToFavorites(true, mClicked.getCategoryKey());
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             }
