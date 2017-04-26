@@ -43,39 +43,6 @@ public class RecommendManager {
         //sharedCart().clear();
     }
 
-   /* public void sendHomeRecommend(final RecommendListCompletionHandler callBack) {
-
-        Transaction transaction = new Transaction();
-        transaction.cart(getCartItems());
-        for (int i = 1; i < 11; i++) {
-            String logic = "HOME_" + i;
-            RecommendationRequest recommend = new RecommendationRequest(logic);
-            recommend.setLimit(RecommendLimit);
-            transaction.recommend(recommend, new CompletionHandler() {
-                @Override
-                public void onCompletion(RecommendationResult result) {
-                    // Process result
-                    Log.d(TAG, result.getFeatureId());
-
-                    String category = result.getTopic();
-
-                    if (category != null && !category.isEmpty()) {
-
-                        List<Item> data = new ArrayList<>();
-
-                        for (com.emarsys.predict.RecommendedItem next : result.getProducts()) {
-                            Item item = new Item(next);
-                            data.add(item);
-                        }
-
-                        callBack.onRecommendedRequestComplete(category, data);
-                    }
-                }
-            });
-        }
-
-        sendTransaction(transaction);
-    }*/
    public void sendHomeRecommend(final RecommendListCompletionHandler callBack) {
 
        Transaction transaction = new Transaction();
@@ -114,7 +81,7 @@ public class RecommendManager {
     public void sendCategoryRecommend(String searchTerm,
                                       String category,
                                       final RecommendListCompletionHandler callBack) {
-        sendRecommend(null, "CATEGORY", category, searchTerm, null, null, callBack);
+        sendRecommend(null, "", category, searchTerm, null, null, callBack);
     }
 
     public void sendRelatedRecommend(RecommendedItem item,
@@ -125,16 +92,20 @@ public class RecommendManager {
         sendRecommend(item, "RELATED", null, searchTerm, itemId, excludeItems, callBack);
     }
 
-    public void sendAlsoBoughtRecommend(RecommendedItem recommendedItem,
+    /*public void sendAlsoBoughtRecommend(RecommendedItem recommendedItem,
                                         String itemId,
                                         final RecommendListCompletionHandler callBack) {
         sendRecommend(recommendedItem, "ALSO_BOUGHT", null, null, itemId, null, callBack);
-    }
+    }*/
 
-
-    public void sendPersonalRecommend(String searchTerm,
+   /* public void sendPersonalRecommend(String searchTerm,
                                       final RecommendListCompletionHandler callBack) {
         sendRecommend(null, "PERSONAL", null, searchTerm, null, null, callBack);
+    }*/
+
+    public void sendSearchRecommend(String searchTerm,
+                                      final RecommendListCompletionHandler callBack) {
+        sendRecommend(null, "", null, searchTerm, null, null, callBack);
     }
 
     private void sendRecommend(RecommendedItem recommendedItem,
@@ -162,28 +133,32 @@ public class RecommendManager {
             transaction.view(itemId);
         }
 
-        RecommendationRequest recommend = new RecommendationRequest(logic);
-        recommend.setLimit(8);
-
-        if (excludeItems != null) {
-            recommend.excludeItemsWhereIn("items", excludeItems);
-        }
-
-        transaction.recommend(recommend, new CompletionHandler() {
-            @Override
-            public void onCompletion(RecommendationResult result) {
-                // Process result
-                Log.d(TAG, result.getFeatureId());
-
-                for (RecommendedItem next : result.getProducts()) {
-                    Item item = new Item(next);
-                    data.add(item);
-                }
-
-                callBack.onRecommendedRequestComplete("", result.getProducts());
+        if (!logic.isEmpty()) {
+            RecommendationRequest recommend = new RecommendationRequest(logic);
+            int recommendCount = RecommendLimit;
+            if (logic.compareTo("RELATED") == 0) {
+                recommendCount = 4;
             }
-        });
+            recommend.setLimit(recommendCount);
+            if (excludeItems != null) {
+                recommend.excludeItemsWhereIn("items", excludeItems);
+            }
 
+            transaction.recommend(recommend, new CompletionHandler() {
+                @Override
+                public void onCompletion(RecommendationResult result) {
+                    // Process result
+                    Log.d(TAG, result.getFeatureId());
+
+                    for (RecommendedItem next : result.getProducts()) {
+                        Item item = new Item(next);
+                        data.add(item);
+                    }
+
+                    callBack.onRecommendedRequestComplete("", result.getProducts());
+                }
+            });
+        }
         sendTransaction(transaction);
     }
 
@@ -195,8 +170,6 @@ public class RecommendManager {
             public void onError(@NonNull Error error) {
 
             }
-
-
         });
     }
 

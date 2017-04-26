@@ -274,10 +274,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Verify if is comming from login after trying to add/remove item from cart.
         retryWishListActionLoggedIn();
 
-        if (showNoResult)
-        {
-            int gg=0;
-        }
     }
 
     /*
@@ -1187,7 +1183,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         };
 
 
-        ArrayList<ProductRegular> productList = catalogPage.getProducts();
+       /* ArrayList<ProductRegular> productList = catalogPage.getProducts();
 
         List<String> excludedItems = null;
 
@@ -1205,12 +1201,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                     excludedItems,
                     handler);
 
-        }
+        }*/
         //else {
 
-            ArrayList<String> categories = catalogPage.getBreadcrumb();
+        ArrayList<String> categories = catalogPage.getBreadcrumb();
         if (categories != null && categories.size()>0) {
-            String category = android.text.TextUtils.join(",", categories);
+            String category = android.text.TextUtils.join(">", categories);
 
             recommendManager.sendCategoryRecommend(catalogPage.getSearchTerm(), category, handler);
         }
