@@ -255,6 +255,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         // Tracking
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL, getLoadTime(), false);
+
+        if (mProduct != null) {
+            sendRecommend();
+        }
+
     }
 
     /*
@@ -454,53 +459,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Save complete product
         mProduct = product;
         mCompleteProductSku = product.getSku();
-        RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
-            @Override
-            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
-                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
-                if (recommendationsGridTeaserHolder == null ) {
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
-                }
-                if (recommendationsGridTeaserHolder != null ) {
-                    // Set view
-                    recommendationsGridTeaserHolder.onBind(data);
-                    // Add to container
-                    if (!recommendationsTeaserHolderAdded) {
-                        mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount()-1);
-                    }
-                    // Save
-                    //mViewHolders.add(holder);
-                    recommendationsTeaserHolderAdded = true;
-
-                }
-                // recommendationsTeaserHolder.onBind(data);
-                // recommendedListAdapter.addAll(data);// = new RecommendedAdapter(data);
-                //recommendedListAdapter.notifyDataSetChanged();
-
-//                recommendedListView.setAdapter(recommendedListAdapter);
-
-                // recommendedListView.invalidate();
-            }
-
-
-        };
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseActivity());
-        String logic = sharedPref.getString("", "RELATED");
-        RecommendManager recommendManager = new RecommendManager();
-        Item item = recommendManager.getCartItem(product);
-        if (logic.equals("RELATED")) {
-            recommendManager.sendRelatedRecommend(item.getRecommendedItem(),
-                    null,
-                    item.getItemID(),
-                    null,
-                    handler);
-        } else {
-            recommendManager.sendAlsoBoughtRecommend(item.getRecommendedItem(),
-                    item.getItemID(),
-                    handler);
-        }
+        sendRecommend();
         // Set layout
         setTitle();
         setSlideShow();
@@ -1494,13 +1454,60 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     private void sendRecommend() {
-        /*recommendedListAdapter.clear();
-        recommendedListAdapter.notifyDataSetChanged();
-        recommendedListView.invalidate();*/
 
-        //recommendManager.sendRelatedRecommend(null, "", mCompleteProductSku, null,
+        RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
-        recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
+                if (recommendationsGridTeaserHolder == null ) {
+                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
+                }
+                if (recommendationsGridTeaserHolder != null ) {
+                    try {
+
+
+                    // Set view
+                    mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
+                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
+
+                    recommendationsGridTeaserHolder.onBind(data);
+                    // Add to container
+
+                        mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount()-1);
+                    }
+                    catch (Exception ex) {
+
+                    }
+                    // Save
+                    //mViewHolders.add(holder);
+                    recommendationsTeaserHolderAdded = true;
+
+                }
+            }
+
+
+        };
+
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseActivity());
+        String logic = sharedPref.getString("", "RELATED");
+        RecommendManager recommendManager = new RecommendManager();
+        Item item = recommendManager.getCartItem(mProduct);
+        if (logic.equals("RELATED")) {
+            recommendManager.sendRelatedRecommend(item.getRecommendedItem(),
+                    null,
+                    item.getItemID(),
+                    null,
+                    handler);
+        } else {
+            recommendManager.sendAlsoBoughtRecommend(item.getRecommendedItem(),
+                    item.getItemID(),
+                    handler);
+        }
+
+
+        /*recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
@@ -1509,26 +1516,22 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
                 }
                 if (recommendationsGridTeaserHolder != null ) {
+                    mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
+
                     // Set view
                     recommendationsGridTeaserHolder.onBind(data);
                     // Add to container
-                    if (!recommendationsTeaserHolderAdded) {
+                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
                         mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount()-1);
-                    }
+
                     // Save
                     //mViewHolders.add(holder);
                     recommendationsTeaserHolderAdded = true;
 
                 }
-                // recommendationsTeaserHolder.onBind(data);
-                // recommendedListAdapter.addAll(data);// = new RecommendedAdapter(data);
-                //recommendedListAdapter.notifyDataSetChanged();
 
-//                recommendedListView.setAdapter(recommendedListAdapter);
-
-                // recommendedListView.invalidate();
             }
-        });
+        });*/
     }
 
 }
