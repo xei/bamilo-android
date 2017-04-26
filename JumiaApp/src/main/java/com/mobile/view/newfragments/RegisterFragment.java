@@ -280,7 +280,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 // Tracking
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
                 PushWooshTracker.signUp(getBaseActivity(),"email",true, JumiaApplication.CUSTOMER.getEmail());
-                EmarsysTracker.signUp(getBaseActivity(),"email",true, JumiaApplication.CUSTOMER.getEmail());
+                EmarsysTracker.signUp("email", true, JumiaApplication.CUSTOMER.getEmail());
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 // Finish
@@ -316,8 +316,8 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 // Tracking
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
 
-               PushWooshTracker.signUp(getBaseActivity(),"email",false, JumiaApplication.CUSTOMER.getEmail());
-               EmarsysTracker.signUp(getBaseActivity(),"email",false, JumiaApplication.CUSTOMER.getEmail());
+               PushWooshTracker.signUp(getBaseActivity(), "email", false, JumiaApplication.CUSTOMER.getEmail());
+               EmarsysTracker.signUp("email", false, JumiaApplication.CUSTOMER.getEmail());
                 // Validate and show errors
                 showFragmentContentContainer();
                 // Show validate messages

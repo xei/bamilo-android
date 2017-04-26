@@ -133,7 +133,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 
     View mClickedFavourite;
     private AppBarLayout.LayoutParams  startParams;
-    RecommendManager recommendManager;
+    //RecommendManager recommendManager;
 
     /**
      * Empty constructor
@@ -171,7 +171,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 */
 
         selectedPosition = 0;
-        recommendManager = new RecommendManager();
+        //recommendManager = new RecommendManager();
     }
 
     @Override
@@ -395,8 +395,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      */
     private void onClickCheckoutButton() {
 
-        recommendManager.buy();
-        sendRecommend();
+        //recommendManager.buy();
+        //sendRecommend();
 
         if (items != null && items.size() > 0) {
             TrackerDelegator.trackCheckout(items);
@@ -655,10 +655,10 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         mGABeginRequestMillis = System.currentTimeMillis();
     }
 
-    private void sendRecommend() {
-        /*recommendedAdapter.clear();
+    /*private void sendRecommend() {
+        *//*recommendedAdapter.clear();
         recommendedAdapter.notifyDataSetChanged();
-        recyclerView.invalidate();*/
+        recyclerView.invalidate();*//*
 
         recommendManager.sendCartRecommend(new RecommendListCompletionHandler() {
             @Override
@@ -667,7 +667,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             }
         });
 
-    }
+    }*/
 
     /**
      * Display shopping cart info

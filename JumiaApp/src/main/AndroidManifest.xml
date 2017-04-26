@@ -348,7 +348,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="ddde4ad6ad210575fdac10a908040d1a93e74833" />
+            android:value="${crashlyticsApiKey}" />
 
         <receiver
             android:name="com.mobile.libraries.emarsys.NotificationReceiver"

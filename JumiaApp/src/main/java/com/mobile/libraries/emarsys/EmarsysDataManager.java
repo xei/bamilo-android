@@ -20,40 +20,26 @@ import static com.mobile.libraries.emarsys.RequestExecutionType.REQUEST_EXEC_IN_
  */
 
 public class EmarsysDataManager implements EmarsysDataManagerInterface {
-    private String kApplicationId = "application_id";
-    private String kHardwareId = "hardware_id";
-    private String kPlatform = "platform";
-    private String kLanguage = "language";
-    private String kTimezone = "timezone";
-    private String kDeviceModel = "device_model";
-    private String kApplicationVersion = "application_version";
-    private String kOSVersion = "os_version";
-    private String kPushToken = "push_token";
-    private String kContactFieldId = "contact_field_id";
-    private String kContactFieldValue = "contact_field_value";
-    private String kSID = "sid";
-    private Context mContext;
+    private static final String kApplicationId = "application_id";
+    private static final String kHardwareId = "hardware_id";
+    private static final String kPlatform = "platform";
+    private static final String kLanguage = "language";
+    private static final String kTimezone = "timezone";
+    private static final String kDeviceModel = "device_model";
+    private static final String kApplicationVersion = "application_version";
+    private static final String kOSVersion = "os_version";
+    private static final String kPushToken = "push_token";
+    private static final String kContactFieldId = "contact_field_id";
+    private static final String kContactFieldValue = "contact_field_value";
+    private static final String kSID = "sid";
 
-    EmarsysContactIdentifier getEmarsysContactIdentifier(String appId, String hwId) {
-        EmarsysContactIdentifier emarsysUserIdentifier = new EmarsysContactIdentifier(appId, hwId);
+    private Context mContext = null;
 
-        return emarsysUserIdentifier;
-    }
+    protected EmarsysRequestManager emarsysRequestManager = null;
 
-    EmarsysPushIdentifier getEmarsysPushIdentifier(String appId, String hwid, String pushToken) {
-        EmarsysPushIdentifier emarsysPushIdentifier = new EmarsysPushIdentifier(appId, hwid, pushToken);
-
-        return emarsysPushIdentifier;
-    }
-
-    static EmarsysDataManager instance;
-    static EmarsysRequestManager requestManager;
-    public EmarsysDataManager init(Context context) {
-        if (requestManager == null) {
-            this.requestManager = EmarsysRequestManager.initWithBaseUrl(context, "https://push.eservice.emarsys.net/api/mobileengage/v2/");
-        }
-        mContext = context;
-        return this;
+    public EmarsysDataManager(Context context) {
+        this.mContext = context;
+        this.emarsysRequestManager = EmarsysRequestManager.initWithBaseUrl(this.mContext, "https://push.eservice.emarsys.net/api/mobileengage/v2/");
     }
 
     @Override
@@ -72,10 +58,9 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
 
     @Override
     public void openMessageEvent(EmarsysContactIdentifier contact, String sid, DataCompletion completion) {
-        Map<String,Object> map =  new HashMap<String,Object>();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put(kSID, sid);
         customEvent(contact, "message_open", map, completion);
-
     }
 
     @Override
@@ -85,7 +70,6 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
         attributes.put(kApplicationId, contact.applicationId);
         attributes.put(kHardwareId, contact.hardwareId);
         executeEvent(event, attributes, completion);
-
     }
 
     @Override
@@ -96,16 +80,6 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
         params.put(kHardwareId, contact.hardwareId);
         executeLogout(params, completion);
     }
-
-    public static EmarsysDataManager sharedInstance(Context context) {
-        if (instance == null) {
-            instance = new EmarsysDataManager();
-            instance = instance.init(context);
-        }
-
-        return instance;
-    }
-
 
     private Map<String, Object> commonLoginParams(Context context, EmarsysPushIdentifier contact) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -122,8 +96,7 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
         return params;
     }
 
-    public static String getTimeZone()
-    {
+    public static String getTimeZone() {
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("Z");
         String gmt = sdf.format(today);
@@ -139,8 +112,7 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
         return manufacturer.toUpperCase() + " " + model.toUpperCase();
     }
 
-    public static String getAppVersionNumber(Context context)
-    {
+    public static String getAppVersionNumber(Context context) {
         try {
             PackageManager manager = context.getPackageManager();
             PackageInfo info = null;
@@ -155,9 +127,7 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
         return "";
     }
 
-
     private void executeLogin(Map<String, Object> params, final DataCompletion completion) {
-
         RequestCompletion requestCompletion = new RequestCompletion() {
             @Override
             public void completion(int status, Object response, ArrayList<String> errors) {
@@ -165,11 +135,10 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
             }
         };
 
-        requestManager.asyncPOST("users/login", params, REQUEST_EXEC_IN_BACKGROUND, requestCompletion);
+        this.emarsysRequestManager.asyncPOST("users/login", params, REQUEST_EXEC_IN_BACKGROUND, requestCompletion);
     }
 
     void executeEvent(String event, Map<String, Object> params, final DataCompletion completion) {
-
         RequestCompletion requestCompletion = new RequestCompletion() {
             @Override
             public void completion(int status, Object response, ArrayList<String> errors) {
@@ -177,11 +146,10 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
             }
         };
 
-        requestManager.asyncPOST(String.format("events/%s", event), params, REQUEST_EXEC_IN_BACKGROUND, requestCompletion);
+        this.emarsysRequestManager.asyncPOST(String.format("events/%s", event), params, REQUEST_EXEC_IN_BACKGROUND, requestCompletion);
     }
 
     void executeLogout(Map<String, Object> params, final DataCompletion completion) {
-
         RequestCompletion requestCompletion = new RequestCompletion() {
             @Override
             public void completion(int status, Object response, ArrayList<String> errors) {
@@ -189,8 +157,7 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
             }
         };
 
-        requestManager.asyncPOST("users/logout", params, REQUEST_EXEC_IN_BACKGROUND, requestCompletion);
-
+        this.emarsysRequestManager.asyncPOST("users/logout", params, REQUEST_EXEC_IN_BACKGROUND, requestCompletion);
     }
 
     private void handleEmarsysDataManagerResponse(int statusCode, Object data, ArrayList<String> errorMessages, DataCompletion completion) {
@@ -199,7 +166,6 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
         } else {
             //EmarsysError emarsysError = new EmarsysError("com.bamilo.android", "" + statusCode, errorMessages.get(0));
             completion.completion(null, errorMessages);
-
         }
     }
 }

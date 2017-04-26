@@ -6,5 +6,4 @@ package com.mobile.libraries.emarsys;
 
 public interface EmarsysMobileEngageResponse {
     void EmarsysMobileEngageResponse(boolean success);
-
 }

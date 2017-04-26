@@ -437,8 +437,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     public void triggerChangeItemQuantityInShoppingCart(int position, int quantity) {
         PurchaseCartItem item = items.get(position);
         TrackerDelegator.trackAddToCartGTM(item, quantity, mItemRemovedCartValue);
-        PushWooshTracker.addToFavorites(getBaseActivity(),true,item.getSku());
-        EmarsysTracker.addToFavorites(getBaseActivity(),true,item.getSku());
+        PushWooshTracker.addToFavorites(getBaseActivity(), true, item.getSku());
+        EmarsysTracker.addToFavorites(true, item.getSku());
         item.setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();

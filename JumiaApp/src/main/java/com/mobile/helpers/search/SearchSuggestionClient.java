@@ -47,13 +47,14 @@ public class SearchSuggestionClient {
             } else {
 
                 JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(searchTerm), responseCallback);
-                RecommendManager recommendManager = new RecommendManager();
-                recommendManager.sendPersonalRecommend(searchTerm, new RecommendListCompletionHandler() {
+                //Should be move to Search
+                /*RecommendManager recommendManager = new RecommendManager();
+                recommendManager.sendSearchRecommend(searchTerm, new RecommendListCompletionHandler() {
                     @Override
                     public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
 
                     }
-                });
+                });*/
             }
         }
 

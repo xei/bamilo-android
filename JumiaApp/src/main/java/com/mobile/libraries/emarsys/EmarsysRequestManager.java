@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Map;
+import java.nio.charset.Charset;
 
 import static android.R.attr.id;
 
@@ -61,11 +62,8 @@ public class EmarsysRequestManager extends RequestManager {
    // @Override
     public void asyncRequest(HttpVerb method, String path, Map<String, Object> params, RequestExecutionType type,
                       RequestCompletion completion) {
-
         RunRequest runRequest = new RunRequest(method, path, params, type, completion);
         runRequest.execute();
-
-
     }
 
     void handleEmarsysMobileEngageResponse(int operation, Object responseObject, InputStream error, RequestCompletion completion)
@@ -130,7 +128,6 @@ public class EmarsysRequestManager extends RequestManager {
     }
 
     String getAuthorizationHeaderValue(Context context) {
-
         String emarsysApplicationCode = context.getResources().getString(R.string.Emarsys_ApplicationID);
         String emarsysApplicationPassword = context.getResources().getString(R.string.Emarsys_ApplicationPassword);
 
@@ -139,6 +136,7 @@ public class EmarsysRequestManager extends RequestManager {
 
         return String.format("Basic %s", new String(bytesEncoded));
     }
+
     private String getQuery(Map<String, Object> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
@@ -158,12 +156,7 @@ public class EmarsysRequestManager extends RequestManager {
         return result.toString();
     }
 
-
-
-
-
     class RunRequest extends AsyncTask<String, Void, Void> {
-
         private Exception exception;
 
         HttpVerb method;
@@ -172,8 +165,7 @@ public class EmarsysRequestManager extends RequestManager {
         RequestExecutionType type;
         RequestCompletion completion;
 
-        public RunRequest (HttpVerb method, String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion)
-        {
+        public RunRequest (HttpVerb method, String path, Map<String, Object> params, RequestExecutionType type, RequestCompletion completion) {
             this.method = method;
             this.path = path;
             this.params = params;
@@ -181,7 +173,6 @@ public class EmarsysRequestManager extends RequestManager {
             this.completion = completion;
         }
 
-        @TargetApi(Build.VERSION_CODES.KITKAT)
         protected Void doInBackground(String... urls) {
             URL url = null;
             HttpURLConnection urlConnection = null;
@@ -189,25 +180,30 @@ public class EmarsysRequestManager extends RequestManager {
             try {
                 url = new URL(String.format("%s%s", baseUrl, path));
 
-
                 urlConnection = (HttpURLConnection) url.openConnection();
 
                 //urlConnection.setRequestProperty("Content-Type", "text/plain");
                 urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 urlConnection.setRequestProperty("Authorization", getAuthorizationHeaderValue(context));
 
-
                 switch (method) {
                     case HttpVerbPOST: {
                         urlConnection.setRequestMethod("POST");
                         urlConnection.setDoOutput(true);
-                        byte[] postData = getQuery(params).getBytes( StandardCharsets.UTF_8 );
+                        //byte[] postData = getQuery(params).getBytes( StandardCharsets.UTF_8 );
+                        byte[] postData = getQuery(params).getBytes(Charset.forName("UTF-8"));
                         int postDataLength = postData.length;
                         urlConnection.setRequestProperty("charset", "utf-8");
                         urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength ));
                         urlConnection.setUseCaches(false);
-                        try(DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream())) {
-                            wr.write( postData );
+                        DataOutputStream wr = null;
+                        try {
+                            wr = new DataOutputStream(urlConnection.getOutputStream());
+                            wr.write(postData);
+                        } finally {
+                            if (wr != null) {
+                                wr.close();
+                            }
                         }
 
                         urlConnection.connect();

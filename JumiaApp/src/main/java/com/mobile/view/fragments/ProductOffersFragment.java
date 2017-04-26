@@ -25,6 +25,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
+import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -235,6 +237,8 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         Print.d(TAG, "SIMLPE SKU:" + sku + " PRICE:" + price);
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
         TrackerDelegator.trackAddOfferToCart(sku, price);
+        PushWooshTracker.addToCart(getBaseActivity(), true, sku, (long) price);
+        EmarsysTracker.addToCart(true, sku, (long) price);
     }
     
     /*

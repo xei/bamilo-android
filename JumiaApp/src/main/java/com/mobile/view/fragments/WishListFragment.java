@@ -32,6 +32,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
+import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
@@ -445,6 +447,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         if (simple != null) {
             triggerAddProductToCart(simple.getSku());
             TrackerDelegator.trackFavouriteAddedToCart(product, simple.getSku(), mGroupType);
+            PushWooshTracker.addToCart(getBaseActivity(),true, simple.getSku(), (long) simple.getPrice());
+            EmarsysTracker.addToCart(true, simple.getSku(), (long) simple.getPrice());
         }
         // Case select a simple variation
         else if (product.hasMultiSimpleVariations()) {
