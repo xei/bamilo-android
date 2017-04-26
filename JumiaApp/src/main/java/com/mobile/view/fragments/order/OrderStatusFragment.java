@@ -111,9 +111,9 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Set title view
-        ((TextView) view.findViewById(R.id.order_status_title_nr)).setText(getString(R.string.order_number, mOrderNumber));
-        if (mOrderDate != null) ((TextView) view.findViewById(R.id.order_status_title_date)).setText(mOrderDate);
-        // Get info view
+      ((TextView) view.findViewById(R.id.order_status_title_nr2)).setText(getString(R.string.order_number, mOrderNumber));
+          if (mOrderDate != null) ((TextView) view.findViewById(R.id.order_status_title_date2)).setText(mOrderDate);
+     /*   // Get info view
         mInfoView = (ViewGroup) view.findViewById(R.id.order_status_info);
         // Get payment container
         mPaymentView = (ViewGroup) view.findViewById(R.id.order_status_payment);
@@ -130,7 +130,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         mReturnItemsButton.setOnClickListener(this);
 
         // Validate state
-        onValidateState();
+        onValidateState();*/
     }
 
     private void onValidateState() {
