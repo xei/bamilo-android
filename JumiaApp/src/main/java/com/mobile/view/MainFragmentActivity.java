@@ -95,6 +95,8 @@ import com.pushwoosh.PushManager;
 import com.pushwoosh.SendPushTagsCallBack;
 import com.pushwoosh.fragment.PushEventListener;
 import com.pushwoosh.fragment.PushFragment;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -283,6 +285,8 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             }
         }
 
+        Fabric.with(this, new Crashlytics());
+
         /*
          * Used for on back pressed
          */
@@ -341,8 +345,10 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
 
             }
         };
+
         PushWooshTracker.openApp(MainFragmentActivity.this, true);
         EmarsysTracker.openApp(true);
+
         PushwooshCounter.setAppOpenCount();
         HashMap<String, Object> open_count = new HashMap<>();
         open_count.put("AppOpenCount", PushwooshCounter.getAppOpenCount());
