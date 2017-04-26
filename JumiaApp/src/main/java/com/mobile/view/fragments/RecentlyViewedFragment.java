@@ -387,8 +387,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, this);
         // Tracking
         trackAddToCart(simple.getSku(), product);
-        PushWooshTracker.addToCart(getBaseActivity(),true,product.getSku(), (long) product.getPrice());
-        EmarsysTracker.addToCart(getBaseActivity(),true,product.getSku(), (long) product.getPrice());
+        PushWooshTracker.addToCart(getBaseActivity(), true, product.getSku(), (long) product.getPrice());
+        EmarsysTracker.addToCart(true, product.getSku(), (long) product.getPrice());
     }
 
     /**

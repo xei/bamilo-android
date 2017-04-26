@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.view.R;
 
@@ -21,7 +22,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
     public TextView name;
     public TextView brand;
     public TextView quantity;
-    public ImageView image;
+    public NetworkImageView image;
     public View progress;
     public ViewGroup ratingContainer;
     public RatingBar rating;
@@ -42,7 +43,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
         super(view);
         name = (TextView) view.findViewById(R.id.item_name);
         brand = (TextView) view.findViewById(R.id.item_brand);
-        image = (ImageView) view.findViewById(R.id.image_view);
+        image = (NetworkImageView) view.findViewById(R.id.image_view);
         progress = view.findViewById(R.id.image_loading_progress);
         rating = (RatingBar) view.findViewById(R.id.item_rating);
         price = (TextView) view.findViewById(R.id.item_regprice);

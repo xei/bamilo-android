@@ -97,23 +97,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (com.mobile.view.BuildConfig.BUILD_TYPE.compareTo("release") == 0) {
-            if (com.mobile.view.BuildConfig.FLAVOR.compareTo("live") == 0) {
-                NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
-                        .start(this);
-            }
-            if (com.mobile.view.BuildConfig.FLAVOR.compareTo("staging") == 0) {
-
-                    NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
-                            .withCrashReportingEnabled(false)
-                            .start(this);
-
-                    Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
-
-            }
-            //Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
-        }
-
         //Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
         // Disable Accengage rich push notifications
@@ -133,23 +116,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Intercept event
         shouldHandleEvent = true;
 
-        //Emarsys
-        EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
-            @Override
-            public void EmarsysMobileEngageResponse(boolean success) {
-
-            }
-        };
-        EmarsysMobileEngage emarsysMobileEngage = new EmarsysMobileEngage(SplashScreenActivity.this);
-        emarsysMobileEngage.sendLogin(PushManager.getPushToken(SplashScreenActivity.this), emarsysMobileEngageResponse);
-        // End of Emarsys
-
         // Initialize application
         JumiaApplication.INSTANCE.init(initializationHandler);
 
         // throw new RuntimeException("This is a crash");
-
-
     }
 
     /*
