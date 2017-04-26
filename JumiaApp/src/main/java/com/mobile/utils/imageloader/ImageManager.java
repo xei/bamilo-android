@@ -92,7 +92,7 @@ public final class ImageManager {
                 }
 
                 mImageLoader = ImageFetcher.getInstance(context).getImageLoader();
-                mImageLoader.get(imageUrl, this.getImageListener(context, imageUrl, imageView, placeHolderImageId, android.R.drawable.ic_dialog_alert, progressView, hideImageView, listener));
+                mImageLoader.get(imageUrl, this.getImageListener(context, imageUrl, imageView, placeHolderImageId, placeHolderImageId /*android.R.drawable.ic_dialog_alert*/, progressView, hideImageView, listener));
                 imageView.setImageUrl(imageUrl, mImageLoader);
                 imageView.setTag(imgContainer);
             }
