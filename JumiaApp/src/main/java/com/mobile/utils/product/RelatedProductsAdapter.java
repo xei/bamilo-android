@@ -63,7 +63,7 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
             holder.brand.setText(item.getBrandName());
             // Set image
             //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
-            ImageManager.getInstance().loadImage(this.getContext(), item.getImageUrl(), false, holder.image, holder.progress, R.drawable.no_image_small, false, null, false);
+            ImageManager.getInstance().loadImage(this.getContext(), item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
             // Set prices
             setProductPrice(holder, item);
             // Set tag

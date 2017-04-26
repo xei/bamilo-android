@@ -32,15 +32,36 @@ public final class ImageManager {
         return instance;
     }
 
-    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, View progressView, final int placeHolderImageId) {
-        loadImage(context, imageUrl, false, imageView, progressView, placeHolderImageId, false, null, false);
+    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView) {
+        loadImage(context, imageUrl, imageView, false, null);
     }
 
-    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, boolean hideView, RocketImageLoader.RocketImageLoaderListener listener) {
+    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, final boolean hideView) {
+        loadImage(context, imageUrl, imageView, hideView, null);
+    }
+
+    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, final boolean hideView, final RocketImageLoader.RocketImageLoaderListener listener) {
         loadImage(context, imageUrl, false, imageView, null, -1, hideView, listener, false);
     }
 
-    public void loadImage(Context context, final String imageUrl, boolean isFilePathList, final NetworkImageView imageView, final View progressView, final int placeHolderImageId, final boolean hideImageView, final RocketImageLoader.RocketImageLoaderListener listener, boolean isDraftImage) {
+    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, final View progressView, final int placeHolderImageId) {
+        loadImage(context, imageUrl, false, imageView, progressView, placeHolderImageId, false, null, false);
+    }
+
+    public void loadImage(Context context, final String imageUrl, final boolean isFilePathList, final NetworkImageView imageView, final View progressView, final int placeHolderImageId) {
+        loadImage(context, imageUrl, isFilePathList, imageView, progressView, placeHolderImageId, false, null, false);
+    }
+
+    public void loadImage(Context context, final String imageUrl, final boolean isFilePathList, final NetworkImageView imageView, final View progressView, final int placeHolderImageId, final boolean isDraftImage) {
+        loadImage(context, imageUrl, isFilePathList, imageView, progressView, placeHolderImageId, false, null,isDraftImage);
+    }
+
+    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, final View progressView, final int placeHolderImageId, final RocketImageLoader.RocketImageLoaderListener listener) {
+        loadImage(context, imageUrl, false, imageView, progressView, placeHolderImageId, false, listener, false);
+    }
+
+    public void loadImage(Context context, final String imageUrl, boolean isFilePathList, final NetworkImageView imageView, final View progressView,
+                          final int placeHolderImageId, final boolean hideImageView, final RocketImageLoader.RocketImageLoaderListener listener, boolean isDraftImage) {
         if (!TextUtils.isEmpty(imageUrl) && imageView !=  null) {
             if(isDraftImage) {
                 if (progressView != null) {
