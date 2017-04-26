@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -135,4 +136,8 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
         getBaseActivity().onBackPressed();
     }
 
+    @Override
+    public void onNothingSelected(IcsAdapterView<?> parent) {
+
+    }
 }

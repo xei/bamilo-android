@@ -63,7 +63,7 @@ import java.util.Set;
  * @version 1.0
  * @date 2015/02/25
  */
-public abstract class EditAddressFragment extends BaseFragment implements IResponseCallback, IcsAdapterView.OnItemSelectedListener {
+public abstract class EditAddressFragment extends BaseFragment implements IResponseCallback, IcsAdapterView.OnItemSelectedListener,View.OnClickListener {
 
     private static final String TAG = EditAddressFragment.class.getSimpleName();
     public static final String SELECTED_ADDRESS = "selected_address";
@@ -92,7 +92,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Constructor
      */
     public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state, @ConstantsCheckout.CheckoutType int titleCheckout) {
-        super(enabledMenuItems, action, R.layout.checkout_edit_address_main, titleResId, adjust_state, titleCheckout);
+        super(enabledMenuItems, action, R.layout.checkout_edit_address_shipping2, titleResId, adjust_state, titleCheckout);
     }
     /*public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state, @ConstantsCheckout.CheckoutType int titleCheckout) {
         super(enabledMenuItems, action, R.layout.checkout_edit_address_shipping2, titleResId, adjust_state, titleCheckout);
@@ -127,7 +127,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         Print.i(TAG, "ON VIEW CREATED");
         name = (EditText) view.findViewById(R.id.address_name);
         family = (EditText) view.findViewById(R.id.address_family);
-        national_id = (EditText) view.findViewById(R.id.address_national_id);
         gender_spinner = (IcsSpinner) view.findViewById(R.id.address_gender);
         cellphone = (EditText) view.findViewById(R.id.address_cell);
         address = (EditText) view.findViewById(R.id.address_direction);
@@ -135,7 +134,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         city_spinner = (IcsSpinner) view.findViewById(R.id.address_city);
         postal_spinner = (IcsSpinner) view.findViewById(R.id.address_postal_region);
         postal_code = (EditText) view.findViewById(R.id.address_postal_code);
-        add = (Button) view.findViewById(R.id.add_address_btn);
+        add = (Button) view.findViewById(R.id.edit_address_btn);
+        add.setOnClickListener(this);
 
         name_error = (TextView) view.findViewById(R.id.address_name_error);
         family_error = (TextView) view.findViewById(R.id.address_last_name_error);
@@ -196,6 +196,135 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         }
     }
 
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        // Get view id
+        int id = view.getId();
+        // Next button
+        if (id == R.id.edit_address_btn) {
+            onClickCreateAddressButton();
+        }
+        // Unknown view
+        else {
+            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        }
+    }
+
+    private boolean formValidated() {
+        boolean flag =true;
+        name_error.setVisibility(View.GONE);
+        family_error.setVisibility(View.GONE);
+        postal_error.setVisibility(View.GONE);
+        address_error.setVisibility(View.GONE);
+        cellphone_error.setVisibility(View.GONE);
+        if (name.getText().length()>=0) {
+          /*  */
+            if (name.getText().length()<2)
+            {
+                name_error.setVisibility(View.VISIBLE);
+                name_error.setText("تکمیل این گزینه الزامی می باشد");
+                flag = false;
+            }
+
+        }
+        if (family.getText().length()>=0) {
+          /*  */
+            if (family.getText().length()<2)
+            {
+                family_error.setVisibility(View.VISIBLE);
+                family_error.setText("تکمیل این گزینه الزامی می باشد");
+                flag = false;
+            }
+
+        }
+        if (address.getText().length()>=0) {
+          /*  */
+            if (address.getText().length()<2)
+            {
+                address_error.setVisibility(View.VISIBLE);
+                address_error.setText("تکمیل این گزینه الزامی می باشد");
+                flag = false;
+            }
+
+        }
+
+
+
+        if (cellphone.getText().length()>=0) {
+          /*  */
+            if (cellphone.getText().length() != 11 && cellphone.getText().length()!=0 ){
+                cellphone.setVisibility(View.VISIBLE);
+                cellphone_error.setVisibility(View.VISIBLE);
+                cellphone_error.setText("تعداد ارقام بایذ 11 رقم باشد");
+                flag = false;
+            }
+            if (cellphone.getText().length()==0)
+            {
+                cellphone.setVisibility(View.VISIBLE);
+                cellphone_error.setVisibility(View.VISIBLE);
+                cellphone_error.setText("تکمیل این گزینه الزامی می باشد");
+                flag = false;
+            }
+
+        }
+
+
+
+        if (postal_code.getText().length()>=0) {
+          /*  */
+            if (postal_code.getText().length() != 10 && postal_code.getText().length()!=0 ){
+                postal_error.setVisibility(View.VISIBLE);
+                postal_error.setText("تعداد ارقام باید ۱۰ رقم باشد");
+                postal_code.setVisibility(View.VISIBLE);
+                flag = false;
+            }
+            if (postal_code.getText().length()==0)
+            {postal_code.setVisibility(View.VISIBLE);
+                postal_error.setVisibility(View.VISIBLE);
+                postal_error.setText("تکمیل این گزینه الزامی می باشد");
+                flag = false;
+            }
+
+        }
+        if (flag==false){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    private void onClickCreateAddressButton() {
+        Print.i(TAG, "ON CLICK: CREATE");
+        // Validate
+        if (formValidated()==false) {
+            Print.i(TAG, "SAME FORM: INVALID");
+
+            return;
+        }
+        else {
+
+            ContentValues values = new ContentValues();
+            values.put("address_form[id]", id);
+            //values.put("address_form[national_id]", national_id.getText().toString());
+            values.put("address_form[first_name]", name.getText().toString());
+            values.put("address_form[last_name]", family.getText().toString());
+            values.put("address_form[address1]", address.getText().toString());
+            values.put("address_form[address2]", postal_code.getText().toString());
+            values.put("address_form[region]", region);
+            values.put("address_form[city]",   city);
+            values.put("address_form[postcode]", postcode);
+            values.put("address_form[phone]", cellphone.getText().toString());
+            values.put("address_form[is_default_shipping]", 1);
+            values.put("address_form[is_default_billing]", 1);
+            values.put("address_form[gender]", JumiaApplication.CUSTOMER.getGender());
+
+            triggerEditAddress(action, values);
+        }
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -252,7 +381,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     protected void loadEditAddressForm(Form form) {
         Print.i(TAG, "LOAD EDIT ADDRESS FORM");
         // Edit form
-       String action = form.getAction();
+        action = form.getAction();
         int x = form.getFields().size();
         List<FormField> fields = form.getFields();
         int i =0;
@@ -297,6 +426,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         i++;
         }
 
+        initialdataform();
+
         /*List<FormField> fields = ((AddressForms) form.getContentData()).getShippingForm() .getFields();
 */
        /* mEditFormGenerator = FormFactory.create(FormConstants.ADDRESS_FORM, getBaseActivity(), form);
@@ -319,6 +450,20 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         mEditFormContainer.refreshDrawableState();*/
     }
 
+    private void initialdataform() {
+        name.setText(nameVal);
+        family.setText(familyVal);
+        //national_id.setText(national_id);
+        //gender_spinner.setText();
+        cellphone.setText(phone);
+        address.setText(address1);
+        postal_code.setText(address2);
+/*        address_spinner = (IcsSpinner) view.findViewById(R.id.address_state);
+        city_spinner = (IcsSpinner) view.findViewById(R.id.address_city);
+        postal_spinner = (IcsSpinner) view.findViewById(R.id.address_postal_region);*/
+        cellphone.setText(phone);
+    }
+
     /**
      * Method used to set the regions on the respective form
      */
@@ -329,21 +474,29 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         // Clean group
         ViewGroup group = formItem.getControl();
         group.removeAllViews();*/
-        // Add a spinner
-         address_spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
+        /*------------------------------------------------------------*/
+/*        ArrayList<AddressCity> city = new ArrayList<AddressCity>();
+        city.add(new AddressCity(0,"شهر"));
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item,city);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
+        promptAdapter.setPrompt("شهر");
+        city_spinner.setAdapter(promptAdapter);*/
+        /*------------------------------------------------------------*/
+
         // Create adapter
-        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
+        ArrayAdapter<AddressRegion> adapter= new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         address_spinner.setAdapter(adapter);
         if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= address_spinner.getCount()) {
             address_spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
         } else {
-            address_spinner.setSelection(Integer.parseInt(city));
+            address_spinner.setSelection(getDefaultPosition(Integer.parseInt(region),regions));
         }
         address_spinner.setOnItemSelectedListener(this);
-hideActivityProgress();
+/*hideActivityProgress();
         // Show invisible content to trigger spinner listeners
-        showGhostFragmentContentContainer();
+        showGhostFragmentContentContainer();*/
     }
 
     /**
@@ -356,9 +509,9 @@ hideActivityProgress();
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         city_spinner.setAdapter(adapter);
         if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= city_spinner.getCount()) {
-            city_spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
+            city_spinner.setSelection(mFormSavedState.getInt(RestConstants.CITY));
         } else {
-            city_spinner.setSelection(Integer.parseInt(city));
+            city_spinner.setSelection(getDefaultPosition(Integer.parseInt(city),cities));
         }
         city_spinner.setOnItemSelectedListener(this);
         hideActivityProgress();
@@ -376,9 +529,9 @@ hideActivityProgress();
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         postal_spinner.setAdapter(adapter);
         if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= city_spinner.getCount()) {
-            postal_spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
+            postal_spinner.setSelection(mFormSavedState.getInt(RestConstants.POSTCODE));
         } else {
-            postal_spinner.setSelection(Integer.parseInt(city));
+            postal_spinner.setSelection(getDefaultPosition(Integer.parseInt(postcode),postalCodes));
         }
         postal_spinner.setOnItemSelectedListener(this);
         hideActivityProgress();
@@ -390,11 +543,11 @@ hideActivityProgress();
      * Get the position of the address city
      * @return int the position
      */
-    private int getDefaultPosition(DynamicFormItem formItem, ArrayList<? extends FormListItem> regions){
+    private int getDefaultPosition(int position, ArrayList<? extends FormListItem> data){
         try {
-            int position = Integer.valueOf(formItem.getEntry().getValue());
-            for(int i = 0; i < regions.size(); i++){
-                FormListItem formListItem = regions.get(i);
+
+            for(int i = 0; i < data.size(); i++){
+                FormListItem formListItem = data.get(i);
                 if(formListItem.getValue() == position){
                     return i;
                 }
@@ -407,27 +560,7 @@ hideActivityProgress();
 
 
 
-    /**
-     * ############# CLICK LISTENER #############
-     */
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-    @Override
-    public void onClick(View view) {
-        super.onClick(view);
-        // Get view id
-        int id = view.getId();
-        // Next button
-        if (id == R.id.checkout_edit_button_enter) {
-            onClickEditAddressButton();
-        }
-        // Unknown view
-        else {
-            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
-        }
-    }
+
 
     @Override
     protected void onClickRetryButton(View view) {
@@ -508,7 +641,7 @@ hideActivityProgress();
      */
     private void triggerEditAddress(String action, ContentValues values) {
         Print.i(TAG, "TRIGGER: EDIT ADDRESS");
-        triggerContentEvent(new EditAddressHelper(), EditAddressHelper.createBundle(action, values), this);
+        triggerContentEventProgress(new EditAddressHelper(), EditAddressHelper.createBundle(action, values), this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
     }
@@ -518,7 +651,7 @@ hideActivityProgress();
      */
     protected void triggerEditAddressForm(){
         Print.i(TAG, "TRIGGER: EDIT FORM");
-        triggerContentEvent(new GetFormEditAddressHelper(), GetFormEditAddressHelper.createBundle(mAddressId), this);
+        triggerContentEventProgress(new GetFormEditAddressHelper(), GetFormEditAddressHelper.createBundle(mAddressId), this);
     }
 
     /**
@@ -526,7 +659,7 @@ hideActivityProgress();
      */
     private void triggerGetRegions(String apiCall){
         Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        triggerContentEventNoLoading(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
+        triggerContentEventProgress(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
     }
 
     /**
@@ -534,7 +667,7 @@ hideActivityProgress();
      */
     private void triggerGetCities(String apiCall, int region){
         Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        triggerContentEvent(new GetCitiesHelper(), GetCitiesHelper.createBundle(apiCall, region, null), this);
+        triggerContentEventProgress(new GetCitiesHelper(), GetCitiesHelper.createBundle(apiCall, region, null), this);
     }
 
     /**
@@ -542,7 +675,7 @@ hideActivityProgress();
      */
     private void triggerGetPostalCodes(String apiCall, int city){
         Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + apiCall);
-        triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(apiCall, city, null), this);
+        triggerContentEventProgress(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(apiCall, city, null), this);
     }
 
     /**
@@ -573,17 +706,17 @@ hideActivityProgress();
                 mFormResponse = form;
                 // Load form, get regions
                 loadEditAddressForm(form);
+                hideActivityProgress();
                 break;
             case GET_REGIONS_EVENT:
                 Print.d(TAG, "RECEIVED GET_REGIONS_EVENT");
                 mRegions = (AddressRegions) baseResponse.getContentData();
                 if (CollectionUtils.isNotEmpty(mRegions)) {
                     setRegions(mEditFormGenerator, mRegions);
-                    hideActivityProgress();
                 } else {
                     Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
                     super.showFragmentErrorRetry();
-                    hideActivityProgress();
+
                 }
                 hideActivityProgress();
                 break;
