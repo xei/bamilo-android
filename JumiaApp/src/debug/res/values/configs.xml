@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- APP -->
-    <string name="app_name">Bamilo Dev</string>
+    <string name="app_name">Bamilo</string>
     <item name="is_bamilo_specific" type="bool">true</item>
 
     <!-- COUNTRIES -->

@@ -18,6 +18,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -32,11 +33,19 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.home.holder.RichRelevanceAdapter;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
+import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
+import com.pushwoosh.PushManager;
+import com.pushwoosh.SendPushTagsCallBack;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author sergiopereira
@@ -155,6 +164,14 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Track purchase
         PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
         TrackerDelegator.trackPurchaseInCheckoutThanks(cart, mOrderNumber, mGrandTotalValue, mOrderShipping, mOrderTax, mPaymentMethod);
+        ArrayList<PurchaseCartItem> carts =  cart.getCartItems();
+        String categories = "";
+        for(PurchaseCartItem cat : carts)
+        {
+            categories += cat.getCategories();
+        }
+        PushWooshTracker.purchase(getBaseActivity(),true,categories, (long) mGrandTotalValue);
+        EmarsysTracker.purchase(getBaseActivity(),true,categories, (long) mGrandTotalValue);
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
         ImageView imageSuccess = (ImageView) view.findViewById(R.id.success_image);
@@ -173,6 +190,27 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         view.findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
         // Add a link to order status
         setOrderStatusLink(view, mOrderNumber);
+        PushwooshCounter.setPurchaseCount();
+        HashMap<String, Object> open_count = new HashMap<>();
+        open_count.put("PurchaseCount",PushwooshCounter.getPurchaseCount());
+        SendPushTagsCallBack callBack = new SendPushTagsCallBack() {
+            @Override
+            public void taskStarted() {
+
+            }
+
+            @Override
+            public void onSentTagsSuccess(Map<String, String> map) {
+                Print.d(TAG, "PurchaseCount app callback is"+map);
+            }
+
+            @Override
+            public void onSentTagsError(Exception e) {
+
+            }
+        };
+        PushManager.sendTags(getBaseActivity(),open_count,callBack);
+
     }
 
     /**

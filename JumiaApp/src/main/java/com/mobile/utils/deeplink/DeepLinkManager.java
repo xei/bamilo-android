@@ -26,6 +26,7 @@ import com.mobile.utils.location.LocationHelper;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CampaignsFragment;
+import com.pushwoosh.PushManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +83,7 @@ public class DeepLinkManager {
     private static final String SORT_PRICE_DOWN = "pd";
     private static final String SORT_NAME = "n";
     private static final String SORT_BRAND = "b";
+    private static String query_ex ="";
 
     /**
      * Load the external deep link.<br>
@@ -108,6 +110,8 @@ public class DeepLinkManager {
     private static List<String> isValidLink(Uri data) {
         // Get host and path
         String host = data.getHost();
+        String path =data.getPath();
+        query_ex = data.getEncodedQuery();
         List<String> segments = data.getPathSegments();
         Print.i(TAG, "DEEP LINK URI HOST: " + data.getHost() + " PATH: " + data.getPathSegments());
         // Get deep link origin
@@ -237,7 +241,8 @@ public class DeepLinkManager {
                     bundle = processSearchTermLink(segments.get(PATH_DATA_POS));
                     break;
                 case ORDER_OVERVIEW_TAG:
-                    bundle = processOrderStatus(segments.get(PATH_DATA_POS));
+                    //bundle = processOrderStatus(segments.get(PATH_DATA_POS));
+                    bundle = processOrderStatus();
                     break;
                 case CAMPAIGN_TAG:
                     bundle = processCampaignLink(segments.get(PATH_DATA_POS));
@@ -308,12 +313,20 @@ public class DeepLinkManager {
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle processOrderStatus(String orderId) {
+    private static Bundle processOrderStatusById(String orderId) {
         Print.i(TAG, "DEEP LINK TO TRACK ORDER: " + orderId);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.ARG_1, orderId);
         bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.ORDER_STATUS);
+        return bundle;
+    }
+
+    private static Bundle processOrderStatus() {
+        Print.i(TAG, "DEEP LINK TO TRACK ORDER: ");
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.MY_ORDERS);
         return bundle;
     }
 
@@ -520,15 +533,31 @@ public class DeepLinkManager {
         Bundle bundle = new Bundle();
         if (segments.size() >= CATALOG_MIN_SEGMENTS) {
             String query = key + segments.get(PATH_DATA_POS);
-            Print.i(TAG, "DEEP LINK TO CATALOG: " + query);
-            ContentValues deepLinkValues = new ContentValues();
-            if (TextUtils.isNotEmpty(query)) {
-                deepLinkValues = RestUrlUtils.getQueryParameters(query);
+            if (query_ex!=null)
+            {
+                Print.i(TAG, "DEEP LINK TO CATALOG: " + query+"&"+query_ex);
+                ContentValues deepLinkValues = new ContentValues();
+                if (TextUtils.isNotEmpty(query+"&"+query_ex)) {
+                    deepLinkValues = RestUrlUtils.getQueryParameters(query+"&"+query_ex);
+                }
+                bundle.putParcelable(ConstantsIntentExtra.DATA, deepLinkValues);
+                bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
+                bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
+                bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_DEEP_LINK);
             }
-            bundle.putParcelable(ConstantsIntentExtra.DATA, deepLinkValues);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
-            bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
-            bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_DEEP_LINK);
+            else {
+                Print.i(TAG, "DEEP LINK TO CATALOG: " + query);
+                ContentValues deepLinkValues = new ContentValues();
+                if (TextUtils.isNotEmpty(query)) {
+                    deepLinkValues = RestUrlUtils.getQueryParameters(query);
+                }
+                bundle.putParcelable(ConstantsIntentExtra.DATA, deepLinkValues);
+                bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
+                bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
+                bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_DEEP_LINK);
+            }
+
+
         }
         return bundle;
     }
@@ -743,7 +772,7 @@ public class DeepLinkManager {
         if (bundle != null) {
             // Get fragment type
             FragmentType fragmentType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
-            //Print.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
+            //Print.d(TA G, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
             // Validate fragment type
             if (fragmentType != FragmentType.UNKNOWN) {
                 // Restart back stack and fragment manager

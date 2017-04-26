@@ -2,19 +2,29 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.RecommendedAdapter;
+import com.mobile.libraries.emarsys.RecommendedListAdapter;
+import com.mobile.libraries.emarsys.predict.recommended.Item;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.home.HomePageObject;
@@ -39,10 +49,14 @@ import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeMainTeaserHolder;
 import com.mobile.utils.home.holder.HomeNewsletterTeaserHolder;
+import com.mobile.utils.home.holder.HomeRecommendationsTeaserHolder;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class used to show the home page.
@@ -58,6 +72,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     private HomePageObject mHomePage;
 
     private NestedScrollView mScrollView;
+    HomeRecommendationsTeaserHolder recommendationsTeaserHolder;
+    private boolean recommendationsTeaserHolderAdded = false;
 
     private ArrayList<BaseTeaserViewHolder> mViewHolders;
 
@@ -73,7 +89,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     //DROID-10
     private long mGABeginRequestMillis;
-
+    private RecommendedAdapter recommendedListAdapter;
+    private RecommendManager recommendManager;
+    private RecyclerView recommendedListView;
     /**
      * Empty constructor
      */
@@ -120,6 +138,21 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             HomeNewsletterTeaserHolder.sInitialValue = null;
             HomeNewsletterTeaserHolder.sInitialGender = IntConstants.INVALID_POSITION;
         }
+        //Map<String, List<Item>> data = new HashMap<>();
+        //ArrayList<String> categories = new ArrayList<>();
+        List<RecommendedItem> data = new ArrayList<>();
+
+       /* recommendedListAdapter = new RecommendedAdapter(data);
+        recommendedListAdapter.setOnItemClickListener(new RecommendedAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecommendedItem item) {
+                *//*Intent intent = new Intent(getContext(), ItemDetailActivity.class);
+                intent.putExtra("item", item);
+                startActivity(intent);*//*
+            }
+        });*/
+
+
     }
 
     /*
@@ -147,6 +180,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         else {
             showFragmentErrorRetry();
         }
+        /*recommendedListView = (RecyclerView)view.findViewById(R.id.recommendedListView);
+        LinearLayoutManager llManager = new LinearLayoutManager(getBaseActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recommendedListView.setLayoutManager(llManager);*/
+        //mContainer.addView(recommendedListView);
+
+
     }
 
     /*
@@ -158,6 +197,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
+
+
     }
 
     /*
@@ -298,6 +339,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         //restoreScrollState();
         // Show mContainer
         showFragmentContentContainer();
+
+        recommendManager = new RecommendManager();
+        sendRecommend();
     }
 
     /**
@@ -319,7 +363,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 mViewHolders.add(viewHolder);
             }
         }
-        // Show mContainer
+        recommendManager = new RecommendManager();
+        sendRecommend();
+
         showFragmentContentContainer();
     }
 
@@ -510,6 +556,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                     showFragmentFallBack();
                 }
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaHome, mGABeginRequestMillis, "");
+
                 break;
             case SUBMIT_FORM:// Newsletter Form Response
                 getBaseActivity().dismissProgress();
@@ -588,6 +635,45 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         } catch (IllegalStateException e) {
             Print.w(TAG, "WARNING: ISE ON TRACK PAGE ADJUST");
         }
+    }
+
+    private void sendRecommend() {
+        /*recommendedListAdapter.clear();
+        recommendedListAdapter.notifyDataSetChanged();
+        recommendedListView.invalidate();*/
+
+        recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
+                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+
+                if (recommendationsTeaserHolder == null ) {
+                    recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, mContainer, false), null);
+                }
+                if (recommendationsTeaserHolder != null ) {
+                    try {
+                    // Set view
+                        mContainer.removeView(recommendationsTeaserHolder.itemView);
+                        recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, mContainer, false), null);
+
+                        recommendationsTeaserHolder.onBind(data);
+                    // Add to container
+
+                        //recommendationsTeaserHolder.itemView.
+                        mContainer.addView(recommendationsTeaserHolder.itemView, mContainer.getChildCount()-1);
+
+                    }
+                    catch (Exception ex) {
+                        int tmp=1;
+
+                    }
+
+                    recommendationsTeaserHolderAdded = true;
+
+                }
+
+            }
+        });
     }
 
 }

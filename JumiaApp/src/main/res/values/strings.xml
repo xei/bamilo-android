@@ -83,6 +83,8 @@
     <string name="form_passwordsnomatch">Passwords do not match</string>
     <string name="form_texttolong"> text is too long</string>
     <string name="form_texttoshort"> text is too short</string>
+    <string name="form_textmaxlen">Max length is %d</string>
+    <string name="form_textminlen">Min length is %d</string>
     <string name="free_label">Free</string>
     <string name="got_it">Got it</string>
     <string name="home_label">Home</string>
@@ -171,6 +173,7 @@
     <string name="review">Review</string>
     <string name="save_changes_label">Save Changes</string>
     <string name="save_label">Save</string>
+    <string name="save_address_label">Save Address</string>
     <string name="search_label">Search</string>
     <string name="section_title_account">Account Settings</string>
     <string name="section_title_notification">Notification Settings</string>
@@ -336,6 +339,7 @@
     <string name="an_error_occurred">An Error Occurred</string>
     <string name="customer_service_info">Please try to contact our Customer Service for more info.</string>
     <string name="phone_contact">Phone:</string>
+    <string name="cellphone">Cell Phone:</string>
     <string name="email_contact">Email:</string>
     <string name="logout_success">Logged out with success</string>
     <string name="percentage_placeholder">%s%%</string>
@@ -397,7 +401,6 @@
     <string name="invalid_address_other">This address is not correct.</string>
 
 
-
     <string name="faq">FAQ</string>
     <string name="about_us_label">About US</string>
 
@@ -435,8 +438,16 @@
 
 
     <string name="checkout_address">Address</string>
+    <string name="delivery_address">Address (English)</string>
+    <string name="deliver_postal_code">postal code</string>
     <string name="checkout_review">Review</string>
     <string name="checkout_payment">Payment</string>
+
+
+    <!--delivery -->
+    <string name="delivery_state">State</string>
+    <string name="delivery_city">City</string>
+    <string name="delivery_neighbourhood">Neighbourhood</string>
 
     <!--checkout confirm-->
 
@@ -462,7 +473,7 @@
     <string name="cart_total_amount">Total</string>
     <string name="cart_total_discount">Total discount</string>
     <string name="cart_product_discount">Products discount</string>
-    <string name="checkout_count_title" >All product</string>
+    <string name="checkout_count_title">All product</string>
     <string name="basket_confirm_button">Confirm</string>
     <string name="register_label">Register</string>
     <string name="national_id">National code</string>
@@ -478,5 +489,12 @@
     <string name="address_next_button">Continue</string>
     <string name="payment_next_button">Continue and Payment</string>
     <string name="coupon_label">Coupon</string>
+    <string name="sub_categories">SubCategories</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="confirm_filter">Confirm</string>
+    <string name="Emarsys_MerchantId">18146DE34FE0B8C9</string>
+    <string name="recommendations">پیشنهادها</string>
 
 </resources>

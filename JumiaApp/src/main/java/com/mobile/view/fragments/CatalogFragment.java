@@ -12,20 +12,30 @@ import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
+import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.categories.GetSubCategoriesHelper;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
+import com.mobile.libraries.emarsys.predict.recommended.Item;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
+import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
+import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
+import com.mobile.newFramework.objects.category.Categories;
+import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -49,12 +59,19 @@ import com.mobile.utils.catalog.UICatalogUtils;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -120,6 +137,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     //DROID-10
     private long mGABeginRequestMillis;
 
+    private boolean showNoResult;
+
     /**
      * Empty constructor
      */
@@ -169,6 +188,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if(arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)){
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             }
+
+            showNoResult = false;
 
         }
 
@@ -252,6 +273,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
         // Verify if is comming from login after trying to add/remove item from cart.
         retryWishListActionLoggedIn();
+
+        if (showNoResult)
+        {
+            int gg=0;
+        }
     }
 
     /*
@@ -328,6 +354,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if(bundle != null && bundle.containsKey(FilterMainFragment.FILTER_TAG)){
             onSubmitFilterValues((ContentValues) bundle.getParcelable(FilterMainFragment.FILTER_TAG));
         }
+        /*if(bundle != null && bundle.containsKey(FilterMainFragment.FILTER_CATEGORY)){
+            mQueryValues.remove("category");
+            mQueryValues.put("category", bundle.getString(FilterMainFragment.FILTER_CATEGORY));
+        }*/
+
     }
 
     /*
@@ -518,6 +549,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (FeaturedBoxHelper.show(this, featuredBox)) {
             // Case success show container
             showFragmentContentContainer();
+
+
+
+
         } else {
             // Case fail show continue
             Print.e(TAG, "No featureBox!");
@@ -538,6 +573,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 if (mClicked != null) {
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
+                    PushWooshTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
+                    EmarsysTracker.addToFavorites(getBaseActivity(),true,mClicked.getCategoryKey());
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             }
@@ -602,6 +639,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             } else {
                 triggerAddToWishList(mWishListItemClicked.getSku());
                 TrackerDelegator.trackAddToFavorites(mWishListItemClicked);
+
+                PushWooshTracker.addToFavorites(getBaseActivity(),true,mMainCategory);
             }
         } else {
             // Save values to end action after login
@@ -663,7 +702,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         try {
             // Show dialog
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, mCatalogPage.getFilters());
+            bundle.putString("category_url", mKey);
+            ArrayList<CatalogFilter> filters = mCatalogPage.getFilters();
+            bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, filters);
             getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
@@ -908,6 +949,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
+
+
     /*
      * ############## RESPONSES ##############
      */
@@ -933,9 +976,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             case ADD_PRODUCT_TO_WISH_LIST:
                 updateWishListProduct();
                 break;
+
             case GET_CATALOG_EVENT:
             default:
                 onRequestCatalogSuccess(baseResponse);
+
+
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaCatalog, mGABeginRequestMillis, mTitle);
                 break;
@@ -948,6 +994,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onRequestCatalogSuccess(BaseResponse baseResponse) {
         // Get the catalog
         CatalogPage catalogPage = ((Catalog) baseResponse.getMetadata().getData()).getCatalogPage();
+        sendRecommend(catalogPage);
         // Case valid success response
         if (catalogPage != null && catalogPage.hasProducts()) {
             // Mark to reload an initial catalog
@@ -996,6 +1043,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                     showUnexpectedErrorWarning();
                 }
                 break;
+            case GET_SUBCATEGORIES_EVENT:
+                hideActivityProgress();
+                break;
+
             case GET_CATALOG_EVENT:
             default:
                 onRequestCatalogError(baseResponse);
@@ -1028,6 +1079,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             FeaturedBox featuredBox = catalog.getFeaturedBox();
             // Show no result layout
             showFeaturedBoxNoResult(featuredBox);
+            showNoResult = true;
         }
         // Case network errors except No network
         else if (ErrorCode.isNetworkError(errorCode)
@@ -1120,6 +1172,49 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mGridView.getLayoutManager().scrollToPosition(mCatalogGridPosition);
         }
 
+    }
+
+    private void sendRecommend(CatalogPage catalogPage) {
+        /*recommendedAdapter.clear();
+        recommendedAdapter.notifyDataSetChanged();
+        recyclerView.invalidate();*/
+        RecommendManager recommendManager = new RecommendManager();
+        RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+
+            }
+        };
+
+
+        ArrayList<ProductRegular> productList = catalogPage.getProducts();
+
+        List<String> excludedItems = null;
+
+        if (productList != null && productList.size() > 0) {
+            if (productList.size() > 1) {
+                excludedItems = new ArrayList<>();
+                for (int i = 1; i > productList.size(); i++) {
+                    excludedItems.add(productList.get(i).getSku());
+                }
+            }
+
+            recommendManager.sendRelatedRecommend(null,
+                    catalogPage.getSearchTerm(),
+                    productList.get(0).getSku(),
+                    excludedItems,
+                    handler);
+
+        }
+        //else {
+
+            ArrayList<String> categories = catalogPage.getBreadcrumb();
+        if (categories != null && categories.size()>0) {
+            String category = android.text.TextUtils.join(",", categories);
+
+            recommendManager.sendCategoryRecommend(catalogPage.getSearchTerm(), category, handler);
+        }
+        //}
     }
 
 }
