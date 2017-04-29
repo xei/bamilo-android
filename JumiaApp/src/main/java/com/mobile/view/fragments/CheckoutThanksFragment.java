@@ -175,7 +175,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             categories += cat.getCategories();
         }
 
-        recommendManager.sendPurchaseRecommend();
         //sendRecommend();
 
         PushWooshTracker.purchase(getBaseActivity(),true, categories, (long) mGrandTotalValue);
@@ -193,6 +192,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Clean cart
         triggerClearCart();
         JumiaApplication.INSTANCE.setCart(null);
+        recommendManager.sendPurchaseRecommend();
+
         // Update cart info
         getBaseActivity().updateCartInfo();
         // Continue button

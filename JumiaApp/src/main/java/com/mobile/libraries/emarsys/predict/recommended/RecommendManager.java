@@ -44,7 +44,7 @@ public class RecommendManager {
     }
 
    public void sendHomeRecommend(final RecommendListCompletionHandler callBack) {
-
+        setEmail();
        Transaction transaction = new Transaction();
        transaction.cart(getCartItems());
 
@@ -103,9 +103,9 @@ public class RecommendManager {
         sendRecommend(null, "PERSONAL", null, searchTerm, null, null, callBack);
     }*/
 
-    public void sendSearchRecommend(String searchTerm,
+    public void sendNoResultRecommend(String searchTerm,
                                       final RecommendListCompletionHandler callBack) {
-        sendRecommend(null, "", null, searchTerm, null, null, callBack);
+        sendRecommend(null, "PERSONAL", null, searchTerm, null, null, callBack);
     }
 
     private void sendRecommend(RecommendedItem recommendedItem,
@@ -115,7 +115,7 @@ public class RecommendManager {
                                List<String> excludeItems,
                                final RecommendListCompletionHandler callBack) {
         final List<Item> data = new ArrayList<>();
-
+        setEmail();
         Transaction transaction = recommendedItem == null ?
                 new Transaction() :
                 new Transaction(recommendedItem);
@@ -194,6 +194,14 @@ public class RecommendManager {
 
         return item;
 
+    }
+
+    public void setEmail() {
+        if (JumiaApplication.CUSTOMER != null) {
+
+            Session.getInstance().setCustomerEmail(JumiaApplication.CUSTOMER.getEmail());
+            Session.getInstance().setCustomerId("" + JumiaApplication.CUSTOMER.getId());
+        }
     }
 
 }
