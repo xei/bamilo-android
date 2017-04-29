@@ -94,7 +94,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     EditText cellphone;
     private Button add;
-    String n , t;
+    String cityApi="" , postalApi="", regionApi="";
     String action;
     int region_Id , city_Id , post_id;
     /*
@@ -402,11 +402,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
                 if(position==0){
                     city_Id = cities.get(position).getValue();
-                    triggerGetPostalCodes(t,city_Id, String.valueOf(city_Id));
+                    triggerGetPostalCodes(postalApi,city_Id, String.valueOf(city_Id));
                 }
                 else {
                     city_Id = cities.get(position-1).getValue();
-                    triggerGetPostalCodes(t,city_Id, String.valueOf(city_Id));
+                    triggerGetPostalCodes(postalApi,city_Id, String.valueOf(city_Id));
                 }
             }
 
@@ -861,22 +861,21 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         action = ((AddressForms) baseResponse.getContentData()).getBillingForm().getAction();
         List<FormField> fields = ((AddressForms) baseResponse.getContentData()).getShippingForm() .getFields();
 
-        String m="";
-        n="";
+
         int i =0;
         for ( FormField field :fields)
         {
             i++;
             if (i == 7) {
-                n=field.getApiCall();
+                cityApi=field.getApiCall();
             }
             if(i==6){
 
-                m = field.getApiCall();
+                regionApi = field.getApiCall();
                 continue;
             }
             if (i == 8) {
-                t=field.getApiCall();
+                postalApi=field.getApiCall();
             }
             continue;
         }
@@ -887,7 +886,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
         /////////////////////////////////
 
-        triggerGetRegions(m);
+        triggerGetRegions(regionApi);
 
         // mFormShipping = form.getShippingForm();
         // Load form
@@ -912,7 +911,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
                 if (position!=0) {
                     region_Id = regions.get(position-1).getValue();
-                    triggerGetCities(n, region_Id, String.valueOf(region_Id));
+                    triggerGetCities(cityApi, region_Id, String.valueOf(region_Id));
                     }
             }
 

@@ -81,7 +81,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     EditText name;
     EditText family;
     EditText address;
-    EditText national_id;
     EditText postal_code;
     EditText cellphone;
     private Button add;
@@ -502,7 +501,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     /**
      * Method used to set the cities on the respective form
      */
-    private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities){
+    private void setCities(ArrayList<AddressCity> cities){
         address_spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         // Create adapter
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, cities);
@@ -723,7 +722,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             case GET_CITIES_EVENT:
                 Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
                 ArrayList<AddressCity> cities = (GetCitiesHelper.AddressCitiesStruct)baseResponse.getContentData();
-                setCities(mEditFormGenerator, cities);
+                setCities( cities);
                 // Show
                 showFragmentContentContainer();
                 break;
