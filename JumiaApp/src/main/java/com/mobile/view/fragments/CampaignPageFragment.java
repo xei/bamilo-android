@@ -390,7 +390,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     }
 
     /**
-     * Process the click on the buy button
+     * Process the click on the sendPurchaseRecommend button
      * @author sergiopereira
      */
     private void onClickBuyButton(CampaignItem campaignItem) {
@@ -656,7 +656,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Set stock percentage
             view.mStockPercentage.setText(String.format(getString(R.string.percentage_placeholder), item.getStockPercentage()));
             view.mStockPercentage.setSelected(true);
-            // Set buy button
+            // Set sendPurchaseRecommend button
             setClickableView(view.mButtonBuy, position);
             // Set timer
             int remainingTime = item.getRemainingTime();

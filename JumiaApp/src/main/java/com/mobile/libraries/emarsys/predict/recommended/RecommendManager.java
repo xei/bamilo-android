@@ -28,7 +28,7 @@ public class RecommendManager {
     private static final String TAG = "RecommendManager";
     private static final int RecommendLimit = 15;
 
-    public void buy() {
+    public void sendPurchaseRecommend() {
         Transaction transaction = new Transaction();
         List<CartItem> cartItems = getCartItems();
         transaction.cart(cartItems);

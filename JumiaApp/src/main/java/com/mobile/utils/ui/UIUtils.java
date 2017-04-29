@@ -286,7 +286,7 @@ public class UIUtils {
     }
 
     /**
-     * Process the click on call to buy
+     * Process the click on call to sendPurchaseRecommend
      */
     public static void onClickCallToOrder(@NonNull Activity activity) {
         // Tracking

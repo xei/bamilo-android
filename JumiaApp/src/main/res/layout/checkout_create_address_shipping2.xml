@@ -28,8 +28,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:text=""
             android:ems="50"
             style="@style/BlueFormTextField"
@@ -42,8 +40,6 @@
             android:text="تکمیل این گزینه الزامی می‌باشد"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:id="@+id/address_name_error"
             android:visibility="gone"
             android:textColor="@color/design_textinput_error_color_light" />
@@ -53,8 +49,6 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:text=""
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:ems="50"
             style="@style/BlueFormTextField"
             android:minEms="2"
@@ -67,8 +61,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/address_last_name_error"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:visibility="gone"
             android:textColor="@color/design_textinput_error_color_light" />
 
@@ -78,8 +70,6 @@
             android:inputType="textPersonName"
             android:text=""
             android:ems="50"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             style="@style/BlueFormTextField"
             android:minEms="2"
             android:id="@+id/address_national_id"
@@ -90,8 +80,6 @@
             android:text="تکمیل این گزینه الزامی می‌باشد"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:id="@+id/address_national_id_error"
             android:visibility="gone"
             android:textColor="@color/design_textinput_error_color_light" />
@@ -111,9 +99,6 @@
         <com.mobile.components.customfontviews.EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
-
             android:inputType="numberDecimal"
             android:text=""
             android:ems="13"
@@ -128,8 +113,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/address_cellphone_error"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:visibility="gone"
             android:textColor="@color/design_textinput_error_color_light" />
 
@@ -141,7 +124,6 @@
             android:textSize="20sp"
             android:textColor="@color/black"
             android:minHeight="@dimen/dimen_50dp"
-            style="@style/spinnerItemStyle"
             android:spinnerMode="dialog"
             />
 
@@ -152,7 +134,6 @@
             android:prompt="@string/delivery_city"
             android:textSize="20sp"
             android:minHeight="@dimen/dimen_50dp"
-            style="@style/spinnerItemStyle"
             android:spinnerMode="dropdown"
             />
 
@@ -165,7 +146,6 @@
             android:textColor="@color/black"
             android:minHeight="@dimen/dimen_50dp"
             android:spinnerMode="dropdown"
-            style="@style/spinnerItemStyle"
             />
 
         <com.mobile.components.customfontviews.EditText
@@ -176,8 +156,6 @@
             android:ems="50"
             style="@style/BlueFormTextField"
             android:minEms="2"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:id="@+id/address_direction"
             android:hint="@string/delivery_address"
             android:textColor="?attr/colorPrimary" />
@@ -188,8 +166,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/address_text_error"
             android:visibility="gone"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             android:textColor="@color/design_textinput_error_color_light" />
 
         <com.mobile.components.customfontviews.EditText
@@ -198,8 +174,6 @@
             android:inputType="textPersonName"
             android:text=""
             android:ems="50"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
             style="@style/BlueFormTextField"
             android:minEms="2"
             android:id="@+id/address_postal_code"
@@ -212,9 +186,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/address_postal_error"
             android:visibility="gone"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_20dp"
+            android:layout_marginBottom="@dimen/dimen_40dp"
             android:textColor="@color/design_textinput_error_color_light" />
 
         <com.mobile.components.customfontviews.Button

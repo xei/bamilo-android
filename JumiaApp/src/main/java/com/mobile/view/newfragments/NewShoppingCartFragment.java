@@ -395,7 +395,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      */
     private void onClickCheckoutButton() {
 
-        //recommendManager.buy();
+        //recommendManager.sendPurchaseRecommend();
         //sendRecommend();
 
         if (items != null && items.size() > 0) {

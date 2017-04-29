@@ -50,16 +50,16 @@ import java.util.Map;
 
 /**
  * @author sergiopereira
- * 
+ *
  */
 public class CheckoutThanksFragment extends BaseFragment implements IResponseCallback, TargetLink.OnAppendDataListener {
 
     private static final String TAG = CheckoutThanksFragment.class.getSimpleName();
 
     private String mOrderShipping;
-    
+
     private String mOrderTax;
-    
+
     private String mPaymentMethod;
 
     private double mGrandTotalValue;
@@ -175,9 +175,10 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             categories += cat.getCategories();
         }
 
-        recommendManager.buy();
+        recommendManager.sendPurchaseRecommend();
         //sendRecommend();
-        PushWooshTracker.purchase(getBaseActivity(),true,categories, (long) mGrandTotalValue);
+
+        PushWooshTracker.purchase(getBaseActivity(),true, categories, (long) mGrandTotalValue);
         EmarsysTracker.purchase(true, categories, (long) mGrandTotalValue);
 
         // Related Products
@@ -259,7 +260,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     /**
      * Set the link into a string to order status
-     * 
+     *
      * @author sergiopereira
      * @see <href=http://www.chrisumbel.com/article/android_textview_rich_text_spannablestring>
      *      SpannableString</href>
@@ -314,7 +315,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
@@ -332,9 +333,9 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         else {
             goToProduct(view);
         }
-        
+
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
@@ -344,7 +345,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         super.onClickRetryButton(view);
         onClickRetryButton();
     }
-    
+
     /**
      * Process the click on retry button.
      * @author paulo
@@ -369,7 +370,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#allowBackPressed()
      */
     @Override
