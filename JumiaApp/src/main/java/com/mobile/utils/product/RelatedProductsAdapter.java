@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -60,7 +62,8 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
             // Set brand
             holder.brand.setText(item.getBrandName());
             // Set image
-            RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+            //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+            ImageManager.getInstance().loadImage(this.getContext(), item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
             // Set prices
             setProductPrice(holder, item);
             // Set tag
@@ -85,7 +88,7 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public TextView brand;
-        public ImageView image;
+        public NetworkImageView image;
         public TextView price;
         public View progress;
         public TextView discount;
@@ -98,7 +101,7 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
         public ProductViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.header_text);
-            image = (ImageView) view.findViewById(R.id.image_view);
+            image = (NetworkImageView) view.findViewById(R.id.image_view);
             progress = view.findViewById(R.id.image_loading_progress);
             brand = (TextView) view.findViewById(R.id.item_brand);
             price = (TextView) view.findViewById(R.id.item_price);

@@ -50,6 +50,7 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
@@ -396,9 +397,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt("شهر");
         city_spinner.setAdapter(promptAdapter);
-        city_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        city_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
                 if(position==0){
                     city_Id = cities.get(position).getValue();
                     triggerGetPostalCodes(t,city_Id, String.valueOf(city_Id));
@@ -409,7 +410,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 }
             }
 
+            @Override
+            public void onNothingSelected(IcsAdapterView<?> parent) {
+            }
         });
+
         hideActivityProgress();
         showFragmentContentContainer();
 
@@ -439,7 +444,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
                 @Override
                 public void onNothingSelected(IcsAdapterView<?> parent) {
-
                 }
             });
             hideActivityProgress();
@@ -616,16 +620,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
     }
 
-    /**
-     * ########### ON ITEM SELECTED LISTENER ###########
-     */
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener#onNothingSelected(com.mobile.components.absspinner.IcsAdapterView)
-     */
-    @Override
-    public void onNothingSelected(IcsAdapterView<?> parent) {
-    }
+
 
     /*
      * (non-Javadoc)
@@ -683,9 +678,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         boolean flag =true;
         name_error.setVisibility(View.GONE);
         family_error.setVisibility(View.GONE);
-        postal_code.setVisibility(View.GONE);
+        postal_error.setVisibility(View.GONE);
         address_error.setVisibility(View.GONE);
-        cellphone.setVisibility(View.GONE);
+        cellphone_error.setVisibility(View.GONE);
         national_error.setVisibility(View.GONE);
         if (name.getText().length()>=0) {
           /*  */
@@ -725,7 +720,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 national_error.setText("تعداد ارقام باید ۱۰ رقم باشد");
                 flag = false;
             }
-            else if (national_id.getText().length()==0)
+            if (national_id.getText().length()==0)
             {
                 national_error.setVisibility(View.VISIBLE);
                 national_error.setText("تکمیل این گزینه الزامی می باشد");
@@ -737,12 +732,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (cellphone.getText().length()>=0) {
           /*  */
             if (cellphone.getText().length() != 11 && cellphone.getText().length()!=0 ){
+                cellphone.setVisibility(View.VISIBLE);
                 cellphone_error.setVisibility(View.VISIBLE);
                 cellphone_error.setText("تعداد ارقام بایذ 11 رقم باشد");
                 flag = false;
             }
-            else if (cellphone.getText().length()==0)
+            if (cellphone.getText().length()==0)
             {
+                cellphone.setVisibility(View.VISIBLE);
                 cellphone_error.setVisibility(View.VISIBLE);
                 cellphone_error.setText("تکمیل این گزینه الزامی می باشد");
                 flag = false;
@@ -757,10 +754,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             if (postal_code.getText().length() != 10 && postal_code.getText().length()!=0 ){
                 postal_error.setVisibility(View.VISIBLE);
                 postal_error.setText("تعداد ارقام باید ۱۰ رقم باشد");
+                postal_code.setVisibility(View.VISIBLE);
                 flag = false;
             }
-            else if (postal_code.getText().length()==0)
-            {
+            if (postal_code.getText().length()==0)
+            {postal_code.setVisibility(View.VISIBLE);
                 postal_error.setVisibility(View.VISIBLE);
                 postal_error.setText("تکمیل این گزینه الزامی می باشد");
                 flag = false;
@@ -912,12 +910,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         address_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
-
+                if (position!=0) {
+                    region_Id = regions.get(position-1).getValue();
+                    triggerGetCities(n, region_Id, String.valueOf(region_Id));
+                    }
             }
 
             @Override
             public void onNothingSelected(IcsAdapterView<?> parent) {
-
             }
         });
         hideActivityProgress();

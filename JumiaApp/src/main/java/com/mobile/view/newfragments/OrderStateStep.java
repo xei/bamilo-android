@@ -186,7 +186,7 @@ enum OrderStatus
     }
 
     public static OrderStatus fromInt(int i) {
-        OrderStatus enumVal = OrderStatus.values()[i];
+        OrderStatus enumVal = OrderStatus.values()[i+1];
 
         return enumVal;
     }

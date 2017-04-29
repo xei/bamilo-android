@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -29,12 +30,16 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.JalaliCalendar;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.order.OrderedProductViewHolder;
 import com.mobile.utils.product.UIProductUtils;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragmentAutoState;
@@ -110,11 +115,14 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Set title view
-      ((TextView) view.findViewById(R.id.order_status_title_nr2)).setText(getString(R.string.order_number, mOrderNumber));
-          if (mOrderDate != null) ((TextView) view.findViewById(R.id.order_status_title_date2)).setText(mOrderDate);
+        //((TextView) view.findViewById(R.id.order_status_title_nr2)).setText(getString(R.string.order_number, mOrderNumber));
+        //if (mOrderDate != null) ((TextView) view.findViewById(R.id.order_status_title_date2)).setText(mOrderDate);
 
         mHeaderView = (ViewGroup) view.findViewById(R.id.order_tracking_header);
+        mInfoView = (ViewGroup) view.findViewById(R.id.order_status_info);
+        mOrderItems = (ViewGroup) view.findViewById(R.id.order_details);
 
+        /*
         // Get info view
         mInfoView = (ViewGroup) view.findViewById(R.id.order_status_info);
         // Get payment container
@@ -124,7 +132,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         // Get billing address container
         mBillingView = (ViewGroup) view.findViewById(R.id.order_status_address_billing);
         // Get order items container
-        mOrderItems = (ViewGroup) view.findViewById(R.id.order_status_items);
+        mOrderItems = (ViewGroup) view.findViewById(R.id.order_status_items);*/
 
         /*// Get return items container
         mReturnItemsButton = view.findViewById(R.id.return_selected_button);
@@ -187,12 +195,12 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         // Set info
         showOrderInfo(mInfoView, orderStatus);
         // Set payment
-        showPayment(mPaymentView, orderStatus);
+       /* showPayment(mPaymentView, orderStatus);
         // Set shipping
         showAddress(mShippingView, getString(R.string.shipping), orderStatus.getShippingAddress());
         // Set billing
         showAddress(mBillingView, getString(R.string.billing), orderStatus.getBillingAddress());
-        // Set items
+        // Set items*/
         showOrderItems(mOrderItems, orderStatus.getItems());
         // Show container
         showFragmentContentContainer();
@@ -200,17 +208,21 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
 
     private void showHeader(ViewGroup mHeaderView, OrderStatus orderStatus) {
         OrderTrackingHeader mOrderTrackingHeader = new OrderTrackingHeader(getContext(), mHeaderView);
-        mOrderTrackingHeader.createHeader(getContext());
+        mOrderTrackingHeader.createHeader(getContext(), orderStatus.getItems());
+
     }
 
     /**
      * Show order info
      */
     private void showOrderInfo(@NonNull ViewGroup group, @NonNull OrderStatus orderStatus) {
-        int size = orderStatus.getTotalProducts();
-        String text = getResources().getQuantityString(R.plurals.numberOfItems, size, size);
-        ((TextView) group.findViewById(R.id.order_status_number_of_items)).setText(text);
-        ((TextView) group.findViewById(R.id.order_status_total)).setText(CurrencyFormatter.formatCurrency(orderStatus.getTotal()));
+
+        ((TextView) group.findViewById(R.id.order_status_number_value)).setText(orderStatus.getId());
+        ((TextView) group.findViewById(R.id.order_status_date_value)).setText(JalaliCalendar.gregorianToJalali(new JalaliCalendar.YearMonthDate(orderStatus.getDate()) ).toString());
+        ((TextView) group.findViewById(R.id.order_status_total_value)).setText(CurrencyFormatter.formatCurrency(orderStatus.getTotal()));
+        ((TextView) group.findViewById(R.id.order_status_quantity_value)).setText(orderStatus.getTotalProducts() + " عدد");
+        ((TextView) group.findViewById(R.id.order_status_payment_value)).setText(orderStatus.getPaymentName());
+        ((TextView) group.findViewById(R.id.order_status_address_value)).setText(orderStatus.getShippingAddress().getAddressString());
     }
 
     /**
@@ -248,105 +260,19 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     private void showOrderItems(@NonNull ViewGroup group, @Nullable ArrayList<OrderTrackerItem> items) {
         if (CollectionUtils.isNotEmpty(items)) {
             LayoutInflater inflater = LayoutInflater.from(group.getContext());
-            // Check whether there is more then 2 items with action online return type
-            boolean bool = displayReturnSelected();
-            UIUtils.setVisibility(mReturnItemsContainer, bool);
-            // Set button state
-            bool = CollectionUtils.isNotEmpty(mSelectedItemsToReturn);
-            mReturnItemsButton.setEnabled(bool);
-            mReturnItemsButton.setActivated(bool);
-            //
+
             for (int i = 0; i < items.size(); i++) {
                 final OrderTrackerItem item = items.get(i);
                 // Create new layout item
-                final OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
-                if(item.isEligibleToReturn() && CollectionUtils.isNotEmpty(item.getOrderActions())){
-                    UIUtils.setVisibility(holder.returnOrder, true);
-                    // Case call to return
-                    if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
-                        holder.returnOrder.setText(getString(R.string.call_return_label));
-                    }
-                    // Case return
-                    else {
-                        holder.returnOrder.setText(getString(R.string.return_label));
-                        if(displayReturnSelected()){
-                            UIUtils.setVisibility(holder.orderCheckbox, true);
-                            holder.orderCheckbox.setTag(R.id.target_position, i);
-                            holder.orderCheckbox.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    holder.orderCheckbox.setChecked(item.isCheckedForAction());
-                                }
-                            });
-                            holder.orderCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public synchronized void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    //
-                                    item.setCheckedForAction(isChecked);
-                                    // Validate checked item
-                                    int position = (int) buttonView.getTag(R.id.target_position);
-                                    if (isChecked) {
-                                        mSelectedItemsToReturn.add(position);
-                                    } else {
-                                        mSelectedItemsToReturn.remove(position);
-                                    }
-                                    // Set button state
-                                    boolean bool = CollectionUtils.isNotEmpty(mSelectedItemsToReturn);
-                                    mReturnItemsButton.setEnabled(bool);
-                                    mReturnItemsButton.setActivated(bool);
-                                }
-                            });
-                        }
+                View view = inflater.inflate(R.layout.order_list_item, group, false);
+                ((TextView)view.findViewById(R.id.order_item_state)).setText(item.getStatus());
+                ((TextView)view.findViewById(R.id.order_item_name)).setText(item.getName());
+                ((TextView)view.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(item.getPrice()));
+                //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+                ImageManager.getInstance().loadImage(this.getContext(), item.getImageUrl(), (NetworkImageView) view.findViewById(R.id.order_item_image)); // holder.progress, R.drawable.no_image_small);
 
-                    }
-
-                    holder.returnOrder.setTag(R.id.target_simple_sku, item.getSku());
-                    holder.returnOrder.setOnClickListener(this);
-
-                }
-
-                // Set image
-                RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
-                // Set name
-                holder.name.setText(item.getName());
-                // Set brand
-                holder.brand.setText(item.getBrandName());
-                // Set size
-                if(TextUtils.isNotEmpty(item.getSize())){
-                    UIUtils.setVisibility(holder.size, true);
-                    holder.size.setText(getString(R.string.size_placeholder, item.getSize()));
-                } else {
-                    UIUtils.setVisibility(holder.size, false);
-                }
-
-                // Set quantity
-                holder.quantity.setText(getString(R.string.qty_placeholder, item.getQuantity()));
-                // Set price
-                UIProductUtils.setPriceRules(item, holder.price, holder.discount);
-                // Set delivery
-                holder.delivery.setText(item.getDelivery());
-
-                if(CollectionUtils.isNotEmpty(item.getOrderReturns())){
-                    String orderReturns = "";
-                    for (OrderReturn orderReturn : item.getOrderReturns() ) {
-                        orderReturns += String.format(getString(R.string.items_returned_on), orderReturn.getQuantity(), orderReturn.getDate()) + "\n";
-                    }
-                    holder.itemReturns.setText(orderReturns);
-                    holder.itemReturnsLabel.setVisibility(View.VISIBLE);
-                    holder.itemReturns.setVisibility(View.VISIBLE);
-                }
-
-                // Set order status
-                String status = String.format(getContext().getString(R.string.order_status_date), item.getStatus(), item.getUpdateDate());
-                holder.status.setText(Html.fromHtml(status));
-                // Set reorder button
-                holder.reorder.setTag(R.id.target_simple_sku, item.getSku());
-                holder.reorder.setOnClickListener(this);
-                //View set tag
-                holder.itemView.setTag(R.id.target_simple_sku, item.getSku());
-                holder.itemView.setOnClickListener(this);
                 // Add to parent
-                group.addView(holder.itemView);
+                group.addView(view);
             }
         }
     }

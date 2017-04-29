@@ -22,19 +22,19 @@ public class PushwooshCounter {
         return purchaseCountValue;
     }
 
-
-    public static int getAppOpenCount()
-    {
+    public static int getAppOpenCount() {
         SharedPreferences sharedPreferences = JumiaApplication.INSTANCE.getBaseContext().getSharedPreferences(AppOpenCount_PREFERENCES, Context.MODE_PRIVATE);
         appOpenCountValue = sharedPreferences.getInt("appOpenCountValue",0);
         return appOpenCountValue;
     }
+
     public static void setAppOpenCount() {
         SharedPreferences sharedPreferences = JumiaApplication.INSTANCE.getBaseContext().getSharedPreferences(AppOpenCount_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("appOpenCountValue", appOpenCountValue+1);
         editor.commit();
     }
+
     public static void setPurchaseCount() {
         SharedPreferences sharedPreferences = JumiaApplication.INSTANCE.getBaseContext().getSharedPreferences(PurchaseCount_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

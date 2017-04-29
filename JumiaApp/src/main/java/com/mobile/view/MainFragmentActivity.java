@@ -22,6 +22,8 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.libraries.emarsys.EmarsysMobileEngage;
+import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -93,6 +95,8 @@ import com.pushwoosh.PushManager;
 import com.pushwoosh.SendPushTagsCallBack;
 import com.pushwoosh.fragment.PushEventListener;
 import com.pushwoosh.fragment.PushFragment;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -156,28 +160,25 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             unregisterReceiver(mReceiver);
         } catch (Exception e) {
 // pass.
-        }try {
+        }
+        try {
             unregisterReceiver(mBroadcastReceiver);
         } catch (Exception e) {
 //pass through
         }
     }
 
-
     private void checkMessage(Intent intent) {
         if (null != intent) {
             if (intent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
-                showMessage("push message is " + intent.getExtras().getString(PushManager.PUSH_RECEIVE_EVENT));}
-            else if (intent.hasExtra(PushManager.REGISTER_EVENT)) {
+                showMessage("push message is " + intent.getExtras().getString(PushManager.PUSH_RECEIVE_EVENT));
+            } else if (intent.hasExtra(PushManager.REGISTER_EVENT)) {
                 showMessage("register");
-            }
-            else if (intent.hasExtra(PushManager.UNREGISTER_EVENT)) {
+            } else if (intent.hasExtra(PushManager.UNREGISTER_EVENT)) {
                 showMessage("unregister");
-            }
-            else if (intent.hasExtra(PushManager.REGISTER_ERROR_EVENT)) {
+            } else if (intent.hasExtra(PushManager.REGISTER_ERROR_EVENT)) {
                 showMessage("register error");
-            }
-            else if(intent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
+            } else if (intent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
                 showMessage("unregister error");
             }
             else if(intent.hasExtra(PushManager.REGISTER_BROAD_CAST_ACTION)) {
@@ -191,17 +192,14 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
         Intent mainAppIntent = getIntent();
         if (mainAppIntent != null) {
             if (mainAppIntent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
-                mainAppIntent.removeExtra(PushManager.PUSH_RECEIVE_EVENT);}
-            else if (mainAppIntent.hasExtra(PushManager.REGISTER_EVENT)) {
+                mainAppIntent.removeExtra(PushManager.PUSH_RECEIVE_EVENT);
+            } else if (mainAppIntent.hasExtra(PushManager.REGISTER_EVENT)) {
                 mainAppIntent.removeExtra(PushManager.REGISTER_EVENT);
-            }
-            else if (mainAppIntent.hasExtra(PushManager.UNREGISTER_EVENT)) {
+            } else if (mainAppIntent.hasExtra(PushManager.UNREGISTER_EVENT)) {
                 mainAppIntent.removeExtra(PushManager.UNREGISTER_EVENT);
-            }
-            else if (mainAppIntent.hasExtra(PushManager.REGISTER_ERROR_EVENT)) {
+            } else if (mainAppIntent.hasExtra(PushManager.REGISTER_ERROR_EVENT)) {
                 mainAppIntent.removeExtra(PushManager.REGISTER_ERROR_EVENT);
-            }
-            else if (mainAppIntent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
+            } else if (mainAppIntent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
                 mainAppIntent.removeExtra(PushManager.UNREGISTER_ERROR_EVENT);
             }
             setIntent(mainAppIntent);
@@ -209,12 +207,11 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     }
 
     private void showMessage(String message) {
-        Log.d("AndroidBash",message);
+        Log.i("AndroidBash", message);
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
-    {
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
         checkMessage(intent);
@@ -222,7 +219,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.utils.MyActivity#onCreate(android.os.Bundle)
      */
 
@@ -249,8 +246,18 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
 //Register for push!
         pushManager.registerForPushNotifications();
         checkMessage(getIntent());
-//PushwooshEnd in onCreate
+ //PushwooshEnd in onCreate
         Ad4PushTracker.get().setPushNotificationLocked(false);
+
+        //Emarsys
+        EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
+            @Override
+            public void EmarsysMobileEngageResponse(boolean success) {
+            }
+        };
+        EmarsysMobileEngage.getInstance(this).sendLogin(PushManager.getPushToken(this), emarsysMobileEngageResponse);
+        // End of Emarsys
+
         // ON ORIENTATION CHANGE
         if (savedInstanceState == null) {
             Print.d(TAG, "################### SAVED INSTANCE IS NULL");
@@ -278,6 +285,8 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             }
         }
 
+        Fabric.with(this, new Crashlytics());
+
         /*
          * Used for on back pressed
          */
@@ -290,7 +299,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     /*
      * (non-Javadoc)
      * For 4DS - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
-     * 
+     *
      * @see com.mobile.utils.BaseActivity#onNewIntent(android.content.Intent)
      */
 /*    @Override
@@ -328,7 +337,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
 
             @Override
             public void onSentTagsSuccess(Map<String, String> map) {
-                Print.d(TAG, "callback is"+map);
+                Print.d(TAG, "callback is" + map);
             }
 
             @Override
@@ -336,19 +345,19 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
 
             }
         };
-        PushWooshTracker.openApp(MainFragmentActivity.this,true);
-        EmarsysTracker.openApp(MainFragmentActivity.this,true);
+
+        PushWooshTracker.openApp(MainFragmentActivity.this, true);
+        EmarsysTracker.openApp(true);
+
         PushwooshCounter.setAppOpenCount();
         HashMap<String, Object> open_count = new HashMap<>();
-        open_count.put("AppOpenCount",PushwooshCounter.getAppOpenCount());
-        PushManager.sendTags(MainFragmentActivity.this,open_count,callBack);
-
-
+        open_count.put("AppOpenCount", PushwooshCounter.getAppOpenCount());
+        PushManager.sendTags(MainFragmentActivity.this, open_count, callBack);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.utils.BaseActivity#onPause()
      */
     @Override
@@ -371,7 +380,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.utils.BaseActivity#onDestroy()
      */
     @Override
@@ -448,8 +457,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 }
 
-                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.SUB_CATEGORY_FILTER))
-                {
+                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.SUB_CATEGORY_FILTER)) {
                     removeEntries = false;
                 }
 
@@ -467,7 +475,8 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
                 type = FragmentType.getUniqueIdentifier(type, fragment);
                 break;
             case PRODUCT_INFO:
-                fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);break;
+                fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);
+                break;
             case PRODUCT_GALLERY:
                 fragment = newFragmentInstance(ProductImageGalleryFragment.class, bundle);
                 break;
@@ -614,7 +623,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
                 return;
         }
         // Clear search term
-        if(type != FragmentType.CATALOG && type != FragmentType.FILTERS)
+        if (type != FragmentType.CATALOG && type != FragmentType.FILTERS)
             JumiaApplication.INSTANCE.setSearchedTerm("");
 
         // Validate menu flag and pop entries until home
@@ -643,7 +652,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     /**
      * Create new fragment
      */
-    private  BaseFragment newFragmentInstance(@NonNull Class<? extends BaseFragment> fragmentClass, @Nullable Bundle arguments) {
+    private BaseFragment newFragmentInstance(@NonNull Class<? extends BaseFragment> fragmentClass, @Nullable Bundle arguments) {
         return BaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
     }
 
@@ -656,6 +665,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     /**
      * Fragment communication.<br>
      * The FragmentManager has some issues to get fragment with the same tag.<br>
+     *
      * @author spereira
      */
     @Override
@@ -670,7 +680,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.utils.MyActivity#onBackPressed()
      */
     @Override
@@ -780,35 +790,29 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     }
 
     @Override
-    public void doOnRegistered(String registrationId)
-    {
+    public void doOnRegistered(String registrationId) {
         Log.i(TAG, "Registered for pushes: " + registrationId);
     }
 
     @Override
-    public void doOnRegisteredError(String errorId)
-    {
+    public void doOnRegisteredError(String errorId) {
         Log.e(TAG, "Failed to register for pushes: " + errorId);
     }
 
     @Override
-    public void doOnMessageReceive(String message)
-    {
+    public void doOnMessageReceive(String message) {
         Log.i(TAG, "Notification opened: " + message);
     }
 
     @Override
-    public void doOnUnregistered(final String message)
-    {
+    public void doOnUnregistered(final String message) {
         Log.i(TAG, "Unregistered from pushes: " + message);
     }
 
     @Override
-    public void doOnUnregisteredError(String errorId)
-    {
+    public void doOnUnregisteredError(String errorId) {
         Log.e(TAG, "Failed to unregister from pushes: " + errorId);
     }
-
 
 
 }

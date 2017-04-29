@@ -16,48 +16,43 @@ import java.util.Map;
  */
 
 public class EmarsysMobileEngage {
-    private static String cContactFieldId = "4819"; //Field Editor (found in 'Admin') - Emarsys Dashboard
+    private static final String cContactFieldId = "4819"; //Field Editor (found in 'Admin') - Emarsys Dashboard
 
-    private Context context;
-
-    static EmarsysDataManager instance;
-
-    public EmarsysDataManager sharedInstance() {
-        if (instance == null) {
-            instance = new EmarsysDataManager();
-            instance = instance.init(context);
-        }
-
-        return instance;
+    private Context mContext = null;
+    private static EmarsysMobileEngage instance = null;
+    private EmarsysMobileEngage(Context context) {
+        this.mContext = context;
+        this.emarsysDataManager = new EmarsysDataManager(context);
     }
-    public EmarsysMobileEngage(Context context)
-    {
-        this.context = context;
+
+    protected EmarsysDataManager emarsysDataManager = null;
+
+    public static EmarsysMobileEngage getInstance(Context context) {
+        if(instance == null) {
+            instance = new EmarsysMobileEngage(context.getApplicationContext());
+        }
+        return instance;
     }
 
     public void sendLogin(String pushToken, final EmarsysMobileEngageResponse completion) {
         if(JumiaApplication.isCustomerLoggedIn()) {
-
             DataCompletion response = new DataCompletion() {
                 @Override
                 public void completion(Object data, ArrayList<String> errorMessages) {
-                    completion.EmarsysMobileEngageResponse(errorMessages == null);
+                    handleEmarsysMobileEngageResponse(errorMessages, completion);
                 }
             };
 
-            sharedInstance().login((EmarsysPushIdentifier) getIdentifier(pushToken), cContactFieldId, ""+JumiaApplication.CUSTOMER.getId(), response);
+            this.emarsysDataManager.login((EmarsysPushIdentifier) getIdentifier(pushToken), cContactFieldId, "" + JumiaApplication.CUSTOMER.getId(), response);
         } else {
-
             DataCompletion response = new DataCompletion() {
                 @Override
                 public void completion(Object data, ArrayList<String> errorMessages) {
-                    handleEmarsysMobileEngageResponse(data, errorMessages, completion);
-
+                    handleEmarsysMobileEngageResponse(errorMessages, completion);
                 }
             };
 
-            sharedInstance().anonymousLogin((EmarsysPushIdentifier) getIdentifier(pushToken), response);
-
+            this.emarsysDataManager.anonymousLogin((EmarsysPushIdentifier) getIdentifier(pushToken), response);
         }
     }
 
@@ -65,59 +60,52 @@ public class EmarsysMobileEngage {
         DataCompletion response = new DataCompletion() {
             @Override
             public void completion(Object data, ArrayList<String> errorMessages) {
-                handleEmarsysMobileEngageResponse(data, errorMessages, completion);
+                handleEmarsysMobileEngageResponse(errorMessages, completion);
 
             }
         };
-        sharedInstance().openMessageEvent((EmarsysContactIdentifier)getIdentifier(null), sid, response);
 
+        this.emarsysDataManager.openMessageEvent((EmarsysContactIdentifier)getIdentifier(null), sid, response);
     }
 
     public void sendCustomEvent(String event, Map<String, Object> attributes, final EmarsysMobileEngageResponse completion) {
-
         DataCompletion response = new DataCompletion() {
             @Override
             public void completion(Object data, ArrayList<String> errorMessages) {
-                handleEmarsysMobileEngageResponse(data, errorMessages, completion);
+                handleEmarsysMobileEngageResponse(errorMessages, completion);
 
             }
         };
 
-        sharedInstance().customEvent((EmarsysContactIdentifier)getIdentifier(null), event, attributes, response);
+        this.emarsysDataManager.customEvent((EmarsysContactIdentifier)getIdentifier(null), event, attributes, response);
     }
 
     public void sendLogout(final EmarsysMobileEngageResponse completion) {
         DataCompletion response = new DataCompletion() {
             @Override
             public void completion(Object data, ArrayList<String> errorMessages) {
-                handleEmarsysMobileEngageResponse(data, errorMessages, completion);
+                handleEmarsysMobileEngageResponse(errorMessages, completion);
 
             }
         };
 
-        sharedInstance().logout((EmarsysContactIdentifier)getIdentifier(null), response);
+        this.emarsysDataManager.logout((EmarsysContactIdentifier)getIdentifier(null), response);
     }
 
     Object getIdentifier(String pushToken) {
+        String appId = this.mContext.getResources().getString(R.string.PW_APPID);
+        String hwid = PushManager.getPushwooshHWID(this.mContext);
 
-        String appId = context.getResources().getString(R.string.PW_APPID);
-        String hwid = PushManager.getPushwooshHWID(context);
-
-        if(pushToken != null) {
-            return new EmarsysPushIdentifier(appId, hwid, pushToken);
-        } else {
+        if(pushToken == null) {
             return new EmarsysContactIdentifier(appId, hwid);
+        } else {
+            return new EmarsysPushIdentifier(appId, hwid, pushToken);
         }
     }
 
-    void handleEmarsysMobileEngageResponse(Object data, ArrayList<String> error, EmarsysMobileEngageResponse completion) {
+    void handleEmarsysMobileEngageResponse(ArrayList<String> error, final EmarsysMobileEngageResponse completion) {
         if(completion != null) {
-            if(error == null) {
-                completion.EmarsysMobileEngageResponse(true);
-            } else {
-                completion.EmarsysMobileEngageResponse(false);
-            }
+            completion.EmarsysMobileEngageResponse(error == null);
         }
     }
-
 }

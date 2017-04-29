@@ -483,5 +483,12 @@
     <string name="recommendations">پیشنهادها</string>
     <string name="order_total">مبلغ کل: %s</string>
     <string name="order_details">جزییات سفارش</string>
+    <string name="order_status_number_title">شماره سفارش:</string>
+    <string name="order_status_date_title">تاریخ سفارش:</string>
+    <string name="order_status_total_title">هزینه کل:</string>
+    <string name="order_status_quantity_title">تعداد کل:</string>
+    <string name="order_status_payment_title">روش پرداخت:</string>
+    <string name="order_items">جزییات کالا</string>
+    <string name="order_status_address_title">آدرس:</string>
 
 </resources>

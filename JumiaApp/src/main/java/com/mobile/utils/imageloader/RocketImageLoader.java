@@ -132,9 +132,7 @@ public class RocketImageLoader {
      * 
      * Some parameters make sense only for specific image libraries
      */
-    public void loadImage(final String imageUrl, boolean isFilePathList, final ImageView imageView, final View progressView,
-                          final int placeHolderImageId, final boolean hideImageView, final RocketImageLoaderListener listener, boolean isDraftImage) {
-
+    public void loadImage(final String imageUrl, boolean isFilePathList, final ImageView imageView, final View progressView, final int placeHolderImageId, final boolean hideImageView, final RocketImageLoaderListener listener, boolean isDraftImage) {
         if (!TextUtils.isEmpty(imageUrl) && null != imageView) {
             if(isDraftImage) {
             	imageView.setImageBitmap(decodeSampledBitmapFromResource(imageUrl));

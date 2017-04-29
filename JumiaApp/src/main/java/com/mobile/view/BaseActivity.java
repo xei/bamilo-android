@@ -1102,7 +1102,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
         SearchSuggestionClient mSearchSuggestionClient = new SearchSuggestionClient();
         PushWooshTracker.search(BaseActivity.this,"" ,text.replace(" ",","));
-        EmarsysTracker.search(BaseActivity.this,"" ,text.replace(" ",","));
+        EmarsysTracker.search("" , text.replace(" ",","));
         mSearchSuggestionClient.getSuggestions(getApplicationContext(), new IResponseCallback() {
             @Override
             public void onRequestComplete(final BaseResponse baseResponse) {

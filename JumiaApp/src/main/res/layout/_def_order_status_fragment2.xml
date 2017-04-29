@@ -22,128 +22,395 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_status_detail_title"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:minHeight="48dp"
+                android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/margin_padding_xl"
                 android:paddingRight="@dimen/margin_padding_xl"
-                android:background="@color/black_300"
-                android:textColor="@color/black"
+                android:background="#f0f0f0"
+                android:textColor="#444444"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:text="@string/order_details"
-                 />
+                />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/order_status_title_date2"
-                    style="@style/TextBase.Caption.Black_800"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:background="@color/black_300"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/margin_padding_xxl"
-                    android:layout_marginRight="@dimen/margin_padding_xxl" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-            </RelativeLayout>
-
-            <TextView
-                android:text="vaziat"
+            <LinearLayout
+                android:id="@+id/order_status_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView8"
-                android:textColor="@color/black" />
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:text="nahveh pardakht"
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_number_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_margin="5dp"
+                        android:gravity="right"
+                        android:text="@string/order_status_number_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_number_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_margin="5dp"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/address_separator" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_date_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_margin="5dp"
+                        android:gravity="right"
+                        android:text="@string/order_status_date_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_date_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_margin="5dp"
+                         />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/address_separator" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_total_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_margin="5dp"
+                        android:gravity="right"
+                        android:text="@string/order_status_total_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_total_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_margin="5dp"
+                         />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/address_separator" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_quantity_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_margin="5dp"
+                        android:gravity="right"
+                        android:text="@string/order_status_quantity_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_quantity_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_margin="5dp"
+                         />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/address_separator" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_payment_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_margin="5dp"
+                        android:gravity="right"
+                        android:text="@string/order_status_payment_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_payment_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_margin="5dp"
+                         />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/address_separator" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_address_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_margin="5dp"
+                        android:gravity="right"
+                        android:text="@string/order_status_address_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/order_status_address_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_margin="5dp"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/order_status_items_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView9"
-                android:textColor="@color/black" />
+                android:paddingLeft="@dimen/margin_padding_xl"
+                android:paddingRight="@dimen/margin_padding_xl"
+                android:background="#f0f0f0"
+                android:textColor="#444444"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="@string/order_items"
+                />
 
-            <TextView
-                android:text="mablaghe kol sefaresh"
+            <LinearLayout
+                android:id="@+id/order_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView10"
-                android:textColor="@color/black" />
+                android:orientation="vertical">
 
-            <TextView
-                android:text="tedad :5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView13"
-                android:textColor="@color/black" />
+            </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="107dp">
 
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="85dp"
-                    app:srcCompat="@drawable/campaign_promobadge"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="12dp"
-                    android:id="@+id/imageView3" />
 
-                <TextView
-                    android:text="onvan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/imageView3"
-                    android:layout_toLeftOf="@+id/imageView3"
-                    android:layout_toStartOf="@+id/imageView3"
-                    android:layout_marginRight="13dp"
-                    android:layout_marginEnd="13dp"
-                    android:id="@+id/textView14"
-                    android:textColor="@color/black" />
 
-                <TextView
-                    android:text="tedad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView15"
-                    android:textColor="@color/black"
-                    android:layout_below="@+id/textView14"
-                    android:layout_alignRight="@+id/textView14"
-                    android:layout_alignEnd="@+id/textView14" />
 
-                <TextView
-                    android:text="TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/textView14"
-                    android:layout_alignParentLeft="true"
-                    android:background="@color/black_700"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
-                    android:id="@+id/textView19" />
 
-                <TextView
-                    android:text="TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView15"
-                    android:background="@color/black_700"
-                    android:layout_alignLeft="@+id/textView19"
-                    android:layout_alignStart="@+id/textView19"
-                    android:id="@+id/textView20" />
 
-            </RelativeLayout>
+
+
+
+            <!-- <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
+
+
+
+                 <com.mobile.components.customfontviews.TextView
+                     android:id="@+id/order_status_title_date2"
+                     style="@style/TextBase.Caption.Black_800"
+                     android:layout_alignParentEnd="true"
+                     android:layout_alignParentRight="true"
+                     android:background="@color/black_300"
+                     android:layout_centerVertical="true"
+                     android:layout_marginEnd="@dimen/margin_padding_xxl"
+                     android:layout_marginRight="@dimen/margin_padding_xxl" />
+
+             </RelativeLayout>-->
+
+            <!-- <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="50dp">
+
+             </RelativeLayout>
+
+             <TextView
+                 android:text="vaziat"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/textView8"
+                 android:textColor="@color/black" />
+
+             <TextView
+                 android:text="nahveh pardakht"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/textView9"
+                 android:textColor="@color/black" />
+
+             <TextView
+                 android:text="mablaghe kol sefaresh"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/textView10"
+                 android:textColor="@color/black" />
+
+             <TextView
+                 android:text="tedad :5"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/textView13"
+                 android:textColor="@color/black" />
+
+             <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="107dp">
+
+                 <ImageView
+                     android:layout_width="70dp"
+                     android:layout_height="85dp"
+                     app:srcCompat="@drawable/campaign_promobadge"
+                     android:layout_alignParentTop="true"
+                     android:layout_alignParentRight="true"
+                     android:layout_alignParentEnd="true"
+                     android:layout_marginRight="10dp"
+                     android:layout_marginEnd="10dp"
+                     android:layout_marginTop="12dp"
+                     android:id="@+id/imageView3" />
+
+                 <TextView
+                     android:text="onvan"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignTop="@+id/imageView3"
+                     android:layout_toLeftOf="@+id/imageView3"
+                     android:layout_toStartOf="@+id/imageView3"
+                     android:layout_marginRight="13dp"
+                     android:layout_marginEnd="13dp"
+                     android:id="@+id/textView14"
+                     android:textColor="@color/black" />
+
+                 <TextView
+                     android:text="tedad"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:id="@+id/textView15"
+                     android:textColor="@color/black"
+                     android:layout_below="@+id/textView14"
+                     android:layout_alignRight="@+id/textView14"
+                     android:layout_alignEnd="@+id/textView14" />
+
+                 <TextView
+                     android:text="TextView"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignTop="@+id/textView14"
+                     android:layout_alignParentLeft="true"
+                     android:background="@color/black_700"
+                     android:layout_alignParentStart="true"
+                     android:layout_marginLeft="15dp"
+                     android:layout_marginStart="15dp"
+                     android:id="@+id/textView19" />
+
+                 <TextView
+                     android:text="TextView"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@+id/textView15"
+                     android:background="@color/black_700"
+                     android:layout_alignLeft="@+id/textView19"
+                     android:layout_alignStart="@+id/textView19"
+                     android:id="@+id/textView20" />
+
+             </RelativeLayout>-->
 
             <!-- INFO AND PAYMENT -->
 

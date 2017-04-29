@@ -4,7 +4,7 @@ package com.mobile.utils.pushwoosh;
  * Created by shahrooz on 4/12/17.
  */
 
-public class   PushWooshEvent {
+public class PushWooshEvent {
     public static String AppVersion ="AppVersion";
     public static String Platform="Platform" ;
     public static String Connection="Connection";
@@ -20,6 +20,4 @@ public class   PushWooshEvent {
     public static String Keywords="Keywords";
     public static String SKU="SKU";
     public static String Categories="Categories";
-
-
 }

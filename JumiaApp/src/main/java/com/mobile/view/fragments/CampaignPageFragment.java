@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.customfontviews.TextView;
@@ -45,8 +46,11 @@ import com.mobile.utils.catalog.HeaderFooterInterface;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
+import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
@@ -460,6 +464,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             TrackerDelegator.trackProductAddedToCart(bundle);
+            PushWooshTracker.addToCart(getBaseActivity(),true, sku, (long) price);
+            EmarsysTracker.addToCart(true, sku, (long) price);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -637,7 +643,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Set image container
             setClickableView(view.mImageContainer, position);
             // Set image
-            RocketImageLoader.instance.loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
+            //RocketImageLoader.instance.loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
+            ImageManager.getInstance().loadImage(getContext(), item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
             // Set size
             setSizeContainer(view, item);
             // Set price and special price
@@ -1022,8 +1029,31 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 holder.itemView.setTag(R.id.position, -1);
                 holder.mBannerImageView.setVisibility(View.GONE);
                 // Set image
-                RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
+                /* RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
+                    @Override
+                    public void onLoadedSuccess(String url, Bitmap bitmap) {
+                        // Show content
+                        holder.mBannerImageView.setImageBitmap(bitmap);
+                        holder.mBannerImageView.setVisibility(View.VISIBLE);
+                        bannerState = VISIBLE;
+                    }
 
+                    @Override
+                    public void onLoadedError() {
+                        holder.mBannerImageView.setVisibility(View.GONE);
+                        mGridView.hideHeaderView();
+                        bannerState = HIDDEN;
+                    }
+
+                    @Override
+                    public void onLoadedCancel() {
+                        holder.mBannerImageView.setVisibility(View.GONE);
+                        mGridView.hideHeaderView();
+                        bannerState = HIDDEN;
+                    }
+                }); */
+
+                ImageManager.getInstance().loadImage(getContext(), mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
                     @Override
                     public void onLoadedSuccess(String url, Bitmap bitmap) {
                         // Show content
@@ -1058,7 +1088,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         private final TextView mBrand;
         private final TextView mName;
         private final View mImageContainer;
-        private final ImageView mImage;
+        private final NetworkImageView mImage;
         private final View progress;
         private final View mSizeContainer;
         private final TextView mSizesValue;
@@ -1072,7 +1102,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         private final TextView mOfferEnded;
         private final View mTimerContainer;
         private final TextView mTimer;
-        private final ImageView mBannerImageView;
+        private final NetworkImageView mBannerImageView;
 
         public CampaignItemHolder(final View itemView) {
             super(itemView);
@@ -1085,7 +1115,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Get image container
             mImageContainer = itemView.findViewById(R.id.image_container);
             // Get image
-            mImage = (ImageView) itemView.findViewById(R.id.image_view);
+            mImage = (NetworkImageView) itemView.findViewById(R.id.image_view);
             // Get Progress
             progress = itemView.findViewById(R.id.campaign_loading_progress);
             // Get size container
@@ -1113,8 +1143,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Get timer
             mTimer = (TextView) itemView.findViewById(R.id.campaign_item_stock_timer);
             // Get banner
-            mBannerImageView = (ImageView) itemView.findViewById(R.id.campaign_header_image);
-
+            mBannerImageView = (NetworkImageView) itemView.findViewById(R.id.campaign_header_image);
         }
     }
 
