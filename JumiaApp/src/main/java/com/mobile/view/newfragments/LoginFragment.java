@@ -15,9 +15,11 @@ import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
 import com.mobile.helpers.session.LoginHelper;
@@ -235,8 +237,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 // Case valid next step
                 if (nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
-                    PushWooshTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
-                    EmarsysTracker.login("email", true, JumiaApplication.CUSTOMER.getEmail());
                     // Tracking
                     if (eventType == EventType.GUEST_LOGIN_EVENT) {
                         TrackerDelegator.storeFirstCustomer(customer);
@@ -253,7 +253,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                     }
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
-
                 }
                 // Case unknown checkout step
                 else {
@@ -284,8 +283,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 // Finish
                 getActivity().onBackPressed();
                 PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail() + "");
-                PushWooshTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
-                EmarsysTracker.login("email", true, JumiaApplication.CUSTOMER.getEmail());
+                PushWooshTracker.getInstance().login(getBaseActivity(), "email", EmailHelper.getHost(customer.getEmail()), true);
+                EmarsysTracker.getInstance().login(getBaseActivity(), "email", EmailHelper.getHost(customer.getEmail()), true);
 
                 if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);

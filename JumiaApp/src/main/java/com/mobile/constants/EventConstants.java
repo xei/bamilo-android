@@ -20,4 +20,16 @@ public final class EventConstants {
     public static String Keywords = "Keywords";
     public static String SKU = "SKU";
     public static String Categories = "Categories";
+
+    public static String Login = "Login";
+    public static String SignUp = "SignUp";
+    public static String OpenApp = "OpenApp";
+    public static String AddToCart = "AddToCart";
+    public static String AddToFavorites = "AddToFavorites";
+    public static String Purchase = "Purchase";
+    public static String Search = "Search";
+    public static String ViewProduct = "ViewProduct";
+    public static String Logout = "Logout";
+
+    public static String UNKNOWN_EVENT_VALUE = "";
 }
