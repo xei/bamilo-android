@@ -335,7 +335,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_button_call) {
             UIUtils.onClickCallToOrder(getBaseActivity());
         }
-        // Case buy button
+        // Case sendPurchaseRecommend button
         else if (id == R.id.pdv_button_buy) {
             onClickBuyProduct();
         }
@@ -944,7 +944,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * Process the click on buy
+     * Process the click on sendPurchaseRecommend
      */
     private void onClickBuyProduct() {
         Log.i(TAG, "ON CLICK BUY BUTTON");
@@ -1136,7 +1136,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Set info
                 String text = mProduct.getVariationName() + ": " + simple.getVariationValue();
                 ((TextView) mSizeLayout.findViewById(R.id.tx_single_line_text)).setText(text);
-                // Case from buy button
+                // Case from sendPurchaseRecommend button
                 if(isFromBuyButton) {
                     onClickBuyProduct();
                 }

@@ -175,7 +175,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             categories += cat.getCategories();
         }
 
-        recommendManager.buy();
+        recommendManager.sendPurchaseRecommend();
         //sendRecommend();
 
         PushWooshTracker.purchase(getBaseActivity(),true, categories, (long) mGrandTotalValue);

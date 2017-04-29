@@ -542,7 +542,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     public void onDialogListItemSelect(int position) {
         // Update the recently adapter
         mAdapter.notifyDataSetChanged();
-        // Case from buy button
+        // Case from sendPurchaseRecommend button
         if(mClickedBuyButton != null) {
             onClickAddToCart(mClickedBuyButton);
         }

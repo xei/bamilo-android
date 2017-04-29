@@ -380,7 +380,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON CLICK VARIATION LIST ITEM");
         // Update the recently adapter
         updateWishListContainer();
-        // Case from buy button
+        // Case from sendPurchaseRecommend button
         if(mClickedBuyButton != null) {
             onClickAddToCart(mClickedBuyButton);
         }
