@@ -171,7 +171,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         ArrayList<AddressCity> city = new ArrayList<AddressCity>();
         city.add(new AddressCity(0,"شهر"));
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item,city);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt("شهر");
         city_spinner.setAdapter(promptAdapter);
@@ -393,7 +393,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected void setCitiesOnSelectedRegion(String requestedRegionAndFields, final ArrayList<AddressCity> cities) {
 
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item, cities);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt("شهر");
         city_spinner.setAdapter(promptAdapter);
@@ -432,7 +432,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (postalCodes.size()>1) {
             postal_spinner.setVisibility(View.VISIBLE);
             ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item, postalCodes);
-            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+            adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
             promptAdapter.setPrompt("محله");
             postal_spinner.setAdapter(promptAdapter);
