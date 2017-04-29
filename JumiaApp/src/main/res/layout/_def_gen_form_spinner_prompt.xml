@@ -6,7 +6,8 @@
     android:background="@android:color/transparent"
     android:gravity="left|start|center_vertical"
     android:maxLines="3"
-    android:paddingLeft="@dimen/form_spinner_left_margin"
-    android:paddingStart="@dimen/form_spinner_left_margin"
+    android:textColor="@color/black_700"
+    android:paddingLeft="0dp"
+    android:paddingStart="0dp"
     android:singleLine="false"
     tools:text="Please choose..." />
