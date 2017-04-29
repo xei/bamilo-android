@@ -25,13 +25,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@string/bamilo_regular_font"
-            android:textStyle="bold"
             android:gravity="left|start|center_vertical"
             android:ellipsize="end"
             android:singleLine="true"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:textSize="14sp"
+            android:layout_marginBottom="2dp"
+            android:textSize="12sp"
             android:textColor="@color/recommendation_black"
             />
 
@@ -46,7 +46,8 @@
             android:singleLine="true"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:textSize="12sp"
+            android:layout_marginBottom="10dp"
+            android:textSize="10sp"
             android:textColor="@color/recommendation_grey" />
 
         <com.mobile.components.customfontviews.TextView
@@ -60,7 +61,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
             android:singleLine="true"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textColor="@color/recommendation_grey" />
 
 
@@ -75,7 +76,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
             android:singleLine="true"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/recommendation_black" />
 
     </LinearLayout>
