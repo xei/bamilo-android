@@ -97,6 +97,27 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+/*<<<<<<< HEAD
+        if (com.mobile.view.BuildConfig.BUILD_TYPE.compareTo("release") == 0) {
+            if (com.mobile.view.BuildConfig.FLAVOR.compareTo("live") == 0) {
+                NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
+                        .start(this);
+
+            }
+            if (com.mobile.view.BuildConfig.FLAVOR.compareTo("staging") == 0) {
+
+                    NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
+                            .withCrashReportingEnabled(false)
+                            .start(this);
+
+                    Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
+
+            }
+            //Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
+        }
+
+=======
+>>>>>>> 91988837b772ad475ef5213e9e17e9ad6163bfd5*/
         //Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
         // Disable Accengage rich push notifications

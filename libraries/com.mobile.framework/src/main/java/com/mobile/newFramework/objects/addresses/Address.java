@@ -129,6 +129,12 @@ public class Address implements IJSONSerializable, Parcelable {
 
     public void setDefault(boolean value){isDefault = value;}
 
+    public String getAddressString() {
+        String result = "";
+        result += getCity() + " - " + getAddress() + "\r\n" + getFirstName() + " " + getLastName();
+        return result;
+    }
+
     /**
      * ########### PARCEL ###########
      */

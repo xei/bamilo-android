@@ -37,9 +37,9 @@ public class OrderTrackingHeader {
         steps.add(placement-1, step);
     }
 
-    public void createHeader(Context context)
+    public void createHeader(Context context, ArrayList<OrderTrackerItem> items)
     {
-        OrderStatus orderStatus = getOrderStatusFromOrderProducts(null);
+        int orderStatus = getOrderStatusFromOrderProducts(items);
 
         OrderStateStep step = new OrderStateStep("ثبت سفارش", 1, R.drawable.order_list_grey, R.drawable.order_list_green,
                 R.drawable.order_list_white, 0);
@@ -58,25 +58,25 @@ public class OrderTrackingHeader {
         steps.get(2).setType(OrderStateType.PROGRESS_ITEM_PENDING);
 
         switch (orderStatus) {
-            case ORDER_STATUS_NEW_ORDER: {
+            case 0: {
                 steps.get(0).setType(OrderStateType.PROGRESS_ITEM_ACTIVE);
             }
             break;
 
-            case ORDER_STATUS_REGISTERED: {
+            case 1: {
                 steps.get(0).setType(OrderStateType.PROGRESS_ITEM_DONE);
                 steps.get(1).setType(OrderStateType.PROGRESS_ITEM_ACTIVE);
             }
             break;
 
-            case ORDER_STATUS_IN_PROGRESS: {
+            case 2: {
                 steps.get(0).setType(OrderStateType.PROGRESS_ITEM_DONE);
                 steps.get(1).setType(OrderStateType.PROGRESS_ITEM_DONE);
                 steps.get(2).setType(OrderStateType.PROGRESS_ITEM_ACTIVE);
             }
             break;
 
-            case ORDER_STATUS_DELIVERED: {
+            case 3: {
                 steps.get(0).setType(OrderStateType.PROGRESS_ITEM_DONE);
                 steps.get(1).setType(OrderStateType.PROGRESS_ITEM_DONE);
                 steps.get(2).setType(OrderStateType.PROGRESS_ITEM_DONE);
@@ -84,7 +84,7 @@ public class OrderTrackingHeader {
             }
             break;
 
-            case ORDER_STATUS_CANCELLED: {
+            case 4: {
                 steps.get(0).setType(OrderStateType.PROGRESS_ITEM_PENDING);
                 steps.get(1).setType(OrderStateType.PROGRESS_ITEM_PENDING);
                 steps.get(2).setType(OrderStateType.PROGRESS_ITEM_ERROR);
@@ -144,15 +144,15 @@ public class OrderTrackingHeader {
         return OrderStatus.ORDER_STATUS_NONE;
     }
 
-    private OrderStatus getOrderStatusFromOrderProducts(ArrayList<OrderTrackerItem> products) {
+    private int getOrderStatusFromOrderProducts(ArrayList<OrderTrackerItem> products) {
         int currentOrderStep = 99;
         if (products == null)
         {
-            return OrderStatus.ORDER_STATUS_NONE;
+            return -1;// OrderStatus.ORDER_STATUS_NONE;
         }
         for(OrderTrackerItem product : products) {
             currentOrderStep = Math.min(currentOrderStep, getOrderItemStatus(product.getStatus()).getValue());
         }
-        return OrderStatus.fromInt(currentOrderStep);
+        return currentOrderStep;//OrderStatus.fromInt(currentOrderStep);
     }
 }

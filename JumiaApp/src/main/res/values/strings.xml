@@ -333,6 +333,8 @@
     <string name="qty_placeholder">Qty: %s</string>
     <string name="reorder_label">Reorder</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b>\n%2$s</string>
+    <string name="order_date">Date: %s</string>
+
     <string name="order_pending">Order Pending</string>
     <string name="no_orders_message">You don\'t have yet any Orders.</string>
     <string name="no_orders">No Orders</string>
@@ -496,5 +498,14 @@
     <string name="confirm_filter">Confirm</string>
     <string name="Emarsys_MerchantId">18146DE34FE0B8C9</string>
     <string name="recommendations">پیشنهادها</string>
+    <string name="order_total">Total: %s</string>
+    <string name="order_details">جزییات سفارش</string>
+    <string name="order_status_number_title">شماره سفارش:</string>
+    <string name="order_status_date_title">تاریخ سفارش:</string>
+    <string name="order_status_total_title">هزینه کل:</string>
+    <string name="order_status_quantity_title">تعداد کل:</string>
+    <string name="order_status_payment_title">روش پرداخت:</string>
+    <string name="order_items">جزییات کالا</string>
+    <string name="order_status_address_title">آدرس:</string>
 
 </resources>
