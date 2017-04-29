@@ -131,7 +131,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         address = (EditText) view.findViewById(R.id.address_direction);
         address_spinner = (IcsSpinner) view.findViewById(R.id.address_state);
         city_spinner = (IcsSpinner) view.findViewById(R.id.address_city);
-        postal_spinner = (IcsSpinner) view.findViewById(R.id.address_postal_region);
+        postal_spinner = (IcsSpinner) view.findViewById(R.id.edit_address_postal_region);
         postal_code = (EditText) view.findViewById(R.id.address_postal_code);
         add = (Button) view.findViewById(R.id.edit_address_btn);
         add.setOnClickListener(this);
@@ -530,12 +530,18 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= city_spinner.getCount()) {
             postal_spinner.setSelection(mFormSavedState.getInt(RestConstants.POSTCODE));
         } else {
-            postal_spinner.setSelection(getDefaultPosition(Integer.parseInt(postcode),postalCodes));
+            if (postcode.trim().compareTo("")!=0) {
+                postal_spinner.setSelection(getDefaultPosition(Integer.parseInt(postcode), postalCodes));
+                postal_spinner.setVisibility(View.VISIBLE);
+            }
+            else {
+                postal_spinner.setVisibility(View.GONE);
+            }
         }
         postal_spinner.setOnItemSelectedListener(this);
         hideActivityProgress();
         // Show invisible content to trigger spinner listeners
-        showGhostFragmentContentContainer();
+       // showGhostFragmentContentContainer();
     }
 
     /**
