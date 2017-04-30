@@ -86,7 +86,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     private Bundle mShippingFormSavedState;
     private Bundle mSavedRegionCitiesPositions;
     IcsSpinner address_spinner ,city_spinner,postal_spinner,gender_spinner;
-    TextView name_error , family_error , national_error,cellphone_error ,address_error;
+    TextView name_error , family_error , national_error,cellphone_error ,address_error,city_error;
     EditText name;
     EditText family;
     EditText address;
@@ -169,6 +169,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         national_error = (TextView) view.findViewById(R.id.address_national_id_error);
         cellphone_error = (TextView) view.findViewById(R.id.address_cellphone_error);
         address_error = (TextView) view.findViewById(R.id.address_text_error);
+        city_error = (TextView) view.findViewById(R.id.address_city_error);
         // Spinner Drop down elements
         ArrayList<AddressCity> city = new ArrayList<AddressCity>();
         city.add(new AddressCity(0,"شهر"));
@@ -680,14 +681,17 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         name_error.setVisibility(View.GONE);
         family_error.setVisibility(View.GONE);
         address_error.setVisibility(View.GONE);
+        city_error.setVisibility(View.GONE);
         cellphone_error.setVisibility(View.GONE);
         national_error.setVisibility(View.GONE);
-        /*if (address_spinner.getSelectedItem().equals("استان")&&address_spinner.getSelectedItem()==null){
-            Toast.makeText(getBaseActivity(),"hooy",Toast.LENGTH_LONG).show();
+        if (address_spinner.getSelectedItem()==null || address_spinner.getSelectedItem().equals("استان")){
+            address_error.setVisibility(View.VISIBLE);
+            address_error.setText("تکمیل این گزینه الزامی می باشد");
         }
-        if (city_spinner.getSelectedItem().equals("شهر")&&city_spinner.getSelectedItem()==null){
-            Toast.makeText(getBaseActivity(),"hooy",Toast.LENGTH_LONG).show();
-        }*/
+        if ( city_spinner.getSelectedItem()==null || city_spinner.getSelectedItem().equals("شهر")){
+            city_error.setVisibility(View.VISIBLE);
+            city_error.setText("تکمیل این گزینه الزامی می باشد");
+        }
         if (name.getText().length()>=0) {
           /*  */
             if (name.getText().length()<2)
