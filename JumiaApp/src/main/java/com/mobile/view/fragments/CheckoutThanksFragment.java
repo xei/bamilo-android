@@ -172,7 +172,12 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Track purchase
         PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
         TrackerDelegator.trackPurchaseInCheckoutThanks(cart, mOrderNumber, mGrandTotalValue, mOrderShipping, mOrderTax, mPaymentMethod);
-        TrackerManager.postEvent(getBaseActivity(), EventConstants.Purchase, EventFactory.purchase(CartHelper.getCategoriesCommaSeparated(cart), (long)mGrandTotalValue, true));
+        ArrayList<PurchaseCartItem> carts=  cart.getCartItems();
+        String categories = "";
+        for(PurchaseCartItem cat : carts) {
+            categories += cat.getCategories();
+        }
+        TrackerManager.postEvent(getBaseActivity(), EventConstants.Purchase, EventFactory.purchase(categories, (long)cart.getTotal(), true));
 
         recommendManager.buy();
         //sendRecommend();

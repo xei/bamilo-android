@@ -29,7 +29,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         //get push bundle as JSON object
         JSONObject dataObject = PushManagerImpl.bundleToJSON(pushBundle);
-        String sid="";
+        String sid = "";
         try {
             sid = dataObject.getJSONObject("userdata").getString("sid");
             Log.d("Emarsys Pushwoosh", sid);
@@ -42,7 +42,9 @@ public class NotificationReceiver extends BroadcastReceiver {
             @Override
             public void EmarsysMobileEngageResponse(boolean success) {}
         };
-        EmarsysMobileEngage.getInstance(context).sendOpen(sid, emarsysMobileEngageResponse);
+        if(sid.length() != 0) {
+            EmarsysMobileEngage.getInstance(context).sendOpen(sid, emarsysMobileEngageResponse);
+        }
         // End of Emarsys
 
         //Get default launcher intent for clarity

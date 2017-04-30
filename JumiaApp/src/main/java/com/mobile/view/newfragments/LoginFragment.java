@@ -350,7 +350,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
             case LOGIN_EVENT:
                 hideActivityProgress();
                 getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.email_password_invalid));
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.Login, EventFactory.login("email", EmailHelper.getHost(JumiaApplication.CUSTOMER.getEmail()), false));
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.Login, EventFactory.login("email", EventConstants.UNKNOWN_EVENT_VALUE, false));
                 break;
             default:
                 break;

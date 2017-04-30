@@ -318,7 +318,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 hideActivityProgress();
                 // Tracking
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.SignUp, EventFactory.signup("email", EmailHelper.getHost(JumiaApplication.CUSTOMER.getEmail()), false));
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.SignUp, EventFactory.signup("email", EventConstants.UNKNOWN_EVENT_VALUE, false));
 
                 // Validate and show errors
                 showFragmentContentContainer();

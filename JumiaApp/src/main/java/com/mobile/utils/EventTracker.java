@@ -22,9 +22,12 @@ public abstract class EventTracker {
         attributes.put(EventConstants.AppVersion, AppManager.getAppFullFormattedVersion());
         attributes.put(EventConstants.Platform, "android");
         attributes.put(EventConstants.Connection, UIUtils.networkType(JumiaApplication.INSTANCE.getApplicationContext()));
-        attributes.put(EventConstants.Date, new Date());
+        attributes.put(EventConstants.Date, DateUtils.getWebNormalizedDateTimeString(new Date()));
         if(JumiaApplication.INSTANCE.isCustomerLoggedIn()) {
-            attributes.put(EventConstants.Gender, JumiaApplication.CUSTOMER.getGender());
+            String userGender = JumiaApplication.CUSTOMER.getGender();
+            if(userGender != null) {
+                attributes.put(EventConstants.Gender, userGender);
+            }
         }
 
         return attributes;

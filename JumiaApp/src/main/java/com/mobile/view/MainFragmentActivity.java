@@ -105,6 +105,7 @@ import java.util.Map;
 public class MainFragmentActivity extends DebugActivity implements PushEventListener {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
+    private EventFactory.OpenAppEventSourceType mAppOpenSource;
 
     private BaseFragment fragment;
     //DROID-63 private NewBaseFragment newFragment;
@@ -164,6 +165,8 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
         if (null != intent) {
             if (intent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
                 showMessage("push message is " + intent.getExtras().getString(PushManager.PUSH_RECEIVE_EVENT));
+                TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION));
+                mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION;
             } else if (intent.hasExtra(PushManager.REGISTER_EVENT)) {
                 showMessage("register");
             } else if (intent.hasExtra(PushManager.UNREGISTER_EVENT)) {
@@ -260,6 +263,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK));
+                mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
             }
         } else {
             mCurrentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
@@ -346,6 +350,11 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
         HashMap<String, Object> open_count = new HashMap<>();
         open_count.put("AppOpenCount", PushwooshCounter.getAppOpenCount());
         PushManager.sendTags(MainFragmentActivity.this, open_count, callBack);
+
+        if(mAppOpenSource != EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION && mAppOpenSource != EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
+            TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT));
+        }
+        mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_NONE;
     }
 
     /*

@@ -12,9 +12,10 @@ import java.util.HashMap;
 
 public final class EventFactory {
     public enum OpenAppEventSourceType {
-        OPEN_APP_SOURCE_DIRECT("direct", 0),
-        OPEN_APP_SOURCE_DEEPLINK("deeplink", 1),
-        OPEN_APP_SOURCE_PUSH_NOTIFICATION("push_notification", 2);
+        OPEN_APP_SOURCE_NONE("none", 0),
+        OPEN_APP_SOURCE_DIRECT("direct", 1),
+        OPEN_APP_SOURCE_DEEPLINK("deeplink", 2),
+        OPEN_APP_SOURCE_PUSH_NOTIFICATION("push_notification", 3);
 
         private String stringValue;
         private int intValue;

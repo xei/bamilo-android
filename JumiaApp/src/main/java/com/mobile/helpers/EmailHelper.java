@@ -12,8 +12,7 @@ public final class EmailHelper {
 
         try {
             String[] emailComponents = email.split("@");
-            return emailComponents[1].split(".")[1];
-
+            return emailComponents[1].split("\\.")[0];
         } catch (Exception e) {
             return null;
         }

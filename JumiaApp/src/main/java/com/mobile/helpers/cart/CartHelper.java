@@ -10,14 +10,4 @@ import java.util.ArrayList;
  */
 
 public final class CartHelper {
-
-    public static String getCategoriesCommaSeparated(PurchaseEntity cart) {
-        ArrayList<PurchaseCartItem> carts=  cart.getCartItems();
-        String categories = "";
-        for(PurchaseCartItem cat : carts) {
-            categories += cat.getCategories();
-        }
-
-        return categories;
-    }
 }

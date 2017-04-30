@@ -34,7 +34,7 @@ public class EmarsysTracker extends EventTracker {
     }
 
     public void login(BaseActivity activity, String method, String emailDomain, boolean success) {
-        postEvent(activity, EventConstants.Login, EventFactory.login(method, (emailDomain != null ? emailDomain : EventConstants.UNKNOWN_EVENT_VALUE), success));
+        postEvent(activity, EventConstants.Login, EventFactory.login(method, emailDomain, success));
     }
 
     public void signUp(BaseActivity activity, String method, String emailDomain, boolean success) {
