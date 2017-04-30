@@ -198,7 +198,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         boolean flag =true;
         name_error.setVisibility(View.GONE);
         family_error.setVisibility(View.GONE);
-        postal_error.setVisibility(View.GONE);
         address_error.setVisibility(View.GONE);
         cellphone_error.setVisibility(View.GONE);
         if (name.getText().length()>=0) {
@@ -516,15 +515,10 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             postal_spinner.setSelection(mFormSavedState.getInt(RestConstants.POSTCODE));
         } else {
             if (postalCodes.size()>1) {
-                if (postcode.equals(""))
-                {
+
                     postal_spinner.setSelection(getDefaultPosition(0, postalCodes));
 
-                }
-                else
-                {
-                    postal_spinner.setSelection(getDefaultPosition(Integer.parseInt(postcode), postalCodes));
-                }
+
 
                 postal_spinner.setVisibility(View.VISIBLE);
             }
