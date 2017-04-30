@@ -88,7 +88,7 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public TextView brand;
-        public NetworkImageView image;
+        public ImageView image;
         public TextView price;
         public View progress;
         public TextView discount;
@@ -101,7 +101,7 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
         public ProductViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.header_text);
-            image = (NetworkImageView) view.findViewById(R.id.image_view);
+            image = (ImageView) view.findViewById(R.id.image_view);
             progress = view.findViewById(R.id.image_loading_progress);
             brand = (TextView) view.findViewById(R.id.item_brand);
             price = (TextView) view.findViewById(R.id.item_price);

@@ -359,7 +359,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
             for (int i = 0; i < mImageList.size(); i++) {
                 View holder = inflater.inflate(R.layout.pdv_fragment_gallery_item, mThumbnailContainer, false);
                 View loading = holder.findViewById(R.id.loading_progress);
-                NetworkImageView image = (NetworkImageView) holder.findViewById(R.id.image);
+                ImageView image = (ImageView) holder.findViewById(R.id.image);
                 RocketImageLoader.instance.loadImage(mImageList.get(i).getUrl(), image, loading, R.drawable.no_image_small);
                 //ImageManager.getInstance().loadImage(this.getContext(), mImageList.get(i).getUrl(), image, loading, R.drawable.no_image_small);
                 holder.setTag(R.id.target_position, i);

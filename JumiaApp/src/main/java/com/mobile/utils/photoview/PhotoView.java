@@ -30,7 +30,7 @@ import com.mobile.utils.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import com.mobile.utils.photoview.PhotoViewAttacher.OnPhotoTapListener;
 import com.mobile.utils.photoview.PhotoViewAttacher.OnViewTapListener;
 
-public class PhotoView extends NetworkImageView implements IPhotoView {
+public class PhotoView extends ImageView /*NetworkImageView*/ implements IPhotoView {
 
     private final PhotoViewAttacher mAttacher;
 

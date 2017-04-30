@@ -1371,7 +1371,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param productBundleItem    - product bundle
      */
     private void fillProductBundleInfo(View view, final ProductBundle productBundleItem) {
-        NetworkImageView mImage = (NetworkImageView) view.findViewById(R.id.image_view);
+        ImageView mImage = (ImageView) view.findViewById(R.id.image_view);
         ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
         final CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);
         mCheck.post(new Runnable() {

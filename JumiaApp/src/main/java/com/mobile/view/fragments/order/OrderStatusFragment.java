@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.components.customfontviews.TextView;
@@ -279,7 +280,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                 ((TextView)view.findViewById(R.id.order_item_state)).setText(item.getStatus());
                 ((TextView)view.findViewById(R.id.order_item_name)).setText(item.getName());
                 ((TextView)view.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-                RocketImageLoader.instance.loadImage(item.getImageUrl(), (NetworkImageView) view.findViewById(R.id.order_item_image));
+                RocketImageLoader.instance.loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image));
                 //ImageManager.getInstance().loadImage(this.getContext(), item.getImageUrl(), (NetworkImageView) view.findViewById(R.id.order_item_image)); // holder.progress, R.drawable.no_image_small);
 
                 // Add to parent

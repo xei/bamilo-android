@@ -14,7 +14,8 @@
         android:layout_marginTop="@dimen/dimen_10dp"
         >
 
-        <com.android.volley.toolbox.NetworkImageView
+        <!-- com.android.volley.toolbox.NetworkImageView -->
+        <ImageView
             android:id="@+id/image_view"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/campaign_image_height"

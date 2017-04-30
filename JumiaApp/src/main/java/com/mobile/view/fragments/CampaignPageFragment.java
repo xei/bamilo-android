@@ -1093,7 +1093,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         private final TextView mBrand;
         private final TextView mName;
         private final View mImageContainer;
-        private final NetworkImageView mImage;
+        private final ImageView mImage;
         private final View progress;
         private final View mSizeContainer;
         private final TextView mSizesValue;
@@ -1107,7 +1107,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         private final TextView mOfferEnded;
         private final View mTimerContainer;
         private final TextView mTimer;
-        private final NetworkImageView mBannerImageView;
+        private final ImageView mBannerImageView;
 
         public CampaignItemHolder(final View itemView) {
             super(itemView);
@@ -1120,7 +1120,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Get image container
             mImageContainer = itemView.findViewById(R.id.image_container);
             // Get image
-            mImage = (NetworkImageView) itemView.findViewById(R.id.image_view);
+            mImage = (ImageView) itemView.findViewById(R.id.image_view);
             // Get Progress
             progress = itemView.findViewById(R.id.campaign_loading_progress);
             // Get size container
@@ -1148,7 +1148,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Get timer
             mTimer = (TextView) itemView.findViewById(R.id.campaign_item_stock_timer);
             // Get banner
-            mBannerImageView = (NetworkImageView) itemView.findViewById(R.id.campaign_header_image);
+            mBannerImageView = (ImageView) itemView.findViewById(R.id.campaign_header_image);
         }
     }
 

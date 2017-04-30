@@ -5,7 +5,8 @@
     android:layout_marginTop="@dimen/margin_padding_s"
     android:layout_marginBottom="@dimen/margin_padding_s">
 
-    <com.android.volley.toolbox.NetworkImageView
+    <!-- com.android.volley.toolbox.NetworkImageView -->
+    <ImageView
         android:id="@+id/image_view"
         android:layout_width="@dimen/catalog_list_item_image_width"
         android:layout_height="@dimen/catalog_list_item_image_height"
@@ -61,7 +62,8 @@
         android:textColor="@color/black"
         android:visibility="gone" />
 
-    <com.android.volley.toolbox.NetworkImageView
+    <!-- com.android.volley.toolbox.NetworkImageView -->
+    <ImageView
         android:id="@+id/shop_first_item"
         style="@style/ShopFirstStyle"
         android:layout_alignRight="@id/my_order_item_name"
