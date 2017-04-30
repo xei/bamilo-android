@@ -240,7 +240,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             if (family.getText().length()>50)
             {
                 family_error.setVisibility(View.VISIBLE);
-                family_error.setText("بیش از 50 کاراکتر مجاز نمی باشد");
+                family_error.setText("بیش از ۵۰ کاراکتر مجاز نمی باشد");
                 flag = false;
             }
 
