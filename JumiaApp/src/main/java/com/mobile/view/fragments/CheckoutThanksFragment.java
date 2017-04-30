@@ -191,8 +191,9 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         setRelatedItems();
         // Clean cart
         triggerClearCart();
-        JumiaApplication.INSTANCE.setCart(null);
+
         recommendManager.sendPurchaseRecommend();
+        JumiaApplication.INSTANCE.setCart(null);
 
         // Update cart info
         getBaseActivity().updateCartInfo();
