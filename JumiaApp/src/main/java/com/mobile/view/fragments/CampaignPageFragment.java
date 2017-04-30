@@ -647,8 +647,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Set image container
             setClickableView(view.mImageContainer, position);
             // Set image
-            //RocketImageLoader.instance.loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
-            ImageManager.getInstance().loadImage(getContext(), item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
+            RocketImageLoader.instance.loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
+            //ImageManager.getInstance().loadImage(getContext(), item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
             // Set size
             setSizeContainer(view, item);
             // Set price and special price
@@ -1033,31 +1033,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 holder.itemView.setTag(R.id.position, -1);
                 holder.mBannerImageView.setVisibility(View.GONE);
                 // Set image
-                /* RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
-                    @Override
-                    public void onLoadedSuccess(String url, Bitmap bitmap) {
-                        // Show content
-                        holder.mBannerImageView.setImageBitmap(bitmap);
-                        holder.mBannerImageView.setVisibility(View.VISIBLE);
-                        bannerState = VISIBLE;
-                    }
-
-                    @Override
-                    public void onLoadedError() {
-                        holder.mBannerImageView.setVisibility(View.GONE);
-                        mGridView.hideHeaderView();
-                        bannerState = HIDDEN;
-                    }
-
-                    @Override
-                    public void onLoadedCancel() {
-                        holder.mBannerImageView.setVisibility(View.GONE);
-                        mGridView.hideHeaderView();
-                        bannerState = HIDDEN;
-                    }
-                }); */
-
-                ImageManager.getInstance().loadImage(getContext(), mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
+                RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
                     @Override
                     public void onLoadedSuccess(String url, Bitmap bitmap) {
                         // Show content
@@ -1080,6 +1056,31 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                         bannerState = HIDDEN;
                     }
                 });
+
+                /*
+                ImageManager.getInstance().loadImage(getContext(), mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
+                    @Override
+                    public void onLoadedSuccess(String url, Bitmap bitmap) {
+                        // Show content
+                        holder.mBannerImageView.setImageBitmap(bitmap);
+                        holder.mBannerImageView.setVisibility(View.VISIBLE);
+                        bannerState = VISIBLE;
+                    }
+
+                    @Override
+                    public void onLoadedError() {
+                        holder.mBannerImageView.setVisibility(View.GONE);
+                        mGridView.hideHeaderView();
+                        bannerState = HIDDEN;
+                    }
+
+                    @Override
+                    public void onLoadedCancel() {
+                        holder.mBannerImageView.setVisibility(View.GONE);
+                        mGridView.hideHeaderView();
+                        bannerState = HIDDEN;
+                    }
+                }); */
             }
         }
     }

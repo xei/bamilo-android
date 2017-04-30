@@ -116,13 +116,13 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         if (this.isZoomAvailable) {
             final PhotoView imageView = (PhotoView) imageTeaserView.findViewById(R.id.image_view);
             //Log.i(TAG, "LOAD PHOTO: " + imageView.getId() + " " + imageUrl);
-            //RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
-            ImageManager.getInstance().loadImage(this.mContext, imageUrl, imageView, progressBar, R.drawable.no_image_large);
+            RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
+            //ImageManager.getInstance().loadImage(this.mContext, imageUrl, imageView, progressBar, R.drawable.no_image_large);
         } else {
             final NetworkImageView imageView = (NetworkImageView) imageTeaserView.findViewById(R.id.image_view);
             //Log.i(TAG, "LOAD PDV PHOTO: " + imageView.getId() + " " + imageUrl);
-            //RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
-            ImageManager.getInstance().loadImage(this.mContext, imageUrl, imageView, progressBar, R.drawable.no_image_large);
+            RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
+            //ImageManager.getInstance().loadImage(this.mContext, imageUrl, imageView, progressBar, R.drawable.no_image_large);
         }
     }
 

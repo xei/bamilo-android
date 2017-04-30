@@ -279,8 +279,8 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                 ((TextView)view.findViewById(R.id.order_item_state)).setText(item.getStatus());
                 ((TextView)view.findViewById(R.id.order_item_name)).setText(item.getName());
                 ((TextView)view.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-                //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
-                ImageManager.getInstance().loadImage(this.getContext(), item.getImageUrl(), (NetworkImageView) view.findViewById(R.id.order_item_image)); // holder.progress, R.drawable.no_image_small);
+                RocketImageLoader.instance.loadImage(item.getImageUrl(), (NetworkImageView) view.findViewById(R.id.order_item_image));
+                //ImageManager.getInstance().loadImage(this.getContext(), item.getImageUrl(), (NetworkImageView) view.findViewById(R.id.order_item_image)); // holder.progress, R.drawable.no_image_small);
 
                 // Add to parent
                 group.addView(view);

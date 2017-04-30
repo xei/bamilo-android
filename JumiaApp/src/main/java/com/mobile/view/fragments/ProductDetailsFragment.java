@@ -1382,8 +1382,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
         });
 
-        //RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
-        ImageManager.getInstance().loadImage(this.getContext(), productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+        RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+        //ImageManager.getInstance().loadImage(this.getContext(), productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
 
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());
