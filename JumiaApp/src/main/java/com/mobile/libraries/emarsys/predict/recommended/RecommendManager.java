@@ -44,7 +44,7 @@ public class RecommendManager {
     }
 
    public void sendHomeRecommend(final RecommendListCompletionHandler callBack) {
-        setEmail();
+       setEmail();
        Transaction transaction = new Transaction();
        transaction.cart(getCartItems());
 

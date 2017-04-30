@@ -13,6 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <include
@@ -49,7 +50,10 @@
                         android:layout_weight="1"
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                         android:gravity="right"
                         android:text="@string/order_status_number_title"
                         />
@@ -67,7 +71,10 @@
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
                         android:gravity="left"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                         />
 
                 </LinearLayout>
@@ -88,7 +95,10 @@
                         android:layout_weight="1"
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                         android:gravity="right"
                         android:text="@string/order_status_date_title"
                         />
@@ -106,7 +116,10 @@
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
                         android:gravity="left"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                          />
 
                 </LinearLayout>
@@ -127,7 +140,10 @@
                         android:layout_weight="1"
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                         android:gravity="right"
                         android:text="@string/order_status_total_title"
                         />
@@ -145,7 +161,10 @@
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
                         android:gravity="left"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                          />
 
                 </LinearLayout>
@@ -166,7 +185,10 @@
                         android:layout_weight="1"
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                         android:gravity="right"
                         android:text="@string/order_status_quantity_title"
                         />
@@ -184,7 +206,10 @@
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
                         android:gravity="left"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                          />
 
                 </LinearLayout>
@@ -206,7 +231,10 @@
                         android:layout_weight="1"
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                         android:gravity="right"
                         android:text="@string/order_status_payment_title"
                         />
@@ -224,7 +252,10 @@
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
                         android:gravity="left"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                          />
 
                 </LinearLayout>
@@ -245,7 +276,10 @@
                         android:layout_weight="1"
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                         android:gravity="right"
                         android:text="@string/order_status_address_title"
                         />
@@ -263,7 +297,10 @@
                         android:textSize="@dimen/order_status_fontsize"
                         android:textColor="@color/order_status_textcolor"
                         android:gravity="left"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
                         />
 
                 </LinearLayout>
@@ -290,137 +327,6 @@
             </LinearLayout>
 
 
-
-
-
-
-
-
-
-
-            <!-- <RelativeLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content">
-
-
-
-                 <com.mobile.components.customfontviews.TextView
-                     android:id="@+id/order_status_title_date2"
-                     style="@style/TextBase.Caption.Black_800"
-                     android:layout_alignParentEnd="true"
-                     android:layout_alignParentRight="true"
-                     android:background="@color/black_300"
-                     android:layout_centerVertical="true"
-                     android:layout_marginEnd="@dimen/margin_padding_xxl"
-                     android:layout_marginRight="@dimen/margin_padding_xxl" />
-
-             </RelativeLayout>-->
-
-            <!-- <RelativeLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="50dp">
-
-             </RelativeLayout>
-
-             <TextView
-                 android:text="vaziat"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:id="@+id/textView8"
-                 android:textColor="@color/black" />
-
-             <TextView
-                 android:text="nahveh pardakht"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:id="@+id/textView9"
-                 android:textColor="@color/black" />
-
-             <TextView
-                 android:text="mablaghe kol sefaresh"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:id="@+id/textView10"
-                 android:textColor="@color/black" />
-
-             <TextView
-                 android:text="tedad :5"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:id="@+id/textView13"
-                 android:textColor="@color/black" />
-
-             <RelativeLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="107dp">
-
-                 <ImageView
-                     android:layout_width="70dp"
-                     android:layout_height="85dp"
-                     app:srcCompat="@drawable/campaign_promobadge"
-                     android:layout_alignParentTop="true"
-                     android:layout_alignParentRight="true"
-                     android:layout_alignParentEnd="true"
-                     android:layout_marginRight="10dp"
-                     android:layout_marginEnd="10dp"
-                     android:layout_marginTop="12dp"
-                     android:id="@+id/imageView3" />
-
-                 <TextView
-                     android:text="onvan"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_alignTop="@+id/imageView3"
-                     android:layout_toLeftOf="@+id/imageView3"
-                     android:layout_toStartOf="@+id/imageView3"
-                     android:layout_marginRight="13dp"
-                     android:layout_marginEnd="13dp"
-                     android:id="@+id/textView14"
-                     android:textColor="@color/black" />
-
-                 <TextView
-                     android:text="tedad"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:id="@+id/textView15"
-                     android:textColor="@color/black"
-                     android:layout_below="@+id/textView14"
-                     android:layout_alignRight="@+id/textView14"
-                     android:layout_alignEnd="@+id/textView14" />
-
-                 <TextView
-                     android:text="TextView"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_alignTop="@+id/textView14"
-                     android:layout_alignParentLeft="true"
-                     android:background="@color/black_700"
-                     android:layout_alignParentStart="true"
-                     android:layout_marginLeft="15dp"
-                     android:layout_marginStart="15dp"
-                     android:id="@+id/textView19" />
-
-                 <TextView
-                     android:text="TextView"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_below="@+id/textView15"
-                     android:background="@color/black_700"
-                     android:layout_alignLeft="@+id/textView19"
-                     android:layout_alignStart="@+id/textView19"
-                     android:id="@+id/textView20" />
-
-             </RelativeLayout>-->
-
-            <!-- INFO AND PAYMENT -->
-
-            <!-- DIVIDER -->
-
-            <!-- ADDRESSES -->
-
-            <!-- HEADER ITEMS -->
-
-            <!-- ITEMS -->
 
         </LinearLayout>
 

@@ -33,6 +33,7 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.JalaliCalendar;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.PersianDateTime;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.imageloader.ImageManager;
@@ -47,6 +48,7 @@ import com.mobile.view.newfragments.OrderTrackingHeader;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 /**
@@ -218,7 +220,16 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     private void showOrderInfo(@NonNull ViewGroup group, @NonNull OrderStatus orderStatus) {
 
         ((TextView) group.findViewById(R.id.order_status_number_value)).setText(orderStatus.getId());
-        ((TextView) group.findViewById(R.id.order_status_date_value)).setText(JalaliCalendar.gregorianToJalali(new JalaliCalendar.YearMonthDate(orderStatus.getDate()) ).toString());
+
+        String date = orderStatus.getDate();
+        int Year = Integer.parseInt(date.substring(0,4));
+        int Month = Integer.parseInt(date.substring(5,7));
+        int Day = Integer.parseInt(date.substring(8,10));
+
+
+        PersianDateTime pd = PersianDateTime.valueOf(new GregorianCalendar(Year,Month,Day,0,0,0));
+
+        ((TextView) group.findViewById(R.id.order_status_date_value)).setText(pd.toString());
         ((TextView) group.findViewById(R.id.order_status_total_value)).setText(CurrencyFormatter.formatCurrency(orderStatus.getTotal()));
         ((TextView) group.findViewById(R.id.order_status_quantity_value)).setText(orderStatus.getTotalProducts() + " عدد");
         ((TextView) group.findViewById(R.id.order_status_payment_value)).setText(orderStatus.getPaymentName());

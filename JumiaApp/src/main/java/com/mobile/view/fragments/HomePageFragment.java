@@ -138,12 +138,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             HomeNewsletterTeaserHolder.sInitialValue = null;
             HomeNewsletterTeaserHolder.sInitialGender = IntConstants.INVALID_POSITION;
         }
-        //Map<String, List<Item>> data = new HashMap<>();
-        //ArrayList<String> categories = new ArrayList<>();
-        List<RecommendedItem> data = new ArrayList<>();
-
-
-
     }
 
     /*
@@ -171,11 +165,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         else {
             showFragmentErrorRetry();
         }
-        /*recommendedListView = (RecyclerView)view.findViewById(R.id.recommendedListView);
-        LinearLayoutManager llManager = new LinearLayoutManager(getBaseActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recommendedListView.setLayoutManager(llManager);*/
-        //mContainer.addView(recommendedListView);
-
 
     }
 
@@ -188,9 +177,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
-        recommendManager = new RecommendManager();
-        sendRecommend();
-
     }
 
     /*
