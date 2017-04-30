@@ -793,7 +793,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             if (cellphone.getText().length() != 11 && cellphone.getText().length()!=0 ){
                 cellphone.setVisibility(View.VISIBLE);
                 cellphone_error.setVisibility(View.VISIBLE);
-                cellphone_error.setText("تعداد ارقام بایذ 11 رقم باشد");
+                cellphone_error.setText("تعداد ارقام باید 11 رقم باشد");
                 flag = false;
             }
             if (cellphone.getText().length()==0)
