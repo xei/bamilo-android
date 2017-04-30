@@ -23,6 +23,7 @@ import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetFormEditAddressHelper;
 import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
+import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
@@ -68,7 +69,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     private static final String TAG = EditAddressFragment.class.getSimpleName();
     public static final String SELECTED_ADDRESS = "selected_address";
     public static final int INVALID_ADDRESS_ID = -1;
-    protected ViewGroup mEditFormContainer;
     protected DynamicForm mEditFormGenerator;
     protected Form mFormResponse;
     protected ArrayList<AddressRegion> mRegions;
@@ -126,12 +126,11 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         Print.i(TAG, "ON VIEW CREATED");
         name = (EditText) view.findViewById(R.id.address_name);
         family = (EditText) view.findViewById(R.id.address_family);
-        gender_spinner = (IcsSpinner) view.findViewById(R.id.address_gender);
         cellphone = (EditText) view.findViewById(R.id.address_cell);
         address = (EditText) view.findViewById(R.id.address_direction);
         address_spinner = (IcsSpinner) view.findViewById(R.id.address_state);
         city_spinner = (IcsSpinner) view.findViewById(R.id.address_city);
-        postal_spinner = (IcsSpinner) view.findViewById(R.id.edit_address_postal_region);
+        postal_spinner = (IcsSpinner) view.findViewById(R.id.address_postal_region);
         postal_code = (EditText) view.findViewById(R.id.address_postal_code);
         add = (Button) view.findViewById(R.id.edit_address_btn);
         add.setOnClickListener(this);
@@ -140,24 +139,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         family_error = (TextView) view.findViewById(R.id.address_last_name_error);
         national_error = (TextView) view.findViewById(R.id.address_national_id_error);
         cellphone_error = (TextView) view.findViewById(R.id.address_cellphone_error);
-        postal_error = (TextView) view.findViewById(R.id.address_postal_error);
         address_error = (TextView) view.findViewById(R.id.address_text_error);
-       /* // Spinner Drop down elements
-        ArrayList<AddressCity> city = new ArrayList<AddressCity>();
-        city.add(new AddressCity(0,"شهر"));
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item,city);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-        promptAdapter.setPrompt("شهر");
-        city_spinner.setAdapter(promptAdapter);*/
-        // Container
-       /* mEditFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
-        // Next button
-        view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener(this);
-        //Validate current address
-        if (mAddressId == INVALID_ADDRESS_ID) {
-            showFragmentErrorRetry();
-        }*/
+
     }
 
     /*
@@ -220,30 +203,66 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         cellphone_error.setVisibility(View.GONE);
         if (name.getText().length()>=0) {
           /*  */
-            if (name.getText().length()<2)
+            if (name.getText().length()==0)
             {
                 name_error.setVisibility(View.VISIBLE);
                 name_error.setText("تکمیل این گزینه الزامی می باشد");
+                flag = false;
+            }
+            if (name.getText().length()>0&&name.getText().length()<3)
+            {
+                name_error.setVisibility(View.VISIBLE);
+                name_error.setText("حداقل ۲ کاراکتر باید وارد شود");
+                flag = false;
+            }
+            if (name.getText().length()>50)
+            {
+                name_error.setVisibility(View.VISIBLE);
+                name_error.setText("بیش از 50 کاراکتر مجاز نمی باشد");
                 flag = false;
             }
 
         }
         if (family.getText().length()>=0) {
           /*  */
-            if (family.getText().length()<2)
+            if (family.getText().length()==0)
             {
                 family_error.setVisibility(View.VISIBLE);
                 family_error.setText("تکمیل این گزینه الزامی می باشد");
+                flag = false;
+            }
+            if (family.getText().length()>0&&name.getText().length()<3)
+            {
+                family_error.setVisibility(View.VISIBLE);
+                family_error.setText("حداقل ۲ کاراکتر باید وارد شود");
+                flag = false;
+            }
+            if (family.getText().length()>50)
+            {
+                family_error.setVisibility(View.VISIBLE);
+                family_error.setText("بیش از 50 کاراکتر مجاز نمی باشد");
                 flag = false;
             }
 
         }
         if (address.getText().length()>=0) {
           /*  */
-            if (address.getText().length()<2)
+            if (address.getText().length()==0)
             {
                 address_error.setVisibility(View.VISIBLE);
                 address_error.setText("تکمیل این گزینه الزامی می باشد");
+                flag = false;
+            }
+            if (address.getText().length()>0&&name.getText().length()<3)
+            {
+                address_error.setVisibility(View.VISIBLE);
+                address_error.setText("حداقل ۲ کاراکتر باید وارد شود");
+                flag = false;
+            }
+            if (address.getText().length()>50)
+            {
+                address_error.setVisibility(View.VISIBLE);
+                address_error.setText("بیش از ۲۵۵ کاراکتر مجاز نمی باشد");
                 flag = false;
             }
 
@@ -271,22 +290,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
 
 
-        if (postal_code.getText().length()>=0) {
-          /*  */
-            if (postal_code.getText().length() != 10 && postal_code.getText().length()!=0 ){
-                postal_error.setVisibility(View.VISIBLE);
-                postal_error.setText("تعداد ارقام باید ۱۰ رقم باشد");
-                postal_code.setVisibility(View.VISIBLE);
-                flag = false;
-            }
-            if (postal_code.getText().length()==0)
-            {postal_code.setVisibility(View.VISIBLE);
-                postal_error.setVisibility(View.VISIBLE);
-                postal_error.setText("تکمیل این گزینه الزامی می باشد");
-                flag = false;
-            }
 
-        }
         if (flag==false){
             return false;
         }
@@ -321,6 +325,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             values.put("address_form[gender]", JumiaApplication.CUSTOMER.getGender());
 
             triggerEditAddress(action, values);
+            triggerDefaultAddressForm(Integer.parseInt(id));
         }
     }
 
@@ -452,14 +457,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     private void initialdataform() {
         name.setText(nameVal);
         family.setText(familyVal);
-        //national_id.setText(national_id);
-        //gender_spinner.setText();
         cellphone.setText(phone);
         address.setText(address1);
         postal_code.setText(address2);
-/*        address_spinner = (IcsSpinner) view.findViewById(R.id.address_state);
-        city_spinner = (IcsSpinner) view.findViewById(R.id.address_city);
-        postal_spinner = (IcsSpinner) view.findViewById(R.id.address_postal_region);*/
         cellphone.setText(phone);
     }
 
@@ -468,20 +468,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions){
         Print.d(TAG, "SET REGIONS REGIONS: ");
-        // Get region item
-     /*   DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.REGION);
-        // Clean group
-        ViewGroup group = formItem.getControl();
-        group.removeAllViews();*/
-        /*------------------------------------------------------------*/
-/*        ArrayList<AddressCity> city = new ArrayList<AddressCity>();
-        city.add(new AddressCity(0,"شهر"));
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item,city);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-        promptAdapter.setPrompt("شهر");
-        city_spinner.setAdapter(promptAdapter);*/
-        /*------------------------------------------------------------*/
 
         // Create adapter
         ArrayAdapter<AddressRegion> adapter= new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
@@ -493,9 +479,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             address_spinner.setSelection(getDefaultPosition(Integer.parseInt(region),regions));
         }
         address_spinner.setOnItemSelectedListener(this);
-/*hideActivityProgress();
-        // Show invisible content to trigger spinner listeners
-        showGhostFragmentContentContainer();*/
+    hideActivityProgress();
+            // Show invisible content to trigger spinner listeners
+            showGhostFragmentContentContainer();
     }
 
     /**
@@ -507,7 +493,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         city_spinner.setAdapter(adapter);
-        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= city_spinner.getCount()) {
+        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.CITY) <= city_spinner.getCount()) {
             city_spinner.setSelection(mFormSavedState.getInt(RestConstants.CITY));
         } else {
             city_spinner.setSelection(getDefaultPosition(Integer.parseInt(city),cities));
@@ -522,21 +508,21 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Method used to set the postalCodes on the respective form
      */
     private void setPostalCodes(DynamicForm dynamicForm, ArrayList<AddressPostalCode> postalCodes){
-        postal_spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         // Create adapter
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         postal_spinner.setAdapter(adapter);
-        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= city_spinner.getCount()) {
+        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.POSTCODE) <= postal_spinner.getCount()) {
             postal_spinner.setSelection(mFormSavedState.getInt(RestConstants.POSTCODE));
         } else {
-            if (postcode.trim().compareTo("")!=0) {
-                postal_spinner.setSelection(getDefaultPosition(Integer.parseInt(postcode), postalCodes));
+            if (postalCodes.size()>1) {
+                postal_spinner.setSelection(getDefaultPosition(0, postalCodes));
                 postal_spinner.setVisibility(View.VISIBLE);
             }
             else {
                 postal_spinner.setVisibility(View.GONE);
             }
+
         }
         postal_spinner.setOnItemSelectedListener(this);
         hideActivityProgress();
@@ -646,7 +632,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerEditAddress(String action, ContentValues values) {
         Print.i(TAG, "TRIGGER: EDIT ADDRESS");
-        triggerContentEventProgress(new EditAddressHelper(), EditAddressHelper.createBundle(action, values), this);
+        triggerContentEvent(new EditAddressHelper(), EditAddressHelper.createBundle(action, values), this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
     }
@@ -656,7 +642,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     protected void triggerEditAddressForm(){
         Print.i(TAG, "TRIGGER: EDIT FORM");
-        triggerContentEventProgress(new GetFormEditAddressHelper(), GetFormEditAddressHelper.createBundle(mAddressId), this);
+        triggerContentEvent(new GetFormEditAddressHelper(), GetFormEditAddressHelper.createBundle(mAddressId), this);
     }
 
     /**
@@ -664,7 +650,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerGetRegions(String apiCall){
         Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        triggerContentEventProgress(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
+        triggerContentEvent(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
     }
 
     /**
@@ -672,7 +658,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerGetCities(String apiCall, int region){
         Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        triggerContentEventProgress(new GetCitiesHelper(), GetCitiesHelper.createBundle(apiCall, region, null), this);
+        triggerContentEvent(new GetCitiesHelper(), GetCitiesHelper.createBundle(apiCall, region, null), this);
     }
 
     /**
@@ -680,7 +666,11 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerGetPostalCodes(String apiCall, int city){
         Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + apiCall);
-        triggerContentEventProgress(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(apiCall, city, null), this);
+        triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(apiCall, city, null), this);
+    }
+
+    protected void triggerDefaultAddressForm(int mAddressId){
+        triggerContentEvent(new SetDefaultShippingAddressHelper(), SetDefaultShippingAddressHelper.createBundle(mAddressId), this);
     }
 
     /**

@@ -4,6 +4,8 @@
     <string name="account_name">حساب کاربری من ‎</string>
     <string name="checkout_confirmation">بررسی نهایی سفارش</string>
     <string name="action_label_add_address">اضافه کردن آدرس جدید</string>
+
+    <string name="action_label_receiver">اطلاعات تحویل گیرنده</string>
     <string name="action_label_basket">سبد کالا</string>
     <string name="action_label_search_hint"> جستجو در بامیلو</string>
     <string name="add_to_shopping_cart">افزودن به سبد خرید</string>
@@ -345,7 +347,7 @@
     <string name="an_error_occurred">خطایی رخ داده است.</string>
     <string name="customer_service_info">برای اطلاعات بیشتر، لطفاً با خدمات مشتریان تماس بگیرید.</string>
     <string name="phone_contact">شماره تلفن:</string>
-    <string name="cellphone">موبایل :</string>
+    <string name="cellphone">موبایل </string>
     <string name="email_contact">آدرس ایمیل</string>
     <string name="logout_success">از حساب کاربری خارج شدید</string>
     <string name="percentage_placeholder">‎%s‎ درصد</string>

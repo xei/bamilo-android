@@ -25,6 +25,7 @@ import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetFormAddAddressHelper;
 import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
+import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.AddressForms;
@@ -85,7 +86,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     private Bundle mShippingFormSavedState;
     private Bundle mSavedRegionCitiesPositions;
     IcsSpinner address_spinner ,city_spinner,postal_spinner,gender_spinner;
-    TextView name_error , family_error , national_error,postal_error,cellphone_error ,address_error;
+    TextView name_error , family_error , national_error,cellphone_error ,address_error;
     EditText name;
     EditText family;
     EditText address;
@@ -150,7 +151,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         city = (Spinner) view.findViewById(R.id.address_city);*/
 
         name = (EditText) view.findViewById(R.id.address_name);
+        name.setText(JumiaApplication.CUSTOMER.getFirstName());
         family = (EditText) view.findViewById(R.id.address_family);
+        family.setText(JumiaApplication.CUSTOMER.getLastName());
         national_id = (EditText) view.findViewById(R.id.address_national_id);
         gender_spinner = (IcsSpinner) view.findViewById(R.id.address_gender);
         cellphone = (EditText) view.findViewById(R.id.address_cell);
@@ -165,16 +168,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         family_error = (TextView) view.findViewById(R.id.address_last_name_error);
         national_error = (TextView) view.findViewById(R.id.address_national_id_error);
         cellphone_error = (TextView) view.findViewById(R.id.address_cellphone_error);
-        postal_error = (TextView) view.findViewById(R.id.address_postal_error);
         address_error = (TextView) view.findViewById(R.id.address_text_error);
         // Spinner Drop down elements
         ArrayList<AddressCity> city = new ArrayList<AddressCity>();
         city.add(new AddressCity(0,"شهر"));
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item,city);
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item,city);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-        promptAdapter.setPrompt("شهر");
-        city_spinner.setAdapter(promptAdapter);
+        city_spinner.setAdapter(adapter);
 
 
         postal_spinner.setVisibility(View.GONE);
@@ -392,7 +392,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     protected void setCitiesOnSelectedRegion(String requestedRegionAndFields, final ArrayList<AddressCity> cities) {
 
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item, cities);
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt("شهر");
@@ -431,7 +431,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected void setPostalCodesOnSelectedCity(String requestedCityAndFields, final ArrayList<AddressPostalCode> postalCodes) {
         if (postalCodes.size()>1) {
             postal_spinner.setVisibility(View.VISIBLE);
-            ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item, postalCodes);
+            ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
             promptAdapter.setPrompt("محله");
@@ -617,6 +617,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             values.put("address_form[gender]", JumiaApplication.CUSTOMER.getGender());
 
             triggerCreateAddress(action, values);
+            /*triggerDefaultAddressForm();*/
         }
     }
 
@@ -678,10 +679,15 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         boolean flag =true;
         name_error.setVisibility(View.GONE);
         family_error.setVisibility(View.GONE);
-        postal_error.setVisibility(View.GONE);
         address_error.setVisibility(View.GONE);
         cellphone_error.setVisibility(View.GONE);
         national_error.setVisibility(View.GONE);
+        /*if (address_spinner.getSelectedItem().equals("استان")&&address_spinner.getSelectedItem()==null){
+            Toast.makeText(getBaseActivity(),"hooy",Toast.LENGTH_LONG).show();
+        }
+        if (city_spinner.getSelectedItem().equals("شهر")&&city_spinner.getSelectedItem()==null){
+            Toast.makeText(getBaseActivity(),"hooy",Toast.LENGTH_LONG).show();
+        }*/
         if (name.getText().length()>=0) {
           /*  */
             if (name.getText().length()<2)
@@ -749,22 +755,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
 
 
-        if (postal_code.getText().length()>=0) {
-          /*  */
-            if (postal_code.getText().length() != 10 && postal_code.getText().length()!=0 ){
-                postal_error.setVisibility(View.VISIBLE);
-                postal_error.setText("تعداد ارقام باید ۱۰ رقم باشد");
-                postal_code.setVisibility(View.VISIBLE);
-                flag = false;
-            }
-            if (postal_code.getText().length()==0)
-            {postal_code.setVisibility(View.VISIBLE);
-                postal_error.setVisibility(View.VISIBLE);
-                postal_error.setText("تکمیل این گزینه الزامی می باشد");
-                flag = false;
-            }
-
-        }
+      ;
         if (flag==false){
             return false;
         }
@@ -812,6 +803,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(action, city, tag), this);
     }
 
+    protected void triggerDefaultAddressForm(int mAddressId){
+        triggerContentEventProgress(new SetDefaultShippingAddressHelper(), SetDefaultShippingAddressHelper.createBundle(mAddressId), this);
+    }
+
+
     /**
      * ############# RESPONSE #############
      */
@@ -854,8 +850,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
         // Get order summary
         orderSummary = JumiaApplication.INSTANCE.getCart();
-        // Save and load form
-        AddressForms form = (AddressForms) baseResponse.getContentData();
+
 
         ///////////////////////////////
         action = ((AddressForms) baseResponse.getContentData()).getBillingForm().getAction();
@@ -901,8 +896,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
         // Creating adapter for spinner
 
-        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.spinner_item, regions);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt("استان");
         address_spinner.setAdapter(promptAdapter);
@@ -951,6 +946,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     protected void onCreateAddressSuccessEvent(BaseResponse baseResponse) {
+
         Print.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
     }
 
