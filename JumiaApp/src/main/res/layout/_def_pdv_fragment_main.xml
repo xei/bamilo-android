@@ -78,7 +78,8 @@
                 android:id="@+id/pdv_related_container"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent" />
+                android:layout_width="match_parent"
+                android:background="@color/black_300"/>
 <!--
             <include
                 android:id="@+id/pdv_related_container"

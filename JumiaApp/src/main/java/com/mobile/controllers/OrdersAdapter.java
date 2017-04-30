@@ -12,10 +12,12 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.JalaliCalendar;
+import com.mobile.utils.PersianDateTime;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 
 /**
  * Created by alexandrapires on 10/22/15.
@@ -57,10 +59,17 @@ public class OrdersAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout._def_my_orders_list_item2, parent, false);
         }
         Order order = getOrders().get(position);
+        String date = order.getDate();
+        int Year = Integer.parseInt(date.substring(0,4));
+        int Month = Integer.parseInt(date.substring(5,7));
+        int Day = Integer.parseInt(date.substring(8,10));
+
+
+        PersianDateTime pd = PersianDateTime.valueOf(new GregorianCalendar(Year,Month,Day,0,0,0));
 
         ((TextView) convertView.findViewById(R.id.order_item_price)).setText(String.format(context.getResources().getString(R.string.order_total), CurrencyFormatter.formatCurrency(order.getTotal())));
         ((TextView) convertView.findViewById(R.id.order_item_number)).setText(String.format(context.getResources().getString(R.string.order_number), String.valueOf(order.getNumber())));
-        ((TextView) convertView.findViewById(R.id.order_item_date)).setText(String.format(context.getResources().getString(R.string.order_date), JalaliCalendar.gregorianToJalali(new JalaliCalendar.YearMonthDate(order.getDate()) ).toString()));
+        ((TextView) convertView.findViewById(R.id.order_item_date)).setText(String.format(context.getResources().getString(R.string.order_date), pd.toString()));// JalaliCalendar.gregorianToJalali(new JalaliCalendar.YearMonthDate(order.getDate()) ).toString()));
         // Show item as selected
         //convertView.findViewById(R.id.order_item_container).setActivated(position == selectedPosition);
         return convertView;
