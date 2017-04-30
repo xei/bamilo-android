@@ -171,13 +171,13 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
      */
     public static void saveSearchQuery(final Suggestion suggestion){
         Print.d(TAG, "SAVE SEARCH QUERY: " + suggestion.getResult());
-        RecommendManager recommendManager = new RecommendManager();
+        /*RecommendManager recommendManager = new RecommendManager();
         recommendManager.sendSearchRecommend(suggestion.getQuery(), new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
 
             }
-        });
+        });*/
         new Thread(new Runnable() {
             @Override
             public void run() {

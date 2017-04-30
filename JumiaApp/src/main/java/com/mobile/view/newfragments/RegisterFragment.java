@@ -20,6 +20,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -281,6 +282,8 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
                 PushWooshTracker.signUp(getBaseActivity(),"email",true, JumiaApplication.CUSTOMER.getEmail());
                 EmarsysTracker.signUp("email", true, JumiaApplication.CUSTOMER.getEmail());
+                /*RecommendManager recommendManager = new RecommendManager();
+                recommendManager.setEmail(JumiaApplication.CUSTOMER.getEmail(), ""+JumiaApplication.CUSTOMER.getId());*/
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 // Finish

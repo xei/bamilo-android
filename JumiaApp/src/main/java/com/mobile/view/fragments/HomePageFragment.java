@@ -138,21 +138,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             HomeNewsletterTeaserHolder.sInitialValue = null;
             HomeNewsletterTeaserHolder.sInitialGender = IntConstants.INVALID_POSITION;
         }
-        //Map<String, List<Item>> data = new HashMap<>();
-        //ArrayList<String> categories = new ArrayList<>();
-        List<RecommendedItem> data = new ArrayList<>();
-
-       /* recommendedListAdapter = new RecommendedAdapter(data);
-        recommendedListAdapter.setOnItemClickListener(new RecommendedAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecommendedItem item) {
-                *//*Intent intent = new Intent(getContext(), ItemDetailActivity.class);
-                intent.putExtra("item", item);
-                startActivity(intent);*//*
-            }
-        });*/
-
-
     }
 
     /*
@@ -180,11 +165,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         else {
             showFragmentErrorRetry();
         }
-        /*recommendedListView = (RecyclerView)view.findViewById(R.id.recommendedListView);
-        LinearLayoutManager llManager = new LinearLayoutManager(getBaseActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recommendedListView.setLayoutManager(llManager);*/
-        //mContainer.addView(recommendedListView);
-
 
     }
 
@@ -197,8 +177,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
-
-
     }
 
     /*
@@ -227,6 +205,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         } else {
             triggerTeasers();
         }
+        recommendManager = new RecommendManager();
+        sendRecommend();
     }
 
     /*
@@ -315,6 +295,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Validate the current data
      */
     private void validateDataState() {
+        /*if (JumiaApplication.CUSTOMER != null) {
+            RecommendManager recommendManager = new RecommendManager();
+            recommendManager.setEmail(JumiaApplication.CUSTOMER.getEmail(), "" + JumiaApplication.CUSTOMER.getId());
+        }*/
         if(CollectionUtils.isNotEmpty(mViewHolders)) {
             rebuildHomePage(mViewHolders);
         } else {
@@ -340,8 +324,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         // Show mContainer
         showFragmentContentContainer();
 
-        recommendManager = new RecommendManager();
-        sendRecommend();
+
     }
 
     /**
@@ -363,8 +346,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 mViewHolders.add(viewHolder);
             }
         }
-        recommendManager = new RecommendManager();
-        sendRecommend();
+
 
         showFragmentContentContainer();
     }

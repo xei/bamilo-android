@@ -24,6 +24,7 @@ import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.EmarsysMobileEngage;
 import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
@@ -274,6 +275,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
 
                 PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getId() + "");
 
+               /* RecommendManager recommendManager = new RecommendManager();
+                recommendManager.setEmail(JumiaApplication.CUSTOMER.getEmail(), ""+JumiaApplication.CUSTOMER.getId());*/
                 //Emarsys
                 emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
                     @Override

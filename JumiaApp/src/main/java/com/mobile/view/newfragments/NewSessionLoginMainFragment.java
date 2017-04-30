@@ -37,6 +37,7 @@ import com.mobile.helpers.session.LoginGuestHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.configs.AuthInfo;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -421,7 +422,8 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                     }
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
-
+                    /*RecommendManager recommendManager = new RecommendManager();
+                    recommendManager.setEmail(JumiaApplication.CUSTOMER.getEmail(), ""+JumiaApplication.CUSTOMER.getId());*/
                 }
                 // Case unknown checkout step
                 else {

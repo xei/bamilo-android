@@ -91,11 +91,12 @@ public class FeaturedBoxHelper {
             return false;
         }
     }
+
     private static void sendRecommend(final BaseFragment fragment) {
 
 
         RecommendManager recommendManager = new RecommendManager();
-        recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
+        recommendManager.sendNoResultRecommend(JumiaApplication.INSTANCE.getSearchedTerm(), new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
                 LayoutInflater inflater = LayoutInflater.from(fragment.getBaseActivity());
