@@ -177,7 +177,7 @@
             <com.mobile.components.customfontviews.EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:inputType="phone"
                 android:text=""
                 android:ems="10"
                 style="@style/BlueFormTextField"

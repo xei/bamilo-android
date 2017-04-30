@@ -86,18 +86,19 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     private Bundle mShippingFormSavedState;
     private Bundle mSavedRegionCitiesPositions;
     IcsSpinner address_spinner ,city_spinner,postal_spinner,gender_spinner;
-    TextView name_error , family_error , national_error,cellphone_error ,address_error,city_error;
+    TextView name_error , family_error , national_error,cellphone_error,address_error ,address_region_error,address_city_error,gender_error;
     EditText name;
     EditText family;
     EditText address;
     EditText national_id;
     EditText postal_code;
-
+    String gender_lable = "";
     EditText cellphone;
     private Button add;
     String cityApi="" , postalApi="", regionApi="";
     String action;
     int region_Id , city_Id , post_id;
+    private String gender;
     /*
      * Constructors
      */
@@ -168,8 +169,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         family_error = (TextView) view.findViewById(R.id.address_last_name_error);
         national_error = (TextView) view.findViewById(R.id.address_national_id_error);
         cellphone_error = (TextView) view.findViewById(R.id.address_cellphone_error);
+        address_region_error = (TextView) view.findViewById(R.id.address_region_error);
+        address_city_error = (TextView) view.findViewById(R.id.address_city_error);
         address_error = (TextView) view.findViewById(R.id.address_text_error);
-        city_error = (TextView) view.findViewById(R.id.address_city_error);
+        gender_error= (TextView) view.findViewById(R.id.address_gender_error);
+
         // Spinner Drop down elements
         ArrayList<AddressCity> city = new ArrayList<AddressCity>();
         city.add(new AddressCity(0,"شهر"));
@@ -323,6 +327,35 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else {
             setRegions(shippingFormGenerator, regions);
         }
+    }
+
+    protected String setgender()
+    {
+
+        ArrayList<String> gender = new ArrayList<>();
+        gender.add("مرد");
+        gender.add("زن");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, gender);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
+        promptAdapter.setPrompt("جنسیت");
+        gender_spinner.setAdapter(promptAdapter);
+        gender_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+                if(position==1){
+                    gender_lable ="male";
+                }
+                else {
+                    gender_lable ="female";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(IcsAdapterView<?> parent) {
+            }
+        });
+        return gender_lable;
     }
 
     /**
@@ -615,10 +648,17 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             values.put("address_form[phone]", cellphone.getText().toString());
             values.put("address_form[is_default_shipping]", 1);
             values.put("address_form[is_default_billing]", 1);
-            values.put("address_form[gender]", JumiaApplication.CUSTOMER.getGender());
+            if (JumiaApplication.CUSTOMER.getGender().isEmpty())
+            {
+
+                values.put("address_form[gender]",  setgender());
+            }
+            else{
+                values.put("address_form[gender]", JumiaApplication.CUSTOMER.getGender());
+            }
+
 
             triggerCreateAddress(action, values);
-            /*triggerDefaultAddressForm();*/
         }
     }
 
@@ -680,17 +720,26 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         boolean flag =true;
         name_error.setVisibility(View.GONE);
         family_error.setVisibility(View.GONE);
+        address_region_error.setVisibility(View.GONE);
+        address_city_error.setVisibility(View.GONE);
         address_error.setVisibility(View.GONE);
-        city_error.setVisibility(View.GONE);
+        gender_error.setVisibility(View.GONE);
         cellphone_error.setVisibility(View.GONE);
         national_error.setVisibility(View.GONE);
         if (address_spinner.getSelectedItem()==null || address_spinner.getSelectedItem().equals("استان")){
-            address_error.setVisibility(View.VISIBLE);
-            address_error.setText("تکمیل این گزینه الزامی می باشد");
+            address_region_error.setVisibility(View.VISIBLE);
+            address_region_error.setText("تکمیل این گزینه الزامی می باشد");
+
         }
         if ( city_spinner.getSelectedItem()==null || city_spinner.getSelectedItem().equals("شهر")){
-            city_error.setVisibility(View.VISIBLE);
-            city_error.setText("تکمیل این گزینه الزامی می باشد");
+            address_city_error.setVisibility(View.VISIBLE);
+            address_city_error.setText("تکمیل این گزینه الزامی می باشد");
+        }
+        if(JumiaApplication.CUSTOMER.getGender().isEmpty()) {
+            if (gender_spinner.getSelectedItem() == null || gender_spinner.getSelectedItem().equals("جنسیت")) {
+                gender_error.setVisibility(View.VISIBLE);
+                gender_error.setText("تکمیل این گزینه الزامی می باشد");
+            }
         }
         if (name.getText().length()>=0) {
           /*  */
@@ -937,6 +986,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         GetCitiesHelper.AddressCitiesStruct cities = (GetCitiesHelper.AddressCitiesStruct) citiesArray;
         String requestedRegionAndField = cities.getCustomTag();
         Print.d(TAG, "REQUESTED REGION FROM FIELD: " + requestedRegionAndField);
+        formValidated();
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
     }
 
@@ -946,6 +996,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "REQUESTED CITY FROM FIELD: " + postalCodesStruct.getCustomTag());
         String requestedRegionAndField = postalCodesStruct.getCustomTag();
         setPostalCodesOnSelectedCity(requestedRegionAndField, postalCodesStruct);
+        formValidated();
         showFragmentContentContainer();
     }
 

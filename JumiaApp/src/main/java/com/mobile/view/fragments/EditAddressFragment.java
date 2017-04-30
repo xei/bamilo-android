@@ -516,7 +516,16 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             postal_spinner.setSelection(mFormSavedState.getInt(RestConstants.POSTCODE));
         } else {
             if (postalCodes.size()>1) {
-                postal_spinner.setSelection(getDefaultPosition(0, postalCodes));
+                if (postcode.equals(""))
+                {
+                    postal_spinner.setSelection(getDefaultPosition(0, postalCodes));
+
+                }
+                else
+                {
+                    postal_spinner.setSelection(getDefaultPosition(Integer.parseInt(postcode), postalCodes));
+                }
+
                 postal_spinner.setVisibility(View.VISIBLE);
             }
             else {
