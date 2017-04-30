@@ -2,6 +2,7 @@ package com.mobile.utils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.EventConstants;
+import com.mobile.managers.AppManager;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 
@@ -18,10 +19,13 @@ public abstract class EventTracker {
     public static HashMap<String, Object> getBasicAttributes() {
         HashMap<String, Object> attributes = new HashMap<>();
 
-        attributes.put(EventConstants.AppVersion, android.os.Build.VERSION.RELEASE);
+        attributes.put(EventConstants.AppVersion, AppManager.getAppFullFormattedVersion());
         attributes.put(EventConstants.Platform, "android");
         attributes.put(EventConstants.Connection, UIUtils.networkType(JumiaApplication.INSTANCE.getApplicationContext()));
         attributes.put(EventConstants.Date, new Date());
+        if(JumiaApplication.INSTANCE.isCustomerLoggedIn()) {
+            attributes.put(EventConstants.Gender, JumiaApplication.CUSTOMER.getGender());
+        }
 
         return attributes;
     }

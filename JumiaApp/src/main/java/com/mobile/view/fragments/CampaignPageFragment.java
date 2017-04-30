@@ -18,16 +18,20 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
 import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.catalog.Banner;
@@ -53,6 +57,7 @@ import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
+import com.newrelic.agent.android.harvest.Event;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -464,8 +469,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             TrackerDelegator.trackProductAddedToCart(bundle);
-            PushWooshTracker.addToCart(getBaseActivity(),true, sku, (long) price);
-            EmarsysTracker.addToCart(true, sku, (long) price);
+            TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, (long)JumiaApplication.INSTANCE.getCart().getTotal(), true));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

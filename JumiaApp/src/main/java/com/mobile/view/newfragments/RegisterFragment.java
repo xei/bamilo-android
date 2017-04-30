@@ -15,11 +15,15 @@ import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
+import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -279,8 +283,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 hideActivityProgress();
                 // Tracking
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
-                PushWooshTracker.signUp(getBaseActivity(),"email",true, JumiaApplication.CUSTOMER.getEmail());
-                EmarsysTracker.signUp("email", true, JumiaApplication.CUSTOMER.getEmail());
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.SignUp, EventFactory.signup("email", EmailHelper.getHost(JumiaApplication.CUSTOMER.getEmail()), true));
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 // Finish
@@ -315,9 +318,8 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 hideActivityProgress();
                 // Tracking
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.SignUp, EventFactory.signup("email", EmailHelper.getHost(JumiaApplication.CUSTOMER.getEmail()), false));
 
-               PushWooshTracker.signUp(getBaseActivity(), "email", false, JumiaApplication.CUSTOMER.getEmail());
-               EmarsysTracker.signUp("email", false, JumiaApplication.CUSTOMER.getEmail());
                 // Validate and show errors
                 showFragmentContentContainer();
                 // Show validate messages

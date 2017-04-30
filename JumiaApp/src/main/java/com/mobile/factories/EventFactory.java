@@ -32,7 +32,7 @@ public final class EventFactory {
     public static HashMap<String, Object> login(String loginMethod, String emailDomain, boolean success) {
         HashMap<String, Object> attributes = EventTracker.getBasicAttributes();
         attributes.put(EventConstants.Method, loginMethod);
-        attributes.put(EventConstants.EmailDomain, (emailDomain != null ? emailDomain : EventConstants.UNKNOWN_EVENT_VALUE));
+        attributes.put(EventConstants.EmailDomain, getSafeEventValue(emailDomain));
         attributes.put(EventConstants.Success, success);
 
         return attributes;
@@ -41,7 +41,7 @@ public final class EventFactory {
     public static HashMap<String, Object> signup(String signupMethod, String emailDomain, boolean success) {
         HashMap<String, Object> attributes = EventTracker.getBasicAttributes();
         attributes.put(EventConstants.Method, signupMethod);
-        attributes.put(EventConstants.EmailDomain, emailDomain);
+        attributes.put(EventConstants.EmailDomain, getSafeEventValue(emailDomain));
         attributes.put(EventConstants.Success, success);
 
         return attributes;
@@ -72,7 +72,7 @@ public final class EventFactory {
 
     public static HashMap<String, Object> addToFavorites(String categoryUrlKey, boolean success) {
         HashMap<String, Object> attributes = EventTracker.getBasicAttributes();
-        attributes.put(EventConstants.CategoryUrlKey, categoryUrlKey);
+        attributes.put(EventConstants.CategoryUrlKey, getSafeEventValue(categoryUrlKey));
         attributes.put(EventConstants.Success, success);
 
         return attributes;
@@ -89,7 +89,7 @@ public final class EventFactory {
 
     public static HashMap<String, Object> search(String categoryUrlKey, String keywords) {
         HashMap<String, Object> attributes = EventTracker.getBasicAttributes();
-        attributes.put(EventConstants.CategoryUrlKey, categoryUrlKey);
+        attributes.put(EventConstants.CategoryUrlKey, getSafeEventValue(categoryUrlKey));
         attributes.put(EventConstants.Keywords, keywords);
 
         return attributes;
@@ -101,5 +101,9 @@ public final class EventFactory {
         attributes.put(EventConstants.Price, price);
 
         return attributes;
+    }
+
+    private static String getSafeEventValue(String value) {
+        return value != null ? value : EventConstants.UNKNOWN_EVENT_VALUE;
     }
 }

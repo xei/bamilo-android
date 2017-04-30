@@ -19,8 +19,10 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.cart.ShoppingCartAddMultipleItemsHelper;
 import com.mobile.helpers.cart.ShoppingCartChangeItemQuantityHelper;
@@ -31,6 +33,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.predict.recommended.Item;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -437,8 +440,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     public void triggerChangeItemQuantityInShoppingCart(int position, int quantity) {
         PurchaseCartItem item = items.get(position);
         TrackerDelegator.trackAddToCartGTM(item, quantity, mItemRemovedCartValue);
-        PushWooshTracker.addToFavorites(getBaseActivity(), true, item.getSku());
-        EmarsysTracker.addToFavorites(true, item.getSku());
+        TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(item.getSku(), (long) JumiaApplication.INSTANCE.getCart().getTotal(), true));
         item.setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();

@@ -258,8 +258,9 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             // Case invalid deep link goto HOME else goto deep link
             if (!DeepLinkManager.onSwitchToDeepLink(this, getIntent())) {
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK));
             }
-
         } else {
             mCurrentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
             Print.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType);
@@ -340,8 +341,6 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
 
             }
         };
-
-        TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT));
 
         PushwooshCounter.setAppOpenCount();
         HashMap<String, Object> open_count = new HashMap<>();
