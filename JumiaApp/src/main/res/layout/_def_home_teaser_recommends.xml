@@ -15,6 +15,6 @@
         style="@style/HorizontalListStyle"
         android:layout_width="match_parent"
         android:paddingLeft="@dimen/margin_padding_xs"
-        android:layout_height="@dimen/dimen_220dp" />
+        android:layout_height="@dimen/dimen_240dp" />
 
 </LinearLayout>

@@ -23,7 +23,7 @@
         android:id="@+id/recommendedListView"
         android:scrollbars="horizontal"
         android:layout_width="wrap_content"
-        android:background="#005fff"
+        android:background="#888888"
         android:layout_height="150dp"/>
 
 </LinearLayout>

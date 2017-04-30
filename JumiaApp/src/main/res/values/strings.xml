@@ -497,7 +497,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="confirm_filter">Confirm</string>
     <string name="Emarsys_MerchantId">18146DE34FE0B8C9</string>
-    <string name="recommendations">پیشنهادها</string>
+    <string name="recommendations"> پیشنهادهای بامیلو برای شما</string>
     <string name="order_total">Total: %s</string>
     <string name="order_details">جزییات سفارش</string>
     <string name="order_status_number_title">شماره سفارش:</string>
