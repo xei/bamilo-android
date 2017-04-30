@@ -1,103 +1,71 @@
 package com.mobile.utils.emarsys;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.constants.EventConstants;
+import com.mobile.factories.EventFactory;
 import com.mobile.libraries.emarsys.EmarsysMobileEngage;
 import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
-import com.mobile.utils.pushwoosh.PushWooshEvent;
-import com.mobile.utils.ui.UIUtils;
+import com.mobile.utils.EventTracker;
 import com.mobile.view.BaseActivity;
-import com.pushwoosh.inapp.InAppFacade;
 
-import java.util.Date;
 import java.util.HashMap;
-
-import static com.mobile.newFramework.Darwin.context;
 
 /**
  * Created by shahrooz on 4/12/17.
  */
 
-public class EmarsysTracker {
+public class EmarsysTracker extends EventTracker {
+    private static EmarsysTracker instance = null;
+    protected EmarsysTracker() {}
 
-    public static HashMap<String, Object> setDefaultAttributes() {
-        HashMap<String, Object> values = new HashMap<>();
-        values.put(PushWooshEvent.AppVersion,android.os.Build.VERSION.RELEASE);
-        values.put(PushWooshEvent.Platform,"android");
-        values.put(PushWooshEvent.Connection,UIUtils.networkType(JumiaApplication.INSTANCE.getApplicationContext()));
-        values.put(PushWooshEvent.Date,new Date());
-        return values;
+    public static EmarsysTracker getInstance() {
+        if(instance == null) {
+            instance = new EmarsysTracker();
+        }
+        return instance;
     }
 
-    public static void login(String method , boolean success , String email) {
-        HashMap<String, Object> values = setDefaultAttributes();
-        values.put(PushWooshEvent.Method,method);
-        values.put(PushWooshEvent.Success,success);
-        values.put(PushWooshEvent.EmailDomain,email);
-        sendToEmarsys("Login", values);
-    }
-
-    public static void signUp(String method , boolean success , String email) {
-        HashMap<String, Object> values = setDefaultAttributes();
-        values.put(PushWooshEvent.Method, method);
-        values.put(PushWooshEvent.Success, success);
-        values.put(PushWooshEvent.EmailDomain, email);
-        sendToEmarsys("SignUp", values);
-    }
-
-    public static void openApp(boolean success) {
-        HashMap<String, Object> values = setDefaultAttributes();
-        values.put(PushWooshEvent.Success,success);
-        sendToEmarsys("OpenApp",values);
-    }
-
-    public static void addToCart(boolean success , String sku , Long basketValue) {
-        HashMap<String, Object> values = setDefaultAttributes();
-        values.put(PushWooshEvent.Success,success);
-        values.put(PushWooshEvent.SKU,sku);
-        values.put(PushWooshEvent.BasketValue,basketValue);
-        sendToEmarsys("AddToCart",values);
-    }
-
-    public static void addToFavorites(boolean success , String categoryUrlKey) {
-        HashMap<String, Object> values = setDefaultAttributes();
-        values.put(PushWooshEvent.Success,success);
-        values.put(PushWooshEvent.CategoryUrlKey,categoryUrlKey);
-        sendToEmarsys("AddToFavorites",values);
-    }
-
-    public static void purchase(boolean success , String categories , Long basketValue) {
-        HashMap<String, Object> values = setDefaultAttributes();
-        values.put(PushWooshEvent.Success,success);
-        values.put(PushWooshEvent.Categories,categories);
-        values.put(PushWooshEvent.BasketValue,basketValue);
-        sendToEmarsys("Purchase",values);
-    }
-
-    public static void search(String categoryUrlKey,String keyword) {
-        HashMap<String, Object> values = setDefaultAttributes();
-        values.put(PushWooshEvent.Keywords,keyword);
-        values.put(PushWooshEvent.CategoryUrlKey,categoryUrlKey);
-        sendToEmarsys("Search",values);
-    }
-
-    public static void viewProduct(String categoryUrlKey, Long price) {
-        HashMap<String, Object> values = setDefaultAttributes();
-        values.put(PushWooshEvent.Price,price);
-        values.put(PushWooshEvent.CategoryUrlKey,categoryUrlKey);
-        sendToEmarsys("ViewProduct",values);
-    }
-
-    public static void logOut(boolean success) {
-        HashMap<String, Object> values = setDefaultAttributes();
-        values.put(PushWooshEvent.Success,success);
-        sendToEmarsys("Logout",values);
-    }
-
-    private static void sendToEmarsys(String event, HashMap<String, Object> attributes ) {
+    @Override
+    public void postEvent(BaseActivity activity, String event, HashMap<String, Object> attributes) {
         EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
             @Override
             public void EmarsysMobileEngageResponse(boolean success) {}
         };
-        EmarsysMobileEngage.getInstance(context).sendCustomEvent(event, attributes,emarsysMobileEngageResponse);
+        EmarsysMobileEngage.getInstance(activity.getApplicationContext()).sendCustomEvent(event, attributes,emarsysMobileEngageResponse);
+    }
+
+    public void login(BaseActivity activity, String method, String emailDomain, boolean success) {
+        postEvent(activity, EventConstants.Login, EventFactory.login(method, emailDomain, success));
+    }
+
+    public void signUp(BaseActivity activity, String method, String emailDomain, boolean success) {
+        postEvent(activity, EventConstants.SignUp, EventFactory.signup(method, emailDomain, success));
+    }
+
+    public void logOut(BaseActivity activity, boolean success) {
+        postEvent(activity, EventConstants.Logout, EventFactory.logout(success));
+    }
+
+    public void openApp(BaseActivity activity, EventFactory.OpenAppEventSourceType source) {
+        postEvent(activity, EventConstants.OpenApp, EventFactory.openApp(source));
+    }
+
+    public void addToCart(BaseActivity activity, String sku , Long basketValue, boolean success) {
+        postEvent(activity, EventConstants.AddToCart, EventFactory.addToCart(sku, basketValue, success));
+    }
+
+    public void addToFavorites(BaseActivity activity, String categoryUrlKey, boolean success) {
+        postEvent(activity, EventConstants.AddToFavorites, EventFactory.addToFavorites(categoryUrlKey, success));
+    }
+
+    public void purchase(BaseActivity activity, String categories , long basketValue, boolean success) {
+        postEvent(activity, EventConstants.Purchase, EventFactory.purchase(categories, basketValue, success));
+    }
+
+    public void search(BaseActivity activity, String categoryUrlKey, String keywords) {
+        postEvent(activity, EventConstants.Search, EventFactory.search(categoryUrlKey, keywords));
+    }
+
+    public void viewProduct(BaseActivity activity, String categoryUrlKey, long price) {
+        postEvent(activity, EventConstants.ViewProduct, EventFactory.viewProduct(categoryUrlKey, price));
     }
 }

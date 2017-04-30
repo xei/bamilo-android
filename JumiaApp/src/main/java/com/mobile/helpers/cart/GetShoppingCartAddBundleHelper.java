@@ -68,7 +68,6 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
         AddedItemStructure addItemStruct = new AddedItemStructure();
         addItemStruct.setPurchaseEntity(cart);
         baseResponse.getMetadata().setData(addItemStruct);
-
     }
 
 

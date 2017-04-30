@@ -11,14 +11,17 @@ import android.view.View;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.WishListGridAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.wishlist.GetWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
@@ -447,8 +450,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         if (simple != null) {
             triggerAddProductToCart(simple.getSku());
             TrackerDelegator.trackFavouriteAddedToCart(product, simple.getSku(), mGroupType);
-            PushWooshTracker.addToCart(getBaseActivity(),true, simple.getSku(), (long) simple.getPrice());
-            EmarsysTracker.addToCart(true, simple.getSku(), (long) simple.getPrice());
+            TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)JumiaApplication.INSTANCE.getCart().getTotal(), true));
         }
         // Case select a simple variation
         else if (product.hasMultiSimpleVariations()) {

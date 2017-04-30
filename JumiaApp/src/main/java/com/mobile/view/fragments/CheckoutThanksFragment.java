@@ -13,12 +13,16 @@ import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.components.recycler.VerticalSpaceItemDecoration;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
+import com.mobile.helpers.cart.CartHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.RichRelevance;
@@ -168,17 +172,14 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Track purchase
         PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
         TrackerDelegator.trackPurchaseInCheckoutThanks(cart, mOrderNumber, mGrandTotalValue, mOrderShipping, mOrderTax, mPaymentMethod);
-        ArrayList<PurchaseCartItem> carts =  cart.getCartItems();
+        ArrayList<PurchaseCartItem> carts=  cart.getCartItems();
         String categories = "";
-        for(PurchaseCartItem cat : carts)
-        {
+        for(PurchaseCartItem cat : carts) {
             categories += cat.getCategories();
         }
+        TrackerManager.postEvent(getBaseActivity(), EventConstants.Purchase, EventFactory.purchase(categories, (long)cart.getTotal(), true));
 
         //sendRecommend();
-
-        PushWooshTracker.purchase(getBaseActivity(),true, categories, (long) mGrandTotalValue);
-        EmarsysTracker.purchase(true, categories, (long) mGrandTotalValue);
 
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);

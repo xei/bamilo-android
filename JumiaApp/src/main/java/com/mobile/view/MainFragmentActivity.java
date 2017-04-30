@@ -1,7 +1,6 @@
 package com.mobile.view;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,24 +10,24 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.mobile.app.DebugActivity;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
 import com.mobile.libraries.emarsys.EmarsysMobileEngage;
 import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.security.ObscuredSharedPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.DeepLinkManager;
@@ -38,13 +37,11 @@ import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
-import com.mobile.view.fragments.CheckoutAddressesFragment;
 import com.mobile.view.fragments.CheckoutConfirmationFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
 import com.mobile.view.fragments.CheckoutExternalPaymentFragment;
 import com.mobile.view.fragments.CheckoutFinishFragment;
-import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
@@ -70,9 +67,7 @@ import com.mobile.view.fragments.ReviewWriteFragment;
 import com.mobile.view.fragments.ReviewsFragment;
 import com.mobile.view.fragments.SessionForgotPasswordFragment;
 import com.mobile.view.fragments.SessionLoginEmailFragment;
-import com.mobile.view.fragments.SessionLoginMainFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
-import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.StaticPageFragment;
 import com.mobile.view.fragments.StaticWebViewPageFragment;
 import com.mobile.view.fragments.VariationsFragment;
@@ -103,8 +98,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.pushwoosh.BasePushMessageReceiver.JSON_DATA_KEY;
-
 /**
  * @author sergiopereira
  */
@@ -112,6 +105,7 @@ import static com.pushwoosh.BasePushMessageReceiver.JSON_DATA_KEY;
 public class MainFragmentActivity extends DebugActivity implements PushEventListener {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
+    private EventFactory.OpenAppEventSourceType mAppOpenSource;
 
     private BaseFragment fragment;
     //DROID-63 private NewBaseFragment newFragment;
@@ -171,6 +165,8 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
         if (null != intent) {
             if (intent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
                 showMessage("push message is " + intent.getExtras().getString(PushManager.PUSH_RECEIVE_EVENT));
+                TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION));
+                mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION;
             } else if (intent.hasExtra(PushManager.REGISTER_EVENT)) {
                 showMessage("register");
             } else if (intent.hasExtra(PushManager.UNREGISTER_EVENT)) {
@@ -265,8 +261,10 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             // Case invalid deep link goto HOME else goto deep link
             if (!DeepLinkManager.onSwitchToDeepLink(this, getIntent())) {
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK));
+                mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
             }
-
         } else {
             mCurrentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
             Print.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType);
@@ -285,6 +283,9 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
         }
 
         Fabric.with(this, new Crashlytics());
+
+        TrackerManager.addEventTracker("EmarsysTracker", EmarsysTracker.getInstance());
+        TrackerManager.addEventTracker("PushWooshTracker", PushWooshTracker.getInstance());
 
         /*
          * Used for on back pressed
@@ -345,13 +346,15 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             }
         };
 
-        PushWooshTracker.openApp(MainFragmentActivity.this, true);
-        EmarsysTracker.openApp(true);
-
         PushwooshCounter.setAppOpenCount();
         HashMap<String, Object> open_count = new HashMap<>();
         open_count.put("AppOpenCount", PushwooshCounter.getAppOpenCount());
         PushManager.sendTags(MainFragmentActivity.this, open_count, callBack);
+
+        if(mAppOpenSource != EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION && mAppOpenSource != EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
+            TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT));
+        }
+        mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_NONE;
     }
 
     /*

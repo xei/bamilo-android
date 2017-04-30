@@ -15,9 +15,12 @@ import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
+import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
 import com.mobile.helpers.session.LoginHelper;
@@ -25,6 +28,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.EmarsysMobileEngage;
 import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
@@ -43,6 +47,7 @@ import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
+import com.newrelic.agent.android.harvest.Event;
 import com.pushwoosh.PushManager;
 import com.pushwoosh.inapp.InAppFacade;
 import com.pushwoosh.internal.PushManagerImpl;
@@ -236,8 +241,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 // Case valid next step
                 if (nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
-                    PushWooshTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
-                    EmarsysTracker.login("email", true, JumiaApplication.CUSTOMER.getEmail());
                     // Tracking
                     if (eventType == EventType.GUEST_LOGIN_EVENT) {
                         TrackerDelegator.storeFirstCustomer(customer);
@@ -254,7 +257,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                     }
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
-
                 }
                 // Case unknown checkout step
                 else {
@@ -287,8 +289,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 // Finish
                 getActivity().onBackPressed();
                 PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail() + "");
-                PushWooshTracker.login(getBaseActivity(), "email", true, JumiaApplication.CUSTOMER.getEmail());
-                EmarsysTracker.login("email", true, JumiaApplication.CUSTOMER.getEmail());
+
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.Login, EventFactory.login("email", EmailHelper.getHost(customer.getEmail()), true));
 
                 if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
@@ -351,6 +353,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
             case LOGIN_EVENT:
                 hideActivityProgress();
                 getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.email_password_invalid));
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.Login, EventFactory.login("email", EventConstants.UNKNOWN_EVENT_VALUE, false));
                 break;
             default:
                 break;

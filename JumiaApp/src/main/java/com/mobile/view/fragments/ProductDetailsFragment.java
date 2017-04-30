@@ -23,8 +23,10 @@ import com.mobile.components.ExpandedGridViewComponent;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
@@ -38,6 +40,7 @@ import com.mobile.libraries.emarsys.predict.recommended.Item;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
@@ -239,8 +242,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 if(JumiaApplication.isCustomerLoggedIn() && mClicked != null){
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
-                    PushWooshTracker.addToFavorites(getBaseActivity(), true, mClicked.getCategoryKey());
-                    EmarsysTracker.addToFavorites(true, mClicked.getCategoryKey());
+                    TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToFavorites, EventFactory.addToFavorites(mClicked.getCategoryKey(), true));
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             }
@@ -483,8 +485,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         showFragmentContentContainer();
         // Tracking
         TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath);
-        PushWooshTracker.viewProduct(getBaseActivity(), mProduct.getCategoryKey(), (long) mProduct.getPrice());
-        EmarsysTracker.viewProduct(mProduct.getCategoryKey(), (long) mProduct.getPrice());
+        TrackerManager.postEvent(getBaseActivity(), EventConstants.ViewProduct, EventFactory.viewProduct(mProduct.getCategoryKey(), (long) mProduct.getPrice()));
     }
 
     /**
@@ -959,8 +960,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             triggerAddItemToCart(simple.getSku());
             // Tracking
             TrackerDelegator.trackProductAddedToCart(mProduct, mGroupType);
-            PushWooshTracker.addToCart(getBaseActivity(),true, simple.getSku(), (long) simple.getPrice());
-            EmarsysTracker.addToCart(true, simple.getSku(), (long) simple.getPrice());
+            TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)JumiaApplication.INSTANCE.getCart().getTotal(), true));
         }
         // Case select a simple variation
         else if (mProduct.hasMultiSimpleVariations()) {
@@ -989,10 +989,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 } else {
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
-
-                    PushWooshTracker.addToFavorites(getBaseActivity(), true, mProduct.getCategoryKey());
-                    EmarsysTracker.addToFavorites(true, mProduct.getCategoryKey());
-
+                    TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToFavorites, EventFactory.addToFavorites(mProduct.getCategoryKey(), true));
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO WISH LIST", e);
@@ -1027,9 +1024,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 } else {
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
-
-                    PushWooshTracker.addToFavorites(getBaseActivity(), true, mProduct.getCategoryKey());
-                    EmarsysTracker.addToFavorites(true, mProduct.getCategoryKey());
+                    TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToFavorites, EventFactory.addToFavorites(mProduct.getCategoryKey(), true));
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO SAVED", e);

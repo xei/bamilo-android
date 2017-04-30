@@ -17,10 +17,13 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
 import com.mobile.helpers.categories.GetSubCategoriesHelper;
 import com.mobile.helpers.products.GetCatalogPageHelper;
+import com.mobile.helpers.search.SearchHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -29,6 +32,7 @@ import com.mobile.libraries.emarsys.predict.recommended.Item;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
@@ -569,8 +573,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 if (mClicked != null) {
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
-                    PushWooshTracker.addToFavorites(getBaseActivity(), true, mClicked.getCategoryKey());
-                    EmarsysTracker.addToFavorites(true, mClicked.getCategoryKey());
+                    TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToFavorites, EventFactory.addToFavorites(mClicked.getCategoryKey(), true));
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             }
@@ -635,8 +638,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             } else {
                 triggerAddToWishList(mWishListItemClicked.getSku());
                 TrackerDelegator.trackAddToFavorites(mWishListItemClicked);
-
-                PushWooshTracker.addToFavorites(getBaseActivity(),true,mMainCategory);
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToFavorites, EventFactory.addToFavorites(mMainCategory, true));
             }
         } else {
             // Save values to end action after login
@@ -1005,6 +1007,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             onUpdateCatalogContainer(catalogPage);
             if (catalogPage.getPage() == 1) {
                 TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.Search, EventFactory.search(mMainCategory, SearchHelper.getSearchTermsCommaSeparated(catalogPage.getSearchTerm())));
             }
         }
         // Case invalid success response
