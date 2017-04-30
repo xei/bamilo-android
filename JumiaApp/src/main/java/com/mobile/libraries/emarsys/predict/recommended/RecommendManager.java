@@ -31,12 +31,16 @@ public class RecommendManager {
     public void sendPurchaseRecommend() {
         Transaction transaction = new Transaction();
         List<CartItem> cartItems = getCartItems();
-        transaction.cart(cartItems);
 
         String uuid = UUID.randomUUID().toString();
 
+
         transaction.purchase(uuid, cartItems);
 
+        sendTransaction(transaction);
+
+        transaction = new Transaction();
+        transaction.cart(new ArrayList<CartItem>());
         sendTransaction(transaction);
 
         //???
@@ -197,10 +201,14 @@ public class RecommendManager {
     }
 
     public void setEmail() {
-        if (JumiaApplication.CUSTOMER != null) {
+        if (JumiaApplication.isCustomerLoggedIn() && JumiaApplication.CUSTOMER != null) {
 
             Session.getInstance().setCustomerEmail(JumiaApplication.CUSTOMER.getEmail());
             Session.getInstance().setCustomerId("" + JumiaApplication.CUSTOMER.getId());
+        }
+        else {
+            Session.getInstance().setCustomerEmail(null);
+            Session.getInstance().setCustomerId(null);
         }
     }
 

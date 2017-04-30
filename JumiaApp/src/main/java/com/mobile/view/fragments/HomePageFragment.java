@@ -190,6 +190,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON RESUME");
         // Track page
         trackPage(false);
+
     }
 
     /**
@@ -202,11 +203,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         // Validate current state
         if(mHomePage != null && mHomePage.hasTeasers()) {
             validateDataState();
+
         } else {
             triggerTeasers();
         }
-        recommendManager = new RecommendManager();
-        sendRecommend();
+
     }
 
     /*
@@ -304,6 +305,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         } else {
             buildHomePage(mHomePage);
         }
+
     }
 
     /**
@@ -322,6 +324,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         // Restore the scroll state
         //restoreScrollState();
         // Show mContainer
+        recommendManager = new RecommendManager();
+        sendRecommend();
+
         showFragmentContentContainer();
 
 
@@ -347,6 +352,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             }
         }
 
+        recommendManager = new RecommendManager();
+        sendRecommend();
 
         showFragmentContentContainer();
     }
