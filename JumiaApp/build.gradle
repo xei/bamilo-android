@@ -48,7 +48,7 @@ android {
         targetSdkVersion 22
         applicationId "com.bamilo.android"
         versionName "2.4.1"
-        versionCode getAppVersionCode(48)
+        versionCode getAppVersionCode(49)
         resConfigs "fa"
     }
 
