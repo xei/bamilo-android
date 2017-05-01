@@ -226,13 +226,16 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         int Year = Integer.parseInt(date.substring(0,4));
         int Month = Integer.parseInt(date.substring(5,7));
         int Day = Integer.parseInt(date.substring(8,10));
-
-
         PersianDateTime pd = PersianDateTime.valueOf(new GregorianCalendar(Year,Month,Day,0,0,0));
+
+        int quantity = 0;
+        for (OrderTrackerItem item : orderStatus.getItems()) {
+            quantity += Integer.parseInt(item.getQuantity());
+        }
 
         ((TextView) group.findViewById(R.id.order_status_date_value)).setText(pd.toString());
         ((TextView) group.findViewById(R.id.order_status_total_value)).setText(CurrencyFormatter.formatCurrency(orderStatus.getTotal()));
-        ((TextView) group.findViewById(R.id.order_status_quantity_value)).setText(orderStatus.getTotalProducts() + " عدد");
+        ((TextView) group.findViewById(R.id.order_status_quantity_value)).setText(quantity + " عدد");
         ((TextView) group.findViewById(R.id.order_status_payment_value)).setText(orderStatus.getPaymentName());
         ((TextView) group.findViewById(R.id.order_status_address_value)).setText(orderStatus.getShippingAddress().getAddressString());
     }
@@ -279,8 +282,9 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                 View view = inflater.inflate(R.layout.order_list_item, group, false);
                 ((TextView)view.findViewById(R.id.order_item_state)).setText(item.getStatus());
                 ((TextView)view.findViewById(R.id.order_item_name)).setText(item.getName());
+                ((TextView)view.findViewById(R.id.order_item_quantity)).setText("تعداد: " + item.getQuantity());
                 ((TextView)view.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-                RocketImageLoader.instance.loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image));
+                RocketImageLoader.instance.loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image), null, R.drawable.no_image_small);
                 //ImageManager.getInstance().loadImage(this.getContext(), item.getImageUrl(), (NetworkImageView) view.findViewById(R.id.order_item_image)); // holder.progress, R.drawable.no_image_small);
 
                 // Add to parent

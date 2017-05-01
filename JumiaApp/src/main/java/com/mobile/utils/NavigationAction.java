@@ -38,6 +38,7 @@ public class NavigationAction {
     public static final int CAMPAIGN = 25;
     public static final int FAQ = 26;
     public static final int ABOUT = 27;
+    public static final int MY_ORDER_STATUS = 28;
 
     @IntDef({
             LOGIN_OUT,

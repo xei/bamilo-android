@@ -53,6 +53,8 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -271,10 +273,14 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
         if (cellphone.getText().length()>=0) {
           /*  */
-            if (cellphone.getText().length() != 11 && cellphone.getText().length()!=0 ){
+            Pattern pattern = Pattern.compile(getString(R.string.cellphone_regex), Pattern.CASE_INSENSITIVE);
+
+            Matcher matcher = pattern.matcher(cellphone.getText());
+            boolean result = matcher.find();
+            if (!result ){
                 cellphone.setVisibility(View.VISIBLE);
                 cellphone_error.setVisibility(View.VISIBLE);
-                cellphone_error.setText("تعداد ارقام بایذ 11 رقم باشد");
+                cellphone_error.setText("شماره موبایل معتبر نیست");
                 flag = false;
             }
             if (cellphone.getText().length()==0)

@@ -50,6 +50,14 @@
                 android:textSize="10sp"
                 android:textColor="#888888"/>
 
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/order_item_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#888888"/>
+
+
         </LinearLayout>
 
     </LinearLayout>
