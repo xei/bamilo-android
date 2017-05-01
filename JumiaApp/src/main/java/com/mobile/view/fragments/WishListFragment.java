@@ -450,7 +450,11 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         if (simple != null) {
             triggerAddProductToCart(simple.getSku());
             TrackerDelegator.trackFavouriteAddedToCart(product, simple.getSku(), mGroupType);
-            TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)JumiaApplication.INSTANCE.getCart().getTotal(), true));
+            try {
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)JumiaApplication.INSTANCE.getCart().getTotal(), true));
+            } catch (Exception e) {
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), 0, true));
+            }
         }
         // Case select a simple variation
         else if (product.hasMultiSimpleVariations()) {

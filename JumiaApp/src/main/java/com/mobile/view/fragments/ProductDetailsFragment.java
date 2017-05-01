@@ -960,7 +960,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             triggerAddItemToCart(simple.getSku());
             // Tracking
             TrackerDelegator.trackProductAddedToCart(mProduct, mGroupType);
-            TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)JumiaApplication.INSTANCE.getCart().getTotal(), true));
+            try {
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)JumiaApplication.INSTANCE.getCart().getTotal(), true));
+            } catch (Exception e) {
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), 0, true));
+            }
         }
         // Case select a simple variation
         else if (mProduct.hasMultiSimpleVariations()) {
