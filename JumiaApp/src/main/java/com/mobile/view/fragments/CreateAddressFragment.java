@@ -347,11 +347,15 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         gender_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
-                if(position==1){
+                if(position == 1){
                     gender_lable ="male";
                 }
-                else {
+                else if(position == 2) {
                     gender_lable ="female";
+                }
+                else
+                {
+                    gender_lable = "";
                 }
             }
 
@@ -811,11 +815,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
         if (postal_code.getText().length() != 0 && postal_code.getText().length() != 10) {
             address_postal_code_error.setVisibility(View.VISIBLE);
-            address_postal_code_error.setVisibility(View.VISIBLE);
-            //cellphone_error.setText("شماره موبایل معتبر نیست");
+            flag = false;
         }
 
-
+        if (gender_lable.length() == 0) {
+            gender_error.setVisibility(View.VISIBLE);
+            flag = false;
+        }
 
 
       ;

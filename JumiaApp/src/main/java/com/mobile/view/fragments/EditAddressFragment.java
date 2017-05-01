@@ -217,7 +217,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 name_error.setText("تکمیل این گزینه الزامی می باشد");
                 flag = false;
             }
-            if (name.getText().length()>0&&name.getText().length()<3)
+            if (name.getText().length()>0&&name.getText().length()<2)
             {
                 name_error.setVisibility(View.VISIBLE);
                 name_error.setText("حداقل ۲ کاراکتر باید وارد شود");
@@ -239,7 +239,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 family_error.setText("تکمیل این گزینه الزامی می باشد");
                 flag = false;
             }
-            if (family.getText().length()>0&&name.getText().length()<3)
+            if (family.getText().length()>0&&family.getText().length()<2)
             {
                 family_error.setVisibility(View.VISIBLE);
                 family_error.setText("حداقل ۲ کاراکتر باید وارد شود");
@@ -261,7 +261,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 address_error.setText("تکمیل این گزینه الزامی می باشد");
                 flag = false;
             }
-            if (address.getText().length()>0&&name.getText().length()<3)
+            if (address.getText().length()>0 && address.getText().length()<2)
             {
                 address_error.setVisibility(View.VISIBLE);
                 address_error.setText("حداقل ۲ کاراکتر باید وارد شود");
@@ -662,7 +662,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 // Request the postal codes for this city id
                 city = ((AddressCity) object).getValue();
                 // Get postal codes
+                postcode = 0;
                 triggerGetPostalCodes(field.getApiCall(), city);
+
 
             }
         }
