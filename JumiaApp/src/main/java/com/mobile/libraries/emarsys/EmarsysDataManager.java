@@ -87,7 +87,7 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
         params.put(kApplicationId, contact.applicationId);
         params.put(kHardwareId, contact.hardwareId);
         params.put(kPlatform, "android");
-        params.put(kLanguage, "fa");
+        params.put(kLanguage, Locale.getDefault().getLanguage());
         params.put(kTimezone, getTimeZone());
         params.put(kDeviceModel, getDeviceName());
         params.put(kApplicationVersion, getAppVersionNumber(context));
