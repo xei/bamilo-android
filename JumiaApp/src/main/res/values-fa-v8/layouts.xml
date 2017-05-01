@@ -75,7 +75,7 @@
     <item name="combo_fragment_bottom"                  type="layout">@layout/_v8_combo_fragment_bottom</item>
 
     <!-- MY ORDERS -->
-    <item name="order_status_fragment"                  type="layout">@layout/_v8_order_status_fragment</item>
+    <item name="order_status_fragment"                  type="layout">@layout/_def_order_status_fragment2</item>
     <item name="my_orders_list_item"                    type="layout">@layout/_v8_my_orders_list_item</item>
 
     <!-- HOME -->
