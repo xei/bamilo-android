@@ -26,8 +26,7 @@
             android:layout_width="50dp"
             android:layout_height="1dp"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/order_step2"
-            android:layout_toLeftOf="@id/order_step2"
+            android:layout_toRightOf="@id/order_step2"
             android:layout_marginRight="@dimen/line_margin_start"
             android:layout_marginLeft="@dimen/line_margin_start"
             android:background="@color/checkout_line_gray"/>
@@ -38,8 +37,7 @@
             android:layout_width="@dimen/dimen_50dp"
             android:layout_height="@dimen/dimen_50dp"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/order_header_line_1_2_invis"
-            android:layout_toLeftOf="@+id/order_header_line_1_2_invis"
+            android:layout_toRightOf="@+id/order_header_line_1_2_invis"
             android:gravity="center"
             />
 
@@ -49,8 +47,7 @@
             android:layout_width="50dp"
             android:layout_height="1dp"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/order_step2"
-            android:layout_toRightOf="@id/order_step2"
+            android:layout_toLeftOf="@id/order_step2"
             android:layout_marginRight="@dimen/line_margin_start"
             android:layout_marginLeft="@dimen/line_margin_start"
             android:background="@color/checkout_line_gray"/>
@@ -62,8 +59,7 @@
             android:layout_width="@dimen/dimen_50dp"
             android:layout_height="@dimen/dimen_50dp"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/order_header_line_2_3_invis"
-            android:layout_toRightOf="@+id/order_header_line_2_3_invis"
+            android:layout_toLeftOf="@+id/order_header_line_2_3_invis"
             android:gravity="center"
             />
 

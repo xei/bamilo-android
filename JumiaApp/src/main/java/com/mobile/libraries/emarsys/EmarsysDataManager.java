@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -98,7 +99,7 @@ public class EmarsysDataManager implements EmarsysDataManagerInterface {
 
     public static String getTimeZone() {
         Date today = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("Z");
+        SimpleDateFormat sdf = new SimpleDateFormat("Z", Locale.ENGLISH);
         String gmt = sdf.format(today);
         return gmt;
     }
