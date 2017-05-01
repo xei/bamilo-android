@@ -469,7 +469,11 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             TrackerDelegator.trackProductAddedToCart(bundle);
-            TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, (long)JumiaApplication.INSTANCE.getCart().getTotal(), true));
+            try {
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, (long)JumiaApplication.INSTANCE.getCart().getTotal(), true));
+            } catch (Exception e) {
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, 0, true));
+            }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
