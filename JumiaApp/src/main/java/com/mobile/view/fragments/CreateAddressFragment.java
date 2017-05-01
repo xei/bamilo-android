@@ -88,7 +88,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     private Bundle mShippingFormSavedState;
     private Bundle mSavedRegionCitiesPositions;
     IcsSpinner address_spinner ,city_spinner,postal_spinner,gender_spinner;
-    TextView name_error , family_error , national_error,cellphone_error,address_error ,address_region_error,address_city_error,gender_error;
+    TextView name_error , family_error , national_error,cellphone_error,address_error ,address_region_error,address_city_error,gender_error, address_postal_code_error;
     EditText name;
     EditText family;
     EditText address;
@@ -175,7 +175,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         address_city_error = (TextView) view.findViewById(R.id.address_city_error);
         address_error = (TextView) view.findViewById(R.id.address_text_error);
         gender_error= (TextView) view.findViewById(R.id.address_gender_error);
-
+        address_postal_code_error= (TextView) view.findViewById(R.id.address_postal_code_error);
         // Spinner Drop down elements
         ArrayList<AddressCity> city = new ArrayList<AddressCity>();
         city.add(new AddressCity(0,"شهر"));
@@ -185,8 +185,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
 
         postal_spinner.setVisibility(View.GONE);
-        if (JumiaApplication.CUSTOMER.getGender().isEmpty())
+        //if (JumiaApplication.CUSTOMER.getGender().isEmpty())
         {
+
+            setgender();
             gender_spinner.setVisibility(View.VISIBLE);
         }
         add.setOnClickListener(this);
@@ -650,14 +652,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             values.put("address_form[phone]", cellphone.getText().toString());
             values.put("address_form[is_default_shipping]", 1);
             values.put("address_form[is_default_billing]", 1);
-            if (JumiaApplication.CUSTOMER.getGender().isEmpty())
-            {
 
-                values.put("address_form[gender]",  setgender());
-            }
-            else{
-                values.put("address_form[gender]", JumiaApplication.CUSTOMER.getGender());
-            }
+            values.put("address_form[gender]",  gender_lable);
 
 
             triggerCreateAddress(action, values);
@@ -728,12 +724,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         gender_error.setVisibility(View.GONE);
         cellphone_error.setVisibility(View.GONE);
         national_error.setVisibility(View.GONE);
+        address_postal_code_error.setVisibility(View.GONE);
         if (address_spinner.getSelectedItem()==null || address_spinner.getSelectedItem().equals("استان")){
             address_region_error.setVisibility(View.VISIBLE);
             address_region_error.setText("تکمیل این گزینه الزامی می باشد");
 
         }
-        if ( city_spinner.getSelectedItem()==null || city_spinner.getSelectedItem().equals("شهر")){
+        if (city_spinner.getSelectedItem()==null || city_spinner.getSelectedItem().equals("شهر")){
             address_city_error.setVisibility(View.VISIBLE);
             address_city_error.setText("تکمیل این گزینه الزامی می باشد");
         }
@@ -811,6 +808,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             }
 
         }
+
+        if (postal_code.getText().length() != 0 && postal_code.getText().length() != 10) {
+            address_postal_code_error.setVisibility(View.VISIBLE);
+            address_postal_code_error.setVisibility(View.VISIBLE);
+            //cellphone_error.setText("شماره موبایل معتبر نیست");
+        }
+
 
 
 

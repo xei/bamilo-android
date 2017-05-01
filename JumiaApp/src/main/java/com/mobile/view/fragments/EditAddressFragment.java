@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,10 +88,13 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     EditText cellphone;
     private Button add;
     String action;
-    String id , nameVal , familyVal , address1 ,address2,region , city, postcode,phone ,shipping ,billing;
+    String id , nameVal , familyVal , address1 ,address2, phone ,shipping ,billing;
+    int region, city, postcode;
+    private TextView address_postal_code_error;
 
     /**
      * Constructor
+     *
      */
     public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state, @ConstantsCheckout.CheckoutType int titleCheckout) {
         super(enabledMenuItems, action, R.layout.checkout_edit_address_shipping2, titleResId, adjust_state, titleCheckout);
@@ -142,6 +146,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         national_error = (TextView) view.findViewById(R.id.address_national_id_error);
         cellphone_error = (TextView) view.findViewById(R.id.address_cellphone_error);
         address_error = (TextView) view.findViewById(R.id.address_text_error);
+        address_postal_code_error = (TextView) view.findViewById(R.id.address_postal_code_error);
 
     }
 
@@ -202,6 +207,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         family_error.setVisibility(View.GONE);
         address_error.setVisibility(View.GONE);
         cellphone_error.setVisibility(View.GONE);
+        address_postal_code_error.setVisibility(View.GONE);
+
         if (name.getText().length()>=0) {
           /*  */
             if (name.getText().length()==0)
@@ -293,7 +300,11 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
         }
 
+        if (postal_code.getText().length() != 0 && postal_code.getText().length() != 10) {
+            address_postal_code_error.setVisibility(View.VISIBLE);
+            flag = false;
 
+        }
 
 
         if (flag==false){
@@ -413,13 +424,28 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 address2 = form.getFields().get(i).getValue();
             }
             if(field.getKey().equals("region")) {
-                region = form.getFields().get(i).getValue();
+                try {
+                    region = Integer.parseInt(form.getFields().get(i).getValue());
+                }
+                catch (Exception ex) {
+                    region = 0;
+                }
             }
             if(field.getKey().equals("city")) {
-                city = form.getFields().get(i).getValue();
+                try {
+                    city = Integer.parseInt(form.getFields().get(i).getValue());
+                }
+                catch (Exception ex) {
+                    city = 0;
+                }
             }
             if(field.getKey().equals("postcode")) {
-                postcode = form.getFields().get(i).getValue();
+                try {
+                    postcode = Integer.parseInt(form.getFields().get(i).getValue());
+                }
+                catch (Exception ex) {
+                    postcode = 0;
+                }
             }
             if(field.getKey().equals("phone")) {
                 phone= form.getFields().get(i).getValue();
@@ -481,7 +507,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= address_spinner.getCount()) {
             address_spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
         } else {
-            address_spinner.setSelection(getDefaultPosition(Integer.parseInt(region),regions));
+            address_spinner.setSelection(getDefaultPosition(region,regions));
         }
         address_spinner.setOnItemSelectedListener(this);
     hideActivityProgress();
@@ -501,7 +527,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.CITY) <= city_spinner.getCount()) {
             city_spinner.setSelection(mFormSavedState.getInt(RestConstants.CITY));
         } else {
-            city_spinner.setSelection(getDefaultPosition(Integer.parseInt(city),cities));
+            city_spinner.setSelection(getDefaultPosition(city,cities));
         }
         city_spinner.setOnItemSelectedListener(this);
         hideActivityProgress();
@@ -512,7 +538,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     /**
      * Method used to set the postalCodes on the respective form
      */
-    private void setPostalCodes(DynamicForm dynamicForm, ArrayList<AddressPostalCode> postalCodes){
+    private void setPostalCodes(DynamicForm dynamicForm, final ArrayList<AddressPostalCode> postalCodes){
         // Create adapter
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
@@ -522,7 +548,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         } else {
             if (postalCodes.size()>1) {
 
-                    postal_spinner.setSelection(getDefaultPosition(0, postalCodes));
+                    postal_spinner.setSelection(getDefaultPosition(postcode, postalCodes));
 
 
 
@@ -533,7 +559,16 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             }
 
         }
-        postal_spinner.setOnItemSelectedListener(this);
+        postal_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+                postcode = postalCodes.get(position).getValue();
+            }
+
+            @Override
+            public void onNothingSelected(IcsAdapterView<?> parent) {
+            }
+        });
         hideActivityProgress();
         // Show invisible content to trigger spinner listeners
        // showGhostFragmentContentContainer();
@@ -611,9 +646,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             // Case list
             if (FormInputType.list == field.getInputType()) {
                 // Request the cities for this region id
-                int regionId = ((AddressRegion) object).getValue();
+                region = ((AddressRegion) object).getValue();
                 // Get cities
-                triggerGetCities(field.getApiCall(), regionId);
+                triggerGetCities(field.getApiCall(), region);
             }
             // Case text or other
             else {
@@ -625,9 +660,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             // Case list
             if (field != null && FormInputType.list == field.getInputType()) {
                 // Request the postal codes for this city id
-                int cityId = ((AddressCity) object).getValue();
+                city = ((AddressCity) object).getValue();
                 // Get postal codes
-                triggerGetPostalCodes(field.getApiCall(), cityId);
+                triggerGetPostalCodes(field.getApiCall(), city);
 
             }
         }
@@ -659,7 +694,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerGetRegions(String apiCall){
         Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        triggerContentEvent(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
+        triggerContentEventNoLoading(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
     }
 
     /**
@@ -667,7 +702,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerGetCities(String apiCall, int region){
         Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        triggerContentEvent(new GetCitiesHelper(), GetCitiesHelper.createBundle(apiCall, region, null), this);
+        triggerContentEventNoLoading(new GetCitiesHelper(), GetCitiesHelper.createBundle(apiCall, region, null), this);
     }
 
     /**
@@ -675,7 +710,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerGetPostalCodes(String apiCall, int city){
         Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + apiCall);
-        triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(apiCall, city, null), this);
+        triggerContentEventNoLoading(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(apiCall, city, null), this);
     }
 
     protected void triggerDefaultAddressForm(int mAddressId){
@@ -722,7 +757,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                     super.showFragmentErrorRetry();
 
                 }
-                hideActivityProgress();
+                //hideActivityProgress();
                 break;
             case GET_CITIES_EVENT:
                 Print.d(TAG, "RECEIVED GET_CITIES_EVENT");

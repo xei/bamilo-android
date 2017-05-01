@@ -115,6 +115,15 @@
                 android:hint="@string/deliver_postal_code"
                 android:textColor="?attr/colorPrimary" />
 
+                <com.mobile.components.customfontviews.TextView
+                    android:text="کدپستی نامعتبر است"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/address_postal_code_error"
+                    android:textSize="@dimen/dimen_10dp"
+                    android:visibility="gone"
+                    android:textColor="#b90f00" />
+
             </LinearLayout>
 
             <com.mobile.components.customfontviews.TextView

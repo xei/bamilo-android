@@ -50,19 +50,20 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:paddingLeft="@dimen/margin_16dp"
-        android:paddingRight="@dimen/margin_16dp"
+
         android:orientation="vertical">
         <RelativeLayout
             android:id="@+id/checkout_address_item_btn_edit_rl"
-            android:layout_width="16dp"
+            android:layout_width="48dp"
             android:layout_height="0dp"
             android:layout_weight="1"
             >
             <ImageView
                 android:id="@+id/checkout_address_item_btn_edit"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:paddingLeft="@dimen/margin_16dp"
+                android:paddingRight="@dimen/margin_16dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/new_selector_btn_edit" />
         </RelativeLayout>
