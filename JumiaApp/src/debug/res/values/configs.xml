@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- APP -->
+    <string name="app_name">Bamilo</string>
+    <item name="is_bamilo_specific" type="bool">true</item>
+
+    <!-- COUNTRIES -->
+    <!-- country.xml -->
+    
+    <!-- GA -->
+    <bool name="ga_debug_mode">false</bool>
+    <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
+    <integer name="ga_dispatchPeriod">0</integer>
+    -->
+
+    <!-- HOCKEY APP -->
+    <string name="hockey_app_id">0dca941dbdf4d503b751b2c4c7890772</string>
+    <item name="hockeyapp_enable_dev" type="bool">true</item>
+
+    <!-- DEEP LINK -->
+    <string name="dp_package_id">com.bamilo.android</string>
+    <string name="dp_app_name_uppercase">BAMILO</string>
+    <string name="dp_app_name_lowercase">bamilo</string>
+    <string name="dp_intent_label">Bamilo</string>
+
+    <!-- ACCENGAGE -->
+    <item name="ad4push_enabled" type="bool">true</item>
+    <string name="ad4push_partner_id">bamilod1818e603043933</string>
+    <string name="ad4push_private_key">c9d28b3f18167ad0abf9f42b78b32f4256cd7721</string>
+
+    <!-- ADJUST -->
+    <item name="adjust_enabled" type="bool">true</item>
+    <item name="adjust_is_production_env" type="bool">false</item>
+    
+	<!-- APPTIMIZE -->
+    <item name="apptimize_enabled" type="bool">false</item>
+    <string name="apptimize_apikey"/>
+
+	<!-- GTM -->
+    <item name="gtm_debug" type="bool">false</item>
+    
+	<!-- FACEBOOK -->
+    <string name="facebook_app_id"/>
+    
+</resources>

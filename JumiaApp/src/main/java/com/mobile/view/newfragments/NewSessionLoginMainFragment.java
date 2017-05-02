@@ -37,6 +37,7 @@ import com.mobile.helpers.session.LoginGuestHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.configs.AuthInfo;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -56,6 +57,7 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.LoginHeaderComponent;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.WarningFactory;
@@ -74,31 +76,19 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
     private static final String TAG = NewSessionLoginMainFragment.class.getSimpleName();
 
-    private EditText mEmailView;
-    private EditText mPasswordView;
 
-    private EditText mNationalIdView;
-    private EditText mFirstNameView;
-    private EditText mLastNameView;
-    private EditText mEmailRView;
-    private EditText mPasswordRView;
-    private EditText mPhoneView;
 
-    private String mCustomerEmail;
-    private String mCustomerPassword;
 
+    private TabLayout tabLayout;
     private FragmentType mParentFragmentType;
 
     private FragmentType mNextStepFromParent;
 
     private boolean isInCheckoutProcess;
 
-    private TextView mLoginErrorMessage , mPasswordErrorMessage;
-    private TextView national_id_error_message,first_name_error_message,last_name_error_message,email_error_message,password_error_message,phone_error_message;
-    TabLayout.Tab tabLogin;
+       TabLayout.Tab tabLogin;
     TabLayout.Tab tabRegister;
     //DROID-10
-    private long mGABeginRequestMillis;
     private LoginFragment loginFragment;
     private RegisterFragment registerFragment;
     private LinearLayout loginRoot;
@@ -161,18 +151,18 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
 
+
         loginRoot = (LinearLayout) view.findViewById(R.id.login_root);
 
         loginFragment = new LoginFragment();
         registerFragment = new RegisterFragment();
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.login_tabs);
+        tabLayout = (TabLayout) view.findViewById(R.id.login_tabs);
         tabLogin = tabLayout.newTab();
         tabLogin.setTag("Login");
         tabLayout.addTab(tabLogin);
         tabLogin.setText(R.string.login_label);
 
 
-        // Saved
         tabRegister = tabLayout.newTab();
         tabLayout.addTab(tabRegister);
         tabRegister.setTag("Register");
@@ -203,6 +193,16 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         });
         tabRegister.select();
         tabLogin.select();
+
+        /*if (savedInstanceState != null)
+        {
+            int selectedTab = savedInstanceState.getInt("selectedtab", 0);
+            if (selectedTab == 1) {
+                tabRegister.select();
+            }
+        }*/
+
+
     }
 
 
@@ -255,6 +255,8 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         outState.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, mParentFragmentType);
         outState.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, mNextStepFromParent);
         outState.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, isInCheckoutProcess);
+        outState.putInt("selectedtab", tabLayout.getSelectedTabPosition());
+
     }
 
     /*
@@ -311,7 +313,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
      * ################ LISTENERS ################
      */
 
-    @Override
+    /*@Override
     public void onClick(View view) {
         int id = view.getId();
         // Case forgot password
@@ -329,97 +331,14 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         else {
             super.onClick(view);
         }
-    }
+    }*/
 
 
-    private void onClickForgotPassword() {
-        getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    private boolean checkValidation()
-    {
-        Context context = getBaseActivity();
-
-        boolean result = validateStringToPattern(context, R.string.national_id, mNationalIdView, mNationalIdView.getText().toString(), true, 10, 10, R.string.normal_string_regex, "", R.id.national_id_error_message);
-        result = validateStringToPattern(context, R.string.first_name, mFirstNameView, mFirstNameView.getText().toString(), true, 2, 50, R.string.normal_string_regex, "", R.id.first_name_error_message) && result;
-        result = validateStringToPattern(context, R.string.last_name, mLastNameView, mLastNameView.getText().toString(), true, 2, 50, R.string.normal_string_regex, "", R.id.last_name_error_message) && result;
-        result = validateStringToPattern(context, R.string.email, mEmailRView, mEmailRView.getText().toString(), true, 0, 40, R.string.email_regex, getResources().getString(R.string.error_invalid_email), R.id.email_error_message) && result;
-        result = validateStringToPattern(context, R.string.new_password, mPasswordRView, mPasswordRView.getText().toString(), true, 6, 50, R.string.normal_string_regex, "", R.id.password_error_message) && result;
-        result = validateStringToPattern(context, R.string.phone, mPhoneView, mPhoneView.getText().toString(), true, 0, 40, R.string.normal_string_regex, "", R.id.phone_error_message) && result;
-        return result;
-    }
 
 
-    void requestRegister() {
-        // Get values
-        ContentValues values = new ContentValues();
-        values.put("customer[national_id]", mNationalIdView.getText().toString());
-        values.put("customer[first_name]", mFirstNameView.getText().toString());
-        values.put("customer[last_name]", mLastNameView.getText().toString());
-        values.put("customer[email]", mEmailRView.getText().toString());
-        values.put("customer[password]", mPasswordRView.getText().toString());
-        values.put("customer[phone]", mPhoneView.getText().toString());
-        values.put("customer[phone_prefix]", "100");
 
-        // Register user
-        triggerRegister("form_submit::customer/create/", values);
-    }
 
-    private void onClickCreate() {
-        // Hide keyboard
-        getBaseActivity().hideKeyboard();
-        // Case valid
-        if (checkValidation()) {
-            requestRegister();
-        }
-        // Case invalid
-        else {
-            // Tracking
-            TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-        }
-    }
 
-    protected void onClickCheckEmail() {
-        Print.i(TAG, "ON CLICK CHECK EMAIL");
-        mGABeginRequestMillis = System.currentTimeMillis();
-
-        // Get email
-        mCustomerEmail = mEmailView.getText().toString();
-        mCustomerPassword = mPasswordView.getText().toString();
-        mLoginErrorMessage.setVisibility(View.GONE);
-        mPasswordErrorMessage.setVisibility(View.GONE);
-        // Trigger to check email
-        if(TextUtils.isNotEmpty(mCustomerEmail) && TextUtils.isNotEmpty(mCustomerPassword) && Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
-            triggerEmailCheck(mCustomerEmail);
-            mLoginErrorMessage.setVisibility(View.GONE);
-            mPasswordErrorMessage.setVisibility(View.GONE);
-        /*    mEmailView.setError("");
-            mPasswordView.setError("");*/
-
-            //mErrorMessage.setVisibility(View.GONE);
-        } else {
-
-            if (!TextUtils.isNotEmpty(mCustomerEmail)){
-                mLoginErrorMessage.setText(getResources().getString(R.string.error_ismandatory));
-                mLoginErrorMessage.setVisibility(View.VISIBLE);
-            }
-            else if( !Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches())
-            {
-                //mEmailView.setError(getString(R.string.error_invalid_email));
-                mLoginErrorMessage.setText(getResources().getString(R.string.error_invalid_email));
-                mLoginErrorMessage.setVisibility(View.VISIBLE);
-            }
-            if (!TextUtils.isNotEmpty(mCustomerPassword))
-            {
-               // mPasswordView.setError(getString(R.string.error_ismandatory));
-                mPasswordErrorMessage.setText(getResources().getString(R.string.error_ismandatory));
-                mPasswordErrorMessage.setVisibility(View.VISIBLE);
-            }
-
-            //mErrorMessage.setText(getString(R.string.error_invalid_email));
-            //mErrorMessage.setVisibility(View.VISIBLE);
-        }
-    }
 
     @Override
     protected void onClickRetryButton(View view) {
@@ -432,19 +351,14 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
      * ################ TRIGGERS ################
      */
 
-    private void triggerEmailCheck(String email) {
-        Print.i(TAG, "TRIGGER EMAIL CHECK");
-        triggerContentEventProgress(new EmailCheckHelper(), EmailCheckHelper.createBundle(email), this);
-    }
+
 
     private void triggerAutoLogin() {
         Print.i(TAG, "TRIGGER AUTO LOGIN");
         triggerContentEventProgress(new LoginAutoHelper(), LoginAutoHelper.createAutoLoginBundle(), this);
     }
 
-    private void triggerRegister(String endpoint, ContentValues values) {
-        triggerContentEventProgress(new RegisterHelper(), RegisterHelper.createBundle(endpoint, values), this);
-    }
+
 
     /*
      * ################ RESPONSE ################
@@ -463,7 +377,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
-            case EMAIL_CHECK:
+            /*case EMAIL_CHECK:
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaLogin, mGABeginRequestMillis, mCustomerEmail);
                 mLoginErrorMessage.setVisibility(View.GONE);
@@ -485,7 +399,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
                 }
 
-                break;
+                break;*/
             case AUTO_LOGIN_EVENT:
                 // Get Customer
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
@@ -508,7 +422,8 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                     }
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
-
+                    /*RecommendManager recommendManager = new RecommendManager();
+                    recommendManager.setEmail(JumiaApplication.CUSTOMER.getEmail(), ""+JumiaApplication.CUSTOMER.getId());*/
                 }
                 // Case unknown checkout step
                 else {
@@ -517,21 +432,29 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                     showFragmentUnknownCheckoutStepError();
                 }
                 break;
-            case LOGIN_EVENT:
+            /*case LOGIN_EVENT:
                 hideActivityProgress();
                 // Get customer
                 nextStepStruct = (NextStepStruct) baseResponse.getContentData();
+
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                 // Set hide change password
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
                 // Finish
-                getActivity().onBackPressed();
+
                 if (isInCheckoutProcess)
                 {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
+                    getActivity().onBackPressed();
                 }
+                else
+                {
+                    getActivity().onBackPressed();
+                }
+
+
                 return;
             case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
@@ -543,7 +466,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                 getActivity().onBackPressed();
                 // Set facebook login
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
-                break;
+                break;*/
             default:
                 hideActivityProgress();
                 break;
@@ -566,18 +489,18 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
-            case EMAIL_CHECK:
+            /*case EMAIL_CHECK:
                 // Show warning
                 mLoginErrorMessage.setText(getResources().getString(R.string.error_invalid_email));
                 mLoginErrorMessage.setVisibility(View.VISIBLE);
                 //showWarningErrorMessage(getString(R.string.error_invalid_email));
                 // Show content
                 showFragmentContentContainer();
-                break;
+                break;*/
             case AUTO_LOGIN_EVENT:
                 // Logout
                 LogOut.perform(getWeakBaseActivity());
-            case REGISTER_ACCOUNT_EVENT:
+           /* case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
                 // Tracking
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
@@ -589,110 +512,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
             case LOGIN_EVENT:
                 hideActivityProgress();
                 getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.email_password_invalid));
-                break;
+                break;*/
             default:
                 break;
-        }
-    }
-
-    private void showValidateMessages(BaseResponse baseResponse) {
-        Map map = baseResponse.getValidateMessages();
-        national_id_error_message.setVisibility(View.GONE);
-        first_name_error_message.setVisibility(View.GONE);
-        last_name_error_message.setVisibility(View.GONE);
-        email_error_message.setVisibility(View.GONE);
-        password_error_message.setVisibility(View.GONE);
-        phone_error_message.setVisibility(View.GONE);
-
-        if (CollectionUtils.isNotEmpty(map)) {
-            for (Object key : map.keySet()) {
-                switch (key.toString())
-                {
-                    case "national_id":
-                        national_id_error_message.setVisibility(View.VISIBLE);
-                        national_id_error_message.setText(map.get(key).toString());
-                        break;
-                    case "first_name":
-                        first_name_error_message.setVisibility(View.VISIBLE);
-                        first_name_error_message.setText(map.get(key).toString());
-                        break;
-                    case "last_name":
-                        last_name_error_message.setVisibility(View.VISIBLE);
-                        last_name_error_message.setText(map.get(key).toString());
-                        break;
-                    case "email":
-                        email_error_message.setVisibility(View.VISIBLE);
-                        email_error_message.setText(map.get(key).toString());
-                        break;
-                    case "password":
-                        password_error_message.setVisibility(View.VISIBLE);
-                        password_error_message.setText(map.get(key).toString());
-                        break;
-                    case "phone":
-                        phone_error_message.setVisibility(View.VISIBLE);
-                        phone_error_message.setText(map.get(key).toString());
-                        break;
-                }
-            }
-        }
-    }
-
-
-    @SuppressLint("ValidFragment")
-    class LoginFragment extends Fragment
-    {
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.new_session_login_main_fragment, container, false);
-            return view;
-        }
-
-        @Override
-        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
-            mEmailView = (EditText) view.findViewById(R.id.login_email);
-            mPasswordView = (EditText) view.findViewById(R.id.login_password);
-            mEmailView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-            // Get error message
-            mLoginErrorMessage = (TextView) view.findViewById(R.id.login_text_error_message);
-            mPasswordErrorMessage = (TextView) view.findViewById(R.id.password_text_error_message);
-
-            // Get continue button
-            view.findViewById(R.id.login_button_continue).setOnClickListener(NewSessionLoginMainFragment.this);
-            view.findViewById(R.id.login_email_button_password).setOnClickListener(NewSessionLoginMainFragment.this);
-        }
-
-    }
-
-    @SuppressLint("ValidFragment")
-    class RegisterFragment extends Fragment
-    {
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.new_session_register_main_fragment, container, false);
-            return view;
-        }
-
-        @Override
-        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
-            mNationalIdView = (EditText) view.findViewById(R.id.national_id);
-            mFirstNameView = (EditText) view.findViewById(R.id.first_name);
-            mLastNameView = (EditText) view.findViewById(R.id.last_name);
-            mEmailRView = (EditText) view.findViewById(R.id.email);
-            mPasswordRView = (EditText) view.findViewById(R.id.password);
-            mPhoneView = (EditText) view.findViewById(R.id.phone);
-            phone_error_message = (TextView) view.findViewById(R.id.phone_error_message);
-            national_id_error_message = (TextView) view.findViewById(R.id.national_id_error_message);
-            first_name_error_message = (TextView) view.findViewById(R.id.first_name_error_message);
-            last_name_error_message = (TextView) view.findViewById(R.id.last_name_error_message);
-            email_error_message = (TextView) view.findViewById(R.id.email_error_message);
-            password_error_message = (TextView) view.findViewById(R.id.password_error_message);
-            phone_error_message = (TextView) view.findViewById(R.id.phone_error_message);
-            view.findViewById(R.id.register_button_create).setOnClickListener(NewSessionLoginMainFragment.this);
-            mEmailRView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         }
     }
 

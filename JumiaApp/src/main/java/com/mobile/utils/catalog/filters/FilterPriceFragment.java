@@ -2,12 +2,9 @@ package com.mobile.utils.catalog.filters;
 
 import android.os.Bundle;
 import android.support.annotation.IntRange;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import com.mobile.components.RangeSeekBar;
 import com.mobile.components.RangeSeekBar.OnRangeSeekBarChangeListener;
@@ -17,14 +14,11 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilterOption;
 import com.mobile.newFramework.utils.NumberTextWatcher;
-import com.mobile.newFramework.utils.PersinConvertor;
+import com.mobile.newFramework.utils.convertor.PersinConvertor;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.Toast;
 import com.mobile.view.R;
 import com.mobile.view.fragments.FilterMainFragment;
-
-import java.text.DecimalFormat;
 
 /**
  * 

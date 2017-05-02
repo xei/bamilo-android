@@ -10,6 +10,10 @@ import android.support.annotation.NonNull;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
+import com.mobile.factories.EventFactory;
+import com.mobile.helpers.search.SearchHelper;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
@@ -39,6 +43,7 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.view.R;
+import com.newrelic.agent.android.harvest.Event;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -242,12 +247,10 @@ public class TrackerDelegator {
         GTMManager.get().gtmTrackSearch(criteria, results);
     }
 
-
     public static void trackShopChanged() {
         //GTM
         GTMManager.get().gtmTrackChangeCountry(ShopSelector.getShopId());
     }
-
 
     public static void trackProductRemoveFromCart(Bundle params) {
         String sku = params.getString(SKU_KEY);
@@ -301,7 +304,6 @@ public class TrackerDelegator {
      *
      */
     public static void trackItemReview(Bundle params) {
-
         ProductComplete product = params.getParcelable(PRODUCT_KEY);
         HashMap<String, Long> ratingValues = (HashMap<String, Long>) params.getSerializable(RATINGS_KEY);
         String user_id = "";
@@ -524,7 +526,6 @@ public class TrackerDelegator {
             Print.d(TAG, "store first customer1");
             prefs.edit().putBoolean(customer.getEmail(),true).apply();
         }
-
     }
 
     private static boolean checkLoginAfterSignup(Customer customer) {
@@ -547,7 +548,6 @@ public class TrackerDelegator {
         SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
         return !prefs.contains(customer.getEmail()) || prefs.getBoolean(customer.getEmail(), true);
     }
-
 
     /**
      * Tracking the continue shopping
@@ -1043,7 +1043,6 @@ public class TrackerDelegator {
      * Fire the track catalog page for Adjust Tracker
      */
     public static void trackCatalogPageContent(CatalogPage catalogPage, String categoryTree, String mainCategory) {
-
         if (catalogPage != null) {
             // Track Adjust screen
             Bundle bundle = new Bundle();
@@ -1098,7 +1097,6 @@ public class TrackerDelegator {
                 }
             }
         }).start();
-
     }
 
     /**
@@ -1148,7 +1146,6 @@ public class TrackerDelegator {
 
     }
 
-
     /**
      *
      */
@@ -1187,12 +1184,11 @@ public class TrackerDelegator {
     /**
      * Tracking event for the External Link Click
      */
-    public static void trackClickOnExternalLink(@NonNull String label){
+    public static void trackClickOnExternalLink(@NonNull String label) {
         AnalyticsGoogle.get().trackEventClickOnExternalLink(TrackingEvent.EXTERNAL_LINK_CLICK, label);
     }
 
     public static void trackOpenPushNotification(){
         Ad4PushTracker.get().trackPNOpened();
     }
-
 }

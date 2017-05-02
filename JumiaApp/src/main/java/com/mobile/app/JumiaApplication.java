@@ -3,6 +3,7 @@ package com.mobile.app;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,9 +11,11 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
+import com.emarsys.predict.Session;
 import com.facebook.FacebookSdk;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.AndroidStorage;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.DarwinDatabaseHelper;
 import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
@@ -34,15 +37,18 @@ import com.mobile.newFramework.utils.ImageResolutionHelper;
 import com.mobile.newFramework.utils.SingletonMap;
 import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.view.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 @UseA4S
 public class JumiaApplication extends Application {
@@ -100,6 +106,17 @@ public class JumiaApplication extends Application {
         countriesAvailable = new ArrayList<>();
         setCart(null);
 
+        //ShopSelector.setLocaleOnOrientationChanged();
+
+        Session.initialize(new AndroidStorage(this));
+
+        Session session = Session.getInstance();
+        // Identifies the merchant account (here the emarsys demo merchant 1A65B5CB868AFF1E).
+        // Replace it with your own Merchant Id before run.
+        session.setMerchantId(getApplicationContext().getResources().getString(R.string.Emarsys_MerchantId));
+
+        //DataSource.initWithContext(getApplicationContext());
+
         /**
          * Fix a crash report, when app try recover from background
          * https://rink.hockeyapp.net/manage/apps/33641/app_versions/109/crash_reasons/17098450
@@ -138,6 +155,12 @@ public class JumiaApplication extends Application {
         CheckVersion.init(getApplicationContext());
         //
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        ShopSelector.setLocaleOnOrientationChanged(getApplicationContext());
     }
 
     public synchronized void handleEvent(@ErrorCode.Code int errorType, EventType eventType, Handler initializationHandler) {

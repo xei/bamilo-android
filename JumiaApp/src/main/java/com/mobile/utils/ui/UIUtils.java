@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
@@ -29,7 +31,10 @@ import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
+
+import static com.mobile.newFramework.Darwin.context;
 
 /**
  * A general Class with UI utils such as set the font <p/><br>
@@ -281,14 +286,14 @@ public class UIUtils {
     }
 
     /**
-     * Process the click on call to buy
+     * Process the click on call to sendPurchaseRecommend
      */
     public static void onClickCallToOrder(@NonNull Activity activity) {
         // Tracking
         TrackerDelegator.trackCall(activity);
         // Get phone number
         SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, "");
+        String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, "021 72516"); //In case phone # not fetched properly
         // Make a call
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + mPhone2Call));
@@ -336,5 +341,15 @@ public class UIUtils {
 
         }
 
+    }
+    public static String networkType(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if(activeNetwork.getTypeName().equals("WIFI")) {
+            return "wifi";
+        } else if(activeNetwork.getTypeName().equals("MOBILE")) {
+            return "cellular";
+        }
+        return "unknown";
     }
 }

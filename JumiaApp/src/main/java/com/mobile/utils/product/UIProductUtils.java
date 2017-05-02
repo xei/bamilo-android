@@ -65,14 +65,15 @@ public class UIProductUtils {
         //If ProductMultiple already has simple
         if(productBase instanceof ProductMultiple && ((ProductMultiple) productBase).getSelectedSimple() != null) {
             //noinspection ConstantConditions
-            setPriceWithAutoAdjust(context, ((ProductMultiple) productBase).getSelectedSimple(), discount);
+            setPriceWithAutoAdjust(context, ((ProductMultiple) productBase).getSelectedSimple(), discount, price);
             //If hasn't simple but has range
         } else if(TextUtils.isNotEmpty(priceRange)){
             discount.setText(priceRange);
+            price.setVisibility(View.GONE);
         } else {
-            setPriceWithAutoAdjust(context, productBase, discount);
+            setPriceWithAutoAdjust(context, productBase, discount, price);
         }
-        price.setVisibility(View.GONE);
+        price.setVisibility(View.VISIBLE);
         discount.setVisibility(View.VISIBLE);
     }
 
@@ -91,21 +92,25 @@ public class UIProductUtils {
         }
     }
 
-    private static void setPriceWithAutoAdjust(Context context, @NonNull ProductBase productBase, @NonNull TextView priceView){
+    private static void setPriceWithAutoAdjust(Context context, @NonNull ProductBase productBase, @NonNull TextView discountView, @NonNull TextView priceView){
         // Case discount
         if (productBase.hasDiscount()) {
             final String specialPrice = CurrencyFormatter.formatCurrency(productBase.getSpecialPrice());
             final String regularPrice = CurrencyFormatter.formatCurrency(productBase.getPrice());
-            final String price = String.format(context.getString(R.string.first_space_second_placeholder), specialPrice, regularPrice);
+            /*final String price = String.format(context.getString(R.string.first_space_second_placeholder), specialPrice, regularPrice);
             int index = price.indexOf(regularPrice);
             SpannableString spannableString = new SpannableString(price);
             spannableString.setSpan(new StrikethroughSpan(), index, price.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context,R.color.black_800)), index, price.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            priceView.setText(spannableString);
+            priceView.setText(spannableString);*/
+            priceView.setText(regularPrice);
+            discountView.setText(specialPrice);
+            priceView.setPaintFlags(discountView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
         }
         // Case normal
         else {
-            priceView.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
+            discountView.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
         }
     }
 

@@ -242,6 +242,7 @@ public class RestConstants {
     public static final String HEAD_LABEL = "head_label";
     public static final String BODY = "body";
     public static final String BANNER = "banner";
+    public static final String Breadcrumb = "breadcrumb";
     public static final String PHONE_IMAGE = "phone_image";
     public static final String TABLET_IMAGE = "tablet_image";
     public static final String HTML = "html";

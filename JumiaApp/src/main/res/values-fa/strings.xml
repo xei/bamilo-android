@@ -2,9 +2,10 @@
 <resources>
     <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">حساب کاربری من ‎</string>
-    <string name="new_account_name">حساب کاربری من 2‎</string>
     <string name="checkout_confirmation">بررسی نهایی سفارش</string>
     <string name="action_label_add_address">اضافه کردن آدرس جدید</string>
+
+    <string name="action_label_receiver">اطلاعات تحویل گیرنده</string>
     <string name="action_label_basket">سبد کالا</string>
     <string name="action_label_search_hint"> جستجو در بامیلو</string>
     <string name="add_to_shopping_cart">افزودن به سبد خرید</string>
@@ -179,6 +180,7 @@
     <string name="review">نقد و بررسی</string>
     <string name="save_changes_label">ذخیره تغییرات</string>
     <string name="save_label">ذخیره</string>
+    <string name="save_address_label">ذخیره آدرس</string>
     <string name="search_label">جستجو</string>
     <string name="section_title_account">تنظیمات حساب کاربری</string>
     <string name="section_title_notification">با ما در ارتباط باشید</string>
@@ -329,9 +331,10 @@
     <string name="recent_searches_empty">اخیراً هیچ کالایی جستجو نکرده‌اید.</string>
     <string name="items_in_your_order">کالاهای سفارش داده شده</string>
     <string name="delivered_label">تحویل داده شد</string>
-    <string name="order_number">شمار سفارش ‎%s‎</string>
+    <string name="order_number">شماره سفارش: ‎%s‎</string>
+    <string name="order_date">تاریخ: %s</string>
     <string name="billing">صورت حساب</string>
-    <string name="first_space_second_placeholder">‎%1$s‎‎%2$s‎</string>
+    <string name="first_space_second_placeholder">‎%1$s‎ ‎%2$s‎</string>
     <string name="first_slash_second_placeholder">‎%1$s‎/‎%2$s‎</string>
     <string name="first_new_line_second_placeholder">%1$s\n%2$s</string>
     <string name="first_x_second_placeholder">اندازه ‎%1$s‎تعداد‎%2$s‎</string>
@@ -344,6 +347,7 @@
     <string name="an_error_occurred">خطایی رخ داده است.</string>
     <string name="customer_service_info">برای اطلاعات بیشتر، لطفاً با خدمات مشتریان تماس بگیرید.</string>
     <string name="phone_contact">شماره تلفن:</string>
+    <string name="cellphone">موبایل </string>
     <string name="email_contact">آدرس ایمیل</string>
     <string name="logout_success">از حساب کاربری خارج شدید</string>
     <string name="percentage_placeholder">‎%s‎ درصد</string>
@@ -431,10 +435,15 @@
     <string name="default_address_label">تعیین آدرس پیش فرض</string>
 
     <string name="checkout_address">آدرس</string>
+    <string name="delivery_address">نشانی (به فارسی)</string>
+    <string name="deliver_postal_code">کد پستی</string>
     <string name="checkout_review">بررسی</string>
     <string name="checkout_payment">پرداخت</string>
 
-
+    <!--delivery -->
+    <string name="delivery_state">استان</string>
+    <string name="delivery_city">شهر</string>
+    <string name="delivery_neighbourhood">محله</string>
 
     <!--checkout confirm-->
 
@@ -471,5 +480,17 @@
     <string name="error_isrequired">تکمیل این گزینه الزامی می باشد</string>
     <string name="email_password_invalid">ایمیل/رمز عبور نادرست است</string>
     <string name="coupon_label">کد تحفیف</string>
+    <string name="sub_categories">زیر مجموعه ها</string>
+    <string name="confirm_filter">ثبت</string>
+    <string name="recommendations"> پیشنهادهای بامیلو برای شما</string>
+    <string name="order_total">مبلغ کل: %s</string>
+    <string name="order_details">جزییات سفارش</string>
+    <string name="order_status_number_title">شماره سفارش:</string>
+    <string name="order_status_date_title">تاریخ سفارش:</string>
+    <string name="order_status_total_title">هزینه کل:</string>
+    <string name="order_status_quantity_title">تعداد کل:</string>
+    <string name="order_status_payment_title">روش پرداخت:</string>
+    <string name="order_items">جزییات کالا</string>
+    <string name="order_status_address_title">آدرس:</string>
 
 </resources>

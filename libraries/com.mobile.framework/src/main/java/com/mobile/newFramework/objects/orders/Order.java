@@ -10,6 +10,10 @@ import com.mobile.newFramework.pojo.RestConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author Paulo Carvalho
  */
@@ -45,6 +49,16 @@ public class Order implements IJSONSerializable, Parcelable {
 
     public String getDate() {
         return mDate;
+    }
+
+    public Date changemDateToDate(String date){
+        SimpleDateFormat conv = new SimpleDateFormat();
+        try {
+            return conv.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

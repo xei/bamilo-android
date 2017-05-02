@@ -17,6 +17,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.JumiaViewPagerWithZoom;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -25,6 +26,7 @@ import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.ProductImageGalleryActivity;
@@ -357,8 +359,9 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
             for (int i = 0; i < mImageList.size(); i++) {
                 View holder = inflater.inflate(R.layout.pdv_fragment_gallery_item, mThumbnailContainer, false);
                 View loading = holder.findViewById(R.id.loading_progress);
-                ImageView im = (ImageView) holder.findViewById(R.id.image);
-                RocketImageLoader.instance.loadImage(mImageList.get(i).getUrl(), im, loading, R.drawable.no_image_small);
+                ImageView image = (ImageView) holder.findViewById(R.id.image);
+                RocketImageLoader.instance.loadImage(mImageList.get(i).getUrl(), image, loading, R.drawable.no_image_small);
+                //ImageManager.getInstance().loadImage(this.getContext(), mImageList.get(i).getUrl(), image, loading, R.drawable.no_image_small);
                 holder.setTag(R.id.target_position, i);
                 holder.setOnClickListener(this);
                 mThumbnailContainer.addView(holder);

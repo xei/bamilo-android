@@ -23,6 +23,8 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 
 import java.util.ArrayList;
 
@@ -66,7 +68,6 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
         AddedItemStructure addItemStruct = new AddedItemStructure();
         addItemStruct.setPurchaseEntity(cart);
         baseResponse.getMetadata().setData(addItemStruct);
-
     }
 
 

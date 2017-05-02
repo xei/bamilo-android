@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -60,11 +61,11 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     public void onResume() {
         super.onResume();
         // Get and show form
-        if (mFormShipping != null && orderSummary != null && regions != null) {
+       /* if (mFormShipping != null && orderSummary != null && regions != null) {
             loadCreateAddressForm(mFormShipping);
         } else {
             triggerCreateAddressForm();
-        }
+        }*/
     }
 
     @Override
@@ -136,5 +137,10 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
             super.showUnexpectedErrorWarning();
         }
         showFragmentContentContainer();
+    }
+
+    @Override
+    public void onNothingSelected(IcsAdapterView<?> parent) {
+
     }
 }

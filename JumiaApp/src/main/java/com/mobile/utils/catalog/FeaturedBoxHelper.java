@@ -6,12 +6,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 
+import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FeaturedItemsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.FeaturedItem;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
@@ -19,6 +23,8 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.home.holder.HomeRecommendationsGridTeaserHolder;
+import com.mobile.utils.home.holder.HomeRecommendationsTeaserHolder;
 import com.mobile.utils.search.NoResSearchAdapter;
 import com.mobile.utils.search.SearchModel;
 import com.mobile.view.ExpandableHeightListView;
@@ -26,6 +32,7 @@ import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -42,7 +49,9 @@ public class FeaturedBoxHelper {
     private static final int ITEMS_PER_PAGE_PORTRAIT = 3;
     
     private static final int ITEMS_PER_PAGE_LANDSCAPE = 5;
-
+    static HomeRecommendationsTeaserHolder recommendationsTeaserHolder;
+    static LinearLayout RecommendationResult;
+    private static boolean recommendationsTeaserHolderAdded = false;
 
     private String mRichRelevanceHash ="";
 
@@ -71,37 +80,10 @@ public class FeaturedBoxHelper {
             // Notice message
             showNoticeMessage(view, featuredBox);
 
-            NoResSearchAdapter adapter = new NoResSearchAdapter(baseFragment.getContext(), searchGenerateData());
-            ExpandableHeightListView searchListView = (ExpandableHeightListView) view.findViewById(R.id.search_listview);
-            //ExpandedListView searchListView = (ExpandedListView) view.findViewById(R.id.search_listview);
-            searchListView.setAdapter(adapter);
-            searchListView.setExpanded(true);
-            searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    switch (position){
-                        case 1 :
-                            onClickBackToHome();
-                            break;
-                        case 2 :
-                            onClickNoSearchItem("","shop_in_shop::fashion-lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
-                        case 3 :
-                            onClickNoSearchItem("","shop_in_shop::health_beauty_personal_care_lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
-                        case 4 :
-                            onClickNoSearchItem("","shop_in_shop::smartphone_tablet_mobile_lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
-                        case 5 :
-                            onClickNoSearchItem("","shop_in_shop::electronic_accessories_lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
-                        case 6 :
-                            onClickNoSearchItem("","shop_in_shop::home_furniture_lifestyle_lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
 
-                    }
-                }
-            });
+            RecommendationResult = (LinearLayout) view.findViewById(R.id.recommendation_result);
+
+            sendRecommend(fragment);
 
             return true;
         } catch (NullPointerException e) {
@@ -110,6 +92,36 @@ public class FeaturedBoxHelper {
         }
     }
 
+    private static void sendRecommend(final BaseFragment fragment) {
+
+
+        RecommendManager recommendManager = new RecommendManager();
+        recommendManager.sendNoResultRecommend(JumiaApplication.INSTANCE.getSearchedTerm(), new RecommendListCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
+                LayoutInflater inflater = LayoutInflater.from(fragment.getBaseActivity());
+
+                if (recommendationsTeaserHolder == null ) {
+                    recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, RecommendationResult, false), null);
+                }
+                if (recommendationsTeaserHolder != null ) {
+
+                    RecommendationResult.removeView(recommendationsTeaserHolder.itemView);
+                    recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, RecommendationResult, false), null);
+
+                    recommendationsTeaserHolder.onBind(data);
+                    // Add to container
+
+                    RecommendationResult.addView(recommendationsTeaserHolder.itemView, RecommendationResult.getChildCount()-1);
+
+
+                    recommendationsTeaserHolderAdded = true;
+
+                }
+
+            }
+        });
+    }
 
     private static void onClickBackToHome(){
         // Get user id

@@ -41,6 +41,8 @@ public class TargetLink {
     public static final String STATIC_PAGE = "static_page";
     public static final String SHOP_IN_SHOP = "shop_in_shop";
     public static final String UNKNOWN = "unknown";
+    private boolean isSubCategoryFilter = false;
+
     @StringDef({PDV, CATALOG, CATALOG_CATEGORY, CATALOG_BRAND, CATALOG_SELLER, CAMPAIGN, STATIC_PAGE, SHOP_IN_SHOP, UNKNOWN})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Type {}
@@ -170,6 +172,10 @@ public class TargetLink {
             bundle = createCampaignBundle(mCampaignListener, mTitle, id, mOrigin);
         } else {
             bundle = createBundle(mTitle, id, mOrigin);
+        }
+        if (isSubCategoryFilter)
+        {
+            bundle.putBoolean(ConstantsIntentExtra.SUB_CATEGORY_FILTER, true);
         }
         Print.i(TAG, "TARGET LINK: TYPE:" + nextFragmentType + " TITLE:" + mTitle + " ID:" + id);
         // ##### Append data
@@ -322,6 +328,12 @@ public class TargetLink {
     @Nullable
     public static String getSkuFromSimple(@Nullable String simple){
         return TextUtils.isNotEmpty(simple) ? TextUtils.split(simple, SIMPLE_SKU_DELIMITER)[0] : null;
+    }
+
+    public TargetLink setIsSubCategoryFilter()
+    {
+        isSubCategoryFilter = true;
+        return this;
     }
 
 }

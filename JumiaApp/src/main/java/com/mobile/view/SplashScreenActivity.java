@@ -27,6 +27,8 @@ import com.mobile.helpers.configs.GetApiInfoHelper;
 import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.EmarsysMobileEngage;
+import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.configs.RedirectPage;
@@ -34,6 +36,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
+import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
@@ -46,6 +49,9 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.newrelic.agent.android.NewRelic;
+import com.pushwoosh.PushManager;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -84,13 +90,34 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());*/
+
+/*<<<<<<< HEAD
+        if (com.mobile.view.BuildConfig.BUILD_TYPE.compareTo("release") == 0) {
+            if (com.mobile.view.BuildConfig.FLAVOR.compareTo("live") == 0) {
+                NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
+                        .start(this);
+
+            }
+            if (com.mobile.view.BuildConfig.FLAVOR.compareTo("staging") == 0) {
+
+                    NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
+                            .withCrashReportingEnabled(false)
+                            .start(this);
+
+                    Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
+
+            }
+            //Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
+        }
+
+=======
+>>>>>>> 91988837b772ad475ef5213e9e17e9ad6163bfd5*/
         //Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
         // Disable Accengage rich push notifications
@@ -109,17 +136,16 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mErrorFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
         // Intercept event
         shouldHandleEvent = true;
+
         // Initialize application
         JumiaApplication.INSTANCE.init(initializationHandler);
 
-          /*  throw new RuntimeException("This is a crash");*/
-
-
+        // throw new RuntimeException("This is a crash");
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.FragmentActivity#onStart()
      */
     @Override
@@ -150,7 +176,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.FragmentActivity#onPause()
      */
     @Override
@@ -165,7 +191,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.FragmentActivity#onStop()
      */
     @Override
@@ -178,7 +204,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.FragmentActivity#onDestroy()
      */
     @Override
@@ -277,7 +303,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle
      * )
@@ -472,7 +498,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
@@ -586,10 +612,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (ShopSelector.isRtl()) {
             MaintenancePage.setMaintenancePageBamilo(getWindow().getDecorView(), this);
         } else {
-            MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, this);
+            //MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, this);
         }
     }
-    
+
     /*
      * ########### RETRY ###########
      */

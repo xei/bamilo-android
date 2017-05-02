@@ -40,17 +40,17 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.6.0'
     /** GOOGLE PLAY SERVICE **/
-    compile 'com.google.android.gms:play-services-analytics:7.5.0'
+    compile 'com.google.android.gms:play-services-analytics:10.0.1'
     /*compile "com.google.android.gms:play-services-analytics:$playServicesVersion"*/
-    compile "com.google.android.gms:play-services-location:$playServicesVersion"
-    compile "com.google.android.gms:play-services-ads:$playServicesVersion"
-    compile "com.google.android.gms:play-services-wearable:$playServicesVersion"
+    compile "com.google.android.gms:play-services-location:10.0.1"
+    compile "com.google.android.gms:play-services-ads:10.0.1"
+    compile "com.google.android.gms:play-services-wearable:10.0.1"
     /** SOCIALS **/
     // https://developers.facebook.com/docs/android
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     /** TRACKERS **/
     // http://mvnrepository.com/artifact/com.newrelic.agent.android
-    compile 'com.newrelic.agent.android:android-agent:5.5.0'
+    compile 'com.newrelic.agent.android:android-agent:5.11.0'
     // https://bintray.com/accengage/maven/A4SSDK/
     compile 'com.ad4screen.sdk:A4SSDK:3.3.0'
     // https://github.com/adjust/android_sdk
@@ -59,6 +59,12 @@ dependencies {
     compile 'net.hockeyapp.android:HockeySDK:3.6.0'
     /** ALGOLIA **/
     compile 'com.algolia:algoliasearch-android:2.6.0@aar'
+/**Pushwoosh**/
+    compile 'com.pushwoosh:pushwoosh:4.12.1'
+    compile 'com.google.android.gms:play-services-gcm:10.0.1'
+    compile 'com.google.android.gms:play-services-location:10.0.1'
+
+
     /** LOCAL **/
     compile fileTree(dir: 'libs', exclude: ['json.jar'], include: ['*.jar'])
     // https://bintray.com/accengage/maven/A4SSDK/

@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.photoview.PhotoView;
 import com.mobile.utils.photoview.PhotoViewAttacher;
@@ -29,11 +31,13 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     private final LayoutInflater mInflater;
     private boolean isZoomAvailable = false;
     private View primaryView;
+    private Context mContext;
 
     public GalleryPagerAdapter(Context context, ArrayList<ImageUrls> imageUrls, boolean zoomAvailable){
         mImageUrls = imageUrls;
         mInflater = LayoutInflater.from(context);
         isZoomAvailable = zoomAvailable;
+        mContext = context;
     }
 
     /*
@@ -113,12 +117,13 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
             final PhotoView imageView = (PhotoView) imageTeaserView.findViewById(R.id.image_view);
             //Log.i(TAG, "LOAD PHOTO: " + imageView.getId() + " " + imageUrl);
             RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
+            //ImageManager.getInstance().loadImage(this.mContext, imageUrl, imageView, progressBar, R.drawable.no_image_large);
         } else {
             final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
             //Log.i(TAG, "LOAD PDV PHOTO: " + imageView.getId() + " " + imageUrl);
             RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
+            //ImageManager.getInstance().loadImage(this.mContext, imageUrl, imageView, progressBar, R.drawable.no_image_large);
         }
-
     }
 
     /*

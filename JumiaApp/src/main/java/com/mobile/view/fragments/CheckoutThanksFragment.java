@@ -13,11 +13,17 @@ import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.components.recycler.VerticalSpaceItemDecoration;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
+import com.mobile.helpers.cart.CartHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.managers.TrackerManager;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -32,24 +38,32 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.home.holder.RichRelevanceAdapter;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
+import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
+import com.pushwoosh.PushManager;
+import com.pushwoosh.SendPushTagsCallBack;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author sergiopereira
- * 
+ *
  */
 public class CheckoutThanksFragment extends BaseFragment implements IResponseCallback, TargetLink.OnAppendDataListener {
 
     private static final String TAG = CheckoutThanksFragment.class.getSimpleName();
 
     private String mOrderShipping;
-    
+
     private String mOrderTax;
-    
+
     private String mPaymentMethod;
 
     private double mGrandTotalValue;
@@ -63,6 +77,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private String mRelatedRichRelevanceHash;
 
     private static final int ITEMS_MARGIN = 6;
+    RecommendManager recommendManager;
 
     /**
      * Empty constructor
@@ -98,6 +113,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 mRichRelevance = getArguments().getParcelable(RestConstants.RECOMMENDED_PRODUCTS);
             }
         }
+        recommendManager = new RecommendManager();
+
     }
 
     @Override
@@ -155,6 +172,15 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Track purchase
         PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
         TrackerDelegator.trackPurchaseInCheckoutThanks(cart, mOrderNumber, mGrandTotalValue, mOrderShipping, mOrderTax, mPaymentMethod);
+        ArrayList<PurchaseCartItem> carts=  cart.getCartItems();
+        String categories = "";
+        for(PurchaseCartItem cat : carts) {
+            categories += cat.getCategories();
+        }
+        TrackerManager.postEvent(getBaseActivity(), EventConstants.Purchase, EventFactory.purchase(categories, (long)cart.getTotal(), true));
+
+        //sendRecommend();
+
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
         ImageView imageSuccess = (ImageView) view.findViewById(R.id.success_image);
@@ -166,13 +192,37 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         setRelatedItems();
         // Clean cart
         triggerClearCart();
+
+        recommendManager.sendPurchaseRecommend();
         JumiaApplication.INSTANCE.setCart(null);
+
         // Update cart info
         getBaseActivity().updateCartInfo();
         // Continue button
         view.findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
         // Add a link to order status
         setOrderStatusLink(view, mOrderNumber);
+        PushwooshCounter.setPurchaseCount();
+        HashMap<String, Object> open_count = new HashMap<>();
+        open_count.put("PurchaseCount",PushwooshCounter.getPurchaseCount());
+        SendPushTagsCallBack callBack = new SendPushTagsCallBack() {
+            @Override
+            public void taskStarted() {
+
+            }
+
+            @Override
+            public void onSentTagsSuccess(Map<String, String> map) {
+                Print.d(TAG, "PurchaseCount app callback is"+map);
+            }
+
+            @Override
+            public void onSentTagsError(Exception e) {
+
+            }
+        };
+        PushManager.sendTags(getBaseActivity(),open_count,callBack);
+
     }
 
     /**
@@ -213,7 +263,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     /**
      * Set the link into a string to order status
-     * 
+     *
      * @author sergiopereira
      * @see <href=http://www.chrisumbel.com/article/android_textview_rich_text_spannablestring>
      *      SpannableString</href>
@@ -268,7 +318,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
@@ -286,9 +336,9 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         else {
             goToProduct(view);
         }
-        
+
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
@@ -298,7 +348,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         super.onClickRetryButton(view);
         onClickRetryButton();
     }
-    
+
     /**
      * Process the click on retry button.
      * @author paulo
@@ -323,7 +373,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#allowBackPressed()
      */
     @Override

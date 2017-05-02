@@ -82,7 +82,23 @@ public class CheckoutStepManager {
                 FragmentType.CHECKOUT_SHIPPING.toString(),
                 FragmentType.CHECKOUT_PAYMENT.toString(),
                 FragmentType.CHECKOUT_FINISH.toString(),
-                FragmentType.CHECKOUT_THANKS.toString()
+                FragmentType.CHECKOUT_THANKS.toString(),
+                FragmentType.CHECKOUT_CONFIRMATION.toString()
+        };
+    }
+
+    public static String[] getAllNativeCheckoutAndCart() {
+        return new String[]{
+                FragmentType.LOGIN.toString(),
+                FragmentType.CHECKOUT_MY_ADDRESSES.toString(),
+                FragmentType.CHECKOUT_CREATE_ADDRESS.toString(),
+                FragmentType.CHECKOUT_EDIT_ADDRESS.toString(),
+                FragmentType.CHECKOUT_SHIPPING.toString(),
+                FragmentType.CHECKOUT_PAYMENT.toString(),
+                FragmentType.CHECKOUT_FINISH.toString(),
+                FragmentType.CHECKOUT_THANKS.toString(),
+                FragmentType.CHECKOUT_CONFIRMATION.toString(),
+                FragmentType.SHOPPING_CART.toString()
         };
     }
 

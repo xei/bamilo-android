@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
-<resources>
-
-    <dimen name="checkout_header_height">38dp</dimen>    
-</resources>

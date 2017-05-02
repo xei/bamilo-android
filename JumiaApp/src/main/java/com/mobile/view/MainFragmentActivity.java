@@ -1,20 +1,29 @@
 package com.mobile.view;
 
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.mobile.app.DebugActivity;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
+import com.mobile.libraries.emarsys.EmarsysMobileEngage;
+import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -22,16 +31,17 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
+import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
-import com.mobile.view.fragments.CheckoutAddressesFragment;
 import com.mobile.view.fragments.CheckoutConfirmationFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
 import com.mobile.view.fragments.CheckoutExternalPaymentFragment;
 import com.mobile.view.fragments.CheckoutFinishFragment;
-import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
@@ -57,9 +67,7 @@ import com.mobile.view.fragments.ReviewWriteFragment;
 import com.mobile.view.fragments.ReviewsFragment;
 import com.mobile.view.fragments.SessionForgotPasswordFragment;
 import com.mobile.view.fragments.SessionLoginEmailFragment;
-import com.mobile.view.fragments.SessionLoginMainFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
-import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.StaticPageFragment;
 import com.mobile.view.fragments.StaticWebViewPageFragment;
 import com.mobile.view.fragments.VariationsFragment;
@@ -69,24 +77,35 @@ import com.mobile.view.fragments.order.OrderReturnCallFragment;
 import com.mobile.view.fragments.order.OrderReturnConditionsFragment;
 import com.mobile.view.fragments.order.OrderReturnStepsMain;
 import com.mobile.view.fragments.order.OrderStatusFragment;
-import com.mobile.view.newfragments.NewBaseFragment;
 import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
 import com.mobile.view.newfragments.NewCheckoutPaymentMethodsFragment;
 import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
 import com.mobile.view.newfragments.NewSessionLoginMainFragment;
 import com.mobile.view.newfragments.NewShoppingCartFragment;
+import com.mobile.view.newfragments.SubCategoryFilterFragment;
+import com.pushwoosh.BasePushMessageReceiver;
+import com.pushwoosh.BaseRegistrationReceiver;
+import com.pushwoosh.PushManager;
+import com.pushwoosh.SendPushTagsCallBack;
+import com.pushwoosh.fragment.PushEventListener;
+import com.pushwoosh.fragment.PushFragment;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author sergiopereira
  */
 @UseA4S
-public class MainFragmentActivity extends DebugActivity {
+public class MainFragmentActivity extends DebugActivity implements PushEventListener {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
+    private EventFactory.OpenAppEventSourceType mAppOpenSource;
 
     private BaseFragment fragment;
     //DROID-63 private NewBaseFragment newFragment;
@@ -103,17 +122,137 @@ public class MainFragmentActivity extends DebugActivity {
         super(NavigationAction.UNKNOWN, EnumSet.noneOf(MyMenuItem.class), IntConstants.ACTION_BAR_NO_TITLE);
     }
 
+    //Registration receiver
+    BroadcastReceiver mBroadcastReceiver = new BaseRegistrationReceiver() {
+        @Override
+        public void onRegisterActionReceive(Context context, Intent intent) {
+            checkMessage(intent);
+        }
+    };
+
+    //Push message receiver
+    private BroadcastReceiver mReceiver = new BasePushMessageReceiver() {
+        @Override
+        protected void onMessageReceive(Intent intent) {
+        //JSON_DATA_KEY contains JSON payload of push notification.
+            checkMessage(intent);
+            showMessage("push message is " + intent.getExtras().getString(JSON_DATA_KEY));
+        }
+    };
+
+    //Registration of the receivers
+    public void registerReceivers() {
+        IntentFilter intentFilter = new IntentFilter(getPackageName() + ".action.PUSH_MESSAGE_RECEIVE");
+        registerReceiver(mReceiver, intentFilter, getPackageName() + ".permission.C2D_MESSAGE", null);
+        registerReceiver(mBroadcastReceiver, new IntentFilter(getPackageName() + "." + PushManager.REGISTER_BROAD_CAST_ACTION));
+    }
+
+    public void unregisterReceivers() {
+//Unregister receivers on pause
+        try {
+            unregisterReceiver(mReceiver);
+        } catch (Exception e) {
+// pass.
+        }
+        try {
+            unregisterReceiver(mBroadcastReceiver);
+        } catch (Exception e) {
+//pass through
+        }
+    }
+
+    private void checkMessage(Intent intent) {
+        if (null != intent) {
+            if (intent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
+                showMessage("push message is " + intent.getExtras().getString(PushManager.PUSH_RECEIVE_EVENT));
+                TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION));
+                mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION;
+            } else if (intent.hasExtra(PushManager.REGISTER_EVENT)) {
+                showMessage("register");
+            } else if (intent.hasExtra(PushManager.UNREGISTER_EVENT)) {
+                showMessage("unregister");
+            } else if (intent.hasExtra(PushManager.REGISTER_ERROR_EVENT)) {
+                showMessage("register error");
+            } else if (intent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
+                showMessage("unregister error");
+            }
+            else if(intent.hasExtra(PushManager.REGISTER_BROAD_CAST_ACTION)) {
+                showMessage("REGISTER_BROAD_CAST_ACTION");
+            }
+            resetIntentValues();
+        }
+    }
+
+    private void resetIntentValues() {
+        Intent mainAppIntent = getIntent();
+        if (mainAppIntent != null) {
+            if (mainAppIntent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
+                mainAppIntent.removeExtra(PushManager.PUSH_RECEIVE_EVENT);
+            } else if (mainAppIntent.hasExtra(PushManager.REGISTER_EVENT)) {
+                mainAppIntent.removeExtra(PushManager.REGISTER_EVENT);
+            } else if (mainAppIntent.hasExtra(PushManager.UNREGISTER_EVENT)) {
+                mainAppIntent.removeExtra(PushManager.UNREGISTER_EVENT);
+            } else if (mainAppIntent.hasExtra(PushManager.REGISTER_ERROR_EVENT)) {
+                mainAppIntent.removeExtra(PushManager.REGISTER_ERROR_EVENT);
+            } else if (mainAppIntent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
+                mainAppIntent.removeExtra(PushManager.UNREGISTER_ERROR_EVENT);
+            }
+            setIntent(mainAppIntent);
+        }
+    }
+
+    private void showMessage(String message) {
+        Log.i("AndroidBash", message);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        checkMessage(intent);
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.utils.MyActivity#onCreate(android.os.Bundle)
      */
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.d(TAG, "ON CREATE");
         // Enable Accengage rich push notifications
+
+        //Init Pushwoosh fragment
+        PushFragment.init(this);
+
+        //Pushwoosh Begin Register receivers for push notifications
+        registerReceivers();
+//Create and start push manager
+        PushManager pushManager = PushManager.getInstance(this);//Start push manager, this will count app open for Pushwoosh stats as well
+        try {
+            pushManager.onStartup(this);
+        } catch (Exception e) {
+//push notifications are not available or AndroidManifest.xml is not configured properly
+        }
+//Register for push!
+        pushManager.registerForPushNotifications();
+        checkMessage(getIntent());
+ //PushwooshEnd in onCreate
         Ad4PushTracker.get().setPushNotificationLocked(false);
+
+        //Emarsys
+        EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
+            @Override
+            public void EmarsysMobileEngageResponse(boolean success) {
+            }
+        };
+        EmarsysMobileEngage.getInstance(this).sendLogin(PushManager.getPushToken(this), emarsysMobileEngageResponse);
+        // End of Emarsys
+
         // ON ORIENTATION CHANGE
         if (savedInstanceState == null) {
             Print.d(TAG, "################### SAVED INSTANCE IS NULL");
@@ -122,8 +261,10 @@ public class MainFragmentActivity extends DebugActivity {
             // Case invalid deep link goto HOME else goto deep link
             if (!DeepLinkManager.onSwitchToDeepLink(this, getIntent())) {
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK));
+                mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
             }
-
         } else {
             mCurrentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
             Print.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType);
@@ -141,6 +282,11 @@ public class MainFragmentActivity extends DebugActivity {
             }
         }
 
+        Fabric.with(this, new Crashlytics());
+
+        TrackerManager.addEventTracker("EmarsysTracker", EmarsysTracker.getInstance());
+        TrackerManager.addEventTracker("PushWooshTracker", PushWooshTracker.getInstance());
+
         /*
          * Used for on back pressed
          */
@@ -153,17 +299,25 @@ public class MainFragmentActivity extends DebugActivity {
     /*
      * (non-Javadoc)
      * For 4DS - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
-     * 
+     *
      * @see com.mobile.utils.BaseActivity#onNewIntent(android.content.Intent)
      */
-    @Override
+/*    @Override
     protected void onNewIntent(Intent intent) {
+
         Print.d(TAG, "ON NEW INTENT");
-        // For AD4 - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
+       *//*
+        // For AD4 - http://wiki.accengage.com/*//*android/doku.php?id=sub-classing-any-activity-type
         this.setIntent(intent);
         // Validate deep link
         DeepLinkManager.onSwitchToDeepLink(this, intent);
-    }
+*//*
+        super.onNewIntent(intent);
+
+        //Check if we've got new intent with a push notification
+        PushFragment.onNewIntent(this ,intent);
+    }*/
+
 
     /*
      * (non-Javadoc)
@@ -174,17 +328,46 @@ public class MainFragmentActivity extends DebugActivity {
     public void onResume() {
         super.onResume();
         Print.d(TAG, "ON RESUME");
+        registerReceivers();
+        SendPushTagsCallBack callBack = new SendPushTagsCallBack() {
+            @Override
+            public void taskStarted() {
+
+            }
+
+            @Override
+            public void onSentTagsSuccess(Map<String, String> map) {
+                Print.d(TAG, "callback is" + map);
+            }
+
+            @Override
+            public void onSentTagsError(Exception e) {
+
+            }
+        };
+
+        PushwooshCounter.setAppOpenCount();
+        HashMap<String, Object> open_count = new HashMap<>();
+        open_count.put("AppOpenCount", PushwooshCounter.getAppOpenCount());
+        PushManager.sendTags(MainFragmentActivity.this, open_count, callBack);
+
+        if(mAppOpenSource != EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION && mAppOpenSource != EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
+            TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT));
+        }
+        mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_NONE;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.utils.BaseActivity#onPause()
      */
     @Override
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
+        //PushWooshTracker.openApp(,true);
+        unregisterReceivers();
     }
 
     /*
@@ -199,7 +382,7 @@ public class MainFragmentActivity extends DebugActivity {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.utils.BaseActivity#onDestroy()
      */
     @Override
@@ -275,6 +458,11 @@ public class MainFragmentActivity extends DebugActivity {
                     removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 }
+
+                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.SUB_CATEGORY_FILTER)) {
+                    removeEntries = false;
+                }
+
                 // Put the target type
                 bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
                 // Create instance
@@ -289,7 +477,8 @@ public class MainFragmentActivity extends DebugActivity {
                 type = FragmentType.getUniqueIdentifier(type, fragment);
                 break;
             case PRODUCT_INFO:
-                fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);break;
+                fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);
+                break;
             case PRODUCT_GALLERY:
                 fragment = newFragmentInstance(ProductImageGalleryFragment.class, bundle);
                 break;
@@ -418,6 +607,9 @@ public class MainFragmentActivity extends DebugActivity {
             case FILTERS:
                 fragment = newFragmentInstance(FilterMainFragment.class, bundle);
                 break;
+            case Sub_CATEGORY_FILTERS:
+                fragment = newFragmentInstance(SubCategoryFilterFragment.class, bundle);
+                break;
             case VARIATIONS:
                 fragment = newFragmentInstance(VariationsFragment.class, bundle);
                 break;
@@ -433,7 +625,7 @@ public class MainFragmentActivity extends DebugActivity {
                 return;
         }
         // Clear search term
-        if(type != FragmentType.CATALOG && type != FragmentType.FILTERS)
+        if (type != FragmentType.CATALOG && type != FragmentType.FILTERS)
             JumiaApplication.INSTANCE.setSearchedTerm("");
 
         // Validate menu flag and pop entries until home
@@ -462,7 +654,7 @@ public class MainFragmentActivity extends DebugActivity {
     /**
      * Create new fragment
      */
-    private  BaseFragment newFragmentInstance(@NonNull Class<? extends BaseFragment> fragmentClass, @Nullable Bundle arguments) {
+    private BaseFragment newFragmentInstance(@NonNull Class<? extends BaseFragment> fragmentClass, @Nullable Bundle arguments) {
         return BaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
     }
 
@@ -475,6 +667,7 @@ public class MainFragmentActivity extends DebugActivity {
     /**
      * Fragment communication.<br>
      * The FragmentManager has some issues to get fragment with the same tag.<br>
+     *
      * @author spereira
      */
     @Override
@@ -489,7 +682,7 @@ public class MainFragmentActivity extends DebugActivity {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.utils.MyActivity#onBackPressed()
      */
     @Override
@@ -598,6 +791,30 @@ public class MainFragmentActivity extends DebugActivity {
         return isInMaintenance;
     }
 
+    @Override
+    public void doOnRegistered(String registrationId) {
+        Log.i(TAG, "Registered for pushes: " + registrationId);
+    }
+
+    @Override
+    public void doOnRegisteredError(String errorId) {
+        Log.e(TAG, "Failed to register for pushes: " + errorId);
+    }
+
+    @Override
+    public void doOnMessageReceive(String message) {
+        Log.i(TAG, "Notification opened: " + message);
+    }
+
+    @Override
+    public void doOnUnregistered(final String message) {
+        Log.i(TAG, "Unregistered from pushes: " + message);
+    }
+
+    @Override
+    public void doOnUnregisteredError(String errorId) {
+        Log.e(TAG, "Failed to unregister from pushes: " + errorId);
+    }
 
 
 }

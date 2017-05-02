@@ -3,12 +3,20 @@ package com.mobile.controllers;
 import android.support.annotation.NonNull;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.constants.EventConstants;
+import com.mobile.factories.EventFactory;
 import com.mobile.helpers.session.GetLogoutHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.view.BaseActivity;
+import com.newrelic.agent.android.harvest.Event;
 
 import java.lang.ref.WeakReference;
 
@@ -32,20 +40,30 @@ public class LogOut {
      * Performs the Logout
      */
     public static void perform(@NonNull final WeakReference<BaseActivity> activityRef) {
-        BaseActivity baseActivity = activityRef.get();
+        final BaseActivity baseActivity = activityRef.get();
         if (baseActivity != null) {
             // Show progress
             baseActivity.showProgress();
             // Try notify mob api
-            JumiaApplication.INSTANCE.sendRequest(new GetLogoutHelper(), null, null);
-            // Clean customer data
-            cleanCustomerData(baseActivity);
-            // Inform activity to update views
-            try {
-                baseActivity.onLogOut();
-            } catch (IllegalStateException e){
-                e.printStackTrace();
-            }
+            JumiaApplication.INSTANCE.sendRequest(new GetLogoutHelper(), null, new IResponseCallback() {
+                @Override
+                public void onRequestComplete(BaseResponse baseResponse) {
+                    // Clean customer data
+                    cleanCustomerData(baseActivity);
+                    // Inform activity to update views
+                    try {
+                        baseActivity.onLogOut();
+                        TrackerManager.postEvent(baseActivity, EventConstants.Logout, EventFactory.logout(true));
+                    } catch (IllegalStateException e){
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onRequestError(BaseResponse baseResponse) {
+                    TrackerManager.postEvent(baseActivity, EventConstants.Logout, EventFactory.logout(false));
+                }
+            });
         }
     }
 

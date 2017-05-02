@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.emarsys.predict.RecommendedItem;
 import com.google.android.gms.analytics.ecommerce.Product;
 import com.mobile.adapters.AddressAdapter;
 import com.mobile.adapters.CartItemAdapter;
@@ -31,8 +32,10 @@ import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.cart.ShoppingCartAddMultipleItemsHelper;
 import com.mobile.helpers.cart.ShoppingCartChangeItemQuantityHelper;
@@ -42,6 +45,11 @@ import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.recommended.Item;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
@@ -69,6 +77,7 @@ import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -127,6 +136,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 
     View mClickedFavourite;
     private AppBarLayout.LayoutParams  startParams;
+    //RecommendManager recommendManager;
 
     /**
      * Empty constructor
@@ -164,6 +174,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 */
 
         selectedPosition = 0;
+        //recommendManager = new RecommendManager();
     }
 
     @Override
@@ -387,6 +398,9 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      */
     private void onClickCheckoutButton() {
 
+        //recommendManager.sendPurchaseRecommend();
+        //sendRecommend();
+
         if (items != null && items.size() > 0) {
             TrackerDelegator.trackCheckout(items);
             Bundle bundle = new Bundle();
@@ -446,6 +460,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     public void triggerChangeItemQuantityInShoppingCart(int position, int quantity) {
         PurchaseCartItem item = items.get(position);
         TrackerDelegator.trackAddToCartGTM(item, quantity, mItemRemovedCartValue);
+        TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(item.getSku(), (long) JumiaApplication.INSTANCE.getCart().getTotal(), true));
         item.setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();
@@ -644,6 +659,19 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         mGABeginRequestMillis = System.currentTimeMillis();
     }
 
+    /*private void sendRecommend() {
+        *//*recommendedAdapter.clear();
+        recommendedAdapter.notifyDataSetChanged();
+        recyclerView.invalidate();*//*
+
+        recommendManager.sendCartRecommend(new RecommendListCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+
+            }
+        });
+
+    }*/
 
     /**
      * Display shopping cart info
@@ -651,7 +679,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     private void displayShoppingCart(PurchaseEntity cart) {
         Print.d(TAG, "displayShoppingCart");
         // Case invalid cart
-
         if (cart == null || CollectionUtils.isEmpty(cart.getCartItems())) {
             showNoItems();
             return;
@@ -661,6 +688,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
             return;
         }
+
         // Case valid state
         items = cart.getCartItems();
         mCartItemsCount = items.size();

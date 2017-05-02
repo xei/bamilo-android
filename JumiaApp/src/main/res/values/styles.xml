@@ -313,4 +313,8 @@
     </style>
 
     <color name="register_font_color">#000000</color>
+
+    <style name="BlueSwitchStyle">
+        <item name="colorControlActivated">@color/blue_new</item>
+    </style>
 </resources>

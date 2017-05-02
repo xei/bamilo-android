@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.mobile.framework.BuildConfig;
 import com.mobile.framework.R;
 import com.mobile.newFramework.utils.output.Print;
 import com.newrelic.agent.android.NewRelic;
@@ -34,7 +35,8 @@ public class NewRelicTracker extends AbcBaseTracker {
         // Validate context
         if (context != null) {
             Print.i(TAG, "ON INIT NEW RELIC");
-            NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).start(context);
+
+            //NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).start(context);
         }
     }
 
