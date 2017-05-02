@@ -555,7 +555,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 postal_spinner.setVisibility(View.VISIBLE);
             }
             else {
-                postal_spinner.setVisibility(View.GONE);
+                //postal_spinner.setVisibility(View.GONE);
             }
 
         }
@@ -660,9 +660,12 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             // Case list
             if (field != null && FormInputType.list == field.getInputType()) {
                 // Request the postal codes for this city id
+                int oldCity = city;
                 city = ((AddressCity) object).getValue();
                 // Get postal codes
-                postcode = 0;
+                if (city != oldCity) {
+                    postcode = 0;
+                }
                 triggerGetPostalCodes(field.getApiCall(), city);
 
 
