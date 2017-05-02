@@ -3,6 +3,7 @@ package com.mobile.app;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,6 +37,7 @@ import com.mobile.newFramework.utils.ImageResolutionHelper;
 import com.mobile.newFramework.utils.SingletonMap;
 import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
@@ -104,6 +106,8 @@ public class JumiaApplication extends Application {
         countriesAvailable = new ArrayList<>();
         setCart(null);
 
+        //ShopSelector.setLocaleOnOrientationChanged();
+
         Session.initialize(new AndroidStorage(this));
 
         Session session = Session.getInstance();
@@ -151,6 +155,12 @@ public class JumiaApplication extends Application {
         CheckVersion.init(getApplicationContext());
         //
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        ShopSelector.setLocaleOnOrientationChanged(getApplicationContext());
     }
 
     public synchronized void handleEvent(@ErrorCode.Code int errorType, EventType eventType, Handler initializationHandler) {
