@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.objects.product.pojo.ProductBase;
@@ -152,7 +152,7 @@ public class UIProductUtils {
      */
     public static void showAddToCartCompleteMessage(@NonNull BaseFragment fragment, @NonNull BaseResponse baseResponse, @NonNull EventType eventType) {
         boolean isToShowCartPopUp = CountryPersistentConfigs.hasCartPopup(fragment.getBaseActivity().getApplicationContext());
-        PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
+        PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
         if (isToShowCartPopUp && cart != null && cart.getTotal() > 0) {
             fragment.getBaseActivity().mConfirmationCartMessageView.showMessage(cart.getTotal());
         } else {

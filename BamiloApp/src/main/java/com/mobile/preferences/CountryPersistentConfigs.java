@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.newFramework.Darwin;
@@ -71,7 +71,7 @@ public class CountryPersistentConfigs {
      */
     public static void newConfigurations(@NonNull CountryConfigs configs) {
         // Case available/supported country save configs
-        Context context = JumiaApplication.INSTANCE.getApplicationContext();
+        Context context = BamiloApplication.INSTANCE.getApplicationContext();
         // Validate country languages
         if (!CountryPersistentConfigs.hasLanguages(context)) {
             ChooseLanguageController.setLanguageBasedOnDevice(configs.getLanguages(), configs.getCurrencyIso());

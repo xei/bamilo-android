@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
@@ -36,7 +36,7 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
 
     @Override
     protected String getEndPoint(Bundle args) {
-        return JumiaApplication.INSTANCE.getApplicationContext().getString(R.string.countries_url);
+        return BamiloApplication.INSTANCE.getApplicationContext().getString(R.string.countries_url);
     }
 
     @Override
@@ -51,21 +51,21 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
 
         //TODO move to observable
         // Gets the previous Countries list
-        JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
-        Print.i(TAG, "COUNTRIES SIZE IN MEM: " + JumiaApplication.INSTANCE.countriesAvailable.size());
+        BamiloApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
+        Print.i(TAG, "COUNTRIES SIZE IN MEM: " + BamiloApplication.INSTANCE.countriesAvailable.size());
         // deletes the old entries
         CountriesConfigsTableHelper.deleteAllCountriesConfigs();
         // Validate available countries
         if (CollectionUtils.isNotEmpty(availableCountries)) {
-            JumiaApplication.INSTANCE.countriesAvailable = availableCountries;
+            BamiloApplication.INSTANCE.countriesAvailable = availableCountries;
             CountriesConfigsTableHelper.insertCountriesConfigs(availableCountries);
             Print.i(TAG, "INSERT INTO DB FROM JSON");
-        } else if (CollectionUtils.isNotEmpty(JumiaApplication.INSTANCE.countriesAvailable)) {
+        } else if (CollectionUtils.isNotEmpty(BamiloApplication.INSTANCE.countriesAvailable)) {
             Print.i(TAG, "INSERT INTO DB FROM MEM");
-            CountriesConfigsTableHelper.insertCountriesConfigs(JumiaApplication.INSTANCE.countriesAvailable);
+            CountriesConfigsTableHelper.insertCountriesConfigs(BamiloApplication.INSTANCE.countriesAvailable);
         }
 
-        SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs =  BamiloApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Editor mEditor = sharedPrefs.edit();
         mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
         mEditor.apply();
@@ -78,10 +78,10 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
         super.postError(baseResponse);
 
         //TODO move to observable
-        JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
-        ArrayList<CountryObject> mCountries = JumiaApplication.INSTANCE.countriesAvailable;
+        BamiloApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
+        ArrayList<CountryObject> mCountries = BamiloApplication.INSTANCE.countriesAvailable;
         if(CollectionUtils.isNotEmpty(mCountries)){
-            SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs =  BamiloApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor mEditor = sharedPrefs.edit();
             mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
             mEditor.apply();

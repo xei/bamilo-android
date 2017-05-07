@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -241,7 +241,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         Print.d(TAG, "SIMLPE SKU:" + sku + " PRICE:" + price);
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
         TrackerDelegator.trackAddOfferToCart(sku, price);
-        TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, (long) JumiaApplication.INSTANCE.getCart().getTotal(), true));
+        TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
     }
     
     /*

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Languages;
@@ -43,8 +43,8 @@ public class ChooseLanguageController {
             public void onDialogListItemSelect(int position, String value) {
                 if(defaultPosition != position) {
                     languages.setSelected(position);
-                    CountryPersistentConfigs.saveLanguages(JumiaApplication.INSTANCE.getApplicationContext(), languages);
-                    JumiaApplication.INSTANCE.cleanAllPreviousLanguageValues();
+                    CountryPersistentConfigs.saveLanguages(BamiloApplication.INSTANCE.getApplicationContext(), languages);
+                    BamiloApplication.INSTANCE.cleanAllPreviousLanguageValues();
                     if (runnable != null) {
                         runnable.run();
                     }

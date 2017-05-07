@@ -1,6 +1,6 @@
 package com.mobile.helpers.checkout;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -31,7 +31,7 @@ public class GetStepFinishHelper extends SuperBaseHelper {
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
-        JumiaApplication.INSTANCE.setCart(cart);
+        BamiloApplication.INSTANCE.setCart(cart);
     }
 
 }

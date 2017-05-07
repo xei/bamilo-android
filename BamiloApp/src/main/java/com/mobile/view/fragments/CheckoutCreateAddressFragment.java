@@ -3,7 +3,7 @@ package com.mobile.view.fragments;
 import android.os.Bundle;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -80,7 +80,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     @Override
     protected void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        if (null != JumiaApplication.CUSTOMER) {
+        if (null != BamiloApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {

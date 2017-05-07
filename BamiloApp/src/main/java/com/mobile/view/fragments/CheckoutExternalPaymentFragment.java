@@ -18,7 +18,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -265,8 +265,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         }
         Print.d(TAG, "Loading Url: " + paymentUrl);
         // Track
-        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-        String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
+        String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "";
+        String email = BamiloApplication.INSTANCE.getCustomerUtils().getEmail();
         String payment = mPaymentSubmitted.getName();
         TrackerDelegator.trackPaymentMethod(userId, email, payment);
 
@@ -479,7 +479,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 showWarningErrorMessage(getString(R.string.ssl_error_generic));
             }
             // Case in dev continue
-            if (JumiaApplication.INSTANCE.isDebuggable()) {
+            if (BamiloApplication.INSTANCE.isDebuggable()) {
                 handler.proceed();
             } else {
                 String url = view.getUrl();
@@ -554,7 +554,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         switch (eventType) {
             case GET_CUSTOMER:
                 customer = (Customer)baseResponse.getContentData();
-                JumiaApplication.CUSTOMER = customer;
+                BamiloApplication.CUSTOMER = customer;
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:
                 break;
@@ -571,7 +571,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
-        if (null != JumiaApplication.CUSTOMER) {
+        if (null != BamiloApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {

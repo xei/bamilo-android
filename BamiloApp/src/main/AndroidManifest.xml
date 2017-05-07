@@ -108,7 +108,7 @@
     <!-- ############# Application ############## -->
     <!-- ######################################## -->
     <application
-        android:name="com.mobile.app.JumiaApplication"
+        android:name="com.mobile.app.BamiloApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

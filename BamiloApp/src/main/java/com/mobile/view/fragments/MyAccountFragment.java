@@ -8,7 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
@@ -338,7 +338,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
                     text = preText + " " + getString(R.string.share_app_link);
                 }
                 ActivitiesWorkFlow.startActivitySendString(getBaseActivity(), getString(R.string.share_the_app), text);
-                AnalyticsGoogle.get().trackShareApp(TrackingEvent.SHARE_APP, (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId() + "" : "");
+                AnalyticsGoogle.get().trackShareApp(TrackingEvent.SHARE_APP, (BamiloApplication.CUSTOMER != null) ? BamiloApplication.CUSTOMER.getId() + "" : "");
             break;
             case POSITION_RATE_APP:
                 goToMarketPage();

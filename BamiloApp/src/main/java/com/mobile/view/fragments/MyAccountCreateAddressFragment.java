@@ -3,7 +3,7 @@ package com.mobile.view.fragments;
 import android.os.Bundle;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
@@ -90,7 +90,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     protected void onCreateAddressSuccessEvent(BaseResponse baseResponse) {
         super.onCreateAddressSuccessEvent(baseResponse);
         AnalyticsGoogle.get().trackAddressCreation(TrackingEvent.ACCOUNT_CREATE_ADDRESS,
-                (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() + "" : ""); //replaced getID because doesn't come from api
+                (BamiloApplication.CUSTOMER != null) ? BamiloApplication.CUSTOMER.getIdAsString() + "" : ""); //replaced getID because doesn't come from api
 
         FragmentController.getInstance().popLastEntry(FragmentType.MY_ACCOUNT_CREATE_ADDRESS.toString());
         getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);

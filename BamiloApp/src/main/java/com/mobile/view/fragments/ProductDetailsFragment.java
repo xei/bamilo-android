@@ -18,7 +18,7 @@ import android.widget.ScrollView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.ExpandedGridViewComponent;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
@@ -239,7 +239,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if(args != null) {
             if(args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)){
                 ProductComplete mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
-                if(JumiaApplication.isCustomerLoggedIn() && mClicked != null){
+                if(BamiloApplication.isCustomerLoggedIn() && mClicked != null){
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
                     TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToFavorites, EventFactory.addToFavorites(mClicked.getCategoryKey(), true));
@@ -248,7 +248,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
             else if(args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)){
                 ProductComplete mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
-                if(JumiaApplication.isCustomerLoggedIn() && mClicked != null){
+                if(BamiloApplication.isCustomerLoggedIn() && mClicked != null){
                     triggerRemoveFromWishList(mClicked.getSku());
                     TrackerDelegator.trackRemoveFromFavorites(mClicked);
                 }
@@ -961,7 +961,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Tracking
             TrackerDelegator.trackProductAddedToCart(mProduct, mGroupType);
             try {
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)JumiaApplication.INSTANCE.getCart().getTotal(), true));
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)BamiloApplication.INSTANCE.getCart().getTotal(), true));
             } catch (Exception e) {
                 TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), 0, true));
             }
@@ -984,7 +984,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void onClickWishListButton(View view) {
         // Validate customer is logged in
-        if (JumiaApplication.isCustomerLoggedIn()) {
+        if (BamiloApplication.isCustomerLoggedIn()) {
             try {
                 // Get item
                 if (view.isSelected()) {
@@ -1019,7 +1019,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void onClickSaveForLateButton(View view) {
         // Validate customer is logged in
-        if (JumiaApplication.isCustomerLoggedIn()) {
+        if (BamiloApplication.isCustomerLoggedIn()) {
             try {
                 // if view is selected it means that the product is currently on the saved list and user want to remove it
                 if (view.isSelected()) {

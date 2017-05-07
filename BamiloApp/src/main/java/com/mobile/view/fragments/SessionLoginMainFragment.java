@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.util.Patterns;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.FacebookTextView;
 import com.mobile.components.customfontviews.TextView;
@@ -171,7 +171,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         // Validate if there was an error related to facebook
         validateFacebookNetworkError();
         // Case auto login
-        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+        if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
             triggerAutoLogin();
         }
         // Case resume from facebook dialog

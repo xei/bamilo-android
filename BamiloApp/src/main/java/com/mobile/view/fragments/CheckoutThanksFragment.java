@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
@@ -170,7 +170,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     private void prepareLayout(View view) {
         // Track purchase
-        PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
+        PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
         TrackerDelegator.trackPurchaseInCheckoutThanks(cart, mOrderNumber, mGrandTotalValue, mOrderShipping, mOrderTax, mPaymentMethod);
         ArrayList<PurchaseCartItem> carts=  cart.getCartItems();
         String categories = "";
@@ -194,7 +194,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         triggerClearCart();
 
         recommendManager.sendPurchaseRecommend();
-        JumiaApplication.INSTANCE.setCart(null);
+        BamiloApplication.INSTANCE.setCart(null);
 
         // Update cart info
         getBaseActivity().updateCartInfo();
@@ -364,7 +364,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private void onClickContinue(){
         // Get user id
         String userId = "";
-        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) userId = JumiaApplication.CUSTOMER.getIdAsString();
+        if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) userId = BamiloApplication.CUSTOMER.getIdAsString();
         // Tracking
         TrackerDelegator.trackCheckoutContinueShopping(userId);
         // Goto home

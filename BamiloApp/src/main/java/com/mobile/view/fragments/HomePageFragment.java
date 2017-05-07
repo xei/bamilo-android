@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.teasers.GetHomeHelper;
@@ -296,9 +296,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Validate the current data
      */
     private void validateDataState() {
-        /*if (JumiaApplication.CUSTOMER != null) {
+        /*if (BamiloApplication.CUSTOMER != null) {
             RecommendManager recommendManager = new RecommendManager();
-            recommendManager.setEmail(JumiaApplication.CUSTOMER.getEmail(), "" + JumiaApplication.CUSTOMER.getId());
+            recommendManager.setEmail(BamiloApplication.CUSTOMER.getEmail(), "" + BamiloApplication.CUSTOMER.getId());
         }*/
         if(CollectionUtils.isNotEmpty(mViewHolders)) {
             rebuildHomePage(mViewHolders);
@@ -613,11 +613,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         try {
             if (isAdded()) {
                 Bundle bundle = new Bundle();
-                bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+                bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
                 bundle.putLong(AdjustTracker.BEGIN_TIME, mLoadTime);
                 bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-                if (JumiaApplication.CUSTOMER != null) {
-                    bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
+                if (BamiloApplication.CUSTOMER != null) {
+                    bundle.putParcelable(AdjustTracker.CUSTOMER, BamiloApplication.CUSTOMER);
                 }
                 TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
             }

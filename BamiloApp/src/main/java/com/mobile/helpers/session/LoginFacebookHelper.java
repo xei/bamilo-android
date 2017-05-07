@@ -3,7 +3,7 @@ package com.mobile.helpers.session;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
@@ -55,18 +55,18 @@ public class LoginFacebookHelper extends SuperBaseHelper {
         baseResponse.getMetadata().setData(nextStepStruct);
 
         // Save customer
-        JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
+        BamiloApplication.CUSTOMER = loginCustomer.getCustomer();
         // Save credentials
         if (saveCredentials) {
             mParameters.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
-            mParameters.put(CustomerUtils.INTERNAL_EMAIL_VALUE, JumiaApplication.CUSTOMER.getEmail());
+            mParameters.put(CustomerUtils.INTERNAL_EMAIL_VALUE, BamiloApplication.CUSTOMER.getEmail());
             mParameters.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, true);
             mParameters.put(CustomerUtils.INTERNAL_SIGN_UP_FLAG, false);
-            JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
-            Print.i("GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+            BamiloApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
+            Print.i("GET CUSTOMER CREDENTIALS: " + BamiloApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save new wish list
-        WishListCache.set(JumiaApplication.CUSTOMER.getWishListCache());
+        WishListCache.set(BamiloApplication.CUSTOMER.getWishListCache());
     }
 
     public static Bundle createBundle(ContentValues values, boolean saveCredentials) {

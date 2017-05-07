@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -135,7 +135,7 @@ public class CheckoutAddressesFragment extends BaseAddressesFragment {
     @Override
     protected void onClickRetryButton(View view) {
         Bundle bundle = new Bundle();
-        if (JumiaApplication.CUSTOMER == null) {
+        if (BamiloApplication.CUSTOMER == null) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {

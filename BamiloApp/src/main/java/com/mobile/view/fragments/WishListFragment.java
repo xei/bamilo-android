@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.EventConstants;
@@ -207,7 +207,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Validate customer is logged in
-        if (!JumiaApplication.isCustomerLoggedIn()) {
+        if (!BamiloApplication.isCustomerLoggedIn()) {
             onLoginRequired();
         }
         // Case first time
@@ -451,7 +451,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             triggerAddProductToCart(simple.getSku());
             TrackerDelegator.trackFavouriteAddedToCart(product, simple.getSku(), mGroupType);
             try {
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)JumiaApplication.INSTANCE.getCart().getTotal(), true));
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)BamiloApplication.INSTANCE.getCart().getTotal(), true));
             } catch (Exception e) {
                 TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), 0, true));
             }

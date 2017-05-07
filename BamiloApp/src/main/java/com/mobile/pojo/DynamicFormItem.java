@@ -31,7 +31,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.absspinner.PromptSpinnerAdapter;
@@ -363,7 +363,7 @@ public class DynamicFormItem {
         // Validate url
         if (!TextUtils.isEmpty(url)) {
             // Get prefixes
-            JumiaApplication.INSTANCE.sendRequest(new PhonePrefixesHelper(), PhonePrefixesHelper.createBundle(url), new IResponseCallback() {
+            BamiloApplication.INSTANCE.sendRequest(new PhonePrefixesHelper(), PhonePrefixesHelper.createBundle(url), new IResponseCallback() {
                 @Override
                 public void onRequestComplete(BaseResponse baseResponse) {
                     PhonePrefixes prefixes = (PhonePrefixes) baseResponse.getContentData();
@@ -1342,7 +1342,7 @@ public class DynamicFormItem {
         // Validate url
         if (!TextUtils.isEmpty(url)) {
             // Get prefixes
-            JumiaApplication.INSTANCE.sendRequest(new GetReturnReasonsHelper(), GetReturnReasonsHelper.createBundle(url), new IResponseCallback() {
+            BamiloApplication.INSTANCE.sendRequest(new GetReturnReasonsHelper(), GetReturnReasonsHelper.createBundle(url), new IResponseCallback() {
                 @Override
                 public void onRequestComplete(BaseResponse baseResponse) {
                     ReturnReasons items = (ReturnReasons) baseResponse.getContentData();
@@ -1742,7 +1742,7 @@ public class DynamicFormItem {
     private SharedPreferences getSharedPref() {
         if (mSharedPrefs == null) {
             //Validate if country configs allows rating and review, only show write review fragment if both are allowed
-            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            mSharedPrefs = BamiloApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         }
         return mSharedPrefs;
     }

@@ -7,7 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -409,7 +409,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, addableToCart.getCategories());
             TrackerDelegator.trackProductAddedToCart(bundle);
-            TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, (long) JumiaApplication.INSTANCE.getCart().getTotal(), true));
+            TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

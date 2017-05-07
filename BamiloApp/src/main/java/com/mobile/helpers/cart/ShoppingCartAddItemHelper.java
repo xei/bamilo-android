@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.cart.AddedItemStructure;
@@ -70,7 +70,7 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
-        JumiaApplication.INSTANCE.setCart(cart);
+        BamiloApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
         // Track the new cart value
         TrackerDelegator.trackAddToCart(cart);

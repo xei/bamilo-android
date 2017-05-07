@@ -3,7 +3,7 @@ package com.mobile.helpers.session;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -45,9 +45,9 @@ public class RegisterHelper extends SuperBaseHelper {
         super.postSuccess(baseResponse);
         Print.i("SAVE CUSTOMER CREDENTIALS");
         mParameters.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
-        JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
+        BamiloApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
         // Save customer
-        JumiaApplication.CUSTOMER = ((Customer) baseResponse.getContentData());
+        BamiloApplication.CUSTOMER = ((Customer) baseResponse.getContentData());
     }
 
     public static Bundle createBundle(String endpoint, ContentValues values) {

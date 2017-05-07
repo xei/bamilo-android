@@ -13,7 +13,7 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -566,7 +566,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void retryWishListActionLoggedIn() {
         // Verify if is comming from login after trying to add/remove item from cart.
         final Bundle args = getArguments();
-        if (CollectionUtils.isNotEmpty(args) && JumiaApplication.isCustomerLoggedIn()) {
+        if (CollectionUtils.isNotEmpty(args) && BamiloApplication.isCustomerLoggedIn()) {
             // Case add to wish list
             if (args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)) {
                 ProductRegular mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
@@ -631,7 +631,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get item
         mWishListItemClicked = ((CatalogGridAdapter) adapter).getItem(position);
         // Validate customer is logged in
-        if (JumiaApplication.isCustomerLoggedIn()) {
+        if (BamiloApplication.isCustomerLoggedIn()) {
             if (view.isSelected()) {
                 triggerRemoveFromWishList(mWishListItemClicked.getSku());
                 TrackerDelegator.trackRemoveFromFavorites(mWishListItemClicked);

@@ -12,7 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.newFramework.objects.configs.Version;
 import com.mobile.newFramework.objects.configs.VersionInfo;
@@ -213,7 +213,7 @@ public class CheckVersion {
     }
 
     private static Version getVersion(Context context) {
-        VersionInfo vInfo = JumiaApplication.INSTANCE.getMobApiVersionInfo();
+        VersionInfo vInfo = BamiloApplication.INSTANCE.getMobApiVersionInfo();
         if (vInfo == null) {
             return null;
         }

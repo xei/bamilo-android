@@ -17,7 +17,7 @@ import android.view.animation.AnimationUtils;
 import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.ndk.CrashlyticsNdk;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -138,7 +138,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         shouldHandleEvent = true;
 
         // Initialize application
-        JumiaApplication.INSTANCE.init(initializationHandler);
+        BamiloApplication.INSTANCE.init(initializationHandler);
 
         // throw new RuntimeException("This is a crash");
     }
@@ -290,7 +290,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void showDevInfo() {
         // Case dev
-        if (JumiaApplication.INSTANCE.isDebuggable()) {
+        if (BamiloApplication.INSTANCE.isDebuggable()) {
             String name = getString(getApplicationInfo().labelRes);
             String text = getString(R.string.first_new_line_second_placeholder, name, AigRestContract.REQUEST_HOST);
             ((TextView) findViewById(R.id.dev_text)).setText(text);
@@ -360,7 +360,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessInitialize() {
         Print.i(TAG, "ON PROCESS: INITIALIZE");
-        JumiaApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, this);
+        BamiloApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, this);
     }
 
     /**
@@ -372,7 +372,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         if (sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null) == null) {
             Print.i(TAG, "SELECTED COUNTRY ID IS NULL");
-            if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
+            if (BamiloApplication.INSTANCE.countriesAvailable != null && BamiloApplication.INSTANCE.countriesAvailable.size() > 0) {
                 // Validate if there is any country from deeplink when starting the app from clean slate
                 if(!DeepLinkManager.validateCountryDeepLink(getApplicationContext(), getIntent(), initializationHandler)){
                     LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
@@ -382,8 +382,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             }
         } else {
             Print.i(TAG, "SELECTED COUNTRY ID IS NOT NULL");
-            if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-                JumiaApplication.INSTANCE.init(initializationHandler);
+            if (BamiloApplication.INSTANCE.countriesAvailable != null && BamiloApplication.INSTANCE.countriesAvailable.size() > 0) {
+                BamiloApplication.INSTANCE.init(initializationHandler);
             } else {
                 onRequestError(baseResponse);
             }
@@ -397,7 +397,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Print.i(TAG, "ON PROCESS COUNTRY CONFIGS");
         // Goes to saved redirect page otherwise continue
         if (!hasRedirectPage(((CountryConfigs) response.getContentData()).getRedirectPage())) {
-            JumiaApplication.INSTANCE.init(initializationHandler);
+            BamiloApplication.INSTANCE.init(initializationHandler);
         }
     }
 
@@ -408,7 +408,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessNoCountryConfigsError() {
         Print.i(TAG, "ON PROCESS NO COUNTRY CONFIGS");
-        JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
+        BamiloApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
     }
 
     /**
@@ -418,7 +418,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessNoCountriesConfigsError() {
         Print.i(TAG, "ON PROCESS NO COUNTRIES CONFIGS");
-        JumiaApplication.INSTANCE.sendRequest(new GetAvailableCountriesHelper(), null, this);
+        BamiloApplication.INSTANCE.sendRequest(new GetAvailableCountriesHelper(), null, this);
     }
 
     /**
@@ -493,7 +493,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * Trigger to get the country configurations
      */
     private void triggerGetCountryConfigs(){
-        JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
+        BamiloApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
     }
 
     /*
@@ -588,7 +588,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             setLayoutMaintenance(eventType);
         }
         else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
-            if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
+            if (BamiloApplication.INSTANCE.countriesAvailable != null && BamiloApplication.INSTANCE.countriesAvailable.size() > 0) {
                 //Print.i(TAG, "code1configs received response correctly!!!");
                 // Auto country selection
                 LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
@@ -740,7 +740,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void retryRequest() {
         // Case first time
         if(mLastSuccessResponse == null) {
-            JumiaApplication.INSTANCE.init(initializationHandler);
+            BamiloApplication.INSTANCE.init(initializationHandler);
         }
         // Case received error from a request
         else {

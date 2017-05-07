@@ -4,7 +4,7 @@ package com.mobile.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
@@ -84,14 +84,14 @@ public class ShopPreferences {
          * Save the Selected Country Configs 
          * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
          */
-        CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition);
+        CountryObject countryObject = BamiloApplication.INSTANCE.countriesAvailable.get(shopPosition);
         //Print.i(TAG, "code1DarwinComponent : selected : " + countryObject.getCountryName());
         editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         CountryPersistentConfigs.save(editor, countryObject);
         editor.apply();
 
         // Clean other
-        JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
+        BamiloApplication.INSTANCE.cleanAllPreviousCountryValues();
         LastViewedTableHelper.deleteAllLastViewed();
         BrandsTableHelper.clearBrands();
         

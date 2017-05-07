@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FeaturedItemsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
@@ -96,7 +96,7 @@ public class FeaturedBoxHelper {
 
 
         RecommendManager recommendManager = new RecommendManager();
-        recommendManager.sendNoResultRecommend(JumiaApplication.INSTANCE.getSearchedTerm(), new RecommendListCompletionHandler() {
+        recommendManager.sendNoResultRecommend(BamiloApplication.INSTANCE.getSearchedTerm(), new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
                 LayoutInflater inflater = LayoutInflater.from(fragment.getBaseActivity());
@@ -126,7 +126,7 @@ public class FeaturedBoxHelper {
     private static void onClickBackToHome(){
         // Get user id
         String userId = "";
-        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) userId = JumiaApplication.CUSTOMER.getIdAsString();
+        if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) userId = BamiloApplication.CUSTOMER.getIdAsString();
         // Goto home
         baseFragment.getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }

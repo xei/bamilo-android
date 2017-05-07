@@ -3,7 +3,7 @@ package com.mobile.libraries.emarsys;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.view.R;
 import com.pushwoosh.PushManager;
 
@@ -35,7 +35,7 @@ public class EmarsysMobileEngage {
     }
 
     public void sendLogin(String pushToken, final EmarsysMobileEngageResponse completion) {
-        if(JumiaApplication.isCustomerLoggedIn()) {
+        if(BamiloApplication.isCustomerLoggedIn()) {
             DataCompletion response = new DataCompletion() {
                 @Override
                 public void completion(Object data, ArrayList<String> errorMessages) {
@@ -43,7 +43,7 @@ public class EmarsysMobileEngage {
                 }
             };
 
-            this.emarsysDataManager.login((EmarsysPushIdentifier) getIdentifier(pushToken), cContactFieldId, "" + JumiaApplication.CUSTOMER.getId(), response);
+            this.emarsysDataManager.login((EmarsysPushIdentifier) getIdentifier(pushToken), cContactFieldId, "" + BamiloApplication.CUSTOMER.getId(), response);
         } else {
             DataCompletion response = new DataCompletion() {
                 @Override

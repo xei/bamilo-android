@@ -1,6 +1,6 @@
 package com.mobile.utils;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.constants.EventConstants;
 import com.mobile.managers.AppManager;
 import com.mobile.utils.ui.UIUtils;
@@ -21,10 +21,10 @@ public abstract class EventTracker {
 
         attributes.put(EventConstants.AppVersion, AppManager.getAppFullFormattedVersion());
         attributes.put(EventConstants.Platform, "android");
-        attributes.put(EventConstants.Connection, UIUtils.networkType(JumiaApplication.INSTANCE.getApplicationContext()));
+        attributes.put(EventConstants.Connection, UIUtils.networkType(BamiloApplication.INSTANCE.getApplicationContext()));
         attributes.put(EventConstants.Date, DateUtils.getWebNormalizedDateTimeString(new Date()));
-        if(JumiaApplication.INSTANCE.isCustomerLoggedIn()) {
-            String userGender = JumiaApplication.CUSTOMER.getGender();
+        if(BamiloApplication.INSTANCE.isCustomerLoggedIn()) {
+            String userGender = BamiloApplication.CUSTOMER.getGender();
             if(userGender != null) {
                 attributes.put(EventConstants.Gender, userGender);
             }

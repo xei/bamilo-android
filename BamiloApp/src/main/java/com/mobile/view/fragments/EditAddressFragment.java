@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.absspinner.PromptSpinnerAdapter;
@@ -338,7 +338,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             values.put("address_form[phone]", cellphone.getText().toString());
             values.put("address_form[is_default_shipping]", 1);
             values.put("address_form[is_default_billing]", 1);
-            values.put("address_form[gender]", JumiaApplication.CUSTOMER.getGender());
+            values.put("address_form[gender]", BamiloApplication.CUSTOMER.getGender());
 
             triggerEditAddress(action, values);
             triggerDefaultAddressForm(Integer.parseInt(id));
@@ -744,7 +744,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             case GET_EDIT_ADDRESS_FORM_EVENT:
                 Print.d(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
                 // Get order summary
-                orderSummary = JumiaApplication.INSTANCE.getCart();
+                orderSummary = BamiloApplication.INSTANCE.getCart();
                 // Form
                 Form form = (Form)baseResponse.getContentData();
                 mFormResponse = form;

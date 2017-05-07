@@ -7,7 +7,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OrdersAdapter;
 import com.mobile.controllers.fragments.FragmentController;
@@ -157,7 +157,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Validate customer is logged in
-        if (!JumiaApplication.isCustomerLoggedIn()) {
+        if (!BamiloApplication.isCustomerLoggedIn()) {
             onLoginRequired();
         }
         // Case first time
@@ -299,7 +299,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
 
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaMyOrders, mGABeginRequestMillis,
-                        JumiaApplication.CUSTOMER==null?"":""+JumiaApplication.CUSTOMER.getId());
+                        BamiloApplication.CUSTOMER==null?"":""+BamiloApplication.CUSTOMER.getId());
                 break;
             default:
                 break;

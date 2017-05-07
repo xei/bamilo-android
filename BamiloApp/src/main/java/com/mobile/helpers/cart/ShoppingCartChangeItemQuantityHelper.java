@@ -3,7 +3,7 @@ package com.mobile.helpers.cart;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -45,9 +45,9 @@ public class ShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        JumiaApplication.INSTANCE.setCart(null);
+        BamiloApplication.INSTANCE.setCart(null);
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
-        JumiaApplication.INSTANCE.setCart(cart);
+        BamiloApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
         // Track the new cart value
         TrackerDelegator.trackAddToCart(cart);

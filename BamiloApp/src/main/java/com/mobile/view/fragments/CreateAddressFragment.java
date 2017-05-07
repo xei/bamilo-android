@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.absspinner.PromptSpinnerAdapter;
@@ -154,9 +154,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         city = (Spinner) view.findViewById(R.id.address_city);*/
 
         name = (EditText) view.findViewById(R.id.address_name);
-        name.setText(JumiaApplication.CUSTOMER.getFirstName());
+        name.setText(BamiloApplication.CUSTOMER.getFirstName());
         family = (EditText) view.findViewById(R.id.address_family);
-        family.setText(JumiaApplication.CUSTOMER.getLastName());
+        family.setText(BamiloApplication.CUSTOMER.getLastName());
         national_id = (EditText) view.findViewById(R.id.address_national_id);
         gender_spinner = (IcsSpinner) view.findViewById(R.id.address_gender);
         cellphone = (EditText) view.findViewById(R.id.address_cell);
@@ -185,7 +185,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
 
         postal_spinner.setVisibility(View.GONE);
-        //if (JumiaApplication.CUSTOMER.getGender().isEmpty())
+        //if (BamiloApplication.CUSTOMER.getGender().isEmpty())
         {
 
             setgender();
@@ -738,7 +738,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             address_city_error.setVisibility(View.VISIBLE);
             address_city_error.setText("تکمیل این گزینه الزامی می باشد");
         }
-        if(JumiaApplication.CUSTOMER.getGender().isEmpty()) {
+        if(BamiloApplication.CUSTOMER.getGender().isEmpty()) {
             if (gender_spinner.getSelectedItem() == null || gender_spinner.getSelectedItem().equals("جنسیت")) {
                 gender_error.setVisibility(View.VISIBLE);
                 gender_error.setText("تکمیل این گزینه الزامی می باشد");
@@ -918,7 +918,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected void onGetCreateAddressFormSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
         // Get order summary
-        orderSummary = JumiaApplication.INSTANCE.getCart();
+        orderSummary = BamiloApplication.INSTANCE.getCart();
 
 
         ///////////////////////////////

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -297,7 +297,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                             int id = v.getId();
                             if (id == R.id.button1) {
                                 dismissDialogFragment();
-                                JumiaApplication.INSTANCE.setCart(null);
+                                BamiloApplication.INSTANCE.setCart(null);
                                 triggerClearCart();
                                 getBaseActivity().updateCartInfo();
                                 getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -508,7 +508,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        if (null != JumiaApplication.CUSTOMER) {
+        if (null != BamiloApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
@@ -633,7 +633,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             case SET_MULTI_STEP_FINISH:
                 mCheckoutFinish = (CheckoutFinish) baseResponse.getContentData();
                 // Tracking purchase
-                TrackerDelegator.trackPurchase(mCheckoutFinish, JumiaApplication.INSTANCE.getCart());
+                TrackerDelegator.trackPurchase(mCheckoutFinish, BamiloApplication.INSTANCE.getCart());
                 // Next step
                 switchToSubmittedPayment();
                 // Update cart info

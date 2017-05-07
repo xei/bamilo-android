@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.EventConstants;
 import com.mobile.factories.EventFactory;
@@ -94,7 +94,7 @@ public class TrackerDelegator {
     public static final String CART_COUNT = "cartCount";
     public static final String GRAND_TOTAL = "grandTotal";
 
-    private static final Context sContext = JumiaApplication.INSTANCE.getApplicationContext();
+    private static final Context sContext = BamiloApplication.INSTANCE.getApplicationContext();
 
     /**
      * Called only on resume activity
@@ -163,7 +163,7 @@ public class TrackerDelegator {
         Ad4PushTracker.get().trackLoginRegistration(customer, wasFacebookLogin);
 
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customer.getIdAsString());
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
@@ -203,21 +203,21 @@ public class TrackerDelegator {
 
     public static void trackLogoutSuccessful() {
         String customerId = "";
-        if (JumiaApplication.CUSTOMER != null) {
-            customerId = JumiaApplication.CUSTOMER.getIdAsString();
+        if (BamiloApplication.CUSTOMER != null) {
+            customerId = BamiloApplication.CUSTOMER.getIdAsString();
         }
 
         AnalyticsGoogle.get().trackEvent(TrackingEvent.LOGOUT_SUCCESS, customerId, 0L);
         //Adjust
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customerId);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(TrackingEvent.LOGOUT_SUCCESS, bundle);
 
         //GTM
         GTMManager.get().gtmTrackLogout(customerId);
-        JumiaApplication.CUSTOMER = null;
+        BamiloApplication.CUSTOMER = null;
     }
 
 
@@ -226,16 +226,16 @@ public class TrackerDelegator {
         long results = params.getLong(SEARCH_RESULTS_KEY);
 
         String customerId = "";
-        if (JumiaApplication.CUSTOMER != null) {
-            customerId = JumiaApplication.CUSTOMER.getIdAsString();
+        if (BamiloApplication.CUSTOMER != null) {
+            customerId = BamiloApplication.CUSTOMER.getIdAsString();
         }
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.CATALOG_SEARCH, criteria, results);
         // Adjust
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customerId);
-        bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
+        bundle.putParcelable(AdjustTracker.CUSTOMER, BamiloApplication.CUSTOMER);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putString(AdjustTracker.SEARCH_TERM, criteria);
         if(params.containsKey(AdjustTracker.CATEGORY))
@@ -256,12 +256,12 @@ public class TrackerDelegator {
         String sku = params.getString(SKU_KEY);
 
         String customer_id = "";
-        if (JumiaApplication.CUSTOMER != null) {
-            customer_id = JumiaApplication.CUSTOMER.getIdAsString();
+        if (BamiloApplication.CUSTOMER != null) {
+            customer_id = BamiloApplication.CUSTOMER.getIdAsString();
         }
         // Adjust
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customer_id);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putString(AdjustTracker.PRODUCT_SKU, sku);
@@ -284,14 +284,14 @@ public class TrackerDelegator {
     public static void trackItemShared(Intent intent, String category) {
         String sku = intent.getExtras().getString(RestConstants.SKU);
         String userId = "";
-        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
-            userId = JumiaApplication.CUSTOMER.getIdAsString();
+        if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) {
+            userId = BamiloApplication.CUSTOMER.getIdAsString();
         }
         // GA
         AnalyticsGoogle.get().trackShare(sku);
         //Adjust
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, userId);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putString(AdjustTracker.PRODUCT_SKU, sku);
@@ -307,8 +307,8 @@ public class TrackerDelegator {
         ProductComplete product = params.getParcelable(PRODUCT_KEY);
         HashMap<String, Long> ratingValues = (HashMap<String, Long>) params.getSerializable(RATINGS_KEY);
         String user_id = "";
-        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
-            user_id = JumiaApplication.CUSTOMER.getIdAsString();
+        if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) {
+            user_id = BamiloApplication.CUSTOMER.getIdAsString();
         }
 
         if (ratingValues != null && ratingValues.size() > 0) {
@@ -320,7 +320,7 @@ public class TrackerDelegator {
         }
         //Adjust
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, user_id);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putString(AdjustTracker.PRODUCT_SKU, product.getSku());
@@ -341,7 +341,7 @@ public class TrackerDelegator {
      * Track signup successful.
      */
     public static void trackSignupSuccessful(String location) {
-        Customer customer = JumiaApplication.CUSTOMER;
+        Customer customer = BamiloApplication.CUSTOMER;
         // Validate customer
         if (customer == null) return;
         // GA
@@ -350,7 +350,7 @@ public class TrackerDelegator {
         Ad4PushTracker.get().trackLoginRegistration(customer, false);
         // Adjust
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customer.getIdAsString());
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
@@ -442,7 +442,7 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackPurchase(order.number, order.valueConverted, order.items);
         // Adjust
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
         bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : AdjustTracker.NOT_AVAILABLE);
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
@@ -495,7 +495,7 @@ public class TrackerDelegator {
         trackBannerClick(items);
         // Adjust
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
         bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : AdjustTracker.NOT_AVAILABLE);
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
@@ -599,10 +599,10 @@ public class TrackerDelegator {
     public static void trackPageForAdjust(TrackingPage screen, Bundle bundle) {
         if (null != bundle) {
             bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-            bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+            bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
             bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
-            if (JumiaApplication.CUSTOMER != null) {
-                bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
+            if (BamiloApplication.CUSTOMER != null) {
+                bundle.putParcelable(AdjustTracker.CUSTOMER, BamiloApplication.CUSTOMER);
             }
             AdjustTracker.get().trackScreen(screen, bundle);
         }
@@ -642,7 +642,7 @@ public class TrackerDelegator {
      */
     public static void trackProductAddedToCart(Bundle bundle) {
         // User
-        String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+        String customerId = (BamiloApplication.CUSTOMER != null) ? BamiloApplication.CUSTOMER.getIdAsString() : "";
         // Data
         String brand = bundle.getString(BRAND_KEY);
         String category = bundle.getString(CATEGORY_KEY);
@@ -656,7 +656,7 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_CART, sku, (long) price);
         //Adjust
         Bundle params = new Bundle();
-        params.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        params.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         params.putString(AdjustTracker.USER_ID, customerId);
         params.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         params.putString(AdjustTracker.PRODUCT_SKU, sku);
@@ -667,7 +667,7 @@ public class TrackerDelegator {
         GTMManager.get().gtmTrackAddToCart(sku, price, brand, EUR_CURRENCY, discount, rating, category, subCategory, location);
         //GA Banner Flow
         if (bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE) != null) {
-            JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE));
+            BamiloApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE));
         }
     }
 
@@ -724,14 +724,14 @@ public class TrackerDelegator {
         double productDiscount = completeProduct.getMaxSavingPercentage();
         String categories = completeProduct.getCategories();
         // User
-        String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+        String customerId = (BamiloApplication.CUSTOMER != null) ? BamiloApplication.CUSTOMER.getIdAsString() : "";
         // Accengage
         Ad4PushTracker.get().trackAddToFavorites(completeProduct);
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_WISHLIST, productSku, (long) productPrice);
         //Adjust
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customerId);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putString(AdjustTracker.PRODUCT_SKU, productSku);
@@ -753,14 +753,14 @@ public class TrackerDelegator {
         double price = product.getPriceForTracking();
         double averageRatingTotal = product.getAvgRating();
         // User
-        String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+        String customerId = (BamiloApplication.CUSTOMER != null) ? BamiloApplication.CUSTOMER.getIdAsString() : "";
         // Accengage
         Ad4PushTracker.get().trackRemoveFromWishList();
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.REMOVE_FROM_WISHLIST, productSku, (long) price);
         //Adjust
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customerId);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putString(AdjustTracker.PRODUCT_SKU, productSku);
@@ -845,7 +845,7 @@ public class TrackerDelegator {
     public static void trackNewsletterGTM(String customerId, String location){
         // User
         if (TextUtils.isEmpty(customerId)) {
-            customerId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+            customerId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "";
         }
         //GTM
         GTMManager.get().gtmTrackSignUp(customerId, location);
@@ -901,12 +901,12 @@ public class TrackerDelegator {
      */
     public static void trackCall(Context context) {
         String userId = "";
-        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
-            userId= JumiaApplication.CUSTOMER.getIdAsString();
+        if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) {
+            userId= BamiloApplication.CUSTOMER.getIdAsString();
         }
         //Adjust
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, userId);
         bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(TrackingEvent.CALL, bundle);
@@ -964,7 +964,7 @@ public class TrackerDelegator {
      * validate if there's any product added from a banner when finished a success order
      */
     public static void trackBannerClick(final List<PurchaseItem> items) {
-        final HashMap<String,String> skus = JumiaApplication.INSTANCE.getBannerFlowSkus();
+        final HashMap<String,String> skus = BamiloApplication.INSTANCE.getBannerFlowSkus();
         if (skus != null && skus.size() > 0 && !CollectionUtils.isEmpty(items)) {
             new Thread(new Runnable() {
                 @Override
@@ -978,7 +978,7 @@ public class TrackerDelegator {
                                         item.sku, (long) item.getPriceForTracking());
                             }
                     }
-                    JumiaApplication.INSTANCE.clearBannerFlowSkus();
+                    BamiloApplication.INSTANCE.clearBannerFlowSkus();
                 }
             }).start();
         }
@@ -1104,8 +1104,8 @@ public class TrackerDelegator {
      */
     public static void trackCheckoutStep(TrackingEvent step) {
         try {
-            String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
-            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+            String email = BamiloApplication.INSTANCE.getCustomerUtils().getEmail();
+            String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "";
             AnalyticsGoogle.get().trackEvent(step, TextUtils.isEmpty(userId) ? email : userId, 0L);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
@@ -1167,8 +1167,8 @@ public class TrackerDelegator {
             Bundle params = new Bundle();
             params.putString(TrackerDelegator.ORDER_NUMBER_KEY, order);
             params.putDouble(TrackerDelegator.VALUE_KEY, cart.getPriceForTracking());
-            params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);
+            params.putString(TrackerDelegator.EMAIL_KEY, BamiloApplication.INSTANCE.getCustomerUtils().getEmail());
+            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, BamiloApplication.CUSTOMER);
             params.putString(TrackerDelegator.COUPON_KEY, String.valueOf(cart.getCouponDiscount()));
             params.putInt(TrackerDelegator.CART_COUNT, cart.getCartCount());
             params.putDouble(TrackerDelegator.GRAND_TOTAL, total);

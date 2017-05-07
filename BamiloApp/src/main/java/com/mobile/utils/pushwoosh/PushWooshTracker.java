@@ -1,6 +1,6 @@
 package com.mobile.utils.pushwoosh;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.utils.EventTracker;
 import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.view.BaseActivity;

@@ -13,7 +13,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.telephony.TelephonyManager;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.objects.configs.CountryObject;
@@ -245,13 +245,13 @@ public class LocationHelper implements LocationListener {
             return NO_SELECTED;
         }
         // Validate countries available
-        if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
-            JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
+        if (BamiloApplication.INSTANCE.countriesAvailable == null || BamiloApplication.INSTANCE.countriesAvailable.size() == 0) {
+            BamiloApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         }
         // Get the supported countries
-        if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-            for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) {
-                CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(i);
+        if (BamiloApplication.INSTANCE.countriesAvailable != null && BamiloApplication.INSTANCE.countriesAvailable.size() > 0) {
+            for (int i = 0; i < BamiloApplication.INSTANCE.countriesAvailable.size(); i++) {
+                CountryObject countryObject = BamiloApplication.INSTANCE.countriesAvailable.get(i);
                 String supportedCountry = countryObject.getCountryIso();
                 if (TextUtils.equalsIgnoreCase(supportedCountry, countryCode)) {
                     Print.i(TAG, "MATCH: SHOP ID " + i);
@@ -365,11 +365,11 @@ public class LocationHelper implements LocationListener {
     }
     
     /**
-     * Send the INITIALIZE message to JumiaApplication
+     * Send the INITIALIZE message to BamiloApplication
      */
     public void sendInitializeMessage(){
         Print.d(TAG, "SEND MESSAGE: INITIALIZE");
-        JumiaApplication.INSTANCE.init(callback.get());
+        BamiloApplication.INSTANCE.init(callback.get());
     }
 
     /**

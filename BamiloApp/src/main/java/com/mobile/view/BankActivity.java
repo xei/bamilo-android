@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -66,6 +66,6 @@ public class BankActivity extends Activity {
     }
     protected final void triggerContentEventNoLoading(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         // Request
-        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+        BamiloApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 }

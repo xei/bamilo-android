@@ -20,7 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.FacebookTextView;
 import com.mobile.components.customfontviews.TextView;
@@ -230,7 +230,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGN_UP, getLoadTime(), false);
 
         // Case auto login
-        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+        if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
             loginRoot.setVisibility(View.GONE);
             triggerAutoLogin();
         }
@@ -423,7 +423,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
                     /*RecommendManager recommendManager = new RecommendManager();
-                    recommendManager.setEmail(JumiaApplication.CUSTOMER.getEmail(), ""+JumiaApplication.CUSTOMER.getId());*/
+                    recommendManager.setEmail(BamiloApplication.CUSTOMER.getEmail(), ""+BamiloApplication.CUSTOMER.getId());*/
                 }
                 // Case unknown checkout step
                 else {

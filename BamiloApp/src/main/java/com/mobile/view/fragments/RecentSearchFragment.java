@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalSpaceItemDecoration;
 import com.mobile.controllers.SearchDropDownAdapter;
@@ -244,7 +244,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
                 getBaseActivity().showSearchOther(selectedSuggestion);
                 break;
         }
-        JumiaApplication.INSTANCE.setSearchedTerm(text);
+        BamiloApplication.INSTANCE.setSearchedTerm(text);
     }
 
     @Override

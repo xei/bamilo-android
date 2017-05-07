@@ -12,7 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
@@ -111,7 +111,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
     public void onClick(final View v) {
         if (v != null && mParentClickListener != null && mNewsLetterForm != null && validate()) {
             mParentClickListener.onClick(v);
-            JumiaApplication.INSTANCE.sendRequest(new SubmitFormHelper(), SubmitFormHelper.createBundle(mNewsLetterForm.getForm().getAction(), mNewsLetterForm.save()), this);
+            BamiloApplication.INSTANCE.sendRequest(new SubmitFormHelper(), SubmitFormHelper.createBundle(mNewsLetterForm.getForm().getAction(), mNewsLetterForm.save()), this);
         }
     }
 

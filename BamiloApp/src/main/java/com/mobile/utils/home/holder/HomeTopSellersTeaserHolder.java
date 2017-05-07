@@ -3,7 +3,7 @@ package com.mobile.utils.home.holder;
 import android.content.Context;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.components.recycler.VerticalSpaceItemDecoration;
@@ -76,7 +76,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder implements 
      */
     private void triggerGetRichRelevanceData(String key) {
         if (TextUtils.isNotEmpty(key)) {
-            JumiaApplication.INSTANCE.sendRequest(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(key), this);
+            BamiloApplication.INSTANCE.sendRequest(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(key), this);
         }
     }
 

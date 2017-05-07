@@ -40,7 +40,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalSpaceItemDecoration;
@@ -876,7 +876,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         return false;
                     }
                     //Save searched text
-                    JumiaApplication.INSTANCE.setSearchedTerm(searchTerm);
+                    BamiloApplication.INSTANCE.setSearchedTerm(searchTerm);
                     // Collapse search view
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
                     Suggestion suggestion = new Suggestion();
@@ -914,7 +914,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 mSearchAutoComplete.post(new Runnable() {
                     @Override
                     public void run() {
-                        String searchedTerm = JumiaApplication.INSTANCE.getSearchedTerm();
+                        String searchedTerm = BamiloApplication.INSTANCE.getSearchedTerm();
                         if (TextUtils.isNotEmpty(searchedTerm)) {
                             mSearchAutoComplete.setText(searchedTerm);
                             mSearchAutoComplete.setSelection(searchedTerm.length());
@@ -1226,7 +1226,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             return;
         }
 
-        PurchaseEntity currentCart = JumiaApplication.INSTANCE.getCart();
+        PurchaseEntity currentCart = BamiloApplication.INSTANCE.getCart();
         // Show 0 while the cart is not updated
         final String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
 
@@ -1311,7 +1311,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         break;
                     case NavigationAction.LOGIN_OUT:
                         // SIGN IN
-                        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+                        if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
                             dialogLogout = DialogGenericFragment.newInstance(true, false,
                                     getString(R.string.logout_title),
                                     getString(R.string.logout_text_question),
@@ -1336,7 +1336,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         // FAVOURITES
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
                         // Validate customer is logged in
-                        if (!JumiaApplication.isCustomerLoggedIn()) {
+                        if (!BamiloApplication.isCustomerLoggedIn()) {
                             // Goto Login and next WishList
                             Bundle bundle = new Bundle();
                             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
@@ -1695,14 +1695,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private void recoverUserDataFromBackground() {
         Print.i(TAG, "ON TRIGGER: INITIALIZE USER DATA");
         // Validate the user credentials
-        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.isCustomerLoggedIn()) {
+        if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials() && !BamiloApplication.isCustomerLoggedIn()) {
             triggerAutoLogin();
         } else {
             // Track auto login failed if hasn't saved credentials
             TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
         }
         // Validate the user credentials
-        if (JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {
+        if (BamiloApplication.SHOP_ID != null && BamiloApplication.INSTANCE.getCart() == null) {
             triggerGetShoppingCartItemsHelper();
         }
     }
@@ -1714,7 +1714,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.i(TAG, "TRIGGER SHOPPING CART ITEMS");
         Bundle bundle = new Bundle();
         //bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
-        JumiaApplication.INSTANCE.sendRequest(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
+        BamiloApplication.INSTANCE.sendRequest(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
             @Override
             public void onRequestError(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST ERROR: CART");
@@ -1739,13 +1739,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private void triggerAutoLogin() {
         Print.i(TAG, "ON TRIGGER: AUTO LOGIN");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, BamiloApplication.INSTANCE.getCustomerUtils().getCredentials());
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
-        JumiaApplication.INSTANCE.sendRequest(new LoginHelper(), bundle, new IResponseCallback() {
+        BamiloApplication.INSTANCE.sendRequest(new LoginHelper(), bundle, new IResponseCallback() {
             @Override
             public void onRequestError(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");
-                JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+                BamiloApplication.INSTANCE.getCustomerUtils().clearCredentials();
             }
 
             @Override
@@ -1754,7 +1754,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 // Get customer
                 Customer customer = ((CheckoutStepLogin)((NextStepStruct)baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
                 // Get origin
-                ContentValues credentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
+                ContentValues credentialValues = BamiloApplication.INSTANCE.getCustomerUtils().getCredentials();
                 boolean isFBLogin = credentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);
                 // Track
                 Bundle params = new Bundle();
@@ -1798,7 +1798,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Get text suggestion
         String text = selectedSuggestion.getResult();
         //Save searched text
-        JumiaApplication.INSTANCE.setSearchedTerm(text);
+        BamiloApplication.INSTANCE.setSearchedTerm(text);
         mSearchAutoComplete.dismissDropDown();
         // Collapse search view
         MenuItemCompat.collapseActionView(mSearchMenuItem);

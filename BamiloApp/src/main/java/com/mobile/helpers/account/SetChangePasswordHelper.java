@@ -3,7 +3,7 @@ package com.mobile.helpers.account;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
@@ -37,7 +37,7 @@ public class SetChangePasswordHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
+        BamiloApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
     }
 
     public static Bundle createBundle(String endpoint, ContentValues values) {

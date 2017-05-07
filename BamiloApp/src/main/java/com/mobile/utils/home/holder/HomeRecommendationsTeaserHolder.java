@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.components.recycler.VerticalSpaceItemDecoration;
@@ -92,7 +92,7 @@ public class HomeRecommendationsTeaserHolder /*extends BaseTeaserViewHolder impl
      */
    /* private void triggerGetRichRelevanceData(String key) {
         if (TextUtils.isNotEmpty(key)) {
-            JumiaApplication.INSTANCE.sendRequest(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(key), this);
+            BamiloApplication.INSTANCE.sendRequest(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(key), this);
         }
     }*/
 

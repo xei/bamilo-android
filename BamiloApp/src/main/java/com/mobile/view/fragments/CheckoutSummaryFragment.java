@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -421,7 +421,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                         int id = v.getId();
                         if (id == R.id.button1) {
                             dismissDialogFragment();
-                            JumiaApplication.INSTANCE.setCart(null);
+                            BamiloApplication.INSTANCE.setCart(null);
                             getBaseActivity().updateCartInfo();
                             getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         }
@@ -477,7 +477,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     private void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        if (null != JumiaApplication.CUSTOMER) {
+        if (null != BamiloApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {

@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
@@ -729,7 +729,7 @@ public class DeepLinkManager {
 
             TrackerDelegator.trackOpenPushNotification();
             // ## Google Analytics "General Campaign Measurement" ##
-            TrackerDelegator.trackGACampaign(JumiaApplication.INSTANCE.getApplicationContext(), mUtm);
+            TrackerDelegator.trackGACampaign(BamiloApplication.INSTANCE.getApplicationContext(), mUtm);
             Print.i(TAG, "UTM FROM GCM: " + mUtm);
             // Get value from deep link key
             String deepLink = payload.getString(DEEP_LINK_PAGE_INDICATION);

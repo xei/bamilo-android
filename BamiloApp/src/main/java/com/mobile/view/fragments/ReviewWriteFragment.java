@@ -14,7 +14,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -124,8 +124,8 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         Print.i(TAG, "ON CREATE");
         // Validate the saved state
         if (savedInstanceState != null) {
-            ratingForm = JumiaApplication.INSTANCE.ratingForm;
-            reviewForm = JumiaApplication.INSTANCE.reviewForm;
+            ratingForm = BamiloApplication.INSTANCE.ratingForm;
+            reviewForm = BamiloApplication.INSTANCE.reviewForm;
             mSavedState = savedInstanceState;
             isShowingRatingForm = savedInstanceState.getBoolean(SHOWING_FORM);
         } else {
@@ -226,8 +226,8 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         super.onStop();
         Print.i(TAG, "ON STOP");
         //duplicated here and on onSaveInstance because when this fragment is removed from the Reviews Landscape it doesn't pass on the onSaveInstance method
-        JumiaApplication.INSTANCE.ratingForm = ratingForm;
-        JumiaApplication.INSTANCE.reviewForm = reviewForm;
+        BamiloApplication.INSTANCE.ratingForm = ratingForm;
+        BamiloApplication.INSTANCE.reviewForm = reviewForm;
     }
 
     /*
@@ -257,8 +257,8 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         isExecutingSendReview = false;
         if (getArguments() != null && getArguments().containsKey(RATING_SHOW)) {
             isShowingRatingForm = getArguments().getBoolean(RATING_SHOW);
-            ratingForm = JumiaApplication.INSTANCE.ratingForm;
-            reviewForm = JumiaApplication.INSTANCE.reviewForm;
+            ratingForm = BamiloApplication.INSTANCE.ratingForm;
+            reviewForm = BamiloApplication.INSTANCE.reviewForm;
         }
         setRatingReviewFlag();
         // load complete product URL
@@ -288,7 +288,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
      */
     private void setReviewName(DynamicForm reviewForm) {
         if(reviewForm != null && reviewForm.getItemByKey(RestConstants.NAME) != null && reviewForm.getItemByKey(RestConstants.NAME).getValue().equals("")){
-            Customer customer = JumiaApplication.CUSTOMER;
+            Customer customer = BamiloApplication.CUSTOMER;
             if(customer != null && !TextUtils.isEmpty(customer.getFirstName())){
                 reviewForm.getItemByKey(RestConstants.NAME).setValue(customer.getFirstName());
             }
@@ -467,13 +467,13 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 triggerRatingForm();
             }
             if (isShowingRatingForm) {
-                if (getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null) {
+                if (getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && BamiloApplication.CUSTOMER == null) {
                     showLoginFragment();
                 } else {
                     executeSendReview(ratingForm.getAction(), mDynamicForm);
                 }
             } else {
-                if (getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null) {
+                if (getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && BamiloApplication.CUSTOMER == null) {
                     showLoginFragment();
                 } else {
                     executeSendReview(reviewForm.getAction(), mDynamicForm);
@@ -553,7 +553,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     private SharedPreferences getSharedPref(){
         if(mSharedPrefs == null){
             //Validate if country configs allows rating and review, only show write review fragment if both are allowed
-            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            mSharedPrefs = BamiloApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         }
         return mSharedPrefs;
     }

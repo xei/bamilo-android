@@ -1,6 +1,6 @@
 package com.mobile.helpers.configs;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -26,6 +26,6 @@ public class GetFaqTermsHelper extends SuperBaseHelper{
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
         MobileAbout mobileAbout = (MobileAbout) baseResponse.getContentData();
-        CountryPersistentConfigs.saveMoreInfo(JumiaApplication.INSTANCE.getApplicationContext(), mobileAbout);
+        CountryPersistentConfigs.saveMoreInfo(BamiloApplication.INSTANCE.getApplicationContext(), mobileAbout);
     }
 }

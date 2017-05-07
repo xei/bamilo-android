@@ -10,7 +10,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
@@ -175,7 +175,7 @@ public class UITabLayoutUtils {
         // Update the cart tab
         try {
             // Show 0 while the cart is not updated
-            String quantity = JumiaApplication.INSTANCE.getCart() == null ? "0" : String.valueOf(JumiaApplication.INSTANCE.getCart().getCartCount());
+            String quantity = BamiloApplication.INSTANCE.getCart() == null ? "0" : String.valueOf(BamiloApplication.INSTANCE.getCart().getCartCount());
             //noinspection ConstantConditions
             int pos = getTabPosition(NavigationAction.BASKET);
             //noinspection ConstantConditions

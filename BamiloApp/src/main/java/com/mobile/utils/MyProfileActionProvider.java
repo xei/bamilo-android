@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.widget.DismissibleSpinner;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -215,7 +215,7 @@ public class MyProfileActionProvider extends ActionProvider {
                     icon.setImageResource(R.drawable.ico_dropdown_home);
                     break;
                 case NavigationAction.LOGIN_OUT:
-                    boolean hasCredentials = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials();
+                    boolean hasCredentials = BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials();
                     int resTitle = hasCredentials ? R.string.sign_out : R.string.sign_in;
                     title.setText(resTitle);
                     icon.setImageResource(R.drawable.ico_dropdown_signin);

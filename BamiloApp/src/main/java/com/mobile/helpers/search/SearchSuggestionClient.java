@@ -3,7 +3,7 @@ package com.mobile.helpers.search;
 import android.content.Context;
 
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.predict.recommended.Item;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
@@ -46,7 +46,7 @@ public class SearchSuggestionClient {
                 new AlgoliaHelper(context, responseCallback).getSuggestions(searchTerm);
             } else {
 
-                JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(searchTerm), responseCallback);
+                BamiloApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(searchTerm), responseCallback);
                 //Should be move to Search
                 /*RecommendManager recommendManager = new RecommendManager();
                 recommendManager.sendSearchRecommend(searchTerm, new RecommendListCompletionHandler() {

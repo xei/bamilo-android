@@ -17,7 +17,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.ScrollViewReachable;
 import com.mobile.components.ScrollViewReachable.OnScrollBottomReachedListener;
 import com.mobile.components.customfontviews.TextView;
@@ -541,7 +541,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     private SharedPreferences getSharedPref() {
         if (sharedPrefs == null) {
             //Validate if country configs allows rating and review, only show write review fragment if both are allowed
-            sharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            sharedPrefs = BamiloApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         }
         return sharedPrefs;
     }

@@ -4,7 +4,7 @@
  */
 package com.mobile.helpers.configs;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.database.ImageResolutionTableHelper;
@@ -52,7 +52,7 @@ public class GetApiInfoHelper extends SuperBaseHelper {
         baseResponse.getMetadata().setData(apiInformation);
         //TODO move to observable
         // Save mob api version
-        JumiaApplication.INSTANCE.setMobApiVersionInfo(apiInformation.getVersionInfo());
+        BamiloApplication.INSTANCE.setMobApiVersionInfo(apiInformation.getVersionInfo());
         // Get md5 sections
         Sections sections = apiInformation.getSections();
         // Get old sections

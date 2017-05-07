@@ -51,13 +51,13 @@ import java.util.HashMap;
 
 
 @UseA4S
-public class JumiaApplication extends Application {
+public class BamiloApplication extends Application {
 
-    private static final String TAG = JumiaApplication.class.getSimpleName();
+    private static final String TAG = BamiloApplication.class.getSimpleName();
     // Components
     private static final SingletonMap<ApplicationComponent> COMPONENTS = new SingletonMap<ApplicationComponent>(new DarwinComponent());
     // Application
-    public static JumiaApplication INSTANCE;
+    public static BamiloApplication INSTANCE;
     // Shop
     public static String SHOP_ID = null;
     public static String SHOP_NAME = "";

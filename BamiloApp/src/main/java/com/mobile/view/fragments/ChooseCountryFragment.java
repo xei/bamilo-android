@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountryAdapter;
 import com.mobile.helpers.configs.GetAvailableCountriesHelper;
@@ -213,23 +213,23 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         String countryIso = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null);
         String countryUrl = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null);
         // Validate data
-        if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0){
+        if(BamiloApplication.INSTANCE.countriesAvailable == null || BamiloApplication.INSTANCE.countriesAvailable.size() == 0){
             // Get countries from database
-            JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
+            BamiloApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
             // Validate data from database
-            if(JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
+            if(BamiloApplication.INSTANCE.countriesAvailable.size() == 0) {
                 triggerGetAvailableCountries();
                 return;   
             }
         } 
         
-        int countriesAvailable = JumiaApplication.INSTANCE.countriesAvailable.size();
+        int countriesAvailable = BamiloApplication.INSTANCE.countriesAvailable.size();
         Print.d(TAG, "COUNTRIES SIZE: " + countriesAvailable);
         
         int count = 0;
         String[] countries = new String[countriesAvailable];
         String[] flagsList = new String[countriesAvailable];
-        for (CountryObject country : JumiaApplication.INSTANCE.countriesAvailable) {
+        for (CountryObject country : BamiloApplication.INSTANCE.countriesAvailable) {
             countries[count] = country.getCountryName();
             flagsList[count] = country.getCountryFlag();
             String iso = country.getCountryIso();
@@ -258,11 +258,11 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     }
 
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-        if(CollectionUtils.isNotEmpty(JumiaApplication.INSTANCE.countriesAvailable)
-                && JumiaApplication.INSTANCE.countriesAvailable.size() > position) {
+        if(CollectionUtils.isNotEmpty(BamiloApplication.INSTANCE.countriesAvailable)
+                && BamiloApplication.INSTANCE.countriesAvailable.size() > position) {
             ((ListView) parent).setItemChecked(position, true);
 
-            final CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(position);
+            final CountryObject countryObject = BamiloApplication.INSTANCE.countriesAvailable.get(position);
             final Languages languages = ChooseLanguageController.getCurrentLanguages(this.getActivity(), countryObject);
 
             Runnable runnable = new Runnable() {
@@ -297,12 +297,12 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     protected boolean setCountry(int position) {
 
-        ArrayList<CountryObject> countriesAvailable = JumiaApplication.INSTANCE.countriesAvailable;
+        ArrayList<CountryObject> countriesAvailable = BamiloApplication.INSTANCE.countriesAvailable;
 
         if(position > -1 && position < countriesAvailable.size() &&     // Position validation
                 countriesAvailable.get(position) != null) {             //Null pointer validation
 
-            CountryObject country = JumiaApplication.INSTANCE.countriesAvailable.get(position);
+            CountryObject country = BamiloApplication.INSTANCE.countriesAvailable.get(position);
 
             // Set new country
             SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -317,7 +317,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
             editor.apply();
             // Clean memory
-            JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
+            BamiloApplication.INSTANCE.cleanAllPreviousCountryValues();
             // Is changing country
             if (isChangeCountry) {
                 LastViewedTableHelper.deleteAllLastViewed();
@@ -391,7 +391,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             case GET_GLOBAL_CONFIGURATIONS:
                 Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
                 // Get countries
-                JumiaApplication.INSTANCE.countriesAvailable = (AvailableCountries) baseResponse.getContentData();
+                BamiloApplication.INSTANCE.countriesAvailable = (AvailableCountries) baseResponse.getContentData();
                 // Show countries
                 showAvailableCountries();
                 showFragmentContentContainer();

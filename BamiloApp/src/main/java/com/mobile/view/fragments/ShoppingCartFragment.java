@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -440,7 +440,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     public void triggerChangeItemQuantityInShoppingCart(int position, int quantity) {
         PurchaseCartItem item = items.get(position);
         TrackerDelegator.trackAddToCartGTM(item, quantity, mItemRemovedCartValue);
-        TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(item.getSku(), (long) JumiaApplication.INSTANCE.getCart().getTotal(), true));
+        TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(item.getSku(), (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
         item.setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();
@@ -585,8 +585,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
 
         getBaseActivity().updateCartInfo();
-        if (JumiaApplication.INSTANCE.getCart() != null) {
-            displayShoppingCart(JumiaApplication.INSTANCE.getCart());
+        if (BamiloApplication.INSTANCE.getCart() != null) {
+            displayShoppingCart(BamiloApplication.INSTANCE.getCart());
         }
     }
 

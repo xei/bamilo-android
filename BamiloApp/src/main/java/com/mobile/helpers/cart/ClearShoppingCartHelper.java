@@ -4,7 +4,7 @@
  */
 package com.mobile.helpers.cart;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -46,7 +46,7 @@ public class ClearShoppingCartHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        JumiaApplication.INSTANCE.setCart(null);
+        BamiloApplication.INSTANCE.setCart(null);
     }
 
 }

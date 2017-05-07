@@ -3,7 +3,7 @@ package com.mobile.helpers.session;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
@@ -53,19 +53,19 @@ public class LoginGuestHelper extends SuperBaseHelper {
             mParameters.put(CustomerUtils.INTERNAL_EMAIL_VALUE, "");
             mParameters.put(CustomerUtils.INTERNAL_SIGN_UP_FLAG, true);
             mParameters.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, false);
-            JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
-            Print.i("GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+            BamiloApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
+            Print.i("GET CUSTOMER CREDENTIALS: " + BamiloApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save customer
         CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getContentData();
         Customer customer = loginCustomer.getCustomer();
         customer.setGuest(true);
         // Save customer
-        JumiaApplication.CUSTOMER = customer;
+        BamiloApplication.CUSTOMER = customer;
         NextStepStruct nextStepStruct = new NextStepStruct(loginCustomer);
         baseResponse.getMetadata().setData(nextStepStruct);
         // Save new wish list
-        WishListCache.set(JumiaApplication.CUSTOMER.getWishListCache());
+        WishListCache.set(BamiloApplication.CUSTOMER.getWishListCache());
     }
 
     public static Bundle createBundle(String email) {

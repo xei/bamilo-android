@@ -3,7 +3,7 @@ package com.mobile.helpers.account;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -38,7 +38,7 @@ public class SetUserDataHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        JumiaApplication.CUSTOMER = (Customer) baseResponse.getContentData();
+        BamiloApplication.CUSTOMER = (Customer) baseResponse.getContentData();
     }
 
     public static Bundle createBundle(String endpoint, ContentValues values) {

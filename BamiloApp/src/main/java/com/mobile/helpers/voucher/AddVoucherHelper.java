@@ -3,7 +3,7 @@ package com.mobile.helpers.voucher;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -48,6 +48,6 @@ public class AddVoucherHelper extends SuperBaseHelper {
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
-        JumiaApplication.INSTANCE.setCart(cart);
+        BamiloApplication.INSTANCE.setCart(cart);
     }
 }

@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -227,7 +227,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
 
-                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail() + "");
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), BamiloApplication.CUSTOMER.getEmail() + "");
 
                 //Emarsys
                 EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
@@ -275,10 +275,10 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
 
-                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getId() + "");
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), BamiloApplication.CUSTOMER.getId() + "");
 
                /* RecommendManager recommendManager = new RecommendManager();
-                recommendManager.setEmail(JumiaApplication.CUSTOMER.getEmail(), ""+JumiaApplication.CUSTOMER.getId());*/
+                recommendManager.setEmail(BamiloApplication.CUSTOMER.getEmail(), ""+BamiloApplication.CUSTOMER.getId());*/
                 //Emarsys
                 emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
                     @Override
@@ -288,7 +288,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 // End of Emarsys
                 // Finish
                 getActivity().onBackPressed();
-                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), JumiaApplication.CUSTOMER.getEmail() + "");
+                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), BamiloApplication.CUSTOMER.getEmail() + "");
 
                 TrackerManager.postEvent(getBaseActivity(), EventConstants.Login, EventFactory.login("email", EmailHelper.getHost(customer.getEmail()), true));
 

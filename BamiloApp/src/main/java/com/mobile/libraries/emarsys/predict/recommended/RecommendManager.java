@@ -12,7 +12,7 @@ import com.emarsys.predict.RecommendationResult;
 import com.emarsys.predict.RecommendedItem;
 import com.emarsys.predict.Session;
 import com.emarsys.predict.Transaction;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 
 
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
@@ -180,8 +180,8 @@ public class RecommendManager {
     private List<CartItem> getCartItems()
     {
         List<CartItem> result = new ArrayList<>();
-        if (JumiaApplication.INSTANCE.getCart() == null) return result;
-        List<PurchaseCartItem> cartItems = JumiaApplication.INSTANCE.getCart().getCartItems();
+        if (BamiloApplication.INSTANCE.getCart() == null) return result;
+        List<PurchaseCartItem> cartItems = BamiloApplication.INSTANCE.getCart().getCartItems();
         if (cartItems == null) return result;
         for (PurchaseCartItem purchaseCartItem:cartItems) {
             CartItem item = new CartItem(purchaseCartItem.getSku(), (float)purchaseCartItem.getPrice(), purchaseCartItem.getQuantity());
@@ -201,10 +201,10 @@ public class RecommendManager {
     }
 
     public void setEmail() {
-        if (JumiaApplication.isCustomerLoggedIn() && JumiaApplication.CUSTOMER != null) {
+        if (BamiloApplication.isCustomerLoggedIn() && BamiloApplication.CUSTOMER != null) {
 
-            Session.getInstance().setCustomerEmail(JumiaApplication.CUSTOMER.getEmail());
-            Session.getInstance().setCustomerId("" + JumiaApplication.CUSTOMER.getId());
+            Session.getInstance().setCustomerEmail(BamiloApplication.CUSTOMER.getEmail());
+            Session.getInstance().setCustomerId("" + BamiloApplication.CUSTOMER.getId());
         }
         else {
             Session.getInstance().setCustomerEmail(null);

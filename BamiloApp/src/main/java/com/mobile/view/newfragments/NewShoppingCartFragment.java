@@ -27,7 +27,7 @@ import com.emarsys.predict.RecommendedItem;
 import com.google.android.gms.analytics.ecommerce.Product;
 import com.mobile.adapters.AddressAdapter;
 import com.mobile.adapters.CartItemAdapter;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -245,7 +245,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         if(args != null) {
             if(args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)){
                 String mClickedSku = args.getString(AddToWishListHelper.ADD_TO_WISHLIST);
-                if(JumiaApplication.isCustomerLoggedIn() && mClickedSku != null && mClickedSku.trim()!=""){
+                if(BamiloApplication.isCustomerLoggedIn() && mClickedSku != null && mClickedSku.trim()!=""){
                     triggerAddToWishList(mClickedSku);
                     //TrackerDelegator.trackAddToFavorites(mClicked);
                 }
@@ -253,7 +253,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             }
             else if(args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)){
                 String mClickedSku = args.getString(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
-                if(JumiaApplication.isCustomerLoggedIn() && mClickedSku != null && mClickedSku.trim()!=""){
+                if(BamiloApplication.isCustomerLoggedIn() && mClickedSku != null && mClickedSku.trim()!=""){
                     triggerRemoveFromWishList(mClickedSku);
                     //TrackerDelegator.trackRemoveFromFavorites(mClicked);
                 }
@@ -460,7 +460,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     public void triggerChangeItemQuantityInShoppingCart(int position, int quantity) {
         PurchaseCartItem item = items.get(position);
         TrackerDelegator.trackAddToCartGTM(item, quantity, mItemRemovedCartValue);
-        TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(item.getSku(), (long) JumiaApplication.INSTANCE.getCart().getTotal(), true));
+        TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(item.getSku(), (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
         item.setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();
@@ -611,8 +611,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         }
 
         getBaseActivity().updateCartInfo();
-        if (JumiaApplication.INSTANCE.getCart() != null) {
-            displayShoppingCart(JumiaApplication.INSTANCE.getCart());
+        if (BamiloApplication.INSTANCE.getCart() != null) {
+            displayShoppingCart(BamiloApplication.INSTANCE.getCart());
         }
     }
 
@@ -948,7 +948,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         // Validate customer is logged in
             mClickedFavourite = (View)view.getTag(R.id.cart_fav_icon);
         String mProductSku = (String)view.getTag(R.id.sku);
-        if (JumiaApplication.isCustomerLoggedIn()) {
+        if (BamiloApplication.isCustomerLoggedIn()) {
             try {
                 // Get item
                 if (mClickedFavourite.isSelected()) {

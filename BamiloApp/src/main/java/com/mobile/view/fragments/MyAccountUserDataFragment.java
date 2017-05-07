@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
@@ -101,7 +101,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        if (null != JumiaApplication.CUSTOMER) {
+        if (null != BamiloApplication.CUSTOMER) {
             setAppContentLayout(view);
         }
     }
@@ -115,7 +115,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
-        if (null != JumiaApplication.CUSTOMER) {
+        if (null != BamiloApplication.CUSTOMER) {
             init();
         } else {
             showFragmentErrorRetry();

@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -256,7 +256,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
-        if (null != JumiaApplication.CUSTOMER) {
+        if (null != BamiloApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
@@ -413,8 +413,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             FragmentType nextFragment = nextStepStruct.getFragmentType();
             nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_FINISH;
             // Tracking
-            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
-            String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
+            String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "";
+            String email = BamiloApplication.INSTANCE.getCustomerUtils().getEmail();
             TrackerDelegator.trackPaymentMethod(userId, email, paymentName);
             // Switch to FINISH
             getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -460,7 +460,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             break;
         case SET_MULTI_STEP_PAYMENT:
             Print.i(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
-            TrackerDelegator.trackFailedPayment(paymentName, JumiaApplication.INSTANCE.getCart());
+            TrackerDelegator.trackFailedPayment(paymentName, BamiloApplication.INSTANCE.getCart());
             showWarningErrorMessage(baseResponse.getValidateMessage());
             showFragmentContentContainer();
             break;

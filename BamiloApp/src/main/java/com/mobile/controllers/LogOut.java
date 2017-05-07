@@ -2,7 +2,7 @@ package com.mobile.controllers;
 
 import android.support.annotation.NonNull;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.constants.EventConstants;
 import com.mobile.factories.EventFactory;
 import com.mobile.helpers.session.GetLogoutHelper;
@@ -45,7 +45,7 @@ public class LogOut {
             // Show progress
             baseActivity.showProgress();
             // Try notify mob api
-            JumiaApplication.INSTANCE.sendRequest(new GetLogoutHelper(), null, new IResponseCallback() {
+            BamiloApplication.INSTANCE.sendRequest(new GetLogoutHelper(), null, new IResponseCallback() {
                 @Override
                 public void onRequestComplete(BaseResponse baseResponse) {
                     // Clean customer data
@@ -78,8 +78,8 @@ public class LogOut {
         // Clean wish list
         WishListCache.clean();
         // Clean cart
-        JumiaApplication.INSTANCE.setCart(null);
-        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+        BamiloApplication.INSTANCE.setCart(null);
+        BamiloApplication.INSTANCE.getCustomerUtils().clearCredentials();
         // Update layouts to clean cart info
         baseActivity.updateCartInfo();
         // Tracking

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -160,7 +160,7 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
                 super.showAddresses((Addresses) baseResponse.getContentData());
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaAddress, mGABeginRequestMillis,
-                        JumiaApplication.CUSTOMER==null?"":""+JumiaApplication.CUSTOMER.getId());
+                        BamiloApplication.CUSTOMER==null?"":""+BamiloApplication.CUSTOMER.getId());
                 break;
             default:
                 break;

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.constants.FormConstants;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -455,7 +455,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
 
     public void triggerContentEvent(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         if(isFragmentUIActive()) {
-            JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+            BamiloApplication.INSTANCE.sendRequest(helper, args, responseCallback);
         }
     }
 

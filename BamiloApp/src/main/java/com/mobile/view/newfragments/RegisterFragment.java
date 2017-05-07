@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -284,7 +284,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 hideActivityProgress();
                 // Tracking
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.SignUp, EventFactory.signup("email", EmailHelper.getHost(JumiaApplication.CUSTOMER.getEmail()), true));
+                TrackerManager.postEvent(getBaseActivity(), EventConstants.SignUp, EventFactory.signup("email", EmailHelper.getHost(BamiloApplication.CUSTOMER.getEmail()), true));
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 // Finish

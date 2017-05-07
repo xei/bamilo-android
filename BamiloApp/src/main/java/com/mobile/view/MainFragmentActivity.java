@@ -15,7 +15,7 @@ import android.util.Log;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.mobile.app.DebugActivity;
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
@@ -626,7 +626,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
         }
         // Clear search term
         if (type != FragmentType.CATALOG && type != FragmentType.FILTERS)
-            JumiaApplication.INSTANCE.setSearchedTerm("");
+            BamiloApplication.INSTANCE.setSearchedTerm("");
 
         // Validate menu flag and pop entries until home
         if (removeEntries) {
@@ -711,7 +711,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
 
             // Clear search term
             if (fragment.getTag().equals(FragmentType.CATALOG.toString()))
-                JumiaApplication.INSTANCE.setSearchedTerm("");
+                BamiloApplication.INSTANCE.setSearchedTerm("");
 
             // Case navigation opened
             if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
@@ -737,7 +737,7 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             newFragment = (NewBaseFragment) frag;
             // Clear search term
             if (newFragment.getTag().equals(FragmentType.CATALOG.toString()))
-                JumiaApplication.INSTANCE.setSearchedTerm("");
+                BamiloApplication.INSTANCE.setSearchedTerm("");
 
             // Case navigation opened
             if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {

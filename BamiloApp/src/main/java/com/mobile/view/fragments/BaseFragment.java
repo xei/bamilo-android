@@ -22,7 +22,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.mobile.app.JumiaApplication;
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -432,7 +432,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Show loading
         showFragmentLoading();
         // Request
-        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+        BamiloApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 
     /**
@@ -442,7 +442,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Show progress
         showActivityProgress();
         // Request
-        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+        BamiloApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 
     /**
@@ -450,7 +450,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected final void triggerContentEventNoLoading(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         // Request
-        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+        BamiloApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 
     /**

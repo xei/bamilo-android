@@ -9,7 +9,7 @@ import com.mobile.newFramework.utils.DeviceInfoHelper;
  * Application used to add all debug features.
  * @author sergio pereira
  */
-public class DebugApplication extends JumiaApplication {
+public class DebugApplication extends BamiloApplication {
 
     /**
      * Enable support multi dex
