@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
-import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.view.R;
 
@@ -58,9 +57,6 @@ public class DebugTrackingModel extends BaseDebugModel implements CompoundButton
             case R.id.dd_debug_item_tracking_adjust_enable:
                 AdjustTracker.get().debugMode(mContext, isChecked);
                 break;
-            case R.id.dd_debug_item_tracking_relic_enable:
-                NewRelicTracker.get().debugMode(mContext, isChecked);
-                break;
             case R.id.dd_debug_item_tracking_switch:
             default:
                 mainSwitch(isChecked);
@@ -78,8 +74,6 @@ public class DebugTrackingModel extends BaseDebugModel implements CompoundButton
             ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_gtm_id)).setText(GTMManager.get().getId(mContext));
             // ADJUST
             ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_adjust_id)).setText(AdjustTracker.get().getId(mContext));
-            // NEW RELIC
-            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_relic_id)).setText(NewRelicTracker.get().getId(mContext));
             // Show
             mContainer.setVisibility(View.VISIBLE);
         } else {

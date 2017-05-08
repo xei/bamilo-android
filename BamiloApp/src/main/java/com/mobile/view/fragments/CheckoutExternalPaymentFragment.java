@@ -29,30 +29,20 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.AigHttpClient;
-import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
-import com.newrelic.agent.android.util.NetworkFailure;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
 import java.net.HttpCookie;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -483,7 +473,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 handler.proceed();
             } else {
                 String url = view.getUrl();
-                NewRelicTracker.noticeFailureTransaction(url, "https", beginTransaction, NetworkFailure.SecureConnectionFailed);
                 onReceivedError(view, error.getPrimaryError(), error.toString(), url);
                 handler.cancel();
             }

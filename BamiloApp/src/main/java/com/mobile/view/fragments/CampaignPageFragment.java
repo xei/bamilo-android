@@ -57,7 +57,6 @@ import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
-import com.newrelic.agent.android.harvest.Event;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -15,8 +15,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.ndk.CrashlyticsNdk;
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -27,8 +25,6 @@ import com.mobile.helpers.configs.GetApiInfoHelper;
 import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.libraries.emarsys.EmarsysMobileEngage;
-import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.configs.RedirectPage;
@@ -36,7 +32,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
-import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
@@ -49,10 +44,6 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.newrelic.agent.android.NewRelic;
-import com.pushwoosh.PushManager;
-
-import io.fabric.sdk.android.Fabric;
 
 /**
  * <p> This class creates a splash screen. It also initializes hockey and the backend </p> <p/> <p> Copyright (C) 2012 Rocket Internet - All Rights Reserved
@@ -97,27 +88,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-/*<<<<<<< HEAD
-        if (com.mobile.view.BuildConfig.BUILD_TYPE.compareTo("release") == 0) {
-            if (com.mobile.view.BuildConfig.FLAVOR.compareTo("live") == 0) {
-                NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
-                        .start(this);
-
-            }
-            if (com.mobile.view.BuildConfig.FLAVOR.compareTo("staging") == 0) {
-
-                    NewRelic.withApplicationToken(getString(com.mobile.framework.R.string.newrelic_token))
-                            .withCrashReportingEnabled(false)
-                            .start(this);
-
-                    Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
-
-            }
-            //Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
-        }
-
-=======
->>>>>>> 91988837b772ad475ef5213e9e17e9ad6163bfd5*/
         //Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
         // Disable Accengage rich push notifications

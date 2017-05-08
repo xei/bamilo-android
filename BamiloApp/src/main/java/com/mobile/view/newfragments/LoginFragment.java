@@ -43,14 +43,9 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.emarsys.EmarsysTracker;
-import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
-import com.newrelic.agent.android.harvest.Event;
 import com.pushwoosh.PushManager;
-import com.pushwoosh.inapp.InAppFacade;
-import com.pushwoosh.internal.PushManagerImpl;
 
 import java.util.EnumSet;
 

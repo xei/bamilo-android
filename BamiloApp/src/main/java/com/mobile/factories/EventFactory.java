@@ -2,7 +2,6 @@ package com.mobile.factories;
 
 import com.mobile.constants.EventConstants;
 import com.mobile.utils.EventTracker;
-import com.newrelic.agent.android.harvest.Event;
 
 import java.util.HashMap;
 

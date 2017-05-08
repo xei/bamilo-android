@@ -15,7 +15,6 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-apply plugin: 'newrelic'
 apply plugin: 'usea4s'
 apply plugin: 'pmd'
 apply plugin: 'findbugs'

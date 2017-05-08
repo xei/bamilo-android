@@ -3,7 +3,6 @@ package com.mobile.newFramework;
 import android.content.Context;
 
 import com.mobile.newFramework.database.DarwinDatabaseHelper;
-import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 
@@ -123,8 +122,6 @@ public class Darwin {
 		DarwinDatabaseHelper.init(context);
 		// Shop
 		ShopSelector.init(context, shopId);
-		// New relic
-		NewRelicTracker.init(context);
 		Print.i(TAG, "Darwin is initialized with id " + shopId);
 		SHOP_ID = shopId;
 		return true;

@@ -12,11 +12,8 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.emarsys.EmarsysTracker;
-import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.view.BaseActivity;
-import com.newrelic.agent.android.harvest.Event;
 
 import java.lang.ref.WeakReference;
 

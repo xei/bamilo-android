@@ -43,7 +43,6 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.view.R;
-import com.newrelic.agent.android.harvest.Event;
 
 import org.json.JSONException;
 import org.json.JSONObject;

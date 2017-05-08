@@ -100,14 +100,6 @@
 -dontwarn com.ad4screen.sdk.plugins.**
 ############################################################################################
 
-## BEGIN NEW RELIC #########################################################################
--keep class com.newrelic.** { *; }
--dontwarn com.newrelic.**
--dontnote com.newrelic.**
--keepattributes Exceptions, Signature, InnerClasses
--dontnote com.newrelic.com.google.gson.internal.UnsafeAllocator
-############################################################################################
-
 ## BEGIN FACEBOOK ##########################################################################
 -keep class com.facebook.** { *; }
 -keepattributes Signature
