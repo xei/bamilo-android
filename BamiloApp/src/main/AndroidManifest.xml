@@ -161,7 +161,6 @@
             android:exported="true"
             android:screenOrientation="unspecified"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name="net.hockeyapp.android.UpdateActivity" />
         <activity
             android:name=".ProductImageGalleryActivity"
             android:exported="true"

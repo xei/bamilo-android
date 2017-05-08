@@ -2,17 +2,14 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
@@ -21,8 +18,6 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.RecommendedAdapter;
-import com.mobile.libraries.emarsys.RecommendedListAdapter;
-import com.mobile.libraries.emarsys.predict.recommended.Item;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.Darwin;
@@ -40,7 +35,6 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -54,9 +48,7 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Class used to show the home page.
@@ -126,8 +118,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        // Register Hockey
-        HockeyStartup.register(getBaseActivity());
         // Get saved scroll position
         if (savedInstanceState != null) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);

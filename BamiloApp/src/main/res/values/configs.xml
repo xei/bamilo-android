@@ -44,10 +44,6 @@
     <integer name="ga_dispatchPeriod">0</integer>
     -->
 
-    <!-- HOCKEY APP -->
-    <string name="hockey_app_id">ff6f925528a2c72ef85cac8908c7ee94</string>
-    <item name="hockeyapp_enable_dev" type="bool">true</item>
-
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.bamilo.android.live</string>
     <string name="dp_app_name_uppercase">BAMILO</string>

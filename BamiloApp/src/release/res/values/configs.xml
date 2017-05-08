@@ -13,9 +13,6 @@
     <integer name="ga_dispatchPeriod">0</integer>
     -->
 
-    <!-- HOCKEY APP -->
-    <string name="hockey_app_id">826e96e46b79db07d4f98ad080bb575c</string>
-
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.bamilo.android</string>
     <string name="dp_app_name_uppercase">BAMILO</string>
