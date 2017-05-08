@@ -14,7 +14,6 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 
-import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -31,7 +30,6 @@ import com.mobile.newFramework.objects.configs.RedirectPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
@@ -56,7 +54,6 @@ import com.mobile.utils.ui.ErrorLayoutFactory;
  * @date 25/04/2013
  * @description
  */
-@UseA4S
 public class SplashScreenActivity extends FragmentActivity implements IResponseCallback, OnClickListener {
 
     private final static String TAG = SplashScreenActivity.class.getSimpleName();
@@ -90,8 +87,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         //Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
-        // Disable Accengage rich push notifications
-        Ad4PushTracker.get().setPushNotificationLocked(true);
         // Set Font
         HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
         // Validate if is phone and force orientation

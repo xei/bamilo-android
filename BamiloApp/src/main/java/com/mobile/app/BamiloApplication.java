@@ -10,7 +10,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.emarsys.predict.Session;
 import com.facebook.FacebookSdk;
 import com.mobile.helpers.SuperBaseHelper;
@@ -49,8 +48,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-@UseA4S
 public class BamiloApplication extends Application {
 
     private static final String TAG = BamiloApplication.class.getSimpleName();
@@ -84,8 +81,6 @@ public class BamiloApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //Remove Accengage Iran Ban config
-        getApplicationContext().deleteFile("com.ad4screen.sdk.common.Environment");
 
         // ON APPLICATION CREATE
         Print.i(TAG, "ON APPLICATION CREATE");

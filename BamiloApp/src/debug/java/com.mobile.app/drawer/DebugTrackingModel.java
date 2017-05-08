@@ -8,12 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import com.mobile.view.R;
 
-import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
-import com.mobile.view.R;
 
 /**
  * Model used to show trackers ids and enable/disable the respective log.
@@ -45,9 +44,6 @@ public class DebugTrackingModel extends BaseDebugModel implements CompoundButton
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         int id = buttonView.getId();
         switch (id) {
-            case R.id.dd_debug_item_tracking_accengage_enable:
-                Ad4PushTracker.get().debugMode(mContext, isChecked);
-                break;
             case R.id.dd_debug_item_tracking_ga_enable:
                 AnalyticsGoogle.get().debugMode(mContext, isChecked);
                 break;
@@ -66,8 +62,6 @@ public class DebugTrackingModel extends BaseDebugModel implements CompoundButton
 
     private void mainSwitch(boolean isChecked) {
         if (isChecked) {
-            // ACCENGAGE
-            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_accengage_id)).setText(Ad4PushTracker.get().getId());
             // GA
             ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_ga_id)).setText(AnalyticsGoogle.get().getId());
             // GTM

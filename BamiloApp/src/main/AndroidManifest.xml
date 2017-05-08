@@ -237,90 +237,14 @@
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
+
         <service
             android:name="com.pushwoosh.GCMRegistrationService"
             android:exported="false"></service>
 
         <!-- ######################################## -->
-        <!-- ############# AD4Push GCM ############## -->
-        <!-- ######################################## -->
-
-
-        <!-- ############# AD4Push: A4SService ############# -->
-        <service
-            android:name="com.ad4screen.sdk.A4SService"
-            android:label="A4S Service"
-            android:process=":A4SService">
-            <meta-data
-                android:name="com.ad4screen.partnerid"
-                android:value="@string/ad4push_partner_id" />
-            <meta-data
-                android:name="com.ad4screen.privatekey"
-                android:value="@string/ad4push_private_key" />
-            <meta-data
-                android:name="com.ad4screen.senderid"
-                android:value="@string/ad4push_sender_id" />
-
-            <!-- http://wiki.accengage.com/android/doku.php?id=plugins -->
-            <meta-data
-                android:name="com.ad4screen.location.priority"
-                android:value="low" />
-            <meta-data
-                android:name="com.ad4screen.advertiser_id"
-                android:value="true" />
-            <meta-data
-                android:name="com.ad4screen.logging"
-                android:value="false" />
-            <!-- Optional Code for >= Kitkat (4.4) Notifications -->
-            <meta-data
-                android:name="com.ad4screen.notifications.icon"
-                android:value="ic_stat_notifications" />
-            <!-- Optional Code for >= Lollipop (5.0) Notifications -->
-            <meta-data
-                android:name="com.ad4screen.notifications.accent_color"
-                android:value="@color/color_accent" />
-            <!--
-            Cache delay in seconds
-            <meta-data android:name="com.ad4screen.cache.delay" android:value="15" />
-            -->
-
-        </service>
-
-        <!-- ############# AD4Push: Geofencing Integration ############# -->
-        <service
-            android:name="com.ad4screen.sdk.A4SGeofencingService"
-            android:exported="false" />
-
-        <!-- ############# AD4Push: Push Notifications ############# -->
-
-        <receiver
-            android:name="com.ad4screen.sdk.GCMHandler"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <!-- WARNING: No use value from strings.xml, attribute is not a string value -->
-                <category android:name="${applicationId}" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.mobile.utils.receivers.PushNotificationReceiver"
-            android:permission="${applicationId}.permission.A4S_SEND">
-            <intent-filter>
-                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
-                <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
-                <action android:name="com.ad4screen.sdk.intent.action.CLOSED" />
-
-                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS" />
-                <!-- <category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" /> -->
-                <!-- <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" /> -->
-            </intent-filter>
-        </receiver>
-
-        <!-- ######################################## -->
         <!-- ################# GTM ################## -->
         <!-- ######################################## -->
-
 
         <!-- Used for install referrer tracking -->
         <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />

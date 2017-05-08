@@ -6,14 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
+import com.mobile.view.R;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.tracking.Ad4PushTracker;
-import com.mobile.utils.SingleLineComponent;
-import com.mobile.view.R;
 
 /**
  * This Class is used to create an adapter for the list of account options. It is called by Home Activity.
@@ -110,20 +107,21 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
             WORKAROUND to set the correct checkbox status when user navigates
             to MyAccountFragment by clicking the back button
              */
+            /*
             optionsCheckbox.post(new Runnable() {
                 @Override
                 public void run() {
                     optionsCheckbox.setChecked(Ad4PushTracker.getActiveAd4Push(mContext));
                 }
             });
+
             optionsCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     Ad4PushTracker.setActiveAd4Push(mContext, isChecked);
                 }
-            });
-        }
-        else {
+            });*/
+        } else {
             optionsCheckbox.setVisibility(View.GONE);
         }
 

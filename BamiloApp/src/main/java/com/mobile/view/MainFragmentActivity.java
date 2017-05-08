@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 
-import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.mobile.app.DebugActivity;
 import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -25,7 +24,6 @@ import com.mobile.libraries.emarsys.EmarsysMobileEngage;
 import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -101,7 +99,6 @@ import java.util.Map;
 /**
  * @author sergiopereira
  */
-@UseA4S
 public class MainFragmentActivity extends DebugActivity implements PushEventListener {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
@@ -224,8 +221,6 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.d(TAG, "ON CREATE");
-        // Enable Accengage rich push notifications
-
         //Init Pushwoosh fragment
         PushFragment.init(this);
 
@@ -242,7 +237,6 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
         pushManager.registerForPushNotifications();
         checkMessage(getIntent());
  //PushwooshEnd in onCreate
-        Ad4PushTracker.get().setPushNotificationLocked(false);
 
         //Emarsys
         EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
@@ -295,29 +289,6 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
             isInMaintenance = splashScreenParams.getExtras().getBoolean(ConstantsIntentExtra.IN_MAINTANCE, false);
         }
     }
-
-    /*
-     * (non-Javadoc)
-     * For 4DS - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
-     *
-     * @see com.mobile.utils.BaseActivity#onNewIntent(android.content.Intent)
-     */
-/*    @Override
-    protected void onNewIntent(Intent intent) {
-
-        Print.d(TAG, "ON NEW INTENT");
-       *//*
-        // For AD4 - http://wiki.accengage.com/*//*android/doku.php?id=sub-classing-any-activity-type
-        this.setIntent(intent);
-        // Validate deep link
-        DeepLinkManager.onSwitchToDeepLink(this, intent);
-*//*
-        super.onNewIntent(intent);
-
-        //Check if we've got new intent with a push notification
-        PushFragment.onNewIntent(this ,intent);
-    }*/
-
 
     /*
      * (non-Javadoc)
@@ -815,6 +786,4 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
     public void doOnUnregisteredError(String errorId) {
         Log.e(TAG, "Failed to unregister from pushes: " + errorId);
     }
-
-
 }

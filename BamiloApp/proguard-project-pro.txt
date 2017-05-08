@@ -86,20 +86,6 @@
 #}
 ########################################################################################
 
-## BEGIN ACCENGAGE ######################################################################
--keepattributes InnerClasses,Signature,Exceptions,EnclosingMethod,SourceFile,LineNumberTable,*Annotation*
--renamesourcefileattribute SourceFile
--keep class com.ad4screen.sdk.common.annotations.API
--keep @com.ad4screen.sdk.common.annotations.API class * {
-	public *;
-	@com.ad4screen.sdk.common.annotations.API protected *;
-}
--keep class com.ad4screen.sdk.IA4SService { public *; }
--keep class com.ad4screen.sdk.IA4SService$Stub { public *; }
--keep class com.ad4screen.sdk.plugins.** { *; }
--dontwarn com.ad4screen.sdk.plugins.**
-############################################################################################
-
 ## BEGIN FACEBOOK ##########################################################################
 -keep class com.facebook.** { *; }
 -keepattributes Signature

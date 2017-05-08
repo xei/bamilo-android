@@ -35,15 +35,6 @@
     <string name="global_server_restbase_path"/>
     <string name="global_server_api_version"/>
 
-    <!-- ACCENGAGE -->
-    <item name="ad4push_enabled" type="bool"/>
-	<string name="ad4push_partner_id"/>
-    <string name="ad4push_private_key"/>
-    <string name="ad4push_sender_id">gcm:593252289486</string>
-    
-	<!-- NEW RELIC -->
-    <string name="newrelic_token"/>
-
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool"/>
     <string name="adjust_app_token"/>

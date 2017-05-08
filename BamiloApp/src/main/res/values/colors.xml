@@ -114,5 +114,6 @@
     <color name="recommendation_black">#1b1b1b</color>
     <color name="recommendation_grey">#929292</color>
     <color name="order_status_textcolor">#555555</color>
+    <color name="transparent">#00000000</color>
 
 </resources>

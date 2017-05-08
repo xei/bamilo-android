@@ -66,7 +66,6 @@ import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
@@ -1562,8 +1561,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     public void restartAppFlow() {
-        // Clear Ad4Push prefs
-        Ad4PushTracker.clearAllSavedData(this);
         // Show splash screen
         ActivitiesWorkFlow.splashActivityNewTask(this);
         // Finish MainFragmentActivity

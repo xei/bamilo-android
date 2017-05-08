@@ -1,6 +1,5 @@
 package com.mobile.utils.receivers;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.ad4screen.sdk.ReferrerHandler;
 import com.adjust.sdk.AdjustReferrerReceiver;
 import com.google.android.gms.analytics.CampaignTrackingReceiver;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
@@ -57,8 +55,6 @@ public class InstallReceiver extends BroadcastReceiver {
        
         // Google Analytics
         new CampaignTrackingReceiver().onReceive(context, intent);
-        // ACCENGAGE
-        new ReferrerHandler().onReceive(context, intent);
         // Adjust
         new AdjustReferrerReceiver().onReceive(context, intent);
     }

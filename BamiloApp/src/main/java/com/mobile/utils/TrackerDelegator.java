@@ -26,7 +26,6 @@ import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.FacebookTracker;
@@ -158,9 +157,6 @@ public class TrackerDelegator {
         boolean loginAfterRegister = checkLoginAfterSignup(customer);
         Print.d(TAG, "trackLoginSuccessul: loginAfterRegister = " + loginAfterRegister + " wasAutologin = " + wasAutologin);
 
-        // Accengage
-        Ad4PushTracker.get().trackLoginRegistration(customer, wasFacebookLogin);
-
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customer.getIdAsString());
@@ -176,7 +172,6 @@ public class TrackerDelegator {
         } else {
             GTMManager.get().gtmTrackLogin(customer, event, location);
         }
-
     }
 
     /**
@@ -345,8 +340,6 @@ public class TrackerDelegator {
         if (customer == null) return;
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP_SUCCESS, customer.getIdAsString(), 0L);
-        // AD4
-        Ad4PushTracker.get().trackLoginRegistration(customer, false);
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
@@ -587,8 +580,6 @@ public class TrackerDelegator {
         if (!justGTM) {
             // GA
             AnalyticsGoogle.get().trackPage(screen);
-            // AD4
-            Ad4PushTracker.get().trackScreen(screen);
         }
     }
 
@@ -687,8 +678,6 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackProduct(TrackingEvent.SHOW_PRODUCT_DETAIL, source, path, name, sku, price);
         // GTM
         GTMManager.get().gtmTrackViewProduct(sku, price, brand, EUR_CURRENCY, discount, rating, category, subCategory);
-        // Accengage
-        Ad4PushTracker.get().trackProductView(product);
     }
 
     /**
@@ -724,8 +713,6 @@ public class TrackerDelegator {
         String categories = completeProduct.getCategories();
         // User
         String customerId = (BamiloApplication.CUSTOMER != null) ? BamiloApplication.CUSTOMER.getIdAsString() : "";
-        // Accengage
-        Ad4PushTracker.get().trackAddToFavorites(completeProduct);
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_WISHLIST, productSku, (long) productPrice);
         //Adjust
@@ -753,8 +740,6 @@ public class TrackerDelegator {
         double averageRatingTotal = product.getAvgRating();
         // User
         String customerId = (BamiloApplication.CUSTOMER != null) ? BamiloApplication.CUSTOMER.getIdAsString() : "";
-        // Accengage
-        Ad4PushTracker.get().trackRemoveFromWishList();
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.REMOVE_FROM_WISHLIST, productSku, (long) price);
         //Adjust
@@ -891,8 +876,6 @@ public class TrackerDelegator {
         params.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(TrackingEvent.APP_OPEN, params);
         GTMManager.trackAdjustInstallSource(context);
-        // AD4Push
-        Ad4PushTracker.get().trackAppOpen();
     }
 
     /**
@@ -934,8 +917,6 @@ public class TrackerDelegator {
      * @author sergiopereira
      */
     public static void trackAddToCart(PurchaseEntity purchase) {
-        // Ad4
-        Ad4PushTracker.get().trackAddToCart(purchase);
     }
 
     /**
@@ -943,8 +924,6 @@ public class TrackerDelegator {
      * @author sergiopereira
      */
     public static void trackRemoveFromCart(PurchaseEntity purchase) {
-        // Ad4
-        Ad4PushTracker.get().trackRemoveFromCart(purchase);
     }
 
     public static void trackAddOfferToCart(String productSku, double price) {
@@ -1149,13 +1128,9 @@ public class TrackerDelegator {
      *
      */
     public static void trackPurchase(CheckoutFinish checkoutFinish, PurchaseEntity cart) {
-        // Accengage
-        Ad4PushTracker.get().trackPurchase(checkoutFinish, cart);
     }
 
     public static void trackCustomerInfo(@NonNull Customer customer) {
-        // Accengage
-        Ad4PushTracker.get().trackCustomerInfo(customer);
     }
 
     /**
@@ -1187,7 +1162,6 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackEventClickOnExternalLink(TrackingEvent.EXTERNAL_LINK_CLICK, label);
     }
 
-    public static void trackOpenPushNotification(){
-        Ad4PushTracker.get().trackPNOpened();
+    public static void trackOpenPushNotification() {
     }
 }

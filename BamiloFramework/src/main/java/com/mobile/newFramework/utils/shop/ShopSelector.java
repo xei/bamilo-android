@@ -9,7 +9,6 @@ import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.configs.AigRestContract;
-import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.FacebookTracker;
@@ -84,7 +83,6 @@ public final class ShopSelector {
         AdjustTracker.startup(context);
         AdjustTracker.initializeAdjust(context);
         AnalyticsGoogle.startup(context);
-        Ad4PushTracker.startup(context);
         GTMManager.init(context);
         FacebookTracker.startup(context);
     }
