@@ -1,12 +1,6 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 ext {
-    // The following are only a few examples of the types of properties you can define.
-    compileSdkVersion = 23
+    compileSdkVersion = 25
     buildToolsVersion = "23.0.2"
-    // You can also create properties to specify versions for dependencies.
-    // Having consistent versions between modules can avoid conflicts with behavior.
-    supportLibVersion = "23.2.1"
-    playServicesVersion = "7.5.0"
 }
 
 buildscript {
