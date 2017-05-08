@@ -10,10 +10,6 @@ import android.support.annotation.NonNull;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
-import com.mobile.factories.EventFactory;
-import com.mobile.helpers.search.SearchHelper;
-import com.mobile.managers.TrackerManager;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
@@ -28,7 +24,6 @@ import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
-import com.mobile.newFramework.tracking.FacebookTracker;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
@@ -59,7 +54,6 @@ public class TrackerDelegator {
 
     public static final String CUSTOMER_KEY = RestConstants.CUSTOMER;
     public static final String AUTOLOGIN_KEY = "auto_login";
-    public static final String FACEBOOKLOGIN_KEY = "facebook_login";
     public static final String SEARCH_CRITERIA_KEY = "search_criteria";
     public static final String SEARCH_RESULTS_KEY = "search_results";
     public static final String SKU_KEY = RestConstants.SKU;
@@ -122,7 +116,6 @@ public class TrackerDelegator {
         Bundle params = new Bundle();
         params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
         params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, autoLogin);
-        params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, fromFacebook);
         params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
         trackLoginSuccessful(params);
     }
@@ -132,12 +125,9 @@ public class TrackerDelegator {
 
         Customer customer = params.getParcelable(CUSTOMER_KEY);
         boolean wasAutologin = params.getBoolean(AUTOLOGIN_KEY);
-        boolean wasFacebookLogin = params.getBoolean(FACEBOOKLOGIN_KEY);
         String location = params.getString(LOCATION_KEY);
 
-        if (wasFacebookLogin) {
-            event = TrackingEvent.LOGIN_FB_SUCCESS;
-        } else if (wasAutologin) {
+        if (wasAutologin) {
             event = TrackingEvent.LOGIN_AUTO_SUCCESS;
         } else {
             event = TrackingEvent.LOGIN_SUCCESS;
@@ -359,8 +349,7 @@ public class TrackerDelegator {
     }
 
     public static void trackSessionFailed(EventType eventType) {
-        if(eventType == EventType.FACEBOOK_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.FACEBOOK);
-        else if(eventType == EventType.AUTO_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.EMAILAUTH);
+        if(eventType == EventType.AUTO_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.EMAILAUTH);
         if(eventType == EventType.GUEST_LOGIN_EVENT) TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
     }
 
@@ -858,8 +847,6 @@ public class TrackerDelegator {
                 GTMManager.getUtmParams(context, GTMManager.CAMPAIGN_SOURCE),
                 GTMManager.getUtmParams(context, GTMManager.CAMPAIGN_MEDIUM),
                 isFromPush);
-        // FB
-        FacebookTracker.get(context).trackActivatedApp();
     }
 
     /**

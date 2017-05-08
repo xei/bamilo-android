@@ -31,7 +31,4 @@
 	<!-- GTM -->
     <item name="gtm_debug" type="bool">false</item>
     
-	<!-- FACEBOOK -->
-    <string name="facebook_app_id"/>
-    
 </resources>

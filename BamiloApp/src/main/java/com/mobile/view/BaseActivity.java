@@ -1752,12 +1752,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 Customer customer = ((CheckoutStepLogin)((NextStepStruct)baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
                 // Get origin
                 ContentValues credentialValues = BamiloApplication.INSTANCE.getCustomerUtils().getCredentials();
-                boolean isFBLogin = credentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);
                 // Track
                 Bundle params = new Bundle();
                 params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
                 params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, TrackerDelegator.IS_AUTO_LOGIN);
-                params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, isFBLogin);
                 params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
                 TrackerDelegator.trackLoginSuccessful(params);
             }

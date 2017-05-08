@@ -86,12 +86,6 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_30dp" />
 
-        <!-- FACEBOOK -->
-        <com.mobile.components.customfontviews.FacebookTextView
-            android:id="@+id/login_button_facebook"
-            style="@style/Button_Link.Facebook"
-            />
-
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/margin_padding_xl" />
@@ -104,7 +98,6 @@
             android:layout_width="@dimen/login_main_container_width"
             android:text="@string/continue_without_log_in"
             android:visibility="gone" />
-
 
     </LinearLayout>
 

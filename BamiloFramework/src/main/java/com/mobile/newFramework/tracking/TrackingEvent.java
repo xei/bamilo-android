@@ -101,8 +101,6 @@ public enum TrackingEvent {
 
 	//	### ACCOUNT EVENTS
 
-	LOGIN_FB_SUCCESS(R.string.gaccount, R.string.gfacebookloginsuccess),
-
 	LOGIN_AUTO_SUCCESS(R.string.gaccount, R.string.gautologinsuccess),
 
 	LOGIN_SUCCESS(R.string.gaccount, R.string.gloginsuccess),

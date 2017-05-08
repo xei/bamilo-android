@@ -59,7 +59,6 @@ public class LoginHelper extends SuperBaseHelper {
         // Save credentials
         if (saveCredentials) {
             mParameters.put(CustomerUtils.INTERNAL_SIGN_UP_FLAG, false);
-            mParameters.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, false);
             BamiloApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
             Print.i("GET CUSTOMER CREDENTIALS: " + BamiloApplication.INSTANCE.getCustomerUtils().getCredentials());
         }

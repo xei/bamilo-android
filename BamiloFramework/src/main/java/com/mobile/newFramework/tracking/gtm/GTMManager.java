@@ -211,7 +211,6 @@ public class GTMManager extends AbcBaseTracker {
         Print.i(TAG, " GTM TRACKING -> gtmTrackLogin -> ");
 
         String method = GTMValues.EMAILAUTH;
-        if (event == TrackingEvent.LOGIN_FB_SUCCESS) method = GTMValues.FACEBOOK;
         Print.d(TAG, "gtmTrackLogin" + " method:" + method + " location:" + location + " customer.getIdAsString():" + customer.getIdAsString() + " customer.getGender():" + customer.getGender());
 
         //working

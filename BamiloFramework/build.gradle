@@ -45,19 +45,15 @@ dependencies {
     compile "com.google.android.gms:play-services-location:10.0.1"
     compile "com.google.android.gms:play-services-ads:10.0.1"
     compile "com.google.android.gms:play-services-wearable:10.0.1"
-    /** SOCIALS **/
-    // https://developers.facebook.com/docs/android
-    compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     /** TRACKERS **/
     // https://github.com/adjust/android_sdk
     compile 'com.adjust.sdk:adjust-android:4.1.2'
     /** ALGOLIA **/
     compile 'com.algolia:algoliasearch-android:2.6.0@aar'
-/**Pushwoosh**/
+    /** PUSHWOOSH **/
     compile 'com.pushwoosh:pushwoosh:4.12.1'
     compile 'com.google.android.gms:play-services-gcm:10.0.1'
     compile 'com.google.android.gms:play-services-location:10.0.1'
-
 
     /** LOCAL **/
     compile fileTree(dir: 'libs', exclude: ['json.jar'], include: ['*.jar'])

@@ -1,48 +1,30 @@
 package com.mobile.view.newfragments;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.widget.FrameLayout;
 
 import com.mobile.adapters.AddressAdapter;
-import com.mobile.components.customfontviews.BamiloLinearLayoutManager;
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
-import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.checkout.GetStepAddressesHelper;
 import com.mobile.helpers.checkout.SetStepAddressesHelper;
-import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.checkout.MultiStepAddresses;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CheckoutAddressesFragment;
 
 import java.util.EnumSet;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by Arash on 1/22/2017.

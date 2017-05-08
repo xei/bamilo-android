@@ -86,14 +86,6 @@
 #}
 ########################################################################################
 
-## BEGIN FACEBOOK ##########################################################################
--keep class com.facebook.** { *; }
--keepattributes Signature
--dontnote bolts.Task
--dontnote bolts.Task$TaskCompletionSource
--dontnote com.facebook.**
-############################################################################################
-
 ## BEGIN GOOGLE ################################################
 -keep class com.google.android.** { *; }
 -keepattributes Signature

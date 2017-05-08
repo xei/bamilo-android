@@ -32,8 +32,6 @@ public enum EventType {
 
     EMAIL_CHECK("http:/customer/emailcheck/"),
 
-    FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin/"),
-
     GET_LOGIN_FORM_EVENT("http:/forms/login/", AigRestContract.MAX_CACHE_TIME),
 
     LOGOUT_EVENT("https:/customer/logout/"),

@@ -603,11 +603,6 @@ public class AdjustTracker extends AbcBaseTracker {
                 Adjust.trackEvent(eventReview);
                 break;
 
-            case LOGIN_FB_SUCCESS:
-                AdjustEvent eventLoginFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_connect));
-                addBaseParameters(eventLoginFB, bundle);
-                Adjust.trackEvent(eventLoginFB);
-                break;
             case SEARCH:
                 AdjustEvent eventSearch = new AdjustEvent(mContext.getString(R.string.adjust_token_search));
                 addBaseParameters(eventSearch, bundle);

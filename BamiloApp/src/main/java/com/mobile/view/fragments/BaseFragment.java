@@ -846,7 +846,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 getBaseActivity().updateCartInfo();
                 return true;
             case GUEST_LOGIN_EVENT:
-            case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
             case AUTO_LOGIN_EVENT:
             case FORGET_PASSWORD_EVENT:

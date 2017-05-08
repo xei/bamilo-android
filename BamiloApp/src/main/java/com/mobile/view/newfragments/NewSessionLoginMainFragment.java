@@ -1,72 +1,35 @@
 package com.mobile.view.newfragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.text.InputType;
-import android.util.Patterns;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.components.customfontviews.EditText;
-import com.mobile.components.customfontviews.FacebookTextView;
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.LogOut;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
-import com.mobile.helpers.session.EmailCheckHelper;
 import com.mobile.helpers.session.LoginAutoHelper;
-import com.mobile.helpers.session.LoginFacebookHelper;
-import com.mobile.helpers.session.LoginGuestHelper;
-import com.mobile.helpers.session.LoginHelper;
-import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
-import com.mobile.newFramework.objects.configs.AuthInfo;
 import com.mobile.newFramework.objects.customer.Customer;
-import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
-import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.pojo.DynamicFormItem;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckoutStepManager;
-import com.mobile.utils.LoginHeaderComponent;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.social.FacebookHelper;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class used to perform login via Facebook,

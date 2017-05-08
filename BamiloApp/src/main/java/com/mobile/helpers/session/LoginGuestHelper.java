@@ -52,7 +52,6 @@ public class LoginGuestHelper extends SuperBaseHelper {
             mParameters.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
             mParameters.put(CustomerUtils.INTERNAL_EMAIL_VALUE, "");
             mParameters.put(CustomerUtils.INTERNAL_SIGN_UP_FLAG, true);
-            mParameters.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, false);
             BamiloApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
             Print.i("GET CUSTOMER CREDENTIALS: " + BamiloApplication.INSTANCE.getCustomerUtils().getCredentials());
         }

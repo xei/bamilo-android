@@ -494,7 +494,6 @@ public class MainFragmentActivity extends DebugActivity implements PushEventList
                 fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);
                 break;
             case LOGIN:
-                //fragment = newFragmentInstance(SessionLoginMainFragment.class, bundle);
                 fragment = newFragmentInstance(NewSessionLoginMainFragment.class, bundle);
                 break;
             case LOGIN_EMAIL:

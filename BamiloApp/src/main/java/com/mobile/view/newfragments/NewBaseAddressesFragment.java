@@ -1,52 +1,31 @@
 package com.mobile.view.newfragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.mobile.adapters.AddressAdapter;
 import com.mobile.adapters.ISetDefaultAddress;
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
-import com.mobile.controllers.LogOut;
 import com.mobile.helpers.address.GetFormDeleteAddressHelper;
 import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.tracking.TrackingEvent;
-import com.mobile.newFramework.tracking.TrackingPage;
-import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseAddressesFragment;
-import com.mobile.view.fragments.BaseFragment;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by Arash on 1/22/2017.

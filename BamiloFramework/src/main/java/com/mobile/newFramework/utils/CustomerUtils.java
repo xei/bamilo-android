@@ -25,8 +25,6 @@ public class CustomerUtils {
 	
 	public static final String INTERNAL_EMAIL_VALUE = " Alice_Module_Customer_Model_LoginForm[email] ";
 	
-	public static final String INTERNAL_FACEBOOK_FLAG = "facebook_login";
-	
 	public static final String INTERNAL_SIGN_UP_FLAG = "signup";
 	
     private static final String CRED_PREFS = "persistent_credentials";

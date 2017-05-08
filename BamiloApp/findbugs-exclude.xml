@@ -5,10 +5,6 @@
     </Match>
 
     <Match>
-        <Package name="com.facebook.android" />
-    </Match>
-
-    <Match>
         <Package name="com.adjust.sdk" />
     </Match>
 

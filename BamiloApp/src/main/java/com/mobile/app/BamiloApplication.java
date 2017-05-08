@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.emarsys.predict.Session;
-import com.facebook.FacebookSdk;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.predict.AndroidStorage;
@@ -123,9 +122,6 @@ public class BamiloApplication extends Application {
             Darwin.initialize(getApplicationContext(), SHOP_ID);
             getCustomerUtils();
         }
-        // Initialize the SDK before executing any other operations,
-        // especially, if you're using Facebook UI elements.
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
     }
 
     public synchronized void init(Handler initializationHandler) {
