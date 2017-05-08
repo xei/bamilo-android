@@ -328,6 +328,11 @@ public class ErrorLayoutFactory {
         RecommendListCompletionHandler recommendListCompletionHandler = new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+                if (data == null || data.size() == 0) {
+                    View recommendations = mErrorLayout.findViewById(R.id.recommendation_view);
+                    recommendations.setVisibility(View.GONE);
+                    return;
+                }
                 try {
                     if (recommendationsTeaserHolder != null) {
                         ((ViewGroup) mErrorLayout).removeView(recommendationsTeaserHolder.itemView);
