@@ -6,5 +6,6 @@ package com.mobile.libraries.emarsys.predict;
 
 public enum RecommendationWidgetType {
     List,
-    Grid
+    Grid,
+    Cart
 }

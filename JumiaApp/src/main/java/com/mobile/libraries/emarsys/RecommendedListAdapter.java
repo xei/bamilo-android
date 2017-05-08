@@ -1,3 +1,4 @@
+/*
 package com.mobile.libraries.emarsys;
 
 import android.content.Context;
@@ -18,9 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * Created by Arash Hassanpour on 4/18/2017.
- */
+ *//*
+
 
 public class RecommendedListAdapter extends ArrayAdapter<String> {
     private final Context context;
@@ -90,3 +93,4 @@ public class RecommendedListAdapter extends ArrayAdapter<String> {
         this.listener = l;
     }
 }
+*/

@@ -16,10 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.ExpandedGridViewComponent;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -34,10 +32,7 @@ import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.libraries.emarsys.EmarsysMobileEngage;
-import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.libraries.emarsys.predict.recommended.Item;
-import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.managers.TrackerManager;
@@ -71,13 +66,8 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
 import com.mobile.utils.home.holder.HomeRecommendationsGridTeaserHolder;
-import com.mobile.utils.home.holder.HomeRecommendationsTeaserHolder;
-import com.mobile.utils.emarsys.EmarsysTracker;
-import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.product.RelatedProductsAdapter;
 import com.mobile.utils.product.UIProductUtils;
-import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -88,8 +78,6 @@ import java.util.EnumSet;
 import java.util.List;
 
 import de.akquinet.android.androlog.Log;
-
-import static com.mobile.newFramework.Darwin.context;
 
 /**
  * This class displays the product detail screen.
@@ -1464,7 +1452,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
                 if (recommendationsGridTeaserHolder == null ) {
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
+                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
                 }
                 if (recommendationsGridTeaserHolder != null ) {
                     try {
@@ -1472,7 +1460,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
                     // Set view
                     mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
+                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
 
                     recommendationsGridTeaserHolder.onBind(data);
                     // Add to container

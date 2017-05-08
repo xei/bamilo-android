@@ -1,4 +1,4 @@
-package com.mobile.utils.home.holder;
+package com.mobile.libraries.emarsys.predict.recommended;
 
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
@@ -10,21 +10,17 @@ import android.widget.ImageView;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.libraries.emarsys.predict.RecommendationWidgetType;
-import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
-import com.mobile.newFramework.objects.home.object.TeaserTopSellerObject;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author sergiopereira
  */
-public class HomeRecommendationsTeaserAdapter extends RecyclerView.Adapter<HomeRecommendationsTeaserAdapter.ViewHolder> {
+public class RecommendationsAdapter extends RecyclerView.Adapter<RecommendationsAdapter.ViewHolder> {
 
     private final View.OnClickListener mOnClickListener;
 
@@ -63,7 +59,7 @@ public class HomeRecommendationsTeaserAdapter extends RecyclerView.Adapter<HomeR
     /**
      * Provide a suitable constructor (depends on the kind of data)
      */
-    public HomeRecommendationsTeaserAdapter(List<RecommendedItem> teasers, View.OnClickListener listener, RecommendationWidgetType recommendationWidgetType) {
+    public RecommendationsAdapter(List<RecommendedItem> teasers, View.OnClickListener listener, RecommendationWidgetType recommendationWidgetType) {
         mDataSet = teasers;
         mOnClickListener = listener;
         this.recommendationWidgetType = recommendationWidgetType;
@@ -74,13 +70,15 @@ public class HomeRecommendationsTeaserAdapter extends RecyclerView.Adapter<HomeR
      * @see android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup, int)
      */
     @Override
-    public HomeRecommendationsTeaserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecommendationsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (this.recommendationWidgetType == RecommendationWidgetType.List) {
-            // Create a new view
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_teaser_recommends_item, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recommends_item, parent, false));
+        } else if (this.recommendationWidgetType == RecommendationWidgetType.Grid) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recommendation_grid_item, parent, false));
         } else {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_teaser_recommendation_grid_item, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recommendation_cart_item, parent, false));
         }
+
     }
 
     /*
@@ -111,6 +109,15 @@ public class HomeRecommendationsTeaserAdapter extends RecyclerView.Adapter<HomeR
         } else {
             holder.mPrice.setText(CurrencyFormatter.formatCurrency(price));
             holder.mOldPrice.setVisibility(View.INVISIBLE);
+        }
+        if (this.recommendationWidgetType == RecommendationWidgetType.Cart) {
+            holder.mOldPrice.setVisibility(View.GONE);
+            holder.mBrand.setVisibility(View.GONE);
+            if (price != special) {
+                holder.mPrice.setText(CurrencyFormatter.formatCurrency(special));
+            } else {
+                holder.mPrice.setText(CurrencyFormatter.formatCurrency(price));
+            }
         }
         holder.mName.setTag(R.id.sku, sku);
         holder.mImage.setTag(R.id.sku, sku);

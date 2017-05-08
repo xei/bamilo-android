@@ -5,7 +5,6 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import com.emarsys.predict.RecommendedItem;
@@ -23,11 +22,8 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.deeplink.TargetLink;
-import com.mobile.utils.home.holder.HomeRecommendationsGridTeaserHolder;
-import com.mobile.utils.home.holder.HomeRecommendationsTeaserHolder;
-import com.mobile.utils.search.NoResSearchAdapter;
+import com.mobile.utils.home.holder.RecommendationsHolder;
 import com.mobile.utils.search.SearchModel;
-import com.mobile.view.ExpandableHeightListView;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
@@ -49,7 +45,7 @@ public class FeaturedBoxHelper {
     private static final int ITEMS_PER_PAGE_PORTRAIT = 3;
     
     private static final int ITEMS_PER_PAGE_LANDSCAPE = 5;
-    static HomeRecommendationsTeaserHolder recommendationsTeaserHolder;
+    static RecommendationsHolder recommendationsTeaserHolder;
     static LinearLayout RecommendationResult;
     private static boolean recommendationsTeaserHolderAdded = false;
 
@@ -102,12 +98,12 @@ public class FeaturedBoxHelper {
                 LayoutInflater inflater = LayoutInflater.from(fragment.getBaseActivity());
 
                 if (recommendationsTeaserHolder == null ) {
-                    recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, RecommendationResult, false), null);
+                    recommendationsTeaserHolder = new RecommendationsHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.recommendation, RecommendationResult, false), null);
                 }
                 if (recommendationsTeaserHolder != null ) {
 
                     RecommendationResult.removeView(recommendationsTeaserHolder.itemView);
-                    recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, RecommendationResult, false), null);
+                    recommendationsTeaserHolder = new RecommendationsHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.recommendation, RecommendationResult, false), null);
 
                     recommendationsTeaserHolder.onBind(data);
                     // Add to container

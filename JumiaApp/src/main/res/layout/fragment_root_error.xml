@@ -18,6 +18,13 @@
 
         <include layout="@layout/error_button_layout" />
 
+        <include layout="@layout/recommendation_cart"
+            android:id="@+id/recommendation_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/margin_20px"/>
+
         <!-- CONTACTS INFO IN CASE OF SSL ERROR -->
         <include
             android:id="@+id/contacts_info"

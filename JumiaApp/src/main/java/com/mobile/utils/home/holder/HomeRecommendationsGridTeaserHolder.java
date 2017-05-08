@@ -9,11 +9,11 @@ import android.view.View;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.components.recycler.VerticalSpaceItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.libraries.emarsys.predict.RecommendationWidgetType;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendationsAdapter;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
@@ -66,7 +66,7 @@ public class HomeRecommendationsGridTeaserHolder /*extends BaseTeaserViewHolder 
             // Case top sellers
             if (items != null && items.size()>0) {
                 //if (TextUtils.isNotEmpty(group.getTitle())) sectionTitle.setText(group.getTitle());
-                recyclerView.setAdapter(new HomeRecommendationsTeaserAdapter(items, onClickListener, RecommendationWidgetType.Grid));
+                recyclerView.setAdapter(new RecommendationsAdapter(items, onClickListener, RecommendationWidgetType.Grid));
             }
             /*// Case rich relevance
             else if (CollectionUtils.isNotEmpty(group.getData())) {

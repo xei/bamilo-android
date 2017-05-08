@@ -115,4 +115,7 @@
     <color name="recommendation_grey">#929292</color>
     <color name="order_status_textcolor">#555555</color>
 
+    <color name="recommendation_cart_grey">#505050</color>
+    <color name="recommendation_cart_black">#000000</color>
+
 </resources>

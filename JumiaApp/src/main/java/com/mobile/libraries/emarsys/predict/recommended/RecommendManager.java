@@ -82,6 +82,10 @@ public class RecommendManager {
         sendRecommend(null, "CART", null, null, null, null, callBack);
     }
 
+    public void sendPersonalRecommend(final RecommendListCompletionHandler callBack) {
+        sendRecommend(null, "PERSONAL", null, null, null, null, callBack);
+    }
+
     public void sendCategoryRecommend(String searchTerm,
                                       String category,
                                       final RecommendListCompletionHandler callBack) {
@@ -96,16 +100,15 @@ public class RecommendManager {
         sendRecommend(item, "RELATED", null, searchTerm, itemId, excludeItems, callBack);
     }
 
-    /*public void sendAlsoBoughtRecommend(RecommendedItem recommendedItem,
+    public void sendAlsoBoughtRecommend(RecommendedItem recommendedItem,
                                         String itemId,
                                         final RecommendListCompletionHandler callBack) {
-        sendRecommend(recommendedItem, "ALSO_BOUGHT", null, null, itemId, null, callBack);
-    }*/
+        sendRecommend(null, "ALSO_BOUGHT", null, null, itemId, null, callBack);
+    }
 
-   /* public void sendPersonalRecommend(String searchTerm,
-                                      final RecommendListCompletionHandler callBack) {
-        sendRecommend(null, "PERSONAL", null, searchTerm, null, null, callBack);
-    }*/
+    public void sendPopularRecommend(final RecommendListCompletionHandler callBack) {
+        sendRecommend(null, "PERSONAL", null, null, null, null, callBack);
+    }
 
     public void sendNoResultRecommend(String searchTerm,
                                       final RecommendListCompletionHandler callBack) {

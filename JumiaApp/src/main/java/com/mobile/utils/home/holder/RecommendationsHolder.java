@@ -5,30 +5,18 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.components.recycler.VerticalSpaceItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.teasers.GetRichRelevanceHelper;
-import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.predict.RecommendationWidgetType;
-import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.newFramework.objects.product.RichRelevance;
-import com.mobile.newFramework.objects.product.pojo.ProductRegular;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendationsAdapter;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.akquinet.android.androlog.Log;
@@ -36,7 +24,7 @@ import de.akquinet.android.androlog.Log;
 /**
  * Class used to represent a top seller teaser.
  */
-public class HomeRecommendationsTeaserHolder /*extends BaseTeaserViewHolder implements IResponseCallback*/ {
+public class RecommendationsHolder /*extends BaseTeaserViewHolder implements IResponseCallback*/ {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
     public final View itemView;
@@ -52,7 +40,7 @@ public class HomeRecommendationsTeaserHolder /*extends BaseTeaserViewHolder impl
     /**
      * Constructor
      */
-    public HomeRecommendationsTeaserHolder(Context context, View view, View.OnClickListener listener) {
+    public RecommendationsHolder(Context context, View view, View.OnClickListener listener) {
        // super(context, view, listener);
         // Get section title
         itemView = view;
@@ -76,7 +64,7 @@ public class HomeRecommendationsTeaserHolder /*extends BaseTeaserViewHolder impl
             // Case top sellers
             if (items != null && items.size()>0) {
                 //if (TextUtils.isNotEmpty(group.getTitle())) sectionTitle.setText(group.getTitle());
-                horizontalListView.setAdapter(new HomeRecommendationsTeaserAdapter(items, onClickListener, RecommendationWidgetType.List));
+                horizontalListView.setAdapter(new RecommendationsAdapter(items, onClickListener, RecommendationWidgetType.List));
             }
             /*// Case rich relevance
             else if (CollectionUtils.isNotEmpty(group.getData())) {

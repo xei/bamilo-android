@@ -1,3 +1,4 @@
+/*
 package com.mobile.libraries.emarsys;
 
 import android.support.v7.widget.RecyclerView;
@@ -96,3 +97,4 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
 
     }
 }
+*/
