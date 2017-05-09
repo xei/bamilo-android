@@ -63,6 +63,9 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     private String mUtmMedium = DONT_SEND;
 
     private String mUtmSource = DONT_SEND;
+    private String mUtmTerm = DONT_SEND;
+    private String mUtmContent = DONT_SEND;
+    private String gclid = DONT_SEND;
 
     private Bundle mCustomData;
 
@@ -142,7 +145,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     private void loadKeys() {
         // Load keys
         SharedPreferences mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        mCurrentKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
+        mCurrentKey = mContext.getResources().getString(R.string.ga_trackingId);// mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
         Print.d(TAG, "TRACK LOAD KEYS: mCurrentKey-> " + mCurrentKey);
     }
 
@@ -310,17 +313,31 @@ public class AnalyticsGoogle extends AbcBaseTracker {
      * Build and send a GA campaign.
      * @author sergiopereira
      */
-    protected void trackGACampaign() {
+    protected boolean trackGACampaign() {
         //setting as empty string or a null object, will show on GA has "not set"
+        boolean flg = false;
         if(!mUtmCampaign.equals(DONT_SEND)){
-            mTracker.set("&cn", mUtmCampaign);
+            mTracker.set("&cn"/*"utm_campaign"*/, mUtmCampaign);
+            flg = true;
         }
         if(!mUtmSource.equals(DONT_SEND)){
-            mTracker.set("&cs", mUtmSource);
+            mTracker.set("&cs"/*"utm_source"*/, mUtmSource);
+            flg = true;
         }
         if(!mUtmMedium.equals(DONT_SEND)){
-            mTracker.set("&cm", mUtmMedium);
+            mTracker.set("&cm"/*"utm_medium"*/, mUtmMedium);
+            flg = true;
         }
+        if(!mUtmContent.equals(DONT_SEND)){
+            mTracker.set(/*"&cm"*/"utm_content", mUtmContent);
+            flg = true;
+        }
+        if(!mUtmTerm.equals(DONT_SEND)){
+            mTracker.set(/*"&cm"*/"utm_term", mUtmTerm);
+            flg = true;
+        }
+        return flg;
+
     }
 
     /**
@@ -605,7 +622,10 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         mUtmCampaign = "";
         mUtmMedium = "";
         mUtmSource = "";
-
+        mUtmTerm = "";
+        mUtmContent = "";
+        gclid = "";
+        campaignString = campaignString.toLowerCase();
         if (!TextUtils.isEmpty(campaignString)) {
             // Track
             if (campaignString.contains("utm_campaign=")) {
@@ -620,7 +640,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
                 if (!TextUtils.isEmpty(mUtmCampaign)) {
                     mUtmSource = "push";
                 }
-
             }
 
             if (campaignString.contains("utm_medium=")) {
@@ -629,6 +648,20 @@ public class AnalyticsGoogle extends AbcBaseTracker {
                 if (!TextUtils.isEmpty(mUtmCampaign)) {
                     mUtmMedium = "referrer";
                 }
+            }
+
+            if (campaignString.contains("utm_term=")) {
+                mUtmTerm = getUtmParameter(campaignString, "utm_term=");
+            }
+
+            if (campaignString.contains("utm_content=")) {
+                mUtmContent = getUtmParameter(campaignString, "utm_content=");
+            }
+
+            if (trackGACampaign()) {
+                mTracker.send(new HitBuilders.ScreenViewBuilder()
+                        .build()
+                );
             }
         }
     }
@@ -675,4 +708,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     private Bundle getCustomData() {
         return mCustomData != null ? mCustomData : new Bundle();
     }
+
+
 }

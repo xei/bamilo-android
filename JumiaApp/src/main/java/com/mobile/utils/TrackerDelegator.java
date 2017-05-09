@@ -701,7 +701,7 @@ public class TrackerDelegator {
             // GA
             AnalyticsGoogle.get().setGACampaign(utm);
             // GTM
-            GTMManager.saveCampaignParams(context, GTMManager.CAMPAIGN_ID_KEY, AnalyticsGoogle.get().getUtmParameter(utm, "utm_campaign="));
+            //GTMManager.saveCampaignParams(context, GTMManager.CAMPAIGN_ID_KEY, AnalyticsGoogle.get().getUtmParameter(utm, "utm_campaign="));
         }
     }
 

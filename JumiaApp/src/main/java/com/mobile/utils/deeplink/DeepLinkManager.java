@@ -661,6 +661,7 @@ public class DeepLinkManager {
         if(bundle == null) {
             bundle = hasDeepLinkFromGCM(intent);
         }
+        hasDeeplinkUTM(intent);
         return bundle;
     }
 
@@ -747,6 +748,13 @@ public class DeepLinkManager {
             }
         }
         return bundle;
+    }
+
+    private static void hasDeeplinkUTM(Intent intent) {
+        Uri uri = intent.getData();
+        if (uri == null) return;
+
+        TrackerDelegator.trackGACampaign(JumiaApplication.INSTANCE.getApplicationContext(), uri.toString());
     }
 
     // ####################### DEEP LINK #######################
