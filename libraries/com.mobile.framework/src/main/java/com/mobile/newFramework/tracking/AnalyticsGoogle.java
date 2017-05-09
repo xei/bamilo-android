@@ -317,15 +317,18 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         //setting as empty string or a null object, will show on GA has "not set"
         boolean flg = false;
         if(!mUtmCampaign.equals(DONT_SEND)){
-            mTracker.set("&cn"/*"utm_campaign"*/, mUtmCampaign);
+            mTracker.set("&cn", mUtmCampaign);
+            //mTracker.set("utm_campaign", mUtmCampaign);
             flg = true;
         }
         if(!mUtmSource.equals(DONT_SEND)){
-            mTracker.set("&cs"/*"utm_source"*/, mUtmSource);
+            mTracker.set("&cs", mUtmSource);
+            //mTracker.set("utm_source", mUtmSource);
             flg = true;
         }
         if(!mUtmMedium.equals(DONT_SEND)){
-            mTracker.set("&cm"/*"utm_medium"*/, mUtmMedium);
+            mTracker.set("&cm", mUtmMedium);
+            //mTracker.set("utm_medium", mUtmMedium);
             flg = true;
         }
         if(!mUtmContent.equals(DONT_SEND)){
