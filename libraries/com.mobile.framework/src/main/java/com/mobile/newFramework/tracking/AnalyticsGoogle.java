@@ -313,34 +313,23 @@ public class AnalyticsGoogle extends AbcBaseTracker {
      * Build and send a GA campaign.
      * @author sergiopereira
      */
-    protected boolean trackGACampaign() {
+    protected void trackGACampaign() {
         //setting as empty string or a null object, will show on GA has "not set"
-        boolean flg = false;
         if(!mUtmCampaign.equals(DONT_SEND)){
             mTracker.set("&cn", mUtmCampaign);
-            //mTracker.set("utm_campaign", mUtmCampaign);
-            flg = true;
         }
         if(!mUtmSource.equals(DONT_SEND)){
             mTracker.set("&cs", mUtmSource);
-            //mTracker.set("utm_source", mUtmSource);
-            flg = true;
         }
         if(!mUtmMedium.equals(DONT_SEND)){
             mTracker.set("&cm", mUtmMedium);
-            //mTracker.set("utm_medium", mUtmMedium);
-            flg = true;
         }
         if(!mUtmContent.equals(DONT_SEND)){
             mTracker.set(/*"&cm"*/"utm_content", mUtmContent);
-            flg = true;
         }
         if(!mUtmTerm.equals(DONT_SEND)){
             mTracker.set(/*"&cm"*/"utm_term", mUtmTerm);
-            flg = true;
         }
-        return flg;
-
     }
 
     /**
@@ -661,11 +650,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
                 mUtmContent = getUtmParameter(campaignString, "utm_content=");
             }
 
-            if (trackGACampaign()) {
-                mTracker.send(new HitBuilders.ScreenViewBuilder()
-                        .build()
-                );
-            }
+
         }
     }
 
