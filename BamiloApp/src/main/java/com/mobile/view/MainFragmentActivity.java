@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 
-import com.mobile.app.DebugActivity;
 import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.EventConstants;
@@ -99,7 +98,7 @@ import java.util.Map;
 /**
  * @author sergiopereira
  */
-public class MainFragmentActivity extends DebugActivity implements PushEventListener {
+public class MainFragmentActivity extends BaseActivity implements PushEventListener {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
     private EventFactory.OpenAppEventSourceType mAppOpenSource;
