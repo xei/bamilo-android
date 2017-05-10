@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     style="@style/ProductTeaserStyle"
-    android:layout_height="@dimen/dimen_240dp"
+    android:layout_height="@dimen/dimen_200dp"
     card_view:cardCornerRadius="0dp"
     card_view:cardElevation="0dp"
     android:layout_margin="2dp"
@@ -52,6 +52,7 @@
                 android:ellipsize="end"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
                 android:singleLine="true"
                 android:textSize="12sp"
                 android:textColor="@color/recommendation_cart_black" />

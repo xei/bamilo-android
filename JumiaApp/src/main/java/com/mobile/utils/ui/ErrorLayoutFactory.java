@@ -6,6 +6,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,7 +123,7 @@ public class ErrorLayoutFactory {
                     break;
                 case CART_EMPTY_LAYOUT:
                     new Builder()
-                    .setContent(R.drawable.ico_empty_cart, R.string.order_no_items)
+                    .setDetailMessage(R.drawable.ico_empty_cart_rtl, R.string.order_no_items)
                     .showRecommendation("PERSONAL");
                     break;
                 case CONTINUE_SHOPPING_LAYOUT:
@@ -142,7 +143,7 @@ public class ErrorLayoutFactory {
                     break;
                 case NO_FAVOURITES_LAYOUT:
                     new Builder()
-                    .setContent(R.drawable.ic_saved_empty, R.string.no_saved_items, R.string.no_saved_items_subtitle)
+                    .setDetailMessage(R.drawable.ic_saved_empty, R.string.no_saved_items_subtitle)
                     .showRecommendation("POPULAR");
                     break;
                 case NO_RECENT_SEARCHES_LAYOUT:
@@ -213,6 +214,21 @@ public class ErrorLayoutFactory {
             hideRecommendation();
             return this;
         }
+
+        Builder setDetailMessage(@DrawableRes int image, @StringRes int message) {
+            // Hide spinning button to avoid that it appears on a new error screen after network issues.
+            hideButtonSpinning();
+            hideButton();
+            setImage(image);
+            setDetailMessageAsTitle(message);
+            hideRecommendation();
+            TextView messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_label);
+            messageView.setVisibility(View.GONE);
+           // messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
+           // messageView.setVisibility(View.VISIBLE);
+            return this;
+        }
+
 
         Builder showContinueButton() {
             setButtonMessage(R.string.continue_shopping);
@@ -312,6 +328,15 @@ public class ErrorLayoutFactory {
         private Builder setDetailMessage(@StringRes int message) {
             TextView messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
             messageView.setVisibility(View.VISIBLE);
+            messageView.setText(message);
+            return this;
+        }
+
+        private Builder setDetailMessageAsTitle(@StringRes int message) {
+            TextView messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
+            messageView.setVisibility(View.VISIBLE);
+            messageView.setTextColor(mErrorLayout.getResources().getColor(R.color.black_900));
+            messageView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mErrorLayout.getResources().getDimension(R.dimen.dimen_16dp));
             messageView.setText(message);
             return this;
         }

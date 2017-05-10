@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:layout_marginBottom="@dimen/margin_20px"/>
+            android:paddingBottom="@dimen/margin_20px"/>
 
         <!-- CONTACTS INFO IN CASE OF SSL ERROR -->
         <include
