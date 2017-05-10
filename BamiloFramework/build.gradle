@@ -40,10 +40,8 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.19'
     /** GOOGLE PLAY SERVICE **/
     compile 'com.google.android.gms:play-services-analytics:10.2.4'
-    /*compile "com.google.android.gms:play-services-analytics:$playServicesVersion"*/
     compile 'com.google.android.gms:play-services-location:10.2.4'
     compile 'com.google.android.gms:play-services-ads:10.2.4'
-    compile 'com.google.android.gms:play-services-wearable:10.2.4'
     /** TRACKERS **/
     // https://github.com/adjust/android_sdk
     compile 'com.adjust.sdk:adjust-android:4.1.2'

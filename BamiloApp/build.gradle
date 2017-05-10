@@ -132,14 +132,8 @@ List debugToolsDependencies = [
     // #LEAK :: https://github.com/square/leakcanary
     'com.squareup.leakcanary:leakcanary-android:1.4-beta2',
     // #SCAPEL :: https://github.com/JakeWharton/scalpel
-    'com.jakewharton.scalpel:scalpel:1.1.2',
-    // #DEBUG DRAWER :: https://github.com/palaima/DebugDrawer
-    'io.palaima.debugdrawer:debugdrawer:0.7.0',
-    'io.palaima.debugdrawer:debugdrawer-base:0.7.0',
-    'io.palaima.debugdrawer:debugdrawer-commons:0.7.0',
-    'io.palaima.debugdrawer:debugdrawer-scalpel:0.7.0',
+    'com.jakewharton.scalpel:scalpel:1.1.2'
 ]
-
 
 dependencies {
     /** ############### LOCAL LIBS ############### **/

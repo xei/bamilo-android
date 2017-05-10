@@ -167,8 +167,6 @@
 -keep interface com.mobile.utils.photoview.PhotoViewAttacher$** { *; }
 #### com.mobile.view
 -keep public enum com.mobile.view.fragments.BaseFragment$KeyboardState { public *; }
-#### com.mobile.wear
--keep class com.mobile.utils.JumiaWearableListenerService.** { *; }
 #### com.mobile.newFramework.rest
 -keep class com.mobile.newFramework.rest.** { *; }
 -keep interface com.mobile.newFramework.rest.** { *; }

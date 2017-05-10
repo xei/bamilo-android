@@ -233,9 +233,6 @@
 
         <!-- Used for install referrer tracking -->
         <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />
-
-        <!-- android:name="com.google.android.gms.tagmanager.InstallReferrerReceiver" -->
-        <!-- android:name="com.mobile.utils.receivers.InstallReceiver" -->
         <receiver
             android:name="com.mobile.utils.receivers.InstallReceiver"
             android:exported="true">
@@ -243,16 +240,6 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
-
-        <!-- ######################################### -->
-        <!-- ################# WEAR ################## -->
-        <!-- ######################################### -->
-
-        <service android:name="com.mobile.utils.JumiaWearableListenerService">
-            <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
-            </intent-filter>
-        </service>
 
         <meta-data
             android:name="io.fabric.ApiKey"
