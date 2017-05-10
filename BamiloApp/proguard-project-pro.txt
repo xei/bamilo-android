@@ -44,7 +44,6 @@
 
 ## IGNORE WARN/NOTE CLASSES #########################################
 -dontnote android.support.**
--dontnote com.ad4screen.sdk.**
 -dontwarn com.google.android.**
 -dontnote com.google.ads.**
 -dontnote com.google.vending.licensing.ILicensingService
