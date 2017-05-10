@@ -226,7 +226,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get sort button
         mSortButton = (TextView) view.findViewById(R.id.catalog_bar_button_sort);
         // Get filter button
-        mFilterButton = view.findViewById(R.id.catalog_bar_button_filter);
+        mFilterButton = view.findViewById(R.id.catalog_filter_button);
         // Get switch button
         ImageView mColumnsButton = (ImageView) view.findViewById(R.id.catalog_bar_button_columns);
         mColumnsButton.setOnClickListener(this);
@@ -424,6 +424,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         showHeaderBanner();
         // Show container
         showFragmentContentContainer();
+        setFilterDescription(catalogPage);
 
     }
 
@@ -483,6 +484,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Show container
         showFragmentContentContainer();
+        setFilterDescription(catalogPage);
     }
 
     /**
@@ -678,7 +680,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             onClickSortButton();
         }
         // Case filter button
-        else if (id == R.id.catalog_bar_button_filter) {
+        else if (id == R.id.catalog_bar_button_filter || id == R.id.catalog_bar_filter || id == R.id.catalog_filter_button
+                || id == R.id.catalog_bar_description_filter) {
             onClickFilterButton();
         }
         // Case columns button
@@ -1015,6 +1018,20 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.w(TAG, "WARNING: RECEIVED INVALID CATALOG PAGE");
             showContinueShopping();
         }
+        setFilterDescription(catalogPage);
+
+    }
+
+    private void setFilterDescription(CatalogPage catalogPage) {
+        TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
+        String filterNames = "";
+
+        if (catalogPage.hasFilters()) {
+            filterNames = catalogPage.getFilters().get(0).getName();
+            if (catalogPage.getFilters().size()>1) filterNames = filterNames + ", " + catalogPage.getFilters().get(1).getName();
+            if (catalogPage.getFilters().size()>2) filterNames = filterNames + ", ...";
+        }
+        filterDesc.setText(filterNames);
     }
 
     /*
