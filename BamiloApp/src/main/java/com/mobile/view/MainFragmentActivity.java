@@ -276,6 +276,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         }
 
         Fabric.with(this, new Crashlytics());
+        Crashlytics.setUserIdentifier(PushManager.getPushwooshHWID(this.getApplicationContext()));
 
         TrackerManager.addEventTracker("EmarsysTracker", EmarsysTracker.getInstance());
         TrackerManager.addEventTracker("PushWooshTracker", PushWooshTracker.getInstance());

@@ -7,6 +7,7 @@ import android.text.InputType;
 import android.util.Patterns;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
@@ -218,8 +219,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
 
-                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), BamiloApplication.CUSTOMER.getEmail() + "");
-
                 //Emarsys
                 EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
                     @Override
@@ -266,8 +265,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
 
-                PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), BamiloApplication.CUSTOMER.getId() + "");
-
                /* RecommendManager recommendManager = new RecommendManager();
                 recommendManager.setEmail(BamiloApplication.CUSTOMER.getEmail(), ""+BamiloApplication.CUSTOMER.getId());*/
                 //Emarsys
@@ -279,7 +276,9 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 // End of Emarsys
                 // Finish
                 getActivity().onBackPressed();
+
                 PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), BamiloApplication.CUSTOMER.getEmail() + "");
+                Crashlytics.setUserEmail(BamiloApplication.CUSTOMER.getEmail());
 
                 TrackerManager.postEvent(getBaseActivity(), EventConstants.Login, EventFactory.login("email", EmailHelper.getHost(customer.getEmail()), true));
 
