@@ -6,17 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by User on 2/15/2017.
- */
-
 public class PaymentMethod {
-
     private String id;
     private String title;
     private ArrayList<String> imageUrls;
     private String text;
-
 
     public void setId(String id)
     {

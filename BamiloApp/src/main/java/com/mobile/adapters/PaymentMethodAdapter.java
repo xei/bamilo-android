@@ -28,10 +28,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
     private List<AdapterItemSelection> methodSelection;
     private static RadioButton lastChecked = null;
     private static int lastCheckedPos = 0;
-    public BaseFragment baseFragment;
-    private ISetDefaultAddress mSetDefaultAddress;
-
-
 
     public class MethodViewHolder extends RecyclerView.ViewHolder {
         public TextView name, text;
@@ -49,13 +45,10 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         }
     }
 
-
     public PaymentMethodAdapter(List<PaymentMethod> methodsList, int mSelectedMethodId) {
-
         this.methodsList = methodsList;
         this.methodSelection = new ArrayList<>();
-        for (int i=0;i<methodsList.size(); i++)
-        {
+        for (int i=0;i<methodsList.size(); i++) {
             AdapterItemSelection tmp = new AdapterItemSelection();
             tmp.id=Integer.parseInt(methodsList.get(i).getId());
             if (i==0 && mSelectedMethodId == -1) tmp.setSelected(true);
@@ -64,19 +57,12 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         }
     }
 
-
     @Override
     public MethodViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_checkout_payment_item, parent, false);
-
         MethodViewHolder holder = new MethodViewHolder(view);
-
-
-
         return holder;
     }
-
-
 
     @Override
     public void onBindViewHolder(final MethodViewHolder holder, int position) {
@@ -137,8 +123,9 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                         lastCheckedPos = clickedPos;
                         holder.text.setVisibility(View.VISIBLE);
                     }
-                } else
+                } else {
                     lastChecked = null;
+                }
 
                 methodSelection.get(clickedPos).setSelected(cb.isChecked());
             }
@@ -146,16 +133,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 
     }
 
-    /**
-     * Process the click on edit button.</br>
-     * Gets the address id from view tag.
-     */
-
-
-
-
-    public int getSelectedId()
-    {
+    public int getSelectedId() {
         return methodSelection.get(lastCheckedPos).id;
     }
 
@@ -163,8 +141,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
     public int getItemCount() {
         return methodsList.size();
     }
-
-
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
@@ -175,5 +151,4 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
     public void onRequestError(BaseResponse baseResponse) {
 
     }
-
 }

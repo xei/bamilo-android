@@ -571,8 +571,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         triggerContentEventProgress(new GetStepPaymentHelper(), null, this);
     }
 
-    private void LoadMethods(MultiStepPayment payment)
-    {
+    private void LoadMethods(MultiStepPayment payment) {
         LinkedHashMap<String, String> paymentMethods = new LinkedHashMap<>();
         ArrayList<PaymentMethod> methodList= new ArrayList<>();
         HashMap<String, PaymentInfo> paymentInfoMap = null;
@@ -583,8 +582,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             paymentInfoMap = payment.getForm().getFieldKeyMap().get(RestConstants.PAYMENT_METHOD).getPaymentInfoList();
             paymentMethods = payment.getForm().getFields().get(0).getDataSet();
             HashMap<String, PaymentInfo> infoList = payment.getForm().getFields().get(0).getPaymentInfoList();
-            for (Map.Entry<String, String> entry : paymentMethods.entrySet())
-            {
+            for (Map.Entry<String, String> entry : paymentMethods.entrySet()) {
                 PaymentMethod method = new PaymentMethod();
                 method.setMethod(entry, paymentInfoMap);
                 methodList.add(method);
