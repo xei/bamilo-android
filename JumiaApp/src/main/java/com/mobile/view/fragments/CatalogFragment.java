@@ -99,6 +99,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private HeaderFooterGridView mGridView;
 
     private TextView mSortButton;
+    private TextView mSortDescription;
+    private ImageView mSortIcon;
 
     private View mFilterButton;
 
@@ -142,6 +144,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private long mGABeginRequestMillis;
 
     private boolean showNoResult;
+    private boolean sortChanged = false;
 
     /**
      * Empty constructor
@@ -225,6 +228,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mNumberOfColumns = getResources().getInteger(dimen);
         // Get sort button
         mSortButton = (TextView) view.findViewById(R.id.catalog_bar_button_sort);
+        mSortDescription = (TextView) view.findViewById(R.id.catalog_bar_description_sort);
+        mSortIcon = (ImageView) view.findViewById(R.id.catalog_bar_sort);
         // Get filter button
         mFilterButton = view.findViewById(R.id.catalog_filter_button);
         // Get switch button
@@ -386,7 +391,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         else if (mSortOrFilterApplied) {
             triggerGetInitialCatalogPage();
             // Set the filter button selected or not
-            UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
+            TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
+
+            UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues, filterDesc, mCatalogPage);
+
         }
         // Case catalog was recover
         else {
@@ -409,7 +417,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Set filter button
         UICatalogUtils.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
         // Set the filter button selected or not
-        UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
+        TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
+        UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues, filterDesc, mCatalogPage);
         // Create adapter new data
         setCatalogAdapter(catalogPage);
         // Validate loading more view 
@@ -484,7 +493,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Show container
         showFragmentContentContainer();
-        setFilterDescription(catalogPage);
+        if (mCurrentFilterValues.size()==0) setFilterDescription(catalogPage);
     }
 
     /**
@@ -501,8 +510,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Set the sort button with the current sort selection.
      */
     private void setSortButton() {
-        mSortButton.setText(getString(mSelectedSort.name));
+        mSortDescription.setText(getString(mSelectedSort.name));
+        mSortDescription.setOnClickListener(this);
         mSortButton.setOnClickListener(this);
+        mSortDescription.setSelected(sortChanged);
+        mSortButton.setSelected(sortChanged);
+        mSortIcon.setSelected(sortChanged);
     }
 
     /**
@@ -676,7 +689,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get id
         int id = view.getId();
         // Case sort button
-        if (id == R.id.catalog_bar_button_sort) {
+        if (id == R.id.catalog_bar_button_sort || id == R.id.catalog_bar_sort || id == R.id.catalog_sort_button
+                || id == R.id.catalog_bar_description_sort) {
             onClickSortButton();
         }
         // Case filter button
@@ -821,6 +835,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get selected sort position
         mSelectedSort = CatalogSort.values()[position];
         // Set sort button
+        sortChanged = true;
         setSortButton();
         // Flag to reload or not an initial catalog in case generic error
         mSortOrFilterApplied = true;
@@ -1018,7 +1033,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.w(TAG, "WARNING: RECEIVED INVALID CATALOG PAGE");
             showContinueShopping();
         }
-        setFilterDescription(catalogPage);
+        if (mCurrentFilterValues.size()==0) setFilterDescription(catalogPage);
 
     }
 

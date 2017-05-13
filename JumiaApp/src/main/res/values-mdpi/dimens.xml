@@ -15,6 +15,7 @@
     <dimen name="selected_date_year_size">22dp</dimen>
     <dimen name="date_picker_view_animator_height">200dp</dimen>
     <dimen name="month_list_item_header_height">35dp</dimen>
+    <dimen name="filter_icon_size">18dp</dimen>
 
     <!-- BOTTOM SHEET -->
     <integer name="dialog_max_items">4</integer>

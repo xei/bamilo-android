@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -19,6 +21,7 @@ import com.mobile.view.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * Class used to help catalog UI.
@@ -100,13 +103,45 @@ public class UICatalogUtils {
      * Set the filter button state, to show as selected or not.<br>
      * The Android M (API 23) has an issue to refresh the drawable, so is used a post runnable.
      */
-    public static void setFilterButtonState(@Nullable final View button, final boolean hasFilterValues) {
+    public static void setFilterButtonState(@Nullable final View button, final ContentValues filterValues, @Nullable final TextView descriptionLabel, final CatalogPage catalogPage) {
         if (button != null) {
             Print.i("SET FILTER BUTTON STATE: " + button.isSelected());
             button.post(new Runnable() {
                 @Override
                 public void run() {
-                    button.setSelected(hasFilterValues);
+                    boolean hasFilter = filterValues.size() > 0;
+                    button.setSelected(hasFilter);
+                    if (hasFilter) {
+                        String desc = "";
+                        int count = 0;
+                        for (String entry : filterValues.keySet()) {
+                            count++;
+                            if (count > 2) break;
+                            for (int index = 0; index < catalogPage.getFilters().size(); index++) {
+                                if (catalogPage.getFilters().get(index).getId().equals(entry)) {
+                                    desc = desc + catalogPage.getFilters().get(index).getName() + ",";
+                                }
+                            }
+                        }
+                        if (filterValues.size()<3 && desc.endsWith(",")) {
+                            desc = desc.substring(0, desc.length()-1);
+                        } else {
+                            desc = desc + "...";
+                        }
+                        descriptionLabel.setText(desc);
+                    }
+                    else {
+                        String filterNames = "";
+
+                        if (catalogPage.hasFilters()) {
+                            filterNames = catalogPage.getFilters().get(0).getName();
+                            if (catalogPage.getFilters().size() > 1)
+                                filterNames = filterNames + ", " + catalogPage.getFilters().get(1).getName();
+                            if (catalogPage.getFilters().size() > 2)
+                                filterNames = filterNames + ", ...";
+                        }
+                        descriptionLabel.setText(filterNames);
+                    }
                 }
             });
         }
