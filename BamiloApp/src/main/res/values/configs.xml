@@ -50,12 +50,6 @@
     <string name="dp_app_name_lowercase">bamilo</string>
     <string name="dp_intent_label">Bamilo Live</string>
 
-    <!-- ADJUST -->
-
-    <!-- APPTIMIZE -->
-    <item name="apptimize_enabled" type="bool">false</item>
-    <string name="apptimize_apikey"/>
-
     <!-- GTM -->
     <item name="gtm_debug" type="bool">false</item>
 

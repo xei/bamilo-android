@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="15"
-        android:targetSdkVersion="22"
+        android:targetSdkVersion="25"
         tools:overrideLibrary="com.google.android.gms"
         />
 

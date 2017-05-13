@@ -29,7 +29,6 @@ import com.mobile.service.rest.cookies.ISessionCookie;
 import com.mobile.service.rest.errors.ErrorCode;
 import com.mobile.service.tracking.AdjustTracker;
 import com.mobile.service.tracking.AnalyticsGoogle;
-import com.mobile.service.tracking.ApptimizeTracking;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.ImageResolutionHelper;
 import com.mobile.service.utils.SingletonMap;
@@ -87,8 +86,6 @@ public class BamiloApplication extends Application {
         INSTANCE = this;
         // Init image loader
         RocketImageLoader.init(getApplicationContext());
-        // Init apptimize
-        ApptimizeTracking.startup(getApplicationContext());
         // Init darwin database, set the context
         DarwinDatabaseHelper.init(getApplicationContext());
         // Init image resolution
