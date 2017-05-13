@@ -2,8 +2,8 @@ package com.mobile.utils.catalog.filters;
 
 import android.support.v4.app.Fragment;
 
-import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
-import com.mobile.newFramework.objects.catalog.filters.SelectedFilterOptions;
+import com.mobile.service.objects.catalog.filters.CatalogFilter;
+import com.mobile.service.objects.catalog.filters.SelectedFilterOptions;
 import com.mobile.view.R;
 
 /**

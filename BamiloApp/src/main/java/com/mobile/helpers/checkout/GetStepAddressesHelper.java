@@ -2,10 +2,10 @@ package com.mobile.helpers.checkout;
 
 
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.EventType;
+import com.mobile.service.requests.BaseRequest;
+import com.mobile.service.requests.RequestBundle;
+import com.mobile.service.rest.interfaces.AigApiInterface;
+import com.mobile.service.utils.EventType;
 
 
 /**

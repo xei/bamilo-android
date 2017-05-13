@@ -10,8 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.statics.TargetHelper;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.service.objects.statics.TargetHelper;
+import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.utils.CheckVersion;
 import com.mobile.view.R;
 

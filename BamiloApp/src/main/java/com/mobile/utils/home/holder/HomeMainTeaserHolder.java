@@ -6,9 +6,9 @@ import android.view.View;
 import com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator;
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.PreviewViewPager;
-import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.service.objects.home.group.BaseTeaserGroupType;
+import com.mobile.service.objects.home.object.BaseTeaserObject;
+import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
 

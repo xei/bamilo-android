@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.newFramework.objects.checkout.ShippingFormField;
+import com.mobile.service.objects.checkout.ShippingFormField;
 import com.mobile.utils.ShippingRadioGroupList;
 
 import java.util.ArrayList;

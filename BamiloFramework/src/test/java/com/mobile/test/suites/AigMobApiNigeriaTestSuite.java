@@ -1,8 +1,8 @@
 package com.mobile.test.suites;
 
-import com.mobile.newFramework.rest.AigHttpClient;
-import com.mobile.newFramework.rest.configs.AigRestContract;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.rest.AigHttpClient;
+import com.mobile.service.rest.configs.AigRestContract;
+import com.mobile.service.utils.output.Print;
 import com.mobile.test.AigChangePasswordFormTest;
 import com.mobile.test.AigForgotPasswordTest;
 import com.mobile.test.AigGetAddressesListTest;

@@ -13,8 +13,8 @@ import android.view.View;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.newFramework.objects.home.TeaserCampaign;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.objects.home.TeaserCampaign;
+import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;

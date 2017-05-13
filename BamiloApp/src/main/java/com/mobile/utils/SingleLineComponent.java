@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.components.customfontviews.CheckBox;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.view.R;
 
 import java.lang.annotation.Retention;

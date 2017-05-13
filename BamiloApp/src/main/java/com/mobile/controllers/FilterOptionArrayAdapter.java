@@ -11,10 +11,10 @@ import android.widget.BaseAdapter;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
-import com.mobile.newFramework.objects.catalog.filters.CatalogFilterOption;
-import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
-import com.mobile.newFramework.utils.convertor.PersinConvertor;
+import com.mobile.service.objects.catalog.filters.CatalogCheckFilter;
+import com.mobile.service.objects.catalog.filters.CatalogFilterOption;
+import com.mobile.service.objects.catalog.filters.MultiFilterOptionInterface;
+import com.mobile.service.utils.convertor.PersinConvertor;
 import com.mobile.view.R;
 
 /**

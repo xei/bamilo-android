@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.widget.DismissibleSpinner;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.view.R;
 
 import java.util.ArrayList;

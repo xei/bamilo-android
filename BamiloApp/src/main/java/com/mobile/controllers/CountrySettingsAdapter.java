@@ -8,9 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.configs.Languages;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 import com.mobile.view.fragments.MyAccountFragment;

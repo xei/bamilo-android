@@ -3,7 +3,7 @@ package com.mobile.helpers;
 import android.support.annotation.Nullable;
 
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
+import com.mobile.service.objects.checkout.CheckoutStepObject;
 import com.mobile.utils.CheckoutStepManager;
 
 /**

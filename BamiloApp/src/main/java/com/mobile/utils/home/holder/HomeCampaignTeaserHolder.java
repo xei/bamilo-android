@@ -1,7 +1,6 @@
 package com.mobile.utils.home.holder;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.util.TypedValue;
 import android.view.View;
@@ -10,10 +9,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.DateTimeUtils;
+import com.mobile.service.objects.home.group.BaseTeaserGroupType;
+import com.mobile.service.objects.home.object.BaseTeaserObject;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.DateTimeUtils;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;

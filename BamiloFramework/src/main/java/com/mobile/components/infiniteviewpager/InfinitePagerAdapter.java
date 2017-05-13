@@ -5,7 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.utils.output.Print;
 
 /**
  * A PagerAdapter that wraps around another PagerAdapter to handle paging

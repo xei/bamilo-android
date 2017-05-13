@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.orders.OrderTrackerItem;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.objects.orders.OrderTrackerItem;
+import com.mobile.service.utils.output.Print;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragmentRequester;
 

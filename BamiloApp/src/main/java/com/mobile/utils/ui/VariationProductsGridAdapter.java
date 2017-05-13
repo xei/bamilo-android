@@ -8,9 +8,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.mobile.interfaces.OnProductViewHolderClickListener;
-import com.mobile.newFramework.objects.product.Variation;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.service.objects.product.Variation;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;

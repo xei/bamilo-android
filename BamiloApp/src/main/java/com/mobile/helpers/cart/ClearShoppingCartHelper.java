@@ -7,12 +7,12 @@ package com.mobile.helpers.cart;
 import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.EventTask;
-import com.mobile.newFramework.utils.EventType;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.requests.BaseRequest;
+import com.mobile.service.requests.RequestBundle;
+import com.mobile.service.rest.interfaces.AigApiInterface;
+import com.mobile.service.utils.EventTask;
+import com.mobile.service.utils.EventType;
 
 /**
  * This helper will Clean the Shopping Cart by sending an empty update to the cart.

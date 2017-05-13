@@ -7,11 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.orders.Order;
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.JalaliCalendar;
+import com.mobile.service.objects.orders.Order;
+import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.PersianDateTime;
 import com.mobile.view.R;
 

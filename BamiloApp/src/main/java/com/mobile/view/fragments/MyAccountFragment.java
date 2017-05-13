@@ -1,10 +1,8 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,7 +11,6 @@ import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.AdapterBuilder;
-import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.controllers.MyAccountMoreInfoAdapter;
 import com.mobile.controllers.MyAccountNotificationsAdapter;
@@ -22,17 +19,17 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetFaqTermsHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.database.SectionsTablesHelper;
-import com.mobile.newFramework.objects.catalog.ITargeting;
-import com.mobile.newFramework.objects.statics.MobileAbout;
-import com.mobile.newFramework.objects.statics.TargetHelper;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.tracking.AnalyticsGoogle;
-import com.mobile.newFramework.tracking.TrackingEvent;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.service.database.SectionsTablesHelper;
+import com.mobile.service.objects.catalog.ITargeting;
+import com.mobile.service.objects.statics.MobileAbout;
+import com.mobile.service.objects.statics.TargetHelper;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.tracking.AnalyticsGoogle;
+import com.mobile.service.tracking.TrackingEvent;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -41,11 +38,8 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
-
-import static com.mobile.newFramework.Darwin.context;
 
 /**
  * @author sergiopereira

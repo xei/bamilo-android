@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.mobile.constants.FormConstants;
-import com.mobile.newFramework.forms.Form;
+import com.mobile.service.forms.Form;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
 

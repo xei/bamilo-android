@@ -1,32 +1,22 @@
 package com.mobile.adapters;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TableRow;
 
 import com.mobile.components.customfontviews.RadioButton;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.address.GetFormDeleteAddressHelper;
-import com.mobile.helpers.address.GetFormEditAddressHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.addresses.AdapterItemSelection;
-import com.mobile.newFramework.objects.addresses.Address;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.Toast;
-import com.mobile.view.BaseActivity;
+import com.mobile.service.objects.addresses.AdapterItemSelection;
+import com.mobile.service.objects.addresses.Address;
+import com.mobile.service.pojo.BaseResponse;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 

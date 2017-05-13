@@ -6,8 +6,8 @@ import android.support.annotation.StringRes;
 
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 

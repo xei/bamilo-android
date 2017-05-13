@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.cart.PurchaseCartItem;
-import com.mobile.newFramework.objects.checkout.Fulfillment;
-import com.mobile.newFramework.objects.checkout.GlobalSeller;
+import com.mobile.service.objects.cart.PurchaseCartItem;
+import com.mobile.service.objects.checkout.Fulfillment;
+import com.mobile.service.objects.checkout.GlobalSeller;
 import com.mobile.view.R;
 
 import java.util.List;

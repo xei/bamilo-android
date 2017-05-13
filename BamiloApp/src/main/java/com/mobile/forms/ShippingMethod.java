@@ -5,9 +5,9 @@ import android.text.Html;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.checkout.ShippingMethodOption;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.service.objects.checkout.ShippingMethodOption;
+import com.mobile.service.utils.TextUtils;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
 
 public class ShippingMethod {

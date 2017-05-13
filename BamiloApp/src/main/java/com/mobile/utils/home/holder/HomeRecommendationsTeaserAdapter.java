@@ -10,15 +10,11 @@ import android.widget.ImageView;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.libraries.emarsys.predict.RecommendationWidgetType;
-import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
-import com.mobile.newFramework.objects.home.object.TeaserTopSellerObject;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.home.TeaserViewFactory;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

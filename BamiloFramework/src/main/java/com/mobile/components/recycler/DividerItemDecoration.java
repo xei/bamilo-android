@@ -26,8 +26,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.service.utils.DeviceInfoHelper;
+import com.mobile.service.utils.shop.ShopSelector;
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 

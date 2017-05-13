@@ -12,10 +12,10 @@ import android.view.animation.AnimationUtils;
 
 import com.mobile.controllers.ProductListAdapter;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
-import com.mobile.newFramework.objects.catalog.Banner;
-import com.mobile.newFramework.objects.product.pojo.ProductRegular;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.service.objects.catalog.Banner;
+import com.mobile.service.objects.product.pojo.ProductRegular;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;

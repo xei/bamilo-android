@@ -9,10 +9,10 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.orders.OrderActions;
-import com.mobile.newFramework.objects.orders.OrderTrackerItem;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.service.objects.orders.OrderActions;
+import com.mobile.service.objects.orders.OrderTrackerItem;
+import com.mobile.service.utils.DeviceInfoHelper;
+import com.mobile.service.utils.TextUtils;
 import com.mobile.pojo.ICustomFormFieldView;
 import com.mobile.utils.dialogfragments.DialogQuantityListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;

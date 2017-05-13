@@ -17,16 +17,15 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.cart.PurchaseCartItem;
-import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.service.objects.cart.PurchaseCartItem;
+import com.mobile.service.objects.cart.PurchaseEntity;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.utils.TextUtils;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

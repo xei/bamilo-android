@@ -9,9 +9,9 @@ import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.newFramework.objects.product.RatingStar;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.service.objects.product.RatingStar;
+import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;

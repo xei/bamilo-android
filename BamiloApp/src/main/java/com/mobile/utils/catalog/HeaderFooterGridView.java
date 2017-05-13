@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import com.mobile.newFramework.objects.catalog.Banner;
+import com.mobile.service.objects.catalog.Banner;
 
 /**
  * RecyclerView with grid layout manager that supports header and footer.

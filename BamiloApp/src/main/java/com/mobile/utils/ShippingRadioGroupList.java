@@ -14,9 +14,9 @@ import com.mobile.controllers.PickupStationsAdapter;
 import com.mobile.forms.ShippingMethod;
 import com.mobile.forms.ShippingMethodForm;
 import com.mobile.forms.ShippingMethodSubForm;
-import com.mobile.newFramework.forms.PickUpStationObject;
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.service.forms.PickUpStationObject;
+import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.utils.CollectionUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;

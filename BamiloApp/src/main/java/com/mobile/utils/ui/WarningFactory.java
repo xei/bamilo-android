@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.service.utils.TextUtils;
 import com.mobile.view.R;
 
 import java.lang.annotation.Retention;

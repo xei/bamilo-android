@@ -3,7 +3,7 @@ package com.mobile.components.viewpager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.service.utils.CollectionUtils;
 
 import java.util.Collections;
 import java.util.LinkedList;

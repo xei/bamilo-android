@@ -8,8 +8,8 @@ import android.view.View;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 

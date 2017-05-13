@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.utils.DeviceInfoHelper;
+import com.mobile.service.utils.output.Print;
 import com.mobile.view.R;
 
 /**

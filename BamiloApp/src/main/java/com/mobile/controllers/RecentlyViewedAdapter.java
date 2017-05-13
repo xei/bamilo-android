@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
+import com.mobile.service.objects.product.pojo.ProductMultiple;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;

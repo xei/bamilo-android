@@ -1,10 +1,10 @@
 package com.mobile.test;
 
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.AigHttpClient;
-import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.requests.RequestBundle;
+import com.mobile.service.rest.AigHttpClient;
+import com.mobile.service.rest.interfaces.AigResponseCallback;
+import com.mobile.service.utils.output.Print;
 
 import junit.framework.TestCase;
 

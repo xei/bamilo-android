@@ -13,12 +13,12 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.product.pojo.ProductComplete;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.objects.product.pojo.ProductComplete;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 

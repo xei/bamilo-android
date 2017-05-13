@@ -9,17 +9,12 @@ import android.widget.ListView;
 
 import com.mobile.adapters.SubCategoryArrayAdapter;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.database.CategoriesTableHelper;
-import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
-import com.mobile.newFramework.objects.category.Categories;
-import com.mobile.newFramework.objects.category.Category;
+import com.mobile.service.database.CategoriesTableHelper;
+import com.mobile.service.objects.category.Category;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.R;
-import com.mobile.view.fragments.CatalogFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.webkit.WebView;
 
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.utils.output.Print;
 
 /**
  * Class used to represent a web view

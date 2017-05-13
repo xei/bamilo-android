@@ -2,7 +2,7 @@ package com.mobile.utils.catalog;
 
 import android.support.annotation.Nullable;
 
-import com.mobile.newFramework.objects.catalog.Banner;
+import com.mobile.service.objects.catalog.Banner;
 
 /**
  * Created by rsoares on 10/2/15.

@@ -9,10 +9,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
-import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.Darwin;
+import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.output.Print;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.view.R;

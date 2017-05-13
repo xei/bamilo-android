@@ -8,8 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.newFramework.objects.product.pojo.ProductRegular;
-import com.mobile.utils.imageloader.ImageManager;
+import com.mobile.service.objects.product.pojo.ProductRegular;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ProductListViewHolder;

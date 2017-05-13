@@ -17,30 +17,27 @@ import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.EventFactory;
-import com.mobile.helpers.cart.CartHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.managers.TrackerManager;
-import com.mobile.newFramework.objects.cart.PurchaseCartItem;
-import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.objects.product.RichRelevance;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.tracking.TrackingPage;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.service.objects.cart.PurchaseCartItem;
+import com.mobile.service.objects.cart.PurchaseEntity;
+import com.mobile.service.objects.product.RichRelevance;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.pojo.RestConstants;
+import com.mobile.service.tracking.TrackingPage;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.TextUtils;
+import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
-import com.mobile.utils.emarsys.EmarsysTracker;
 import com.mobile.utils.home.holder.RichRelevanceAdapter;
-import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
@@ -296,7 +293,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     @Override
     public void onAppendData(FragmentType next, String title, String id, Bundle data) {
-        if(com.mobile.newFramework.utils.TextUtils.isNotEmpty(mRelatedRichRelevanceHash))
+        if(com.mobile.service.utils.TextUtils.isNotEmpty(mRelatedRichRelevanceHash))
             data.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRelatedRichRelevanceHash );
     }
 

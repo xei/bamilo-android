@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mobile.constants.ConstantsCheckout;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.UIUtils;

@@ -4,36 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 
-import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.UITabLayoutUtils;
-import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
-import com.mobile.view.fragments.CheckoutSummaryFragment;
 
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -302,7 +286,7 @@ public abstract class NewBaseFragment extends BaseFragment {
              * This is a fallback in case API don't return the error message
              * for the Regex. Will be fixed in https://jira.africainternetgroup.com/browse/NAFAMZ-16927
              */
-            if(com.mobile.newFramework.utils.TextUtils.isEmpty(errorMessage)){
+            if(com.mobile.service.utils.TextUtils.isEmpty(errorMessage)){
                 errorMessage = context.getString(R.string.error_ismandatory) + " " + label;
             }
 

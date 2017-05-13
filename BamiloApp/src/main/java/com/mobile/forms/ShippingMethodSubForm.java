@@ -9,8 +9,8 @@ import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.controllers.PickupStationsAdapter;
-import com.mobile.newFramework.forms.PickUpStationObject;
-import com.mobile.newFramework.objects.checkout.ShippingFormFieldPUS;
+import com.mobile.service.forms.PickUpStationObject;
+import com.mobile.service.objects.checkout.ShippingFormFieldPUS;
 import com.mobile.view.R;
 
 import java.util.ArrayList;

@@ -4,17 +4,12 @@ import android.content.Context;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.orders.OrderTrackerItem;
+import com.mobile.service.objects.orders.OrderTrackerItem;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-
-import static com.mobile.view.R.id.product;
-import static com.mobile.view.newfragments.OrderStateType.PROGRESS_ITEM_ACTIVE;
 
 /**
  * Created by User on 3/12/2017.

@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
@@ -32,29 +31,26 @@ import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.managers.TrackerManager;
-import com.mobile.newFramework.objects.campaign.Campaign;
-import com.mobile.newFramework.objects.campaign.CampaignItem;
-import com.mobile.newFramework.objects.catalog.Banner;
-import com.mobile.newFramework.objects.home.TeaserCampaign;
-import com.mobile.newFramework.objects.product.pojo.ProductSimple;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.tracking.TrackingPage;
-import com.mobile.newFramework.tracking.gtm.GTMValues;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.service.objects.campaign.Campaign;
+import com.mobile.service.objects.campaign.CampaignItem;
+import com.mobile.service.objects.catalog.Banner;
+import com.mobile.service.objects.home.TeaserCampaign;
+import com.mobile.service.objects.product.pojo.ProductSimple;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.tracking.TrackingPage;
+import com.mobile.service.tracking.gtm.GTMValues;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.catalog.HeaderFooterInterface;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
-import com.mobile.utils.emarsys.EmarsysTracker;
-import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
-import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
@@ -685,7 +681,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             }
 
             public void run() {
-                if(com.mobile.newFramework.utils.TextUtils.equalsIgnoreCase(this.mView.mName.getText().toString(), this.mName)){
+                if(com.mobile.service.utils.TextUtils.equalsIgnoreCase(this.mView.mName.getText().toString(), this.mName)){
                     // update Timer
                     updateTimer(this.mView, this.mView.mTimer, this.mView.mTimerContainer, this.mView.mButtonBuy, this.mView.mOfferEnded, this.mView.mName, this.mView.mImage, this.mRemainingTime, this.mView.mImageContainer);
                 }

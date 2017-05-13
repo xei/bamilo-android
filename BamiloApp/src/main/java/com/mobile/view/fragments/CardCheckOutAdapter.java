@@ -7,15 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.Toast;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
 import java.util.List;
-
-import static com.mobile.view.R.id.imageView;
 
 /**
  * Created by shahrooz on 2/16/17.

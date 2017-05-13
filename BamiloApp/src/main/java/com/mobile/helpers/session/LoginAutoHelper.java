@@ -3,10 +3,10 @@ package com.mobile.helpers.session;
 import android.os.Bundle;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.CustomerUtils;
-import com.mobile.newFramework.utils.EventTask;
-import com.mobile.newFramework.utils.EventType;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.CustomerUtils;
+import com.mobile.service.utils.EventTask;
+import com.mobile.service.utils.EventType;
 
 /**
  * Auto login helper

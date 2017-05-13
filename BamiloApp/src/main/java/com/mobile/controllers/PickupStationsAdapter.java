@@ -13,8 +13,8 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.RadioButton;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.forms.PickUpStationObject;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.service.forms.PickUpStationObject;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 

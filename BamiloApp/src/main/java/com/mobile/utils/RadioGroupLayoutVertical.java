@@ -16,12 +16,12 @@ import android.widget.RelativeLayout;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
-import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.PaymentInfo;
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.forms.Form;
+import com.mobile.service.forms.PaymentInfo;
+import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.TextUtils;
+import com.mobile.service.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
 

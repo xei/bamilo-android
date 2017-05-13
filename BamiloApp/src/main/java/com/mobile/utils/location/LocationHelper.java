@@ -15,13 +15,13 @@ import android.telephony.TelephonyManager;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.controllers.ChooseLanguageController;
-import com.mobile.newFramework.database.CountriesConfigsTableHelper;
-import com.mobile.newFramework.objects.configs.CountryObject;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.database.CountriesConfigsTableHelper;
+import com.mobile.service.objects.configs.CountryObject;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.TextUtils;
+import com.mobile.service.utils.output.Print;
 import com.mobile.preferences.ShopPreferences;
 
 import java.lang.ref.WeakReference;

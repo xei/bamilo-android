@@ -11,11 +11,11 @@ import android.view.View;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.newFramework.objects.orders.OrderTrackerItem;
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.service.objects.orders.OrderTrackerItem;
+import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.UITabLayoutUtils;

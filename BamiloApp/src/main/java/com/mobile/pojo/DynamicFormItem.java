@@ -43,28 +43,28 @@ import com.mobile.constants.FormConstants;
 import com.mobile.helpers.address.PhonePrefixesHelper;
 import com.mobile.helpers.order.GetReturnReasonsHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.forms.FieldValidation;
-import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.FormField;
-import com.mobile.newFramework.forms.FormInputType;
-import com.mobile.newFramework.forms.IFormField;
-import com.mobile.newFramework.forms.NewsletterOption;
-import com.mobile.newFramework.forms.PaymentInfo;
-import com.mobile.newFramework.objects.addresses.FormListItem;
-import com.mobile.newFramework.objects.addresses.PhonePrefix;
-import com.mobile.newFramework.objects.addresses.PhonePrefixes;
-import com.mobile.newFramework.objects.addresses.ReturnReason;
-import com.mobile.newFramework.objects.addresses.ReturnReasons;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.service.Darwin;
+import com.mobile.service.forms.FieldValidation;
+import com.mobile.service.forms.Form;
+import com.mobile.service.forms.FormField;
+import com.mobile.service.forms.FormInputType;
+import com.mobile.service.forms.IFormField;
+import com.mobile.service.forms.NewsletterOption;
+import com.mobile.service.forms.PaymentInfo;
+import com.mobile.service.objects.addresses.FormListItem;
+import com.mobile.service.objects.addresses.PhonePrefix;
+import com.mobile.service.objects.addresses.PhonePrefixes;
+import com.mobile.service.objects.addresses.ReturnReason;
+import com.mobile.service.objects.addresses.ReturnReasons;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.pojo.RestConstants;
+import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.pojo.fields.CheckBoxField;
 import com.mobile.pojo.fields.ListNumberField;
 import com.mobile.pojo.fields.RadioExpandableField;
@@ -586,9 +586,9 @@ public class DynamicFormItem {
                         }
                     }
                     // Case HomeNewsletter
-                    else if (com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) spinner.getSelectedItem())) {
+                    else if (com.mobile.service.utils.TextUtils.isNotEmpty((String) spinner.getSelectedItem())) {
                         for (String key : this.entry.getDataSet().keySet()) {
-                            if (com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) spinner.getSelectedItem())) {
+                            if (com.mobile.service.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) spinner.getSelectedItem())) {
                                 values.put(getName(), key);
                                 break;
                             }
@@ -600,7 +600,7 @@ public class DynamicFormItem {
             case relatedNumber:
                 // Get number
                 String number = getValue();
-                if (com.mobile.newFramework.utils.TextUtils.isNotEmpty(number)) {
+                if (com.mobile.service.utils.TextUtils.isNotEmpty(number)) {
                     values.put(getName(), number);
                     // Get related option
                     IFormField related = getEntry().getRelatedField();
@@ -1031,7 +1031,7 @@ public class DynamicFormItem {
              * This is a fallback in case API don't return the error message
              * for the Regex. Will be fixed in https://jira.africainternetgroup.com/browse/NAFAMZ-16927
              */
-            if(com.mobile.newFramework.utils.TextUtils.isEmpty(errorMessage)){
+            if(com.mobile.service.utils.TextUtils.isEmpty(errorMessage)){
                 errorMessage = context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel();
             }
             setErrorText(errorMessage + space);
@@ -1233,7 +1233,7 @@ public class DynamicFormItem {
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        if(!com.mobile.newFramework.utils.TextUtils.isEmpty(this.entry.getFormat())){
+        if(!com.mobile.service.utils.TextUtils.isEmpty(this.entry.getFormat())){
             DATE_FORMAT = this.entry.getFormat();
         }
         dataContainer.addView(this.dataControl);
@@ -1296,7 +1296,7 @@ public class DynamicFormItem {
             public void onClick(View v) {
                 if (!dialogDate.isVisible()) {
                     Calendar c = Calendar.getInstance();
-                    if(com.mobile.newFramework.utils.TextUtils.isEmpty(spinnerButton.getText().toString())){
+                    if(com.mobile.service.utils.TextUtils.isEmpty(spinnerButton.getText().toString())){
                         dialogDate.setDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
                         dialogDate.setYearRange(DatePickerDialog.DEFAULT_START_YEAR, c.get(Calendar.YEAR));
                     } else {

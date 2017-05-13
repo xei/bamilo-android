@@ -3,7 +3,7 @@ package com.mobile.components._unused_.dialogs;
 
 import android.content.Context;
 
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.utils.output.Print;
 
 @SuppressWarnings("unused")
 public class WizardFactory {

@@ -24,17 +24,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.components.customfontviews.CheckBox;
-import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.service.Darwin;
+import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.DeviceInfoHelper;
+import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-
-import static com.mobile.newFramework.Darwin.context;
 
 /**
  * A general Class with UI utils such as set the font <p/><br>

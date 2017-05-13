@@ -6,12 +6,12 @@ import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.objects.configs.CountryObject;
-import com.mobile.newFramework.objects.configs.Languages;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.service.Darwin;
+import com.mobile.service.objects.configs.CountryObject;
+import com.mobile.service.objects.configs.Languages;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.TextUtils;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.dialogfragments.DialogLanguagesListAdapter;
 import com.mobile.utils.dialogfragments.DialogListFragment;

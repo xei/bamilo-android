@@ -4,8 +4,8 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.utils.DeviceInfoHelper;
+import com.mobile.service.utils.output.Print;
 
 /**
  * Activity to show the Server Overload error.

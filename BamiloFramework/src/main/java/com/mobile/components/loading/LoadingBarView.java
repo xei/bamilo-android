@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.mobile.framework.R;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.utils.output.Print;
 
 import java.io.InputStream;
 

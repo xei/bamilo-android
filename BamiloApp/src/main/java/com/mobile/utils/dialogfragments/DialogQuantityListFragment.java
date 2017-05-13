@@ -20,8 +20,8 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.utils.output.Print;
 import com.mobile.view.R;
 
 import java.lang.ref.WeakReference;

@@ -1,8 +1,6 @@
 package com.mobile.utils.maintenance;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -10,11 +8,8 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
 import com.mobile.components.customfontviews.Button;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.EventType;
+import com.mobile.service.utils.DeviceInfoHelper;
+import com.mobile.service.utils.EventType;
 import com.mobile.view.R;
 
 /**

@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.configs.Languages;
+import com.mobile.service.objects.configs.Languages;
 import com.mobile.view.R;
 
 /**

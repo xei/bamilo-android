@@ -9,11 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
-import com.mobile.newFramework.objects.product.ImageUrls;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.imageloader.ImageManager;
+import com.mobile.service.objects.product.ImageUrls;
+import com.mobile.service.utils.output.Print;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.photoview.PhotoView;
 import com.mobile.utils.photoview.PhotoViewAttacher;

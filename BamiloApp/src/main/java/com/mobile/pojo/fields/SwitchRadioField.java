@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.forms.IFormField;
-import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.service.forms.IFormField;
+import com.mobile.service.pojo.IntConstants;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.pojo.IDynamicFormItemField;

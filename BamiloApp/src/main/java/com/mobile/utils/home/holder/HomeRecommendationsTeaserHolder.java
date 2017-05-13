@@ -5,30 +5,17 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.components.recycler.VerticalSpaceItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.teasers.GetRichRelevanceHelper;
-import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.predict.RecommendationWidgetType;
-import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.newFramework.objects.product.RichRelevance;
-import com.mobile.newFramework.objects.product.pojo.ProductRegular;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.akquinet.android.androlog.Log;

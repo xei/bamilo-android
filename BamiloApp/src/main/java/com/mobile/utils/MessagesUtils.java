@@ -2,7 +2,7 @@ package com.mobile.utils;
 
 import android.support.annotation.Nullable;
 
-import com.mobile.newFramework.utils.EventType;
+import com.mobile.service.utils.EventType;
 import com.mobile.view.R;
 
 /**

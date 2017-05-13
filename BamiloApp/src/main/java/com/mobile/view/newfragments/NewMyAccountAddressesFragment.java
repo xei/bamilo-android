@@ -1,33 +1,23 @@
 package com.mobile.view.newfragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewStub;
 
-import com.mobile.adapters.AddressAdapter;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.address.GetMyAddressesHelper;
-import com.mobile.helpers.checkout.GetStepAddressesHelper;
-import com.mobile.helpers.checkout.SetStepAddressesHelper;
-import com.mobile.newFramework.objects.addresses.Addresses;
-import com.mobile.newFramework.objects.checkout.MultiStepAddresses;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.objects.addresses.Addresses;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
-import com.mobile.view.fragments.CheckoutAddressesFragment;
 
 import java.util.EnumSet;
 

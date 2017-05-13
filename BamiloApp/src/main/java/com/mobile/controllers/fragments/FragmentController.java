@@ -10,9 +10,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.utils.DeviceInfoHelper;
+import com.mobile.service.utils.output.Print;
 import com.mobile.utils.WorkerThread;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;

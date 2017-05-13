@@ -1,6 +1,6 @@
 package com.mobile.interfaces;
 
-import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.service.pojo.BaseResponse;
 
 /**
  * Callback for the response

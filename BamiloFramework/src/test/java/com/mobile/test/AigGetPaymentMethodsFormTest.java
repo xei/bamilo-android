@@ -1,10 +1,10 @@
 package com.mobile.test;
 
-import com.mobile.newFramework.objects.checkout.MultiStepPayment;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.objects.checkout.MultiStepPayment;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.rest.interfaces.AigApiInterface;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
 import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 
 import java.util.HashMap;

@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.mobile.newFramework.forms.FormField;
-import com.mobile.newFramework.forms.IFormField;
+import com.mobile.service.forms.FormField;
+import com.mobile.service.forms.IFormField;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.pojo.IDynamicFormItemField;

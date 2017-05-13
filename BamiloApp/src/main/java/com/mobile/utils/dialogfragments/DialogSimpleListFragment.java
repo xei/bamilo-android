@@ -18,11 +18,11 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.campaign.CampaignItem;
-import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
-import com.mobile.newFramework.objects.product.pojo.ProductSimple;
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.objects.campaign.CampaignItem;
+import com.mobile.service.objects.product.pojo.ProductMultiple;
+import com.mobile.service.objects.product.pojo.ProductSimple;
+import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.ArrayList;

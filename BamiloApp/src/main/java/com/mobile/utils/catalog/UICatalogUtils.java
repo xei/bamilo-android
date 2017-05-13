@@ -11,9 +11,9 @@ import android.view.animation.AnimationUtils;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.pojo.RestConstants;
+import com.mobile.service.utils.TextUtils;
+import com.mobile.service.utils.output.Print;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 

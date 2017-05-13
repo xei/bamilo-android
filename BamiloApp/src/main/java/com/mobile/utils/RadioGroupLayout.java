@@ -11,8 +11,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.output.Print;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;

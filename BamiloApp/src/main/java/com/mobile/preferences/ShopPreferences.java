@@ -5,13 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.database.BrandsTableHelper;
-import com.mobile.newFramework.database.CountriesConfigsTableHelper;
-import com.mobile.newFramework.database.LastViewedTableHelper;
-import com.mobile.newFramework.objects.configs.CountryObject;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.Darwin;
+import com.mobile.service.database.BrandsTableHelper;
+import com.mobile.service.database.CountriesConfigsTableHelper;
+import com.mobile.service.database.LastViewedTableHelper;
+import com.mobile.service.objects.configs.CountryObject;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.ArrayList;

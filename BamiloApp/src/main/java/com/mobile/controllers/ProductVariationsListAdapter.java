@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 
 import com.mobile.components.recycler.HorizontalListView.OnViewHolderSelected;
 import com.mobile.components.recycler.HorizontalListView.OnViewSelectedListener;
-import com.mobile.newFramework.objects.product.Variation;
+import com.mobile.service.objects.product.Variation;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 

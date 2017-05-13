@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.home.type.TeaserGroupType;
-import com.mobile.newFramework.objects.product.pojo.ProductRegular;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.service.objects.home.type.TeaserGroupType;
+import com.mobile.service.objects.product.pojo.ProductRegular;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;

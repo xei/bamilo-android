@@ -1,7 +1,7 @@
 package com.mobile.test.suites;
 
-import com.mobile.newFramework.rest.AigHttpClient;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.rest.AigHttpClient;
+import com.mobile.service.utils.output.Print;
 import com.mobile.test.AigGetApiInformationTest;
 import com.mobile.test.AigGetAvailableCountriesTest;
 import com.mobile.test.AigGetCampaignTest;

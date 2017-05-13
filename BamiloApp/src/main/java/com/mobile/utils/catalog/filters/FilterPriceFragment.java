@@ -11,12 +11,12 @@ import com.mobile.components.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
-import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilterOption;
-import com.mobile.newFramework.utils.NumberTextWatcher;
-import com.mobile.newFramework.utils.convertor.PersinConvertor;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.service.objects.catalog.filters.CatalogPriceFilter;
+import com.mobile.service.objects.catalog.filters.CatalogPriceFilterOption;
+import com.mobile.service.utils.NumberTextWatcher;
+import com.mobile.service.utils.convertor.PersinConvertor;
+import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
 import com.mobile.view.fragments.FilterMainFragment;
 

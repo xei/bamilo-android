@@ -11,8 +11,6 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.mobile.adapters.NewCategoriesListAdapter;
 import com.mobile.components.AnimatedExpandableListView;
@@ -24,25 +22,22 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.GetExternalLinksHelper;
 import com.mobile.helpers.categories.GetCategoriesHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.database.CategoriesTableHelper;
-import com.mobile.newFramework.objects.ExternalLinks;
-import com.mobile.newFramework.objects.ExternalLinksSection;
-import com.mobile.newFramework.objects.category.Categories;
-import com.mobile.newFramework.objects.category.Category;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.service.database.CategoriesTableHelper;
+import com.mobile.service.objects.ExternalLinks;
+import com.mobile.service.objects.ExternalLinksSection;
+import com.mobile.service.objects.category.Categories;
+import com.mobile.service.objects.category.Category;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.pojo.RestConstants;
+import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 

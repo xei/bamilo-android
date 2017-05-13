@@ -10,10 +10,10 @@ import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.JumiaViewPagerWithZoom;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.GalleryPagerAdapter;
-import com.mobile.newFramework.objects.product.ImageUrls;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.objects.product.ImageUrls;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.DeviceInfoHelper;
+import com.mobile.service.utils.output.Print;
 import com.mobile.view.fragments.ProductDetailsFragment;
 
 import java.util.ArrayList;

@@ -6,10 +6,10 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.mobile.newFramework.rest.cookies.ISessionCookie;
-import com.mobile.newFramework.utils.CustomerUtils;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.security.ObscuredSharedPreferences;
+import com.mobile.service.rest.cookies.ISessionCookie;
+import com.mobile.service.utils.CustomerUtils;
+import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.security.ObscuredSharedPreferences;
 
 import java.net.URISyntaxException;
 import java.util.Map;

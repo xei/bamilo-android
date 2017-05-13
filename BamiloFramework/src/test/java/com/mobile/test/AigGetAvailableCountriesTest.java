@@ -1,11 +1,11 @@
 package com.mobile.test;
 
-import com.mobile.newFramework.objects.configs.AvailableCountries;
-import com.mobile.newFramework.objects.configs.CountryObject;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.objects.configs.AvailableCountries;
+import com.mobile.service.objects.configs.CountryObject;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.rest.interfaces.AigApiInterface;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
 
 import java.util.HashMap;
 import java.util.Map;

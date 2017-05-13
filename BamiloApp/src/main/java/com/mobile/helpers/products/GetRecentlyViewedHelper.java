@@ -1,10 +1,10 @@
 package com.mobile.helpers.products;
 
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.database.LastViewedTableHelper;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.database.LastViewedTableHelper;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
 
 import java.util.ArrayList;
 

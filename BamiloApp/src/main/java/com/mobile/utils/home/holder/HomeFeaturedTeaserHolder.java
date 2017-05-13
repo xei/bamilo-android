@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.mobile.components.ExpandedGridViewComponent;
-import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.service.objects.home.group.BaseTeaserGroupType;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
 

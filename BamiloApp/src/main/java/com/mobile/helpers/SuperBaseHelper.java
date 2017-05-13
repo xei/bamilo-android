@@ -7,15 +7,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.RestUrlUtils;
-import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventTask;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.requests.RequestBundle;
+import com.mobile.service.rest.RestUrlUtils;
+import com.mobile.service.rest.interfaces.AigResponseCallback;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.EventTask;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
 
 import java.io.Serializable;
 import java.util.ArrayList;

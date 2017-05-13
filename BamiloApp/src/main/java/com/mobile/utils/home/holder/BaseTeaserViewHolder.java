@@ -3,8 +3,8 @@ package com.mobile.utils.home.holder;
 import android.content.Context;
 import android.view.View;
 
-import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.service.objects.home.group.BaseTeaserGroupType;
+import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.home.TeaserViewFactory;
 
 /**

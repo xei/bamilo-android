@@ -6,8 +6,8 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.mobile.constants.ConstantsSharedPrefs;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.output.Print;
 
 /**
  * Class used to save the shared preferences for customer            

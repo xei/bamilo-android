@@ -14,10 +14,10 @@ import android.view.View;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.controllers.ActivitiesWorkFlow;
-import com.mobile.newFramework.objects.configs.Version;
-import com.mobile.newFramework.objects.configs.VersionInfo;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.objects.configs.Version;
+import com.mobile.service.objects.configs.VersionInfo;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.output.Print;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 

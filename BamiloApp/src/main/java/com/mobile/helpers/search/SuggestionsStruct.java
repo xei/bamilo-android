@@ -1,7 +1,7 @@
 package com.mobile.helpers.search;
 
-import com.mobile.newFramework.objects.search.Suggestion;
-import com.mobile.newFramework.objects.search.Suggestions;
+import com.mobile.service.objects.search.Suggestion;
+import com.mobile.service.objects.search.Suggestions;
 
 import java.util.List;
 

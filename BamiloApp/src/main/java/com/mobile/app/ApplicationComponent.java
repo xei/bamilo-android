@@ -2,7 +2,7 @@ package com.mobile.app;
 
 import android.content.Context;
 
-import com.mobile.newFramework.rest.errors.ErrorCode;
+import com.mobile.service.rest.errors.ErrorCode;
 
 /**
  * @author nutzer2

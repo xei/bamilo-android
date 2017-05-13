@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
 
-import com.mobile.newFramework.forms.IFormField;
+import com.mobile.service.forms.IFormField;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.pojo.ICustomFormField;

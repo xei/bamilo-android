@@ -5,8 +5,8 @@ import android.view.View;
 
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.components.recycler.HorizontalListView;
-import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.service.objects.home.group.BaseTeaserGroupType;
+import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.view.R;
 
 /**

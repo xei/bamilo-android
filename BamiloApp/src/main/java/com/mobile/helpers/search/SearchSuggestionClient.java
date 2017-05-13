@@ -2,21 +2,14 @@ package com.mobile.helpers.search;
 
 import android.content.Context;
 
-import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.libraries.emarsys.predict.recommended.Item;
-import com.mobile.libraries.emarsys.predict.recommended.RecommendCompletionHandler;
-import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
-import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
-import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
-import com.mobile.newFramework.objects.search.Suggestion;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.utils.pushwoosh.PushWooshTracker;
+import com.mobile.service.database.SearchRecentQueriesTableHelper;
+import com.mobile.service.objects.search.Suggestion;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.utils.TextUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by msilva on 2/8/16.

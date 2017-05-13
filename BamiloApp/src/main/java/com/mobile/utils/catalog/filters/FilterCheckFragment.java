@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.mobile.controllers.FilterOptionArrayAdapter;
-import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
-import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.objects.catalog.filters.CatalogCheckFilter;
+import com.mobile.service.objects.catalog.filters.MultiFilterOptionInterface;
+import com.mobile.service.utils.output.Print;
 import com.mobile.view.R;
 import com.mobile.view.fragments.FilterMainFragment;
 

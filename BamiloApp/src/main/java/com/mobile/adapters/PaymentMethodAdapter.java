@@ -1,6 +1,5 @@
 package com.mobile.adapters;
 
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,21 +9,12 @@ import android.widget.RelativeLayout;
 
 import com.mobile.components.customfontviews.RadioButton;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.addresses.AdapterItemSelection;
-import com.mobile.newFramework.objects.addresses.Address;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.service.objects.addresses.AdapterItemSelection;
+import com.mobile.service.pojo.BaseResponse;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.newfragments.PaymentMethod;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,10 +5,10 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.cart.PurchaseCartItem;
-import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.service.objects.cart.PurchaseCartItem;
+import com.mobile.service.objects.cart.PurchaseEntity;
+import com.mobile.service.utils.TextUtils;
+import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.ui.UIUtils;
 
 import java.math.BigDecimal;

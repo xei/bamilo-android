@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
-import com.mobile.newFramework.forms.Form;
+import com.mobile.service.forms.Form;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
 

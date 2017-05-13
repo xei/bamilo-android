@@ -11,9 +11,9 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.product.pojo.ProductOffer;
-import com.mobile.newFramework.objects.product.pojo.ProductSimple;
-import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.service.objects.product.pojo.ProductOffer;
+import com.mobile.service.objects.product.pojo.ProductSimple;
+import com.mobile.service.utils.CollectionUtils;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 

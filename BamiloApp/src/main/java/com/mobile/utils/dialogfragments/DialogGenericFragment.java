@@ -14,7 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.utils.output.Print;
 import com.mobile.view.R;
 
 /**

@@ -10,11 +10,11 @@ import android.widget.RatingBar;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FilterOptionArrayAdapter;
-import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
-import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
-import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilterOption;
-import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.objects.catalog.filters.CatalogCheckFilter;
+import com.mobile.service.objects.catalog.filters.CatalogRatingFilter;
+import com.mobile.service.objects.catalog.filters.CatalogRatingFilterOption;
+import com.mobile.service.objects.catalog.filters.MultiFilterOptionInterface;
+import com.mobile.service.utils.output.Print;
 import com.mobile.view.R;
 
 /**

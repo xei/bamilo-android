@@ -8,9 +8,9 @@ import com.mobile.factories.EventFactory;
 import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.managers.TrackerManager;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.rest.AigHttpClient;
-import com.mobile.newFramework.utils.cache.WishListCache;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.rest.AigHttpClient;
+import com.mobile.service.utils.cache.WishListCache;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.BaseActivity;
 

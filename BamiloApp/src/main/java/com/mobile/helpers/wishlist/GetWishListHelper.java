@@ -5,17 +5,17 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.product.WishList;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventTask;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.cache.WishListCache;
+import com.mobile.service.objects.product.WishList;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.pojo.RestConstants;
+import com.mobile.service.requests.BaseRequest;
+import com.mobile.service.requests.RequestBundle;
+import com.mobile.service.rest.interfaces.AigApiInterface;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.EventTask;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.cache.WishListCache;
 
 /**
  * Helper used to get the default wish list.

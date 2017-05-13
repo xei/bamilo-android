@@ -5,13 +5,13 @@ import android.support.multidex.MultiDex;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp.StethoInterceptor;
-import com.mobile.newFramework.rest.AigHttpClient;
-import com.mobile.newFramework.rest.AigRestAdapter;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.rest.AigHttpClient;
+import com.mobile.service.rest.AigRestAdapter;
+import com.mobile.service.utils.output.Print;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.service.utils.DeviceInfoHelper;
 
 public class DebugApplication extends BamiloApplication {
 

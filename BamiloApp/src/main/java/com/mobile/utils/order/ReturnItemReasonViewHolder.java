@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.orders.OrderTrackerItem;
-import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.service.objects.orders.OrderTrackerItem;
+import com.mobile.service.utils.TextUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 import com.mobile.view.fragments.order.OrderReturnStepsMain;

@@ -2,12 +2,12 @@ package com.mobile.test;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.requests.BaseRequest;
+import com.mobile.service.requests.RequestBundle;
+import com.mobile.service.rest.interfaces.AigApiInterface;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
 
 public class VoucherRemoveTest extends BaseTestCase {
 

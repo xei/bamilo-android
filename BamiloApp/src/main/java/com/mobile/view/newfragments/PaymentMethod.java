@@ -1,6 +1,6 @@
 package com.mobile.view.newfragments;
 
-import com.mobile.newFramework.forms.PaymentInfo;
+import com.mobile.service.forms.PaymentInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

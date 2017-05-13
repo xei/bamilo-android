@@ -5,26 +5,22 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.emarsys.predict.RecommendedItem;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
-import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
-import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
-import com.mobile.newFramework.objects.search.Suggestion;
-import com.mobile.newFramework.objects.search.Suggestions;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.requests.BaseRequest;
-import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.database.SearchRecentQueriesTableHelper;
+import com.mobile.service.objects.search.Suggestion;
+import com.mobile.service.objects.search.Suggestions;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.pojo.RestConstants;
+import com.mobile.service.requests.BaseRequest;
+import com.mobile.service.requests.RequestBundle;
+import com.mobile.service.rest.interfaces.AigApiInterface;
+import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**

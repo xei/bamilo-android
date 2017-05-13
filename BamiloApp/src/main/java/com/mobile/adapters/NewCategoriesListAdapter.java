@@ -8,15 +8,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.controllers.CategoriesListAdapter;
-import com.mobile.newFramework.objects.category.Category;
-import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.service.objects.category.Category;
+import com.mobile.service.utils.TextUtils;
 import com.mobile.utils.SingleLineComponent;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import pl.openrnd.multilevellistview.ItemInfo;
 import pl.openrnd.multilevellistview.MultiLevelListAdapter;

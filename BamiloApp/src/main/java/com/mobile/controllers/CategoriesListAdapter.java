@@ -8,8 +8,8 @@ import android.widget.ImageView;
 
 import com.mobile.components.AnimatedExpandableListView.AnimatedExpandableListAdapter;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.category.Category;
-import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.service.objects.category.Category;
+import com.mobile.service.utils.TextUtils;
 import com.mobile.utils.SingleLineComponent;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;

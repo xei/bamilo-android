@@ -9,8 +9,8 @@ import android.text.TextUtils;
 
 import com.adjust.sdk.AdjustReferrerReceiver;
 import com.google.android.gms.analytics.CampaignTrackingReceiver;
-import com.mobile.newFramework.tracking.gtm.GTMManager;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.service.tracking.gtm.GTMManager;
+import com.mobile.service.utils.output.Print;
 
 import java.util.HashMap;
 import java.util.Map;
