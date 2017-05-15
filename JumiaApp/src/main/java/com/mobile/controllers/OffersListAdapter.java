@@ -99,7 +99,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Pr
             item.variations.setVisibility(View.GONE);
         }
         // Set shop first
-        UIProductUtils.setShopFirst(offer, item.shopFirst);
+        //UIProductUtils.setShopFirst(offer, item.shopFirst);
         // Set free shipping
         UIProductUtils.setFreeShippingInfo(offer, item.mFreeShipping);
     }
@@ -122,7 +122,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Pr
         private final TextView offerProductOwner;
         private final TextView offerDeliveryTime;
         private final TextView variations;
-        private final ImageView shopFirst;
+        //private final ImageView shopFirst;
         private final View mFreeShipping;
 
         public ProductOfferHolder(View itemView) {
@@ -133,7 +133,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Pr
             offerProductOwner = (TextView) itemView.findViewById(R.id.offer_owner_name);
             offerDeliveryTime = (TextView) itemView.findViewById(R.id.offer_item_delivery);
             variations = (TextView) itemView.findViewById(R.id.button_variant);
-            shopFirst = (ImageView) itemView.findViewById(R.id.item_shop_first);
+            //shopFirst = (ImageView) itemView.findViewById(R.id.item_shop_first);
             mFreeShipping = itemView.findViewById(R.id.offer_item_shipping);
         }
 
