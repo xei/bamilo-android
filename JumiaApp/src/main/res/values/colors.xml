@@ -120,6 +120,8 @@
 
     <color name="lightgrey">#929292</color>
     <color name="extradarkgrey">#505050</color>
+    <color name="dark_blue">#0091FF</color>
+    <color name="light_blue">#75bdf3</color>
 
 
 </resources>

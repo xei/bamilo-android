@@ -7,8 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="127dp"
     android:background="@drawable/selector_grid_item_highlight"
-    card_view:cardCornerRadius="4dp"
-    android:layout_margin="5dp">
+    card_view:cardCornerRadius="0dp"
+    android:layout_margin="3dp">
 
     <RelativeLayout
         style="@style/grid_row_style"
@@ -49,7 +49,7 @@
             android:layout_marginTop="@dimen/margin_padding_l"
             android:maxLines="1"
             android:ellipsize="end"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/black"
             tools:text="Name" />
 
@@ -63,7 +63,7 @@
             android:layout_marginRight="@dimen/dimen_50dp"
             android:layout_marginTop="10dp"
             android:layout_below="@id/item_name"
-            android:textSize="9sp"
+            android:textSize="11sp"
             android:textColor="@color/lightgrey"
             tools:text="BRAND" />
 
@@ -78,7 +78,7 @@
             android:layout_below="@id/rating_container"
             android:layout_marginEnd="@dimen/dimen_4dp"
             android:layout_marginRight="@dimen/dimen_4dp"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textColor="@color/black"
             tools:text="Discount" />
 
@@ -94,7 +94,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             tools:text="Price"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:textColor="@color/lightgrey" />
 
         <com.mobile.components.customfontviews.TextView
@@ -108,7 +108,7 @@
             android:layout_marginLeft="@dimen/margin_padding_xl"
             android:layout_marginStart="@dimen/margin_padding_xl"
             android:gravity="center"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:textColor="@color/lightgrey"/>
 
         <ImageView
@@ -134,7 +134,7 @@
 
             <RatingBar
                 android:id="@+id/item_rating"
-                style="@style/StarBar.Small.Indicator"
+                android:progressDrawable="@drawable/custom_rating_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"

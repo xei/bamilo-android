@@ -572,4 +572,9 @@
     <dimen name="cart_discout_shadow_height">5dp</dimen>
     <dimen name="order_status_fontsize">10sp</dimen>
     <dimen name="filter_icon_size">18dp</dimen>
+
+
+    <dimen name="total_product_toast_margin">148dp</dimen>
+    <dimen name="ratingbar_height">20dp</dimen>
+
 </resources>

@@ -7,8 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="287dp"
     android:background="@drawable/selector_grid_item_highlight"
-    card_view:cardCornerRadius="4dp"
-    android:layout_margin="5dp">
+    card_view:cardCornerRadius="0dp"
+    android:layout_margin="3dp">
 
     <RelativeLayout
         style="@style/grid_row_style">
@@ -79,12 +79,14 @@
 
             <RatingBar
                 android:id="@+id/item_rating"
-                style="@style/StarBar.Small.Indicator"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/ratingbar_height"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                tools:rating="3.5" />
+                android:stepSize="0.1"
+                android:progressDrawable="@drawable/custom_rating_bar"
+                tools:rating="3.5"
+                android:layout_alignBottom="@+id/item_reviews" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"

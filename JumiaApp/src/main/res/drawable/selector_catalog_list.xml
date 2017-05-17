@@ -6,6 +6,22 @@
             android:variablePadding="false">
             <item android:state_pressed="true">
                 <layer-list>
+                    <item android:drawable="@drawable/ic_catalog_single_pressed" />
+                </layer-list>
+            </item>
+            <item>
+                <layer-list>
+                    <item android:drawable="@drawable/ic_catalog_single" />
+                </layer-list>
+            </item>
+        </selector>
+    </item>
+    <item android:maxLevel="2">
+        <selector
+            android:constantSize="true"
+            android:variablePadding="false">
+            <item android:state_pressed="true">
+                <layer-list>
                     <item android:drawable="@drawable/ic_catalog_list_pressed" />
                 </layer-list>
             </item>
@@ -16,7 +32,7 @@
             </item>
         </selector>
     </item>
-    <item android:maxLevel="2">
+    <item android:maxLevel="3">
         <selector
             android:constantSize="true"
             android:variablePadding="false">
@@ -28,22 +44,6 @@
             <item>
                 <layer-list>
                     <item android:drawable="@drawable/ic_catalog_grid" />
-                </layer-list>
-            </item>
-        </selector>
-    </item>
-    <item android:maxLevel="3">
-        <selector
-            android:constantSize="true"
-            android:variablePadding="false">
-            <item android:state_pressed="true">
-                <layer-list>
-                    <item android:drawable="@drawable/ic_catalog_single_pressed" />
-                </layer-list>
-            </item>
-            <item>
-                <layer-list>
-                    <item android:drawable="@drawable/ic_catalog_single" />
                 </layer-list>
             </item>
         </selector>

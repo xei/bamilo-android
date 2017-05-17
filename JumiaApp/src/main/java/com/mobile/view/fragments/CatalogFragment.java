@@ -7,10 +7,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.JumiaApplication;
@@ -61,6 +64,8 @@ import com.mobile.utils.catalog.FeaturedBoxHelper;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.catalog.UICatalogUtils;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.dialogfragments.CatalogPageToastView;
+import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
 import com.mobile.utils.emarsys.EmarsysTracker;
@@ -248,8 +253,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mGridView.setGridLayoutManager(mNumberOfColumns);
         mGridView.setItemAnimator(new DefaultItemAnimator());
         mGridView.addOnScrollListener(mOnScrollListener);
-        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
-        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
+        //mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        //mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
         mGridView.post(new Runnable() {
             @Override
             public void run() {
@@ -1026,6 +1031,20 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (catalogPage.getPage() == 1) {
                 TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
                 TrackerManager.postEvent(getBaseActivity(), EventConstants.Search, EventFactory.search(mMainCategory, SearchHelper.getSearchTermsCommaSeparated(catalogPage.getSearchTerm())));
+
+                int actionBarHeight = 180;
+                TypedValue tv = new TypedValue();
+                if (getBaseActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+                {
+                    actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+                }
+                actionBarHeight *= 2;
+                int dp = (int) (getResources().getDimension(R.dimen.dimen_10dp) / getResources().getDisplayMetrics().density);
+
+                actionBarHeight += dp;//TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, R.dimen.dimen_10dp, getResources().getDisplayMetrics());
+                Toast toast = CatalogPageToastView.makeText(getBaseActivity(), "تعداد محصول: " + catalogPage.getTotal(), Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.TOP, 0, actionBarHeight);
+                toast.show();
             }
         }
         // Case invalid success response
