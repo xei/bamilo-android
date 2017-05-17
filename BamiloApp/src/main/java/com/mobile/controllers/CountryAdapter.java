@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.utils.SingleLineComponent;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 /**
@@ -59,7 +59,10 @@ public class CountryAdapter extends ArrayAdapter<String> {
         ImageView imageView = rowView.getStartImageView();
         rowView.showImageStartViewVisible();
         textView.setText(values[position]);
-        if (flagsList != null && flagsList.length > 0) RocketImageLoader.instance.loadImage(flagsList[position], imageView, null, R.drawable.no_image_small);
+        if (flagsList != null && flagsList.length > 0) {
+            //RocketImageLoader.instance.loadImage(flagsList[position], imageView, null, R.drawable.no_image_small);
+            ImageManager.getInstance().loadImage(flagsList[position], imageView, null, R.drawable.no_image_large);
+        }
         return rowView;
     }
 

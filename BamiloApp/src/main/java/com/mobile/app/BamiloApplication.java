@@ -39,7 +39,7 @@ import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.io.IOException;
@@ -85,7 +85,8 @@ public class BamiloApplication extends Application {
         // Save instance
         INSTANCE = this;
         // Init image loader
-        RocketImageLoader.init(getApplicationContext());
+        //RocketImageLoader.init(getApplicationContext());
+        ImageManager.initialize(getApplicationContext());
         // Init darwin database, set the context
         DarwinDatabaseHelper.init(getApplicationContext());
         // Init image resolution

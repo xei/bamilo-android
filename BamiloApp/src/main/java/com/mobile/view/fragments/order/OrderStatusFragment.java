@@ -31,7 +31,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.PersianDateTime;
 import com.mobile.utils.deeplink.TargetLink;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragmentAutoState;
 import com.mobile.view.newfragments.OrderTrackingHeader;
@@ -273,9 +273,8 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                 ((TextView)view.findViewById(R.id.order_item_name)).setText(item.getName());
                 ((TextView)view.findViewById(R.id.order_item_quantity)).setText("تعداد: " + item.getQuantity());
                 ((TextView)view.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-                RocketImageLoader.instance.loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image), null, R.drawable.no_image_small);
-                //ImageManager.getInstance().loadImage(this.getContext(), item.getImageUrl(), (NetworkImageView) view.findViewById(R.id.order_item_image)); // holder.progress, R.drawable.no_image_small);
-
+                //RocketImageLoader.instance.loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image), null, R.drawable.no_image_small);
+                ImageManager.getInstance().loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image), null, R.drawable.no_image_large);
                 // Add to parent
                 group.addView(view);
             }

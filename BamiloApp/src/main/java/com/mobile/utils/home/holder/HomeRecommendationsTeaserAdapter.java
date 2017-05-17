@@ -12,7 +12,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.libraries.emarsys.predict.RecommendationWidgetType;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.shop.CurrencyFormatter;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -91,7 +91,8 @@ public class HomeRecommendationsTeaserAdapter extends RecyclerView.Adapter<HomeR
         holder.mName.setText("" + item.getData().get("title"));
 
         // Set image
-        RocketImageLoader.instance.loadImage("" + item.getData().get("image"), holder.mImage, holder.mProgress, R.drawable.no_image_large);
+        //RocketImageLoader.instance.loadImage("" + item.getData().get("image"), holder.mImage, holder.mProgress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(item.getData().get("image").toString(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
 
         // Set brand
         holder.mBrand.setText("" + item.getData().get("brand"));

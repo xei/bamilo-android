@@ -2,6 +2,7 @@ package com.mobile.utils.product;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.service.objects.product.pojo.ProductRegular;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.shop.CurrencyFormatter;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -60,8 +61,8 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
             // Set brand
             holder.brand.setText(item.getBrandName());
             // Set image
-            RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
-            //ImageManager.getInstance().loadImage(this.getContext(), item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+            //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+            ImageManager.getInstance().loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_large);
             // Set prices
             setProductPrice(holder, item);
             // Set tag

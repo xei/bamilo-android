@@ -1,6 +1,7 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import com.mobile.service.objects.product.pojo.ProductRegular;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.preferences.CustomerPreferences;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ProductListViewHolder;
 import com.mobile.view.R;
@@ -314,9 +315,9 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
             // just in order to have a position tag in order to not crash on the onCLick
             holder.itemView.setTag(R.id.position, -1);
             // Set image
-            RocketImageLoader.instance.loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large);
+            //RocketImageLoader.instance.loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large);
+            ImageManager.getInstance().loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large);
         }
-
     }
 
     /*

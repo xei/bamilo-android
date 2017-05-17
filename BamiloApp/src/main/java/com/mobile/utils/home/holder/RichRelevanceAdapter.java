@@ -12,7 +12,7 @@ import com.mobile.service.objects.product.pojo.ProductRegular;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.home.TeaserViewFactory;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -85,7 +85,8 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
         // Set brand
         holder.mBrand.setText(item.getBrandName());
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_small);
+        //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_small);
+        ImageManager.getInstance().loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set prices
         // Set price
         double price = item.hasDiscount() ? item.getSpecialPrice() : item.getPrice();

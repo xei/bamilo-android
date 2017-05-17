@@ -66,7 +66,7 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
 import com.mobile.utils.home.holder.HomeRecommendationsGridTeaserHolder;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -553,7 +553,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Set image
             ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
             if (TextUtils.isNotEmpty(brand.getImageUrl())) {
-                RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_tiny);
+                //RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_tiny);
+                ImageManager.getInstance().loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_large);
             } else {
                 brandImage.setVisibility(View.GONE);
             }
@@ -1373,10 +1374,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mCheck.setEnabled(true);
             }
         });
-
-        RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
-        //ImageManager.getInstance().loadImage(this.getContext(), productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
-
+        //RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());
         TextView mTitle = (TextView) view.findViewById(R.id.item_title);

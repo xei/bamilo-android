@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import com.mobile.service.objects.home.object.BaseTeaserObject;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.utils.home.TeaserViewFactory;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -19,11 +19,8 @@ import java.util.ArrayList;
  * @author sergiopereira
  */
 public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaserAdapter.ViewHolder> {
-
     public static final String TAG = HomeBrandTeaserAdapter.class.getSimpleName();
-
     private final View.OnClickListener mOnClickListener;
-
     private ArrayList<BaseTeaserObject> mDataSet;
 
     /**
@@ -32,7 +29,6 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
      * @author sergiopereira
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         private ImageView mImage;
         private View mProgress;
 
@@ -75,7 +71,8 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
         // Get item
         BaseTeaserObject item = mDataSet.get(position);
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
+        //RocketImageLoader.instance.loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set listener and tags
         TeaserViewFactory.setClickableView(holder.itemView, item, mOnClickListener, position);
     }

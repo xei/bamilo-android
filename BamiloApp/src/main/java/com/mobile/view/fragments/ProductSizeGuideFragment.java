@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.mobile.components._unused_.dialogs.WizardPreferences;
 import com.mobile.components._unused_.dialogs.WizardPreferences.WizardType;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -16,8 +19,7 @@ import com.mobile.service.utils.NetworkConnectivity;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.photoview.PhotoView;
 import com.mobile.view.R;
 
@@ -185,8 +187,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     private void showSizeGuide(PhotoView mImageView, String url) {
         Print.i(TAG, "ON SHOW SIZE GUIDE");
      // Load image        
-        RocketImageLoader.getInstance().loadImage(url, mImageView, null, R.drawable.no_image_large, new RocketImageLoaderListener() {
-            
+        /*RocketImageLoader.getInstance().loadImage(url, mImageView, null, R.drawable.no_image_large, new RocketImageLoaderListener() {
             @Override
             public void onLoadedSuccess(String url, Bitmap bitmap) { 
                 showFragmentContentContainer();
@@ -199,6 +200,19 @@ public class ProductSizeGuideFragment extends BaseFragment {
             
             @Override
             public void onLoadedCancel() { }
+        });*/
+        ImageManager.getInstance().loadImage(url, mImageView, null, R.drawable.no_image_large, false, new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String s, Target<GlideDrawable> target, boolean b) {
+                showFragmentContentContainer();
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b, boolean b1) {
+                showRetryLayout();
+                return false;
+            }
         });
     }
     

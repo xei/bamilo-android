@@ -14,7 +14,7 @@ import com.mobile.service.objects.product.pojo.ProductBundle;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.TextUtils;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
@@ -113,7 +113,8 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         // Set brand
         holder.brand.setText(item.getBrandName());
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+        //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+        ImageManager.getInstance().loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_large);
         // Set prices
         UIProductUtils.setPriceRules(item, holder.price, holder.discount);
         // Set variation

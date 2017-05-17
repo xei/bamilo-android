@@ -41,7 +41,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.cart.UICartUtils;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
@@ -377,7 +377,8 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             View prodInflateView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_my_order_product_item, mProductsContainer, false);
             // Image
             ImageView imageView = (ImageView) prodInflateView.findViewById(R.id.image_view);
-            RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_small);
+            //RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_small);
+            ImageManager.getInstance().loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_large);
             //shop first image
             ImageView shopFirstImageView = (ImageView) prodInflateView.findViewById(R.id.shop_first_item);
             UIProductUtils.setShopFirst(item, shopFirstImageView);

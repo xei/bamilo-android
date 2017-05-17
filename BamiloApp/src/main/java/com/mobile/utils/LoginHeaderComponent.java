@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.mobile.service.objects.configs.AuthInfo;
 import com.mobile.service.utils.TextUtils;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
@@ -131,6 +131,7 @@ public class LoginHeaderComponent extends FrameLayout {
             final ImageView imageView = (ImageView) view.findViewById(R.id.image_view);
             final ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
             mImagesContainerView.addView(view);
+            /*
             RocketImageLoader.instance.loadImage(imageUrl, imageView, true, new RocketImageLoader.RocketImageLoaderListener() {
                 @Override
                 public void onLoadedSuccess(String imageUrl, Bitmap bitmap) {
@@ -147,7 +148,8 @@ public class LoginHeaderComponent extends FrameLayout {
                 public void onLoadedCancel() {
                     view.setVisibility(GONE);
                 }
-            });
+            });*/
+            ImageManager.getInstance().loadImage(imageUrl, imageView, mProgress, -1);
         }
     }
 

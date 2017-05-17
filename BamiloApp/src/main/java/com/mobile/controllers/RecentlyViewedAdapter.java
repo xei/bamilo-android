@@ -1,6 +1,7 @@
 package com.mobile.controllers;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.service.objects.product.pojo.ProductMultiple;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
@@ -27,14 +28,11 @@ import java.util.ArrayList;
 public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAdapter.RecentlyViewedHolder> {
 
     public final static String TAG = RecentlyViewedAdapter.class.getSimpleName();
-
     private final LayoutInflater mInflater;
-
     private final OnClickListener mOnClickParentListener;
-
     private Class<? extends ProductMultiple> itemsClass;
-
     private ArrayList<ProductMultiple> items;
+    private final Context mContext;
 
     /**
      * Constructor
@@ -45,8 +43,9 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
      */
     public RecentlyViewedAdapter(Context context, ArrayList<ProductMultiple> items, OnClickListener parentListener) {
         this.items = items;
-        mInflater = LayoutInflater.from(context);
-        mOnClickParentListener = parentListener;
+        this.mContext = context;
+        this.mInflater = LayoutInflater.from(context);
+        this.mOnClickParentListener = parentListener;
 
         if (!items.isEmpty()) {
             itemsClass = items.get(0).getClass();
@@ -75,7 +74,8 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
         // Set is new image
         prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
         // Set image
-        RocketImageLoader.instance.loadImage(addableToCart.getImageUrl(), prodItem.image,  null, R.drawable.no_image_small);
+        //RocketImageLoader.instance.loadImage(addableToCart.getImageUrl(), prodItem.image,  null, R.drawable.no_image_small);
+        ImageManager.getInstance().loadImage(addableToCart.getImageUrl(), prodItem.image,  null, R.drawable.no_image_large);
     }
 
     /**

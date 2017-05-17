@@ -1,175 +1,81 @@
 package com.mobile.utils.imageloader;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.text.TextUtils;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.mobile.view.R;
-import com.android.volley.VolleyError;
+import com.bumptech.glide.DrawableRequestBuilder;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 
 /**
  * Created by Narbeh M. on 4/23/17.
  */
 
 public final class ImageManager {
-    private ImageLoader mImageLoader;
+    private final Context mContext;
 
     private static ImageManager instance = null;
-    protected ImageManager() {
-        // Exists only to defeat instantiation.
+    protected ImageManager(Context context) {
+        mContext = context;
     }
 
     public static ImageManager getInstance() {
-        if(instance == null) {
-            instance = new ImageManager();
-        }
+        assert instance != null: "Call Initialize() first";
         return instance;
     }
 
-    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView) {
-        loadImage(context, imageUrl, imageView, false, null);
+    public static void initialize(Context context) {
+        assert instance == null: "Initialize already called. Use getInstance()";
+        instance = new ImageManager(context);
     }
 
-    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, final boolean hideView) {
-        loadImage(context, imageUrl, imageView, hideView, null);
+    public void loadImage(final String imageUrl, final ImageView imageView, final View progressView, final int placeHolderImageId) {
+        loadImage(imageUrl, imageView, progressView, placeHolderImageId, false);
     }
 
-    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, final boolean hideView, final RocketImageLoader.RocketImageLoaderListener listener) {
-        loadImage(context, imageUrl, false, imageView, null, -1, hideView, listener, false);
-    }
-
-    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, final View progressView, final int placeHolderImageId) {
-        loadImage(context, imageUrl, false, imageView, progressView, placeHolderImageId, false, null, false);
-    }
-
-    public void loadImage(Context context, final String imageUrl, final boolean isFilePathList, final NetworkImageView imageView, final View progressView, final int placeHolderImageId) {
-        loadImage(context, imageUrl, isFilePathList, imageView, progressView, placeHolderImageId, false, null, false);
-    }
-
-    public void loadImage(Context context, final String imageUrl, final boolean isFilePathList, final NetworkImageView imageView, final View progressView, final int placeHolderImageId, final boolean isDraftImage) {
-        loadImage(context, imageUrl, isFilePathList, imageView, progressView, placeHolderImageId, false, null,isDraftImage);
-    }
-
-    public void loadImage(Context context, final String imageUrl, final NetworkImageView imageView, final View progressView, final int placeHolderImageId, final RocketImageLoader.RocketImageLoaderListener listener) {
-        loadImage(context, imageUrl, false, imageView, progressView, placeHolderImageId, false, listener, false);
-    }
-
-    public void loadImage(Context context, final String imageUrl, boolean isFilePathList, final NetworkImageView imageView, final View progressView,
-                          final int placeHolderImageId, final boolean hideImageView, final RocketImageLoader.RocketImageLoaderListener listener, boolean isDraftImage) {
-        if (!TextUtils.isEmpty(imageUrl) && imageView !=  null) {
-            if(isDraftImage) {
-                if (progressView != null) {
+    public void loadImage(final String imageUrl, final ImageView imageView, final View progressView, final int placeHolderImageId, final boolean isThumbnail) {
+        loadImage(imageUrl, imageView, progressView, placeHolderImageId, isThumbnail, new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String s, Target<GlideDrawable> target, boolean b) {
+                if(progressView != null) {
                     progressView.setVisibility(View.GONE);
                 }
-            } else if (isFilePathList) {
-                imageView.setImageBitmap(BitmapFactory.decodeFile(imageUrl));
+                return false;
+            }
 
-                if (progressView != null) {
+            @Override
+            public boolean onResourceReady(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b, boolean b1) {
+                if(progressView != null) {
                     progressView.setVisibility(View.GONE);
                 }
-            } else {
-                ImageLoader.ImageContainer imgContainer = (ImageLoader.ImageContainer) imageView.getTag();
-                if (null != imgContainer && !imgContainer.getRequestUrl().equals(imageUrl)) {
-                    imgContainer.cancelRequest();
-                    if (listener != null) {
-                        listener.onLoadedCancel();
-                    }
-                }
-
-                if (progressView != null) {
-                    progressView.setVisibility(View.VISIBLE);
-                }
-
-                // clear any previous image
-                if(placeHolderImageId != -1) {
-                    imageView.setImageResource(placeHolderImageId);
-                }
-
-                mImageLoader = ImageFetcher.getInstance(context).getImageLoader();
-                mImageLoader.get(imageUrl, this.getImageListener(context, imageUrl, imageView, placeHolderImageId, placeHolderImageId /*android.R.drawable.ic_dialog_alert*/, progressView, hideImageView, listener));
-                imageView.setImageUrl(imageUrl, mImageLoader);
-                imageView.setTag(imgContainer);
+                return false;
             }
-        } else if (imageView != null) {
-            if (progressView != null) {
-                progressView.setVisibility(View.GONE);
-            }
+        });
+    }
 
-            // clear any previous image
-            if(placeHolderImageId != -1) {
-                imageView.setImageResource(placeHolderImageId);
-            }
-
-            if (listener != null) {
-                listener.onLoadedError();
-            }
+    public void loadImage(final String imageUrl, final ImageView imageView, final View progressView, final int placeHolderImageId,
+                          final boolean isThumbnail, final RequestListener<String, GlideDrawable> listener) {
+        if(progressView != null) {
+            progressView.setVisibility(View.VISIBLE);
         }
-    }
 
-    private ImageLoader.ImageListener getImageListener(final Context context, final String imageUrl, final NetworkImageView imageView, final int defaultImageResId, final int errorImageResId, final View progressView, final boolean hideImageView, final RocketImageLoader.RocketImageLoaderListener listener) {
-        return new ImageLoader.ImageListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (errorImageResId != 0) {
-                    imageView.setImageResource(errorImageResId);
-                }
+        DrawableRequestBuilder<?> builder = Glide.with(mContext)
+                .load(imageUrl)
+                .placeholder(placeHolderImageId)
+                .crossFade()
+                .listener(listener)
+                .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-                if (progressView != null) {
-                    progressView.setVisibility(View.GONE);
-                }
+        if(isThumbnail) {
+            builder.thumbnail(0.1f);
+        }
 
-                if (listener != null) {
-                    listener.onLoadedError();
-                }
-
-                if (hideImageView) {
-                    imageView.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                /*if (response.getBitmap() != null) {
-                    imageView.setImageBitmap(response.getBitmap());
-                } else if (defaultImageResId != 0) {
-                    imageView.setImageResource(defaultImageResId);
-                }*/
-
-                if (response.getBitmap() != null && response.getBitmap().getWidth() != -1) {
-                    if (response.getRequestUrl().equals(imageUrl)) {
-                        if (progressView != null) {
-                            progressView.setVisibility(View.GONE);
-                        }
-
-                        // Animation
-                        Boolean noAnimate = (Boolean) imageView.getTag(R.id.no_animate);
-                        if (noAnimate == null || noAnimate) {
-                            imageView.setImageBitmap(response.getBitmap());
-                        } else {
-                            Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in);
-                            imageView.setImageBitmap(response.getBitmap());
-                            imageView.startAnimation(animation);
-                        }
-
-                        if (listener != null) {
-                            listener.onLoadedSuccess(imageUrl, response.getBitmap());
-                        }
-
-                        if (hideImageView) {
-                            imageView.setVisibility(View.VISIBLE);
-                        }
-                    }
-                } else if(defaultImageResId != -1) {
-                    //imageView.setImageBitmap(null);
-                    imageView.setImageResource(defaultImageResId);
-                }
-            }
-        };
+        builder.into(imageView);
     }
 }

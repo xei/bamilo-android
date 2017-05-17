@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.service.utils.shop.ShopSelector;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 import com.mobile.view.fragments.MyAccountFragment;
 
@@ -75,7 +75,8 @@ public class CountrySettingsAdapter extends BaseAdapter {
             country.setText(R.string.country);
             info.setText(countryObject.countryName);
             ImageView flag = (ImageView) view.findViewById(R.id.flag);
-            RocketImageLoader.instance.loadImage(countryObject.countryFlag, flag, null, R.drawable.no_image_small);
+            //RocketImageLoader.instance.loadImage(countryObject.countryFlag, flag, null, R.drawable.no_image_small);
+            ImageManager.getInstance().loadImage(countryObject.countryFlag, flag, null, R.drawable.no_image_large);
         }
         return view;
     }

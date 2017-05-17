@@ -9,10 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.mobile.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import com.mobile.service.objects.product.ImageUrls;
 import com.mobile.service.utils.output.Print;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.photoview.PhotoView;
 import com.mobile.utils.photoview.PhotoViewAttacher;
 import com.mobile.view.R;
@@ -111,17 +115,8 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
 
     private void setImageToLoad(String imageUrl, View imageTeaserView) {
         final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
-        if (this.isZoomAvailable) {
-            final PhotoView imageView = (PhotoView) imageTeaserView.findViewById(R.id.image_view);
-            //Log.i(TAG, "LOAD PHOTO: " + imageView.getId() + " " + imageUrl);
-            RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
-            //ImageManager.getInstance().loadImage(this.mContext, imageUrl, imageView, progressBar, R.drawable.no_image_large);
-        } else {
-            final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
-            //Log.i(TAG, "LOAD PDV PHOTO: " + imageView.getId() + " " + imageUrl);
-            RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
-            //ImageManager.getInstance().loadImage(this.mContext, imageUrl, imageView, progressBar, R.drawable.no_image_large);
-        }
+        final ImageView imageView = (this.isZoomAvailable) ? (PhotoView) imageTeaserView.findViewById(R.id.image_view) : (ImageView) imageTeaserView.findViewById(R.id.image_view);
+        ImageManager.getInstance().loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
     }
 
     /*

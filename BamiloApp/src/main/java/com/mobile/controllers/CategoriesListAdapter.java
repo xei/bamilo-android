@@ -11,7 +11,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.service.objects.category.Category;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.utils.SingleLineComponent;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -35,6 +35,7 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
 
     private final LayoutInflater mInflater;
     private final ArrayList<Category> mCategories;
+    private final Context mContext;
 
     /**
      * A representation of each item parent list
@@ -48,6 +49,7 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
     public CategoriesListAdapter(Context context, ArrayList<Category> categories) {
         this.mCategories = categories;
         this.mInflater = LayoutInflater.from(context);
+        this.mContext = context;
     }
 
     @Override
@@ -123,7 +125,8 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
         } else {
             item.icon.setVisibility(View.VISIBLE);
             item.icon.setTag(R.id.no_animate, true);
-            RocketImageLoader.instance.loadImage(category.getImage(), item.icon, false);
+            //RocketImageLoader.instance.loadImage(category.getImage(), item.icon, false);
+            ImageManager.getInstance().loadImage(category.getImage(), item.icon, null, -1);
         }
 
         //

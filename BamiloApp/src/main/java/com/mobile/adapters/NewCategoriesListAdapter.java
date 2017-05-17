@@ -2,6 +2,7 @@
 package com.mobile.adapters;
 
 import android.content.Context;
+import android.media.Image;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.service.objects.category.Category;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.utils.SingleLineComponent;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -99,7 +100,8 @@ public class NewCategoriesListAdapter extends MultiLevelListAdapter {
         } else {
             item.icon.setVisibility(View.VISIBLE);
             item.icon.setTag(R.id.no_animate, true);
-            RocketImageLoader.instance.loadImage(category.getImage(), item.icon, false);
+            //RocketImageLoader.instance.loadImage(category.getImage(), item.icon, false);
+            ImageManager.getInstance().loadImage(category.getImage(), item.icon, null, -1);
         }
 
         //

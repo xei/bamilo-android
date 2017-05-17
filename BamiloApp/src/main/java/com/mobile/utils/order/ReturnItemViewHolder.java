@@ -15,7 +15,7 @@ import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.pojo.ICustomFormFieldView;
 import com.mobile.utils.dialogfragments.DialogQuantityListFragment;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
@@ -70,7 +70,8 @@ public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickL
         // Image
         ImageView image = (ImageView) mItemView.findViewById(R.id.image_view);
         View progress = mItemView.findViewById(R.id.image_loading_progress);
-        RocketImageLoader.instance.loadImage(mItem.getImageUrl(), image, progress, R.drawable.no_image_large);
+        //RocketImageLoader.instance.loadImage(mItem.getImageUrl(), image, progress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(mItem.getImageUrl(), image, progress, R.drawable.no_image_large);
         // Brand
         ((TextView) mItemView.findViewById(R.id.order_return_item_text_brand)).setText(mItem.getBrandName());
         // Name

@@ -12,7 +12,7 @@ import com.mobile.service.objects.home.object.TeaserTopSellerObject;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.home.TeaserViewFactory;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -82,7 +82,8 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
         // Get item
         TeaserTopSellerObject item = (TeaserTopSellerObject) mDataSet.get(position);
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
+        //RocketImageLoader.instance.loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set brand
         holder.mBrand.setText(item.getBrand());
         // Set name

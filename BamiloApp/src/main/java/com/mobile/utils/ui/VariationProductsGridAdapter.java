@@ -11,7 +11,7 @@ import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.service.objects.product.Variation;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.shop.CurrencyFormatter;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
@@ -83,7 +83,8 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
         holder.brand.setText(item.getBrand());
         // Set is new image
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImage(), holder.image, holder.progress, R.drawable.no_image_small);
+        //RocketImageLoader.instance.loadImage(item.getImage(), holder.image, holder.progress, R.drawable.no_image_small);
+        ImageManager.getInstance().loadImage(item.getImage(), holder.image, holder.progress, R.drawable.no_image_large);
         // Set prices
         setProductPrice(holder, item);
         // Set the parent layout

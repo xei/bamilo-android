@@ -175,7 +175,21 @@
 -keepclassmembers class com.mobile.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface { public *; }
 -keepattributes JavascriptInterface
 #################################################################################
+
+## PUSHWOOSH ####################################################################
 -keep class com.pushwoosh.** { *; }
 -keep class com.arellomobile.** { *; }
 -dontwarn com.pushwoosh.**
 -dontwarn com.arellomobile.**
+#################################################################################
+
+## GLIDE ########################################################################
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
+# for DexGuard only
+-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#################################################################################

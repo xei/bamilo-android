@@ -1,5 +1,7 @@
 package com.mobile.controllers;
 
+import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +12,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.service.objects.product.pojo.ProductMultiple;
 import com.mobile.service.utils.CollectionUtils;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
@@ -105,7 +107,8 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         // Set is new image
         prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
         // Set image
-        RocketImageLoader.instance.loadImage(addableToCart.getImageUrl(), prodItem.image, null, R.drawable.no_image_small);
+        //RocketImageLoader.instance.loadImage(addableToCart.getImageUrl(), prodItem.image, null, R.drawable.no_image_small);
+        ImageManager.getInstance().loadImage(addableToCart.getImageUrl(), prodItem.image, null, R.drawable.no_image_large);
     }
 
     /**

@@ -32,7 +32,7 @@ import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.cart.UICartUtils;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
@@ -325,7 +325,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             UIProductUtils.setShopFirst(item, shopFirstImageView);
             UIProductUtils.showShopFirstOverlayMessage(this, item, shopFirstImageView);
             // Image
-            RocketImageLoader.instance.loadImage(item.getImageUrl(), mImageView, pBar, R.drawable.no_image_small);
+            //RocketImageLoader.instance.loadImage(item.getImageUrl(), mImageView, pBar, R.drawable.no_image_small);
+            ImageManager.getInstance().loadImage(item.getImageUrl(), mImageView, pBar, R.drawable.no_image_large);
             // Price
             double price = item.hasDiscount() ? item.getSpecialPrice() : item.getPrice();
             String text = getString(R.string.first_x_second_placeholder, item.getQuantity(), CurrencyFormatter.formatCurrency(price));

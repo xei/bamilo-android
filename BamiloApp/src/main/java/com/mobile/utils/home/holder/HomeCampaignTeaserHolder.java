@@ -14,7 +14,7 @@ import com.mobile.service.objects.home.object.BaseTeaserObject;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.DateTimeUtils;
 import com.mobile.utils.home.TeaserViewFactory;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -136,7 +136,8 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         // More button
         setMoreButton(campaign);
         // Set Image
-        RocketImageLoader.instance.loadImage(campaign.getImage(), image, progress, R.drawable.no_image_large);
+        //RocketImageLoader.instance.loadImage(campaign.getImage(), image, progress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(campaign.getImage(), image, progress, R.drawable.no_image_large);
         // Set timer
         title.setText(campaign.getTitle());
         // Set sub

@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
@@ -49,7 +52,7 @@ import com.mobile.utils.catalog.HeaderFooterInterface;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
@@ -646,8 +649,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Set image container
             setClickableView(view.mImageContainer, position);
             // Set image
-            RocketImageLoader.instance.loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
-            //ImageManager.getInstance().loadImage(getContext(), item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
+            //RocketImageLoader.instance.loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
+            ImageManager.getInstance().loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
             // Set size
             setSizeContainer(view, item);
             // Set price and special price
@@ -997,7 +1000,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
         @Override
         public void hideHeaderView() {
-
         }
 
         @Override
@@ -1007,12 +1009,10 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
         @Override
         public void hideFooterView() {
-
         }
 
         @Override
         public void setHeader(@Nullable Banner banner) {
-
         }
 
         @Override
@@ -1032,7 +1032,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 holder.itemView.setTag(R.id.position, -1);
                 holder.mBannerImageView.setVisibility(View.GONE);
                 // Set image
-                RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
+                /*RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
                     @Override
                     public void onLoadedSuccess(String url, Bitmap bitmap) {
                         // Show content
@@ -1053,33 +1053,25 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                         holder.mBannerImageView.setVisibility(View.GONE);
                         mGridView.hideHeaderView();
                         bannerState = HIDDEN;
+                    }
+                });*/
+                ImageManager.getInstance().loadImage(mBannerImage, holder.mBannerImageView, null, -1, false, new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String s, Target<GlideDrawable> target, boolean b) {
+                        holder.mBannerImageView.setVisibility(View.GONE);
+                        mGridView.hideHeaderView();
+                        bannerState = HIDDEN;
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b, boolean b1) {
+                        //holder.mBannerImageView.setImageBitmap(bitmap);
+                        holder.mBannerImageView.setVisibility(View.VISIBLE);
+                        bannerState = VISIBLE;
+                        return false;
                     }
                 });
-
-                /*
-                ImageManager.getInstance().loadImage(getContext(), mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
-                    @Override
-                    public void onLoadedSuccess(String url, Bitmap bitmap) {
-                        // Show content
-                        holder.mBannerImageView.setImageBitmap(bitmap);
-                        holder.mBannerImageView.setVisibility(View.VISIBLE);
-                        bannerState = VISIBLE;
-                    }
-
-                    @Override
-                    public void onLoadedError() {
-                        holder.mBannerImageView.setVisibility(View.GONE);
-                        mGridView.hideHeaderView();
-                        bannerState = HIDDEN;
-                    }
-
-                    @Override
-                    public void onLoadedCancel() {
-                        holder.mBannerImageView.setVisibility(View.GONE);
-                        mGridView.hideHeaderView();
-                        bannerState = HIDDEN;
-                    }
-                }); */
             }
         }
     }

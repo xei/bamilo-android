@@ -20,7 +20,7 @@ import com.mobile.service.objects.catalog.FeaturedItemProduct;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.deeplink.TargetLink;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
@@ -195,7 +195,8 @@ public class FeaturedItemsAdapter extends PagerAdapter {
                     textView.setText(CurrencyFormatter.formatCurrency(price));
                 }
             }
-            RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large);
+            //RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large);
+            ImageManager.getInstance().loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large);
         } else {
             Print.e(TAG, "setViewForFeaturedItem for index: " + index + " with no layout available!");
         }

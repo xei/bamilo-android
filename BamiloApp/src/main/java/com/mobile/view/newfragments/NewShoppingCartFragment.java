@@ -52,7 +52,7 @@ import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.WarningFactory;
@@ -749,7 +749,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         // Show shop first overlay message
         UIProductUtils.showShopFirstOverlayMessage(this, item, shopFirstImage);
         // Image
-        RocketImageLoader.instance.loadImage(imageUrl, productView, pBar, R.drawable.no_image_small);
+        //RocketImageLoader.instance.loadImage(imageUrl, productView, pBar, R.drawable.no_image_small);
+        ImageManager.getInstance().loadImage(imageUrl, productView, pBar, R.drawable.no_image_large);
         // Price
         UIProductUtils.setPriceRules(item, priceView);
         // Delete

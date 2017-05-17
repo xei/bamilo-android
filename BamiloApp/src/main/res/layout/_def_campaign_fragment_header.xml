@@ -7,7 +7,6 @@
     android:layout_height="wrap_content"
     >
 
-    <!-- com.android.volley.toolbox.NetworkImageView -->
     <ImageView
         android:id="@+id/campaign_header_image"
         android:layout_width="match_parent"

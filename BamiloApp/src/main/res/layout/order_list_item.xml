@@ -14,7 +14,6 @@
         android:orientation="horizontal"
         android:padding="@dimen/margin_padding_xxl">
 
-        <!-- com.android.volley.toolbox.NetworkImageView -->
         <ImageView
             android:id="@+id/order_item_image"
             android:layout_width="@dimen/dimen_0dp"

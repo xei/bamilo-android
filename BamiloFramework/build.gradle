@@ -52,6 +52,9 @@ dependencies {
     compile 'com.pushwoosh:pushwoosh:4.12.1'
     /** EMARSYS **/
     compile 'com.scarabresearch:predictsdk:1.0.6'
+    /** GLIDE **/
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.support:support-v4:25.3.1'
     /** LOCAL **/
     compile fileTree(include: ['*.jar'], exclude: ['json.jar'], dir: 'libs')
     compile 'pl.openrnd.android:multi-level-listview:1.0.1'

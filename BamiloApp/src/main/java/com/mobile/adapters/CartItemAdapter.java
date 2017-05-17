@@ -22,7 +22,7 @@ import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.shop.CurrencyFormatter;
-import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
@@ -187,11 +187,11 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             vh.cart_fav_label.setTag(R.id.cart_fav_icon, vh.cart_fav_icon);
             vh.cart_fav_label.setOnClickListener(mOnChangeFavouriteClickListener);
 
-
             //vh.cart_item_image.setImageBitmap(item.getImageUrl());
             String imageUrl = item.getImageUrl().replace("-cart.jpg","-catalog_grid_3.jpg");
             if (TextUtils.isNotEmpty(imageUrl)) {
-                RocketImageLoader.instance.loadImage(imageUrl, vh.cart_item_image, null, R.drawable.no_image_tiny);
+                //RocketImageLoader.instance.loadImage(imageUrl, vh.cart_item_image, null, R.drawable.no_image_tiny);
+                ImageManager.getInstance().loadImage(imageUrl, vh.cart_item_image, null, R.drawable.no_image_large);
             } else {
                 vh.cart_item_image.setVisibility(View.GONE);
             }

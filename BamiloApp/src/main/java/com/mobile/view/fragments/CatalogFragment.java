@@ -57,7 +57,6 @@ import com.mobile.utils.catalog.UICatalogUtils;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
-import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
@@ -858,9 +857,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             super.onScrollStateChanged(recyclerView, newState);
             Print.i(TAG, "ON SCROLL STATE CHANGED: " + newState);
             if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                RocketImageLoader.getInstance().stopProcessingQueue();
+                //RocketImageLoader.getInstance().stopProcessingQueue();
             } else {
-                RocketImageLoader.getInstance().startProcessingQueue();
+                //RocketImageLoader.getInstance().startProcessingQueue();
                 setVisibilityTopButton(recyclerView);
             }
         }
