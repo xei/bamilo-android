@@ -161,7 +161,7 @@ public class UIProductUtils {
     }
 
     public static void setShopFirst(@NonNull ProductRegular productBase, @NonNull View badge){
-        badge.setVisibility((!productBase.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
+        //badge.setVisibility((!productBase.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
     }
 
 

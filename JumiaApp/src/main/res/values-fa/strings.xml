@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="format_discount_percentage">-%1$s%%</string>
+    <string name="format_discount_percentage">%1$s%%</string>
     <string name="account_name">حساب کاربری من ‎</string>
     <string name="checkout_confirmation">بررسی نهایی سفارش</string>
     <string name="action_label_add_address">اضافه کردن آدرس جدید</string>
@@ -492,5 +492,6 @@
     <string name="order_status_payment_title">روش پرداخت:</string>
     <string name="order_items">جزییات کالا</string>
     <string name="order_status_address_title">آدرس:</string>
+    <string name="sort_label">مرتب سازی</string>
 
 </resources>

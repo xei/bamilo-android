@@ -118,4 +118,10 @@
     <color name="recommendation_cart_grey">#505050</color>
     <color name="recommendation_cart_black">#000000</color>
 
+    <color name="lightgrey">#929292</color>
+    <color name="extradarkgrey">#505050</color>
+    <color name="dark_blue">#0091FF</color>
+    <color name="light_blue">#75bdf3</color>
+
+
 </resources>

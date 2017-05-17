@@ -1,146 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                style="@style/grid_row_style"
-                android:layout_height="@dimen/dimen_265dp">
-
-    <include
-        android:id="@+id/image_loadable"
-        layout="@layout/_def_gen_image_loadable"
-        android:layout_width="@dimen/dimen_98dp"
-        android:layout_height="@dimen/dimen_123dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="@dimen/dimen_30dp"
-        android:layout_marginLeft="@dimen/dimen_30dp"
-        android:layout_marginRight="@dimen/dimen_30dp"
-        android:layout_marginStart="@dimen/dimen_30dp"
-        android:layout_marginTop="@dimen/margin_padding_xl" />
-
-
-    <ImageView
-        android:id="@+id/image_is_favourite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="false"
-        android:padding="@dimen/margin_padding_xl"
-        android:src="@drawable/selector_favorite" />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/item_brand"
-        style="@style/TextBase.Body.Black_800"
-        android:layout_width="wrap_content"
-        android:layout_below="@id/image_loadable"
-        android:layout_marginEnd="@dimen/margin_padding_xl"
-        android:layout_marginLeft="@dimen/margin_padding_xl"
-        android:layout_marginRight="@dimen/margin_padding_xl"
-        android:layout_marginStart="@dimen/margin_padding_xl"
-        android:layout_marginTop="@dimen/margin_padding_l"
-        android:gravity="left|start"
-        tools:text="BRAND" />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/item_name"
-        style="@style/TextBase.Title.Black"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_below="@id/item_brand"
-        android:layout_marginEnd="@dimen/margin_padding_xl"
-        android:layout_marginRight="@dimen/margin_padding_xl"
-        android:layout_marginLeft="@dimen/margin_padding_xl"
-        android:layout_marginStart="@dimen/margin_padding_xl"
-        android:gravity="left|start"
-        tools:text="Name" />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/item_discount"
-        style="@style/TextBase.Body.Black"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignLeft="@+id/item_brand"
-        android:layout_alignStart="@+id/item_brand"
-        android:layout_below="@id/item_name"
-        android:layout_marginEnd="@dimen/dimen_50dp"
-        android:layout_marginRight="@dimen/dimen_50dp"
-        tools:text="Discount" />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/item_regprice"
-        style="@style/TextBase.Body.Black_800"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_below="@id/item_discount"
-        android:layout_marginEnd="@dimen/dimen_50dp"
-        android:layout_marginRight="@dimen/dimen_50dp"
-        android:layout_alignLeft="@id/item_brand"
-        android:layout_alignStart="@id/item_brand"
-        tools:text="Price" />
-
-    <ImageView
-        style="@style/ShopFirstStyle"
-        android:id="@+id/item_shop_first"
-        android:layout_below="@id/item_regprice"
-        android:layout_alignLeft="@id/item_brand"
-        android:layout_alignStart="@id/item_brand" />
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="287dp"
+    android:background="@drawable/selector_grid_item_highlight"
+    card_view:cardCornerRadius="0dp"
+    android:layout_margin="3dp">
 
     <RelativeLayout
-        android:id="@+id/rating_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/item_name"
-        android:layout_alignStart="@id/item_name"
-        android:layout_below="@+id/item_shop_first"
-        android:layout_marginTop="@dimen/dimen_6dp"
-        android:gravity="start|left|center_vertical"
-        android:orientation="horizontal" >
+        style="@style/grid_row_style">
 
-        <RatingBar
-            android:id="@+id/item_rating"
-            style="@style/StarBar.Small.Indicator"
+        <include
+            android:id="@+id/image_loadable"
+            layout="@layout/_def_gen_image_loadable"
+            android:layout_width="136dp"
+            android:layout_height="170dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp" />
+
+
+        <ImageView
+            android:id="@+id/image_is_favourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            tools:rating="3.5" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="false"
+            android:padding="@dimen/margin_padding_xl"
+            android:visibility="gone"
+            android:src="@drawable/selector_favorite" />
+
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/item_reviews"
-            style="@style/TextBase.Caption"
+            android:id="@+id/item_name"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="@dimen/margin_padding_xs"
-            android:layout_marginStart="@dimen/margin_padding_xs"
-            android:layout_toRightOf="@id/item_rating"
-            android:layout_toEndOf="@id/item_rating"
-            android:includeFontPadding="false"
-            tools:text="(12)"
-            android:textColor="@color/black_800" />
+            android:layout_below="@id/image_loadable"
+            android:layout_marginEnd="@dimen/margin_padding_xl"
+            android:layout_marginRight="@dimen/margin_padding_xl"
+            android:layout_marginLeft="@dimen/margin_padding_xl"
+            android:layout_marginStart="@dimen/margin_padding_xl"
+            android:layout_marginTop="4dp"
+            android:gravity="left|start"
+            android:textSize="10sp"
+            android:textColor="@color/black"
+            tools:text="Name" />
+
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_name"
+            android:layout_marginEnd="@dimen/margin_padding_xl"
+            android:layout_marginLeft="@dimen/margin_padding_xl"
+            android:layout_marginRight="@dimen/margin_padding_xl"
+            android:layout_marginStart="@dimen/margin_padding_xl"
+            android:layout_marginTop="2dp"
+            android:gravity="left|start"
+            android:textSize="9sp"
+            android:textColor="@color/lightgrey"
+            tools:text="BRAND" />
+
+        <RelativeLayout
+            android:id="@+id/rating_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/item_name"
+            android:layout_alignStart="@id/item_name"
+            android:layout_below="@+id/item_brand"
+            android:layout_marginTop="2dp"
+            android:gravity="start|left|center_vertical"
+            android:orientation="horizontal" >
+
+            <RatingBar
+                android:id="@+id/item_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/ratingbar_height"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:stepSize="0.1"
+                android:progressDrawable="@drawable/custom_rating_bar"
+                tools:rating="3.5"
+                android:layout_alignBottom="@+id/item_reviews" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_reviews"
+                style="@style/TextBase.Caption"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/margin_padding_xs"
+                android:layout_marginStart="@dimen/margin_padding_xs"
+                android:layout_toRightOf="@id/item_rating"
+                android:layout_toEndOf="@id/item_rating"
+                android:includeFontPadding="false"
+                tools:text="(12)"
+                android:textColor="@color/black_800" />
+        </RelativeLayout>
+
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_discount"
+            style="@style/TextBase.Body.Black"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignLeft="@+id/item_brand"
+            android:layout_alignStart="@+id/item_brand"
+            android:layout_below="@id/rating_container"
+            android:layout_marginEnd="@dimen/dimen_50dp"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_marginTop="2dp"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            tools:text="Discount" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_regprice"
+            style="@style/TextBase.Body.Black_800"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/item_discount"
+            android:layout_alignLeft="@id/item_brand"
+            android:layout_alignStart="@id/item_brand"
+            android:layout_marginTop="2dp"
+            android:textSize="9sp"
+            android:textColor="@color/lightgrey"
+            tools:text="Price" />
+<!--
+        <ImageView
+            style="@style/ShopFirstStyle"
+            android:id="@+id/item_shop_first"
+            android:visibility="gone"
+            android:layout_below="@id/item_regprice"
+            android:layout_alignLeft="@id/item_brand"
+            android:layout_alignStart="@id/item_brand" />-->
+
+
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/discount_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_discount"
+            android:layout_toRightOf="@+id/item_regprice"
+            android:layout_toEndOf="@+id/item_regprice"
+            android:layout_alignBaseline="@+id/item_regprice"
+            android:layout_marginLeft="@dimen/margin_padding_xl"
+            android:layout_marginStart="@dimen/margin_padding_xl"
+            android:textSize="9sp"
+            android:text="%"
+            android:textColor="@color/lightgrey"
+            android:gravity="center" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/new_arrival_badge"
+            style="@style/NewArrivalBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_15dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/margin_padding_l"
+            android:layout_marginRight="@dimen/margin_padding_xl"
+            android:layout_marginEnd="@dimen/margin_padding_xl"
+            android:layout_below="@id/discount_percentage"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/new_arrival_badge" />
     </RelativeLayout>
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/discount_percentage"
-        style="@style/PdvBadgeStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/item_name"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="@dimen/margin_padding_xl"
-        android:layout_marginRight="@dimen/margin_padding_xl"
-        android:gravity="center" />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/new_arrival_badge"
-        style="@style/NewArrivalBadge"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dimen_15dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/margin_padding_l"
-        android:layout_marginRight="@dimen/margin_padding_xl"
-        android:layout_marginEnd="@dimen/margin_padding_xl"
-        android:layout_below="@id/discount_percentage"
-        android:gravity="center"
-        android:text="@string/new_arrival_badge" />
-</RelativeLayout>
+</android.support.v7.widget.CardView>
