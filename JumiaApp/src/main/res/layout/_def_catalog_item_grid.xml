@@ -80,13 +80,13 @@
             <RatingBar
                 android:id="@+id/item_rating"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/ratingbar_height"
+                android:maxHeight="@dimen/ratingbar_height"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:stepSize="0.1"
                 android:progressDrawable="@drawable/custom_rating_bar"
+                android:stepSize="0.1"
                 tools:rating="3.5"
-                android:layout_alignBottom="@+id/item_reviews" />
+                android:layout_height="12dp" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
@@ -96,7 +96,7 @@
                 android:layout_marginStart="@dimen/margin_padding_xs"
                 android:layout_toRightOf="@id/item_rating"
                 android:layout_toEndOf="@id/item_rating"
-                android:includeFontPadding="false"
+                android:layout_alignBaseline="@+id/item_rating"
                 tools:text="(12)"
                 android:textColor="@color/black_800" />
         </RelativeLayout>

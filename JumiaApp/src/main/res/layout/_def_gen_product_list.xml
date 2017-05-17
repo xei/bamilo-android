@@ -136,10 +136,12 @@
                 android:id="@+id/item_rating"
                 android:progressDrawable="@drawable/custom_rating_bar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="12dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                tools:rating="3.5" />
+                android:stepSize="0.1"
+                tools:rating="3.5"
+                />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
@@ -149,7 +151,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_toEndOf="@id/item_rating"
                 android:layout_toRightOf="@id/item_rating"
-                android:includeFontPadding="false"
+                android:layout_alignBaseline="@+id/item_rating"
                 tools:text="(12)"
                 android:textColor="@color/black_800" />
         </RelativeLayout>
