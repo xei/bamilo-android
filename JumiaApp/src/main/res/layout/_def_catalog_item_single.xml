@@ -8,7 +8,10 @@
     android:layout_height="328dp"
     android:background="@drawable/selector_grid_item_highlight"
     card_view:cardCornerRadius="0dp"
-    android:layout_margin="3dp">
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginRight="6dp"
+    android:layout_marginLeft="6dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -47,7 +50,7 @@
             android:layout_marginTop="5dp"
             android:gravity="left|start"
             android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textSize="13sp"
             tools:text="Name" />
 
         <com.mobile.components.customfontviews.TextView
@@ -63,7 +66,7 @@
             android:gravity="left|start"
             tools:text="BRAND"
             android:textColor="@color/lightgrey"
-            android:textSize="10sp"
+            android:textSize="11sp"
             />
 
 
@@ -89,8 +92,6 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_below="@id/item_discount"
-            android:layout_marginEnd="15dp"
-            android:layout_marginRight="15dp"
             android:layout_alignLeft="@+id/item_brand"
             android:layout_alignStart="@+id/item_brand"
             android:layout_marginTop="2dp"
@@ -146,16 +147,20 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
-                style="@style/TextBase.Caption"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_toLeftOf="@id/item_rating"
                 android:layout_toStartOf="@id/item_rating"
-                android:layout_alignBaseline="@+id/item_rating"
+                android:layout_alignTop="@+id/item_rating"
+                android:layout_alignBottom="@+id/item_rating"
+                android:paddingTop="-2dp"
+                android:gravity="top"
                 tools:text="(12)"
                 android:textColor="@color/black_800"
-                android:layout_height="wrap_content"/>
+                />
 
 
         </RelativeLayout>

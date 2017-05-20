@@ -8,7 +8,10 @@
     android:layout_height="287dp"
     android:background="@drawable/selector_grid_item_highlight"
     card_view:cardCornerRadius="0dp"
-    android:layout_margin="3dp">
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginRight="6dp"
+    android:layout_marginLeft="6dp">
 
     <RelativeLayout
         style="@style/grid_row_style">
@@ -46,8 +49,9 @@
             android:layout_marginStart="@dimen/margin_padding_xl"
             android:layout_marginTop="4dp"
             android:gravity="left|start"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/black"
+            android:singleLine="true"
             tools:text="Name" />
 
 
@@ -60,9 +64,8 @@
             android:layout_marginLeft="@dimen/margin_padding_xl"
             android:layout_marginRight="@dimen/margin_padding_xl"
             android:layout_marginStart="@dimen/margin_padding_xl"
-            android:layout_marginTop="2dp"
             android:gravity="left|start"
-            android:textSize="9sp"
+            android:textSize="11sp"
             android:textColor="@color/lightgrey"
             tools:text="BRAND" />
 
@@ -80,23 +83,27 @@
             <RatingBar
                 android:id="@+id/item_rating"
                 android:layout_width="wrap_content"
+                android:layout_height="12dp"
                 android:maxHeight="@dimen/ratingbar_height"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:progressDrawable="@drawable/custom_rating_bar"
                 android:stepSize="0.1"
                 tools:rating="3.5"
-                android:layout_height="12dp" />
+                />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
-                style="@style/TextBase.Caption"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="@dimen/margin_padding_xs"
                 android:layout_marginRight="@dimen/margin_padding_xs"
+                android:layout_marginBottom="4dp"
                 android:layout_toRightOf="@id/item_rating"
                 android:layout_toEndOf="@id/item_rating"
-                android:layout_alignBaseline="@+id/item_rating"
+                android:layout_alignTop="@+id/item_rating"
+                android:layout_alignBottom="@+id/item_rating"
                 tools:text="(12)"
                 android:textColor="@color/black_800" />
         </RelativeLayout>
@@ -129,14 +136,14 @@
             android:textSize="9sp"
             android:textColor="@color/lightgrey"
             tools:text="Price" />
-<!--
-        <ImageView
-            style="@style/ShopFirstStyle"
-            android:id="@+id/item_shop_first"
-            android:visibility="gone"
-            android:layout_below="@id/item_regprice"
-            android:layout_alignLeft="@id/item_brand"
-            android:layout_alignStart="@id/item_brand" />-->
+        <!--
+                <ImageView
+                    style="@style/ShopFirstStyle"
+                    android:id="@+id/item_shop_first"
+                    android:visibility="gone"
+                    android:layout_below="@id/item_regprice"
+                    android:layout_alignLeft="@id/item_brand"
+                    android:layout_alignStart="@id/item_brand" />-->
 
 
 
