@@ -93,7 +93,7 @@
                 style="@style/TextBase.Caption"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="@dimen/margin_padding_xs"
-                android:layout_marginStart="@dimen/margin_padding_xs"
+                android:layout_marginRight="@dimen/margin_padding_xs"
                 android:layout_toRightOf="@id/item_rating"
                 android:layout_toEndOf="@id/item_rating"
                 android:layout_alignBaseline="@+id/item_rating"
