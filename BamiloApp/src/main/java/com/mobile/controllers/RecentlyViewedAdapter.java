@@ -1,7 +1,6 @@
 package com.mobile.controllers;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.service.objects.product.pojo.ProductMultiple;
-import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
@@ -28,11 +26,14 @@ import java.util.ArrayList;
 public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAdapter.RecentlyViewedHolder> {
 
     public final static String TAG = RecentlyViewedAdapter.class.getSimpleName();
+
     private final LayoutInflater mInflater;
+
     private final OnClickListener mOnClickParentListener;
+
     private Class<? extends ProductMultiple> itemsClass;
+
     private ArrayList<ProductMultiple> items;
-    private final Context mContext;
 
     /**
      * Constructor
@@ -43,9 +44,8 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
      */
     public RecentlyViewedAdapter(Context context, ArrayList<ProductMultiple> items, OnClickListener parentListener) {
         this.items = items;
-        this.mContext = context;
-        this.mInflater = LayoutInflater.from(context);
-        this.mOnClickParentListener = parentListener;
+        mInflater = LayoutInflater.from(context);
+        mOnClickParentListener = parentListener;
 
         if (!items.isEmpty()) {
             itemsClass = items.get(0).getClass();
@@ -72,10 +72,8 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
      */
     private void setImage(RecentlyViewedHolder prodItem, ProductMultiple addableToCart){
         // Set is new image
-        prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
+        //prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
         // Set image
-        //RocketImageLoader.instance.loadImage(addableToCart.getImageUrl(), prodItem.image,  null, R.drawable.no_image_small);
-        ImageManager.getInstance().loadImage(addableToCart.getImageUrl(), prodItem.image,  null, R.drawable.no_image_large);
     }
 
     /**
@@ -138,7 +136,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
         private TextView price;
         private TextView percentage;
         private TextView brand;
-        private TextView newArrivalBadge;
+        //private TextView newArrivalBadge;
         private TextView varianceButton;
         private View addToCartButton;
         private View deleteButton;
@@ -152,7 +150,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
             price = (TextView) itemView.findViewById(R.id.item_regprice);
             percentage = (TextView) itemView.findViewById(R.id.item_percentage);
             brand = (TextView) itemView.findViewById(R.id.item_brand);
-            newArrivalBadge = (TextView) itemView.findViewById(R.id.new_arrival_badge);
+            //newArrivalBadge = (TextView) itemView.findViewById(R.id.new_arrival_badge);
             varianceButton = (TextView) itemView.findViewById(R.id.button_variant);
             addToCartButton = itemView.findViewById(R.id.button_shop);
             deleteButton = itemView.findViewById(R.id.button_delete);

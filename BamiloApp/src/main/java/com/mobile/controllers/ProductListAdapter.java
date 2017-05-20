@@ -38,7 +38,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
     }
 
     @Override
-    public void onBindViewHolder(final ProductListViewHolder holder, int position) {
+    public void onBindViewHolder(ProductListViewHolder holder, int position) {
         // Get item
         ProductRegular item = mDataSet.get(position);
         // Set name
@@ -46,7 +46,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         // Set brand
         holder.brand.setText(item.getBrandName());
         // Show / Hide New Arrival Badge
-        holder.newArrivalBadge.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
+        //holder.newArrivalBadge.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         //Show/Hide Shop First
         UIProductUtils.setShopFirst(item,holder.shopFirst);
         // Set image
@@ -59,6 +59,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         // Set prices
         setProductPrice(holder, item);
     }
+
 
     public void setResources(Resources resources)
     {

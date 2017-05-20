@@ -317,4 +317,5 @@
     <style name="BlueSwitchStyle">
         <item name="colorControlActivated">@color/blue_new</item>
     </style>
+
 </resources>

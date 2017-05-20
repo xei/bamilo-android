@@ -22,7 +22,7 @@ import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.deeplink.TargetLink;
-import com.mobile.utils.home.holder.HomeRecommendationsTeaserHolder;
+import com.mobile.utils.home.holder.RecommendationsHolder;
 import com.mobile.utils.search.SearchModel;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
@@ -45,7 +45,7 @@ public class FeaturedBoxHelper {
     private static final int ITEMS_PER_PAGE_PORTRAIT = 3;
     
     private static final int ITEMS_PER_PAGE_LANDSCAPE = 5;
-    static HomeRecommendationsTeaserHolder recommendationsTeaserHolder;
+    static RecommendationsHolder recommendationsTeaserHolder;
     static LinearLayout RecommendationResult;
     private static boolean recommendationsTeaserHolderAdded = false;
 
@@ -98,12 +98,12 @@ public class FeaturedBoxHelper {
                 LayoutInflater inflater = LayoutInflater.from(fragment.getBaseActivity());
 
                 if (recommendationsTeaserHolder == null ) {
-                    recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, RecommendationResult, false), null);
+                    recommendationsTeaserHolder = new RecommendationsHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.recommendation, RecommendationResult, false), null);
                 }
                 if (recommendationsTeaserHolder != null ) {
 
                     RecommendationResult.removeView(recommendationsTeaserHolder.itemView);
-                    recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, RecommendationResult, false), null);
+                    recommendationsTeaserHolder = new RecommendationsHolder(fragment.getBaseActivity(), inflater.inflate(R.layout.recommendation, RecommendationResult, false), null);
 
                     recommendationsTeaserHolder.onBind(data);
                     // Add to container

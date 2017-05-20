@@ -10,8 +10,11 @@ import android.support.annotation.NonNull;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.EventFactory;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.home.TeaserCampaign;
 import com.mobile.service.rest.RestUrlUtils;
 import com.mobile.service.utils.CollectionUtils;
@@ -23,11 +26,14 @@ import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.catalog.UICatalogUtils;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.view.BaseActivity;
-import com.mobile.view.fragments.CampaignsFragment;
+import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
+import com.mobile.view.fragments.CampaignsFragment;
+import com.pushwoosh.PushManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Class used to manage the deep link process
@@ -654,6 +660,7 @@ public class DeepLinkManager {
         if(bundle == null) {
             bundle = hasDeepLinkFromGCM(intent);
         }
+        hasDeeplinkUTM(intent);
         return bundle;
     }
 
@@ -740,6 +747,13 @@ public class DeepLinkManager {
             }
         }
         return bundle;
+    }
+
+    private static void hasDeeplinkUTM(Intent intent) {
+        Uri uri = intent.getData();
+        if (uri == null) return;
+
+        TrackerDelegator.trackGACampaign(BamiloApplication.INSTANCE.getApplicationContext(), uri.toString());
     }
 
     // ####################### DEEP LINK #######################

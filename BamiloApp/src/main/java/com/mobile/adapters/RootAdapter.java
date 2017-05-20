@@ -9,7 +9,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.mobile.newFramework.objects.category.Category;
+import com.mobile.service.objects.category.Category;
 
 import java.util.ArrayList;
 

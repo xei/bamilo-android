@@ -1,11 +1,15 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
@@ -17,9 +21,12 @@ import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.EventFactory;
+import com.mobile.helpers.cart.CartHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.libraries.emarsys.predict.recommended.Item;
+import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.cart.PurchaseCartItem;
@@ -37,7 +44,12 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.home.holder.HomeRecommendationsGridTeaserHolder;
+import com.mobile.utils.home.holder.RecommendationsCartHolder;
+import com.mobile.utils.home.holder.RecommendationsHolder;
 import com.mobile.utils.home.holder.RichRelevanceAdapter;
+import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
@@ -47,6 +59,7 @@ import com.pushwoosh.SendPushTagsCallBack;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,6 +88,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     private static final int ITEMS_MARGIN = 6;
     RecommendManager recommendManager;
+    RecommendationsCartHolder recommendationsHolder;
+    private String itemsId="";
 
     /**
      * Empty constructor
@@ -173,20 +188,22 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         String categories = "";
         for(PurchaseCartItem cat : carts) {
             categories += cat.getCategories();
+            itemsId += cat.getSku()+",";
         }
         TrackerManager.postEvent(getBaseActivity(), EventConstants.Purchase, EventFactory.purchase(categories, (long)cart.getTotal(), true));
 
         //sendRecommend();
 
         // Related Products
-        mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
+        mRelatedProductsView = (ViewGroup) view.findViewById(R.id.pdv_related_container);
         ImageView imageSuccess = (ImageView) view.findViewById(R.id.success_image);
         /**
          * Mirror image to avoid having extra assets for each resolution for RTL.
          */
         UIUtils.mirrorViewForRTL(imageSuccess);
         // Show
-        setRelatedItems();
+        //setRelatedItems();
+        sendRecommend(cart);
         // Clean cart
         triggerClearCart();
 
@@ -226,7 +243,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      * Hide related items.
      */
     private void hideRelatedItems() {
-        UIUtils.setVisibility(mRelatedProductsView, false);
+
+        //UIUtils.setVisibility(mRelatedProductsView, false);
     }
 
     /**
@@ -398,7 +416,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         switch (eventType){
             case GET_RICH_RELEVANCE_EVENT:
                 mRichRelevance = (RichRelevance) baseResponse.getContentData();
-                setRelatedItems();
+                sendRecommend(BamiloApplication.INSTANCE.getCart());
+                //setRelatedItems();
                 showFragmentContentContainer();
                 break;
             default:
@@ -427,6 +446,51 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             default:
                 break;
         }
+
+    }
+
+    private void sendRecommend(PurchaseEntity cart) {
+
+        RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
+            @Override
+            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+
+                if (recommendationsHolder == null ) {
+                    recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);
+                }
+                if (recommendationsHolder != null ) {
+                    try {
+
+
+                        // Set view
+                        mRelatedProductsView.removeView(recommendationsHolder.itemView);
+                        recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);
+
+                        recommendationsHolder.onBind(data);
+                        // Add to container
+
+                        mRelatedProductsView.addView(recommendationsHolder.itemView, mRelatedProductsView.getChildCount()-1);
+                    }
+                    catch (Exception ex) {
+
+                    }
+
+
+                }
+            }
+
+
+        };
+
+        if (cart == null) return;
+
+        if (cart.getCartCount() == 1) {
+            recommendManager.sendAlsoBoughtRecommend(null, cart.getCartItems().get(0).getSku(), handler);
+        } else {
+            recommendManager.sendPersonalRecommend(handler);
+        }
+
 
     }
 

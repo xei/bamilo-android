@@ -4,7 +4,7 @@
 //import android.os.Parcelable;
 //
 //import com.mobile.framework.interfaces.IJSONSerializable;
-//import com.mobile.newFramework.pojo.JsonConstants;
+//import com.mobile.service.pojo.JsonConstants;
 //
 //import org.json.JSONException;
 //import org.json.JSONObject;

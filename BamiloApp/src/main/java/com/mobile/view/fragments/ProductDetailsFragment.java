@@ -1374,8 +1374,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mCheck.setEnabled(true);
             }
         });
+
         //RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
         ImageManager.getInstance().loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());
         TextView mTitle = (TextView) view.findViewById(R.id.item_title);
@@ -1451,7 +1453,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
                 if (recommendationsGridTeaserHolder == null ) {
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
+                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
                 }
                 if (recommendationsGridTeaserHolder != null ) {
                     try {
@@ -1459,7 +1461,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
                     // Set view
                     mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
+                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
 
                     recommendationsGridTeaserHolder.onBind(data);
                     // Add to container

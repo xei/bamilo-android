@@ -166,9 +166,9 @@
 -keep interface com.mobile.utils.photoview.PhotoViewAttacher$** { *; }
 #### com.mobile.view
 -keep public enum com.mobile.view.fragments.BaseFragment$KeyboardState { public *; }
-#### com.mobile.newFramework.rest
--keep class com.mobile.newFramework.rest.** { *; }
--keep interface com.mobile.newFramework.rest.** { *; }
+#### com.mobile.service.rest
+-keep class com.mobile.service.rest.** { *; }
+-keep interface com.mobile.service.rest.** { *; }
 #################################################################################
 
 ## JAVASCRIPTINTERFACE ##########################################################

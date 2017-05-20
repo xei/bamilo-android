@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.libraries.emarsys.RecommendedAdapter;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.service.Darwin;
@@ -43,7 +41,7 @@ import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeMainTeaserHolder;
 import com.mobile.utils.home.holder.HomeNewsletterTeaserHolder;
-import com.mobile.utils.home.holder.HomeRecommendationsTeaserHolder;
+import com.mobile.utils.home.holder.RecommendationsHolder;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -64,7 +62,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     private HomePageObject mHomePage;
 
     private NestedScrollView mScrollView;
-    HomeRecommendationsTeaserHolder recommendationsTeaserHolder;
+    RecommendationsHolder recommendationsTeaserHolder;
     private boolean recommendationsTeaserHolderAdded = false;
 
     private ArrayList<BaseTeaserViewHolder> mViewHolders;
@@ -81,9 +79,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     //DROID-10
     private long mGABeginRequestMillis;
-    private RecommendedAdapter recommendedListAdapter;
     private RecommendManager recommendManager;
-    private RecyclerView recommendedListView;
     /**
      * Empty constructor
      */
@@ -627,13 +623,13 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
                 if (recommendationsTeaserHolder == null ) {
-                    recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, mContainer, false), null);
+                    recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation, mContainer, false), null);
                 }
                 if (recommendationsTeaserHolder != null ) {
                     try {
                     // Set view
                         mContainer.removeView(recommendationsTeaserHolder.itemView);
-                        recommendationsTeaserHolder = new HomeRecommendationsTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation, mContainer, false), null);
+                        recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation, mContainer, false), null);
 
                         recommendationsTeaserHolder.onBind(data);
                     // Add to container

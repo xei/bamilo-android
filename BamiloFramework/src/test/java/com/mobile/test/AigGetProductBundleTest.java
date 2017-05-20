@@ -10,7 +10,7 @@ import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 import java.util.HashMap;
 import java.util.Map;
 
-//import com.mobile.newFramework.requests.product.GetProductBundle;
+//import com.mobile.service.requests.product.GetProductBundle;
 
 public class AigGetProductBundleTest extends AigTestCase {
 

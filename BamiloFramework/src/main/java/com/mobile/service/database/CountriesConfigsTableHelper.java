@@ -36,7 +36,7 @@ public class CountriesConfigsTableHelper extends BaseTable {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see com.mobile.newFramework.database.BaseTable#getName()
+	 * @see com.mobile.service.database.BaseTable#getName()
 	 */
     @Override
     public String getName() {
@@ -45,7 +45,7 @@ public class CountriesConfigsTableHelper extends BaseTable {
 	
     /*
      * (non-Javadoc)
-     * @see com.mobile.newFramework.database.BaseTable#getUpgradeType()
+     * @see com.mobile.service.database.BaseTable#getUpgradeType()
      */
     @Override
 	@DarwinDatabaseHelper.UpgradeType
@@ -55,7 +55,7 @@ public class CountriesConfigsTableHelper extends BaseTable {
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.newFramework.database.BaseTable#create(java.lang.String)
+     * @see com.mobile.service.database.BaseTable#create(java.lang.String)
      */
     @Override
     public String create() {

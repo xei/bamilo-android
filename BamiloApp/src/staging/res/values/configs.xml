@@ -2,4 +2,7 @@
 <resources>
     <string name="PW_APPID">A9EF7-6FDD2</string>
     <string name="PW_PROJECT_ID">A98759480567</string>
+
+    <!--Google Analytic-->
+    <string name="ga_trackingId">UA-52004541-5</string>
 </resources>

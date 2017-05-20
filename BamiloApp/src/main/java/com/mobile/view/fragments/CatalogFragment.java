@@ -7,15 +7,17 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
@@ -55,6 +57,7 @@ import com.mobile.utils.catalog.FeaturedBoxHelper;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.catalog.UICatalogUtils;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.dialogfragments.CatalogPageToastView;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
 import com.mobile.utils.ui.ErrorLayoutFactory;
@@ -86,6 +89,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private HeaderFooterGridView mGridView;
 
     private TextView mSortButton;
+    private TextView mSortDescription;
+    private ImageView mSortIcon;
 
     private View mFilterButton;
 
@@ -129,6 +134,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private long mGABeginRequestMillis;
 
     private boolean showNoResult;
+    private boolean sortChanged = false;
 
     /**
      * Empty constructor
@@ -212,8 +218,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mNumberOfColumns = getResources().getInteger(dimen);
         // Get sort button
         mSortButton = (TextView) view.findViewById(R.id.catalog_bar_button_sort);
+        mSortDescription = (TextView) view.findViewById(R.id.catalog_bar_description_sort);
+        mSortIcon = (ImageView) view.findViewById(R.id.catalog_bar_sort);
         // Get filter button
-        mFilterButton = view.findViewById(R.id.catalog_bar_button_filter);
+        mFilterButton = view.findViewById(R.id.catalog_filter_button);
         // Get switch button
         ImageView mColumnsButton = (ImageView) view.findViewById(R.id.catalog_bar_button_columns);
         mColumnsButton.setOnClickListener(this);
@@ -230,8 +238,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mGridView.setGridLayoutManager(mNumberOfColumns);
         mGridView.setItemAnimator(new DefaultItemAnimator());
         mGridView.addOnScrollListener(mOnScrollListener);
-        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
-        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
+        //mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        //mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
         mGridView.post(new Runnable() {
             @Override
             public void run() {
@@ -373,7 +381,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         else if (mSortOrFilterApplied) {
             triggerGetInitialCatalogPage();
             // Set the filter button selected or not
-            UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
+            TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
+
+            UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues, filterDesc, mCatalogPage);
+
         }
         // Case catalog was recover
         else {
@@ -396,7 +407,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Set filter button
         UICatalogUtils.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
         // Set the filter button selected or not
-        UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
+        TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
+        UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues, filterDesc, mCatalogPage);
         // Create adapter new data
         setCatalogAdapter(catalogPage);
         // Validate loading more view 
@@ -411,6 +423,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         showHeaderBanner();
         // Show container
         showFragmentContentContainer();
+        setFilterDescription(catalogPage);
 
     }
 
@@ -470,6 +483,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Show container
         showFragmentContentContainer();
+        if (mCurrentFilterValues.size()==0) setFilterDescription(catalogPage);
     }
 
     /**
@@ -486,8 +500,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Set the sort button with the current sort selection.
      */
     private void setSortButton() {
-        mSortButton.setText(getString(mSelectedSort.name));
+        mSortDescription.setText(getString(mSelectedSort.name));
+        mSortDescription.setOnClickListener(this);
         mSortButton.setOnClickListener(this);
+        mSortDescription.setSelected(sortChanged);
+        mSortButton.setSelected(sortChanged);
+        mSortIcon.setSelected(sortChanged);
     }
 
     /**
@@ -661,11 +679,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get id
         int id = view.getId();
         // Case sort button
-        if (id == R.id.catalog_bar_button_sort) {
+        if (id == R.id.catalog_bar_button_sort || id == R.id.catalog_bar_sort || id == R.id.catalog_sort_button
+                || id == R.id.catalog_bar_description_sort) {
             onClickSortButton();
         }
         // Case filter button
-        else if (id == R.id.catalog_bar_button_filter) {
+        else if (id == R.id.catalog_bar_button_filter || id == R.id.catalog_bar_filter || id == R.id.catalog_filter_button
+                || id == R.id.catalog_bar_description_filter) {
             onClickFilterButton();
         }
         // Case columns button
@@ -805,6 +825,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get selected sort position
         mSelectedSort = CatalogSort.values()[position];
         // Set sort button
+        sortChanged = true;
         setSortButton();
         // Flag to reload or not an initial catalog in case generic error
         mSortOrFilterApplied = true;
@@ -852,17 +873,17 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
          * (non-Javadoc)
          * @see android.support.v7.widget.RecyclerView.OnScrollListener#onScrollStateChanged(android.support.v7.widget.RecyclerView, int)
          */
-        @Override
+        /*@Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             Print.i(TAG, "ON SCROLL STATE CHANGED: " + newState);
             if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                //RocketImageLoader.getInstance().stopProcessingQueue();
+                RocketImageLoader.getInstance().stopProcessingQueue();
             } else {
-                //RocketImageLoader.getInstance().startProcessingQueue();
+                RocketImageLoader.getInstance().startProcessingQueue();
                 setVisibilityTopButton(recyclerView);
             }
-        }
+        }*/
     };
 
     protected void setVisibilityTopButton(RecyclerView recyclerView) {
@@ -995,6 +1016,20 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (catalogPage.getPage() == 1) {
                 TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
                 TrackerManager.postEvent(getBaseActivity(), EventConstants.Search, EventFactory.search(mMainCategory, SearchHelper.getSearchTermsCommaSeparated(catalogPage.getSearchTerm())));
+
+                int actionBarHeight = 180;
+                TypedValue tv = new TypedValue();
+                if (getBaseActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+                {
+                    actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+                }
+                actionBarHeight *= 2;
+                int dp = (int) (getResources().getDimension(R.dimen.dimen_10dp) / getResources().getDisplayMetrics().density);
+
+                actionBarHeight += dp;//TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, R.dimen.dimen_10dp, getResources().getDisplayMetrics());
+                Toast toast = CatalogPageToastView.makeText(getBaseActivity(), "تعداد محصول: " + catalogPage.getTotal(), Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.TOP, 0, actionBarHeight);
+                toast.show();
             }
         }
         // Case invalid success response
@@ -1002,6 +1037,20 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.w(TAG, "WARNING: RECEIVED INVALID CATALOG PAGE");
             showContinueShopping();
         }
+        if (mCurrentFilterValues.size()==0) setFilterDescription(catalogPage);
+
+    }
+
+    private void setFilterDescription(CatalogPage catalogPage) {
+        TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
+        String filterNames = "";
+
+        if (catalogPage.hasFilters()) {
+            filterNames = catalogPage.getFilters().get(0).getName();
+            if (catalogPage.getFilters().size()>1) filterNames = filterNames + ", " + catalogPage.getFilters().get(1).getName();
+            if (catalogPage.getFilters().size()>2) filterNames = filterNames + ", ...";
+        }
+        filterDesc.setText(filterNames);
     }
 
     /*

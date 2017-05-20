@@ -71,15 +71,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         holder.name.setText(method_name);
         holder.text.setText(method.getText());
 
-        /*String imageUrl = method.getImageUrl();
-        Print.d("IMAGEURL", imageUrl);
-        if (TextUtils.isNotEmpty(imageUrl)) {
-            RocketImageLoader.instance.loadImage(imageUrl, holder.method_logo, null, 0);
-        } else {
-            holder.method_logo.setVisibility(View.GONE);
-        }
-*/
-
         if (method_name.contains("پارسیان"))
         {
             holder.payment_logo.setVisibility(View.VISIBLE);
