@@ -103,8 +103,8 @@ public class RecommendationsAdapter extends RecyclerView.Adapter<Recommendations
         double price = (double) item.getData().get("price");
         double special = (double) item.getData().get("msrp");
         if (price != special) {
-            holder.mPrice.setText(CurrencyFormatter.formatCurrency(special));
-            holder.mOldPrice.setText(CurrencyFormatter.formatCurrency(price));
+            holder.mPrice.setText(CurrencyFormatter.formatCurrency(price));
+            holder.mOldPrice.setText(CurrencyFormatter.formatCurrency(special));
             holder.mOldPrice.setPaintFlags(holder.mOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.mOldPrice.setVisibility(View.VISIBLE);
         } else {
@@ -115,9 +115,9 @@ public class RecommendationsAdapter extends RecyclerView.Adapter<Recommendations
             holder.mOldPrice.setVisibility(View.GONE);
             holder.mBrand.setVisibility(View.GONE);
             if (price != special) {
-                holder.mPrice.setText(CurrencyFormatter.formatCurrency(special));
-            } else {
                 holder.mPrice.setText(CurrencyFormatter.formatCurrency(price));
+            } else {
+                holder.mPrice.setText(CurrencyFormatter.formatCurrency(special));
             }
         }
         holder.mName.setTag(R.id.sku, sku);
