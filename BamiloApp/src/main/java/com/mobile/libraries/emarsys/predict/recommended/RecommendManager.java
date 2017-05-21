@@ -107,7 +107,7 @@ public class RecommendManager {
     }
 
     public void sendPopularRecommend(final RecommendListCompletionHandler callBack) {
-        sendRecommend(null, "PERSONAL", null, null, null, null, callBack);
+        sendRecommend(null, "POPULAR", null, null, null, null, callBack);
     }
 
     public void sendNoResultRecommend(String searchTerm,

@@ -8,10 +8,10 @@
     android:layout_height="287dp"
     android:background="@drawable/selector_grid_item_highlight"
     card_view:cardCornerRadius="0dp"
-    android:layout_marginTop="3dp"
-    android:layout_marginBottom="3dp"
-    android:layout_marginRight="6dp"
-    android:layout_marginLeft="6dp">
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginLeft="4dp">
 
     <RelativeLayout
         style="@style/grid_row_style">
@@ -102,7 +102,6 @@
                 android:layout_marginBottom="4dp"
                 android:layout_toRightOf="@id/item_rating"
                 android:layout_toEndOf="@id/item_rating"
-                android:layout_alignTop="@+id/item_rating"
                 android:layout_alignBottom="@+id/item_rating"
                 tools:text="(12)"
                 android:textColor="@color/black_800" />

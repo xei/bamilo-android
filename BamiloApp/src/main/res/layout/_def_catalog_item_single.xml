@@ -132,6 +132,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="@dimen/dimen_6dp"
+            android:layout_marginBottom="@dimen/dimen_4dp"
             android:gravity="start|left|center_vertical"
             android:orientation="horizontal" >
 
@@ -154,13 +155,9 @@
                 android:layout_marginRight="4dp"
                 android:layout_toLeftOf="@id/item_rating"
                 android:layout_toStartOf="@id/item_rating"
-                android:layout_alignTop="@+id/item_rating"
-                android:layout_alignBottom="@+id/item_rating"
-                android:paddingTop="-2dp"
-                android:gravity="top"
                 tools:text="(12)"
                 android:textColor="@color/black_800"
-                />
+                android:layout_alignBottom="@+id/item_rating" />
 
 
         </RelativeLayout>
