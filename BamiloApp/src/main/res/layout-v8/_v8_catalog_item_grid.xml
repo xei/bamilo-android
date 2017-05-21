@@ -83,18 +83,18 @@
                 android:progressDrawable="@drawable/custom_rating_bar"
                 android:stepSize="0.1"
                 tools:rating="3.5"
-                />
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textSize="11sp"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="@dimen/margin_padding_xs"
                 android:layout_marginRight="@dimen/margin_padding_xs"
                 android:layout_marginBottom="4dp"
                 android:layout_toLeftOf="@id/item_rating"
-                android:layout_alignTop="@+id/item_rating"
                 android:layout_alignBottom="@+id/item_rating"
                 tools:text="(12)"
                 android:textColor="@color/black_800" />

@@ -130,17 +130,18 @@
                 android:layout_height="12dp"
                 android:layout_alignParentLeft="true"
                 android:stepSize="0.1"
-                tools:rating="3.5" />
+                tools:rating="3.5"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textSize="11sp"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_toRightOf="@id/item_rating"
-                android:layout_alignTop="@+id/item_rating"
                 android:layout_alignBottom="@+id/item_rating"
                 android:paddingTop="-2dp"
                 android:gravity="top"
