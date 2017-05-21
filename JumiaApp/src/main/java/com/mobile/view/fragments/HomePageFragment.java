@@ -623,6 +623,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
+                if (data == null || data.size() == 0) {
+                    //mRelatedProductsView.removeView(recommendationsHolder.itemView);
+                    // recommendations.setVisibility(View.GONE);
+                    return;
+                }
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
                 if (recommendationsTeaserHolder == null ) {

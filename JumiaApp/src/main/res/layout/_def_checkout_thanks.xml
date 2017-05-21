@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_20dp"
+            android:visibility="gone"
             android:src="@drawable/ic_success_checkout" />
 
 
@@ -27,6 +28,8 @@
             android:paddingBottom="@dimen/dimen_16dp"
             android:singleLine="false"
             android:text="@string/thank_you_order_title"
+            android:drawableLeft="@drawable/ic_success_checkout"
+            android:drawableStart="@drawable/ic_success_checkout"
             android:textColor="@color/green_1" />
 
         <com.mobile.components.customfontviews.TextView

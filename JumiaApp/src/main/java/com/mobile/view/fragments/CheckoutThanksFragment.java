@@ -454,7 +454,14 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+
+                if (data == null || data.size() == 0) {
+                    //mRelatedProductsView.removeView(recommendationsHolder.itemView);
+                   // recommendations.setVisibility(View.GONE);
+                    return;
+                }
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+
 
                 if (recommendationsHolder == null ) {
                     recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);
