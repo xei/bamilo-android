@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.BamiloApplication;
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
@@ -29,17 +29,17 @@ import com.mobile.libraries.emarsys.predict.recommended.Item;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.managers.TrackerManager;
-import com.mobile.service.objects.cart.PurchaseCartItem;
-import com.mobile.service.objects.cart.PurchaseEntity;
-import com.mobile.service.objects.product.RichRelevance;
-import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.pojo.RestConstants;
-import com.mobile.service.tracking.TrackingPage;
-import com.mobile.service.utils.CollectionUtils;
-import com.mobile.service.utils.EventType;
-import com.mobile.service.utils.TextUtils;
-import com.mobile.service.utils.output.Print;
-import com.mobile.service.utils.shop.ShopSelector;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.product.RichRelevance;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -182,7 +182,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     private void prepareLayout(View view) {
         // Track purchase
-        PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+        PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
         TrackerDelegator.trackPurchaseInCheckoutThanks(cart, mOrderNumber, mGrandTotalValue, mOrderShipping, mOrderTax, mPaymentMethod);
         ArrayList<PurchaseCartItem> carts=  cart.getCartItems();
         String categories = "";
@@ -208,7 +208,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         triggerClearCart();
 
         recommendManager.sendPurchaseRecommend();
-        BamiloApplication.INSTANCE.setCart(null);
+        JumiaApplication.INSTANCE.setCart(null);
 
         // Update cart info
         getBaseActivity().updateCartInfo();
@@ -311,7 +311,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     @Override
     public void onAppendData(FragmentType next, String title, String id, Bundle data) {
-        if(com.mobile.service.utils.TextUtils.isNotEmpty(mRelatedRichRelevanceHash))
+        if(com.mobile.newFramework.utils.TextUtils.isNotEmpty(mRelatedRichRelevanceHash))
             data.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRelatedRichRelevanceHash );
     }
 
@@ -379,7 +379,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private void onClickContinue(){
         // Get user id
         String userId = "";
-        if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) userId = BamiloApplication.CUSTOMER.getIdAsString();
+        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) userId = JumiaApplication.CUSTOMER.getIdAsString();
         // Tracking
         TrackerDelegator.trackCheckoutContinueShopping(userId);
         // Goto home
@@ -416,7 +416,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         switch (eventType){
             case GET_RICH_RELEVANCE_EVENT:
                 mRichRelevance = (RichRelevance) baseResponse.getContentData();
-                sendRecommend(BamiloApplication.INSTANCE.getCart());
+                sendRecommend(JumiaApplication.INSTANCE.getCart());
                 //setRelatedItems();
                 showFragmentContentContainer();
                 break;
@@ -454,7 +454,14 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+
+                if (data == null || data.size() == 0) {
+                    //mRelatedProductsView.removeView(recommendationsHolder.itemView);
+                   // recommendations.setVisibility(View.GONE);
+                    return;
+                }
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+
 
                 if (recommendationsHolder == null ) {
                     recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);

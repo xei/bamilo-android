@@ -127,7 +127,7 @@
     <string name="or_text">یا</string>
     <string name="order_no_items">شما هیچ کالایی در سبد خرید ندارید. \r\n</string>
     <string name="order_status_label">وضعیت سفارش</string>
-    <string name="order_success">سفارش شما با موفقیت ثبت شد.\nمیتوانید وضعیت سفارش خود را در جزئیات سفارش مشاهده کنید.</string>
+    <string name="order_success">سفارش شما با موفقیت ثبت شد.</string>
     <string name="order_summary_label">خلاصه سفارش</string>
     <string name="order_summary_shipping_fee_label">هزینه ارسال:</string>
     <string name="order_summary_shipping_method">روش ارسال:</string>

@@ -27,24 +27,70 @@
 
     <!-- SORT -->
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/catalog_sort_button"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight=".4"
-        android:addStatesFromChildren="true">
+        android:addStatesFromChildren="true"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/catalog_bar_button_sort"
-            style="@style/TextBase.List.Black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/selector_catalog_sort"
-            android:drawablePadding="@dimen/margin_padding_xs"
+
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="0.8"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/products_sort_popularity" />
+            >
 
-    </FrameLayout>
+            <View
+                android:id="@+id/sort_center"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/catalog_bar_button_sort"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="start|left|center_vertical"
+                android:layout_above="@+id/sort_center"
+                android:textSize="12sp"
+                android:textColor="@drawable/selector_catalog_filter_color"
+                android:text="@string/sort_label" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/catalog_bar_description_sort"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="start|left|center_vertical"
+                android:layout_below="@+id/sort_center"
+                android:textSize="9sp"
+                android:textColor="@drawable/selector_catalog_filter_description_color"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="0.2"
+            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+            <ImageView
+                android:id="@+id/catalog_bar_sort"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_catalog_sort"/>
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <!-- DIVIDER -->
 
@@ -52,23 +98,69 @@
 
     <!-- FILTER -->
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/catalog_filter_button"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight=".4"
-        android:addStatesFromChildren="true">
+        android:addStatesFromChildren="true"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/catalog_bar_button_filter"
-            style="@style/TextBase.List.Black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/selector_catalog_filter"
-            android:drawablePadding="@dimen/margin_padding_xs"
+
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="0.8"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/filters_label" />
+            >
 
-    </FrameLayout>
+            <View
+                android:id="@+id/center"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/catalog_bar_button_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="start|left|center_vertical"
+                android:layout_above="@+id/center"
+                android:textSize="12sp"
+                android:textColor="@drawable/selector_catalog_filter_color"
+                android:text="@string/filters_label" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/catalog_bar_description_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="start|left|center_vertical"
+                android:layout_below="@+id/center"
+                android:textSize="9sp"
+                android:textColor="@drawable/selector_catalog_filter_description_color"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="0.2"
+            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+            <ImageView
+                android:id="@+id/catalog_bar_filter"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_catalog_filter"/>
+        </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

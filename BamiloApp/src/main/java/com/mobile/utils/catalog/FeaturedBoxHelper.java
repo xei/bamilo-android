@@ -8,19 +8,19 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.BamiloApplication;
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FeaturedItemsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
-import com.mobile.service.objects.catalog.FeaturedBox;
-import com.mobile.service.objects.catalog.FeaturedItem;
-import com.mobile.service.objects.home.type.TeaserGroupType;
-import com.mobile.service.utils.CollectionUtils;
-import com.mobile.service.utils.DeviceInfoHelper;
-import com.mobile.service.utils.output.Print;
+import com.mobile.newFramework.objects.catalog.FeaturedBox;
+import com.mobile.newFramework.objects.catalog.FeaturedItem;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.holder.RecommendationsHolder;
 import com.mobile.utils.search.SearchModel;
@@ -92,9 +92,15 @@ public class FeaturedBoxHelper {
 
 
         RecommendManager recommendManager = new RecommendManager();
-        recommendManager.sendNoResultRecommend(BamiloApplication.INSTANCE.getSearchedTerm(), new RecommendListCompletionHandler() {
+        recommendManager.sendNoResultRecommend(JumiaApplication.INSTANCE.getSearchedTerm(), new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
+                if (data == null || data.size() == 0) {
+                    //mRelatedProductsView.removeView(recommendationsHolder.itemView);
+                    // recommendations.setVisibility(View.GONE);
+                    return;
+                }
+
                 LayoutInflater inflater = LayoutInflater.from(fragment.getBaseActivity());
 
                 if (recommendationsTeaserHolder == null ) {
@@ -122,7 +128,7 @@ public class FeaturedBoxHelper {
     private static void onClickBackToHome(){
         // Get user id
         String userId = "";
-        if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) userId = BamiloApplication.CUSTOMER.getIdAsString();
+        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) userId = JumiaApplication.CUSTOMER.getIdAsString();
         // Goto home
         baseFragment.getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }

@@ -11,28 +11,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.BamiloApplication;
+import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
-import com.mobile.service.Darwin;
-import com.mobile.service.database.CategoriesTableHelper;
-import com.mobile.service.objects.home.HomePageObject;
-import com.mobile.service.objects.home.TeaserCampaign;
-import com.mobile.service.objects.home.group.BaseTeaserGroupType;
-import com.mobile.service.objects.home.type.TeaserGroupType;
-import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.pojo.IntConstants;
-import com.mobile.service.tracking.AdjustTracker;
-import com.mobile.service.tracking.TrackingPage;
-import com.mobile.service.utils.CollectionUtils;
-import com.mobile.service.utils.Constants;
-import com.mobile.service.utils.EventType;
-import com.mobile.service.utils.TextUtils;
-import com.mobile.service.utils.output.Print;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.database.CategoriesTableHelper;
+import com.mobile.newFramework.objects.home.HomePageObject;
+import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.tracking.AdjustTracker;
+import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -114,6 +115,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+        // Register Hockey
+        HockeyStartup.register(getBaseActivity());
         // Get saved scroll position
         if (savedInstanceState != null) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
@@ -282,9 +285,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Validate the current data
      */
     private void validateDataState() {
-        /*if (BamiloApplication.CUSTOMER != null) {
+        /*if (JumiaApplication.CUSTOMER != null) {
             RecommendManager recommendManager = new RecommendManager();
-            recommendManager.setEmail(BamiloApplication.CUSTOMER.getEmail(), "" + BamiloApplication.CUSTOMER.getId());
+            recommendManager.setEmail(JumiaApplication.CUSTOMER.getEmail(), "" + JumiaApplication.CUSTOMER.getId());
         }*/
         if(CollectionUtils.isNotEmpty(mViewHolders)) {
             rebuildHomePage(mViewHolders);
@@ -599,11 +602,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         try {
             if (isAdded()) {
                 Bundle bundle = new Bundle();
-                bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
+                bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
                 bundle.putLong(AdjustTracker.BEGIN_TIME, mLoadTime);
                 bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-                if (BamiloApplication.CUSTOMER != null) {
-                    bundle.putParcelable(AdjustTracker.CUSTOMER, BamiloApplication.CUSTOMER);
+                if (JumiaApplication.CUSTOMER != null) {
+                    bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
                 }
                 TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
             }
@@ -620,6 +623,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
+                if (data == null || data.size() == 0) {
+                    //mRelatedProductsView.removeView(recommendationsHolder.itemView);
+                    // recommendations.setVisibility(View.GONE);
+                    return;
+                }
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
                 if (recommendationsTeaserHolder == null ) {
