@@ -86,7 +86,7 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
         holder.mBrand.setText(item.getBrandName());
         // Set image
         //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_small);
-        ImageManager.getInstance().loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large, false);
         // Set prices
         // Set price
         double price = item.hasDiscount() ? item.getSpecialPrice() : item.getPrice();

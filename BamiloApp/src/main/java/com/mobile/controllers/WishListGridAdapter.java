@@ -108,7 +108,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
         // Set image
         //RocketImageLoader.instance.loadImage(addableToCart.getImageUrl(), prodItem.image, null, R.drawable.no_image_small);
-        ImageManager.getInstance().loadImage(addableToCart.getImageUrl(), prodItem.image, null, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(addableToCart.getImageUrl(), prodItem.image, null, R.drawable.no_image_large, false);
     }
 
     /**

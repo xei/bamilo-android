@@ -116,7 +116,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     private void setImageToLoad(String imageUrl, View imageTeaserView) {
         final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
         final ImageView imageView = (this.isZoomAvailable) ? (PhotoView) imageTeaserView.findViewById(R.id.image_view) : (ImageView) imageTeaserView.findViewById(R.id.image_view);
-        ImageManager.getInstance().loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large, false);
     }
 
     /*

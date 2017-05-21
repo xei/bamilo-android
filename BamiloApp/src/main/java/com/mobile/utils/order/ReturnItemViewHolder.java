@@ -71,7 +71,7 @@ public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickL
         ImageView image = (ImageView) mItemView.findViewById(R.id.image_view);
         View progress = mItemView.findViewById(R.id.image_loading_progress);
         //RocketImageLoader.instance.loadImage(mItem.getImageUrl(), image, progress, R.drawable.no_image_large);
-        ImageManager.getInstance().loadImage(mItem.getImageUrl(), image, progress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(mItem.getImageUrl(), image, progress, R.drawable.no_image_large, false);
         // Brand
         ((TextView) mItemView.findViewById(R.id.order_return_item_text_brand)).setText(mItem.getBrandName());
         // Name

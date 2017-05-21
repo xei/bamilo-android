@@ -84,7 +84,7 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
         // Set is new image
         // Set image
         //RocketImageLoader.instance.loadImage(item.getImage(), holder.image, holder.progress, R.drawable.no_image_small);
-        ImageManager.getInstance().loadImage(item.getImage(), holder.image, holder.progress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(item.getImage(), holder.image, holder.progress, R.drawable.no_image_large, false);
         // Set prices
         setProductPrice(holder, item);
         // Set the parent layout

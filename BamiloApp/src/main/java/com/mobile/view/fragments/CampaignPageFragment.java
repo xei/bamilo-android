@@ -650,7 +650,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             setClickableView(view.mImageContainer, position);
             // Set image
             //RocketImageLoader.instance.loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
-            ImageManager.getInstance().loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
+            ImageManager.getInstance().loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large, false);
             // Set size
             setSizeContainer(view, item);
             // Set price and special price

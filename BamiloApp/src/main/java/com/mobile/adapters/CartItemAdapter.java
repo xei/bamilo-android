@@ -191,7 +191,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             String imageUrl = item.getImageUrl().replace("-cart.jpg","-catalog_grid_3.jpg");
             if (TextUtils.isNotEmpty(imageUrl)) {
                 //RocketImageLoader.instance.loadImage(imageUrl, vh.cart_item_image, null, R.drawable.no_image_tiny);
-                ImageManager.getInstance().loadImage(imageUrl, vh.cart_item_image, null, R.drawable.no_image_large);
+                ImageManager.getInstance().loadImage(imageUrl, vh.cart_item_image, null, R.drawable.no_image_large, false);
             } else {
                 vh.cart_item_image.setVisibility(View.GONE);
             }

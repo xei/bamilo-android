@@ -554,7 +554,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
             if (TextUtils.isNotEmpty(brand.getImageUrl())) {
                 //RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_tiny);
-                ImageManager.getInstance().loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_large);
+                ImageManager.getInstance().loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_large, false);
             } else {
                 brandImage.setVisibility(View.GONE);
             }
@@ -1376,7 +1376,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         });
 
         //RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
-        ImageManager.getInstance().loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large, false);
 
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());

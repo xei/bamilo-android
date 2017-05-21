@@ -41,7 +41,7 @@ public class CardCheckOutAdapter extends RecyclerView.Adapter<CardCheckOutAdapte
         holder.count.setText("تعداد : "+carditem.getCount());
         holder.product.setText(carditem.getProduct());
         //RocketImageLoader.instance.loadImage(carditem.getImageUrl().replace("-cart.jpg","-catalog_grid_3.jpg"), holder.img, null, R.drawable.no_image_small);
-        ImageManager.getInstance().loadImage(carditem.getImageUrl().replace("-cart.jpg","-catalog_grid_3.jpg"), holder.img, null, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(carditem.getImageUrl().replace("-cart.jpg","-catalog_grid_3.jpg"), holder.img, null, R.drawable.no_image_large, false);
     }
 
     @Override

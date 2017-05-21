@@ -274,7 +274,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                 ((TextView)view.findViewById(R.id.order_item_quantity)).setText("تعداد: " + item.getQuantity());
                 ((TextView)view.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(item.getPrice()));
                 //RocketImageLoader.instance.loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image), null, R.drawable.no_image_small);
-                ImageManager.getInstance().loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image), null, R.drawable.no_image_large);
+                ImageManager.getInstance().loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image), null, R.drawable.no_image_large, false);
                 // Add to parent
                 group.addView(view);
             }

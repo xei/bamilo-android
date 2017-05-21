@@ -326,7 +326,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             UIProductUtils.showShopFirstOverlayMessage(this, item, shopFirstImageView);
             // Image
             //RocketImageLoader.instance.loadImage(item.getImageUrl(), mImageView, pBar, R.drawable.no_image_small);
-            ImageManager.getInstance().loadImage(item.getImageUrl(), mImageView, pBar, R.drawable.no_image_large);
+            ImageManager.getInstance().loadImage(item.getImageUrl(), mImageView, pBar, R.drawable.no_image_large, false);
             // Price
             double price = item.hasDiscount() ? item.getSpecialPrice() : item.getPrice();
             String text = getString(R.string.first_x_second_placeholder, item.getQuantity(), CurrencyFormatter.formatCurrency(price));

@@ -378,7 +378,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Image
             ImageView imageView = (ImageView) prodInflateView.findViewById(R.id.image_view);
             //RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_small);
-            ImageManager.getInstance().loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_large);
+            ImageManager.getInstance().loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_large, false);
             //shop first image
             ImageView shopFirstImageView = (ImageView) prodInflateView.findViewById(R.id.shop_first_item);
             UIProductUtils.setShopFirst(item, shopFirstImageView);

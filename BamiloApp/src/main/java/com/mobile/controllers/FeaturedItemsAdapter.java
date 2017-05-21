@@ -196,7 +196,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
                 }
             }
             //RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large);
-            ImageManager.getInstance().loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large);
+            ImageManager.getInstance().loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large, false);
         } else {
             Print.e(TAG, "setViewForFeaturedItem for index: " + index + " with no layout available!");
         }

@@ -83,7 +83,7 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
         TeaserTopSellerObject item = (TeaserTopSellerObject) mDataSet.get(position);
         // Set image
         //RocketImageLoader.instance.loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
-        ImageManager.getInstance().loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large, false);
         // Set brand
         holder.mBrand.setText(item.getBrand());
         // Set name

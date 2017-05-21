@@ -149,7 +149,7 @@ public class LoginHeaderComponent extends FrameLayout {
                     view.setVisibility(GONE);
                 }
             });*/
-            ImageManager.getInstance().loadImage(imageUrl, imageView, mProgress, -1);
+            ImageManager.getInstance().loadImage(imageUrl, imageView, mProgress, -1, false);
         }
     }
 

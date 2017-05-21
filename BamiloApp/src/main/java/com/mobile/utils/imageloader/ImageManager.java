@@ -34,10 +34,6 @@ public final class ImageManager {
         instance = new ImageManager(context);
     }
 
-    public void loadImage(final String imageUrl, final ImageView imageView, final View progressView, final int placeHolderImageId) {
-        loadImage(imageUrl, imageView, progressView, placeHolderImageId, false);
-    }
-
     public void loadImage(final String imageUrl, final ImageView imageView, final View progressView, final int placeHolderImageId, final boolean isThumbnail) {
         loadImage(imageUrl, imageView, progressView, placeHolderImageId, isThumbnail, new RequestListener<String, GlideDrawable>() {
             @Override

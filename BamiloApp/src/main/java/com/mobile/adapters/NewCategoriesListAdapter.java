@@ -101,7 +101,7 @@ public class NewCategoriesListAdapter extends MultiLevelListAdapter {
             item.icon.setVisibility(View.VISIBLE);
             item.icon.setTag(R.id.no_animate, true);
             //RocketImageLoader.instance.loadImage(category.getImage(), item.icon, false);
-            ImageManager.getInstance().loadImage(category.getImage(), item.icon, null, -1);
+            ImageManager.getInstance().loadImage(category.getImage(), item.icon, null, -1, false);
         }
 
         //

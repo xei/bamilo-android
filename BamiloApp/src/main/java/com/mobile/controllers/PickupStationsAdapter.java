@@ -100,7 +100,7 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
         setDetails(pickUpStationObject, pickupStationViewHolder);
 
         //RocketImageLoader.instance.loadImage(pickUpStationObject.getImage(), pickupStationViewHolder.image, null, R.drawable.no_image_small);
-        ImageManager.getInstance().loadImage(pickUpStationObject.getImage(), pickupStationViewHolder.image, null, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(pickUpStationObject.getImage(), pickupStationViewHolder.image, null, R.drawable.no_image_large, false);
 
         return convertView;
     }

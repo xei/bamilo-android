@@ -51,7 +51,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         UIProductUtils.setShopFirst(item,holder.shopFirst);
         // Set image
         //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
-        ImageManager.getInstance().loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_large, false);
         // Set is favorite image
         setFavourite(holder, item, position);
         // Set rating and reviews

@@ -750,7 +750,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         UIProductUtils.showShopFirstOverlayMessage(this, item, shopFirstImage);
         // Image
         //RocketImageLoader.instance.loadImage(imageUrl, productView, pBar, R.drawable.no_image_small);
-        ImageManager.getInstance().loadImage(imageUrl, productView, pBar, R.drawable.no_image_large);
+        ImageManager.getInstance().loadImage(imageUrl, productView, pBar, R.drawable.no_image_large, false);
         // Price
         UIProductUtils.setPriceRules(item, priceView);
         // Delete

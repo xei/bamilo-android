@@ -316,7 +316,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
             holder.itemView.setTag(R.id.position, -1);
             // Set image
             //RocketImageLoader.instance.loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large);
-            ImageManager.getInstance().loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large);
+            ImageManager.getInstance().loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large, false);
         }
     }
 
