@@ -1,0 +1,195 @@
+# To enable ProGuard in your project, edit project.properties
+# to define the proguard.config property as described in that file.
+#
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in ${sdk.dir}/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the ProGuard
+# include property in project.properties.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+#################################################################################################
+# Author: SergioPereira										                                    #
+# Defaults: android-sdk-linux/tools/proguard                                                    #
+# See: http://proguard.sourceforge.net/manual/examples.html	                                    #
+#      https://android.googlesource.com/platform/sdk/+/master/files/proguard-android.txt        #
+#      https://android.googlesource.com/platform/sdk/+/master/files/proguard-android-optimize.txt#
+#################################################################################################
+
+## PARENT proguard-android-optimize.txt #########################################
+#-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+#-optimizationpasses 5
+#-allowaccessmodification
+#-dontpreverify
+#-dontusemixedcaseclassnames
+#-dontskipnonpubliclibraryclasses
+#-verbose
+##################################################################################
+
+## BEGIN OBFUSCATE PACKAGE NAMES #########################################
+-repackageclasses ''
+-allowaccessmodification
+###########################################################################
+
+## IGNORE WARN/NOTE CLASSES #########################################
+-dontnote android.support.**
+-dontwarn com.google.android.**
+-dontnote com.google.ads.**
+-dontnote com.google.vending.licensing.ILicensingService
+-dontnote com.android.vending.licensing.ILicensingService
+#####################################################################
+
+## BEGIN GENERIC CLASSES ############################################
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+#-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class * extends android.support.v4.view.ActionProvider
+-keep public class * extends android.support.v4.app.Fragment
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+########################################################################################
+
+## BEGIN GOOGLE PLAY SERVICES ########################################################
+#-keep class * extends java.util.ListResourceBundle {
+#    protected Object[][] getContents();
+#}
+#-keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
+#    public static final *** NULL;
+#}
+#-keepnames @com.google.android.gms.common.annotation.KeepName class *
+#-keepclassmembernames class * {
+#    @com.google.android.gms.common.annotation.KeepName *;
+#}
+#test
+#-keepnames class * implements android.os.Parcelable {
+#    public static final ** CREATOR;
+#}
+########################################################################################
+
+## BEGIN GOOGLE ################################################
+-keep class com.google.android.** { *; }
+-keepattributes Signature
+################################################################
+
+## BEGIN ADJUST ################################################
+-keep class com.adjust.sdk.** { *; }
+-keep class com.google.android.gms.common.** { *; }
+-keep class com.google.android.gms.ads.identifier.** { *; }
+-dontnote com.adjust.**
+################################################################
+
+## BEGIN APPTIMIZE ##########################################################
+#-keepclassmembers class * extends com.apptimize.ApptimizeTest { <methods>; }
+#-keep class com.apptimize.** { *; }
+-keep class android.support.v4.view.ViewPager
+-keepclassmembers class android.support.v4.view.ViewPager$LayoutParams { *; }
+-keep class android.support.v4.app.Fragment { *; }
+#-keep class com.mixpanel.android.mpmetrics.MixpanelAPI { *;}
+-keep class com.google.android.gms.analytics.Tracker { *; }
+#-keep class com.google.analytics.tracking.android.Tracker { *; }
+#-keep class com.flurry.android.FlurryAgent { *; }
+#-keep class com.omniture.AppMeasurementBase { *;}
+#-keep class com.adobe.adms.measurement.ADMS_Measurement { *;}
+#############################################################################
+
+## BEGIN SUPPORT LIBRARY (v?) ###############################################
+#-keep class android.support.v4.** { *; }
+#-keep interface android.support.v4.** { *; }
+
+#-keep class android.support.v7.** { *; }
+#-keep interface android.support.v7.** { *; }
+
+# Allow obfuscation of android.support.v7.internal.view.menu.**
+# to avoid problem on Samsung 4.2.2 devices with appcompat v21
+# see https://code.google.com/p/android/issues/detail?id=78377
+# see http://stackoverflow.com/questions/24809580/noclassdeffounderror-android-support-v7-internal-view-menu-menubuilder/
+#### FOR OLDER APPCOMPAT VERSION:
+#-keep class !android.support.v7.internal.view.menu.*MenuBuilder*, android.support.v7.** { *; }
+#### FOR APPCOMPAT 23.1.1:
+-keep class !android.support.v7.view.menu.*MenuBuilder*, android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
+#############################################################################
+
+## BEGIN VOLLEY #############################################################
+-keep class com.android.volley.** { *; }
+-keep interface com.android.volley.** { *; }
+#############################################################################
+
+## BEGIN PAGE INDICATOR #####################################################
+-keep class com.viewpagerindicator.** { *; }
+-keep interface com.viewpagerindicator.** { *; }
+#############################################################################
+
+## BEGIN RETROFIT ##############################################################
+-dontwarn retrofit.**
+-dontnote retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
+-dontnote com.squareup.okhttp.**
+################################################################################
+
+## BEGIN MOBILE #################################################################
+#### com.mobile.components
+-keep interface com.mobile.components.RangeSeekBar$** { public *; }
+-keep class com.mobile.components.RangeSeekBar { public *; }
+-keep public interface com.mobile.components.absspinner.IcsAdapterView$** { public *; }
+-keep,includedescriptorclasses class com.mobile.components.absspinner.IcsAdapterView { public *; }
+-keep interface com.mobile.components.ScrollViewEx$** { public *; }
+-keep interface com.mobile.components.androidslidingtabstrip.SlidingTabLayout$** { public *; }
+#### com.mobile.utils
+-keep class com.mobile.utils.MyProfileActionProvider { public *; }
+-keep class com.mobile.utils.NavigationAction { public *; }
+-keep class com.mobile.utils.photoview.PhotoViewAttacher { public *; }
+-keep interface com.mobile.utils.photoview.PhotoViewAttacher$** { *; }
+#### com.mobile.view
+-keep public enum com.mobile.view.fragments.BaseFragment$KeyboardState { public *; }
+#### com.mobile.service.rest
+-keep class com.mobile.service.rest.** { *; }
+-keep interface com.mobile.service.rest.** { *; }
+#################################################################################
+
+## JAVASCRIPTINTERFACE ##########################################################
+-keepclassmembers class com.mobile.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface { public *; }
+-keepattributes JavascriptInterface
+#################################################################################
+
+## PUSHWOOSH ####################################################################
+-keep class com.pushwoosh.** { *; }
+-keep class com.arellomobile.** { *; }
+-dontwarn com.pushwoosh.**
+-dontwarn com.arellomobile.**
+#################################################################################
+
+## GLIDE ########################################################################
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
+# for DexGuard only
+-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#################################################################################

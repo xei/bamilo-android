@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_padding_s"
+    android:layout_marginBottom="@dimen/margin_padding_s">
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="@dimen/catalog_list_item_image_width"
+        android:layout_height="@dimen/catalog_list_item_image_height"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/catalog_list_item_image_padding"
+        android:layout_marginRight="@dimen/margin_padding_l"
+        android:adjustViewBounds="false"
+        android:background="@android:color/white"
+        android:scaleType="fitCenter"
+        android:src="@drawable/no_image_small" />
+
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/my_order_item_brand"
+        style="@style/TextBase.Caption"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/margin_30px"
+        android:layout_toLeftOf="@id/image_view"
+        android:text="BRAND"
+        android:textColor="@color/black_800" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/my_order_item_name"
+        style="@style/TextBase.Body"
+        android:layout_below="@id/my_order_item_brand"
+        android:layout_toLeftOf="@+id/image_view"
+        android:gravity="right|center_vertical"
+        android:textColor="@color/black" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/my_order_item_quantity"
+        style="@style/TextBase.Body"
+        android:layout_alignRight="@id/my_order_item_name"
+        android:layout_below="@id/my_order_item_name"
+        android:gravity="right|center_vertical"
+        android:textColor="@color/black" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/my_order_item_price"
+        style="@style/TextBase.Body"
+        android:layout_alignRight="@id/my_order_item_name"
+        android:layout_below="@id/my_order_item_quantity"
+        android:gravity="right|center_vertical"
+        android:textColor="@color/black_800" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/my_order_item_variation"
+        style="@style/TextBase.Body"
+        android:layout_alignRight="@id/my_order_item_name"
+        android:layout_below="@id/my_order_item_price"
+        android:gravity="right|center_vertical"
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/shop_first_item"
+        style="@style/ShopFirstStyle"
+        android:layout_alignRight="@id/my_order_item_name"
+        android:layout_below="@id/my_order_item_variation" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_10dp"
+        android:layout_below="@id/shop_first_item" />
+
+</RelativeLayout>
