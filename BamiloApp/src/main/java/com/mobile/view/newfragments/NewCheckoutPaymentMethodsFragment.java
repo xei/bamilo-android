@@ -120,7 +120,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
+
         // Validate the saved values 
         if(savedInstanceState != null){
             mSavedState = savedInstanceState;
@@ -128,7 +128,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         }
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_PAYMENT);
     }
-    
+
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
@@ -136,7 +136,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
+
         // Get containers
         mPaymentContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         mScrollView = (RecyclerView) view.findViewById(R.id.payment_scroll);
@@ -163,16 +163,9 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             }
         });
 
-/*  DROID-65
-        // Voucher
-        mVoucherContainer = view.findViewById(R.id.voucher_container);
-        // Checkout total view
-        mCheckoutTotalBar = view.findViewById(R.id.checkout_total_bar);
-        mCheckoutButtonNext = view.findViewById(R.id.checkout_button_enter);*/
         // Get and show addresses
-        triggerGetPaymentMethods();
+        getMultistepPayment();
     }
-
     
     /*
      * (non-Javadoc)
@@ -209,25 +202,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
     /*
      * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-/* DROID-65
-        // Save the form state
-        if(mDynamicForm != null) {
-            mDynamicForm.saveFormState(outState);
-        }
-        // Save voucher
-        if(mVoucherView != null) {
-            outState.putString(ConstantsIntentExtra.ARG_1, mVoucherView.getText().toString());
-        }
-*/
-    }
-
-    /*
-     * (non-Javadoc)
      *
      * @see android.support.v4.app.Fragment#onStop()
      */
@@ -260,7 +234,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     /**
      * ############# CLICK LISTENER #############
      */
-
     @Override
     public void onClick(View view) {
         super.onClick(view);
@@ -268,18 +241,10 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         int id = view.getId();
         // Submit
         if (id == R.id.payment_continue) {
-/* DROID-65
-            if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(couponButton.getText(), getString(R.string.remove_label))) {
-                validateCoupon();
-            } else {
-                onClickSubmitPaymentButton();
-            }
-*/
-            onClickSubmitPaymentButton();
+            setMultistepConfirmation();
             getBaseActivity().hideKeyboard();
-        }
-        // Case Unknown
-        else {
+        } else {
+            // Case Unknown
             Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
         }
     }
@@ -292,6 +257,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
+
         Bundle bundle = new Bundle();
         if (BamiloApplication.CUSTOMER != null) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
@@ -300,38 +266,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
-
-    /**
-     * Load the dynamic form
-     */
-/* DROID-65
-    private void loadForm(Form form) {
-        Print.i(TAG, "LOAD FORM");
-        mDynamicForm = FormFactory.create(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
-        mPaymentContainer.removeAllViews();
-        mPaymentContainer.addView(mDynamicForm.getContainer());
-        mDynamicForm.loadSaveFormState(mSavedState);
-        mPaymentContainer.refreshDrawableState();
-        prepareCouponView();
-        validatePaymentIsAvailableOrIsNecessary();
-        showFragmentContentContainer();
-    }
-*/
-
-
-    /**
-     * Set the all views associated to order.
-     */
-/* DROID-65
-    private void setOrderInfo(PurchaseEntity purchaseEntity) {
-        // Set the checkout total bar
-        CheckoutStepManager.setTotalBar(mCheckoutTotalBar, purchaseEntity);
-        // Update voucher
-        updateVoucher(purchaseEntity);
-        // Show checkout summary
-        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, purchaseEntity);
-    }
-*/
 
     /*
      * Disable the next button case No payment options available
@@ -354,159 +288,45 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         }
     }
 
-/* DROID-65   private void prepareCouponView() {
-        mVoucherView = (EditText) mVoucherContainer.findViewById(R.id.voucher_name);
-        if (!TextUtils.isEmpty(mVoucherCode)) {
-            mVoucherView.setText(mVoucherCode);
-        }
-        UIUtils.scrollToViewByClick(mScrollView, mVoucherView);
-        couponButton = (TextView) mVoucherContainer.findViewById(R.id.voucher_btn);
-        if (removeVoucher) {
-            couponButton.setText(getString(R.string.remove_label));
-        }
-        couponButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validateCoupon();
-            }
-        });
-    }
-
-    private void validateCoupon() {
-        mVoucherCode = mVoucherView.getText().toString();
-        getBaseActivity().hideKeyboard();
-        if (!TextUtils.isEmpty(mVoucherCode)) {
-            if (TextUtils.equals(getString(R.string.use_label), couponButton.getText())) {
-                triggerSubmitVoucher(mVoucherCode);
-            } else {
-                triggerRemoveVoucher();
-            }
-        } else {
-            showWarningErrorMessage(getString(R.string.voucher_error_message));
-        }
-    }*/
-    
-    private void onClickSubmitPaymentButton() {
-        Print.i(TAG, "ON CLICK: Submit Payment Method");
-        //payment_method[payment_method]
-        //PaymentFieldName
-        int selectedId = ((PaymentMethodAdapter) mScrollView.getAdapter()).getSelectedId();
-        ContentValues values = new ContentValues();
-        values.put(PaymentFieldName, selectedId);
-        triggerSubmitPaymentMethod(PaymentAction, values);
-        /*if(mDynamicForm != null){
-            if(mDynamicForm.validate()){
-                ContentValues values = mDynamicForm.save();
-                paymentName = values.getAsString(RestConstants.NAME);
-                triggerSubmitPaymentMethod(mDynamicForm.getForm().getAction(), values);
-            } else {
-                showWarningErrorMessage(getString(R.string.please_fill_all_data));
-            }
-        }*/
-    }
-
-    /**
-     * Fill Coupon field if orderSummary has discountCouponCode
-     */
-/* DROID-65
-    private void updateVoucher(PurchaseEntity orderSummary) {
-        if (orderSummary != null) {
-            if (orderSummary.hasCouponDiscount()) {
-                mVoucherCode = orderSummary.getCouponCode();
-                if (!TextUtils.isEmpty(mVoucherCode)) {
-                    removeVoucher = true;
-                    prepareCouponView();
-                    mVoucherView.setText(mVoucherCode);
-                    mVoucherView.setFocusable(false);
-                } else {
-                    mVoucherCode = null;
-                }
-            } else {
-                mVoucherView.setText(TextUtils.isNotEmpty(mVoucherCode) ? mVoucherCode : "" );
-                mVoucherView.setFocusable(true);
-                mVoucherView.setFocusableInTouchMode(true);
-            }
-        }
-    }
-*/
-
     /**
      * ############# RESPONSE #############
      */
-
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        
+
         switch (eventType) {
-        case GET_MULTI_STEP_PAYMENT:
-            Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-            // Get order summary
-            MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();
-
-            LoadMethods(responseData);
-            setTotal(responseData.getOrderSummary());
-            // Form
-            //DROID-65 loadForm(responseData.getForm());
-            // Set the checkout total bar
-            //DROID-65 setOrderInfo(responseData.getOrderSummary());
-            hideActivityProgress();
+            case GET_MULTI_STEP_PAYMENT:
+                MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();
+                bindPaymentMethods(responseData);
+                setTotal(responseData.getOrderSummary());
+                hideActivityProgress();
             break;
-        case SET_MULTI_STEP_PAYMENT:
-            Print.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
-            triggerContentEvent(new GetStepFinishHelper(), null, this);
 
-            /*NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
-            FragmentType nextFragment = nextStepStruct.getFragmentType();
-            nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_FINISH;
-            // Tracking
-            String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "";
-            String email = BamiloApplication.INSTANCE.getCustomerUtils().getEmail();
-            TrackerDelegator.trackPaymentMethod(userId, email, paymentName);
-            // Switch to FINISH
-            getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);*/
+            case SET_MULTI_STEP_PAYMENT:
+                triggerContentEventProgress(new GetStepFinishHelper(), null, this);
             break;
+
             case GET_MULTI_STEP_FINISH:
                 mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
-                triggerContentEvent(new SetStepFinishHelper(), SetStepFinishHelper.createBundle(getUserAgentAsExtraData()), this);
-                break;
+                setTotal(mOrderFinish);
+                hideActivityProgress();
+            break;
+
             case SET_MULTI_STEP_FINISH:
                 mCheckoutFinish = (CheckoutFinish) baseResponse.getContentData();
-                // Tracking purchase
                 TrackerDelegator.trackPurchase(mCheckoutFinish, BamiloApplication.INSTANCE.getCart());
-                // Next step
                 switchToSubmittedPayment();
-                // Update cart info
                 getBaseActivity().updateCartInfo();
+            break;
+
+            default:
                 break;
-
-
-
-/* DROID-65
-        case REMOVE_VOUCHER:
-            mVoucherCode = null;
-        case ADD_VOUCHER:
-            couponButton.setText(getString(eventType == EventType.ADD_VOUCHER ? R.string.remove_label : R.string.use_label));
-            removeVoucher = eventType == EventType.ADD_VOUCHER;
-            hideActivityProgress();
-            setOrderInfo((PurchaseEntity) baseResponse.getContentData());
-            // Case voucher removed and is showing no payment necessary
-            if(isShowingNoPaymentNecessary) {
-                isShowingNoPaymentNecessary = false;
-                triggerGetPaymentMethods();
-            }
-            break;
-*/
-        default:
-            break;
         }
     }
 
@@ -514,71 +334,57 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+
     	// Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
         }
+
         // Get event type and error
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Validate event type
         switch (eventType) {
-        case GET_MULTI_STEP_PAYMENT:
-            Print.i(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-            mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
+            case GET_MULTI_STEP_PAYMENT:
+                mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
             break;
-        case SET_MULTI_STEP_PAYMENT:
-            Print.i(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
-            TrackerDelegator.trackFailedPayment(paymentName, BamiloApplication.INSTANCE.getCart());
-            showWarningErrorMessage(baseResponse.getValidateMessage());
-            showFragmentContentContainer();
+
+            case SET_MULTI_STEP_PAYMENT:
+                TrackerDelegator.trackFailedPayment(paymentName, BamiloApplication.INSTANCE.getCart());
+                showWarningErrorMessage(baseResponse.getValidateMessage());
+                showFragmentContentContainer();
             break;
-/* DROID-65
-        case ADD_VOUCHER:
-        case REMOVE_VOUCHER:
-            hideActivityProgress();
-            break;
-*/
-        default:
-            break;
+
+            default:
+                break;
         }
     }
     
     /**
      * ############# REQUESTS #############
      */
-    
-    private void triggerSubmitPaymentMethod(String endpoint, ContentValues values) {
-        triggerContentEvent(new SetStepPaymentHelper(), SetStepPaymentHelper.createBundle(endpoint, values), this);
-    }
-    
-/* DROID-65
-    private void triggerSubmitVoucher(String code) {
-        triggerContentEventProgress(new AddVoucherHelper(), AddVoucherHelper.createBundle(code), this);
-    }
-    
-    private void triggerRemoveVoucher() {
-        triggerContentEventProgress(new RemoveVoucherHelper(), null, this);
-    }
-*/
-
-    private void triggerGetPaymentMethods(){
+    private void getMultistepPayment(){
         triggerContentEventProgress(new GetStepPaymentHelper(), null, this);
     }
 
-    private void LoadMethods(MultiStepPayment payment) {
+    private void setMultistepPayment(String endpoint, ContentValues values) {
+        triggerContentEventProgress(new SetStepPaymentHelper(), SetStepPaymentHelper.createBundle(endpoint, values), this);
+    }
+
+    private void setMultistepConfirmation() {
+        triggerContentEvent(new SetStepFinishHelper(), SetStepFinishHelper.createBundle(getUserAgentAsExtraData()), this);
+    }
+
+    private void bindPaymentMethods(MultiStepPayment payment) {
         LinkedHashMap<String, String> paymentMethods = new LinkedHashMap<>();
         ArrayList<PaymentMethod> methodList= new ArrayList<>();
         HashMap<String, PaymentInfo> paymentInfoMap = null;
         PaymentAction = payment.getForm().getAction();
         PaymentFieldName= payment.getForm().getFields().get(0).getName();
-        try
-        {
+        try {
             paymentInfoMap = payment.getForm().getFieldKeyMap().get(RestConstants.PAYMENT_METHOD).getPaymentInfoList();
             paymentMethods = payment.getForm().getFields().get(0).getDataSet();
             HashMap<String, PaymentInfo> infoList = payment.getForm().getFields().get(0).getPaymentInfoList();
@@ -589,23 +395,23 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             }
 
             PaymentMethodAdapter adapter = new PaymentMethodAdapter(methodList, -1);
+            adapter.mFragmentBridge = new PaymentMethodAdapter.IPaymentMethodAdapter() {
+                @Override
+                public void paymentMethodSelected(int selectedId) {
+                    //int selectedId = ((PaymentMethodAdapter) mScrollView.getAdapter()).getSelectedId();
+                    ContentValues values = new ContentValues();
+                    values.put(PaymentFieldName, selectedId);
+                    setMultistepPayment(PaymentAction, values);
+                }
+            };
             mScrollView.setAdapter(adapter);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
 
         }
-
-
-
     }
+
     private String getUserAgentAsExtraData() {
         return getResources().getBoolean(R.bool.isTablet) ? "tablet" : "mobile";
-    }
-
-    private void triggerCheckoutFinish() {
-        Print.i(TAG, "TRIGGER: CHECKOUT FINISH");
-        triggerContentEvent(new SetStepFinishHelper(), SetStepFinishHelper.createBundle(getUserAgentAsExtraData()), this);
     }
 
     private void switchToSubmittedPayment() {
@@ -618,9 +424,8 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
                 bundle.putParcelable(RestConstants.RECOMMENDED_PRODUCTS, mCheckoutFinish.getRichRelevance());
             }
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
-        // Case other
-        else {
+        } else {
+            // Case other
             Bundle bundle = new Bundle();
             bundle.putString(RestConstants.ORDER_NUMBER, mCheckoutFinish.getOrderNumber());
             bundle.putString(RestConstants.TRANSACTION_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
@@ -641,8 +446,8 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
+
     private void setTotal(@NonNull PurchaseEntity cart) {
-        Print.d(TAG, "SET THE TOTAL VALUE");
         // Get views
         TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
         TextView quantityValue = (TextView) mTotalContainer.findViewById(R.id.total_quantity);
@@ -650,8 +455,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
         quantityValue.setText(R.string.cart_total_amount);
 
-
         mTotalContainer.setVisibility(View.VISIBLE);
-
     }
 }
