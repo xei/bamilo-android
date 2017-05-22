@@ -64,6 +64,7 @@ public class UICatalogUtils {
                     }
                     break;
                 case CATALOG_CATEGORY:
+                case CATALOG_FILTER:
                     values.put(RestConstants.CATEGORY, contentId);
                     break;
                 default:

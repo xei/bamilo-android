@@ -441,6 +441,19 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 // Put the type with unique identifier
                 type = FragmentType.getUniqueIdentifier(FragmentType.CATALOG, fragment);
                 break;
+            case CATALOG_FILTER:
+                removeEntries = false;
+                // Get indications to remove old entries or not
+                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES)) {
+                    removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
+                    bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
+                }
+                bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
+                // Create instance
+                fragment = newFragmentInstance(CatalogFragment.class, bundle);
+                // Put the type with unique identifier
+                type = FragmentType.getUniqueIdentifier(FragmentType.CATALOG, fragment);
+                break;
             case PRODUCT_DETAILS:
                 // Create instance
                 fragment = newFragmentInstance(ProductDetailsFragment.class, bundle);

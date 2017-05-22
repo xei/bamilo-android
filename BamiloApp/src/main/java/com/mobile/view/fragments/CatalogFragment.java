@@ -180,11 +180,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
             //Get category content/main category
             mMainCategory = arguments.getString(RestConstants.MAIN_CATEGORY);
-
+            mCurrentFilterValues = arguments.getParcelable(FilterMainFragment.FILTER_TAG);
+            if (mCurrentFilterValues == null) mCurrentFilterValues = new ContentValues();
             // Get sort from Deep Link
             if(arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)){
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             }
+
 
             showNoResult = false;
 
@@ -435,13 +437,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onUpdateCatalogContainer(CatalogPage catalogPage) {
         Print.i(TAG, "ON UPDATE CATALOG CONTAINER: " + catalogPage.getPage());
         // Case first time save catalog
-        if (mCatalogPage == null) {
+        mCatalogPage = catalogPage;
+        /*if (mCatalogPage == null) {
             mCatalogPage = catalogPage;
         }
         // Case load more then update data or Case filter applied then replace the data
         else {
             mCatalogPage.update(catalogPage);
-        }
+        }*/
 
         // Validate current catalog page
         CatalogGridAdapter adapter = (CatalogGridAdapter) mGridView.getAdapter();
@@ -554,9 +557,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (FeaturedBoxHelper.show(this, featuredBox)) {
             // Case success show container
             showFragmentContentContainer();
-
-
-
 
         } else {
             // Case fail show continue
@@ -708,12 +708,21 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Show dialog
             Bundle bundle = new Bundle();
             bundle.putString("category_url", mKey);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, mKey);
+            bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             ArrayList<CatalogFilter> filters = mCatalogPage.getFilters();
             bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, filters);
             getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
         }
+
+
+
+
+
+
     }
 
     /**
@@ -942,7 +951,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Create catalog request parameters
         mQueryValues.put(RestConstants.PAGE, page);
         // Get filters
-        mQueryValues.putAll(mCurrentFilterValues);
+        if (mCurrentFilterValues != null) mQueryValues.putAll(mCurrentFilterValues);
         // Get Sort
         if (mSelectedSort != null && TextUtils.isNotEmpty(mSelectedSort.path)) {
             mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
