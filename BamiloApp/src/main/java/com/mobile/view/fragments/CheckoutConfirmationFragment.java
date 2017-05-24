@@ -307,15 +307,12 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         triggerContentEventProgress(new GetStepShippingHelper(), null, this);
     }
 
-
     private void setOrderInfo(PurchaseEntity purchaseEntity) {
         // Update voucher
         updateVoucher(purchaseEntity);
         // Show checkout summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, purchaseEntity);
     }
-
-
 
     /**
      * Fill Coupon field if orderSummary has discountCouponCode
