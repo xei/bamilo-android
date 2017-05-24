@@ -183,12 +183,17 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private void prepareLayout(View view) {
         // Track purchase
         PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+        if (cart == null) {
+            cart = new PurchaseEntity();
+        }
         TrackerDelegator.trackPurchaseInCheckoutThanks(cart, mOrderNumber, mGrandTotalValue, mOrderShipping, mOrderTax, mPaymentMethod);
         ArrayList<PurchaseCartItem> carts=  cart.getCartItems();
         String categories = "";
-        for(PurchaseCartItem cat : carts) {
-            categories += cat.getCategories();
-            itemsId += cat.getSku()+",";
+        if (carts != null) {
+            for (PurchaseCartItem cat : carts) {
+                categories += cat.getCategories();
+                itemsId += cat.getSku() + ",";
+            }
         }
         TrackerManager.postEvent(getBaseActivity(), EventConstants.Purchase, EventFactory.purchase(categories, (long)cart.getTotal(), true));
 
