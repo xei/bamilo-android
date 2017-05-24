@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.components.customfontviews.TextView;
@@ -34,6 +35,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
     public ImageView favourite;
     public ImageView headerImage;
     public ImageView shopFirst;
+    public RelativeLayout price_rl;
 
     /**
      * Constructor
@@ -55,6 +57,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
         headerImage = (ImageView) view.findViewById(R.id.catalog_header_image);
         ratingContainer = (ViewGroup)view.findViewById(R.id.rating_container);
         shopFirst = (ImageView)view.findViewById(R.id.item_shop_first);
+        price_rl = (RelativeLayout)view.findViewById(R.id.item_regprice_rl);
     }
 }
 
