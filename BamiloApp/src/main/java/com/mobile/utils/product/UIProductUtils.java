@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobile.app.BamiloApplication;
@@ -87,8 +88,9 @@ public class UIProductUtils {
         }
         // Case normal
         else {
-            specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
             price.setVisibility(View.GONE);
+            specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
+
         }
     }
 
@@ -97,12 +99,7 @@ public class UIProductUtils {
         if (productBase.hasDiscount()) {
             final String specialPrice = CurrencyFormatter.formatCurrency(productBase.getSpecialPrice());
             final String regularPrice = CurrencyFormatter.formatCurrency(productBase.getPrice());
-            /*final String price = String.format(context.getString(R.string.first_space_second_placeholder), specialPrice, regularPrice);
-            int index = price.indexOf(regularPrice);
-            SpannableString spannableString = new SpannableString(price);
-            spannableString.setSpan(new StrikethroughSpan(), index, price.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context,R.color.black_800)), index, price.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            priceView.setText(spannableString);*/
+
             priceView.setText(regularPrice);
             discountView.setText(specialPrice);
             priceView.setPaintFlags(discountView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="328dp"
+    android:layout_height="360dp"
     android:background="@drawable/selector_grid_item_highlight"
     card_view:cardCornerRadius="0dp"
     android:layout_marginTop="3dp"
@@ -23,6 +23,7 @@
             layout="@layout/_def_gen_image_loadable"
             android:layout_width="176dp"
             android:layout_height="220dp"
+            android:layout_marginTop="16dp"
             android:layout_centerHorizontal="true"
             />
 
@@ -64,64 +65,17 @@
             android:textSize="11sp"
             />
 
-
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/item_discount"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_alignRight="@+id/item_brand"
-            android:layout_below="@id/item_brand"
-            android:layout_marginLeft="@dimen/margin_padding_xs"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            tools:text="Discount" />
-
-
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/item_regprice"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_below="@id/item_discount"
-            android:layout_alignRight="@+id/item_brand"
-            android:layout_marginTop="2dp"
-            android:textColor="@color/lightgrey"
-            android:textSize="11sp"
-            tools:text="Price" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/discount_percentage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/item_discount"
-            android:layout_toLeftOf="@+id/item_regprice"
-            android:layout_marginRight="@dimen/margin_padding_xl"
-            android:layout_marginTop="2dp"
-            android:gravity="center"
-            android:textColor="@color/lightgrey"
-            android:textSize="11sp"
-            android:text="%"/>
-
-        <ImageView
-            style="@style/ShopFirstStyle"
-            android:id="@+id/item_shop_first"
-            android:visibility="gone"
-            android:layout_below="@id/item_regprice"
-            android:layout_alignLeft="@id/item_brand"
-            />
-
         <RelativeLayout
             android:id="@+id/rating_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/item_discount"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="@dimen/dimen_6dp"
             android:gravity="right|center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dimen_16dp">
 
             <RatingBar
                 android:id="@+id/item_rating"
@@ -151,6 +105,67 @@
 
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/price_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignRight="@+id/item_brand"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentBottom="true"
+            >
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_discount"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/margin_padding_xs"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:text="Discount"
+                 />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_regprice_rl"
+                >
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/item_regprice"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/lightgrey"
+                    android:textSize="11sp"
+                    tools:text="Price" />
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/discount_percentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/item_regprice"
+                    android:layout_marginRight="@dimen/margin_padding_xl"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center"
+                    android:textColor="@color/lightgrey"
+                    android:textSize="11sp"
+                    android:text="%"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <ImageView
+            style="@style/ShopFirstStyle"
+            android:id="@+id/item_shop_first"
+            android:visibility="gone"
+            android:layout_alignLeft="@id/item_brand"
+            />
+
+
 
 
 
