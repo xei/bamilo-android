@@ -50,7 +50,7 @@
 -dontnote com.android.vending.licensing.ILicensingService
 #####################################################################
 
-## BEGIN GENERIC CLASSES ############################################
+## GENERIC CLASSES ############################################
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
@@ -85,19 +85,19 @@
 #}
 ########################################################################################
 
-## BEGIN GOOGLE ################################################
+## GOOGLE ################################################
 -keep class com.google.android.** { *; }
 -keepattributes Signature
 ################################################################
 
-## BEGIN ADJUST ################################################
+## ADJUST ################################################
 -keep class com.adjust.sdk.** { *; }
 -keep class com.google.android.gms.common.** { *; }
 -keep class com.google.android.gms.ads.identifier.** { *; }
 -dontnote com.adjust.**
 ################################################################
 
-## BEGIN APPTIMIZE ##########################################################
+## APPTIMIZE ##########################################################
 #-keepclassmembers class * extends com.apptimize.ApptimizeTest { <methods>; }
 #-keep class com.apptimize.** { *; }
 -keep class android.support.v4.view.ViewPager
@@ -129,29 +129,7 @@
 -keep interface android.support.v7.** { *; }
 #############################################################################
 
-## BEGIN VOLLEY #############################################################
--keep class com.android.volley.** { *; }
--keep interface com.android.volley.** { *; }
-#############################################################################
-
-## BEGIN PAGE INDICATOR #####################################################
--keep class com.viewpagerindicator.** { *; }
--keep interface com.viewpagerindicator.** { *; }
-#############################################################################
-
-## BEGIN RETROFIT ##############################################################
--dontwarn retrofit.**
--dontnote retrofit.**
--keep class retrofit.** { *; }
--keepattributes Signature
--keepattributes Exceptions
-
--dontwarn okio.**
--dontwarn com.squareup.okhttp.**
--dontnote com.squareup.okhttp.**
-################################################################################
-
-## BEGIN MOBILE #################################################################
+## MOBILE #################################################################
 #### com.mobile.components
 -keep interface com.mobile.components.RangeSeekBar$** { public *; }
 -keep class com.mobile.components.RangeSeekBar { public *; }
@@ -189,7 +167,42 @@
   **[] $VALUES;
   public *;
 }
+#################################################################################
 
-# for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+## RETROFIT #####################################################################
+-keep class retrofit.** { *; }
+-dontwarn okio.**
+-dontwarn retrofit.**
+-dontwarn rx.**
+
+-keepclasseswithmembers class * {
+    @retrofit.http.* <methods>;
+}
+
+# If in your rest service interface you use methods with Callback argument.
+-keepattributes Exceptions
+
+# If your rest service methods throw custom exceptions, because you've defined an ErrorHandler.
+-keepattributes Signature
+
+-dontwarn rx.**
+-dontwarn javax.annotation.**
+-dontwarn retrofit.appengine.UrlFetchClient
+#################################################################################
+
+## OKHTTP #######################################################################
+-dontwarn okio.**
+-keep class com.squareup.okhttp3.** {
+*;
+}
+#################################################################################
+
+## VOLLEY #######################################################################
+-keep class com.android.volley.** { *; }
+-keep interface com.android.volley.** { *; }
+#################################################################################
+
+## PAGE INDICATOR ###############################################################
+-keep class com.viewpagerindicator.** { *; }
+-keep interface com.viewpagerindicator.** { *; }
 #################################################################################

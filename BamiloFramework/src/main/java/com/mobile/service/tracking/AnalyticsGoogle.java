@@ -605,29 +605,37 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         mUtmCampaign = "";
         mUtmMedium = "";
         mUtmSource = "";
+        //campaignString = campaignString.substring(campaignString.indexOf("?"), campaignString.length());
 
         if (!TextUtils.isEmpty(campaignString)) {
             // Track
-            if (campaignString.contains("utm_campaign=")) {
-                mUtmCampaign = getUtmParameter(campaignString, "utm_campaign=");
-            } else {
-                mUtmCampaign = "";
-            }
 
-            if (campaignString.contains("utm_source=")) {
-                mUtmSource = getUtmParameter(campaignString, "utm_source=");
-            } else {
-                if (!TextUtils.isEmpty(mUtmCampaign)) {
-                    mUtmSource = "push";
+            String[] items = campaignString.split("&");
+            for(String item :items) {
+                String[] terms = item.split("=");
+                if (terms.length != 2) continue;
+
+                if (terms[0].toLowerCase().endsWith("utm_campaign")) {
+                    mUtmCampaign = terms[1]; //getUtmParameter(campaignString, "utm_campaign=");
+                } else {
+                    mUtmCampaign = "";
                 }
 
-            }
+                if (terms[0].toLowerCase().endsWith("utm_source")) {
+                    mUtmSource = terms[1];// getUtmParameter(campaignString, "utm_source=");
+                } else {
+                    if (!TextUtils.isEmpty(mUtmCampaign)) {
+                        mUtmSource = "push";
+                    }
 
-            if (campaignString.contains("utm_medium=")) {
-                mUtmMedium = getUtmParameter(campaignString, "utm_medium=");
-            } else {
-                if (!TextUtils.isEmpty(mUtmCampaign)) {
-                    mUtmMedium = "referrer";
+                }
+
+                if (terms[0].toLowerCase().endsWith("utm_medium")) {
+                    mUtmMedium = terms[1]; // getUtmParameter(campaignString, "utm_medium=");
+                } else {
+                    if (!TextUtils.isEmpty(mUtmCampaign)) {
+                        mUtmMedium = "referrer";
+                    }
                 }
             }
         }

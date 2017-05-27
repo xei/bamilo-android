@@ -24,10 +24,15 @@ import java.util.List;
  */
 
 public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdapter.MethodViewHolder> implements IResponseCallback {
+    public interface IPaymentMethodAdapter {
+        void paymentMethodSelected(int selectedId);
+    }
+
     private List<PaymentMethod> methodsList;
     private List<AdapterItemSelection> methodSelection;
     private static RadioButton lastChecked = null;
     private static int lastCheckedPos = 0;
+    public IPaymentMethodAdapter mFragmentBridge;
 
     public class MethodViewHolder extends RecyclerView.ViewHolder {
         public TextView name, text;
@@ -71,18 +76,13 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         holder.name.setText(method_name);
         holder.text.setText(method.getText());
 
-        if (method_name.contains("پارسیان"))
-        {
+        if (method_name.contains("پارسیان")) {
             holder.payment_logo.setVisibility(View.VISIBLE);
             holder.method_logo.setImageResource(R.drawable.parsian_logo);
-        }
-        else if (method_name.contains("سامان"))
-        {
+        } else if (method_name.contains("سامان")) {
             holder.payment_logo.setVisibility(View.VISIBLE);
             holder.method_logo.setImageResource(R.drawable.saman_logo);
-        }
-        else
-        {
+        } else {
             holder.payment_logo.setVisibility(View.GONE);
         }
 
@@ -97,6 +97,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             lastChecked = holder.checkBox;
             lastCheckedPos = 0;
             holder.text.setVisibility(View.VISIBLE);
+            mFragmentBridge.paymentMethodSelected(getSelectedId());
         }
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +120,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
                 }
 
                 methodSelection.get(clickedPos).setSelected(cb.isChecked());
+                mFragmentBridge.paymentMethodSelected(getSelectedId());
             }
         });
 

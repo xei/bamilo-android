@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 
 import com.mobile.controllers.ProductListAdapter;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
@@ -179,9 +180,12 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
 
     @Override
     protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
-        if (level == ITEM_VIEW_TYPE_GRID) {
+        if (level == ITEM_VIEW_TYPE_GRID || level == ITEM_VIEW_TYPE_SINGLE) {
             UIProductUtils.setPriceRules(item, holder.price, holder.discount);
             UIProductUtils.setDiscountRules(item, holder.percentage);
+            if (!item.hasDiscount()) {
+                holder.price_rl.setVisibility(View.GONE);
+            }
         } else {
             super.setProductPrice(holder, item);
         }
