@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -127,10 +128,19 @@ public class UICatalogUtils {
                         }
                         if (filterValues.size()<3 && desc.endsWith(",")) {
                             desc = desc.substring(0, desc.length()-1);
-                        } else {
+                        } else if (desc.trim().length()>0) {
                             desc = desc + "...";
                         }
                         descriptionLabel.setText(desc);
+                        if (catalogPage.getFilters() == null || catalogPage.getFilters().size() == 0) {
+                            button.findViewById(R.id.catalog_bar_filter).setEnabled(false);
+                            button.findViewById(R.id.catalog_bar_button_filter).setEnabled(false);
+                            button.findViewById(R.id.catalog_bar_description_filter).setEnabled(false);
+                            ((TextView)button.findViewById(R.id.catalog_bar_description_filter)).setText("برند، قیمت، ...");
+                            button.setSelected(false);
+                            button.setBackgroundResource(R.color.black_300);
+
+                        }
                     }
                     else {
                         String filterNames = "";
@@ -141,6 +151,9 @@ public class UICatalogUtils {
                                 filterNames = filterNames + ", " + catalogPage.getFilters().get(1).getName();
                             if (catalogPage.getFilters().size() > 2)
                                 filterNames = filterNames + ", ...";
+                        }
+                        else {
+                            button.setEnabled(false);
                         }
                         descriptionLabel.setText(filterNames);
                     }
