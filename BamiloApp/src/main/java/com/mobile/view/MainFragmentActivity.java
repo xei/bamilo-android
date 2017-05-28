@@ -421,6 +421,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             case CATALOG_BRAND:
             case CATALOG_DEEP_LINK:
             case CATALOG_CATEGORY:
+            case CATALOG_NOFILTER:
             case CATALOG:
                 // Default
                 removeEntries = true;
@@ -435,6 +436,19 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 }
 
                 // Put the target type
+                bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
+                // Create instance
+                fragment = newFragmentInstance(CatalogFragment.class, bundle);
+                // Put the type with unique identifier
+                type = FragmentType.getUniqueIdentifier(FragmentType.CATALOG, fragment);
+                break;
+            case CATALOG_FILTER:
+                removeEntries = false;
+                // Get indications to remove old entries or not
+                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES)) {
+                    removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
+                    bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
+                }
                 bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
                 // Create instance
                 fragment = newFragmentInstance(CatalogFragment.class, bundle);

@@ -1,5 +1,6 @@
 package com.mobile.view.fragments;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.categories.GetSubCategoriesHelper;
@@ -30,18 +32,23 @@ import com.mobile.service.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.service.objects.catalog.filters.FilterOptionInterface;
 import com.mobile.service.objects.catalog.filters.FilterSelectionController;
 import com.mobile.service.objects.category.Categories;
+import com.mobile.service.objects.product.pojo.ProductRegular;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.pojo.RestConstants;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.catalog.CatalogGridAdapter;
+import com.mobile.utils.catalog.UICatalogUtils;
 import com.mobile.utils.catalog.filters.FilterCheckFragment;
 import com.mobile.utils.catalog.filters.FilterColorFragment;
 import com.mobile.utils.catalog.filters.FilterFragment;
 import com.mobile.utils.catalog.filters.FilterPriceFragment;
 import com.mobile.utils.catalog.filters.FilterRatingFragment;
+import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 import com.mobile.view.newfragments.SubCategoryFilterFragment;
 
@@ -93,6 +100,20 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     private TextView mTxFilterTitle;
     private Categories mCategories;
     private String mCategoryKey;
+
+    private String mCategoryTree;
+
+    private String mMainCategory;
+
+    private ContentValues mQueryValues = new ContentValues();
+
+    private String mTitle;
+
+    private int mLevel = CatalogGridAdapter.ITEM_VIEW_TYPE_LIST;
+
+    private String mKey;
+    private boolean cleanfilters = false;
+
     /**
      * Empty constructor
      */
@@ -116,6 +137,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
             Parcelable[] filterOptions = savedInstanceState.getParcelableArray(INITIAL_FILTER_VALUES);
             filterSelectionController = filterOptions instanceof FilterOptionInterface[] ? new FilterSelectionController(mFilters, (FilterOptionInterface[]) filterOptions) : new FilterSelectionController(mFilters);
             mCategoryKey = savedInstanceState.getString("category_url");
+
         }
         // Received arguments
         else {
@@ -123,6 +145,20 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
             currentFilterPosition = IntConstants.DEFAULT_POSITION;
             filterSelectionController = new FilterSelectionController(mFilters);
             mCategoryKey = bundle.getString("category_url");
+            mKey = bundle.getString(ConstantsIntentExtra.CONTENT_ID);
+            // Get title
+            mTitle = bundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
+            // Get catalog type (Hash|Seller|Brand|Category|DeepLink)
+            //mQueryValues = UICatalogUtils.saveCatalogType(bundle, mQueryValues, mKey);
+            // Default catalog values
+            //mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
+            // In case of searching by keyword
+            UICatalogUtils.saveSearchQuery(bundle, mQueryValues);
+            // Verify if catalog page was open via navigation drawer
+            mCategoryTree = bundle.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
+            //Get category content/main category
+            mMainCategory = bundle.getString(RestConstants.MAIN_CATEGORY);
+
         }
         //
         toCancelFilters = true;
@@ -306,6 +342,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         if(currentFragment != null) {
             currentFragment.cleanValues();
         }
+        cleanfilters = true;
     }
 
     /**
@@ -327,9 +364,18 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         toCancelFilters = false;
         Bundle bundle = new Bundle();
        // bundle.putString(FILTER_CATEGORY, "women_tops_tshirts");
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, mKey);
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
         bundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
-        getBaseActivity().communicateBetweenFragments(parentCatalogBackStackTag, bundle);
         getBaseActivity().onBackPressed();
+        if (cleanfilters) {
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG_NOFILTER, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+        } else {
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG_FILTER, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+        cleanfilters = false;
     }
 
 

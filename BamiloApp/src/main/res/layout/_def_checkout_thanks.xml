@@ -21,13 +21,14 @@
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextBase.Display_1"
-            android:layout_marginLeft="@dimen/margin_60px"
-            android:layout_marginRight="@dimen/margin_60px"
-            android:layout_marginTop="@dimen/dimen_16dp"
+            android:layout_marginLeft="@dimen/margin_80px"
+            android:layout_marginRight="@dimen/margin_80px"
+            android:layout_marginTop="@dimen/dimen_32dp"
             android:gravity="center_horizontal"
             android:paddingBottom="@dimen/dimen_16dp"
             android:singleLine="false"
             android:text="@string/thank_you_order_title"
+            android:drawablePadding="-40dp"
             android:drawableLeft="@drawable/ic_success_checkout"
             android:drawableStart="@drawable/ic_success_checkout"
             android:textColor="@color/green_1" />
