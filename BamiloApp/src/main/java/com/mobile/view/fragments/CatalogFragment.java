@@ -83,6 +83,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private final static String TRACK_GRID = "grid";
 
     private final static String TRACK_SINGLE = "single";
+    public final static String FILTER_TAG = "catalog_filters";
 
     private final static int FIRST_POSITION = 0;
 
@@ -180,8 +181,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
             //Get category content/main category
             mMainCategory = arguments.getString(RestConstants.MAIN_CATEGORY);
-            mCurrentFilterValues = arguments.getParcelable(FilterMainFragment.FILTER_TAG);
-            if (mCurrentFilterValues == null) mCurrentFilterValues = new ContentValues();
+            mCurrentFilterValues = arguments.getParcelable(FILTER_TAG);
+            if (mCurrentFilterValues == null) {
+                mCurrentFilterValues = new ContentValues();
+            }
             // Get sort from Deep Link
             if(arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)){
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
@@ -259,6 +262,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onStart();
         Print.i(TAG, "ON START");
         // Validate data
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mCurrentFilterValues = arguments.getParcelable(FILTER_TAG);
+            if (mCurrentFilterValues == null) {
+                mCurrentFilterValues = new ContentValues();
+            }
+        }
         onValidateDataState();
     }
 
@@ -378,6 +388,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case catalog is null get catalog from URL
         else if (mCatalogPage == null) {
             triggerGetPaginatedCatalog();
+
         }
         // Case sort or filter applied
         else if (mSortOrFilterApplied) {
@@ -453,6 +464,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             setCatalogAdapter(mCatalogPage);
             // Set filter button
             UICatalogUtils.setFilterButtonActionState(mFilterButton, mCatalogPage.hasFilters(), this);
+            TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
+            UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues, filterDesc, mCatalogPage);
             // Set sort button
             setSortButton();
         }
@@ -486,7 +499,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Show container
         showFragmentContentContainer();
-        if (mCurrentFilterValues.size()==0) setFilterDescription(catalogPage);
+        if (mCurrentFilterValues.size()==0) {
+            setFilterDescription(catalogPage);
+        }
     }
 
     /**
@@ -712,7 +727,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, mKey);
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             ArrayList<CatalogFilter> filters = mCatalogPage.getFilters();
-            bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, filters);
+            bundle.putParcelableArrayList(FILTER_TAG, filters);
             getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
@@ -996,7 +1011,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             default:
                 onRequestCatalogSuccess(baseResponse);
 
-
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaCatalog, mGABeginRequestMillis, mTitle);
                 break;
@@ -1046,7 +1060,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.w(TAG, "WARNING: RECEIVED INVALID CATALOG PAGE");
             showContinueShopping();
         }
-        if (mCurrentFilterValues.size()==0) setFilterDescription(catalogPage);
+        if (mCurrentFilterValues.size()==0) {
+            setFilterDescription(catalogPage);
+        }
 
     }
 

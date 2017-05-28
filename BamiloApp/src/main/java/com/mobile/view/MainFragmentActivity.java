@@ -421,6 +421,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             case CATALOG_BRAND:
             case CATALOG_DEEP_LINK:
             case CATALOG_CATEGORY:
+            case CATALOG_NOFILTER:
             case CATALOG:
                 // Default
                 removeEntries = true;

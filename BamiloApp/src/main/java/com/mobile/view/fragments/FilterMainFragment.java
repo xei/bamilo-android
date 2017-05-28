@@ -112,6 +112,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     private int mLevel = CatalogGridAdapter.ITEM_VIEW_TYPE_LIST;
 
     private String mKey;
+    private boolean cleanfilters = false;
 
     /**
      * Empty constructor
@@ -341,6 +342,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         if(currentFragment != null) {
             currentFragment.cleanValues();
         }
+        cleanfilters = true;
     }
 
     /**
@@ -367,8 +369,13 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
         bundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
         getBaseActivity().onBackPressed();
-        getBaseActivity().onSwitchFragment(FragmentType.CATALOG_FILTER, bundle, FragmentController.ADD_TO_BACK_STACK);
-        //getBaseActivity().communicateBetweenFragments(parentCatalogBackStackTag, bundle);
+        if (cleanfilters) {
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG_NOFILTER, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+        } else {
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG_FILTER, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+        cleanfilters = false;
     }
 
 
