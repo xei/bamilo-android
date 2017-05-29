@@ -10,28 +10,53 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
         <ImageView
             android:id="@+id/success_image"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.15"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_20dp"
-            android:visibility="gone"
+            android:visibility="invisible"
             android:src="@drawable/ic_success_checkout" />
 
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextBase.Display_1"
-            android:layout_marginLeft="@dimen/margin_80px"
-            android:layout_marginRight="@dimen/margin_80px"
+            android:layout_width="0dp"
+            android:layout_weight="0.70"
+
             android:layout_marginTop="@dimen/dimen_32dp"
             android:gravity="center_horizontal"
             android:paddingBottom="@dimen/dimen_16dp"
-            android:singleLine="false"
+            android:textSize="24sp"
+            android:singleLine="true"
             android:text="@string/thank_you_order_title"
-            android:drawablePadding="-40dp"
+            android:drawablePadding="5dp"
             android:drawableLeft="@drawable/ic_success_checkout"
             android:drawableStart="@drawable/ic_success_checkout"
             android:textColor="@color/green_1" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="0.15"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:visibility="invisible"
+                android:src="@drawable/ic_success_checkout" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextBase.Body"
@@ -41,8 +66,9 @@
             android:gravity="center_horizontal"
             android:paddingBottom="@dimen/dimen_16dp"
             android:singleLine="false"
+            android:textSize="14sp"
             android:text="@string/order_success"
-            android:textColor="@color/black_800" />
+            android:textColor="@color/black" />
 
 
         <com.mobile.components.customfontviews.Button
@@ -52,6 +78,7 @@
             android:layout_marginLeft="@dimen/margin_60px"
             android:layout_marginRight="@dimen/margin_60px"
             android:layout_marginTop="@dimen/dimen_16dp"
+            android:textSize="16sp"
             android:text="@string/my_order_details_label"
             android:textAllCaps="true" />
 

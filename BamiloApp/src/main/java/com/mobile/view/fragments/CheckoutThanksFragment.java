@@ -91,6 +91,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     RecommendationsCartHolder recommendationsHolder;
     private String itemsId="";
 
+    private PurchaseEntity oldCart = null;
     /**
      * Empty constructor
      */
@@ -184,7 +185,11 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Track purchase
         PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
         if (cart == null) {
-            cart = new PurchaseEntity();
+            if (oldCart == null) {
+                cart = new PurchaseEntity();
+            } else {
+                cart = oldCart;
+            }
         }
         TrackerDelegator.trackPurchaseInCheckoutThanks(cart, mOrderNumber, mGrandTotalValue, mOrderShipping, mOrderTax, mPaymentMethod);
         ArrayList<PurchaseCartItem> carts=  cart.getCartItems();
@@ -209,6 +214,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Show
         //setRelatedItems();
         sendRecommend(cart);
+        oldCart = cart;
         // Clean cart
         triggerClearCart();
 
