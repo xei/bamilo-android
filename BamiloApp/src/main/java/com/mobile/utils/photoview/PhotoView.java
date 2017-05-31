@@ -25,7 +25,6 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.widget.ImageView;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.utils.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import com.mobile.utils.photoview.PhotoViewAttacher.OnPhotoTapListener;
 import com.mobile.utils.photoview.PhotoViewAttacher.OnViewTapListener;
