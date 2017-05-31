@@ -61,4 +61,6 @@
     <item type="id" name="item_quantity"/>
     <item type="id" name="item_change"/>
 
+    <item name="material_drawer_item_divider" type="id" />
+
 </resources>

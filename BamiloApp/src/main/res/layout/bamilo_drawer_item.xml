@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:orientation="horizontal"
+    android:paddingEnd="@dimen/material_drawer_vertical_padding"
+    android:paddingLeft="@dimen/material_drawer_vertical_padding"
+    android:paddingRight="@dimen/material_drawer_vertical_padding"
+    android:paddingStart="@dimen/material_drawer_vertical_padding"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/material_drawer_icon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="0dp"
+        android:paddingStart="0dp"
+        android:scaleType="fitXY"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/my_address_icon"/>
+
+>    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical|start"
+        android:orientation="vertical">
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/material_drawer_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|start"
+            android:lines="1"
+            android:singleLine="true"
+            android:textDirection="anyRtl"
+            android:textSize="@dimen/drawer_fontsize"
+            android:textColor="@color/drawer_defaultcolor"
+            tools:text="Some drawer text" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/material_drawer_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:gravity="center_vertical|start"
+            android:lines="1"
+            android:singleLine="true"
+            android:textDirection="anyRtl"
+            android:textSize="@dimen/material_drawer_item_primary_description"
+            tools:text="Some drawer text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/material_drawer_badge_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingEnd="0dp"
+        android:paddingLeft="@dimen/material_drawer_padding"
+        android:paddingRight="0dp"
+        android:paddingStart="@dimen/material_drawer_padding"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/material_drawer_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="1"
+            android:minWidth="20dp"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:singleLine="true"
+            android:textSize="@dimen/material_drawer_item_primary_text"
+            tools:text="99" />
+    </LinearLayout>
+</LinearLayout>

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -40,6 +41,14 @@ import android.widget.FrameLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.holder.BadgeStyle;
+import com.mikepenz.materialdrawer.holder.StringHolder;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -59,6 +68,8 @@ import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
+import com.mobile.libraries.mikepenz.materialdrawer.BamiloDividerItem;
+import com.mobile.libraries.mikepenz.materialdrawer.BamiloDrawerItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.checkout.CheckoutStepLogin;
 import com.mobile.service.objects.customer.Customer;
@@ -137,6 +148,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private DialogProgressFragment baseActivityProgressDialog;
     private DialogGenericFragment dialogLogout;
     private boolean backPressedOnce = false;
+    private BamiloDrawerItem cartDrawerItem;
     /**
      * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
      * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this -action-after-onsaveinstancestate-h
@@ -158,6 +170,21 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private AppBarLayout mAppBarLayout;
     public ConfirmationCartMessageView mConfirmationCartMessageView;
 
+    private static int drawer_identifier_home = 1;
+    private static int drawer_identifier_categories = 2;
+    private static int drawer_identifier_order_tracking = 3;
+    private static int drawer_identifier_wishlist = 4;
+    private static int drawer_identifier_recently_viewed = 5;
+    private static int drawer_identifier_cart = 6;
+    private static int drawer_identifier_contactus = 7;
+    private static int drawer_identifier_emailus = 8;
+    private static int drawer_identifier_bug_report = 9;
+    private static int drawer_identifier_faq = 10;
+    private static int drawer_identifier_share = 11;
+    private static int drawer_identifier_rateus = 12;
+
+    private AccountHeader headerResult = null;
+    private Drawer mainDrawer = null;
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
      */
@@ -475,7 +502,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     private void setupDrawerNavigation() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerNavigation = findViewById(R.id.fragment_navigation);
+        //mDrawerNavigation = findViewById(R.id.fragment_navigation);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -484,6 +511,144 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+
+        headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withTranslucentStatusBar(true)
+                .withHeaderBackground(R.drawable.drawer_header)
+
+                /*.addProfiles(
+                        profile,
+                        profile2,
+                        profile3,
+                        profile4,
+                        profile5,
+                        profile6,
+                        //don't ask but google uses 14dp for the add account icon in gmail but 20dp for the normal icons (like manage account)
+                        new ProfileSettingDrawerItem().withName("Add Account").withDescription("Add new GitHub Account").withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_plus).actionBar().paddingDp(5).colorRes(R.color.material_drawer_primary_text)).withIdentifier(PROFILE_SETTING),
+                        new ProfileSettingDrawerItem().withName("Manage Account").withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(100001)
+                )*/
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean current) {
+                        //sample usage of the onProfileChanged listener
+                        //if the clicked item has the identifier 1 add a new profile ;)
+                        /*if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTING) {
+                            int count = 100 + headerResult.getProfiles().size() + 1;
+                            IProfile newProfile = new ProfileDrawerItem().withNameShown(true).withName("Batman" + count).withEmail("batman" + count + "@gmail.com").withIcon(R.drawable.profile5).withIdentifier(count);
+                            if (headerResult.getProfiles() != null) {
+                                //we know that there are 2 setting elements. set the new profile above them ;)
+                                headerResult.addProfile(newProfile, headerResult.getProfiles().size() - 2);
+                            } else {
+                                headerResult.addProfiles(newProfile);
+                            }
+                        }*/
+
+                        //false if you have not consumed the event and it should close the drawer
+                        return false;
+                    }
+                })
+                //.withSavedInstance(savedInstanceState)
+                .build();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+
+
+                //Create the drawer
+        mainDrawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withDrawerGravity(Gravity.RIGHT)
+                .withHasStableIds(true)
+                //.withItemAnimator(new AlphaCrossFadeAnimator())
+                .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
+                .addDrawerItems(
+                        new BamiloDrawerItem().withName(R.string.drawer_home).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_home).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_categories).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_categories).withSelectable(false),
+                        new BamiloDividerItem(),
+                        new BamiloDrawerItem().withName(R.string.drawer_order_tracking).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_order_tracking).withSelectable(false),
+                        new BamiloDividerItem(),
+                        new BamiloDrawerItem().withName(R.string.drawer_wishlist).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_wishlist).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_recently_viewed).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_recently_viewed).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_cart).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_cart).withSelectable(false).withBadgeStyle(new BadgeStyle().withBadgeBackground(getResources().getDrawable(R.drawable.drawer_cart_badge)).withTextColor(Color.WHITE).withColorRes(R.color.md_deep_orange_300)),                        new BamiloDrawerItem().withName(R.string.drawer_myprofile).withIcon(R.drawable.my_address_icon).withIdentifier(7).withSelectable(false),
+                        new BamiloDividerItem(),
+                        new BamiloDrawerItem().withName(R.string.drawer_contactus).withIdentifier(drawer_identifier_contactus).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_emailus).withIdentifier(drawer_identifier_emailus).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_bug_report).withIdentifier(drawer_identifier_bug_report).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_faq).withIdentifier(drawer_identifier_faq).withSelectable(false),
+                        new BamiloDividerItem(),
+                        new BamiloDrawerItem().withName(R.string.drawer_share).withIdentifier(drawer_identifier_share).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_rateus).withIdentifier(drawer_identifier_rateus).withSelectable(false)
+
+                ) // add the items we want to use with our Drawer
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        //check if the drawerItem is set.
+                        //there are different reasons for the drawerItem to be null
+                        //--> click on the header
+                        //--> click on the footer
+                        //those items don't contain a drawerItem
+
+                        /*if (drawerItem != null) {
+                            Intent intent = null;
+                            if (drawerItem.getIdentifier() == 1) {
+                                intent = new Intent(DrawerActivity.this, CompactHeaderDrawerActivity.class);
+                            } else if (drawerItem.getIdentifier() == 2) {
+                                intent = new Intent(DrawerActivity.this, ActionBarActivity.class);
+                            } else if (drawerItem.getIdentifier() == 3) {
+                                intent = new Intent(DrawerActivity.this, MultiDrawerActivity.class);
+                            } else if (drawerItem.getIdentifier() == 4) {
+                                intent = new Intent(DrawerActivity.this, NonTranslucentDrawerActivity.class);
+                            } else if (drawerItem.getIdentifier() == 5) {
+                                intent = new Intent(DrawerActivity.this, AdvancedActivity.class);
+                            } else if (drawerItem.getIdentifier() == 7) {
+                                intent = new Intent(DrawerActivity.this, EmbeddedDrawerActivity.class);
+                            } else if (drawerItem.getIdentifier() == 8) {
+                                intent = new Intent(DrawerActivity.this, FullscreenDrawerActivity.class);
+                            } else if (drawerItem.getIdentifier() == 9) {
+                                intent = new Intent(DrawerActivity.this, CustomContainerActivity.class);
+                            } else if (drawerItem.getIdentifier() == 10) {
+                                intent = new Intent(DrawerActivity.this, MenuDrawerActivity.class);
+                            } else if (drawerItem.getIdentifier() == 11) {
+                                intent = new Intent(DrawerActivity.this, MiniDrawerActivity.class);
+                            } else if (drawerItem.getIdentifier() == 12) {
+                                intent = new Intent(DrawerActivity.this, FragmentActivity.class);
+                            } else if (drawerItem.getIdentifier() == 13) {
+                                intent = new Intent(DrawerActivity.this, CollapsingToolbarActivity.class);
+                            } else if (drawerItem.getIdentifier() == 14) {
+                                intent = new Intent(DrawerActivity.this, PersistentDrawerActivity.class);
+                            } else if (drawerItem.getIdentifier() == 15) {
+                                intent = new Intent(DrawerActivity.this, CrossfadeDrawerLayoutActvitiy.class);
+                            } else if (drawerItem.getIdentifier() == 20) {
+                                intent = new LibsBuilder()
+                                        .withFields(R.string.class.getFields())
+                                        .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                                        .intent(DrawerActivity.this);
+                            }
+                            if (intent != null) {
+                                DrawerActivity.this.startActivity(intent);
+                            }
+                        }*/
+
+                        return false;
+                    }
+                })
+                //.withSavedInstance(savedInstanceState)
+                .withShowDrawerOnFirstLaunch(true)
+//              .withShowDrawerUntilDraggedOpened(true)
+                .build();
+
+        updateCartDrawerItem();
+
+    }
+
+    public void updateCartDrawerItem() {
+        PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+        if (cart != null && cart.getCartCount() != 0) {
+            mainDrawer.updateBadge(drawer_identifier_cart, new StringHolder(cart.getCartCount() + ""));
+        }
     }
 
     /*
@@ -496,9 +661,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * @modified sergiopereira
      */
     public void closeNavigationDrawer() {
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
+        /*if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
             mDrawerLayout.closeDrawer(mDrawerNavigation);
-        }
+        }*/
     }
 
     /**
@@ -677,7 +842,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             Print.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
         }
     }    @Override
-         public void onTabUnselected(TabLayout.Tab tab) {
+    public void onTabUnselected(TabLayout.Tab tab) {
         // ...
     }
 
@@ -695,7 +860,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             mDrawerToggle.setDrawerIndicatorEnabled(true);
         }
     }    @Override
-         public void onTabReselected(TabLayout.Tab tab) {
+    public void onTabReselected(TabLayout.Tab tab) {
         // ...
     }
     
@@ -1031,7 +1196,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
-        Print.d(TAG, "SEARCH COMPONENT: result " + result);
+        Print.d(TAG, "SEARCH COMPONENT: mainDrawer " + result);
         // Case algolia
         if (!result) {
             Bundle bundle = new Bundle();
@@ -1210,6 +1375,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.d(TAG, "ON UPDATE CART INFO");
         updateCartInfoInActionBar();
         UITabLayoutUtils.updateTabCartInfo(mTabLayout);
+        updateCartDrawerItem();
     }
 
     /**
@@ -1661,7 +1827,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             String last = FragmentController.getInstance().getLastEntry();
             // Validate last entry to support create and edit address (rotation)
             if(!TextUtils.equals(last, FragmentType.CHECKOUT_CREATE_ADDRESS.toString()) &&
-               !TextUtils.equals(last, FragmentType.CHECKOUT_EDIT_ADDRESS.toString())) {
+                    !TextUtils.equals(last, FragmentType.CHECKOUT_EDIT_ADDRESS.toString())) {
                 popBackStackUntilTag(FragmentType.CHECKOUT_MY_ADDRESSES.toString());
             }
         }

@@ -58,6 +58,10 @@ dependencies {
     /** LOCAL **/
     compile fileTree(include: ['*.jar'], exclude: ['json.jar'], dir: 'libs')
     compile 'pl.openrnd.android:multi-level-listview:1.0.1'
+    /** Drawer **/
+    compile('com.mikepenz:materialdrawer:5.9.2@aar') {
+        transitive = true
+    }
     /** TESTS **/
     testCompile 'junit:junit:4.12'
     testCompile files('libs/json.jar')
