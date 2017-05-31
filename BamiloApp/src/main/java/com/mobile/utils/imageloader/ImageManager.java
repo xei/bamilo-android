@@ -10,7 +10,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.android.volley.toolbox.ImageLoader;
 
 /**
  * Created by Narbeh M. on 4/23/17.
