@@ -37,7 +37,6 @@ dependencies {
     /** FRAMEWORK **/
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
-    compile 'com.android.volley:volley:1.0.0'
     /** GOOGLE PLAY SERVICE **/
     compile 'com.google.android.gms:play-services-analytics:10.2.4'
     compile 'com.google.android.gms:play-services-location:10.2.4'

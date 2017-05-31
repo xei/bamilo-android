@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.view.R;
 
