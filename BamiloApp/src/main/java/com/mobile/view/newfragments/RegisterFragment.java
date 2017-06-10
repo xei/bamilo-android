@@ -280,6 +280,8 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 getActivity().onBackPressed();
                 // Set facebook login
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
+                getBaseActivity().setupDrawerNavigation();
+
                 break;
             default:
                 hideActivityProgress();

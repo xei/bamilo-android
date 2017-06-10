@@ -254,6 +254,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                     // Show layout to call to order
                     showFragmentUnknownCheckoutStepError();
                 }
+                getBaseActivity().setupDrawerNavigation();
+
                 break;
             case LOGIN_EVENT:
                 hideActivityProgress();
@@ -285,6 +287,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
                 }
+                getBaseActivity().setupDrawerNavigation();
+
                 return;
            /* case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();

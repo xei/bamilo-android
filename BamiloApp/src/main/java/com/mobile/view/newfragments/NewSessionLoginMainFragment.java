@@ -394,6 +394,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                     // Show layout to call to order
                     showFragmentUnknownCheckoutStepError();
                 }
+                getBaseActivity().setupDrawerNavigation();
                 break;
             /*case LOGIN_EVENT:
                 hideActivityProgress();

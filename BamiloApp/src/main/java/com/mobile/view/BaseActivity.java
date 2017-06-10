@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -27,6 +28,7 @@ import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -47,6 +49,7 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.holder.BadgeStyle;
 import com.mikepenz.materialdrawer.holder.StringHolder;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mobile.app.BamiloApplication;
@@ -98,6 +101,7 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.UITabLayoutUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 
@@ -176,12 +180,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private static int drawer_identifier_wishlist = 4;
     private static int drawer_identifier_recently_viewed = 5;
     private static int drawer_identifier_cart = 6;
-    private static int drawer_identifier_contactus = 7;
-    private static int drawer_identifier_emailus = 8;
-    private static int drawer_identifier_bug_report = 9;
-    private static int drawer_identifier_faq = 10;
-    private static int drawer_identifier_share = 11;
-    private static int drawer_identifier_rateus = 12;
+    private static int drawer_identifier_myprofile = 7;
+    private static int drawer_identifier_contactus = 8;
+    private static int drawer_identifier_emailus = 9;
+    private static int drawer_identifier_bug_report = 10;
+    private static int drawer_identifier_idea_report = 11;
+    private static int drawer_identifier_faq = 12;
+    private static int drawer_identifier_share = 13;
+    private static int drawer_identifier_rateus = 14;
 
     private AccountHeader headerResult = null;
     private Drawer mainDrawer = null;
@@ -500,7 +506,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      *
      * @modified sergiopereira
      */
-    private void setupDrawerNavigation() {
+    public void setupDrawerNavigation() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         //mDrawerNavigation = findViewById(R.id.fragment_navigation);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
@@ -511,24 +517,27 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        IProfile profile = null;
+       // boolean hasCredentials = BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials();
 
+        if (BamiloApplication.isCustomerLoggedIn()) {
+            profile = new ProfileDrawerItem().withName("سلام " + BamiloApplication.CUSTOMER.getFirstName())
+                    .withEmail(BamiloApplication.CUSTOMER.getEmail()).withIcon("https://avatars3.githubusercontent.com/u/1476232?v=3&s=460").withIdentifier(100);
+
+        } else {
+            profile = new ProfileDrawerItem().withName("خوش آمدید")
+                    .withEmail("ورود/ثبت نام").withIcon("https://avatars3.githubusercontent.com/u/1476232?v=3&s=460").withIdentifier(100);
+
+        }
 
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
-                .withTranslucentStatusBar(true)
-                .withHeaderBackground(R.drawable.drawer_header)
-
-                /*.addProfiles(
-                        profile,
-                        profile2,
-                        profile3,
-                        profile4,
-                        profile5,
-                        profile6,
-                        //don't ask but google uses 14dp for the add account icon in gmail but 20dp for the normal icons (like manage account)
-                        new ProfileSettingDrawerItem().withName("Add Account").withDescription("Add new GitHub Account").withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_plus).actionBar().paddingDp(5).colorRes(R.color.material_drawer_primary_text)).withIdentifier(PROFILE_SETTING),
-                        new ProfileSettingDrawerItem().withName("Manage Account").withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(100001)
-                )*/
+                .withAccountHeader(R.layout.hamburger_menu_header)
+                //.withTranslucentStatusBar(true)
+                //.withHeaderBackground(R.drawable.drawer_header)
+                .addProfiles(profile)
+                .withSelectionListEnabledForSingleProfile(false)
+                .withAlternativeProfileHeaderSwitching(false)
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
@@ -549,8 +558,20 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         return false;
                     }
                 })
+
                 //.withSavedInstance(savedInstanceState)
                 .build();
+
+                headerResult.getView().findViewById(R.id.material_drawer_account_header_email).setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!BamiloApplication.isCustomerLoggedIn()) {
+                            onSwitchFragment(FragmentType.LOGIN, null, true);
+                            mainDrawer.closeDrawer();
+                        }
+                    }
+                });
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
@@ -561,84 +582,82 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 .withToolbar(toolbar)
                 .withDrawerGravity(Gravity.RIGHT)
                 .withHasStableIds(true)
-                //.withItemAnimator(new AlphaCrossFadeAnimator())
-                .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
+                .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        new BamiloDrawerItem().withName(R.string.drawer_home).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_home).withSelectable(false),
-                        new BamiloDrawerItem().withName(R.string.drawer_categories).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_categories).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_home).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_home).withSelectable(false).setSelectedColor(),
+                        new BamiloDrawerItem().withName(R.string.drawer_categories).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_categories).withSelectable(false).setSelectedColor(),
                         new BamiloDividerItem(),
                         new BamiloDrawerItem().withName(R.string.drawer_order_tracking).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_order_tracking).withSelectable(false),
                         new BamiloDividerItem(),
                         new BamiloDrawerItem().withName(R.string.drawer_wishlist).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_wishlist).withSelectable(false),
                         new BamiloDrawerItem().withName(R.string.drawer_recently_viewed).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_recently_viewed).withSelectable(false),
-                        new BamiloDrawerItem().withName(R.string.drawer_cart).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_cart).withSelectable(false).withBadgeStyle(new BadgeStyle().withBadgeBackground(getResources().getDrawable(R.drawable.drawer_cart_badge)).withTextColor(Color.WHITE).withColorRes(R.color.md_deep_orange_300)),                        new BamiloDrawerItem().withName(R.string.drawer_myprofile).withIcon(R.drawable.my_address_icon).withIdentifier(7).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_cart).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_cart).withSelectable(false).withBadgeStyle(new BadgeStyle().withBadgeBackground(getResources().getDrawable(R.drawable.drawer_cart_badge)).withTextColor(Color.WHITE).withColorRes(R.color.md_deep_orange_300)),
+                        new BamiloDrawerItem().withName(R.string.drawer_myprofile).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_myprofile).withSelectable(false),
                         new BamiloDividerItem(),
                         new BamiloDrawerItem().withName(R.string.drawer_contactus).withIdentifier(drawer_identifier_contactus).withSelectable(false),
                         new BamiloDrawerItem().withName(R.string.drawer_emailus).withIdentifier(drawer_identifier_emailus).withSelectable(false),
                         new BamiloDrawerItem().withName(R.string.drawer_bug_report).withIdentifier(drawer_identifier_bug_report).withSelectable(false),
+                        //new BamiloDrawerItem().withName(R.string.drawer_idea_report).withIdentifier(drawer_identifier_idea_report).withSelectable(false),
                         new BamiloDrawerItem().withName(R.string.drawer_faq).withIdentifier(drawer_identifier_faq).withSelectable(false),
                         new BamiloDividerItem(),
                         new BamiloDrawerItem().withName(R.string.drawer_share).withIdentifier(drawer_identifier_share).withSelectable(false),
                         new BamiloDrawerItem().withName(R.string.drawer_rateus).withIdentifier(drawer_identifier_rateus).withSelectable(false)
 
-                ) // add the items we want to use with our Drawer
+                )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        //check if the drawerItem is set.
-                        //there are different reasons for the drawerItem to be null
-                        //--> click on the header
-                        //--> click on the footer
-                        //those items don't contain a drawerItem
 
-                        /*if (drawerItem != null) {
+                        if (drawerItem != null) {
                             Intent intent = null;
-                            if (drawerItem.getIdentifier() == 1) {
-                                intent = new Intent(DrawerActivity.this, CompactHeaderDrawerActivity.class);
-                            } else if (drawerItem.getIdentifier() == 2) {
-                                intent = new Intent(DrawerActivity.this, ActionBarActivity.class);
-                            } else if (drawerItem.getIdentifier() == 3) {
-                                intent = new Intent(DrawerActivity.this, MultiDrawerActivity.class);
-                            } else if (drawerItem.getIdentifier() == 4) {
-                                intent = new Intent(DrawerActivity.this, NonTranslucentDrawerActivity.class);
-                            } else if (drawerItem.getIdentifier() == 5) {
-                                intent = new Intent(DrawerActivity.this, AdvancedActivity.class);
-                            } else if (drawerItem.getIdentifier() == 7) {
-                                intent = new Intent(DrawerActivity.this, EmbeddedDrawerActivity.class);
-                            } else if (drawerItem.getIdentifier() == 8) {
-                                intent = new Intent(DrawerActivity.this, FullscreenDrawerActivity.class);
-                            } else if (drawerItem.getIdentifier() == 9) {
-                                intent = new Intent(DrawerActivity.this, CustomContainerActivity.class);
-                            } else if (drawerItem.getIdentifier() == 10) {
-                                intent = new Intent(DrawerActivity.this, MenuDrawerActivity.class);
-                            } else if (drawerItem.getIdentifier() == 11) {
-                                intent = new Intent(DrawerActivity.this, MiniDrawerActivity.class);
-                            } else if (drawerItem.getIdentifier() == 12) {
-                                intent = new Intent(DrawerActivity.this, FragmentActivity.class);
-                            } else if (drawerItem.getIdentifier() == 13) {
-                                intent = new Intent(DrawerActivity.this, CollapsingToolbarActivity.class);
-                            } else if (drawerItem.getIdentifier() == 14) {
-                                intent = new Intent(DrawerActivity.this, PersistentDrawerActivity.class);
-                            } else if (drawerItem.getIdentifier() == 15) {
-                                intent = new Intent(DrawerActivity.this, CrossfadeDrawerLayoutActvitiy.class);
-                            } else if (drawerItem.getIdentifier() == 20) {
-                                intent = new LibsBuilder()
-                                        .withFields(R.string.class.getFields())
-                                        .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
-                                        .intent(DrawerActivity.this);
+                            if (drawerItem.getIdentifier() == drawer_identifier_home) {
+                                onSwitchFragment(FragmentType.HOME, null, true);
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_categories) {
+                                onSwitchFragment(FragmentType.CATEGORIES, null, true);
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_order_tracking) {
+                                onSwitchFragment(FragmentType.MY_ORDERS, null, true);
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_wishlist) {
+                                onSwitchFragment(FragmentType.WISH_LIST, null, true);
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_recently_viewed) {
+                                onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST, null, true);
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_cart) {
+                                onSwitchFragment(FragmentType.SHOPPING_CART, null, true);
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_myprofile) {
+                                onSwitchFragment(FragmentType.MY_ACCOUNT, null, true);
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_contactus) {
+                                Intent callintent = new Intent(Intent.ACTION_DIAL);
+                                callintent.setData(Uri.parse(getResources().getString(R.string.call_center_number)));
+                                startActivity(callintent);
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_emailus) {
+                                UIUtils.emailToCS(BaseActivity.this);
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_bug_report) {
+                                UIUtils.emailBugs(BaseActivity.this);
+                            /*} else if (drawerItem.getIdentifier() == drawer_identifier_idea_report) {
+                                UIUtils.emailIdeas(BaseActivity.this);*/
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_faq) {
+                                @TargetLink.Type String link = TargetLink.SHOP_IN_SHOP.concat("::help-android");
+                                new TargetLink(getWeakBaseActivity(), link)
+                                        .addTitle(R.string.faq)
+                                        .setOrigin(TeaserGroupType.MAIN_TEASERS)
+                                        //.addAppendListener(this)
+                                        //.addCampaignListener(this)
+                                        .retainBackStackEntries()
+                                        .enableWarningErrorMessage()
+                                        .run();
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_share) {
+                                UIUtils.shareApp(BaseActivity.this);
+                            } else if (drawerItem.getIdentifier() == drawer_identifier_rateus) {
+                                UIUtils.rateApp(BaseActivity.this);
                             }
-                            if (intent != null) {
-                                DrawerActivity.this.startActivity(intent);
-                            }
-                        }*/
+                        }
 
                         return false;
                     }
                 })
-                //.withSavedInstance(savedInstanceState)
                 .withShowDrawerOnFirstLaunch(true)
-//              .withShowDrawerUntilDraggedOpened(true)
                 .build();
+
+
 
         updateCartDrawerItem();
 
@@ -1640,6 +1659,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         dismissProgress();
         // Inform user
         showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.logout_success));
+
+        setupDrawerNavigation();
+
+
     }
 
     /**
@@ -1990,5 +2013,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void onViewHolderItemClick(View view, RecyclerView.Adapter<?> adapter, int position) {
 
     }
+
+
 
 }

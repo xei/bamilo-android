@@ -582,5 +582,7 @@
     <dimen name="drawer_height">48dp</dimen>
     <dimen name="drawer_item_icon">18dp</dimen>
 
+    <dimen name="material_drawer_account_header_height">110dp</dimen>
+
 
 </resources>

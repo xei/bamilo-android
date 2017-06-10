@@ -123,8 +123,9 @@
     <color name="extradarkgrey">#505050</color>
     <color name="dark_blue">#0091FF</color>
     <color name="light_blue">#75bdf3</color>
-    <color name="drawer_defaultcolor">#202020</color>
+    <color name="drawer_defaultcolor">#505050</color>
     <color name="drawer_orange">#ff9900</color>
+    <color name="fefefe">#fefefe</color>
 
 
 </resources>

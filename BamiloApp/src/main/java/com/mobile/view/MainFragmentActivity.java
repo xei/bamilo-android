@@ -52,6 +52,7 @@ import com.mobile.view.fragments.MyAccountEditAddressFragment;
 import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
+import com.mobile.view.fragments.NavigationCategoryFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -604,6 +605,9 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 removeEntries = true;
                 fragment = newFragmentInstance(MyAccountAboutFragment.class, bundle);
                 break;
+            case CATEGORIES:
+                fragment = newFragmentInstance(NavigationCategoryFragment.class, bundle);
+                break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
                 return;
@@ -698,10 +702,10 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 BamiloApplication.INSTANCE.setSearchedTerm("");
 
             // Case navigation opened
-            if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+            /* DROID-139 if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
                 Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
                 mDrawerLayout.closeDrawer(mDrawerNavigation);
-            }
+            }*/
             // Case fragment not allow back pressed
             else if (fragment == null || !fragment.allowBackPressed()) {
                 Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
