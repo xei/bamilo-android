@@ -42,6 +42,7 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.catalog.CatalogGridAdapter;
+import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.catalog.UICatalogUtils;
 import com.mobile.utils.catalog.filters.FilterCheckFragment;
 import com.mobile.utils.catalog.filters.FilterColorFragment;
@@ -114,6 +115,9 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     private String mKey;
     private boolean cleanfilters = false;
 
+    private CatalogSort mSelectedSort;
+
+
     /**
      * Empty constructor
      */
@@ -158,6 +162,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
             mCategoryTree = bundle.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
             //Get category content/main category
             mMainCategory = bundle.getString(RestConstants.MAIN_CATEGORY);
+            mSelectedSort = CatalogSort.values()[bundle.getInt(ConstantsIntentExtra.CATALOG_SORT)];
 
         }
         //
@@ -367,6 +372,8 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, mKey);
         bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
+        bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
+
         bundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
         getBaseActivity().onBackPressed();
         if (cleanfilters) {

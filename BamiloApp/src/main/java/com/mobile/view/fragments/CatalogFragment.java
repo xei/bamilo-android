@@ -188,6 +188,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Get sort from Deep Link
             if(arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)){
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
+                sortChanged = true;
+                if (mSelectedSort.equals(CatalogSort.POPULARITY)) {
+                    sortChanged = false;
+                }
+
             }
 
 
@@ -727,6 +732,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, mKey);
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             ArrayList<CatalogFilter> filters = mCatalogPage.getFilters();
+            bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
             bundle.putParcelableArrayList(FILTER_TAG, filters);
             getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
@@ -1076,6 +1082,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (catalogPage.getFilters().size()>2) filterNames = filterNames + ", ...";
         }
         filterDesc.setText(filterNames);
+
+        setSortButton();
     }
 
     /*
