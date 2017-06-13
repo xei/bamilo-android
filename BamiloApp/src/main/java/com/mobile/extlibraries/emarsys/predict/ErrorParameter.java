@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mobile.libraries.emarsys.predict;
+package com.mobile.extlibraries.emarsys.predict;
 
 /**
  * Holds error information for the query.

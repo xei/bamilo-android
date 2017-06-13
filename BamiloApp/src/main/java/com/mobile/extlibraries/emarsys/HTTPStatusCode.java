@@ -1,4 +1,4 @@
-package com.mobile.libraries.emarsys;
+package com.mobile.extlibraries.emarsys;
 
 import java.util.HashMap;
 import java.util.Map;

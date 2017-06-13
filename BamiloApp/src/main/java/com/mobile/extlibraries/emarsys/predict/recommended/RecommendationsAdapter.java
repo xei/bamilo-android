@@ -1,4 +1,4 @@
-package com.mobile.libraries.emarsys.predict.recommended;
+package com.mobile.extlibraries.emarsys.predict.recommended;
 
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.libraries.emarsys.predict.RecommendationWidgetType;
+import com.mobile.extlibraries.emarsys.predict.RecommendationWidgetType;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.ImageManager;

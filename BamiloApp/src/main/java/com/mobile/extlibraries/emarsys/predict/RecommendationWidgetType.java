@@ -1,4 +1,4 @@
-package com.mobile.libraries.emarsys.predict;
+package com.mobile.extlibraries.emarsys.predict;
 
 /**
  * Created by Arash Hassanpour on 4/23/2017.

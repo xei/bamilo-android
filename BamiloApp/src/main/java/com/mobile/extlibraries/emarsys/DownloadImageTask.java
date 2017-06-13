@@ -1,4 +1,4 @@
-package com.mobile.libraries.emarsys;
+package com.mobile.extlibraries.emarsys;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

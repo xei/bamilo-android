@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.libraries.emarsys.predict.recommended.RecommendListCompletionHandler;
-import com.mobile.libraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
+import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.home.holder.RecommendationsCartHolder;
 import com.mobile.utils.home.holder.RecommendationsHolder;

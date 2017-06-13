@@ -1,4 +1,4 @@
-package com.mobile.libraries.emarsys.predict;
+package com.mobile.extlibraries.emarsys.predict;
 
 import android.content.Context;
 import android.content.SharedPreferences;

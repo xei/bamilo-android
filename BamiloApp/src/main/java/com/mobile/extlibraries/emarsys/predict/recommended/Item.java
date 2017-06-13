@@ -1,4 +1,4 @@
-package com.mobile.libraries.emarsys.predict.recommended;
+package com.mobile.extlibraries.emarsys.predict.recommended;
 
 import com.emarsys.predict.RecommendedItem;
 

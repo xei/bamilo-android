@@ -1,4 +1,4 @@
-package com.mobile.libraries.emarsys;
+package com.mobile.extlibraries.emarsys;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 
 
-import static com.mobile.libraries.emarsys.RequestExecutionType.REQUEST_EXEC_IN_BACKGROUND;
+import static com.mobile.extlibraries.emarsys.RequestExecutionType.REQUEST_EXEC_IN_BACKGROUND;
 
 /**
  * Created by Arash Hassanpour on 4/4/2017.
