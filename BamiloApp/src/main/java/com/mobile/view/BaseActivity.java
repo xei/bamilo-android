@@ -584,15 +584,15 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 .withHasStableIds(true)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        new BamiloDrawerItem().withName(R.string.drawer_home).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_home).withSelectable(false).setSelectedColor(),
-                        new BamiloDrawerItem().withName(R.string.drawer_categories).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_categories).withSelectable(false).setSelectedColor(),
+                        new BamiloDrawerItem().withName(R.string.drawer_home).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.drawer_home).withIdentifier(drawer_identifier_home).withSelectable(false).setSelectedColor(),
+                        new BamiloDrawerItem().withName(R.string.drawer_categories).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.drawer_categories).withIdentifier(drawer_identifier_categories).withSelectable(false).setSelectedColor(),
                         new BamiloDividerItem(),
-                        new BamiloDrawerItem().withName(R.string.drawer_order_tracking).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_order_tracking).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_order_tracking).withIcon(R.drawable.drawer_order_tracking).withIdentifier(drawer_identifier_order_tracking).withSelectable(false),
                         new BamiloDividerItem(),
-                        new BamiloDrawerItem().withName(R.string.drawer_wishlist).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_wishlist).withSelectable(false),
-                        new BamiloDrawerItem().withName(R.string.drawer_recently_viewed).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_recently_viewed).withSelectable(false),
-                        new BamiloDrawerItem().withName(R.string.drawer_cart).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_cart).withSelectable(false).withBadgeStyle(new BadgeStyle().withBadgeBackground(getResources().getDrawable(R.drawable.drawer_cart_badge)).withTextColor(Color.WHITE).withColorRes(R.color.md_deep_orange_300)),
-                        new BamiloDrawerItem().withName(R.string.drawer_myprofile).withIcon(R.drawable.my_address_icon).withIdentifier(drawer_identifier_myprofile).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_wishlist).withIcon(R.drawable.drawer_wishlist).withIdentifier(drawer_identifier_wishlist).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_recently_viewed).withIcon(R.drawable.drawer_recently_viewed).withIdentifier(drawer_identifier_recently_viewed).withSelectable(false),
+                        new BamiloDrawerItem().withName(R.string.drawer_cart).withIcon(R.drawable.drawer_cart).withIdentifier(drawer_identifier_cart).withSelectable(false).withBadgeStyle(new BadgeStyle().withBadgeBackground(getResources().getDrawable(R.drawable.drawer_cart_badge)).withTextColor(Color.WHITE).withColorRes(R.color.md_deep_orange_300)),
+                        new BamiloDrawerItem().withName(R.string.drawer_myprofile).withIcon(R.drawable.drawer_profile).withIdentifier(drawer_identifier_myprofile).withSelectable(false),
                         new BamiloDividerItem(),
                         new BamiloDrawerItem().withName(R.string.drawer_contactus).withIdentifier(drawer_identifier_contactus).withSelectable(false),
                         new BamiloDrawerItem().withName(R.string.drawer_emailus).withIdentifier(drawer_identifier_emailus).withSelectable(false),
