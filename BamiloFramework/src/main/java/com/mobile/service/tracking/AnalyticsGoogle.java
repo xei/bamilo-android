@@ -64,6 +64,10 @@ public class AnalyticsGoogle extends AbcBaseTracker {
 
     private String mUtmSource = DONT_SEND;
 
+    private String mUtmContent = DONT_SEND;
+
+    private String mUtmTerm = DONT_SEND;
+
     private Bundle mCustomData;
 
     private static boolean isCheckoutStarted = false;
@@ -320,6 +324,12 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         }
         if(!mUtmMedium.equals(DONT_SEND)){
             mTracker.set("&cm", mUtmMedium);
+        }
+        if(!mUtmContent.equals(DONT_SEND)){
+            mTracker.set("&cc", mUtmContent);
+        }
+        if(!mUtmTerm.equals(DONT_SEND)){
+            mTracker.set("&ck", mUtmTerm);
         }
     }
 
@@ -605,6 +615,8 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         mUtmCampaign = "";
         mUtmMedium = "";
         mUtmSource = "";
+        mUtmContent = "";
+        mUtmTerm = "";
         //campaignString = campaignString.substring(campaignString.indexOf("?"), campaignString.length());
 
         if (!TextUtils.isEmpty(campaignString)) {
@@ -617,26 +629,21 @@ public class AnalyticsGoogle extends AbcBaseTracker {
 
                 if (terms[0].toLowerCase().endsWith("utm_campaign")) {
                     mUtmCampaign = terms[1]; //getUtmParameter(campaignString, "utm_campaign=");
-                } else {
-                    mUtmCampaign = "";
-                }
-
-                if (terms[0].toLowerCase().endsWith("utm_source")) {
+                } else if (terms[0].toLowerCase().endsWith("utm_source")) {
                     mUtmSource = terms[1];// getUtmParameter(campaignString, "utm_source=");
-                } else {
-                    if (!TextUtils.isEmpty(mUtmCampaign)) {
-                        mUtmSource = "push";
-                    }
-
-                }
-
-                if (terms[0].toLowerCase().endsWith("utm_medium")) {
+                } else if (terms[0].toLowerCase().endsWith("utm_medium")) {
                     mUtmMedium = terms[1]; // getUtmParameter(campaignString, "utm_medium=");
-                } else {
-                    if (!TextUtils.isEmpty(mUtmCampaign)) {
-                        mUtmMedium = "referrer";
-                    }
+                } else if (terms[0].toLowerCase().endsWith("utm_content")) {
+                    mUtmContent = terms[1]; // getUtmParameter(campaignString, "utm_medium=");
+                } else if (terms[0].toLowerCase().endsWith("utm_term")) {
+                    mUtmTerm = terms[1]; // getUtmParameter(campaignString, "utm_medium=");
                 }
+            }
+            if (TextUtils.isEmpty(mUtmSource) && !TextUtils.isEmpty(mUtmCampaign)) {
+                mUtmSource = "push";
+            }
+            if (TextUtils.isEmpty(mUtmMedium) && !TextUtils.isEmpty(mUtmCampaign)) {
+                mUtmMedium = "referrer";
             }
         }
     }
@@ -648,7 +655,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
      */
     public String getUtmParameter(String campaignString, String parameter) {
         try{
-            String[] separated = campaignString.split(parameter);
+            String[] separated = campaignString.toLowerCase().split(parameter);
             String afterParameter =separated[1];
 
             if(afterParameter.contains("&")){
