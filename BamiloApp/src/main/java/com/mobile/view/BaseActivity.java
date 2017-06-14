@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -13,6 +15,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
@@ -26,6 +29,7 @@ import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -39,6 +43,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
@@ -87,8 +92,10 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.UITabLayoutUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
+import com.mobile.view.fragments.DrawerFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.Set;
@@ -158,6 +165,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private AppBarLayout mAppBarLayout;
     public ConfirmationCartMessageView mConfirmationCartMessageView;
 
+    public DrawerFragment mDrawerFragment;
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
      */
@@ -473,7 +481,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      *
      * @modified sergiopereira
      */
-    private void setupDrawerNavigation() {
+    public void setupDrawerNavigation() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
@@ -484,7 +492,21 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        mDrawerFragment.CreateDrawer();
+
+
     }
+
+    public void updateCartDrawerItem() {
+        mDrawerFragment.CreateDrawer();
+        /*DrawerFragment navigationCategoryFragment = new DrawerFragment();// NavigationCategoryFragment.getInstance(bundle);
+        fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
+        *//*PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+        if (cart != null && cart.getCartCount() != 0) {
+            mainDrawer.updateBadge(drawer_identifier_cart, new StringHolder(cart.getCartCount() + ""));
+        }*/
+    }/*
 
     /*
      * ############### OPTIONS MENU #################
@@ -677,7 +699,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             Print.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
         }
     }    @Override
-         public void onTabUnselected(TabLayout.Tab tab) {
+    public void onTabUnselected(TabLayout.Tab tab) {
         // ...
     }
 
@@ -695,7 +717,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             mDrawerToggle.setDrawerIndicatorEnabled(true);
         }
     }    @Override
-         public void onTabReselected(TabLayout.Tab tab) {
+    public void onTabReselected(TabLayout.Tab tab) {
         // ...
     }
     
@@ -1031,7 +1053,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
-        Print.d(TAG, "SEARCH COMPONENT: result " + result);
+        Print.d(TAG, "SEARCH COMPONENT: mainDrawer " + result);
         // Case algolia
         if (!result) {
             Bundle bundle = new Bundle();
@@ -1210,6 +1232,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.d(TAG, "ON UPDATE CART INFO");
         updateCartInfoInActionBar();
         UITabLayoutUtils.updateTabCartInfo(mTabLayout);
+
+        updateCartDrawerItem();
     }
 
     /**
@@ -1474,6 +1498,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         dismissProgress();
         // Inform user
         showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.logout_success));
+
+        setupDrawerNavigation();
+
+
     }
 
     /**
@@ -1661,7 +1689,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             String last = FragmentController.getInstance().getLastEntry();
             // Validate last entry to support create and edit address (rotation)
             if(!TextUtils.equals(last, FragmentType.CHECKOUT_CREATE_ADDRESS.toString()) &&
-               !TextUtils.equals(last, FragmentType.CHECKOUT_EDIT_ADDRESS.toString())) {
+                    !TextUtils.equals(last, FragmentType.CHECKOUT_EDIT_ADDRESS.toString())) {
                 popBackStackUntilTag(FragmentType.CHECKOUT_MY_ADDRESSES.toString());
             }
         }
@@ -1756,6 +1784,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, TrackerDelegator.IS_AUTO_LOGIN);
                 params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
                 TrackerDelegator.trackLoginSuccessful(params);
+                setupDrawerNavigation();
             }
         });
     }
@@ -1824,5 +1853,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void onViewHolderItemClick(View view, RecyclerView.Adapter<?> adapter, int position) {
 
     }
+
+
 
 }

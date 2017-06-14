@@ -1,6 +1,7 @@
 package com.mobile.utils.ui;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -314,7 +315,7 @@ public class UIUtils {
         String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
         String deviceName = android.os.Build.MODEL;
         String deviceBrand = Build.BRAND;
-        String description = "لطفا برای پیگیری بهتر اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
+        String description = "لطفا برای پیگیری بهتر، اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
 
 
         emailIntent.setType("plain/text");
@@ -348,5 +349,99 @@ public class UIUtils {
             return "cellular";
         }
         return "unknown";
+    }
+
+    public static void emailToCS(@NonNull Activity activity) {
+
+        String appVersion = android.os.Build.VERSION.RELEASE; // e.g. myVersion := "1.6"
+        String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
+        String deviceName = android.os.Build.MODEL;
+        String deviceBrand = Build.BRAND;
+        String description = "لطفا برای پیگیری بهتر، اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
+
+        String body =  "\n\n\n\n\n\n\n "
+                + description+"\n"
+                + "android version : " + appVersion+"\n"
+                + "application version : " + sdkVersion+"\n"
+                + "device name : " + deviceBrand +"-"+deviceName;
+
+        sendEmail(activity, new String[]{"support@bamilo.com"}, "", body);
+
+    }
+
+    public static void emailBugs(@NonNull Activity activity) {
+
+        String appVersion = android.os.Build.VERSION.RELEASE; // e.g. myVersion := "1.6"
+        String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
+        String deviceName = android.os.Build.MODEL;
+        String deviceBrand = Build.BRAND;
+        String description = "لطفا برای پیگیری بهتر، اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
+
+        String body =  "\n\n\n\n\n\n\n "
+                + description+"\n"
+                + "android version : " + appVersion+"\n"
+                + "application version : " + sdkVersion+"\n"
+                + "device name : " + deviceBrand +"-"+deviceName;
+
+        sendEmail(activity, new String[]{"application@bamilo.com"}, "ارسال ایده\u200Cها و مشکلات برنامه", body);
+
+    }
+
+    public static void emailIdeas(@NonNull Activity activity) {
+
+        String appVersion = android.os.Build.VERSION.RELEASE; // e.g. myVersion := "1.6"
+        String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
+        String deviceName = android.os.Build.MODEL;
+        String deviceBrand = Build.BRAND;
+        String description = "لطفا برای پیگیری بهتر، اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
+
+        String body =  "\n\n\n\n\n\n\n "
+                + description+"\n"
+                + "android version : " + appVersion+"\n"
+                + "application version : " + sdkVersion+"\n"
+                + "device name : " + deviceBrand +"-"+deviceName;
+
+        sendEmail(activity, new String[]{"application@bamilo.com"}, "اشتراک گذاری ایده های نو", body);
+
+    }
+
+    private static void sendEmail(@NonNull Activity activity, String[] address, String subject, String body) {
+
+
+        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, address);
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,  body);
+
+        if (emailIntent.resolveActivity(activity.getPackageManager()) != null) {
+            activity.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+        }
+        else {
+            Toast.makeText(activity,"لطفا ایمیل را نصب کنید",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public static void rateApp(Context context){
+        Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        // To count with Play market backstack, After pressing back button,
+        // to taken back to our application, we need to add following flags to intent.
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            context.startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            context.startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + context.getPackageName())));
+        }
+    }
+
+    public static void shareApp(Context context) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.share_link));
+        context.startActivity(Intent.createChooser(shareIntent, "Share link using"));
     }
 }

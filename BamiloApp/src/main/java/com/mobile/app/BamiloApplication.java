@@ -13,7 +13,7 @@ import android.text.TextUtils;
 import com.emarsys.predict.Session;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.libraries.emarsys.predict.AndroidStorage;
+import com.mobile.extlibraries.emarsys.predict.AndroidStorage;
 import com.mobile.service.Darwin;
 import com.mobile.service.database.DarwinDatabaseHelper;
 import com.mobile.service.database.SearchRecentQueriesTableHelper;

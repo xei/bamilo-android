@@ -2,8 +2,8 @@ package com.mobile.utils.emarsys;
 
 import com.mobile.constants.EventConstants;
 import com.mobile.factories.EventFactory;
-import com.mobile.libraries.emarsys.EmarsysMobileEngage;
-import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
+import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
+import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.utils.EventTracker;
 import com.mobile.view.BaseActivity;
 

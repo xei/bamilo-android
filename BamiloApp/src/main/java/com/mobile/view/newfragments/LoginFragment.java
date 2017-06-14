@@ -23,8 +23,8 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.libraries.emarsys.EmarsysMobileEngage;
-import com.mobile.libraries.emarsys.EmarsysMobileEngageResponse;
+import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
+import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.checkout.CheckoutStepLogin;
 import com.mobile.service.objects.customer.Customer;
@@ -254,6 +254,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                     // Show layout to call to order
                     showFragmentUnknownCheckoutStepError();
                 }
+                getBaseActivity().setupDrawerNavigation();
+
                 break;
             case LOGIN_EVENT:
                 hideActivityProgress();
@@ -285,6 +287,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
                 }
+                getBaseActivity().setupDrawerNavigation();
+
                 return;
            /* case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
