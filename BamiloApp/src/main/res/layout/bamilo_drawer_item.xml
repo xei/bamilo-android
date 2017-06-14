@@ -46,23 +46,20 @@
 
     <LinearLayout
         android:id="@+id/material_drawer_badge_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
         android:gravity="center"
-        android:layout_marginEnd="0dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="14dp"
+        android:background="@drawable/drawer_cart_badge"
         android:visibility="gone"
+
         >
 
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/material_drawer_badge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:lines="1"
                 android:minWidth="20dp"
@@ -70,7 +67,6 @@
                 android:paddingRight="1dp"
                 android:singleLine="true"
                 android:textSize="14sp"
-                android:background="@color/drawer_orange"
                 android:textColor="@color/white"
                 tools:text="99" />
 

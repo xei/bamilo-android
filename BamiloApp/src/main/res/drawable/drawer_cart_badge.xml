@@ -7,7 +7,7 @@
         android:color="@color/drawer_orange"/>
 
     <size
-        android:width="30dp"
-        android:height="30dp"/>
-    <padding android:bottom="14dp" android:top="14dp" />
+        android:width="40dp"
+        android:height="40dp"/>
+
 </shape>
