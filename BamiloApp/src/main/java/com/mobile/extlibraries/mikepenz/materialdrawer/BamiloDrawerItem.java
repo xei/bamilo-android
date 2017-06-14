@@ -1,4 +1,5 @@
-package com.mobile.libraries.mikepenz.materialdrawer;
+/*
+package com.mobile.extlibraries.mikepenz.materialdrawer;
 
 import android.support.annotation.LayoutRes;
 
@@ -10,9 +11,11 @@ import com.mobile.view.R;
 
 import java.util.List;
 
+*/
 /**
  * Created by Arash Hassanpour on 6/12/2017.
- */
+ *//*
+
 
 public class BamiloDrawerItem extends AbstractBadgeableDrawerItem<BamiloDrawerItem> {
 
@@ -31,3 +34,4 @@ public class BamiloDrawerItem extends AbstractBadgeableDrawerItem<BamiloDrawerIt
 
 
 }
+*/

@@ -15,6 +15,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
@@ -43,15 +44,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.holder.BadgeStyle;
-import com.mikepenz.materialdrawer.holder.StringHolder;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -71,8 +64,6 @@ import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
-import com.mobile.libraries.mikepenz.materialdrawer.BamiloDividerItem;
-import com.mobile.libraries.mikepenz.materialdrawer.BamiloDrawerItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.checkout.CheckoutStepLogin;
 import com.mobile.service.objects.customer.Customer;
@@ -104,6 +95,7 @@ import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
+import com.mobile.view.fragments.DrawerFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.Set;
@@ -152,7 +144,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private DialogProgressFragment baseActivityProgressDialog;
     private DialogGenericFragment dialogLogout;
     private boolean backPressedOnce = false;
-    private BamiloDrawerItem cartDrawerItem;
     /**
      * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
      * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this -action-after-onsaveinstancestate-h
@@ -174,23 +165,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private AppBarLayout mAppBarLayout;
     public ConfirmationCartMessageView mConfirmationCartMessageView;
 
-    private static int drawer_identifier_home = 1;
-    private static int drawer_identifier_categories = 2;
-    private static int drawer_identifier_order_tracking = 3;
-    private static int drawer_identifier_wishlist = 4;
-    private static int drawer_identifier_recently_viewed = 5;
-    private static int drawer_identifier_cart = 6;
-    private static int drawer_identifier_myprofile = 7;
-    private static int drawer_identifier_contactus = 8;
-    private static int drawer_identifier_emailus = 9;
-    private static int drawer_identifier_bug_report = 10;
-    private static int drawer_identifier_idea_report = 11;
-    private static int drawer_identifier_faq = 12;
-    private static int drawer_identifier_share = 13;
-    private static int drawer_identifier_rateus = 14;
-
-    private AccountHeader headerResult = null;
-    private Drawer mainDrawer = null;
+    public DrawerFragment mDrawerFragment;
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
      */
@@ -508,7 +483,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     public void setupDrawerNavigation() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //mDrawerNavigation = findViewById(R.id.fragment_navigation);
+        mDrawerNavigation = findViewById(R.id.fragment_navigation);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -517,158 +492,21 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        IProfile profile = null;
-       // boolean hasCredentials = BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials();
 
-        if (BamiloApplication.isCustomerLoggedIn()) {
-            profile = new ProfileDrawerItem().withName("سلام " + BamiloApplication.CUSTOMER.getFirstName())
-                    .withEmail(BamiloApplication.CUSTOMER.getEmail()).withIcon("https://avatars3.githubusercontent.com/u/1476232?v=3&s=460").withIdentifier(100);
+        mDrawerFragment.CreateDrawer();
 
-        } else {
-            profile = new ProfileDrawerItem().withName("خوش آمدید")
-                    .withEmail("ورود/ثبت نام").withIcon("https://avatars3.githubusercontent.com/u/1476232?v=3&s=460").withIdentifier(100);
-
-        }
-
-        headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withAccountHeader(R.layout.hamburger_menu_header)
-                //.withTranslucentStatusBar(true)
-                //.withHeaderBackground(R.drawable.drawer_header)
-                .addProfiles(profile)
-                .withSelectionListEnabledForSingleProfile(false)
-                .withAlternativeProfileHeaderSwitching(false)
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean current) {
-                        //sample usage of the onProfileChanged listener
-                        //if the clicked item has the identifier 1 add a new profile ;)
-                        /*if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTING) {
-                            int count = 100 + headerResult.getProfiles().size() + 1;
-                            IProfile newProfile = new ProfileDrawerItem().withNameShown(true).withName("Batman" + count).withEmail("batman" + count + "@gmail.com").withIcon(R.drawable.profile5).withIdentifier(count);
-                            if (headerResult.getProfiles() != null) {
-                                //we know that there are 2 setting elements. set the new profile above them ;)
-                                headerResult.addProfile(newProfile, headerResult.getProfiles().size() - 2);
-                            } else {
-                                headerResult.addProfiles(newProfile);
-                            }
-                        }*/
-
-                        //false if you have not consumed the event and it should close the drawer
-                        return false;
-                    }
-                })
-
-                //.withSavedInstance(savedInstanceState)
-                .build();
-
-                headerResult.getView().findViewById(R.id.material_drawer_account_header_email).setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (!BamiloApplication.isCustomerLoggedIn()) {
-                            onSwitchFragment(FragmentType.LOGIN, null, true);
-                            mainDrawer.closeDrawer();
-                        }
-                    }
-                });
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-
-
-                //Create the drawer
-        mainDrawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .withDrawerGravity(Gravity.RIGHT)
-                .withHasStableIds(true)
-                .withAccountHeader(headerResult)
-                .addDrawerItems(
-                        new BamiloDrawerItem().withName(R.string.drawer_home).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.drawer_home).withIdentifier(drawer_identifier_home).withSelectable(false).setSelectedColor(),
-                        new BamiloDrawerItem().withName(R.string.drawer_categories).withTextColorRes(R.color.drawer_orange).withIcon(R.drawable.drawer_categories).withIdentifier(drawer_identifier_categories).withSelectable(false).setSelectedColor(),
-                        new BamiloDividerItem(),
-                        new BamiloDrawerItem().withName(R.string.drawer_order_tracking).withIcon(R.drawable.drawer_order_tracking).withIdentifier(drawer_identifier_order_tracking).withSelectable(false),
-                        new BamiloDividerItem(),
-                        new BamiloDrawerItem().withName(R.string.drawer_wishlist).withIcon(R.drawable.drawer_wishlist).withIdentifier(drawer_identifier_wishlist).withSelectable(false),
-                        new BamiloDrawerItem().withName(R.string.drawer_recently_viewed).withIcon(R.drawable.drawer_recently_viewed).withIdentifier(drawer_identifier_recently_viewed).withSelectable(false),
-                        new BamiloDrawerItem().withName(R.string.drawer_cart).withIcon(R.drawable.drawer_cart).withIdentifier(drawer_identifier_cart).withSelectable(false).withBadgeStyle(new BadgeStyle().withBadgeBackground(getResources().getDrawable(R.drawable.drawer_cart_badge)).withTextColor(Color.WHITE).withColorRes(R.color.md_deep_orange_300)),
-                        new BamiloDrawerItem().withName(R.string.drawer_myprofile).withIcon(R.drawable.drawer_profile).withIdentifier(drawer_identifier_myprofile).withSelectable(false),
-                        new BamiloDividerItem(),
-                        new BamiloDrawerItem().withName(R.string.drawer_contactus).withIdentifier(drawer_identifier_contactus).withSelectable(false),
-                        new BamiloDrawerItem().withName(R.string.drawer_emailus).withIdentifier(drawer_identifier_emailus).withSelectable(false),
-                        new BamiloDrawerItem().withName(R.string.drawer_bug_report).withIdentifier(drawer_identifier_bug_report).withSelectable(false),
-                        //new BamiloDrawerItem().withName(R.string.drawer_idea_report).withIdentifier(drawer_identifier_idea_report).withSelectable(false),
-                        new BamiloDrawerItem().withName(R.string.drawer_faq).withIdentifier(drawer_identifier_faq).withSelectable(false),
-                        new BamiloDividerItem(),
-                        new BamiloDrawerItem().withName(R.string.drawer_share).withIdentifier(drawer_identifier_share).withSelectable(false),
-                        new BamiloDrawerItem().withName(R.string.drawer_rateus).withIdentifier(drawer_identifier_rateus).withSelectable(false)
-
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-
-                        if (drawerItem != null) {
-                            Intent intent = null;
-                            if (drawerItem.getIdentifier() == drawer_identifier_home) {
-                                onSwitchFragment(FragmentType.HOME, null, true);
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_categories) {
-                                onSwitchFragment(FragmentType.CATEGORIES, null, true);
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_order_tracking) {
-                                onSwitchFragment(FragmentType.MY_ORDERS, null, true);
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_wishlist) {
-                                onSwitchFragment(FragmentType.WISH_LIST, null, true);
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_recently_viewed) {
-                                onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST, null, true);
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_cart) {
-                                onSwitchFragment(FragmentType.SHOPPING_CART, null, true);
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_myprofile) {
-                                onSwitchFragment(FragmentType.MY_ACCOUNT, null, true);
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_contactus) {
-                                Intent callintent = new Intent(Intent.ACTION_DIAL);
-                                callintent.setData(Uri.parse(getResources().getString(R.string.call_center_number)));
-                                startActivity(callintent);
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_emailus) {
-                                UIUtils.emailToCS(BaseActivity.this);
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_bug_report) {
-                                UIUtils.emailBugs(BaseActivity.this);
-                            /*} else if (drawerItem.getIdentifier() == drawer_identifier_idea_report) {
-                                UIUtils.emailIdeas(BaseActivity.this);*/
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_faq) {
-                                @TargetLink.Type String link = TargetLink.SHOP_IN_SHOP.concat("::help-android");
-                                new TargetLink(getWeakBaseActivity(), link)
-                                        .addTitle(R.string.faq)
-                                        .setOrigin(TeaserGroupType.MAIN_TEASERS)
-                                        //.addAppendListener(this)
-                                        //.addCampaignListener(this)
-                                        .retainBackStackEntries()
-                                        .enableWarningErrorMessage()
-                                        .run();
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_share) {
-                                UIUtils.shareApp(BaseActivity.this);
-                            } else if (drawerItem.getIdentifier() == drawer_identifier_rateus) {
-                                UIUtils.rateApp(BaseActivity.this);
-                            }
-                        }
-
-                        return false;
-                    }
-                })
-                .withShowDrawerOnFirstLaunch(true)
-                .build();
-
-
-
-        updateCartDrawerItem();
 
     }
 
     public void updateCartDrawerItem() {
-        PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+        mDrawerFragment.CreateDrawer();
+        /*DrawerFragment navigationCategoryFragment = new DrawerFragment();// NavigationCategoryFragment.getInstance(bundle);
+        fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
+        *//*PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
         if (cart != null && cart.getCartCount() != 0) {
             mainDrawer.updateBadge(drawer_identifier_cart, new StringHolder(cart.getCartCount() + ""));
-        }
-    }
+        }*/
+    }/*
 
     /*
      * ############### OPTIONS MENU #################
@@ -680,9 +518,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * @modified sergiopereira
      */
     public void closeNavigationDrawer() {
-        /*if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
+        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
             mDrawerLayout.closeDrawer(mDrawerNavigation);
-        }*/
+        }
     }
 
     /**
@@ -1394,6 +1232,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.d(TAG, "ON UPDATE CART INFO");
         updateCartInfoInActionBar();
         UITabLayoutUtils.updateTabCartInfo(mTabLayout);
+
         updateCartDrawerItem();
     }
 
@@ -1945,6 +1784,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, TrackerDelegator.IS_AUTO_LOGIN);
                 params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
                 TrackerDelegator.trackLoginSuccessful(params);
+                setupDrawerNavigation();
             }
         });
     }

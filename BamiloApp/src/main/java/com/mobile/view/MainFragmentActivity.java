@@ -43,6 +43,7 @@ import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.ComboFragment;
+import com.mobile.view.fragments.DrawerFragment;
 import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
@@ -521,8 +522,6 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 fragment = newFragmentInstance(SessionForgotPasswordFragment.class, bundle);
                 break;
             case CHECKOUT_MY_ADDRESSES:
-                //DROID-63 isNewFragment = true;
-                //DROID-63 newFragment = newNewFragmentInstance(NewCheckoutAddressesFragment.class, bundle);
                 fragment = newFragmentInstance(NewCheckoutAddressesFragment.class, bundle);
                 break;
             case CHECKOUT_CREATE_ADDRESS:
@@ -627,16 +626,6 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
 
         fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
 
-/* DROID-63
-        // Transition
-        if (!isNewFragment) {
-            fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
-        }
-        else
-        {
-            fragmentManagerTransition(R.id.app_content, newFragment, type, addToBackStack);
-        }
-*/
     }
 
     /**
@@ -645,12 +634,6 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
     private BaseFragment newFragmentInstance(@NonNull Class<? extends BaseFragment> fragmentClass, @Nullable Bundle arguments) {
         return BaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
     }
-
-/* DROID-63
-    private  NewBaseFragment newNewFragmentInstance(@NonNull Class<? extends NewBaseFragment> fragmentClass, @Nullable Bundle arguments) {
-        return NewBaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
-    }
-*/
 
     /**
      * Fragment communication.<br>
@@ -702,10 +685,10 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 BamiloApplication.INSTANCE.setSearchedTerm("");
 
             // Case navigation opened
-            /* DROID-139 if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+            if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
                 Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
                 mDrawerLayout.closeDrawer(mDrawerNavigation);
-            }*/
+            }
             // Case fragment not allow back pressed
             else if (fragment == null || !fragment.allowBackPressed()) {
                 Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
@@ -719,33 +702,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
             }
         }
-/* DROID-63
-        else
-        {
-            newFragment = (NewBaseFragment) frag;
-            // Clear search term
-            if (newFragment.getTag().equals(FragmentType.CATALOG.toString()))
-                BamiloApplication.INSTANCE.setSearchedTerm("");
 
-            // Case navigation opened
-            if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
-                Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
-                mDrawerLayout.closeDrawer(mDrawerNavigation);
-            }
-            // Case fragment not allow back pressed
-            else if (newFragment == null || !newFragment.allowBackPressed()) {
-                Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
-                // Hide Keyboard
-                hideKeyboard();
-                // Back
-                fragmentManagerBackPressed();
-            }
-            // Case fragment allow back pressed
-            else {
-                Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
-            }
-        }
-*/
     }
 
     /**

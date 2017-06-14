@@ -168,8 +168,8 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         Print.i(TAG, "ON SWITCH CHILD FRAG: " + filterType);
         switch (filterType) {
         case NAVIGATION_CATEGORIES_ROOT_LEVEL:
-            NavigationCategoryFragment navigationCategoryFragment = NavigationCategoryFragment.getInstance(bundle);
-            fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
+            getBaseActivity().mDrawerFragment = new DrawerFragment();// NavigationCategoryFragment.getInstance(bundle);
+            fragmentChildManagerTransition(R.id.navigation_container_list, filterType, getBaseActivity().mDrawerFragment , false, true);
             break;
         default:
             Print.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");

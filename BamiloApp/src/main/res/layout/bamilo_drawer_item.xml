@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:orientation="horizontal"
-    android:paddingEnd="@dimen/material_drawer_vertical_padding"
-    android:paddingLeft="@dimen/material_drawer_vertical_padding"
-    android:paddingRight="@dimen/material_drawer_vertical_padding"
-    android:paddingStart="@dimen/material_drawer_vertical_padding"
+    android:paddingEnd="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingStart="16dp"
     android:gravity="center_vertical">
 
     <ImageView
@@ -22,7 +22,7 @@
         android:layout_marginEnd="16dp"
         android:src="@drawable/my_address_icon"/>
 
->    <LinearLayout
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -41,17 +41,7 @@
             android:textColor="@color/drawer_defaultcolor"
             tools:text="Some drawer text" />
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/material_drawer_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:gravity="center_vertical|start"
-            android:lines="1"
-            android:singleLine="true"
-            android:textDirection="anyRtl"
-            android:textSize="@dimen/material_drawer_item_primary_description"
-            tools:text="Some drawer text" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -59,25 +49,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingEnd="0dp"
-        android:paddingLeft="@dimen/material_drawer_padding"
-        android:paddingRight="0dp"
-        android:paddingStart="@dimen/material_drawer_padding"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
+        android:visibility="gone"
         >
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/material_drawer_badge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:lines="1"
-            android:minWidth="20dp"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
-            android:singleLine="true"
-            android:textSize="@dimen/material_drawer_item_primary_text"
-            tools:text="99" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/material_drawer_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lines="1"
+                android:minWidth="20dp"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:background="@color/drawer_orange"
+                android:textColor="@color/white"
+                tools:text="99" />
+
+
     </LinearLayout>
 </LinearLayout>

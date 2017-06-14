@@ -353,7 +353,19 @@ public class UIUtils {
 
     public static void emailToCS(@NonNull Activity activity) {
 
-        sendEmail(activity, new String[]{"support@bamilo.com"}, "", "");
+        String appVersion = android.os.Build.VERSION.RELEASE; // e.g. myVersion := "1.6"
+        String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
+        String deviceName = android.os.Build.MODEL;
+        String deviceBrand = Build.BRAND;
+        String description = "لطفا برای پیگیری بهتر، اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
+
+        String body =  "\n\n\n\n\n\n\n "
+                + description+"\n"
+                + "android version : " + appVersion+"\n"
+                + "application version : " + sdkVersion+"\n"
+                + "device name : " + deviceBrand +"-"+deviceName;
+
+        sendEmail(activity, new String[]{"support@bamilo.com"}, "", body);
 
     }
 

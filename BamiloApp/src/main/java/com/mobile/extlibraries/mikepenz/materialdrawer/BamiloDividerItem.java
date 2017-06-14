@@ -1,4 +1,5 @@
-package com.mobile.libraries.mikepenz.materialdrawer;
+/*
+package com.mobile.extlibraries.mikepenz.materialdrawer;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
@@ -8,9 +9,11 @@ import com.mikepenz.materialdrawer.model.AbstractDrawerItem;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mobile.view.R;
 
+*/
 /**
  * Created by Arash Hassanpour on 6/12/2017.
- */
+ *//*
+
 
 public class BamiloDividerItem extends AbstractDrawerItem<BamiloDividerItem, BamiloDividerItem.ViewHolder> {
 
@@ -41,3 +44,4 @@ public class BamiloDividerItem extends AbstractDrawerItem<BamiloDividerItem, Bam
         }
     }
 }
+*/
