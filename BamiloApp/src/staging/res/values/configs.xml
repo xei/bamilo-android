@@ -2,6 +2,8 @@
 <resources>
     <string name="PW_APPID">A9EF7-6FDD2</string>
     <string name="PW_PROJECT_ID">A98759480567</string>
+    <string name="PW_TESTDEVICE_DEEPLINK">pw-A9EF7-6FDD2</string>
+    <string name="PW_TESTDEVICE_DEEPLINK_LOWERCASE">pw-a9ef7-6fdd2</string>
 
     <!--Google Analytic-->
     <string name="ga_trackingId">UA-52004541-5</string>

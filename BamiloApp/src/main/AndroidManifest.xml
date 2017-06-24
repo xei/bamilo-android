@@ -146,6 +146,18 @@
         <activity
             android:name=".RedirectInfoActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.pushwoosh.DeepLinkActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/PW_TESTDEVICE_DEEPLINK" />
+                <data android:scheme="@string/PW_TESTDEVICE_DEEPLINK_LOWERCASE" />
+            </intent-filter>
+        </activity>
 
         <!-- ######################################## -->
         <!-- ############# PushWoosh ################ -->
@@ -215,7 +227,7 @@
             android:value="${crashlyticsApiKey}" />
 
         <receiver
-            android:name="com.mobile.libraries.emarsys.NotificationReceiver"
+            android:name="com.mobile.extlibraries.emarsys.NotificationReceiver"
             android:enabled="true"
             ></receiver>
     </application>
