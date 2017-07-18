@@ -1,107 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView android:fillViewport="true"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ScrollView
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.mobile.components.customfontviews.EditText
+            style="@style/Register_Edittext"
+            android:hint="@string/national_id"
+            android:id="@+id/national_id"
+            android:inputType="number" />
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/FormTextErrorField"
+            android:fontFamily="@string/bamilo_font"
+            android:gravity="start|left"
+            android:id="@+id/national_id_error_message"
+            android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.EditText
+            style="@style/Register_Edittext"
+            android:hint="@string/first_name"
+            android:id="@+id/first_name"
+            android:inputType="text" />
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/FormTextErrorField"
+            android:fontFamily="@string/bamilo_font"
+            android:gravity="start|left"
+            android:id="@+id/first_name_error_message"
+            android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.EditText
+            style="@style/Register_Edittext"
+            android:hint="@string/last_name"
+            android:id="@+id/last_name"
+            android:inputType="text" />
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/FormTextErrorField"
+            android:fontFamily="@string/bamilo_font"
+            android:gravity="start|left"
+            android:id="@+id/last_name_error_message"
+            android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.EditText
+            style="@style/Register_Edittext"
+            android:hint="@string/email"
+            android:id="@+id/email"
+            android:inputType="textEmailAddress" />
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/FormTextErrorField"
+            android:fontFamily="@string/bamilo_font"
+            android:gravity="start|left"
+            android:id="@+id/email_error_message"
+            android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.EditText
+            style="@style/Register_Edittext"
+            android:gravity="right"
+            android:hint="@string/new_password"
+            android:id="@+id/password"
+            android:inputType="textPassword" />
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/FormTextErrorField"
+            android:fontFamily="@string/bamilo_font"
+            android:gravity="start|left"
+            android:id="@+id/password_error_message"
+            android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.EditText
+            style="@style/Register_Edittext"
+            android:hint="@string/phone"
+            android:id="@+id/phone"
+            android:inputType="phone" />
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/FormTextErrorField"
+            android:fontFamily="@string/bamilo_font"
+            android:gravity="start|left"
+            android:id="@+id/phone_error_message"
+            android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:background="#4990e2"
+            android:id="@+id/register_button_create"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingBottom="30dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="46dp">
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_width="match_parent"
+            android:text="@string/register_label" />
 
-            <com.mobile.components.customfontviews.EditText
-                android:id="@+id/national_id"
-                style="@style/Register_Edittext"
-                android:inputType="number"
-                android:hint="@string/national_id"/>
-            <com.mobile.components.customfontviews.TextView
-                android:fontFamily="@string/bamilo_font"
-                android:id="@+id/national_id_error_message"
-                android:visibility="gone"
-                android:gravity="start|left"
-                style="@style/FormTextErrorField"/>
-            <com.mobile.components.customfontviews.EditText
-                android:id="@+id/first_name"
-                style="@style/Register_Edittext"
-                android:inputType="text"
-                android:hint="@string/first_name"/>
-            <com.mobile.components.customfontviews.TextView
-                android:fontFamily="@string/bamilo_font"
-                android:id="@+id/first_name_error_message"
-                android:visibility="gone"
-                android:gravity="start|left"
-                style="@style/FormTextErrorField"/>
+    </LinearLayout>
 
-            <com.mobile.components.customfontviews.EditText
-                android:id="@+id/last_name"
-                style="@style/Register_Edittext"
-                android:inputType="text"
-                android:hint="@string/last_name"/>
-            <com.mobile.components.customfontviews.TextView
-                android:fontFamily="@string/bamilo_font"
-                android:id="@+id/last_name_error_message"
-                android:visibility="gone"
-                android:gravity="start|left"
-                style="@style/FormTextErrorField"/>
-            <com.mobile.components.customfontviews.EditText
-                android:id="@+id/email"
-                style="@style/Register_Edittext"
-                android:inputType="textEmailAddress"
-                android:hint="@string/email"/>
-            <com.mobile.components.customfontviews.TextView
-                android:fontFamily="@string/bamilo_font"
-                android:id="@+id/email_error_message"
-                android:visibility="gone"
-                android:gravity="start|left"
-                style="@style/FormTextErrorField"/>
-
-            <com.mobile.components.customfontviews.EditText
-                android:id="@+id/password"
-                style="@style/Register_Edittext"
-                android:inputType="textPassword"
-                android:gravity="right"
-                android:hint="@string/new_password"/>
-            <com.mobile.components.customfontviews.TextView
-                android:fontFamily="@string/bamilo_font"
-                android:id="@+id/password_error_message"
-                android:visibility="gone"
-                android:gravity="start|left"
-                style="@style/FormTextErrorField"/>
-
-            <com.mobile.components.customfontviews.EditText
-                android:id="@+id/phone"
-                style="@style/Register_Edittext"
-                android:inputType="phone"
-                android:hint="@string/phone"/>
-            <com.mobile.components.customfontviews.TextView
-                android:fontFamily="@string/bamilo_font"
-                android:id="@+id/phone_error_message"
-                android:visibility="gone"
-                android:gravity="start|left"
-                style="@style/FormTextErrorField"/>
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/register_button_create"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:background="#4990e2"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="@string/register_label" />
-
-        </LinearLayout>
-
-    </ScrollView>
-
-</LinearLayout>
+</ScrollView>
