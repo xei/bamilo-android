@@ -123,13 +123,13 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         tabLogin = tabLayout.newTab();
         tabLogin.setTag("Login");
         tabLayout.addTab(tabLogin);
-        tabLogin.setText(R.string.login_label);
+        tabLogin.setCustomView(R.layout.tab_login);
 
 
         tabRegister = tabLayout.newTab();
         tabLayout.addTab(tabRegister);
         tabRegister.setTag("Register");
-        tabRegister.setText(R.string.register_label);
+        tabRegister.setCustomView(R.layout.tab_register);
         //tabLayout.setupWithViewPager(viewPager);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
