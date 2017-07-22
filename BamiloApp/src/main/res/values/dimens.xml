@@ -527,7 +527,7 @@
 
 
     <!-- Category Navigation -->
-    <dimen name="tx_single_line_text_text_size">11sp</dimen>
+    <dimen name="tx_single_line_text_text_size">12sp</dimen>
 
 
     <!-- Product Detail Rating Title -->

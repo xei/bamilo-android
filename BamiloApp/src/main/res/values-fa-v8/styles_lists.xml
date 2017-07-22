@@ -15,15 +15,16 @@
     </style>
 
     <style name="SingleLineListIconStartRTL">
-        <item name="android:layout_width">@dimen/dimen_22dp</item>
-        <item name="android:layout_height">@dimen/dimen_22dp</item>
+        <item name="android:layout_width">@dimen/dimen_16dp</item>
+        <item name="android:layout_height">@dimen/dimen_16dp</item>
         <item name="android:layout_marginRight">@dimen/margin_padding_xl</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_alignParentRight">true</item>
     </style>
+
     <style name="SingleLineListIconEndRTL">
-        <item name="android:layout_width">@dimen/dimen_22dp</item>
-        <item name="android:layout_height">@dimen/dimen_22dp</item>
+        <item name="android:layout_width">@dimen/dimen_12dp</item>
+        <item name="android:layout_height">@dimen/dimen_12dp</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_marginLeft">@dimen/margin_padding_xl</item>
     </style>
