@@ -36,39 +36,38 @@ import com.mobile.view.R;
 
 /**
  * A general Class with UI utils such as set the font <p/><br>
- *
+ * <p>
  * Copyright (C) 2012 Rocket Internet - All Rights Reserved <p/>
- *
+ * <p>
  * Unauthorized copying of this file, via any medium is strictly prohibited <br>
  * Proprietary and confidential.
  *
  * @author Manuel Silva
  * @modified Andre Lopes
- *
  */
-@SuppressWarnings("unused")
 public class UIUtils {
 
     public static final String TAG = UIUtils.class.getSimpleName();
 
     public static int dpToPx(int dp, float density) {
-        return Math.round((float)dp * density);
+        return Math.round((float) dp * density);
     }
 
-    public static float convertPixelsToDp(float px, Context context){
+    public static float convertPixelsToDp(float px, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return px / (metrics.densityDpi / 160f);
     }
 
     public static int spToPx(float dp, Context context) {
-        return Math.round(dp * context.getResources().getDisplayMetrics().scaledDensity );
+        return Math.round(dp * context.getResources().getDisplayMetrics().scaledDensity);
     }
 
     /**
      * Show or hide a set of views.
+     *
      * @param visibility The visibility parameter for all.
-     * @param views The views that some can be null.
+     * @param views      The views that some can be null.
      * @author sergiopereira
      */
     public static void showOrHideViews(int visibility, View... views) {
@@ -77,6 +76,7 @@ public class UIUtils {
 
     /**
      * Set the visibility
+     *
      * @param view The view that can be null
      * @param show The visibility parameter
      * @author sergiopereira
@@ -88,12 +88,12 @@ public class UIUtils {
     /**
      * Animate the view with a fade in, after an offset a fade out.
      * TODO - Create this animation using XML, http://developer.android.com/guide/topics/graphics/view-animation.html
-     * @param context The application context
-     * @param animatedView The view
+     *
+     * @param context       The application context
+     * @param animatedView  The view
      * @param visibleOffset The visible offset
      */
-    public static void animateFadeInAndOut(Context context, View animatedView, int visibleOffset){
-//        if (!isAnimating(animatedView)) {
+    public static void animateFadeInAndOut(Context context, View animatedView, int visibleOffset) {
         // Set view as invisible for old Android versions
         animatedView.setVisibility(View.INVISIBLE);
         // Create the fade in and fade out animation
@@ -112,6 +112,7 @@ public class UIUtils {
 
     /**
      * Validate if the current view is being animated
+     *
      * @param view The animated view
      * @return true or false
      * @author sergio pereira
@@ -159,8 +160,9 @@ public class UIUtils {
 
     /**
      * Animate a view sliding from down to top
+     *
      * @param animatedView -  the animated view
-     * */
+     */
     public static void animateSlideUp(@NonNull View animatedView) {
         animatedView.clearAnimation();
         Animation animation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_up);
@@ -171,8 +173,9 @@ public class UIUtils {
 
     /**
      * Animate a view sliding from top to down
+     *
      * @param animatedView -  the animated view
-     * */
+     */
     public static void animateSlideDown(@NonNull View animatedView) {
         animatedView.clearAnimation();
         animatedView.setVisibility(View.VISIBLE);
@@ -184,11 +187,11 @@ public class UIUtils {
      * method responsible for scrolling a scrollview for 60dp
      * This is used for editexts that show in a layout inside a toolbar
      */
-    public static void scrollToViewByClick(final View scrollView, final View viewToDetectTouch){
+    public static void scrollToViewByClick(final View scrollView, final View viewToDetectTouch) {
         viewToDetectTouch.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP){
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     scrollView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -201,7 +204,7 @@ public class UIUtils {
         });
     }
 
-    public static SpannableString setSpan(String first, String second, int firstColor, int secondColor){
+    public static SpannableString setSpan(String first, String second, int firstColor, int secondColor) {
         SpannableString spannableString = new SpannableString(first + second);
         spannableString.setSpan(new ForegroundColorSpan(firstColor), 0, first.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(secondColor), first.length(), first.length() + second.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -229,11 +232,11 @@ public class UIUtils {
 
     /**
      * Method to detect if a drawable existing at left or right in a TextView was clicked
-     * */
-    public static boolean drawableClicked(TextView view, MotionEvent event){
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            if((!ShopSelector.isRtl() &&  event.getX() >= view.getRight() - view.getTotalPaddingRight())
-                    || (ShopSelector.isRtl() && event.getX() <= view.getTotalPaddingLeft()) ){
+     */
+    public static boolean drawableClicked(TextView view, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if ((!ShopSelector.isRtl() && event.getX() >= view.getRight() - view.getTotalPaddingRight())
+                    || (ShopSelector.isRtl() && event.getX() <= view.getTotalPaddingLeft())) {
                 return true;
             }
         }
@@ -270,11 +273,12 @@ public class UIUtils {
 
     /**
      * Fixes the checkbox state for Marshmallow
+     *
      * @param checkBox
      */
-    public static void checkBoxDrawableStateCompat(final CheckBox checkBox){
+    public static void checkBoxDrawableStateCompat(final CheckBox checkBox) {
         checkBox.setButtonDrawable(R.drawable._gen_selector_check_box);
-        if(ShopSelector.isRtl()){
+        if (ShopSelector.isRtl()) {
             checkBox.setPadding(IntConstants.DEFAULT_POSITION, IntConstants.DEFAULT_POSITION, IntConstants.PADDING_10, IntConstants.DEFAULT_POSITION);
         } else {
             checkBox.setPadding(IntConstants.PADDING_10, IntConstants.DEFAULT_POSITION, IntConstants.DEFAULT_POSITION, IntConstants.DEFAULT_POSITION);
@@ -303,10 +307,6 @@ public class UIUtils {
     public static void onClickEmailToCS(@NonNull Activity activity) {
         // Tracking
         TrackerDelegator.trackCall(activity);
-        // Get phone number
-        SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String mAddress2Email = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, "");
-        // Make a call
 
         final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 
@@ -321,31 +321,32 @@ public class UIUtils {
         emailIntent.setType("plain/text");
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"application@bamilo.com"});
         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "گزارش مشکل در برنامه");
-        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,  "\n\n\n\n\n\n\n "
-                + description+"\n"
-                + "android version : " + appVersion+"\n"
-                + "application version : " + sdkVersion+"\n"
-                + "device name : " + deviceBrand +"-"+deviceName
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "\n\n\n\n\n\n\n "
+                + description + "\n"
+                + "android version : " + appVersion + "\n"
+                + "application version : " + sdkVersion + "\n"
+                + "device name : " + deviceBrand + "-" + deviceName
 
         );
 
 
-
         if (emailIntent.resolveActivity(activity.getPackageManager()) != null) {
             activity.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-        }
-        else {
-            Toast.makeText(activity,"لطفا ایمیل را نصب کنید",Toast.LENGTH_LONG).show();
-
+        } else {
+            Toast.makeText(activity, "لطفا ایمیل را نصب کنید", Toast.LENGTH_LONG).show();
         }
 
     }
+
     public static String networkType(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if(activeNetwork.getTypeName().equals("WIFI")) {
+        if (activeNetwork == null) {
+            return "unknown";
+        }
+        if (activeNetwork.getTypeName().matches("WIFI")) {
             return "wifi";
-        } else if(activeNetwork.getTypeName().equals("MOBILE")) {
+        } else if (activeNetwork.getTypeName().matches("MOBILE")) {
             return "cellular";
         }
         return "unknown";
@@ -359,11 +360,11 @@ public class UIUtils {
         String deviceBrand = Build.BRAND;
         String description = "لطفا برای پیگیری بهتر، اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
 
-        String body =  "\n\n\n\n\n\n\n "
-                + description+"\n"
-                + "android version : " + appVersion+"\n"
-                + "application version : " + sdkVersion+"\n"
-                + "device name : " + deviceBrand +"-"+deviceName;
+        String body = "\n\n\n\n\n\n\n "
+                + description + "\n"
+                + "android version : " + appVersion + "\n"
+                + "application version : " + sdkVersion + "\n"
+                + "device name : " + deviceBrand + "-" + deviceName;
 
         sendEmail(activity, new String[]{"support@bamilo.com"}, "", body);
 
@@ -377,17 +378,17 @@ public class UIUtils {
         String deviceBrand = Build.BRAND;
         String description = "لطفا برای پیگیری بهتر، اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
 
-        String body =  "\n\n\n\n\n\n\n "
-                + description+"\n"
-                + "android version : " + appVersion+"\n"
-                + "application version : " + sdkVersion+"\n"
-                + "device name : " + deviceBrand +"-"+deviceName;
+        String body = "\n\n\n\n\n\n\n "
+                + description + "\n"
+                + "android version : " + appVersion + "\n"
+                + "application version : " + sdkVersion + "\n"
+                + "device name : " + deviceBrand + "-" + deviceName;
 
         sendEmail(activity, new String[]{"application@bamilo.com"}, "ارسال ایده\u200Cها و مشکلات برنامه", body);
 
     }
 
-    public static void emailIdeas(@NonNull Activity activity) {
+    /*public static void emailIdeas(@NonNull Activity activity) {
 
         String appVersion = android.os.Build.VERSION.RELEASE; // e.g. myVersion := "1.6"
         String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
@@ -395,15 +396,15 @@ public class UIUtils {
         String deviceBrand = Build.BRAND;
         String description = "لطفا برای پیگیری بهتر، اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
 
-        String body =  "\n\n\n\n\n\n\n "
-                + description+"\n"
-                + "android version : " + appVersion+"\n"
-                + "application version : " + sdkVersion+"\n"
-                + "device name : " + deviceBrand +"-"+deviceName;
+        String body = "\n\n\n\n\n\n\n "
+                + description + "\n"
+                + "android version : " + appVersion + "\n"
+                + "application version : " + sdkVersion + "\n"
+                + "device name : " + deviceBrand + "-" + deviceName;
 
         sendEmail(activity, new String[]{"application@bamilo.com"}, "اشتراک گذاری ایده های نو", body);
 
-    }
+    }*/
 
     private static void sendEmail(@NonNull Activity activity, String[] address, String subject, String body) {
 
@@ -412,17 +413,16 @@ public class UIUtils {
         emailIntent.setType("plain/text");
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, address);
         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,  body);
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
 
         if (emailIntent.resolveActivity(activity.getPackageManager()) != null) {
             activity.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-        }
-        else {
-            Toast.makeText(activity,"لطفا ایمیل را نصب کنید",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(activity, "لطفا ایمیل را نصب کنید", Toast.LENGTH_LONG).show();
         }
     }
 
-    public static void rateApp(Context context){
+    public static void rateApp(Context context) {
         Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         // To count with Play market backstack, After pressing back button,
