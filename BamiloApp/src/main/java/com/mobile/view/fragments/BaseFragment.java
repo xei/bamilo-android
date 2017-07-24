@@ -258,7 +258,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems + " " + action);
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
             // Method used to set a bottom margin
-            UITabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
+            // UITabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
         }
     }
 

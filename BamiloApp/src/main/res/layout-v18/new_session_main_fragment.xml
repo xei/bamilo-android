@@ -14,10 +14,10 @@
         app:tabMode="fixed"
         app:tabGravity="fill"
         app:tabTextColor="@color/black_700"
-        app:tabSelectedTextColor="@color/black"
- />
-    <FrameLayout
-        android:id="@+id/fragment_container"
+        app:tabSelectedTextColor="@color/black"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="30dp"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:paddingTop="@dimen/dimen_16dp">
 
         <com.mobile.components.customfontviews.EditText
             android:id="@+id/national_id"
@@ -22,7 +22,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/national_id_error_message"
             style="@style/FormTextErrorField"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="start|left"
             android:visibility="gone" />
 
@@ -35,7 +34,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/first_name_error_message"
             style="@style/FormTextErrorField"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="start|left"
             android:visibility="gone" />
 
@@ -48,7 +46,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/last_name_error_message"
             style="@style/FormTextErrorField"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="start|left"
             android:visibility="gone" />
 
@@ -61,7 +58,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/email_error_message"
             style="@style/FormTextErrorField"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="start|left"
             android:visibility="gone" />
 
@@ -75,7 +71,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/password_error_message"
             style="@style/FormTextErrorField"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="start|left"
             android:visibility="gone" />
 
@@ -88,7 +83,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/phone_error_message"
             style="@style/FormTextErrorField"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="start|left"
             android:visibility="gone" />
 

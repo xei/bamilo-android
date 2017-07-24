@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingTop="@dimen/dimen_16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
@@ -21,7 +22,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/national_id_error_message"
             style="@style/FormTextErrorField17"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="right"
             android:visibility="gone" />
 
@@ -34,7 +34,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/first_name_error_message"
             style="@style/FormTextErrorField17"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="right"
             android:visibility="gone" />
 
@@ -47,7 +46,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/last_name_error_message"
             style="@style/FormTextErrorField17"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="right"
             android:visibility="gone" />
 
@@ -60,7 +58,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/email_error_message"
             style="@style/FormTextErrorField17"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="right"
             android:visibility="gone" />
 
@@ -74,7 +71,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/password_error_message"
             style="@style/FormTextErrorField17"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="right"
             android:visibility="gone" />
 
@@ -87,7 +83,6 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/phone_error_message"
             style="@style/FormTextErrorField17"
-            android:fontFamily="@string/bamilo_font"
             android:gravity="right"
             android:visibility="gone" />
 

@@ -91,6 +91,13 @@ public class UITabLayoutUtils {
         return action == NavigationAction.HOME || action == NavigationAction.SAVED || action == NavigationAction.BASKET;
     }
 
+
+    // TODO: 7/24/2017 we should change this approach
+    public static boolean isNavigationActionbarAutoHide(@NavigationAction.Type int action){
+        return action == NavigationAction.LOGIN_OUT || action == NavigationAction.CHECKOUT
+                || action == NavigationAction.PRODUCT;
+    }
+
     public static int getTabPosition(@NavigationAction.Type int action) {
         // Case Home
         if (action == NavigationAction.HOME) {
@@ -141,7 +148,7 @@ public class UITabLayoutUtils {
      * Because the Coordinator Layout first build the without tool bar size.<br>
      * And after add the tool bar and translate the view to below.
      */
-    public static void setViewWithoutNestedScrollView(View view, @NavigationAction.Type int action) {
+    /*public static void setViewWithoutNestedScrollView(View view, @NavigationAction.Type int action) {
         // Case others
         if (action != NavigationAction.BASKET &&
                 action != NavigationAction.SAVED &&
@@ -169,7 +176,7 @@ public class UITabLayoutUtils {
             }
         }
 
-    }
+    }*/
 
     public static void updateTabCartInfo(TabLayout mTabLayout) {
         // Update the cart tab

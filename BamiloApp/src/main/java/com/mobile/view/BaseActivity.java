@@ -159,6 +159,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private long mGABeginInMillis;
 
     private ActionBar mSupportActionBar;
+    private Toolbar toolbar;
     private boolean isBackButtonEnabled = false;
     private TabLayout mTabLayout;
     private TabLayout mCheckoutTabLayout;
@@ -374,7 +375,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Get tab layout
         mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         // Get tool bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mSupportActionBar = getSupportActionBar();
         if(mSupportActionBar != null) {
@@ -438,6 +439,20 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     private void setAppBarLayout(@NavigationAction.Type int oldNavAction, @NavigationAction.Type int newNavAction) {
         try {
+            // Case enable/disable actionbar auto-hide
+            if (UITabLayoutUtils.isNavigationActionbarAutoHide(newNavAction)) {
+                AppBarLayout.LayoutParams params =
+                        (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+                params.setScrollFlags(0);
+                toolbar.setLayoutParams(params);
+            } else if (UITabLayoutUtils.isNavigationActionbarAutoHide(oldNavAction)) {
+                AppBarLayout.LayoutParams params =
+                        (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+                params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                        | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+                toolbar.setLayoutParams(params);
+            }
+
             // Case action without tab layout
             if (!UITabLayoutUtils.isNavigationActionWithTabLayout(newNavAction)) {
                 mTabLayout.setVisibility(View.GONE);

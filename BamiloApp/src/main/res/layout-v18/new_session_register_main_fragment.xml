@@ -11,7 +11,8 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:paddingTop="@dimen/dimen_16dp">
 
         <com.mobile.components.customfontviews.EditText
             android:id="@+id/national_id"

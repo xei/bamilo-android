@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="@dimen/margin_16dp"
-        android:paddingRight="@dimen/margin_16dp">
+        android:paddingRight="@dimen/margin_16dp"
+        android:paddingTop="@dimen/dimen_16dp">
 
         <com.mobile.components.customfontviews.EditText
             android:id="@+id/login_email"
