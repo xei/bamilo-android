@@ -344,9 +344,9 @@ public class UIUtils {
         if (activeNetwork == null) {
             return "unknown";
         }
-        if (activeNetwork.getTypeName().matches("WIFI")) {
+        if (activeNetwork.getTypeName().equalsIgnoreCase("WIFI")) {
             return "wifi";
-        } else if (activeNetwork.getTypeName().matches("MOBILE")) {
+        } else if (activeNetwork.getTypeName().equalsIgnoreCase("MOBILE")) {
             return "cellular";
         }
         return "unknown";
