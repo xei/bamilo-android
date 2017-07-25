@@ -19,12 +19,9 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.CategoriesListAdapter;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.GetExternalLinksHelper;
 import com.mobile.helpers.categories.GetCategoriesHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.service.database.CategoriesTableHelper;
-import com.mobile.service.objects.ExternalLinks;
-import com.mobile.service.objects.ExternalLinksSection;
 import com.mobile.service.objects.category.Categories;
 import com.mobile.service.objects.category.Category;
 import com.mobile.service.pojo.BaseResponse;
@@ -54,12 +51,11 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
 
     private static final String TAG = NavigationCategoryFragment.class.getSimpleName();
 
-    private AnimatedExpandableListView mCategoryList;
     private View mPartialErrorView;
 
     private Categories mCategories;
-    private Categories mCategories2;
-    private ExternalLinksSection mExternalLinksSection;
+//    private Categories mCategories2;
+//    private ExternalLinksSection mExternalLinksSection;
     private Category mCategory;
     private MultiLevelListView mCategoryListNew;
 
@@ -80,7 +76,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         super(IS_NESTED_FRAGMENT, R.layout.navigation_fragment_categories);
     }
 
-    /*
+    /**
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
@@ -91,17 +87,18 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         // Get category list view
 
         mCategoryListNew = (MultiLevelListView) view.findViewById(R.id.nav_sub_categories_grid);
-        mCategoryList = (AnimatedExpandableListView) view.findViewById(R.id.nav_sub_categories_grid2);
+        // AnimatedExpandableListView mCategoryList = (AnimatedExpandableListView) view.findViewById(R.id.nav_sub_categories_grid2);
         // Get Error view to retry categories load
         mPartialErrorView = view.findViewById(R.id.partial_error_button);
         // Validation to show content
-        if (mCategories != null && mCategories.size() > 0) {
+        /*if (mCategories != null && mCategories.size() > 0) {
             showCategoryList(mCategories, mExternalLinksSection);
         }
+        else*/
         // Case empty
-        else if (!TextUtils.isEmpty(ShopSelector.getShopId())) {
+        if (!TextUtils.isEmpty(ShopSelector.getShopId())) {
             if (getBaseActivity() instanceof MainFragmentActivity && !((MainFragmentActivity) getBaseActivity()).isInMaintenance()){
-                triggerGetExternalLinksSection();
+//                triggerGetExternalLinksSection();
                 triggerGetCategories();
             }
 
@@ -118,7 +115,21 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
     /**
      * Show the category list
      */
-    private void showCategoryList(Categories categories, ExternalLinksSection externalLinksSection) {
+    private void showCategoryList(Categories categories) {
+        // Case No categories are retrieved
+        if (CollectionUtils.isNotEmpty(categories)) {
+            hidePartialRetry();
+            showRootCategories(categories);
+
+            // Show content
+            showFragmentContentContainer();
+        }
+        // Case error
+        else {
+            showRetry();
+        }
+    }
+    /*private void showCategoryList(Categories categories, ExternalLinksSection externalLinksSection) {
         // Case No categories are retrieved but we have some External Links Section to show
         if (CollectionUtils.isNotEmpty(categories) || (externalLinksSection != null && CollectionUtils.isNotEmpty(externalLinksSection.getExternaLinks()))) {
             if(externalLinksSection != null && CollectionUtils.isNotEmpty(externalLinksSection.getExternaLinks())){
@@ -157,7 +168,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
             }
 
 
-            newShowRootCategories(categories);
+            showRootCategories(categories);
 
             // Show content
             showFragmentContentContainer();
@@ -165,20 +176,20 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         // Case error
         else showRetry();
 
-    }
+    }*/
 
     /**
      * Show the root categories
      */
-    private void showRootCategories(final ArrayList<Category> categories) {
+    /*private void showRootCategories(final ArrayList<Category> categories) {
         Print.i(TAG, "ON SHOW ROOT CATEGORIES "+categories.size());
         CategoriesListAdapter mCategoryAdapter = new CategoriesListAdapter(getBaseActivity().getApplicationContext(), categories);
         mCategoryList.setAdapter(mCategoryAdapter);
         mCategoryList.setOnGroupClickListener(this);
         mCategoryList.setOnChildClickListener(this);
-    }
+    }*/
 
-    private void newShowRootCategories(final ArrayList<Category> categories) {
+    private void showRootCategories(final ArrayList<Category> categories) {
         setCategoryLevel(categories , 0);
         Print.i(TAG, "ON SHOW ROOT CATEGORIES "+categories.size());
         NewCategoriesListAdapter mCategoryAdapter = new NewCategoriesListAdapter(getBaseActivity());
@@ -236,12 +247,12 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
      */
     private void showRetry() {
         Print.i(TAG, "ON SHOW RETRY");
-        if(CollectionUtils.isEmpty(mCategories) && mExternalLinksSection == null){
+        if(CollectionUtils.isEmpty(mCategories) /*&& mExternalLinksSection == null*/){
             showFragmentErrorRetry();
-        } else if(mExternalLinksSection != null) {
+        } /*else if(mExternalLinksSection != null) {
             mPartialErrorView.setVisibility(View.VISIBLE);
             mPartialErrorView.setOnClickListener(this);
-        }
+        }*/
     }
 
     /**
@@ -266,9 +277,9 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         triggerContentEvent(new GetCategoriesHelper(), bundle, this);
     }
 
-    private void triggerGetExternalLinksSection(){
+    /*private void triggerGetExternalLinksSection(){
         triggerContentEventNoLoading(new GetExternalLinksHelper(), null, this);
-    }
+    }*/
 
     /**
      * Show product list
@@ -310,7 +321,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
 
                 if (CollectionUtils.isNotEmpty(mCategories)) {
                     // Show categories
-                    showCategoryList(mCategories, mExternalLinksSection);
+                    showCategoryList(mCategories);
 
 
                 } else {
@@ -320,11 +331,11 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
 
 
                 break;
-            case GET_EXTERNAL_LINKS:
+            /*case GET_EXTERNAL_LINKS:
                 mExternalLinksSection = (ExternalLinksSection) baseResponse.getContentData();
                 // Show categories
                 showCategoryList(mCategories, mExternalLinksSection);
-                break;
+                break;*/
         }
 
     }

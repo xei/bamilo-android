@@ -1,3 +1,4 @@
+/*
 package com.mobile.service.objects;
 
 import android.os.Parcel;
@@ -8,10 +9,12 @@ import com.mobile.service.pojo.RestConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+*/
 /**
  * Created by msilva on 4/19/16.
  * This Class will hold the External Links Section elements that currently will be displayed on the NavigationCategoryFragment
- */
+ *//*
+
 public class ExternalLinks implements IJSONSerializable, Parcelable {
 
     // The label
@@ -88,3 +91,4 @@ public class ExternalLinks implements IJSONSerializable, Parcelable {
 
 
 }
+*/
