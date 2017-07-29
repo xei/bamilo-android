@@ -731,7 +731,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             Print.i(TAG, "NO SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(true);
         }
-    }    @Override
+        // TODO: 7/29/2017 Cleanup
+        mDrawerToggle.syncState();
+    }
+
+    @Override
     public void onTabReselected(TabLayout.Tab tab) {
         // ...
     }
