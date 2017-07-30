@@ -345,9 +345,12 @@ public class UIUtils {
     public static String networkType(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if(activeNetwork.getTypeName().equals("WIFI")) {
+        if (activeNetwork == null) {
+            return "unknown";
+        }
+        if(activeNetwork.getTypeName().equalsIgnoreCase("WIFI")) {
             return "wifi";
-        } else if(activeNetwork.getTypeName().equals("MOBILE")) {
+        } else if(activeNetwork.getTypeName().equalsIgnoreCase("MOBILE")) {
             return "cellular";
         }
         return "unknown";
