@@ -206,7 +206,7 @@ public class ErrorLayoutFactory {
         Builder showContinueButton() {
             setButtonMessage(R.string.continue_shopping);
             setButtonTextColor(R.color.white);
-            setButtonBackground(R.color.color_accent);
+            setButtonBackground(R.color.orange_1);
             showButton();
             return this;
         }

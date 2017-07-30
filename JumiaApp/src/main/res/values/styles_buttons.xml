@@ -117,7 +117,7 @@
         <item name="android:layout_width">@dimen/dimen_64dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:background">@color/black_900</item>
+        <item name="android:background">@color/blue_3</item>
     </style>
 
     <style name="Button_Link.NewAddress" parent="@style/Button_Link.Blue_1">

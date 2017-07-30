@@ -55,6 +55,7 @@
             android:layout_alignParentLeft="true"
             android:layout_above="@+id/address_continue"
             app:fabSize="mini"
+            app:backgroundTint="@color/orange_1"
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_add_white_48dp" />
 
@@ -62,11 +63,13 @@
             android:id="@+id/address_continue"
             android:layout_width="match_parent"
             android:layout_height="@dimen/checkout_footer_height"
-            android:layout_alignParentBottom="true"
             android:textSize="@dimen/checkout_footer_font_size"
             android:textColor="@color/white"
             android:gravity="center"
-            android:background="@color/color_accent"
-            android:text="@string/address_next_button"/>
+            android:background="@color/orange_1"
+            android:text="@string/address_next_button"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

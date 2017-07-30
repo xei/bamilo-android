@@ -381,7 +381,7 @@
     <com.mobile.components.customfontviews.TextView
         android:text="@string/checkout_confirmation_next_step"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_accent"
+        android:background="@color/orange_1"
         android:layout_gravity="center_vertical|center_horizontal|center"
         android:gravity="center|center_horizontal|center_vertical"
         android:layout_width="match_parent"
