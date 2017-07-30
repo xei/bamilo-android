@@ -94,7 +94,7 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/register_button_create"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:background="#4990e2"
+                android:background="#1E375F"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
