@@ -17,14 +17,15 @@
             android:id="@+id/fab_new_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            app:fabSize="normal"
             android:layout_gravity="bottom|end|right"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_add_white_48dp"
+            app:backgroundTint="@color/orange_1"
+            app:fabSize="normal"
             app:layout_anchor="@+id/address_recycler_view"
             app:layout_anchorGravity="bottom|right|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:layout_behavior="com.mobile.view.newfragments.FABScrollBehavior"
-            android:src="@drawable/ic_add_white_48dp" />
+            app:layout_behavior="com.mobile.view.newfragments.FABScrollBehavior" />
 </android.support.design.widget.CoordinatorLayout>
