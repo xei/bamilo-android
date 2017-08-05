@@ -3,43 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BankActivity"
-    >
+    tools:context=".BankActivity">
 
     <ImageView
+        android:id="@+id/checkout_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/checkout_image"
-        android:src="@drawable/ic_success_checkout"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="98dp" />
+        android:layout_marginTop="98dp"
+        android:src="@drawable/ic_success_checkout" />
 
     <TextView
         android:id="@+id/launch_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:textColor="@color/black"
-        android:text="پرداخت شما با موفقیت پرداخت شد"
-        android:textStyle="bold"
-
         android:layout_below="@+id/checkout_image"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:gravity="center_vertical|center_horizontal" />
+        android:gravity="center_vertical|center_horizontal"
+
+        android:text="@string/payment_successful"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold" />
 
     <Button
+        android:id="@+id/back_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="بازگشت به برنامه"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:background="@color/orange_1"
-        android:paddingTop="@dimen/dimen_10dp"
         android:paddingBottom="@dimen/dimen_10dp"
         android:paddingLeft="@dimen/dimen_40dp"
         android:paddingRight="@dimen/dimen_40dp"
-        android:id="@+id/back_main"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:paddingTop="@dimen/dimen_10dp"
+        android:text="@string/return_to_app" />
 
 </RelativeLayout>

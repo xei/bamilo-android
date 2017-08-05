@@ -42,12 +42,12 @@ public class BankActivity extends Activity {
             if(bundle != null){
                 String msgFromBrowserUrl = bundle.getString("msg_from_browser");
                 if (msgFromBrowserUrl.equals("reject")) {
-                    launchInfo.setText("پرداخت شما ناموفق بود");
+                    launchInfo.setText(R.string.payment_unsuccessful);
                     checkout_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_reject_checkout));
                 }
                 else
                 {
-                    launchInfo.setText("پرداخت شما با موفقیت پرداخت شد");
+                    launchInfo.setText(R.string.payment_successful);
                     triggerClearCart();
                 }
             }
