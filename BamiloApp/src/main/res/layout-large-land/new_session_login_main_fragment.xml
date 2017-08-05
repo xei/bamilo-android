@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/fgt_pass"
-            android:textColor="#4990e2"
+            android:textColor="@color/blue_3"
             android:textSize="12sp" />
 
         <Space
@@ -70,7 +70,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#4990e2"
+            android:background="@color/blue_3"
             android:text="@string/login_label" />
 
         <Space
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:text="@string/continue_without_log_in"
             android:textAlignment="center"
-            android:textColor="#4990e2"
+            android:textColor="@color/blue_3"
             android:textSize="12sp"
             android:visibility="gone"
             app:met_primaryColor="@color/transparent" />

@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:id="@+id/fgt_pass"
-        android:textColor="#4990e2" />
+        android:textColor="#1E375F" />
 
     <Space
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/button4"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:background="#4990e2"
+        android:background="#1E375F"
         android:text="@string/login_label" />
 
     <Space
@@ -70,7 +70,7 @@
         android:textSize="12sp"
         android:layout_height="wrap_content"
         android:id="@+id/continue_without_log_in"
-        android:textColor="#4990e2"
+        android:textColor="#1E375F"
         android:visibility="gone"
         app:met_primaryColor="@color/transparent"
         android:textAlignment="center" />
