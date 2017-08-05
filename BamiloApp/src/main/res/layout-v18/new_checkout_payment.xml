@@ -68,7 +68,7 @@
             android:textColor="@color/white"
             android:gravity="center"
             android:layout_alignParentBottom="true"
-            android:background="@color/color_accent"
+            android:background="@color/orange_1"
             android:text="@string/payment_next_button"/>
 
 </RelativeLayout>

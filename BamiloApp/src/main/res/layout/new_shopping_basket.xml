@@ -59,7 +59,7 @@
         android:textSize="@dimen/checkout_footer_font_size"
         android:textColor="@color/white"
         android:gravity="center"
-        android:background="@color/color_accent"
+        android:background="@color/orange_1"
         android:text="@string/basket_confirm_button"/>
         </RelativeLayout>
     </ScrollView>
