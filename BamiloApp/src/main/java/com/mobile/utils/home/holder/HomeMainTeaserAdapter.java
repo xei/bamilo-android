@@ -78,7 +78,7 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
         View progressBar = imageTeaserView.findViewById(R.id.home_teaser_item_progress);
         final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.home_teaser_item_image);
         //RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
-        ImageManager.getInstance().loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large, false);
+        ImageManager.getInstance().loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_slider, false);
     }
 
     /*
