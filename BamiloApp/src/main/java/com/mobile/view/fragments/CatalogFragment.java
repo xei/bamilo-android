@@ -453,14 +453,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onUpdateCatalogContainer(CatalogPage catalogPage) {
         Print.i(TAG, "ON UPDATE CATALOG CONTAINER: " + catalogPage.getPage());
         // Case first time save catalog
-        mCatalogPage = catalogPage;
-        /*if (mCatalogPage == null) {
+        //mCatalogPage = catalogPage;
+        if (mCatalogPage == null) {
             mCatalogPage = catalogPage;
         }
         // Case load more then update data or Case filter applied then replace the data
         else {
             mCatalogPage.update(catalogPage);
-        }*/
+        }
 
         // Validate current catalog page
         CatalogGridAdapter adapter = (CatalogGridAdapter) mGridView.getAdapter();

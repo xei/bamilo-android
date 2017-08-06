@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -15,7 +13,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
@@ -29,7 +26,6 @@ import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -92,7 +88,6 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.UITabLayoutUtils;
-import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.DrawerFragment;
@@ -440,12 +435,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private void setAppBarLayout(@NavigationAction.Type int oldNavAction, @NavigationAction.Type int newNavAction) {
         try {
             // Case enable/disable actionbar auto-hide
-            if (UITabLayoutUtils.isNavigationActionbarAutoHide(newNavAction)) {
+            if (UITabLayoutUtils.isNotNavigationActionbarAutoHide(newNavAction)) {
                 AppBarLayout.LayoutParams params =
                         (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
                 params.setScrollFlags(0);
                 toolbar.setLayoutParams(params);
-            } else if (UITabLayoutUtils.isNavigationActionbarAutoHide(oldNavAction)) {
+            } else if (UITabLayoutUtils.isNotNavigationActionbarAutoHide(oldNavAction)) {
                 AppBarLayout.LayoutParams params =
                         (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
                 params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL

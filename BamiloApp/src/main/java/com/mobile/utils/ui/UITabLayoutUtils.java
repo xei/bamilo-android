@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.util.TypedValue;
 import android.view.View;
@@ -93,9 +94,9 @@ public class UITabLayoutUtils {
 
 
     // TODO: 7/24/2017 we should change this approach
-    public static boolean isNavigationActionbarAutoHide(@NavigationAction.Type int action){
+    public static boolean isNotNavigationActionbarAutoHide(@NavigationAction.Type int action){
         return action == NavigationAction.LOGIN_OUT || action == NavigationAction.CHECKOUT
-                || action == NavigationAction.PRODUCT;
+                || action == NavigationAction.PRODUCT || action == NavigationAction.FILTERS;
     }
 
     public static int getTabPosition(@NavigationAction.Type int action) {
