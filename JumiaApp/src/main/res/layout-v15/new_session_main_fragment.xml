@@ -15,6 +15,7 @@
         app:tabGravity="fill"
         app:tabTextColor="@color/black_700"
         app:tabSelectedTextColor="@color/black"
+        app:tabIndicatorColor="@color/orange_1"
  />
     <FrameLayout
         android:id="@+id/fragment_container"

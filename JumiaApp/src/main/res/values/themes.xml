@@ -12,7 +12,7 @@
         <!-- Color for UI controls like checkboxes and text fields -->
         <item name="colorAccent">@color/color_accent</item>
         <!-- Color for UI controls (switch|checkbox|radio) -->
-        <item name="colorControlActivated">@color/color_accent</item>
+        <item name="colorControlActivated">@color/orange_1</item>
         <!-- Color for UI controls like checkboxes and text fields -->
         <item name="android:navigationBarColor">@color/black</item>
         <!-- Color for app background -->
@@ -79,7 +79,7 @@
         <item name="tabGravity">fill</item>
         <item name="tabMode">fixed</item>
         <item name="tabIndicatorHeight">2dp</item>
-        <item name="tabIndicatorColor">@color/color_accent</item>
+        <item name="tabIndicatorColor">@color/orange_1</item>
     </style>
 
     <!-- Checkout Tab Layout -->
@@ -88,7 +88,7 @@
         <item name="tabGravity">center</item>
         <item name="tabMode">fixed</item>
         <item name="tabIndicatorHeight">2dp</item>
-        <item name="tabIndicatorColor">@color/tabBar</item>
+        <item name="tabIndicatorColor">@color/orange_1</item>
     </style>
 
     <!-- Sliding Tab Layout -->
@@ -97,7 +97,7 @@
         <item name="stsBottomBorderThickness">0dp</item>
         <item name="stsDividerColor">@color/white</item>
         <item name="stsDividerThickness">0dp</item>
-        <item name="stsIndicatorColor">@color/color_accent</item>
+        <item name="stsIndicatorColor">@color/orange_1</item>
         <item name="stsIndicatorThickness">2.5dp</item>
     </style>
 

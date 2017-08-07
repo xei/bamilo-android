@@ -248,7 +248,7 @@
 
                 <com.mobile.components.customfontviews.Button
                 android:text="@string/save_address_label"
-                android:background="#5688E3"
+                android:background="@color/blue_3"
                 android:textColor="@color/white"
                     android:layout_marginTop="@dimen/dimen_15dp"
                 android:layout_width="match_parent"

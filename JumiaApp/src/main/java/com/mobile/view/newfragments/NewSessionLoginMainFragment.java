@@ -255,7 +255,8 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         outState.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, mParentFragmentType);
         outState.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, mNextStepFromParent);
         outState.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, isInCheckoutProcess);
-        outState.putInt("selectedtab", tabLayout.getSelectedTabPosition());
+        // TODO: 7/31/2017 To remove -> no usage found
+//        outState.putInt("selectedtab", tabLayout.getSelectedTabPosition());
 
     }
 

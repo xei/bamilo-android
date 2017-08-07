@@ -125,12 +125,12 @@ public class ErrorLayoutFactory {
                 case CATALOG_NO_RESULTS:
                     new Builder()
                     .setContent(R.drawable.ic_filter_empty, R.string.catalog_no_results, R.string.catalog_no_results_details)
-                    .setButton(R.string.catalog_edit_filters, R.color.white, R.color.color_accent);
+                    .setButton(R.string.catalog_edit_filters, R.color.white, R.color.orange_1);
                     break;
                 case CATALOG_UNEXPECTED_ERROR:
                     new Builder()
                     .setContent(R.drawable.ic_filter_empty, R.string.server_error)
-                    .setButton(R.string.catalog_edit_filters, R.color.color_accent);
+                    .setButton(R.string.catalog_edit_filters, R.color.orange_1);
                     break;
                 case NO_FAVOURITES_LAYOUT:
                     new Builder()
@@ -206,7 +206,7 @@ public class ErrorLayoutFactory {
         Builder showContinueButton() {
             setButtonMessage(R.string.continue_shopping);
             setButtonTextColor(R.color.white);
-            setButtonBackground(R.color.color_accent);
+            setButtonBackground(R.color.orange_1);
             showButton();
             return this;
         }
