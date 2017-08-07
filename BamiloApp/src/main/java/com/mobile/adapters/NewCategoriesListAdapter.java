@@ -97,7 +97,7 @@ public class NewCategoriesListAdapter extends MultiLevelListAdapter {
             categoryLevelOffset = -1;
         }
         int paddingLevel = category.getLevel() == 0 ? 0 : category.getLevel() + categoryLevelOffset;
-        int itemRightPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, paddingLevel * 24, mContext.getResources().getDisplayMetrics());
+        int itemRightPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, paddingLevel * 32, mContext.getResources().getDisplayMetrics());
         ((RelativeLayout) item.icon.getParent()).setPadding(0, 0, itemRightPadding, 0);
 
         // ##### SET CATEGORY ICON #####
