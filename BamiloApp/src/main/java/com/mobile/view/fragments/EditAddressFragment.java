@@ -13,6 +13,7 @@ import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.datamanagement.DataManager;
 import com.mobile.helpers.address.EditAddressHelper;
 import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetFormEditAddressHelper;
@@ -691,7 +692,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerGetRegions(String apiCall){
         Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        triggerContentEventNoLoading(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
+//        triggerContentEventNoLoading(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
+        DataManager.getInstance().loadData(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
     }
 
     /**
@@ -699,7 +701,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerGetCities(String apiCall, int region){
         Print.i(TAG, "TRIGGER: GET REGIONS: " + apiCall);
-        triggerContentEventNoLoading(new GetCitiesHelper(), GetCitiesHelper.createBundle(apiCall, region, null), this);
+//        triggerContentEventNoLoading(new GetCitiesHelper(), GetCitiesHelper.createBundle(apiCall, region, null), this);
+        DataManager.getInstance().loadData(new GetCitiesHelper(), GetCitiesHelper.createBundle(apiCall, region, null), this);
     }
 
     /**
@@ -707,7 +710,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerGetPostalCodes(String apiCall, int city){
         Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + apiCall);
-        triggerContentEventNoLoading(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(apiCall, city, null), this);
+//        triggerContentEventNoLoading(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(apiCall, city, null), this);
+        DataManager.getInstance().loadData(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(apiCall, city, null), this);
     }
 
     protected void triggerDefaultAddressForm(int mAddressId){

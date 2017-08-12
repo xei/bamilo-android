@@ -156,6 +156,8 @@ public enum EventType {
 
     GET_PRODUCT_DETAIL("http:/catalog/detail/"),
 
+    GET_DELIVERY_TIME("http:/catalog/deliverytime/"),
+
     GET_PRODUCT_REVIEWS(GET_PRODUCT_DETAIL.action, AigRestContract.MAX_CACHE_TIME),
 
     GET_PRODUCT_OFFERS(GET_PRODUCT_DETAIL.action),

@@ -63,6 +63,7 @@ public class RestConstants {
     public static final String OPTIONS = "options";
     public static final String RATINGS = "ratings";
     public static final String SKU = "sku";
+    public static final String SKUS = "skus[]";
     public static final String PRICE = "price";
     public static final String PRICE_CONVERTED = "price_converted";
     public static final String BRAND = "brand";
@@ -152,6 +153,8 @@ public class RestConstants {
     public static final String ADDRESS_1 = "address1";
     public static final String ADDRESS_2 = "address2";
     public static final String CITY = "city";
+    public static final String CITY_ID = "city_id";
+    public static final String CITY_ID_REQUEST = "city-id";
     public static final String POSTCODE = "postcode";
     public static final String VALIDATE = "validate";
     public static final String ERROR = "error";
@@ -344,4 +347,7 @@ public class RestConstants {
     public static final String ACTIONS = "actions";
     public static final String SUBTEXT = "subtext";
     public static final String IS_VALID = "is_valid";
+    public static final String DELIVERY_ZONE_ONE = "delivery_zone_one";
+    public static final String DELIVERY_ZONE_TWO = "delivery_zone_two";
+    public static final String DELIVERY_MESSAGE = "delivery_message";
 }
