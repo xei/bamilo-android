@@ -21,7 +21,7 @@ public final class DataManager {
         offlineDataMap = new HashMap<>();
     }
 
-    public static DataManager getInstance() {
+    public static synchronized DataManager getInstance() {
         if (mInstance == null) {
             mInstance = new DataManager();
         }
