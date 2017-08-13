@@ -6,7 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputType;
 import android.view.View;
+import android.widget.RadioGroup;
 
+import com.alirezaafkar.sundatepicker.DatePicker;
+import com.alirezaafkar.sundatepicker.components.JDF;
+import com.alirezaafkar.sundatepicker.interfaces.DateSetListener;
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
@@ -22,6 +26,7 @@ import com.mobile.managers.TrackerManager;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.tracking.gtm.GTMValues;
+import com.mobile.service.utils.ApiConstants;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.CustomerUtils;
 import com.mobile.service.utils.EventType;
@@ -32,11 +37,13 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
+import java.util.Calendar;
 import java.util.EnumSet;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Map;
 
-public class RegisterFragment extends NewBaseFragment implements IResponseCallback
-{
+public class RegisterFragment extends NewBaseFragment implements IResponseCallback {
 
     private EditText mNationalIdView;
     private EditText mFirstNameView;
@@ -44,13 +51,17 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     private EditText mEmailRView;
     private EditText mPasswordRView;
     private EditText mPhoneView;
+    private TextView mBirthDay;
+    private RadioGroup mGender;
 
     private FragmentType mParentFragmentType;
 
     private FragmentType mNextStepFromParent;
 
     private boolean isInCheckoutProcess;
-    private TextView national_id_error_message,first_name_error_message,last_name_error_message,email_error_message,password_error_message,phone_error_message;
+    private TextView national_id_error_message, first_name_error_message, last_name_error_message,
+            email_error_message, password_error_message, phone_error_message;
+    private JDF mSelectedBirthDay;
 
     public RegisterFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
@@ -106,8 +117,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     public void onClick(View view) {
         int id = view.getId();
         // Case forgot password
-         if (id == R.id.register_button_create)
-        {
+        if (id == R.id.register_button_create) {
             onClickCreate();
         }
         // Case super
@@ -125,6 +135,8 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         mEmailRView = (EditText) view.findViewById(R.id.email);
         mPasswordRView = (EditText) view.findViewById(R.id.password);
         mPhoneView = (EditText) view.findViewById(R.id.phone);
+        mBirthDay = (TextView) view.findViewById(R.id.birthday);
+        mGender = (RadioGroup) view.findViewById(R.id.radio_group_gender);
         phone_error_message = (TextView) view.findViewById(R.id.phone_error_message);
         national_id_error_message = (TextView) view.findViewById(R.id.national_id_error_message);
         first_name_error_message = (TextView) view.findViewById(R.id.first_name_error_message);
@@ -135,8 +147,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         view.findViewById(R.id.register_button_create).setOnClickListener(this);
         mEmailRView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             mNationalIdView.setText(savedInstanceState.getString("mNationalIdView"));
             mFirstNameView.setText(savedInstanceState.getString("mFirstNameView"));
             mLastNameView.setText(savedInstanceState.getString("mLastNameView"));
@@ -144,13 +155,47 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
             mPasswordRView.setText(savedInstanceState.getString("mPasswordRView"));
             mPhoneView.setText(savedInstanceState.getString("mPhoneView"));
         }
+
+        final DateSetListener dateSetListener = new DateSetListener() {
+            @Override
+            public void onDateSet(int i, @Nullable Calendar calendar, int dayOfMonth, int month, int year) {
+                mBirthDay.setText(String.format(new Locale("fa"), "%d/%02d/%02d", year, month, dayOfMonth));
+                if (mSelectedBirthDay == null) {
+                    mSelectedBirthDay = new JDF();
+                }
+                mSelectedBirthDay.setIranianDate(year, month, dayOfMonth);
+            }
+        };
+        mBirthDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JDF today = new JDF(GregorianCalendar.getInstance());
+                JDF defaultDate = new JDF();
+                ;
+                if (mSelectedBirthDay == null) {
+                    defaultDate.setIranianDate(today.getIranianYear() - 10,
+                            today.getIranianMonth(), today.getIranianDay());
+                } else {
+                    defaultDate.setIranianDate(mSelectedBirthDay.getIranianYear() - 10,
+                            mSelectedBirthDay.getIranianMonth(), mSelectedBirthDay.getIranianDay());
+                }
+                final int MIN_YEAR_OF_BIRTHDAY = 1300;
+                new DatePicker.Builder()
+                        .minYear(MIN_YEAR_OF_BIRTHDAY)
+                        .theme(R.style.DatePickerDialogTheme)
+                        .maxYear(today.getIranianYear() - 10)
+                        .date(defaultDate)
+                        .closeYearAutomatically(true)
+                        .build(dateSetListener)
+                        .show(getFragmentManager(), TAG);
+            }
+        });
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             mNationalIdView.setText(savedInstanceState.getString("mNationalIdView"));
             mFirstNameView.setText(savedInstanceState.getString("mFirstNameView"));
             mLastNameView.setText(savedInstanceState.getString("mLastNameView"));
@@ -171,8 +216,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
 
         if (CollectionUtils.isNotEmpty(map)) {
             for (Object key : map.keySet()) {
-                switch (key.toString())
-                {
+                switch (key.toString()) {
                     case "national_id":
                         national_id_error_message.setVisibility(View.VISIBLE);
                         national_id_error_message.setText(map.get(key).toString());
@@ -202,8 +246,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         }
     }
 
-    private boolean checkValidation()
-    {
+    private boolean checkValidation() {
         Context context = getBaseActivity();
 
         boolean result = validateStringToPattern(context, R.string.national_id, mNationalIdView, mNationalIdView.getText().toString(), true, 10, 10, R.string.normal_string_regex, "", R.id.national_id_error_message);
@@ -226,9 +269,14 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         values.put("customer[password]", mPasswordRView.getText().toString());
         values.put("customer[phone]", mPhoneView.getText().toString());
         values.put("customer[phone_prefix]", "100");
+        values.put("customer[gender]", mGender.getCheckedRadioButtonId() == R.id.radio_gender_male ? "male" : "female");
+        if (mSelectedBirthDay != null) {
+            values.put("customer[birthday]", String.format(Locale.US, "%d-%02d-%02d",
+                    mSelectedBirthDay.getIranianYear(), mSelectedBirthDay.getIranianMonth(), mSelectedBirthDay.getIranianDay()));
+        }
 
         // Register user
-        triggerRegister("form_submit::customer/create/", values);
+        triggerRegister(ApiConstants.USER_REGISTRATION_API_PATH, values);
     }
 
     private void onClickCreate() {
@@ -244,6 +292,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
             TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
         }
     }
+
     private void triggerRegister(String endpoint, ContentValues values) {
         triggerContentEventProgress(new RegisterHelper(), RegisterHelper.createBundle(endpoint, values), this);
     }
@@ -306,7 +355,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
 
-           case REGISTER_ACCOUNT_EVENT:
+            case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
                 // Tracking
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);

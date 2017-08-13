@@ -529,5 +529,6 @@
     <string name="payment_successful">پرداخت شما با موفقیت انجام شد</string>
     <string name="payment_unsuccessful">پرداخت شما ناموفق بود</string>
     <string name="return_to_app">بازگشت به برنامه</string>
+    <string name="birthday_placeholder">----/--/--</string>
 
 </resources>

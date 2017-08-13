@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -18,14 +19,20 @@ import android.widget.ScrollView;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
+import com.mobile.components.absspinner.IcsAdapterView;
+import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.datamanagement.DataManager;
 import com.mobile.factories.EventFactory;
+import com.mobile.helpers.address.GetCitiesHelper;
+import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
+import com.mobile.helpers.products.GetDeliveryTimeHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
@@ -38,9 +45,15 @@ import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.database.BrandsTableHelper;
 import com.mobile.service.database.LastViewedTableHelper;
+import com.mobile.service.objects.addresses.AddressCities;
+import com.mobile.service.objects.addresses.AddressCity;
+import com.mobile.service.objects.addresses.AddressRegion;
+import com.mobile.service.objects.addresses.AddressRegions;
 import com.mobile.service.objects.campaign.CampaignItem;
 import com.mobile.service.objects.product.Brand;
 import com.mobile.service.objects.product.BundleList;
+import com.mobile.service.objects.product.DeliveryTime;
+import com.mobile.service.objects.product.DeliveryTimeCollection;
 import com.mobile.service.objects.product.ImageUrls;
 import com.mobile.service.objects.product.RichRelevance;
 import com.mobile.service.objects.product.pojo.ProductBundle;
@@ -51,6 +64,7 @@ import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.pojo.RestConstants;
 import com.mobile.service.tracking.AdjustTracker;
 import com.mobile.service.tracking.TrackingPage;
+import com.mobile.service.utils.ApiConstants;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.EventType;
@@ -76,6 +90,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
 
@@ -116,9 +131,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private String mRelatedRichRelevanceHash;
     private ViewGroup mBrandView;
     private View mPriceContainer;
+    private IcsSpinner mRegionSpinner, mCitySpinner;
+    private TextView mDeliveryTimeTextView;
     private RecommendManager recommendManager;
     HomeRecommendationsGridTeaserHolder recommendationsGridTeaserHolder;
     private boolean recommendationsTeaserHolderAdded = false;
+    private AddressRegions mRegions;
+    private AddressCities mCities;
+    private int defaultRegionId, defaultCityId;
+
     /**
      * Empty constructor
      */
@@ -208,6 +229,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mSaveForLater = (TextView) view.findViewById(R.id.pdv_button_add_to_save);
         mSaveForLater.setOnClickListener(this);
 
+        mRegionSpinner = (IcsSpinner) view.findViewById(R.id.pdv_delivery_region);
+        mCitySpinner = (IcsSpinner) view.findViewById(R.id.pdv_delivery_city);
+
+        mDeliveryTimeTextView = (TextView) view.findViewById(R.id.pdv_seller_delivery_info);
     }
 
     /*
@@ -408,6 +433,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Case get product
         else if (TextUtils.isNotEmpty(mCompleteProductSku)) {
             triggerLoadProduct(mCompleteProductSku, mRichRelevanceHash);
+            triggerGetRegions(ApiConstants.GET_REGIONS_API_PATH);
         }
         // Case error
         else {
@@ -436,6 +462,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mNavSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
             mNavPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
             triggerLoadProduct(sku, mRichRelevanceHash);
+            triggerGetRegions(ApiConstants.GET_REGIONS_API_PATH);
             return true;
         }
         return false;
@@ -590,11 +617,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Delivery Info
                 mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_container).setVisibility(View.VISIBLE);
                 ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_title)).setText(mProduct.getSeller().getDeliveryTime());
-                if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
+                /*if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
                     TextView info = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_cms);
                     info.setText(mProduct.getSeller().getDeliveryCMSInfo());
                     info.setVisibility(View.VISIBLE);
-                }
+                }*/
                 // Shipping Info
                 if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryShippingInfo())) {
                     TextView info2 = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_info);
@@ -611,17 +638,18 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
             }
             // Case normal
-            else if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryTime())) {
+            /*else if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryTime())) {
                 // Delivery Info
                 TextView textView = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_delivery_info);
                 textView.setText(mProduct.getSeller().getDeliveryTime());
                 textView.setVisibility(View.VISIBLE);
-            }
+            }*/
             // Seller warranty
             if (TextUtils.isNotEmpty(mProduct.getSeller().getWarranty())) {
+                mSellerContainer.findViewById(R.id.pdv_seller_warranty_column).setVisibility(View.VISIBLE);
                 TextView textView = ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_warranty));
-                String warranty = String.format(getResources().getString(R.string.warranty), mProduct.getSeller().getWarranty());
-                textView.setText(warranty);
+//                String warranty = String.format(getResources().getString(R.string.warranty), mProduct.getSeller().getWarranty());
+                textView.setText(mProduct.getSeller().getWarranty());
                 textView.setVisibility(View.VISIBLE);
             }
         }
@@ -1167,6 +1195,18 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         //sendRecommend();
     }
 
+    private void triggerGetRegions(String apiCall){
+        DataManager.getInstance().loadData(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
+    }
+
+    private void triggerGetDeliveryTime(String sku, Integer cityId) {
+        triggerContentEventNoLoading(new GetDeliveryTimeHelper(), GetDeliveryTimeHelper.createBundle(sku, cityId), this);
+    }
+
+    private void triggerGetCities(String apiCall, int region){
+        DataManager.getInstance().loadData(new GetCitiesHelper(), GetCitiesHelper.createBundle(apiCall, region, null), this);
+    }
+
     private void triggerAddItemToCart(String sku) {
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
     }
@@ -1259,6 +1299,36 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 RichRelevance productRichRelevance = (RichRelevance) baseResponse.getContentData();
                 mProduct.setRichRelevance(productRichRelevance);
                 setRelatedItems();
+                break;
+            case GET_REGIONS_EVENT:
+                mRegions = (AddressRegions) baseResponse.getContentData();
+                if (CollectionUtils.isNotEmpty(mRegions)) {
+                    setRegions(mRegions);
+                    triggerGetDeliveryTime(mCompleteProductSku, null);
+                }
+                break;
+            case GET_CITIES_EVENT:
+                Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
+                mCities = (GetCitiesHelper.AddressCitiesStruct) baseResponse.getContentData();
+                if (CollectionUtils.isNotEmpty(mCities)) {
+                    setCities(mCities);
+                }
+                break;
+            case GET_DELIVERY_TIME:
+                Print.d(TAG, "RECEIVED DELIVERY_TIME");
+                DeliveryTimeCollection deliveryTimeCollection = (DeliveryTimeCollection) baseResponse.getContentData();
+                DeliveryTime deliveryTime = deliveryTimeCollection.getDeliveryTimes().get(0);
+                String strDeliveryTime;
+                if (deliveryTime.getTehranDeliveryTime().isEmpty()) {
+                    strDeliveryTime = deliveryTime.getDeliveryMessage();
+                } else {
+                    strDeliveryTime = String.format(new Locale("fa"), "%s %s\n%s %s", getString(R.string.tehran_delivery_time), deliveryTime.getTehranDeliveryTime(), getString(R.string.other_cities_delivery_time),deliveryTime.getOtherCitiesDeliveryTime());
+                }
+                mDeliveryTimeTextView.setText(strDeliveryTime);
+                mDeliveryTimeTextView.setVisibility(View.VISIBLE);
+                defaultRegionId = deliveryTimeCollection.getRegionId();
+                defaultCityId = deliveryTimeCollection.getCityId();
+                selectDefaultRegion(mRegions);
                 break;
             default:
                 break;
@@ -1422,6 +1492,90 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     }
 
+
+    IcsAdapterView.OnItemSelectedListener onAddressItemSelected = new IcsAdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+            Object object = parent.getItemAtPosition(position);
+            if (object instanceof AddressRegion) {
+                // Request the cities for this region id
+                int region = ((AddressRegion) object).getValue();
+                // Get cities
+                if (region != -1) {
+                    triggerGetCities(ApiConstants.GET_CITIES_API_PATH, region);
+                }
+
+            } else if (object instanceof AddressCity) {
+                // Case list
+                int city = ((AddressCity) object).getValue();
+                if (city != -1) {
+                    mDeliveryTimeTextView.setText(R.string.getting_data_from_server);
+                    triggerGetDeliveryTime(mCompleteProductSku, city);
+                }
+            }
+        }
+
+        @Override
+        public void onNothingSelected(IcsAdapterView<?> parent) {
+
+        }
+    };
+    /**
+     * Method used to set the regions on the respective form
+     */
+    private void setRegions(ArrayList<AddressRegion> regions){
+        Print.d(TAG, "SET REGIONS REGIONS: ");
+
+        // Create adapter
+        List<AddressRegion> regionsWithEmptyItem = new ArrayList<>();
+        regionsWithEmptyItem.add(new AddressRegion(-1, getString(R.string.select_region)));
+        regionsWithEmptyItem.addAll(regions);
+        ArrayAdapter<AddressRegion> adapter= new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regionsWithEmptyItem);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+        mRegionSpinner.setAdapter(adapter);
+        mRegionSpinner.setOnItemSelectedListener(onAddressItemSelected);
+        selectDefaultRegion(regions);
+        hideActivityProgress();
+        // Show invisible content to trigger spinner listeners
+    }
+
+    private void selectDefaultRegion(List<AddressRegion> regions) {
+        if (defaultRegionId != 0) {
+            for (int i = 0; i < regions.size(); i++) {
+                if (regions.get(i).getValue() == defaultRegionId) {
+                    mRegionSpinner.setSelection(i + 1);
+                }
+            }
+        }
+    }
+
+    /**
+     * Method used to set the cities on the respective form
+     */
+    private void setCities(ArrayList<AddressCity> cities){
+        mCitySpinner.setVisibility(View.VISIBLE);
+        // Create adapter
+        List<AddressCity> citiesWithEmptyItem = new ArrayList<>();
+        citiesWithEmptyItem.add(new AddressCity(-1, getString(R.string.select_city)));
+        citiesWithEmptyItem.addAll(cities);
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, citiesWithEmptyItem);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+        mCitySpinner.setAdapter(adapter);
+        selectDefaultCity(cities);
+        mCitySpinner.setOnItemSelectedListener(onAddressItemSelected);
+        hideActivityProgress();
+        // Show invisible content to trigger spinner listeners
+    }
+
+    private void selectDefaultCity(List<AddressCity> cities) {
+        if (defaultCityId != 0) {
+            for (int i = 0; i < cities.size(); i++) {
+                if (cities.get(i).getValue() == defaultCityId) {
+                    mCitySpinner.setSelection(i + 1);
+                }
+            }
+        }
+    }
 
 
     private class ComboItemClickListener implements OnClickListener {

@@ -28,6 +28,7 @@ import com.mobile.service.objects.home.HomePageObject;
 import com.mobile.service.objects.orders.MyOrder;
 import com.mobile.service.objects.orders.OrderStatus;
 import com.mobile.service.objects.product.BundleList;
+import com.mobile.service.objects.product.DeliveryTimeCollection;
 import com.mobile.service.objects.product.OfferList;
 import com.mobile.service.objects.product.ProductRatingPage;
 import com.mobile.service.objects.product.RichRelevance;
@@ -426,6 +427,11 @@ public interface AigApiInterface {
     @POST("/")
     void emailCheck(@FieldMap Map<String, String> data, Callback<BaseResponse<CustomerEmailCheck>> callback);
     String emailCheck = "emailCheck";
+
+    @FormUrlEncoded
+    @POST("/")
+    void getDeliveryTime(@FieldMap Map<String, String> data, Callback<BaseResponse<DeliveryTimeCollection>> callback);
+    String getDeliveryTime = "getDeliveryTime";
 
     /*
      * ########## HTTP PUT ##########  TODO : ADD HERE NEW MOB API INTERFACE v2.0

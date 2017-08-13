@@ -265,7 +265,7 @@
     <string name="see_other_variations">تنوع کالا</string>
     <string name="variations">تنوع کالا</string>
     <string name="be_first_rate">اولین نفر باشید که به این محصول امتیاز می دهید</string>
-    <string name="seller_info">مشخصات فروشنده</string>
+    <string name="seller_info">فروشنده و زمان تحویل</string>
     <string name="read_more">بیشتر بخوانید</string>
     <string name="more_specifications">مشخصات بیشتر</string>
     <string name="see_other_colors">سایر رنگ ها</string>
@@ -507,5 +507,16 @@
     <string name="drawer_faq">راهنما و سوالات متداول</string>
     <string name="drawer_share">اشتراک برنامه با دوستان</string>
     <string name="drawer_rateus">امتیازدهی به برنامه</string>
+    <string name="seller_column">فروشنده:</string>
+    <string name="warranty_column">ضمانت:</string>
+    <string name="extimated_time_column">زمان حدودی:</string>
+    <string name="calculate_delivery_time">محاسبه زمان تحویل کالا</string>
+    <string name="select_region">لطفاً استان خود را انتخاب کنید.</string>
+    <string name="tehran_delivery_time">تهران</string>
+    <string name="other_cities_delivery_time">شهرستان‌ها</string>
+    <string name="getting_data_from_server">در حال دریافت اطلاعات…</string>
+    <string name="gender">جنسیت</string>
+    <string name="gender_male">مرد</string>
+    <string name="gender_female">زن</string>
 
 </resources>

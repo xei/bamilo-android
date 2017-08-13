@@ -22,7 +22,7 @@ import pl.openrnd.multilevellistview.MultiLevelListAdapter;
 
 public class NewCategoriesListAdapter extends MultiLevelListAdapter {
 
-    Context mContext;
+    private Context mContext;
 
     // TODO: 7/22/2017 Remove if there is no dependency/issue
     /*private class ViewHolder {
@@ -97,7 +97,9 @@ public class NewCategoriesListAdapter extends MultiLevelListAdapter {
             categoryLevelOffset = -1;
         }
         int paddingLevel = category.getLevel() == 0 ? 0 : category.getLevel() + categoryLevelOffset;
-        int itemRightPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, paddingLevel * 32, mContext.getResources().getDisplayMetrics());
+        int CATEGORY_ITEMS_PADDING_DIP = 32;
+        int itemRightPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, paddingLevel *
+                CATEGORY_ITEMS_PADDING_DIP, mContext.getResources().getDisplayMetrics());
         ((RelativeLayout) item.icon.getParent()).setPadding(0, 0, itemRightPadding, 0);
 
         // ##### SET CATEGORY ICON #####

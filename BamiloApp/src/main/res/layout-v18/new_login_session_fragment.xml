@@ -1,63 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="15dp"
-    tools:context="com.mobile.view.fragments.LoginNewMainFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:padding="15dp">
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_50dp" />
-        <com.mobile.components.customfontviews.EditText
-            style="@style/BlueFormTextField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text=""
-            android:hint="@string/email_address"
-            android:ems="10"
-            android:id="@+id/login_email" />
+
+    <com.mobile.components.customfontviews.EditText
+        android:id="@+id/login_email"
+        style="@style/BlueFormTextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/email_address"
+        android:inputType="textPersonName" />
+
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/login_text_error_message"
         style="@style/FormTextErrorField"
-        android:visibility="gone"/>
-        <com.mobile.components.customfontviews.EditText
-            android:layout_width="match_parent"
-            style="@style/BlueFormTextField"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:hint="@string/password"
-            android:id="@+id/login_password"
-            android:textSize="12sp" />
+        android:visibility="gone" />
+
+    <com.mobile.components.customfontviews.EditText
+        android:id="@+id/login_password"
+        style="@style/BlueFormTextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:textSize="12sp" />
+
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/password_text_error_message"
         style="@style/FormTextErrorField"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_20dp" />
 
     <com.mobile.components.customfontviews.TextView
-        android:text="@string/fgt_pass"
+        android:id="@+id/fgt_pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:id="@+id/fgt_pass"
-        android:textColor="#1E375F" />
+        android:text="@string/fgt_pass"
+        android:textColor="#1E375F"
+        android:textSize="12sp" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_20dp" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/button4"
         style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="#1E375F"
         android:text="@string/login_label" />
 
@@ -66,14 +70,14 @@
         android:layout_height="@dimen/dimen_20dp" />
 
     <com.mobile.components.customfontviews.TextView
-        android:text="@string/continue_without_log_in"
-        android:layout_width="match_parent"
-        android:textSize="12sp"
-        android:layout_height="wrap_content"
         android:id="@+id/continue_without_log_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/continue_without_log_in"
+        android:textAlignment="center"
         android:textColor="#1E375F"
+        android:textSize="12sp"
         android:visibility="gone"
-        app:met_primaryColor="@color/transparent"
-        android:textAlignment="center" />
+        app:met_primaryColor="@color/transparent" />
 
 </LinearLayout>

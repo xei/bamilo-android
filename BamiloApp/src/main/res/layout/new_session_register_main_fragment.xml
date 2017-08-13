@@ -14,18 +14,6 @@
         android:paddingTop="@dimen/dimen_16dp">
 
         <com.mobile.components.customfontviews.EditText
-            android:id="@+id/national_id"
-            style="@style/Register_Edittext"
-            android:hint="@string/national_id"
-            android:inputType="number" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/national_id_error_message"
-            style="@style/FormTextErrorField"
-            android:gravity="start|left"
-            android:visibility="gone" />
-
-        <com.mobile.components.customfontviews.EditText
             android:id="@+id/first_name"
             style="@style/Register_Edittext"
             android:hint="@string/first_name"
@@ -48,6 +36,73 @@
             style="@style/FormTextErrorField"
             android:gravity="start|left"
             android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.EditText
+            android:id="@+id/national_id"
+            style="@style/Register_Edittext"
+            android:hint="@string/national_id"
+            android:inputType="number" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/national_id_error_message"
+            style="@style/FormTextErrorField"
+            android:gravity="start|left"
+            android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/gender_title"
+            style="@style/TextBase.Title"
+            android:layout_marginTop="@dimen/margin_padding_xl"
+            android:drawablePadding="@dimen/margin_padding_m"
+            android:drawableRight="@drawable/ic_form_gender"
+            android:gravity="right"
+            android:paddingLeft="@dimen/form_padding"
+            android:paddingRight="@dimen/form_padding"
+            android:text="@string/gender"
+            android:textColor="@color/black_700" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|right"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/form_padding"
+            android:paddingRight="@dimen/form_padding">
+
+            <com.mobile.components.customfontviews.RadioButton
+                android:id="@+id/radio_gender_male"
+                style="@style/FormRadioButton"
+                android:layout_width="wrap_content"
+                android:checked="true"
+                android:text="@string/gender_male" />
+
+            <com.mobile.components.customfontviews.RadioButton
+                android:id="@+id/radio_gender_female"
+                style="@style/FormRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:text="@string/gender_female" />
+        </RadioGroup>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/birthday_title"
+            style="@style/TextBase.Title"
+            android:layout_marginTop="@dimen/margin_padding_xl"
+            android:drawablePadding="@dimen/margin_padding_m"
+            android:drawableRight="@drawable/ic_form_birthday"
+            android:gravity="right"
+            android:paddingLeft="@dimen/form_padding"
+            android:paddingRight="@dimen/form_padding"
+            android:text="@string/gender"
+            android:textColor="@color/black_700" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/birthday"
+            style="@style/FormButtonSpinner"
+            android:hint="@string/birthday_placeholder"
+            android:paddingBottom="5dp" />
 
         <com.mobile.components.customfontviews.EditText
             android:id="@+id/email"
