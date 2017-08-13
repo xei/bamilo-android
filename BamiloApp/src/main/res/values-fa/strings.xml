@@ -515,5 +515,8 @@
     <string name="tehran_delivery_time">تهران</string>
     <string name="other_cities_delivery_time">شهرستان‌ها</string>
     <string name="getting_data_from_server">در حال دریافت اطلاعات…</string>
+    <string name="gender">جنسیت</string>
+    <string name="gender_male">مرد</string>
+    <string name="gender_female">زن</string>
 
 </resources>
