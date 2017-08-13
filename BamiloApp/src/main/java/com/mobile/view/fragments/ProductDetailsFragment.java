@@ -53,7 +53,7 @@ import com.mobile.service.objects.campaign.CampaignItem;
 import com.mobile.service.objects.product.Brand;
 import com.mobile.service.objects.product.BundleList;
 import com.mobile.service.objects.product.DeliveryTime;
-import com.mobile.service.objects.product.DeliveryTimes;
+import com.mobile.service.objects.product.DeliveryTimeCollection;
 import com.mobile.service.objects.product.ImageUrls;
 import com.mobile.service.objects.product.RichRelevance;
 import com.mobile.service.objects.product.pojo.ProductBundle;
@@ -1316,8 +1316,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 break;
             case GET_DELIVERY_TIME:
                 Print.d(TAG, "RECEIVED DELIVERY_TIME");
-                DeliveryTimes deliveryTimes = (DeliveryTimes) baseResponse.getContentData();
-                DeliveryTime deliveryTime = deliveryTimes.getDeliveryTimes().get(0);
+                DeliveryTimeCollection deliveryTimeCollection = (DeliveryTimeCollection) baseResponse.getContentData();
+                DeliveryTime deliveryTime = deliveryTimeCollection.getDeliveryTimes().get(0);
                 String strDeliveryTime;
                 if (deliveryTime.getTehranDeliveryTime().isEmpty()) {
                     strDeliveryTime = deliveryTime.getDeliveryMessage();
@@ -1326,8 +1326,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
                 mDeliveryTimeTextView.setText(strDeliveryTime);
                 mDeliveryTimeTextView.setVisibility(View.VISIBLE);
-                defaultRegionId = deliveryTimes.getRegionId();
-                defaultCityId = deliveryTimes.getCityId();
+                defaultRegionId = deliveryTimeCollection.getRegionId();
+                defaultCityId = deliveryTimeCollection.getCityId();
                 selectDefaultRegion(mRegions);
                 break;
             default:

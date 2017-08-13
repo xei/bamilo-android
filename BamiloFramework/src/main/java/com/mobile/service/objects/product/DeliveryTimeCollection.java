@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeliveryTimes implements IJSONSerializable {
+public class DeliveryTimeCollection implements IJSONSerializable {
     private List<DeliveryTime> deliveryTimes;
     private int regionId, cityId;
 

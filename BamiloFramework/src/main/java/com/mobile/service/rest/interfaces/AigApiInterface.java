@@ -28,7 +28,7 @@ import com.mobile.service.objects.home.HomePageObject;
 import com.mobile.service.objects.orders.MyOrder;
 import com.mobile.service.objects.orders.OrderStatus;
 import com.mobile.service.objects.product.BundleList;
-import com.mobile.service.objects.product.DeliveryTimes;
+import com.mobile.service.objects.product.DeliveryTimeCollection;
 import com.mobile.service.objects.product.OfferList;
 import com.mobile.service.objects.product.ProductRatingPage;
 import com.mobile.service.objects.product.RichRelevance;
@@ -430,7 +430,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void getDeliveryTime(@FieldMap Map<String, String> data, Callback<BaseResponse<DeliveryTimes>> callback);
+    void getDeliveryTime(@FieldMap Map<String, String> data, Callback<BaseResponse<DeliveryTimeCollection>> callback);
     String getDeliveryTime = "getDeliveryTime";
 
     /*
