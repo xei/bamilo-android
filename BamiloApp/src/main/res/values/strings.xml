@@ -530,5 +530,6 @@
     <string name="payment_unsuccessful">پرداخت شما ناموفق بود</string>
     <string name="return_to_app">بازگشت به برنامه</string>
     <string name="birthday_placeholder">----/--/--</string>
+    <string name="order_summary_total_items">مجموع کالاها</string>
 
 </resources>

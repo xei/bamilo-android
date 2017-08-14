@@ -350,4 +350,5 @@ public class RestConstants {
     public static final String DELIVERY_ZONE_ONE = "delivery_zone_one";
     public static final String DELIVERY_ZONE_TWO = "delivery_zone_two";
     public static final String DELIVERY_MESSAGE = "delivery_message";
+    public static final String ESTIMATED_DELIVERY_TIME = "estimated_delivery_time";
 }

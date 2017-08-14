@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.service.objects.IJSONSerializable;
 import com.mobile.service.objects.RequiredJson;
 import com.mobile.service.objects.cart.PurchaseEntity;
+import com.mobile.service.pojo.RestConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +22,8 @@ public class MultiStepShipping implements IJSONSerializable, Parcelable {
 
     private ShippingForm mForm;
 
+    private String estimatedDeliveryTime;
+
     /**
      * Empty constructor
      */
@@ -32,6 +35,7 @@ public class MultiStepShipping implements IJSONSerializable, Parcelable {
     public MultiStepShipping(MultiStepShipping step) {
         this.mOrderSummary = step.mOrderSummary;
         this.mForm = step.mForm;
+        this.estimatedDeliveryTime = step.estimatedDeliveryTime;
     }
 
     /*
@@ -43,6 +47,7 @@ public class MultiStepShipping implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
+        estimatedDeliveryTime = jsonObject.getJSONObject(RestConstants.ESTIMATED_DELIVERY_TIME).optString(RestConstants.DELIVERY_MESSAGE);
         // Get shipping form
         mForm = new ShippingForm();
         mForm.initialize(jsonObject);
@@ -82,11 +87,13 @@ public class MultiStepShipping implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(estimatedDeliveryTime);
         dest.writeValue(mOrderSummary);
         dest.writeValue(mForm);
     }
 
     private MultiStepShipping(Parcel in) {
+        estimatedDeliveryTime = in.readString();
         mOrderSummary = (PurchaseEntity) in.readValue(PurchaseEntity.class.getClassLoader());
         mForm = (ShippingForm) in.readValue(ShippingForm.class.getClassLoader());
     }
@@ -101,4 +108,11 @@ public class MultiStepShipping implements IJSONSerializable, Parcelable {
         }
     };
 
+    public String getEstimatedDeliveryTime() {
+        return estimatedDeliveryTime;
+    }
+
+    public void setEstimatedDeliveryTime(String estimatedDeliveryTime) {
+        this.estimatedDeliveryTime = estimatedDeliveryTime;
+    }
 }

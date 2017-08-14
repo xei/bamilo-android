@@ -518,5 +518,10 @@
     <string name="gender">جنسیت</string>
     <string name="gender_male">مرد</string>
     <string name="gender_female">زن</string>
+    <string name="checkout_confirmation_phone">تلفن: %s</string>
+    <string name="checkout_confirmation_total_price">جمع نهایی(%d کالا)</string>
+    <string name="price_free">رایگان</string>
+    <string name="order_summary_total_discount">مجموع تخفیف‌ها</string>
+    <string name="order_summary_shipping_fee">هزینه ارسال</string>
 
 </resources>

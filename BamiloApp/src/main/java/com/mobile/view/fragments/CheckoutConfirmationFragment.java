@@ -11,7 +11,6 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.mobile.components.customfontviews.Button;
@@ -20,8 +19,6 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.forms.ShippingMethodForm;
-import com.mobile.forms.ShippingMethodFormBuilder;
 import com.mobile.helpers.checkout.GetStepFinishHelper;
 import com.mobile.helpers.checkout.GetStepShippingHelper;
 import com.mobile.helpers.voucher.AddVoucherHelper;
@@ -42,22 +39,18 @@ import com.mobile.view.newfragments.NewBaseFragment;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author sergiopereira
- *
  */
-public class CheckoutConfirmationFragment extends NewBaseFragment implements View.OnClickListener ,IResponseCallback{
-    TextView next , address , telephone , user , order_count_title , order_price ,ship_price,voucher_price,all_price,ship_time,all_voucher ,voucher_error,all_price_title;
+public class CheckoutConfirmationFragment extends NewBaseFragment implements View.OnClickListener, IResponseCallback {
+    TextView next, address, telephone, user, order_count_title, order_price, ship_price, voucher_price, all_price, ship_time, all_voucher, voucher_error, all_price_title;
     Switch voucher_switch;
     LinearLayout voucher_lay;
-    private ShippingMethodFormBuilder mFormResponse;
     LinearLayout voucher_layer;
     private EditText mVoucherView;
     private Button couponButton;
-    ScrollView scrollView;
-    private boolean isShowingNoPaymentNecessary;
-    private boolean removeVoucher = false;
     private String mVoucherCode;
     private static final String TAG = CheckoutConfirmationFragment.class.getSimpleName();
     private PurchaseEntity mOrderFinish;
@@ -83,7 +76,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         // Tracking checkout step
-       // TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ADDRESSES);
+        // TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ADDRESSES);
     }
 
     @Override
@@ -125,25 +118,26 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         couponButton.setOnClickListener(this);
         recyclerView = (RecyclerView) view.findViewById(R.id.cheackout_recycler_view);
         mVoucherView.addTextChangedListener(new TextWatcher() {
-                                                @Override
-                                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                                                }
+            }
 
-                                                @Override
-                                                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                                    hideError();
-                                                }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                hideError();
+            }
 
-                                                @Override
-                                                public void afterTextChanged(Editable s) {
+            @Override
+            public void afterTextChanged(Editable s) {
 
-                                                }
-                                            });
-            mAdapter = new CardCheckOutAdapter(cardList);
+            }
+        });
+        mAdapter = new CardCheckOutAdapter(cardList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(mAdapter);
         //prepareCardData();
         voucher_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -151,10 +145,10 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if(isChecked){
+                if (isChecked) {
                     voucher_layer.setVisibility(View.VISIBLE);
 
-                }else{
+                } else {
                     voucher_layer.setVisibility(View.GONE);
                     triggerRemoveVoucher();
                 }
@@ -162,16 +156,15 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
             }
         });
 
-        TextView step1 = (TextView)view.findViewById(R.id.step1);
+        TextView step1 = (TextView) view.findViewById(R.id.step1);
         step1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onCheckoutCircleClick(2,1);
+                onCheckoutCircleClick(2, 1);
             }
         });
 
     }
-
 
 
     private void validateCoupon() {
@@ -199,19 +192,16 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
-        if (viewId== R.id.checkout_confirmation_btn)
-        {
-           getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_PAYMENT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-        }
-        else if (viewId == R.id.checkout_button_enter) {
+        if (viewId == R.id.checkout_confirmation_btn) {
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_PAYMENT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        } else if (viewId == R.id.checkout_button_enter) {
             if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(couponButton.getText(), getString(R.string.remove_label))) {
                 hideError();
                 validateCoupon();
             } else {
-              if (TextUtils.isEmpty(mVoucherView.getText()))
-              {
-                  showError();
-              }
+                if (TextUtils.isEmpty(mVoucherView.getText())) {
+                    showError();
+                }
                 validateCoupon();
             }
             getBaseActivity().hideKeyboard();
@@ -221,7 +211,8 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     private void showError() {
         voucher_error.setVisibility(View.VISIBLE);
     }
-    private void hideError(){
+
+    private void hideError() {
         voucher_error.setVisibility(View.GONE);
     }
 
@@ -242,16 +233,15 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     private void showOrderdetail() {
         all_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
        // order_count_title.setText(mOrderFinish.getCartCount()+" "+getContext().getString(R.string.checkout_count_title));
-        all_price_title.setText("جمع نهایی("+mOrderFinish.getCartCount()+" کالا)");
+        all_price_title.setText(String.format(new Locale("fa"), getString(R.string.checkout_confirmation_total_price), mOrderFinish.getCartCount()));
         order_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted()));
         all_price_title.setTextColor(getResources().getColor(R.color.checkout_order_green));
         all_price.setTextColor(getResources().getColor(R.color.checkout_order_green));
-        all_voucher.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted()+mOrderFinish.getShippingValue()-mOrderFinish.getTotal()));
-        if (mOrderFinish.hasCouponDiscount()){
+        all_voucher.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted() + mOrderFinish.getShippingValue() - mOrderFinish.getTotal()));
+        if (mOrderFinish.hasCouponDiscount()) {
             voucher_lay.setVisibility(View.VISIBLE);
-        voucher_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getCouponDiscount()));
-        }
-        else{
+            voucher_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getCouponDiscount()));
+        } else {
             voucher_lay.setVisibility(View.GONE);
         }
     }
@@ -260,17 +250,14 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         cardList = new ArrayList<CardChoutItem>();
         for (PurchaseCartItem item : mOrderFinish.getCartItems()) {
             CardChoutItem card;
-            if (item.hasDiscount())
-            {
-              card = new CardChoutItem(item.getBrandName().toString(), item.getName().toString(), item.getSpecialPrice()+"",item.getQuantity()+"",item.getImageUrl());
+            if (item.hasDiscount()) {
+                card = new CardChoutItem(item.getBrandName(), item.getName(), String.valueOf(item.getSpecialPrice()), String.valueOf(item.getQuantity()), item.getImageUrl());
+
+            } else {
+                card = new CardChoutItem(item.getBrandName(), item.getName(), String.valueOf(item.getPrice()), String.valueOf(item.getQuantity()), item.getImageUrl());
 
             }
-            else
-            {
-                card = new CardChoutItem(item.getBrandName().toString(), item.getName().toString(), item.getPrice()+"",item.getQuantity()+"",item.getImageUrl());
-
-            }
-                  cardList.add(card);
+            cardList.add(card);
         }
         mAdapter = new CardCheckOutAdapter(cardList);
 
@@ -280,11 +267,10 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     private void showOrderAddresses() {
 
         if (mOrderFinish.hasShippingAddress()) {
-            address.setText(mOrderFinish.getShippingAddress().getAddress().toString());
-            telephone.setText("تلفن : "+mOrderFinish.getShippingAddress().getPhone().toString());
-            user.setText(mOrderFinish.getShippingAddress().getFirstName().toString()+" "+mOrderFinish.getShippingAddress().getLastName().toString());
-        }
-        else {
+            address.setText(mOrderFinish.getShippingAddress().getAddress());
+            telephone.setText(String.format(new Locale("fa"), getString(R.string.checkout_confirmation_phone), mOrderFinish.getShippingAddress().getPhone()));
+            user.setText(String.format(new Locale("fa"), "%s %s", mOrderFinish.getShippingAddress().getFirstName(), mOrderFinish.getShippingAddress().getLastName()));
+        } else {
 
         }
     }
@@ -292,17 +278,17 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
     private void showShippingMethod() {
 
-        if (mOrderFinish.hasFreeShipping()||mOrderFinish.getShippingValue()==0){
-            ship_price.setText("رایگان");
+        if (mOrderFinish.hasFreeShipping() || mOrderFinish.getShippingValue() == 0) {
+            ship_price.setText(R.string.price_free);
             ship_price.setTextColor(getResources().getColor(R.color.checkout_order_green));
-        }
-        else {
+        } else {
             ship_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingValue()));
             ship_price.setTextColor(getResources().getColor(R.color.black));
         }
 
     }
-    private void triggerGetShippingMethods(){
+
+    private void triggerGetShippingMethods() {
         Print.i(TAG, "TRIGGER: GET SHIPPING METHODS");
         triggerContentEventProgress(new GetStepShippingHelper(), null, this);
     }
@@ -322,14 +308,13 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
             if (orderSummary.hasCouponDiscount()) {
                 mVoucherCode = orderSummary.getCouponCode();
                 if (!TextUtils.isEmpty(mVoucherCode)) {
-                    removeVoucher = true;
                     mVoucherView.setText(mVoucherCode);
                     mVoucherView.setFocusable(false);
                 } else {
                     mVoucherCode = null;
                 }
             } else {
-                mVoucherView.setText(TextUtils.isNotEmpty(mVoucherCode) ? mVoucherCode : "" );
+                mVoucherView.setText(TextUtils.isNotEmpty(mVoucherCode) ? mVoucherCode : "");
                 mVoucherView.setFocusable(true);
                 mVoucherView.setFocusableInTouchMode(true);
             }
@@ -350,8 +335,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case ADD_VOUCHER:
-                couponButton.setText(getString(eventType == EventType.ADD_VOUCHER ? R.string.remove_label : R.string.checkout_submit_voucher));
-                removeVoucher = eventType == EventType.ADD_VOUCHER;
+                couponButton.setText(getString(R.string.remove_label));
                 hideActivityProgress();
                 setOrderInfo((PurchaseEntity) baseResponse.getContentData());
                /* // Case voucher removed and is showing no payment necessary
@@ -364,7 +348,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
                 break;
             case REMOVE_VOUCHER:
                 mVoucherCode = null;
-                couponButton.setText(getString(eventType == EventType.REMOVE_VOUCHER ? R.string.checkout_submit_voucher : R.string.checkout_submit_voucher));
+                couponButton.setText(getString(R.string.checkout_submit_voucher));
                 setOrderInfo((PurchaseEntity) baseResponse.getContentData());
                 triggerGetMultiStepFinish();
                 break;
@@ -372,10 +356,10 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
                 onSuccessGetShippingMethods(baseResponse);
                 hideActivityProgress();
                 break;
-             case GET_MULTI_STEP_FINISH:
+            case GET_MULTI_STEP_FINISH:
                 mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
 
-                if(mOrderFinish == null) {
+                if (mOrderFinish == null) {
                     showFragmentErrorRetry();
                 } else {
                     showMyOrder();
@@ -384,19 +368,18 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
                     hideActivityProgress();
                 }
 
-                 if (mOrderFinish.hasCouponDiscount())
-                 {
-                     couponButton.setText(getContext().getString(R.string.remove_label));
-                     mVoucherView.setText(mOrderFinish.getCouponCode());
-                     mVoucherView.setFocusable(false);
-                     voucher_switch.setChecked(true);
-                 }else {
-                     couponButton.setText(getContext().getString(R.string.checkout_submit_voucher));
-                     mVoucherView.setText("");
-                     mVoucherView.setFocusable(true);
-                     mVoucherView.setFocusableInTouchMode(true);
-                     voucher_switch.setChecked(false);
-                 }
+                if (mOrderFinish.hasCouponDiscount()) {
+                    couponButton.setText(getContext().getString(R.string.remove_label));
+                    mVoucherView.setText(mOrderFinish.getCouponCode());
+                    mVoucherView.setFocusable(false);
+                    voucher_switch.setChecked(true);
+                } else {
+                    couponButton.setText(getContext().getString(R.string.checkout_submit_voucher));
+                    mVoucherView.setText("");
+                    mVoucherView.setFocusable(true);
+                    mVoucherView.setFocusableInTouchMode(true);
+                    voucher_switch.setChecked(false);
+                }
                 break;
 
             default:
@@ -405,24 +388,26 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     }
 
 
-    public void onSuccessGetShippingMethods(BaseResponse baseResponse){
+    public void onSuccessGetShippingMethods(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
         //
         GetStepShippingHelper.ShippingMethodFormStruct shippingMethodsForm = (GetStepShippingHelper.ShippingMethodFormStruct) baseResponse.getContentData();
         // Get order summary
         PurchaseEntity orderSummary = shippingMethodsForm.getOrderSummary();
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
-        showDeliveryTime(loadForm(shippingMethodsForm.getFormBuilder()));
+//        showDeliveryTime(loadForm(shippingMethodsForm.getFormBuilder()));
+        showDeliveryTime(shippingMethodsForm.getEstimatedDeliveryTime());
     }
 
     private void showDeliveryTime(String time) {
         ship_time.setText(time);//
     }
 
-    private String loadForm(ShippingMethodFormBuilder form) {
+    // TODO: 8/14/2017 REMOVE ASAP
+    /*private String loadForm(ShippingMethodFormBuilder form) {
         ShippingMethodForm field = new ShippingMethodForm(form.shippingMethodFormBuilderHolder.fields.get(0));
        return field.optionsShippingMethod.get("UniversalShippingMatrix").deliveryTime;
-    }
+    }*/
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
