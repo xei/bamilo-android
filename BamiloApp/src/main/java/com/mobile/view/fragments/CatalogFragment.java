@@ -1074,21 +1074,22 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (hasFilter) {
             String description;
             List<String> filterNamesArray = new ArrayList<>();
-            int counter = 0;
             for (String entry : filterValues.keySet()){
-                counter++;
-                if (counter > 2) {
-                    filterNamesArray.add(getString(R.string.ellipsis));
-                    break;
-                }
                 for (int index = 0; index < catalogPage.getFilters().size(); index++) {
                     if (catalogPage.getFilters().get(index).getId().equals(entry)) {
                         filterNamesArray.add(catalogPage.getFilters().get(index).getName());
                     }
                 }
             }
-            description = android.text.TextUtils.join(getString(R.string.filters_separator),
-                    filterNamesArray);
+            if (filterNamesArray.size() == 1) {
+                description = filterNamesArray.get(0);
+            } else if (filterNamesArray.size() > 1) {
+                description = getString(R.string.filters_last_delimiter,
+                        android.text.TextUtils.join(getString(R.string.filters_separator), filterNamesArray.subList(0, filterNamesArray.size() - 1)),
+                        filterNamesArray.get(filterNamesArray.size() - 1));
+            } else {
+                description = android.text.TextUtils.join(getString(R.string.filters_separator), filterNamesArray.subList(0, filterNamesArray.size() - 1));
+            }
             filterDesc.setText(description);
         } else {
             if (!catalogPage.hasFilters()) {
@@ -1105,23 +1106,25 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
         if (catalogPage.hasFilters()) {
             List<String> filterNamesArray = new ArrayList<>();
-            int counter = 0;
             for (CatalogFilter filter : catalogPage.getFilters()){
-                counter++;
-                if (counter > 2) {
-                    filterNamesArray.add(getString(R.string.ellipsis));
-                    break;
-                }
                 filterNamesArray.add(filter.getName());
             }
-            filterNames = android.text.TextUtils.join(getString(R.string.filters_separator), filterNamesArray);
+            if (filterNamesArray.size() == 1) {
+                filterNames = filterNamesArray.get(0);
+            } else if (filterNamesArray.size() > 1) {
+                filterNames = getString(R.string.filters_last_delimiter,
+                        android.text.TextUtils.join(getString(R.string.filters_separator), filterNamesArray.subList(0, filterNamesArray.size() - 1)),
+                        filterNamesArray.get(filterNamesArray.size() - 1));
+            } else {
+                filterNames = android.text.TextUtils.join(getString(R.string.filters_separator), filterNamesArray.subList(0, filterNamesArray.size() - 1));
+            }
         }
         filterDesc.setText(filterNames);
 
         setSortButton();
     }
 
-    /*
+    /**
      * (non-Javadoc)
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */

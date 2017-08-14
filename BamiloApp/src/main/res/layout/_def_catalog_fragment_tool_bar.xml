@@ -63,14 +63,14 @@
                 android:id="@+id/catalog_bar_description_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="start|left|center_vertical"
                 android:layout_below="@+id/center"
-                android:textSize="9sp"
-                android:textColor="@drawable/selector_catalog_filter_description_color"
-                android:singleLine="true"
+                android:layout_gravity="center"
                 android:ellipsize="end"
-                android:text="" />
+                android:gravity="start|left|center_vertical"
+                android:paddingLeft="@dimen/margin_padding_m"
+                android:singleLine="true"
+                android:textColor="@drawable/selector_catalog_filter_description_color"
+                android:textSize="9sp" />
         </RelativeLayout>
 
     </LinearLayout>
