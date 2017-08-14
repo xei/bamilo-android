@@ -91,25 +91,6 @@
                 android:text="@string/gender_female" />
         </RadioGroup>
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/birthday_title"
-            style="@style/TextBase.Title"
-            android:layout_marginTop="@dimen/margin_padding_xl"
-            android:drawablePadding="@dimen/margin_padding_m"
-            android:drawableRight="@drawable/ic_form_birthday"
-            android:fontFamily="@string/bamilo_font"
-            android:paddingLeft="@dimen/form_padding"
-            android:paddingRight="@dimen/form_padding"
-            android:text="@string/gender"
-            android:textAlignment="textStart"
-            android:textColor="@color/black_700" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/birthday"
-            style="@style/FormButtonSpinner"
-            android:hint="@string/birthday_placeholder"
-            android:paddingBottom="5dp" />
-
         <com.mobile.components.customfontviews.EditText
             android:id="@+id/email"
             style="@style/Register_Edittext"

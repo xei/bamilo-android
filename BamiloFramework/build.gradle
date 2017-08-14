@@ -58,8 +58,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], exclude: ['json.jar'], dir: 'libs')
     compile 'pl.openrnd.android:multi-level-listview:1.0.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    /** PERSIAN DATE-TIME PICKER **/
-    compile 'com.alirezaafkar:sundatepicker:2.0.8'
 
     /** TESTS **/
     testCompile 'junit:junit:4.12'
