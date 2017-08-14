@@ -1199,8 +1199,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         DataManager.getInstance().loadData(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
     }
 
-    private void triggerGetDeliveryTime(String sku, Integer cityId) {
-        triggerContentEventNoLoading(new GetDeliveryTimeHelper(), GetDeliveryTimeHelper.createBundle(sku, cityId), this);
+    private void triggerGetDeliveryTime(Integer cityId) {
+        if (mProduct != null && mRegions != null) {
+            triggerContentEventNoLoading(new GetDeliveryTimeHelper(), GetDeliveryTimeHelper.createBundle(mProduct.getSimples().get(0).getSku()
+                    , cityId), this);
+        }
     }
 
     private void triggerGetCities(String apiCall, int region){
@@ -1287,6 +1290,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Database
                 LastViewedTableHelper.insertLastViewedProduct(product);
                 BrandsTableHelper.updateBrandCounter(product.getBrandName());
+                triggerGetDeliveryTime(null);
                 break;
             case GET_PRODUCT_BUNDLE:
                 BundleList bundleList = (BundleList) baseResponse.getContentData();
@@ -1304,7 +1308,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mRegions = (AddressRegions) baseResponse.getContentData();
                 if (CollectionUtils.isNotEmpty(mRegions)) {
                     setRegions(mRegions);
-                    triggerGetDeliveryTime(mCompleteProductSku, null);
+                    triggerGetDeliveryTime(null);
                 }
                 break;
             case GET_CITIES_EVENT:
@@ -1510,7 +1514,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 int city = ((AddressCity) object).getValue();
                 if (city != -1) {
                     mDeliveryTimeTextView.setText(R.string.getting_data_from_server);
-                    triggerGetDeliveryTime(mCompleteProductSku, city);
+                    triggerGetDeliveryTime(city);
                 }
             }
         }
