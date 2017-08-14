@@ -11,7 +11,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -399,9 +398,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         else if (mSortOrFilterApplied) {
             triggerGetInitialCatalogPage();
             // Set the filter button selected or not
-            TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
-
-            UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues, filterDesc, mCatalogPage);
+            setFilterButtonState(mCurrentFilterValues, mCatalogPage);
 
         }
         // Case catalog was recover
@@ -425,8 +422,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Set filter button
         UICatalogUtils.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
         // Set the filter button selected or not
-        TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
-        UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues, filterDesc, mCatalogPage);
+        setFilterButtonState(mCurrentFilterValues, mCatalogPage);
         // Create adapter new data
         setCatalogAdapter(catalogPage);
         // Validate loading more view 
@@ -469,8 +465,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             setCatalogAdapter(mCatalogPage);
             // Set filter button
             UICatalogUtils.setFilterButtonActionState(mFilterButton, mCatalogPage.hasFilters(), this);
-            TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
-            UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues, filterDesc, mCatalogPage);
+            setFilterButtonState(mCurrentFilterValues, mCatalogPage);
             // Set sort button
             setSortButton();
         }
@@ -1072,14 +1067,54 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     }
 
+    private void setFilterButtonState(ContentValues filterValues, CatalogPage catalogPage) {
+        TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
+        boolean hasFilter = filterValues.size() > 0;
+        mFilterButton.setSelected(hasFilter);
+        if (hasFilter) {
+            String description;
+            List<String> filterNamesArray = new ArrayList<>();
+            int counter = 0;
+            for (String entry : filterValues.keySet()){
+                counter++;
+                if (counter > 2) {
+                    filterNamesArray.add(getString(R.string.ellipsis));
+                    break;
+                }
+                for (int index = 0; index < catalogPage.getFilters().size(); index++) {
+                    if (catalogPage.getFilters().get(index).getId().equals(entry)) {
+                        filterNamesArray.add(catalogPage.getFilters().get(index).getName());
+                    }
+                }
+            }
+            description = android.text.TextUtils.join(getString(R.string.filters_separator),
+                    filterNamesArray);
+            filterDesc.setText(description);
+        } else {
+            if (!catalogPage.hasFilters()) {
+                mFilterButton.setEnabled(false);
+            } else {
+                setFilterDescription(catalogPage);
+            }
+        }
+    }
+
     private void setFilterDescription(CatalogPage catalogPage) {
         TextView filterDesc = (TextView) mFilterButton.findViewById(R.id.catalog_bar_description_filter);
         String filterNames = "";
 
         if (catalogPage.hasFilters()) {
-            filterNames = catalogPage.getFilters().get(0).getName();
-            if (catalogPage.getFilters().size()>1) filterNames = filterNames + ", " + catalogPage.getFilters().get(1).getName();
-            if (catalogPage.getFilters().size()>2) filterNames = filterNames + ", ...";
+            List<String> filterNamesArray = new ArrayList<>();
+            int counter = 0;
+            for (CatalogFilter filter : catalogPage.getFilters()){
+                counter++;
+                if (counter > 2) {
+                    filterNamesArray.add(getString(R.string.ellipsis));
+                    break;
+                }
+                filterNamesArray.add(filter.getName());
+            }
+            filterNames = android.text.TextUtils.join(getString(R.string.filters_separator), filterNamesArray);
         }
         filterDesc.setText(filterNames);
 

@@ -523,5 +523,6 @@
     <string name="price_free">رایگان</string>
     <string name="order_summary_total_discount">مجموع تخفیف‌ها</string>
     <string name="order_summary_shipping_fee">هزینه ارسال</string>
-
+    <string name="filters_separator">،</string>
+    <string name="ellipsis">…</string>
 </resources>

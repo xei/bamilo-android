@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -22,7 +21,6 @@ import com.mobile.view.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Map;
 
 /**
  * Class used to help catalog UI.
@@ -102,11 +100,12 @@ public class UICatalogUtils {
         baseActivity.setActionBarTitle(name);
     }
 
+    // TODO: 8/14/2017 no usage for this method, remove it asap
     /**
      * Set the filter button state, to show as selected or not.<br>
      * The Android M (API 23) has an issue to refresh the drawable, so is used a post runnable.
      */
-    public static void setFilterButtonState(@Nullable final View button, final ContentValues filterValues, @Nullable final TextView descriptionLabel, final CatalogPage catalogPage) {
+    /*public static void setFilterButtonState(@Nullable final View button, final ContentValues filterValues, @Nullable final TextView descriptionLabel, final CatalogPage catalogPage) {
         if (button != null) {
             Print.i("SET FILTER BUTTON STATE: " + button.isSelected());
             button.post(new Runnable() {
@@ -160,7 +159,7 @@ public class UICatalogUtils {
                 }
             });
         }
-    }
+    }*/
 
     /**
      * Set button state when catalog show no internet connection error.
