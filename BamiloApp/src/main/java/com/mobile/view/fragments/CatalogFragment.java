@@ -1081,6 +1081,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                     }
                 }
             }
+            if (filterValues.containsKey(RestConstants.SPECIAL_PRICE)) {
+                filterNamesArray.add(getString(R.string.special_price_filter));
+            }
             if (filterNamesArray.size() == 1) {
                 description = filterNamesArray.get(0);
             } else if (filterNamesArray.size() > 1) {
