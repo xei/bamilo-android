@@ -426,7 +426,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             case CATALOG_NOFILTER:
             case CATALOG:
                 // Default
-                removeEntries = true;
+                removeEntries = false;
                 // Get indications to remove old entries or not
                 if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES)) {
                     removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);

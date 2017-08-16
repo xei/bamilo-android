@@ -110,12 +110,12 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
 
     private String mTitle;
 
-    private int mLevel = CatalogGridAdapter.ITEM_VIEW_TYPE_LIST;
-
     private String mKey;
-    private boolean cleanfilters = false;
 
     private CatalogSort mSelectedSort;
+
+    private ContentValues mInitialSelectedFilterValues;
+    private FragmentType mTargetType;
 
 
     /**
@@ -140,14 +140,17 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
             currentFilterPosition = savedInstanceState.getInt(FILTER_POSITION_TAG);
             Parcelable[] filterOptions = savedInstanceState.getParcelableArray(INITIAL_FILTER_VALUES);
             filterSelectionController = filterOptions instanceof FilterOptionInterface[] ? new FilterSelectionController(mFilters, (FilterOptionInterface[]) filterOptions) : new FilterSelectionController(mFilters);
+            mInitialSelectedFilterValues = filterSelectionController.getValues();
             mCategoryKey = savedInstanceState.getString("category_url");
-
+            mTargetType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
         }
         // Received arguments
         else {
+            mTargetType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
             mFilters = bundle.getParcelableArrayList(FILTER_TAG);
             currentFilterPosition = IntConstants.DEFAULT_POSITION;
             filterSelectionController = new FilterSelectionController(mFilters);
+            mInitialSelectedFilterValues = filterSelectionController.getValues();
             mCategoryKey = bundle.getString("category_url");
             mKey = bundle.getString(ConstantsIntentExtra.CONTENT_ID);
             // Get title
@@ -225,6 +228,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         Print.i(TAG, "ON SAVE INSTANCE");
         outState.putParcelableArray(INITIAL_FILTER_VALUES, filterSelectionController.getInitialValues());
         outState.putParcelableArrayList(FILTER_TAG, filterSelectionController.getCatalogFilters());
+        outState.putSerializable(ConstantsIntentExtra.TARGET_TYPE, mTargetType);
         outState.putInt(FILTER_POSITION_TAG, currentFilterPosition);
         super.onSaveInstanceState(outState);
     }
@@ -329,11 +333,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     private void processOnClickClean(){
         Print.d(TAG, "CLICKED ON: CLEAR");
         if (currentFragment instanceof FilterPriceFragment) {
-           ((FilterPriceFragment) currentFragment).mMinValueTxt.clearFocus();
-           ((FilterPriceFragment) currentFragment).mMaxValueTxt.clearFocus();
-           ((FilterPriceFragment) currentFragment).mMinValueTxt.setText(((FilterPriceFragment) currentFragment).mMinRang+"");
-           ((FilterPriceFragment) currentFragment).mMaxValueTxt.setText(((FilterPriceFragment) currentFragment).mMaxRang+"");
-
+           ((FilterPriceFragment) currentFragment).clearFilterValues();
         }
         filterSelectionController.initAllInitialFilterValues();
         // Clean all saved values
@@ -347,7 +347,6 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         if(currentFragment != null) {
             currentFragment.cleanValues();
         }
-        cleanfilters = true;
     }
 
     /**
@@ -360,11 +359,12 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         // Get parent unique tag
         String parentCatalogBackStackTag = FragmentController.getParentBackStackTag(this);
 
-        if (currentFragment instanceof FilterPriceFragment) {
-            ((FilterPriceFragment) currentFragment).mMinValueTxt.clearFocus();
-            ((FilterPriceFragment) currentFragment).mMaxValueTxt.clearFocus();
-
+        // in case selected filters isn't changed
+        if (mInitialSelectedFilterValues != null && mInitialSelectedFilterValues.equals(filterSelectionController.getValues())) {
+            getBaseActivity().onBackPressed();
+            return;
         }
+
         // Communicate with parent
         toCancelFilters = false;
         Bundle bundle = new Bundle();
@@ -376,13 +376,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
 
         bundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
         getBaseActivity().onBackPressed();
-        if (cleanfilters) {
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG_NOFILTER, bundle, FragmentController.ADD_TO_BACK_STACK);
-
-        } else {
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG_FILTER, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
-        cleanfilters = false;
+        getBaseActivity().onSwitchFragment(mTargetType, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
 

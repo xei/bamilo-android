@@ -21,6 +21,8 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
+import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.factories.EventFactory;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.helpers.search.SearchHelper;
@@ -28,13 +30,13 @@ import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
-import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
-import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.managers.TrackerManager;
+import com.mobile.preferences.CustomerPreferences;
 import com.mobile.service.objects.catalog.Catalog;
 import com.mobile.service.objects.catalog.CatalogPage;
 import com.mobile.service.objects.catalog.FeaturedBox;
 import com.mobile.service.objects.catalog.filters.CatalogFilter;
+import com.mobile.service.objects.catalog.filters.FilterSelectionController;
 import com.mobile.service.objects.product.pojo.ProductRegular;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
@@ -46,7 +48,6 @@ import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
-import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -135,6 +136,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private boolean showNoResult;
     private boolean sortChanged = false;
+    private FragmentType mTargetType;
 
     /**
      * Empty constructor
@@ -166,6 +168,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Bundle arguments = getArguments();
         if (arguments != null) {
             Print.i(TAG, "ON RECEIVE ARGUMENTS: " + arguments);
+            mTargetType = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
             // Get key
             mKey = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
             // Get title
@@ -209,6 +212,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
             mCatalogGridPosition = savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, IntConstants.INVALID_POSITION);
+            mTargetType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
         }
     }
 
@@ -311,6 +315,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         outState.putParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES, mCurrentFilterValues);
         outState.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
         outState.putBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED, mSortOrFilterApplied);
+        outState.putSerializable(ConstantsIntentExtra.TARGET_TYPE, mTargetType);
     }
 
     /*
@@ -459,6 +464,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mCatalogPage.update(catalogPage);
         }
 
+        FilterSelectionController filterSelectionController = new FilterSelectionController(mCatalogPage.getFilters());
+        mCurrentFilterValues = filterSelectionController.getValues();
+
         // Validate current catalog page
         CatalogGridAdapter adapter = (CatalogGridAdapter) mGridView.getAdapter();
         if (adapter == null) {
@@ -547,7 +555,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     private void onClickFilterErrorButton() {
-        getActivity().onBackPressed();
+        getBaseActivity().onBackPressed();
     }
 
     /**
@@ -727,6 +735,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         try {
             // Show dialog
             Bundle bundle = new Bundle();
+            bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, mTargetType);
             bundle.putString("category_url", mKey);
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, mKey);

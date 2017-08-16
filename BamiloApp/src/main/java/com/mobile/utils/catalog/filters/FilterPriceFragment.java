@@ -30,18 +30,16 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     private static final String TAG = FilterPriceFragment.class.getSimpleName();
 
     private TextView mRangeValues;
-    public EditText mMinValueTxt;
-    public EditText mMaxValueTxt;
-
-    private CheckBox mDiscountBox;
+    private EditText mMinValueTxt;
+    private EditText mMaxValueTxt;
 
     private int mMin;
 
     private int mMax;
 
-    public int mCurrMinValue ,mMinRang;
+    private int mCurrMinValue ,mMinRang;
 
-    public int mCurrMaxValue, mMaxRang;
+    private int mCurrMaxValue, mMaxRang;
 
     private RangeSeekBar<Integer> mRangeBar;
 
@@ -100,7 +98,6 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         Print.d(TAG, "FILTER RANGE: " + mMin + " " + mMax + " " + mInterval);
 
         // Get check box
-        mDiscountBox = (CheckBox) view.findViewById(R.id.dialog_filter_check_discount);
         mMinValueTxt = (EditText) view.findViewById(R.id.min);
         mMaxValueTxt = (EditText) view.findViewById(R.id.max);
 
@@ -145,8 +142,8 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         mMinValueTxt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                Long mymin , mintemp;
-                mymin =mintemp= Long.parseLong(PersinConvertor.toEnglishNumber(mMinValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
+                Long mymin;
+                mymin = Long.parseLong(PersinConvertor.toEnglishNumber(mMinValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
                 Long mymax= Long.parseLong(PersinConvertor.toEnglishNumber(mMaxValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
                 if(!hasFocus){
                     if(mymax>mymin) {
@@ -186,10 +183,12 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         
         // Get range values from pre selection
 //        if(mFilter.hasRangeValues()) {
-        mMinRang = mCurrMinValue = filterOption.getRangeMin();
-        mMaxRang = mCurrMaxValue = filterOption.getRangeMax();
-        mMinValueTxt.setText(( mCurrMinValue)+"");
-        mMaxValueTxt.setText(mCurrMaxValue+"");
+        mMinRang = filterOption.getMin();
+        mMaxRang = filterOption.getMax();
+        mCurrMinValue = filterOption.getRangeMin();
+        mCurrMaxValue = filterOption.getRangeMax();
+        mMinValueTxt.setText(String.valueOf(mCurrMinValue));
+        mMaxValueTxt.setText(String.valueOf(mCurrMaxValue));
 //        }
         // Set init range values
         mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
@@ -317,5 +316,19 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
 
     protected void setIntervalText(@IntRange(from = 0) int minValue, int maxValue) {
         mRangeValues.setText(CurrencyFormatter.formatCurrencyPattern(minValue + " - " + maxValue));
+    }
+
+    @Override
+    public void onDestroyView() {
+        mMaxValueTxt.clearFocus();
+        mMinValueTxt.clearFocus();
+        super.onDestroyView();
+    }
+
+    public void clearFilterValues() {
+        mMaxValueTxt.clearFocus();
+        mMinValueTxt.clearFocus();
+        mMinValueTxt.setText(String.valueOf(mMinRang));
+        mMaxValueTxt.setText(String.valueOf(mMaxRang));
     }
 }
