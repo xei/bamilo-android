@@ -66,6 +66,9 @@ public class FilterColorFragment extends FilterCheckFragment {
             // Get Filter
             MultiFilterOptionInterface option = getItem(position);
             if(option instanceof CatalogColorFilterOption){
+                if (option.isSelected()) {
+                    addSelectedItem(option, position);
+                }
                 // Validate current view
                 if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
                 // Set color box

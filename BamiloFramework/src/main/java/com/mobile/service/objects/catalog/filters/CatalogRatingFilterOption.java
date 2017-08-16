@@ -38,6 +38,7 @@ public class CatalogRatingFilterOption extends CatalogFilterOption implements Mu
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         val = jsonObject.getString(RestConstants.VAL);
         average = jsonObject.getInt(RestConstants.AVERAGE);
+        selected = jsonObject.getBoolean(RestConstants.SELECTED);
         return super.initialize(jsonObject);
     }
 

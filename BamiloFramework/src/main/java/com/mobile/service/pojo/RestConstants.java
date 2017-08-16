@@ -351,4 +351,7 @@ public class RestConstants {
     public static final String DELIVERY_ZONE_TWO = "delivery_zone_two";
     public static final String DELIVERY_MESSAGE = "delivery_message";
     public static final String ESTIMATED_DELIVERY_TIME = "estimated_delivery_time";
+    public static final String SELECTED = "selected";
+    public static final java.lang.String LOWER_VALUE = "lowerValue";
+    public static final java.lang.String UPPER_VALUE = "upperValue";
 }

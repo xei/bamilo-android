@@ -45,6 +45,9 @@ import com.mobile.view.R;
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get Filter
         MultiFilterOptionInterface option = getItem(position);
+        if (option != null && option.isSelected()) {
+            addSelectedItem(option, position);
+        }
         // Validate current view
         if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_sub_item_2, null);
         // Set title

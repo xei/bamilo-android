@@ -66,7 +66,19 @@ public class CatalogCheckFilter extends CatalogFilter {
 
     @Override
     public boolean hasAppliedFilters() {
+        fillSelectedFilterOptions();
         return CollectionUtils.isNotEmpty(selectedFilterOptions);
+    }
+
+    private void fillSelectedFilterOptions() {
+        int counter = 0;
+        selectedFilterOptions.clear();
+        for (MultiFilterOptionInterface filterOption : filterOptions){
+            if (filterOption.isSelected()){
+                selectedFilterOptions.put(counter, filterOption);
+                counter++;
+            }
+        }
     }
 
     private String processSingle() {
@@ -136,7 +148,7 @@ public class CatalogCheckFilter extends CatalogFilter {
             dest.writeByte((byte) (0x01));
             dest.writeList(filterOptions);
         }
-        dest.writeValue(selectedFilterOptions);
+        dest.writeParcelable(selectedFilterOptions, flags);
     }
 
     protected CatalogCheckFilter(Parcel in) {

@@ -259,7 +259,7 @@
     <string name="language">زبان</string>
     <string name="country">کشور</string>
     <string name="birthday_error">لطفاً تاریخ صحیح تولد خود را انتخاب کنید</string>
-    <string name="parenthesis_placeholder">(%s)</string>
+    <string name="parenthesis_placeholder">(%1$d)</string>
     <string name="clear_all_lowercase_label">پاک کردن همه</string>
     <string name="apply_label">اعمال</string>
     <string name="see_other_variations">تنوع کالا</string>

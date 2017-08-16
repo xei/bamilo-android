@@ -37,7 +37,7 @@ public class CatalogPriceFilter extends CatalogFilter {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
-        option.initialize(jsonObject.getJSONObject(RestConstants.OPTION));
+        option.initialize(jsonObject);
         return true;
     }
 

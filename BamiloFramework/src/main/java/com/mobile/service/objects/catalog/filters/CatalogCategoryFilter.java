@@ -66,7 +66,19 @@ public class CatalogCategoryFilter extends CatalogFilter {
 
     @Override
     public boolean hasAppliedFilters() {
+        fillSelectedFilterOptions();
         return CollectionUtils.isNotEmpty(selectedFilterOptions);
+    }
+
+    private void fillSelectedFilterOptions() {
+        int counter = 0;
+        selectedFilterOptions.clear();
+        for (MultiFilterOptionInterface filterOption : filterOptions){
+            if (filterOption.isSelected()){
+                selectedFilterOptions.put(counter, filterOption);
+                counter++;
+            }
+        }
     }
 
     private String processSingle() {

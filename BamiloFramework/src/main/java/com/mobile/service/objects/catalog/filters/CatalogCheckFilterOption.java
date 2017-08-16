@@ -40,6 +40,7 @@ public class CatalogCheckFilterOption extends CatalogFilterOption implements Mul
         id = jsonObject.optString(RestConstants.ID);
         label = jsonObject.getString(RestConstants.LABEL);
         val = jsonObject.getString(RestConstants.VAL);
+        selected = jsonObject.getBoolean(RestConstants.SELECTED);
         return super.initialize(jsonObject);
     }
 
@@ -86,7 +87,7 @@ public class CatalogCheckFilterOption extends CatalogFilterOption implements Mul
         dest.writeString(this.id);
         dest.writeString(this.label);
         dest.writeString(this.val);
-        dest.writeByte(selected ? (byte) 1 : (byte) 0);
+        dest.writeByte((byte) (selected ? 1 : 0));
     }
 
     protected CatalogCheckFilterOption(Parcel in) {

@@ -92,8 +92,10 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         // Get data from filter
         CatalogPriceFilterOption filterOption = mFilter.getOption();
         // Get min and max
-        mCurrMinValue = mMin = filterOption.getMin();
-        mCurrMaxValue = mMax = filterOption.getMax();
+        mMin = filterOption.getMin();
+        mCurrMinValue = filterOption.getRangeMin();
+        mMax = filterOption.getMax();
+        mCurrMaxValue = filterOption.getRangeMax();
         mInterval = filterOption.getInterval();
         Print.d(TAG, "FILTER RANGE: " + mMin + " " + mMax + " " + mInterval);
 

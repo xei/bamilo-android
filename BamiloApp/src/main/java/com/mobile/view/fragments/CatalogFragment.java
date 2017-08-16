@@ -219,6 +219,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mCatalogPage = null;
         Print.i(TAG, "ON VIEW CREATED");
         // Load user preferences
         mLevel = Integer.parseInt(CustomerPreferences.getCatalogLayout(getBaseActivity()));
@@ -540,9 +541,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             @Override
             public void onClick(View v) {
                 Print.d(TAG, "ON CLICK: FILTER BUTTON");
-                onClickFilterButton();
+                onClickFilterErrorButton();
             }
         });
+    }
+
+    private void onClickFilterErrorButton() {
+        getActivity().onBackPressed();
     }
 
     /**
@@ -733,12 +738,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
         }
-
-
-
-
-
-
     }
 
     /**
@@ -1129,7 +1128,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     /**
      * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
+     * @see com.mobile.interfaces.IResponseCallback#onRequestError(BaseResponse)
      */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
