@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -133,6 +134,13 @@ public class HoloFontLoader {
                 return;
             }
             provider.setTypeface(font.getTypeface(fontFamily, fontStyle));
+            if (view instanceof MaterialEditText) {
+                MaterialEditText materialEditText = (MaterialEditText) view;
+                materialEditText.setAccentTypeface(font.getTypeface(fontFamily, fontStyle));
+                materialEditText.setFloatingLabelTextSize((int) (materialEditText.getTextSize() -
+                                        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 2,
+                                                materialEditText.getResources().getDisplayMetrics())));
+            }
             view.setTag(R.id.fontLoaderFont, font);
             view.setTag(R.id.fontLoaderFontStyle, fontStyle);
             view.setTag(R.id.fontLoaderFontFamily, fontFamily);
