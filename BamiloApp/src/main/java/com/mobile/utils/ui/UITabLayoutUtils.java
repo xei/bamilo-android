@@ -96,7 +96,9 @@ public class UITabLayoutUtils {
     // TODO: 7/24/2017 we should change this approach
     public static boolean isNotNavigationActionbarAutoHide(@NavigationAction.Type int action){
         return action == NavigationAction.LOGIN_OUT || action == NavigationAction.CHECKOUT
-                || action == NavigationAction.PRODUCT || action == NavigationAction.FILTERS;
+                || action == NavigationAction.PRODUCT || action == NavigationAction.FILTERS
+                || action == NavigationAction.MY_ACCOUNT_MY_ADDRESSES || action == NavigationAction.MY_ACCOUNT
+                || action == NavigationAction.MY_ACCOUNT_EMAIL_NOTIFICATION || action == NavigationAction.MY_ACCOUNT_USER_DATA;
     }
 
     public static int getTabPosition(@NavigationAction.Type int action) {
