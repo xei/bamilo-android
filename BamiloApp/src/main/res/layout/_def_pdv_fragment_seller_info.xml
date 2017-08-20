@@ -56,12 +56,6 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black_400" />
-
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -100,6 +94,12 @@
                 tools:text="Delivery info"
                 tools:visibility="visible" />
         </TableRow>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_400" />
 
         <TableRow
             android:layout_width="fill_parent"

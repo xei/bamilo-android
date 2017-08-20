@@ -513,7 +513,7 @@
     <string name="calculate_delivery_time">محاسبه زمان تحویل کالا</string>
     <string name="select_region">لطفاً استان خود را انتخاب کنید.</string>
     <string name="tehran_delivery_time">تهران</string>
-    <string name="other_cities_delivery_time">شهرستان‌ها</string>
+    <string name="other_cities_delivery_time">شهرستان</string>
     <string name="getting_data_from_server">در حال دریافت اطلاعات…</string>
     <string name="gender">جنسیت</string>
     <string name="gender_male">مرد</string>

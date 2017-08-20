@@ -139,6 +139,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private AddressRegions mRegions;
     private AddressCities mCities;
     private int defaultRegionId, defaultCityId;
+    private static int selectedRegionId = -1
+            , selectedCityId = -1;
 
     /**
      * Empty constructor
@@ -233,6 +235,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mCitySpinner = (IcsSpinner) view.findViewById(R.id.pdv_delivery_city);
 
         mDeliveryTimeTextView = (TextView) view.findViewById(R.id.pdv_seller_delivery_info);
+        if (mRegions != null) {
+            setRegions(mRegions);
+        }
     }
 
     /*
@@ -1506,6 +1511,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 int region = ((AddressRegion) object).getValue();
                 // Get cities
                 if (region != -1) {
+                    selectedRegionId = region;
                     triggerGetCities(ApiConstants.GET_CITIES_API_PATH, region);
                 }
 
@@ -1514,6 +1520,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 int city = ((AddressCity) object).getValue();
                 if (city != -1) {
                     mDeliveryTimeTextView.setText(R.string.getting_data_from_server);
+                    selectedCityId = city;
                     triggerGetDeliveryTime(city);
                 }
             }
@@ -1544,11 +1551,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     private void selectDefaultRegion(List<AddressRegion> regions) {
+        int selected = 0;
         if (defaultRegionId != 0) {
-            for (int i = 0; i < regions.size(); i++) {
-                if (regions.get(i).getValue() == defaultRegionId) {
-                    mRegionSpinner.setSelection(i + 1);
-                }
+            selected = defaultRegionId;
+        } else if (selectedRegionId != -1) {
+            selected = selectedRegionId;
+        }
+        for (int i = 0; i < regions.size(); i++) {
+            if (regions.get(i).getValue() == selected) {
+                mRegionSpinner.setSelection(i + 1);
             }
         }
     }
@@ -1572,11 +1583,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     private void selectDefaultCity(List<AddressCity> cities) {
+        int selected = 0;
         if (defaultCityId != 0) {
-            for (int i = 0; i < cities.size(); i++) {
-                if (cities.get(i).getValue() == defaultCityId) {
-                    mCitySpinner.setSelection(i + 1);
-                }
+            selected = defaultCityId;
+        } else if (selectedCityId != -1) {
+            selected = selectedCityId;
+        }
+        for (int i = 0; i < cities.size(); i++) {
+            if (cities.get(i).getValue() == selected) {
+                mCitySpinner.setSelection(i + 1);
             }
         }
     }
