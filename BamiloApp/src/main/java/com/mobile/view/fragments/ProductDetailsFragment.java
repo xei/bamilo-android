@@ -621,8 +621,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mGlobalButton.setOnClickListener(this);
                 // Delivery Info
                 mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_container).setVisibility(View.VISIBLE);
-                ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_title)).setText(mProduct.getSeller().getDeliveryTime());
-                /*if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
+                /*((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_title)).setText(mProduct.getSeller().getDeliveryTime());
+                if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
                     TextView info = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_cms);
                     info.setText(mProduct.getSeller().getDeliveryCMSInfo());
                     info.setVisibility(View.VISIBLE);
