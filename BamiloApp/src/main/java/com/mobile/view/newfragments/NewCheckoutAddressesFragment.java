@@ -12,6 +12,8 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
+import com.mobile.helpers.address.SetDefaultBillingAddressHelper;
+import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.helpers.checkout.GetStepAddressesHelper;
 import com.mobile.helpers.checkout.SetStepAddressesHelper;
 import com.mobile.service.objects.checkout.MultiStepAddresses;
@@ -37,6 +39,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     private View mCheckoutTotalBar;
     private FloatingActionButton fabNewAddress;
     private int mSelectedAddress;
+    private FragmentType checkoutPaymentFragment;
 
     public NewCheckoutAddressesFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
@@ -189,6 +192,10 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         triggerContentEventProgress(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
     }
 
+    private void triggerSetDefaultAddress(int selectedAddress){
+        triggerContentEventNoLoading(new SetDefaultShippingAddressHelper(), SetDefaultShippingAddressHelper.createBundle(selectedAddress), this);
+    }
+
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         /*if (isOnStoppingProcess) {
@@ -203,24 +210,25 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 MultiStepAddresses multiStepAddresses = (MultiStepAddresses) baseResponse.getContentData();
                 //CheckoutStepManager.setTotalBar(mCheckoutTotalBar, multiStepAddresses.getOrderSummary());
                 //super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, multiStepAddresses.getOrderSummary());
-                try
-                    {
-                        mSelectedAddress = multiStepAddresses.getOrderSummary().getShippingAddress().getId();
-                    }
-                catch (Exception ex)
-            {
-                mSelectedAddress = -1;
-            }
+                try {
+                    mSelectedAddress = multiStepAddresses.getOrderSummary().getShippingAddress().getId();
+                } catch (Exception ex) {
+                    mSelectedAddress = -1;
+                }
                 super.showAddresses(multiStepAddresses.getAddresses(), mSelectedAddress);
                 hideActivityProgress();
                 break;
             case SET_MULTI_STEP_ADDRESSES:
+                int selectedId = ((AddressAdapter) mAddressView.getAdapter()).getSelectedId();
+                triggerSetDefaultAddress(selectedId);
                 // Get next step
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
-                FragmentType nextFragment = nextStepStruct.getFragmentType();
-                nextFragment = FragmentType.CHECKOUT_CONFIRMATION;
-                nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_PAYMENT;
-                getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                checkoutPaymentFragment = nextStepStruct.getFragmentType();
+                checkoutPaymentFragment = FragmentType.CHECKOUT_CONFIRMATION;
+                checkoutPaymentFragment = (checkoutPaymentFragment != FragmentType.UNKNOWN) ? checkoutPaymentFragment : FragmentType.CHECKOUT_PAYMENT;
+                break;
+            case SET_DEFAULT_SHIPPING_ADDRESS:
+                getBaseActivity().onSwitchFragment(checkoutPaymentFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
             default:
                 break;
