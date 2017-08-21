@@ -16,6 +16,7 @@
         android:id="@+id/icon_end"
         style="@style/SingleLineListIconEndRTL"
         android:visibility="invisible"
+        android:layout_alignParentLeft="true"
         tools:src="@drawable/no_image_tiny"
         tools:visibility="visible" />
 
