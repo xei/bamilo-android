@@ -54,6 +54,7 @@ public class HomeRecommendationsGridTeaserHolder /*extends BaseTeaserViewHolder 
         //recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(ITEMS_MARGIN));
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
         // Validate orientation
     }
 

@@ -2,6 +2,7 @@ package com.mobile.view.fragments;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
@@ -140,7 +141,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     }
 
     @Override
-    public void onNothingSelected(IcsAdapterView<?> parent) {
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

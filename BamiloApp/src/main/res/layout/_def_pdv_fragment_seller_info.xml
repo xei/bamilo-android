@@ -32,19 +32,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.mobile.components.absspinner.IcsSpinner
+            <Spinner
                 android:id="@+id/pdv_delivery_region"
+                style="@style/Widget.Custom.Spinner.Style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_padding_xl"
                 android:layout_marginRight="@dimen/margin_padding_xl"
                 android:minHeight="@dimen/dimen_50dp"
                 android:prompt="@string/delivery_state"
-                android:spinnerMode="dropdown"
                 android:textSize="20sp" />
 
-            <com.mobile.components.absspinner.IcsSpinner
+            <Spinner
                 android:id="@+id/pdv_delivery_city"
+                style="@style/Widget.Custom.Spinner.Style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_padding_xl"

@@ -3,11 +3,11 @@ package com.mobile.view.fragments;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.components.absspinner.IcsAdapterView;
-import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
@@ -21,6 +21,7 @@ import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.pojo.DynamicForm;
 import com.mobile.service.forms.Form;
 import com.mobile.service.forms.FormField;
 import com.mobile.service.forms.FormInputType;
@@ -37,7 +38,6 @@ import com.mobile.service.tracking.TrackingEvent;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
-import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -60,7 +60,8 @@ import java.util.regex.Pattern;
  * @version 1.0
  * @date 2015/02/25
  */
-public abstract class EditAddressFragment extends BaseFragment implements IResponseCallback, IcsAdapterView.OnItemSelectedListener,View.OnClickListener {
+public abstract class EditAddressFragment extends BaseFragment implements IResponseCallback,
+        AdapterView.OnItemSelectedListener,View.OnClickListener {
 
     private static final String TAG = EditAddressFragment.class.getSimpleName();
     public static final String SELECTED_ADDRESS = "selected_address";
@@ -72,8 +73,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     protected PurchaseEntity orderSummary;
     protected boolean isCityIdAnEditText = false;
     private Bundle mFormSavedState;
-    IcsSpinner address_spinner ,city_spinner,postal_spinner,gender_spinner;
-    TextView name_error , family_error , national_error,postal_error,cellphone_error ,address_error;
+    Spinner address_spinner ,city_spinner,postal_spinner;
+    TextView name_error , family_error , national_error,cellphone_error ,address_error;
     EditText name;
     EditText family;
     EditText address;
@@ -127,9 +128,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         family = (EditText) view.findViewById(R.id.address_family);
         cellphone = (EditText) view.findViewById(R.id.address_cell);
         address = (EditText) view.findViewById(R.id.address_direction);
-        address_spinner = (IcsSpinner) view.findViewById(R.id.address_state);
-        city_spinner = (IcsSpinner) view.findViewById(R.id.address_city);
-        postal_spinner = (IcsSpinner) view.findViewById(R.id.address_postal_region);
+        address_spinner = (Spinner) view.findViewById(R.id.address_state);
+        city_spinner = (Spinner) view.findViewById(R.id.address_city);
+        postal_spinner = (Spinner) view.findViewById(R.id.address_postal_region);
         postal_code = (EditText) view.findViewById(R.id.address_postal_code);
         add = (Button) view.findViewById(R.id.edit_address_btn);
         add.setOnClickListener(this);
@@ -469,7 +470,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             triggerGetRegions(field.getApiCall());
         } else {
             Print.d(TAG, "REGIONS ISN'T NULL");
-            setRegions(mEditFormGenerator, mRegions);
+            setRegions(mRegions);
         }
         // Define if CITY is a List or Text
        /* DynamicFormItem item = mEditFormGenerator.getItemByKey(RestConstants.CITY);
@@ -490,29 +491,29 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     /**
      * Method used to set the regions on the respective form
      */
-    private void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions){
+    private void setRegions(ArrayList<AddressRegion> regions){
         Print.d(TAG, "SET REGIONS REGIONS: ");
 
         // Create adapter
-        ArrayAdapter<AddressRegion> adapter= new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
+        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         address_spinner.setAdapter(adapter);
         if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= address_spinner.getCount()) {
             address_spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
         } else {
-            address_spinner.setSelection(getDefaultPosition(region,regions));
+            address_spinner.setSelection(getDefaultPosition(region, regions));
         }
         address_spinner.setOnItemSelectedListener(this);
-    hideActivityProgress();
-            // Show invisible content to trigger spinner listeners
-            showGhostFragmentContentContainer();
+        hideActivityProgress();
+        // Show invisible content to trigger spinner listeners
+        showGhostFragmentContentContainer();
     }
 
     /**
      * Method used to set the cities on the respective form
      */
     private void setCities(ArrayList<AddressCity> cities){
-        address_spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
+        address_spinner = (Spinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         // Create adapter
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
@@ -531,7 +532,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     /**
      * Method used to set the postalCodes on the respective form
      */
-    private void setPostalCodes(DynamicForm dynamicForm, final ArrayList<AddressPostalCode> postalCodes){
+    private void setPostalCodes(final ArrayList<AddressPostalCode> postalCodes){
         // Create adapter
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
@@ -552,14 +553,15 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             }
 
         }
-        postal_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
+        postal_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 postcode = postalCodes.get(position).getValue();
             }
 
             @Override
-            public void onNothingSelected(IcsAdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
         hideActivityProgress();
@@ -622,7 +624,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @see com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener#onNothingSelected(com.mobile.components.absspinner.IcsAdapterView)
      */
     @Override
-    public void onNothingSelected(IcsAdapterView<?> parent) {
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 
     /*
@@ -630,7 +632,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @see com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener#onItemSelected(com.mobile.components.absspinner.IcsAdapterView, android.view.View, int, long)
      */
     @Override
-    public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Print.d(TAG, "ON ITEM SELECTED");
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
@@ -752,7 +754,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 Print.d(TAG, "RECEIVED GET_REGIONS_EVENT");
                 mRegions = (AddressRegions) baseResponse.getContentData();
                 if (CollectionUtils.isNotEmpty(mRegions)) {
-                    setRegions(mEditFormGenerator, mRegions);
+                    setRegions(mRegions);
                 } else {
                     Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
                     super.showFragmentErrorRetry();
@@ -770,7 +772,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             case GET_POSTAL_CODE_EVENT:
                 Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
                 ArrayList<AddressPostalCode> postalCodes = (AddressPostalCodes)baseResponse.getContentData();
-                setPostalCodes(mEditFormGenerator, postalCodes);
+                setPostalCodes(postalCodes);
                 // Show
                 showFragmentContentContainer();
                 break;

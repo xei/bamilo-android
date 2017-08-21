@@ -32,15 +32,15 @@
             android:paddingBottom="@dimen/dimen_15dp"
             android:layout_height="match_parent">
 
-                <com.mobile.components.absspinner.IcsSpinner
+                <Spinner
                     android:id="@+id/address_state"
+                    style="@style/Widget.Custom.Spinner.Style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/delivery_state"
                     android:textSize="20sp"
                     android:textColor="@color/black"
                     android:minHeight="@dimen/dimen_50dp"
-                    android:spinnerMode="dialog"
                     />
 
                 <com.mobile.components.customfontviews.TextView
@@ -52,8 +52,9 @@
                     android:visibility="gone"
                     android:textColor="#b90f00" />
 
-                <com.mobile.components.absspinner.IcsSpinner
+                <Spinner
                     android:id="@+id/address_city"
+                    style="@style/Widget.Custom.Spinner.Style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/delivery_city"
@@ -71,8 +72,9 @@
                     android:visibility="gone"
                     android:textColor="#b90f00" />
 
-                <com.mobile.components.absspinner.IcsSpinner
+                <Spinner
                     android:id="@+id/address_postal_region"
+                    style="@style/Widget.Custom.Spinner.Style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/delivery_neighbourhood"
@@ -225,8 +227,9 @@
                 android:textSize="@dimen/dimen_10dp"
                 android:textColor="#b90f00" />
 
-                <com.mobile.components.absspinner.IcsSpinner
+                <Spinner
                     android:id="@+id/address_gender"
+                    style="@style/Widget.Custom.Spinner.Style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/delivery_neighbourhood"

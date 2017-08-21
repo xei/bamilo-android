@@ -5,12 +5,12 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.components.absspinner.IcsAdapterView;
-import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.absspinner.PromptSpinnerAdapter;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
@@ -65,7 +65,7 @@ import java.util.regex.Pattern;
  * @version 1.0
  * @date 2015/02/24
  */
-public abstract class CreateAddressFragment extends BaseFragment implements IResponseCallback, IcsAdapterView.OnItemSelectedListener , View.OnClickListener{
+public abstract class CreateAddressFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemSelectedListener , View.OnClickListener{
 
     private static final String TAG = CreateAddressFragment.class.getSimpleName();
     private static final String SHIPPING_SAVED_STATE = "shippingSavedStateBundle";
@@ -82,7 +82,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected PurchaseEntity orderSummary;
     private Bundle mShippingFormSavedState;
     private Bundle mSavedRegionCitiesPositions;
-    IcsSpinner address_spinner ,city_spinner,postal_spinner,gender_spinner;
+    Spinner address_spinner ,city_spinner,postal_spinner,gender_spinner;
     TextView name_error , family_error , national_error,cellphone_error,address_error ,address_region_error,address_city_error,gender_error, address_postal_code_error;
     EditText name;
     EditText family;
@@ -153,12 +153,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         family = (EditText) view.findViewById(R.id.address_family);
         family.setText(BamiloApplication.CUSTOMER.getLastName());
         national_id = (EditText) view.findViewById(R.id.address_national_id);
-        gender_spinner = (IcsSpinner) view.findViewById(R.id.address_gender);
+        gender_spinner = (Spinner) view.findViewById(R.id.address_gender);
         cellphone = (EditText) view.findViewById(R.id.address_cell);
         address = (EditText) view.findViewById(R.id.address_direction);
-        address_spinner = (IcsSpinner) view.findViewById(R.id.address_state);
-        city_spinner = (IcsSpinner) view.findViewById(R.id.address_city);
-        postal_spinner = (IcsSpinner) view.findViewById(R.id.address_postal_region);
+        address_spinner = (Spinner) view.findViewById(R.id.address_state);
+        city_spinner = (Spinner) view.findViewById(R.id.address_city);
+        postal_spinner = (Spinner) view.findViewById(R.id.address_postal_region);
         postal_code = (EditText) view.findViewById(R.id.address_postal_code);
         add = (Button) view.findViewById(R.id.add_address_btn);
 
@@ -339,9 +339,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt("جنسیت");
         gender_spinner.setAdapter(promptAdapter);
-        gender_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
+        gender_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 1){
                     gender_lable ="male";
                 }
@@ -355,7 +355,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             }
 
             @Override
-            public void onNothingSelected(IcsAdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
         return gender_lable;
@@ -367,27 +367,24 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions) {
         // Get region item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.REGION);
-        // Get spinner
-        IcsSpinner spinner = (IcsSpinner) v.getDataControl();
-        spinner.setEnabled(true);
         // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
-        spinner.setAdapter(promptAdapter);
+        address_spinner.setAdapter(promptAdapter);
         // Add listener
-        v.setOnItemSelectedListener(this);
+        address_spinner.setOnItemSelectedListener(this);
         // Case default value
         if (CollectionUtils.isNotEmpty(mShippingFormSavedState)) {
-            processSpinners(spinner, RestConstants.REGION);
+            processSpinners(address_spinner, RestConstants.REGION);
         }
         // Case saved state
         else if(TextUtils.isNotEmpty(v.getEntry().getValue())) {
-            spinner.setSelection(getDefaultPosition(v, regions));
+            address_spinner.setSelection(getDefaultPosition(v, regions));
         }
         // Show form (Zero is the prompt)
-        if(spinner.getSelectedItemPosition() != IntConstants.DEFAULT_POSITION &&
+        if(address_spinner.getSelectedItemPosition() != IntConstants.DEFAULT_POSITION &&
                 mFormShipping.getFieldKeyMap().get(RestConstants.CITY) != null) {
             showGhostFragmentContentContainer();
         } else {
@@ -398,7 +395,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     /**
      * Allows to update the spinners (regions/cities/postcodes) correctly with previous values when app goes to background or rotates
      */
-    private boolean processSpinners(IcsSpinner spinner, String restConstantsKey) {
+    private boolean processSpinners(Spinner spinner, String restConstantsKey) {
         if (mShippingFormSavedState != null && mShippingFormSavedState.getInt(restConstantsKey) < spinner.getCount()) {
             spinner.setSelection(mShippingFormSavedState.getInt(restConstantsKey));
             return true;
@@ -434,9 +431,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt("شهر");
         city_spinner.setAdapter(promptAdapter);
-        city_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
+        city_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position==0){
                     city_Id = cities.get(position).getValue();
                     triggerGetPostalCodes(postalApi,city_Id, String.valueOf(city_Id));
@@ -448,7 +445,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             }
 
             @Override
-            public void onNothingSelected(IcsAdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
@@ -473,14 +470,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
             promptAdapter.setPrompt("محله");
             postal_spinner.setAdapter(promptAdapter);
-            postal_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
+            postal_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     post_id = postalCodes.get(position).getValue();
                 }
 
                 @Override
-                public void onNothingSelected(IcsAdapterView<?> parent) {
+                public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
             hideActivityProgress();
@@ -500,27 +497,24 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities) {
         // Get city item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.CITY);
-        // Get spinner
-        IcsSpinner spinner = (IcsSpinner) v.getDataControl();
-        spinner.setEnabled(true);
         // Create adapter
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
-        spinner.setAdapter(promptAdapter);
+        city_spinner.setAdapter(promptAdapter);
 
-        setSavedSelectedCityPos(spinner);
+        setSavedSelectedCityPos(city_spinner);
 
         if (mShippingFormSavedState == null) {
-            spinner.setSelection(getDefaultPosition(v, cities));
+            city_spinner.setSelection(getDefaultPosition(v, cities));
         } else {
-            processSpinners(spinner, RestConstants.CITY);
+            processSpinners(city_spinner, RestConstants.CITY);
         }
         // Add listener
-        v.setOnItemSelectedListener(this);
+        city_spinner.setOnItemSelectedListener(this);
         // Show form (Zero is the prompt)
-        if(spinner.getSelectedItemPosition() != IntConstants.DEFAULT_POSITION &&
+        if(city_spinner.getSelectedItemPosition() != IntConstants.DEFAULT_POSITION &&
                 mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE) != null) {
             showGhostFragmentContentContainer();
         } else {
@@ -534,30 +528,27 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     private void setPostalCodes(DynamicForm dynamicForm, ArrayList<AddressPostalCode> postalCodes) {
         // Get city item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.POSTCODE);
-        // Get a spinner
-        IcsSpinner spinner = (IcsSpinner) v.getDataControl();
-        spinner.setEnabled(true);
         // Create adapter
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
-        spinner.setAdapter(promptAdapter);
+        postal_spinner.setAdapter(promptAdapter);
 
-        setSavedSelectedPostalCodePos(spinner);
+        setSavedSelectedPostalCodePos(postal_spinner);
         if (mShippingFormSavedState == null) {
-            spinner.setSelection(getDefaultPosition(v, postalCodes));
+            postal_spinner.setSelection(getDefaultPosition(v, postalCodes));
         } else {
-            processSpinners(spinner, RestConstants.POSTCODE);
+            processSpinners(postal_spinner, RestConstants.POSTCODE);
         }
         // Add listener
-        v.setOnItemSelectedListener(this);
+        postal_spinner.setOnItemSelectedListener(this);
     }
 
     /**
      * Load and set the saved city position one time
      */
-    private void setSavedSelectedCityPos(IcsSpinner spinner) {
+    private void setSavedSelectedCityPos(Spinner spinner) {
         int position = IntConstants.INVALID_POSITION;
         if (mSavedRegionCitiesPositions != null) {
             position = mSavedRegionCitiesPositions.getInt(RestConstants.CITY);
@@ -571,7 +562,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     /**
      * Load and set the postal code position one time
      */
-    private void setSavedSelectedPostalCodePos(IcsSpinner spinner) {
+    private void setSavedSelectedPostalCodePos(Spinner spinner) {
         int position = IntConstants.INVALID_POSITION;
         if (mSavedRegionCitiesPositions != null) {
             position = mSavedRegionCitiesPositions.getInt(RestConstants.POSTCODE);
@@ -666,7 +657,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @see com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener#onItemSelected(com.mobile.components.absspinner.IcsAdapterView, android.view.View, int, long)
      */
     @Override
-    public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
             if (((AddressRegion) object).getValue() != 0) {   //if not the place holder option, load cities of selected region
@@ -965,9 +956,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt("استان");
         address_spinner.setAdapter(promptAdapter);
-        address_spinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
+        address_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position!=0) {
                     region_Id = regions.get(position-1).getValue();
                     triggerGetCities(cityApi, region_Id, String.valueOf(region_Id));
@@ -975,7 +966,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             }
 
             @Override
-            public void onNothingSelected(IcsAdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
         hideActivityProgress();

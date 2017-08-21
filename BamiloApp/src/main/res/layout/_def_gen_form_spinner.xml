@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mobile.components.absspinner.IcsSpinner xmlns:android="http://schemas.android.com/apk/res/android"
+<Spinner xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/custom"
     style="@style/Widget.Custom.Spinner.Style"
     android:layout_width="match_parent"
