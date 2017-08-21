@@ -134,7 +134,7 @@ public class ErrorLayoutFactory {
                 case CATALOG_NO_RESULTS:
                     new Builder()
                     .setContent(R.drawable.ic_filter_empty, R.string.catalog_no_results, R.string.catalog_no_results_details)
-                    .setButton(R.string.return_label, R.color.white, R.color.orange_1);
+                    .setButton(R.string.return_label, R.color.white, R.color.button_primary_color);
                     break;
                 case CATALOG_UNEXPECTED_ERROR:
                     new Builder()

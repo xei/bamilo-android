@@ -56,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/fgt_pass"
-            android:textColor="@color/blue_3"
+            android:textColor="@color/link_color"
             android:textSize="12sp" />
 
         <Space
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_10dp"
-            android:background="@color/blue_3"
+            android:background="@color/button_primary_color"
             android:text="@string/login_label"
             android:textColor="@color/white" />
 

@@ -104,7 +104,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/rate_write_button"
-            style="@style/Button_Link.Blue_1"
+            style="@style/Button_Link"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="@dimen/reviews_rating_group_right_percentage"

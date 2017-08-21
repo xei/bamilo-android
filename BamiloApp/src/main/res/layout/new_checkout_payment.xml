@@ -62,7 +62,7 @@
             android:textColor="@color/white"
             android:gravity="center"
             android:layout_alignParentBottom="true"
-            android:background="@color/orange_1"
+            android:background="@color/button_primary_color"
             android:text="@string/payment_next_button"/>
 
 </RelativeLayout>

@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColor="@color/blue_new"
+            android:textColor="@color/button_secondary_color"
             />
 
         <LinearLayout
@@ -52,7 +52,7 @@
         android:id="@+id/dialog_filter_button_done"
         style="@style/DialogFilterButtonSubmit"
         android:layout_width="match_parent"
-        android:background="@color/blue_new"/>
+        android:background="@color/button_secondary_color"/>
 
 
 </LinearLayout>
