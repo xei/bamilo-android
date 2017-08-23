@@ -1514,8 +1514,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.logout_success));
 
         setupDrawerNavigation();
-
-
+        mDrawerToggle.syncState();
     }
 
     /**

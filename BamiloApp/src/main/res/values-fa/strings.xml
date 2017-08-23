@@ -526,4 +526,5 @@
     <string name="filters_separator">،</string>
     <string name="filters_last_delimiter">%1$s و %2$s</string>
     <string name="special_price_filter">تخفیف</string>
+    <string name="user_greeting">سلام %1$s</string>
 </resources>

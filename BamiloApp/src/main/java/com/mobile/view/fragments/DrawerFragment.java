@@ -13,12 +13,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.controllers.LogOut;
+import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.home.type.TeaserGroupType;
+import com.mobile.service.tracking.TrackingEvent;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.output.Print;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
@@ -39,6 +44,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
 
     private FragmentType mSavedStateType;
     private RecyclerView mDrawerRecycler;
+    private DialogGenericFragment dialogLogout;
 
     /**
      * Constructor via bundle
@@ -106,10 +112,10 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
         ArrayList<DrawerItem> items = new ArrayList<>();
         if (BamiloApplication.isCustomerLoggedIn()) {
             String gender = BamiloApplication.CUSTOMER.getGender();
-            items.add(new DrawerItem("سلام " + BamiloApplication.CUSTOMER.getFirstName(), BamiloApplication.CUSTOMER.getEmail(), gender, null));
+            items.add(new DrawerItem(getString(R.string.user_greeting, BamiloApplication.CUSTOMER.getFirstName()), BamiloApplication.CUSTOMER.getEmail(), gender, null));
 
         } else {
-            items.add(new DrawerItem("خوش آمدید", "ورود/ثبت نام", "male", new View.OnClickListener() {
+            items.add(new DrawerItem(getString(R.string.welcome_label), getString(R.string.register_login_title), "male", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (!BamiloApplication.isCustomerLoggedIn()) {
@@ -177,7 +183,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, null, true);
             }
         }));
-        items.add(new DrawerItem(R.drawable.drawer_profile, R.string.drawer_myprofile, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        items.add(new DrawerItem(R.drawable.drawer_profile, R.string.my_account, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -245,6 +251,33 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 UIUtils.rateApp(getBaseActivity());
             }
         }));
+        boolean hasCredentials = BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials();
+        if (hasCredentials) {
+            items.add(new DrawerItem(true));
+            items.add(new DrawerItem(R.drawable.drawer_logout, R.string.sign_out, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+                        dialogLogout = DialogGenericFragment.newInstance(true, false,
+                                getString(R.string.logout_title),
+                                getString(R.string.logout_text_question),
+                                getString(R.string.no_label),
+                                getString(R.string.yes_label),
+                                new OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (v.getId() == R.id.button2) {
+                                            getBaseActivity().onBackPressed();
+                                            LogOut.perform(getWeakBaseActivity());
+                                        }
+                                        dialogLogout.dismiss();
+                                    }
+                                });
+                        dialogLogout.show(getFragmentManager(), null);
+                    }
+                }
+            }));
+        }
 
 
 
