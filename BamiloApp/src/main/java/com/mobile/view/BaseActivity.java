@@ -91,6 +91,7 @@ import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.DrawerFragment;
+import com.mobile.view.fragments.ProductDetailsFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.Set;
@@ -1504,6 +1505,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * NOTE: Others sign out methods are performed in {@link LogOut}.
      */
     public void onLogOut() {
+        ProductDetailsFragment.clearSelectedRegionCityId();
+        
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
         // Goto Home

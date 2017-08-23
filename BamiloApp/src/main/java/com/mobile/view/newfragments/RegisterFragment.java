@@ -33,6 +33,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
+import com.mobile.view.fragments.ProductDetailsFragment;
 
 import java.util.Calendar;
 import java.util.EnumSet;
@@ -275,6 +276,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
 
             case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
+                ProductDetailsFragment.clearSelectedRegionCityId();
                 // Tracking
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
                 TrackerManager.postEvent(getBaseActivity(), EventConstants.SignUp, EventFactory.signup("email", EmailHelper.getHost(BamiloApplication.CUSTOMER.getEmail()), true));

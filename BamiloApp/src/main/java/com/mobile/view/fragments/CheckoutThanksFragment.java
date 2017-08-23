@@ -113,6 +113,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ProductDetailsFragment.clearSelectedRegionCityId();
         Print.i(TAG, "ON CREATE");
         // Get values
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();

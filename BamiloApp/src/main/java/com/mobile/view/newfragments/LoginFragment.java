@@ -42,6 +42,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
+import com.mobile.view.fragments.ProductDetailsFragment;
 import com.pushwoosh.PushManager;
 
 import java.util.EnumSet;
@@ -258,6 +259,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
 
                 break;
             case LOGIN_EVENT:
+                ProductDetailsFragment.clearSelectedRegionCityId();
                 hideActivityProgress();
                 // Get customer
                 nextStepStruct = (NextStepStruct) baseResponse.getContentData();

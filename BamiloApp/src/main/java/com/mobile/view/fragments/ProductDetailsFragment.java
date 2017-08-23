@@ -1697,6 +1697,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         });*/
     }
 
+    public static void clearSelectedRegionCityId() {
+        selectedCityId = null;
+        selectedRegionId = null;
+    }
+
     private class RegionCitySpinnerAdapter extends ArrayAdapter {
         public RegionCitySpinnerAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List objects) {
             super(context, resource, objects);
