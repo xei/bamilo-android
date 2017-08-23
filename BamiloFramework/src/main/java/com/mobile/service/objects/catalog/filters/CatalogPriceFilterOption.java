@@ -61,6 +61,8 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
             rangeMin = selectedJsonObject.optInt(RestConstants.LOWER_VALUE);
             rangeMax = selectedJsonObject.optInt(RestConstants.UPPER_VALUE);
         }
+        JSONObject specialPrice = jsonObject.getJSONObject(RestConstants.SPECIAL_PRICE);
+        checkBoxOption = new PriceFilterCheckBoxOption(specialPrice);
         return true;
     }
 

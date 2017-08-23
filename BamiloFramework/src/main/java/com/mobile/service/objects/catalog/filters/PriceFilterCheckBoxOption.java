@@ -42,6 +42,7 @@ public class PriceFilterCheckBoxOption implements IJSONSerializable, SingleFilte
         label = jsonObject.getString(RestConstants.LABEL);
         name = jsonObject.optString(RestConstants.NAME);
         type = jsonObject.optString(RestConstants.TYPE);
+        selected = jsonObject.optBoolean(RestConstants.SELECTED);
         return true;
     }
 

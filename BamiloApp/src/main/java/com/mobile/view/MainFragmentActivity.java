@@ -2,6 +2,7 @@ package com.mobile.view;
 
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -96,6 +97,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.mobile.view.fragments.CatalogFragment.FILTER_TAG;
 
 /**
  * @author sergiopereira
@@ -433,14 +436,14 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 }
 
-                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.SUB_CATEGORY_FILTER)) {
-                    removeEntries = false;
-                }
-
                 // Put the target type
                 bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
                 // Create instance
                 fragment = newFragmentInstance(CatalogFragment.class, bundle);
+                ContentValues filterValues = bundle.getParcelable(FILTER_TAG);
+                if (filterValues != null) {
+                    removeEntries = filterValues.keySet().size() == 0;
+                }
                 // Put the type with unique identifier
                 type = FragmentType.getUniqueIdentifier(FragmentType.CATALOG, fragment);
                 break;
