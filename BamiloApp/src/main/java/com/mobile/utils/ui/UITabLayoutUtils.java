@@ -98,7 +98,8 @@ public class UITabLayoutUtils {
         return action == NavigationAction.LOGIN_OUT || action == NavigationAction.CHECKOUT
                 || action == NavigationAction.PRODUCT || action == NavigationAction.FILTERS
                 || action == NavigationAction.MY_ACCOUNT_MY_ADDRESSES || action == NavigationAction.MY_ACCOUNT
-                || action == NavigationAction.MY_ACCOUNT_EMAIL_NOTIFICATION || action == NavigationAction.MY_ACCOUNT_USER_DATA;
+                || action == NavigationAction.MY_ACCOUNT_EMAIL_NOTIFICATION || action == NavigationAction.MY_ACCOUNT_USER_DATA
+                || action == NavigationAction.BASKET || action == NavigationAction.ABOUT;
     }
 
     public static int getTabPosition(@NavigationAction.Type int action) {

@@ -109,6 +109,7 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             DrawerItemViewHolder vh = (DrawerItemViewHolder) holder;
 
             if (item.getIcon() != 0) {
+                vh.material_drawer_icon.setVisibility(View.VISIBLE);
                 vh.material_drawer_icon.setImageResource(item.getIcon());
             } else {
                 vh.material_drawer_icon.setImageDrawable(null);
@@ -122,7 +123,9 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             vh.material_drawer_name.setOnClickListener(item.getListener());
             if (item.getBadge() > 0) {
                 vh.material_drawer_badge_container.setVisibility(View.VISIBLE);
-                vh.material_drawer_badge.setText("" + item.getBadge());
+                vh.material_drawer_badge.setText(String.valueOf(item.getBadge()));
+            } else {
+                vh.material_drawer_badge_container.setVisibility(View.GONE);
             }
         }
         else if (holder instanceof HeaderViewHolder) {
