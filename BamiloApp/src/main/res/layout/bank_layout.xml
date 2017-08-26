@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@color/orange_1"
+        android:background="@color/button_secondary_color"
         android:paddingBottom="@dimen/dimen_10dp"
         android:paddingLeft="@dimen/dimen_40dp"
         android:paddingRight="@dimen/dimen_40dp"

@@ -30,7 +30,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/user_data_save_button"
-            style="@style/Button_1.Shop"
+            style="@style/Button_Action_Secondary"
             android:layout_below="@id/user_data_container"
             android:layout_marginBottom="@dimen/margin_padding_l"
             android:layout_marginLeft="@dimen/margin_padding_l"
@@ -57,7 +57,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/change_password_save_button"
-            style="@style/Button_1.Shop"
+            style="@style/Button_Action_Secondary"
             android:layout_below="@+id/change_password_layout"
             android:layout_marginLeft="@dimen/margin_padding_l"
             android:layout_marginRight="@dimen/margin_padding_l"

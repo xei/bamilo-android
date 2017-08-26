@@ -127,4 +127,8 @@
 
     <!-- TODO : ADD HERE MORE STYLES -->
 
+    <style name="Button_Action_Secondary" parent="ButtonBase">
+        <item name="android:background">@drawable/_gen_selector_button_secondary</item>
+    </style>
+
 </resources>

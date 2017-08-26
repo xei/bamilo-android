@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/cart_name_font_size"
-                android:textColor="@color/cart_brand"
+                android:textColor="@color/primary_gray_1"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/cart_fav_icon"
                 android:layout_marginLeft="@dimen/dimen_8dp"

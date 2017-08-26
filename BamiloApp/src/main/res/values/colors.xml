@@ -139,5 +139,6 @@
     <color name="filter_sort_title_text">@color/teal_bright</color>
     <color name="filter_sort_sub_text">@color/teal_brighter</color>
 
+    <color name="primary_gray_1">#DD53585B</color>
 
 </resources>
