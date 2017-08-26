@@ -32,7 +32,6 @@ import com.mobile.service.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.service.objects.catalog.filters.FilterOptionInterface;
 import com.mobile.service.objects.catalog.filters.FilterSelectionController;
 import com.mobile.service.objects.category.Categories;
-import com.mobile.service.objects.product.pojo.ProductRegular;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.pojo.RestConstants;
@@ -41,7 +40,6 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.catalog.CatalogGridAdapter;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.catalog.UICatalogUtils;
 import com.mobile.utils.catalog.filters.FilterCheckFragment;
@@ -49,7 +47,6 @@ import com.mobile.utils.catalog.filters.FilterColorFragment;
 import com.mobile.utils.catalog.filters.FilterFragment;
 import com.mobile.utils.catalog.filters.FilterPriceFragment;
 import com.mobile.utils.catalog.filters.FilterRatingFragment;
-import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 import com.mobile.view.newfragments.SubCategoryFilterFragment;
 
@@ -116,6 +113,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
 
     private ContentValues mInitialSelectedFilterValues;
     private FragmentType mTargetType;
+    private Bundle argumentsBundle;
 
 
     /**
@@ -133,7 +131,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        Bundle bundle = getArguments();
+        argumentsBundle = getArguments();
         // Saved state
         if (savedInstanceState != null) {
             mFilters = savedInstanceState.getParcelableArrayList(FILTER_TAG);
@@ -142,30 +140,30 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
             filterSelectionController = filterOptions instanceof FilterOptionInterface[] ? new FilterSelectionController(mFilters, (FilterOptionInterface[]) filterOptions) : new FilterSelectionController(mFilters);
             mInitialSelectedFilterValues = filterSelectionController.getValues();
             mCategoryKey = savedInstanceState.getString("category_url");
-            mTargetType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
+            mTargetType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
         }
         // Received arguments
         else {
-            mTargetType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
-            mFilters = bundle.getParcelableArrayList(FILTER_TAG);
+            mTargetType = (FragmentType) argumentsBundle.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
+            mFilters = argumentsBundle.getParcelableArrayList(FILTER_TAG);
             currentFilterPosition = IntConstants.DEFAULT_POSITION;
             filterSelectionController = new FilterSelectionController(mFilters);
             mInitialSelectedFilterValues = filterSelectionController.getValues();
-            mCategoryKey = bundle.getString("category_url");
-            mKey = bundle.getString(ConstantsIntentExtra.CONTENT_ID);
+            mCategoryKey = argumentsBundle.getString(ConstantsIntentExtra.CATEGORY_URL);
+            mKey = argumentsBundle.getString(ConstantsIntentExtra.CONTENT_ID);
             // Get title
-            mTitle = bundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
+            mTitle = argumentsBundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
             // Get catalog type (Hash|Seller|Brand|Category|DeepLink)
-            //mQueryValues = UICatalogUtils.saveCatalogType(bundle, mQueryValues, mKey);
+            //mQueryValues = UICatalogUtils.saveCatalogType(argumentsBundle, mQueryValues, mKey);
             // Default catalog values
             //mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
             // In case of searching by keyword
-            UICatalogUtils.saveSearchQuery(bundle, mQueryValues);
+            UICatalogUtils.saveSearchQuery(argumentsBundle, mQueryValues);
             // Verify if catalog page was open via navigation drawer
-            mCategoryTree = bundle.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
+            mCategoryTree = argumentsBundle.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
             //Get category content/main category
-            mMainCategory = bundle.getString(RestConstants.MAIN_CATEGORY);
-            mSelectedSort = CatalogSort.values()[bundle.getInt(ConstantsIntentExtra.CATALOG_SORT)];
+            mMainCategory = argumentsBundle.getString(RestConstants.MAIN_CATEGORY);
+            mSelectedSort = CatalogSort.values()[argumentsBundle.getInt(ConstantsIntentExtra.CATALOG_SORT)];
 
         }
         //
@@ -367,16 +365,18 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
 
         // Communicate with parent
         toCancelFilters = false;
-        Bundle bundle = new Bundle();
-       // bundle.putString(FILTER_CATEGORY, "women_tops_tshirts");
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, mKey);
-        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
-        bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
+       // argumentsBundle.putString(FILTER_CATEGORY, "women_tops_tshirts");
+        if (argumentsBundle == null) {
+            argumentsBundle = new Bundle();
+        }
+        argumentsBundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
+        argumentsBundle.putString(ConstantsIntentExtra.CONTENT_ID, mKey);
+        argumentsBundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
+        argumentsBundle.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
 
-        bundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
-        getBaseActivity().onBackPressed();
-        getBaseActivity().onSwitchFragment(mTargetType, bundle, FragmentController.ADD_TO_BACK_STACK);
+        argumentsBundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
+//        getBaseActivity().onBackPressed();
+        getBaseActivity().onSwitchFragment(mTargetType, argumentsBundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
 

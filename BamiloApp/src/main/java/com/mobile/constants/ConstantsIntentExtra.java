@@ -106,4 +106,5 @@ public class ConstantsIntentExtra {
 
     public static final String SUB_CATEGORY_FILTER="SubCategoryFilter";
 
+    public static final String CATEGORY_URL = "category_url";
 }

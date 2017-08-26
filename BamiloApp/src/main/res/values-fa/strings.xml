@@ -315,7 +315,7 @@
     <string name="password">رمز عبور</string>
     <string name="more">بیشتر</string>
     <string name="app_version">نسخه برنامه</string>
-    <string name="update_now">بروزرسانی</string>
+    <string name="update_now">بروزرسانی</string>\
     <string name="informational_text">کالا به سبد خرید شما اضافه شد.</string>
     <string name="cart_total_price">قیمت کل سبد کالای شما ‎%s‎ است.</string>
     <string name="cta_button_view_cart">مشاهده سبد کالا</string>
@@ -323,7 +323,7 @@
     <string name="up_to_date">برروز شده</string>
     <string name="rate_the_app">به برنامه امتیاز بدهید</string>
     <string name="order_track_check">از بخش "سفارشات من" می‌توانید وضعیت سفارش خود را پیگیری کنید.</string>
-    <string name="select_city">لطفاً شهر خود را انتخاب کنید.</string>
+    <string name="select_city">شهر خود را انتخاب کنید</string>
     <string name="no_saved_items">کالای ذخیره‌ شده‌ای وجود ندارد.</string>
     <string name="no_saved_items_subtitle">شما هیچ کالای ذخیره شده‌ای \r\n در علاقه مندی ها ندارید.</string>
     <string name="no_recently_viewed_items">کالایی اخیراً مشاهده نشده است.</string>
@@ -511,7 +511,7 @@
     <string name="warranty_column">ضمانت:</string>
     <string name="extimated_time_column">زمان حدودی:</string>
     <string name="calculate_delivery_time">محاسبه زمان تحویل کالا</string>
-    <string name="select_region">لطفاً استان خود را انتخاب کنید.</string>
+    <string name="select_region">استان خود را انتخاب کنید</string>
     <string name="tehran_delivery_time">تهران</string>
     <string name="other_cities_delivery_time">شهرستان</string>
     <string name="getting_data_from_server">در حال دریافت اطلاعات…</string>

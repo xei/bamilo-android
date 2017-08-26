@@ -2,18 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!-- RELATED ITEMS -->
-    <include
-        android:id="@+id/related_container"
-        layout="@layout/checkout_success_fragment_related"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/related_container">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,7 +63,15 @@
                 android:layout_marginRight="@dimen/margin_60px"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:contentDescription="@string/checkout_continue_button_description"
-                android:text="@string/continue_shopping" />
+                android:text="@string/continue_shopping"
+                android:visibility="gone" />
+
+            <!-- RELATED ITEMS -->
+            <include
+                android:id="@+id/related_container"
+                layout="@layout/checkout_success_fragment_related"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

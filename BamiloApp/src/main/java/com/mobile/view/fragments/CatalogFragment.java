@@ -131,6 +131,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private String mKey;
 
+    private String searchQuery;
+
     //DROID-10
     private long mGABeginRequestMillis;
 
@@ -179,6 +181,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
             // In case of searching by keyword
             UICatalogUtils.saveSearchQuery(arguments, mQueryValues);
+            searchQuery = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
             // Verify if catalog page was open via navigation drawer
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
             //Get category content/main category
@@ -409,6 +412,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Case catalog was recover
         else {
+            mCurrentFilterValues = new FilterSelectionController(mCatalogPage.getFilters()).getValues();
             onRecoverCatalogContainer(mCatalogPage);
             TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
         }
@@ -428,7 +432,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Set filter button
         UICatalogUtils.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
         // Set the filter button selected or not
-        setFilterButtonState(mCurrentFilterValues, mCatalogPage);
+        setFilterButtonState(mCurrentFilterValues, catalogPage);
         // Create adapter new data
         setCatalogAdapter(catalogPage);
         // Validate loading more view 
@@ -443,7 +447,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         showHeaderBanner();
         // Show container
         showFragmentContentContainer();
-        setFilterDescription(catalogPage);
+        if (mCurrentFilterValues.size() == 0) {
+            setFilterDescription(catalogPage);
+        }
 
     }
 
@@ -736,14 +742,15 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Show dialog
             Bundle bundle = new Bundle();
             bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, mTargetType);
-            bundle.putString("category_url", mKey);
+            bundle.putString(ConstantsIntentExtra.CATEGORY_URL, mKey);
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, mKey);
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             ArrayList<CatalogFilter> filters = mCatalogPage.getFilters();
             bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
             bundle.putParcelableArrayList(FILTER_TAG, filters);
-            getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
+            getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, false);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
         }
@@ -919,16 +926,17 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }*/
     };
 
+    // TODO: 8/26/2017 correct scroll to top functionality
     protected void setVisibilityTopButton(RecyclerView recyclerView) {
         // Set the goto top button
-        GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
+        /*GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
         int last = manager.findLastVisibleItemPosition();
         // Show or hide top button after X arrow
         if (last > mNumberOfColumns * mTopButtonActivateLine) {
             UICatalogUtils.showGotoTopButton(getBaseActivity(), mTopButton);
         } else {
             UICatalogUtils.hideGotoTopButton(getBaseActivity(), mTopButton);
-        }
+        }*/
     }
 
     /*
@@ -977,7 +985,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get filters
         if (mCurrentFilterValues != null) mQueryValues.putAll(mCurrentFilterValues);
         // Get Sort
-        if (mSelectedSort != null && TextUtils.isNotEmpty(mSelectedSort.path)) {
+        if (mSelectedSort != null && TextUtils.isNotEmpty(mSelectedSort.path) && !mSelectedSort.equals(CatalogSort.POPULARITY)) {
             mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
         }
         // Case initial request or load more
