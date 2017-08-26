@@ -19,7 +19,7 @@
         android:layout_gravity="bottom|left"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_white_48dp"
-        app:backgroundTint="@color/orange_1"
+        app:backgroundTint="@color/button_primary_color"
         app:fabSize="normal"
         app:layout_anchor="@+id/address_recycler_view"
         app:layout_anchorGravity="bottom|left"
