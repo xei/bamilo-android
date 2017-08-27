@@ -67,11 +67,13 @@
                 android:visibility="gone" />
 
             <!-- RELATED ITEMS -->
-            <include
+            <LinearLayout
                 android:id="@+id/related_container"
-                layout="@layout/checkout_success_fragment_related"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/margin_padding_xl"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

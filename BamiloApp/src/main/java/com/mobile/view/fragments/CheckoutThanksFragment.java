@@ -200,12 +200,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         //sendRecommend();
 
         // Related Products
-        mRelatedProductsView = (ViewGroup) view.findViewById(R.id.pdv_related_container);
-        ImageView imageSuccess = (ImageView) view.findViewById(R.id.success_image);
-        /**
-         * Mirror image to avoid having extra assets for each resolution for RTL.
-         */
-        UIUtils.mirrorViewForRTL(imageSuccess);
+        mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
         // Show
         //setRelatedItems();
         sendRecommend(cart);
@@ -250,8 +245,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      * Hide related items.
      */
     private void hideRelatedItems() {
-        UIUtils.setVisibility(mRelatedProductsView, false);
-        UIUtils.setVisibility(btnContinueShopping, true);
+        /*UIUtils.setVisibility(mRelatedProductsView, false);
+        UIUtils.setVisibility(btnContinueShopping, true);*/
     }
 
     /**
@@ -464,28 +459,37 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
                 if (data == null || data.size() == 0) {
                     //mRelatedProductsView.removeView(recommendationsHolder.itemView);
-                   // recommendations.setVisibility(View.GONE);
+                    // recommendations.setVisibility(View.GONE);
+                    mRelatedProductsView.setVisibility(View.GONE);
+                    btnContinueShopping.setVisibility(View.VISIBLE);
                     return;
                 }
+                btnContinueShopping.setVisibility(View.GONE);
+                mRelatedProductsView.setVisibility(View.VISIBLE);
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
 
-                if (recommendationsHolder == null ) {
+                if (recommendationsHolder == null) {
                     recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);
                 }
-                try {
-                    // Set view
-                    mRelatedProductsView.removeView(recommendationsHolder.itemView);
-                    recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);
+                if (recommendationsHolder != null) {
+                    try {
 
-                    recommendationsHolder.onBind(data);
-                    // Add to container
 
-                    mRelatedProductsView.addView(recommendationsHolder.itemView, mRelatedProductsView.getChildCount()-1);
+                        // Set view
+                        mRelatedProductsView.removeView(recommendationsHolder.itemView);
+                        recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);
+
+                        recommendationsHolder.onBind(data);
+                        // Add to container
+
+                        mRelatedProductsView.addView(recommendationsHolder.itemView, mRelatedProductsView.getChildCount() - 1);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+
                 }
-                catch (Exception ignored) {}
-
-
             }
 
 
