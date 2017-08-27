@@ -248,7 +248,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void onStart() {
         super.onStart();
+//        triggerGetDeliveryTime(selectedCityId);
         triggerGetRegions(ApiConstants.GET_REGIONS_API_PATH);
+
     }
 
     /*
@@ -660,6 +662,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Seller warranty
             if (TextUtils.isNotEmpty(mProduct.getSeller().getWarranty())) {
                 mSellerContainer.findViewById(R.id.pdv_seller_warranty_column).setVisibility(View.VISIBLE);
+                mSellerContainer.findViewById(R.id.pdv_seller_warranty_container).setVisibility(View.VISIBLE);
                 TextView textView = ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_warranty));
 //                String warranty = String.format(getResources().getString(R.string.warranty), mProduct.getSeller().getWarranty());
                 textView.setText(mProduct.getSeller().getWarranty());

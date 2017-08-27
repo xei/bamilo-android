@@ -13,8 +13,8 @@
         android:text="@string/seller_info" />
 
     <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextBase.Title.Black"
@@ -126,7 +126,8 @@
 
         </TableRow>
 
-        <TableRow>
+        <TableRow
+            android:layout_width="match_parent">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/pdv_seller_warranty_column"
@@ -140,18 +141,34 @@
                 tools:visibility="visible" />
 
             <!-- WARRANTY: OPTIONAL -->
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/pdv_seller_warranty"
-                style="@style/TextBase.Title.Black"
-                android:layout_marginBottom="@dimen/margin_padding_xl"
-                android:drawablePadding="@dimen/margin_padding_l"
-                android:drawableRight="@drawable/ic_warranty"
-                android:gravity="right|center_vertical"
-                android:maxLines="2"
-                android:singleLine="false"
+            <RelativeLayout
+                android:id="@+id/pdv_seller_warranty_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:visibility="gone"
-                tools:text="WARRANTY: 1 YEAR"
-                tools:visibility="visible" />
+                tools:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/pdv_seller_warranty_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/margin_padding_l"
+                    android:src="@drawable/ic_warranty" />
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/pdv_seller_warranty"
+                    style="@style/TextBase.Title.Black"
+                    android:layout_marginBottom="@dimen/margin_padding_xl"
+                    android:layout_toLeftOf="@+id/pdv_seller_warranty_badge"
+                    android:gravity="right|center_vertical"
+                    android:maxLines="2"
+                    android:paddingLeft="@dimen/margin_padding_xl"
+                    android:singleLine="false"
+                    tools:text="WARRANTY: 1 YEAR"
+                    tools:visibility="visible" />
+            </RelativeLayout>
         </TableRow>
     </TableLayout>
     <!--TEXT BLACK -->

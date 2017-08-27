@@ -276,7 +276,6 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
 
             case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
-                ProductDetailsFragment.clearSelectedRegionCityId();
                 // Tracking
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
                 TrackerManager.postEvent(getBaseActivity(), EventConstants.SignUp, EventFactory.signup("email", EmailHelper.getHost(BamiloApplication.CUSTOMER.getEmail()), true));

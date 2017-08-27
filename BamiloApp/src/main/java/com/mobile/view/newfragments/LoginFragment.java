@@ -259,7 +259,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
 
                 break;
             case LOGIN_EVENT:
-                ProductDetailsFragment.clearSelectedRegionCityId();
                 hideActivityProgress();
                 // Get customer
                 nextStepStruct = (NextStepStruct) baseResponse.getContentData();
