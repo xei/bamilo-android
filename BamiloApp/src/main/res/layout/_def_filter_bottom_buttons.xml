@@ -3,30 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:orientation="horizontal"
         android:weightSum="2">
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
             style="@style/DialogFilterSearch"
-            android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/dialog_filter_check_discount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_5dp"
-                android:paddingTop="10dp"
                 android:checked="false"
-                android:id="@+id/dialog_filter_check_discount" />
+                android:padding="@dimen/dimen_5dp"
+                android:paddingTop="10dp" />
 
             <com.mobile.components.customfontviews.TextView
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:paddingTop="10dp"
                 android:text="@string/filter_toggle_text"
                 android:textColor="@color/black" />
@@ -38,8 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColor="@color/button_secondary_color"
-            />
+            android:textColor="@color/filter_clear_button_text" />
 
     </LinearLayout>
 
@@ -47,6 +47,6 @@
         android:id="@+id/dialog_filter_button_done"
         style="@style/DialogFilterButtonSubmit"
         android:layout_width="match_parent"
-        android:background="@color/button_secondary_color"/>
+        android:background="@color/button_secondary_color" />
 
 </LinearLayout>

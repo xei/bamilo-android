@@ -136,6 +136,7 @@
     <color name="button_primary_color">@color/orange_3</color>
     <color name="button_secondary_color">@color/teal</color>
     <color name="link_color">@color/orange_3</color>
+    <color name="filter_clear_button_text">@color/teal_bright</color>
     <color name="filter_sort_title_text">@color/teal_bright</color>
     <color name="filter_sort_sub_text">@color/teal_brighter</color>
 
