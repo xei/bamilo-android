@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ScrollView;
 
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.components.webview.SuperWebView;
@@ -97,6 +98,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
+        ShopSelector.setLocaleOnOrientationChanged(BamiloApplication.INSTANCE);
         // Get scroll
         mScrollView = (ScrollView) view.findViewById(R.id.shop_scroll);
         // Get main container
@@ -150,6 +152,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     @Override
     public void onDestroyView() {
+        mWebView.destroy();
         super.onDestroyView();
         Print.i(TAG, "ON DESTROY VIEW");
     }

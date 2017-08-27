@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.webview.SuperWebView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -15,6 +16,7 @@ import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
@@ -86,6 +88,7 @@ public class StaticWebViewPageFragment extends BaseFragmentRequester implements 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
+        ShopSelector.setLocaleOnOrientationChanged(BamiloApplication.INSTANCE);
         // Get title
         mArgTitle = TextUtils.isNotEmpty(mArgTitle) ? mArgTitle : getString(R.string.policy);
         // Title AB
@@ -167,6 +170,7 @@ public class StaticWebViewPageFragment extends BaseFragmentRequester implements 
      */
     @Override
     public void onDestroyView() {
+        mSuperWebViewView.destroy();
         super.onDestroyView();
         Print.i(TAG, "ON DESTROY");
     }
