@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/checkout_footer_height"
                 android:layout_alignParentBottom="true"
-                android:background="@color/orange_1"
+                android:background="@color/button_primary_color"
                 android:gravity="center"
                 android:text="@string/basket_confirm_button"
                 android:textColor="@color/white"
