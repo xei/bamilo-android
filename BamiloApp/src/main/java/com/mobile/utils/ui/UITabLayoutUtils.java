@@ -100,7 +100,7 @@ public class UITabLayoutUtils {
                 || action == NavigationAction.MY_ACCOUNT_MY_ADDRESSES || action == NavigationAction.MY_ACCOUNT
                 || action == NavigationAction.MY_ACCOUNT_EMAIL_NOTIFICATION || action == NavigationAction.MY_ACCOUNT_USER_DATA
                 || action == NavigationAction.BASKET || action == NavigationAction.ABOUT
-                || action == NavigationAction.MY_ORDERS;
+                || action == NavigationAction.MY_ORDERS || action == NavigationAction.UNKNOWN;
     }
 
     public static int getTabPosition(@NavigationAction.Type int action) {
