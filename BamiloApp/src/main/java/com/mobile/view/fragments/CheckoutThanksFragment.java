@@ -1,9 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +18,12 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
+import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.factories.EventFactory;
-import com.mobile.helpers.cart.CartHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.extlibraries.emarsys.predict.recommended.Item;
-import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
-import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.cart.PurchaseCartItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
@@ -44,12 +40,8 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
-import com.mobile.utils.emarsys.EmarsysTracker;
-import com.mobile.utils.home.holder.HomeRecommendationsGridTeaserHolder;
 import com.mobile.utils.home.holder.RecommendationsCartHolder;
-import com.mobile.utils.home.holder.RecommendationsHolder;
 import com.mobile.utils.home.holder.RichRelevanceAdapter;
-import com.mobile.utils.pushwoosh.PushWooshTracker;
 import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
@@ -92,6 +84,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private String itemsId="";
 
     private PurchaseEntity oldCart = null;
+    private Button btnContinueShopping;
+
     /**
      * Empty constructor
      */
@@ -225,7 +219,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Update cart info
         getBaseActivity().updateCartInfo();
         // Continue button
-        view.findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
+        btnContinueShopping = (Button) view.findViewById(R.id.btn_checkout_continue);
+        btnContinueShopping.setOnClickListener(this);
         // Add a link to order status
         setOrderStatusLink(view, mOrderNumber);
         PushwooshCounter.setPurchaseCount();
@@ -255,8 +250,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      * Hide related items.
      */
     private void hideRelatedItems() {
-
-        //UIUtils.setVisibility(mRelatedProductsView, false);
+        UIUtils.setVisibility(mRelatedProductsView, false);
+        UIUtils.setVisibility(btnContinueShopping, true);
     }
 
     /**
@@ -478,25 +473,19 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 if (recommendationsHolder == null ) {
                     recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);
                 }
-                if (recommendationsHolder != null ) {
-                    try {
+                try {
+                    // Set view
+                    mRelatedProductsView.removeView(recommendationsHolder.itemView);
+                    recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);
 
+                    recommendationsHolder.onBind(data);
+                    // Add to container
 
-                        // Set view
-                        mRelatedProductsView.removeView(recommendationsHolder.itemView);
-                        recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);
-
-                        recommendationsHolder.onBind(data);
-                        // Add to container
-
-                        mRelatedProductsView.addView(recommendationsHolder.itemView, mRelatedProductsView.getChildCount()-1);
-                    }
-                    catch (Exception ex) {
-
-                    }
-
-
+                    mRelatedProductsView.addView(recommendationsHolder.itemView, mRelatedProductsView.getChildCount()-1);
                 }
+                catch (Exception ignored) {}
+
+
             }
 
 

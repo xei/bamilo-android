@@ -1,73 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="50dp"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="#F0F0F0"
+
     >
 
-
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:fillViewport="true">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/shoppingcart_list"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/total_container"
+                android:layout_alignParentTop="true" />
+
+
+            <LinearLayout
+                android:id="@+id/discount_container_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_above="@+id/discount_container"
+                android:background="@drawable/new_shadow_gradiant"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/discount_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:layout_anchor="@+id/app_bar"
-                />
+                android:layout_above="@+id/total_container"
+                android:background="@color/white_transparent"
+                android:orientation="vertical" />
 
-
-        <LinearLayout
-            android:id="@+id/discount_container_shadow"
-            android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:orientation="vertical"
-            android:background="@drawable/new_shadow_gradiant"
-            android:layout_below="@+id/shoppingcart_list"
-            android:visibility="gone">
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/discount_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white_transparent"
-            android:orientation="vertical"
-            android:visibility="gone"
-            />
-
-    <include
-        android:id="@+id/total_container"
-        layout="@layout/new_shopping_basket_total_element"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/checkout_totalbar_height"
-        android:layout_below="@+id/discount_container_shadow"
-        android:visibility="gone"
-        />
+            <include
+                android:id="@+id/total_container"
+                layout="@layout/new_shopping_basket_total_element"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/checkout_totalbar_height"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </ScrollView>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_button"
         android:layout_width="match_parent"
-        android:layout_below="@+id/total_container"
-        android:layout_height="57dp"
-        android:textSize="@dimen/checkout_footer_font_size"
-        android:textColor="@color/white"
-        android:paddingTop="20dp"
-        android:gravity="center|top"
-        app:layout_anchor="@+id/app_bar"
-        android:layout_marginBottom="57dp"
-        app:layout_anchorGravity="bottom|right|end"
+        android:layout_height="@dimen/checkout_footer_height"
+        android:layout_alignParentBottom="true"
         android:background="@color/button_primary_color"
-        android:text="@string/basket_confirm_button"/>
+        android:gravity="center"
+        android:text="@string/basket_confirm_button"
+        android:textColor="@color/white"
+        android:textSize="@dimen/checkout_footer_font_size" />
 </RelativeLayout>
 
-</ScrollView>

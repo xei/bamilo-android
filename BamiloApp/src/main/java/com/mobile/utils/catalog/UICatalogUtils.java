@@ -68,7 +68,9 @@ public class UICatalogUtils {
                     values.put(RestConstants.CATEGORY, contentId);
                     break;
                 default:
-                    values.put(RestConstants.HASH, contentId);
+                    if (contentId != null) {
+                        values.put(RestConstants.HASH, contentId);
+                    }
                     break;
             }
         } else {

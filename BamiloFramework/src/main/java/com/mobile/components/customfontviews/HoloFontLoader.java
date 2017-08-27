@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mobile.framework.R;
@@ -116,15 +117,15 @@ public class HoloFontLoader {
 
     private static void applyInternal(View view, Font font) {
         // TODO Validate if this is necessary
-//        if (view instanceof ViewGroup) {
-//            final ViewGroup vg = (ViewGroup) view;
-//            final int childCount = vg.getChildCount();
-//            for (int i = 0; i < childCount; i++) {
-//                applyInternal(vg.getChildAt(i), font);
-//            }
-//        }
+        if (view instanceof ViewGroup) {
+            final ViewGroup vg = (ViewGroup) view;
+            final int childCount = vg.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                applyInternal(vg.getChildAt(i), font);
+            }
+        }
         // Case View with interface FontStyleProvider
-        if (view instanceof FontStyleProvider) {
+        else if (view instanceof FontStyleProvider) {
             final FontStyleProvider provider = (FontStyleProvider) view;
             final int fontStyle = provider.getFontStyle();
             final String fontFamily = provider.getFontFamily();
