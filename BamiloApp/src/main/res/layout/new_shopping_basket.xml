@@ -2,23 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_300">
+    android:background="#F0F0F0"
+
+    >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"
         android:fillViewport="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/shoppingcart_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/discount_container_shadow"
+                android:layout_above="@+id/total_container"
                 android:layout_alignParentTop="true" />
 
 
@@ -45,19 +46,20 @@
                 layout="@layout/new_shopping_basket_total_element"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/checkout_totalbar_height"
+                android:layout_above="@+id/checkout_button"
                 android:visibility="gone" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/checkout_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/checkout_footer_height"
+                android:layout_alignParentBottom="true"
+                android:background="@color/orange_1"
+                android:gravity="center"
+                android:text="@string/basket_confirm_button"
+                android:textColor="@color/white"
+                android:textSize="@dimen/checkout_footer_font_size" />
         </RelativeLayout>
     </ScrollView>
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/checkout_button"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/checkout_footer_height"
-        android:layout_alignParentBottom="true"
-        android:background="@color/button_primary_color"
-        android:gravity="center"
-        android:text="@string/basket_confirm_button"
-        android:textColor="@color/white"
-        android:textSize="@dimen/checkout_footer_font_size" />
 </RelativeLayout>
 
