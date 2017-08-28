@@ -114,7 +114,9 @@ android {
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
                 //def fileNameRemoveReferences = outputFile.name.replace('JumiaApp', "App")
-                output.outputFile = new File(outputFile.parent, outputFile.name)
+                output.outputFile = new File(outputFile.parent,
+                        outputFile.name.replace(".apk", "-v" + defaultConfig.versionName + "(" +
+                                defaultConfig.versionCode + ").apk"))
             }
         }
     }
