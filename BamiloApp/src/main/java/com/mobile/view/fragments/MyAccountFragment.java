@@ -127,7 +127,8 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         Print.i(TAG, "ON VIEW CREATED");
 
         showMyAccount(view);
-        showPreferences(view);
+        // TODO: 8/28/2017 Notification and newsletter settings removed for release 2.5.0 because API doesn't support these settings
+        // showPreferences(view);
         showAppSharing(view);
         //showChooseLanguage(view);
 
