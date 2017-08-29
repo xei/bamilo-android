@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="127dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/selector_grid_item_highlight"
     card_view:cardCornerRadius="0dp"
     android:layout_marginTop="4dp"
@@ -119,7 +119,6 @@
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/item_name"
             android:layout_marginLeft="@dimen/dimen_50dp"
-            android:gravity="start|left|center_vertical"
             android:orientation="horizontal"
             android:layout_below="@id/item_brand"
             android:layout_marginTop="16dp"
@@ -132,6 +131,7 @@
                 android:layout_height="12dp"
                 android:layout_alignParentRight="true"
                 android:stepSize="0.1"
+                android:isIndicator="true"
                 tools:rating="3.5"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"/>
@@ -139,14 +139,13 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_toLeftOf="@id/item_rating"
-                android:layout_alignBottom="@+id/item_rating"
-                tools:text="(12)"
-                android:layout_height="match_parent"
+                android:textColor="@color/black_800"
                 android:textSize="11sp"
-                android:textColor="@color/black_800" />
+                tools:text="(12)" />
         </RelativeLayout>
 
         <ImageView

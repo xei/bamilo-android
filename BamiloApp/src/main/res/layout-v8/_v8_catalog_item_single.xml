@@ -67,13 +67,11 @@
 
         <RelativeLayout
             android:id="@+id/rating_container"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignBottom="@+id/price_ll"
             android:layout_alignParentLeft="true"
-            android:layout_marginBottom="@dimen/dimen_16dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:gravity="start|left|center_vertical"
             android:orientation="horizontal">
 
@@ -84,6 +82,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="2dp"
+                android:isIndicator="true"
                 android:progressDrawable="@drawable/custom_rating_bar"
                 android:stepSize="0.1"
                 tools:rating="3.5" />
@@ -91,8 +90,7 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignBottom="@+id/item_rating"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_toRightOf="@id/item_rating"
@@ -107,8 +105,8 @@
             android:id="@+id/price_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignRight="@+id/item_brand"
+            android:layout_below="@+id/item_brand"
             android:layout_marginBottom="16dp"
             android:orientation="vertical">
 
