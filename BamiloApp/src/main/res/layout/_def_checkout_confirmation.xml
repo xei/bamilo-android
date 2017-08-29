@@ -52,7 +52,7 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <Switch
+                    <android.support.v7.widget.SwitchCompat
                         android:id="@+id/voucher_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -64,6 +64,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="right"
                         android:padding="@dimen/dimen_10dp"
                         android:text="@string/checkout_voucher_title"
                         android:textColor="@color/black_73"
@@ -128,23 +129,25 @@
                 android:orientation="horizontal"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:paddingTop="@dimen/dimen_10dp">
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/checkout_order_count_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textColor="@color/black_73"
-                    android:textStyle="normal|bold"
-                    android:text="@string/order_summary_total_items" />
+                android:paddingTop="@dimen/dimen_10dp"
+                android:weightSum="2">
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_order_price"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="end|right"
+                    android:gravity="right"
+                    android:textColor="@color/black_73"
+                    android:textStyle="normal|bold" />
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/checkout_order_count_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="@string/order_summary_total_items"
                     android:textColor="@color/black_73"
                     android:textStyle="normal|bold" />
 
@@ -156,25 +159,26 @@
                 android:orientation="horizontal"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:paddingTop="@dimen/dimen_10dp">
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textColor="@color/black_73"
-                    android:text="@string/order_summary_total_discount" />
+                android:paddingTop="@dimen/dimen_10dp"
+                android:weightSum="2">
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_order_all_discount"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="end|right"
+                    android:gravity="right"
                     android:textColor="@color/black_73"
                     android:textSize="13sp" />
 
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="@string/order_summary_total_discount"
+                    android:textColor="@color/black_73" />
 
             </LinearLayout>
 
@@ -186,25 +190,27 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:paddingTop="@dimen/dimen_10dp"
-                android:visibility="gone">
-
-                <com.mobile.components.customfontviews.TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textColor="@color/black_73"
-                    tools:text="کد تخفیف" />
+                android:visibility="gone"
+                android:weightSum="2"
+                tools:visibility="visible">
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_order_voucher_price"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="right|end"
+                    android:gravity="right"
                     android:textColor="@color/black_73"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:text="7s8fd5sdfsdf56sdf5" />
 
-
+                <com.mobile.components.customfontviews.TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:textColor="@color/black_73"
+                    tools:text="کد تخفیف" />
             </LinearLayout>
 
             <LinearLayout
@@ -213,24 +219,26 @@
                 android:orientation="horizontal"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:paddingTop="@dimen/dimen_10dp">
-
-                <com.mobile.components.customfontviews.TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textColor="@color/black_73"
-                    android:text="@string/order_summary_shipping_fee" />
+                android:paddingTop="@dimen/dimen_10dp"
+                android:weightSum="2">
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_order_ship_price"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="end|right"
+                    android:gravity="right"
                     android:textColor="@color/black_73"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:text="7000 Rials" />
 
+                <com.mobile.components.customfontviews.TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="@string/order_summary_shipping_fee"
+                    android:textColor="@color/black_73" />
 
             </LinearLayout>
 
@@ -251,22 +259,24 @@
                 android:paddingTop="@dimen/dimen_10dp">
 
                 <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/all_price_total_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textColor="@color/black_73"
-                    android:textStyle="normal|bold" />
-
-                <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_order_all_price"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="right|end"
+                    android:gravity="right"
                     android:textColor="@color/black_73"
-                    android:textStyle="normal|bold" />
+                    android:textStyle="normal|bold"
+                    tools:text="45000 Rials" />
 
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/all_price_total_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:textColor="@color/black_73"
+                    android:textStyle="normal|bold"
+                    tools:text="all price" />
 
             </LinearLayout>
 
@@ -277,6 +287,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/black_400"
+                android:gravity="right"
                 android:paddingBottom="@dimen/dimen_10dp"
                 android:paddingLeft="@dimen/dimen_16dp"
                 android:paddingRight="@dimen/dimen_16dp"
@@ -290,6 +301,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="right"
                 android:paddingBottom="@dimen/dimen_10dp"
                 android:paddingLeft="@dimen/dimen_16dp"
                 android:paddingRight="@dimen/dimen_16dp"
@@ -305,6 +317,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/black_400"
+                android:gravity="right"
                 android:paddingBottom="@dimen/dimen_10dp"
                 android:paddingLeft="@dimen/dimen_16dp"
                 android:paddingRight="@dimen/dimen_16dp"
@@ -326,6 +339,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/black_400"
+                android:gravity="right"
                 android:paddingBottom="@dimen/dimen_15dp"
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:paddingRight="@dimen/dimen_10dp"
@@ -342,8 +356,9 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_user_reciver"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:paddingLeft="@dimen/dimen_16dp"
                     android:paddingRight="@dimen/dimen_16dp"
                     android:text=""
@@ -352,8 +367,9 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:paddingBottom="@dimen/dimen_5dp"
                     android:paddingLeft="@dimen/dimen_16dp"
                     android:paddingRight="@dimen/dimen_16dp"
@@ -363,8 +379,9 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_telephone"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="right"
                     android:paddingBottom="@dimen/dimen_5dp"
                     android:paddingLeft="@dimen/dimen_16dp"
                     android:paddingRight="@dimen/dimen_16dp"
