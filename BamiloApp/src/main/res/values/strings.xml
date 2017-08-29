@@ -345,7 +345,7 @@
     <string name="cellphone">Cell Phone</string>
     <string name="email_contact">Email:</string>
     <string name="logout_success">Logged out with success</string>
-    <string name="percentage_placeholder">%s%%</string>
+    <string name="percentage_placeholder">%1$d%%</string>
     <string name="error_add_bundle_to_shopping_cart">This bundle could not be added to the shopping cart. Please try again later.</string>
     <string name="buy">buy</string>
     <string name="size_placeholder">Size %s</string>

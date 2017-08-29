@@ -660,7 +660,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Set stock bar
             setStockBar(view.mStockBar, item.getStockPercentage());
             // Set stock percentage
-            view.mStockPercentage.setText(String.format(getString(R.string.percentage_placeholder), item.getStockPercentage()));
+            view.mStockPercentage.setText(getString(R.string.percentage_placeholder, item.getStockPercentage()));
             view.mStockPercentage.setSelected(true);
             // Set sendPurchaseRecommend button
             setClickableView(view.mButtonBuy, position);
