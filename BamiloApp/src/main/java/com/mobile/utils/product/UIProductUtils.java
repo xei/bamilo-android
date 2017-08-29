@@ -63,6 +63,8 @@ public class UIProductUtils {
 
     public static void setPriceRulesWithAutoAdjust(Context context, @NonNull ProductBase productBase, @NonNull TextView discount, @NonNull TextView price){
         String priceRange = productBase.getPriceRange();
+        price.setVisibility(View.VISIBLE);
+        discount.setVisibility(View.VISIBLE);
         //If ProductMultiple already has simple
         if(productBase instanceof ProductMultiple && ((ProductMultiple) productBase).getSelectedSimple() != null) {
             //noinspection ConstantConditions
@@ -74,8 +76,6 @@ public class UIProductUtils {
         } else {
             setPriceWithAutoAdjust(context, productBase, discount, price);
         }
-        price.setVisibility(View.VISIBLE);
-        discount.setVisibility(View.VISIBLE);
     }
 
     private static void setPrice(@NonNull ProductBase productBase, @NonNull TextView price, @NonNull TextView specialPrice){

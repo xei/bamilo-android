@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="format_discount_percentage">%1$s%%</string>
+    <string name="format_discount_percentage">%1$d%%</string>
     <string name="account_name">My Account</string>
     <string name="checkout_confirmation">Checkout Confirmation</string>
     <string name="action_label_add_address">Add New Address</string>

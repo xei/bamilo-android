@@ -122,33 +122,38 @@
             <RelativeLayout
                 android:id="@+id/item_regprice_rl"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="wrap_content">
 
-                >
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/item_regprice"
-                    style="@style/TextBase.Body.Black_800"
+                <RelativeLayout
+                    android:id="@+id/rlDiscount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="2dp"
-                    android:textColor="@color/lightgrey"
-                    android:textSize="9sp"
-                    tools:text="Price" />
+                    android:layout_marginTop="2dp">
 
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/item_regprice"
+                        style="@style/TextBase.Body.Black_800"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_padding_xl"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/lightgrey"
+                        android:textSize="9sp"
+                        tools:text="Price" />
 
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/discount_percentage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/item_regprice"
-                    android:layout_marginRight="@dimen/margin_padding_xl"
-                    android:layout_toLeftOf="@+id/item_regprice"
-                    android:gravity="center"
-                    android:text="%"
-                    android:textColor="@color/lightgrey"
-                    android:textSize="9sp" />
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/discount_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/item_regprice"
+                        android:gravity="center"
+                        android:layout_alignBaseline="@+id/item_regprice"
+                        android:textColor="@color/lightgrey"
+                        android:textSize="9sp"
+                        tools:text="54 %" />
+                </RelativeLayout>
+
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/new_arrival_badge"
@@ -156,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_below="@id/discount_percentage"
+                    android:layout_below="@id/rlDiscount"
                     android:layout_marginLeft="@dimen/margin_padding_xl"
                     android:layout_marginTop="@dimen/margin_padding_l"
                     android:gravity="center"
