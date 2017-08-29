@@ -1,63 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="344dp"
-    android:background="@drawable/selector_grid_item_highlight"
-    card_view:cardCornerRadius="0dp"
-    android:layout_marginTop="3dp"
     android:layout_marginBottom="3dp"
+    android:layout_marginLeft="6dp"
     android:layout_marginRight="6dp"
-    android:layout_marginLeft="6dp">
+    android:layout_marginTop="3dp"
+    android:background="@drawable/selector_grid_item_highlight"
+    card_view:cardCornerRadius="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        >
+        android:paddingBottom="8dp">
 
         <include
             android:id="@+id/image_loadable"
             layout="@layout/_def_gen_image_loadable"
             android:layout_width="176dp"
             android:layout_height="220dp"
-            android:layout_marginTop="16dp"
             android:layout_centerHorizontal="true"
-            />
+            android:layout_marginTop="16dp" />
 
 
         <ImageView
             android:id="@+id/image_is_favourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_centerInParent="false"
             android:padding="@dimen/margin_padding_xl"
             android:src="@drawable/selector_favorite" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
             android:layout_below="@id/image_loadable"
             android:layout_marginEnd="@dimen/margin_padding_xl"
-            android:layout_marginRight="@dimen/margin_padding_xl"
             android:layout_marginLeft="@dimen/margin_padding_xl"
+            android:layout_marginRight="@dimen/margin_padding_xl"
             android:layout_marginStart="@dimen/margin_padding_xl"
             android:layout_marginTop="5dp"
-            android:gravity="left|start"
+            android:gravity="right"
             android:textColor="@color/black"
             android:textSize="13sp"
             tools:text="Name" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_brand"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/item_name"
             android:layout_marginEnd="@dimen/margin_padding_xl"
@@ -65,49 +60,45 @@
             android:layout_marginRight="@dimen/margin_padding_xl"
             android:layout_marginStart="@dimen/margin_padding_xl"
             android:layout_marginTop="2dp"
-            android:gravity="left|start"
-            tools:text="BRAND"
+            android:gravity="right"
             android:textColor="@color/lightgrey"
             android:textSize="11sp"
-            />
+            tools:text="BRAND" />
 
         <RelativeLayout
             android:id="@+id/rating_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_alignParentLeft="true"
             android:layout_marginBottom="@dimen/dimen_16dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:gravity="start|left|center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <RatingBar
                 android:id="@+id/item_rating"
-                android:progressDrawable="@drawable/custom_rating_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="12dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:stepSize="0.1"
-                tools:rating="3.5"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="2dp"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"/>
+                android:progressDrawable="@drawable/custom_rating_bar"
+                android:stepSize="0.1"
+                tools:rating="3.5" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
-                android:layout_height="match_parent"
-                android:textSize="11sp"
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/item_rating"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
-                android:layout_toLeftOf="@id/item_rating"
-                android:layout_toStartOf="@id/item_rating"
-                tools:text="(12)"
+                android:layout_toRightOf="@id/item_rating"
                 android:textColor="@color/black_800"
-                android:layout_alignBottom="@+id/item_rating" />
+                android:textSize="11sp"
+                tools:text="(12)" />
 
 
         </RelativeLayout>
@@ -116,37 +107,32 @@
             android:id="@+id/price_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignLeft="@+id/item_brand"
-            android:layout_alignStart="@+id/item_brand"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/item_brand"
             android:layout_marginBottom="16dp"
-            android:layout_alignParentBottom="true">
+            android:orientation="vertical">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_discount"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-
-                android:layout_marginEnd="@dimen/margin_padding_xs"
-                android:layout_marginRight="@dimen/margin_padding_xs"
+                android:layout_marginLeft="@dimen/margin_padding_xs"
                 android:layout_marginTop="5dp"
+                android:gravity="right"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 tools:text="Discount" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/item_regprice_rl"
-
-                >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/item_regprice"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_marginTop="2dp"
                     android:textColor="@color/lightgrey"
                     android:textSize="11sp"
@@ -156,30 +142,25 @@
                     android:id="@+id/discount_percentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/item_regprice"
-                    android:layout_toEndOf="@+id/item_regprice"
-                    android:layout_marginLeft="@dimen/margin_padding_xl"
-                    android:layout_marginStart="@dimen/margin_padding_xl"
+                    android:layout_marginRight="@dimen/margin_padding_xl"
                     android:layout_marginTop="2dp"
+                    android:layout_toLeftOf="@+id/item_regprice"
                     android:gravity="center"
                     android:singleLine="true"
+                    android:text="%"
                     android:textColor="@color/lightgrey"
-                    android:textSize="11sp"
-                    android:text="%"/>
+                    android:textSize="11sp" />
             </RelativeLayout>
         </LinearLayout>
 
 
-
-
         <ImageView
-            style="@style/ShopFirstStyle"
             android:id="@+id/item_shop_first"
-            android:visibility="gone"
-            android:layout_alignParentBottom="true"
+            style="@style/ShopFirstStyle"
             android:layout_alignLeft="@id/item_brand"
-            android:layout_alignStart="@id/item_brand" />
-
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@id/item_brand"
+            android:visibility="gone" />
 
 
     </RelativeLayout>
