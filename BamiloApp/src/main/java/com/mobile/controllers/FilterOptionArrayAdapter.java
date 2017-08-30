@@ -73,13 +73,14 @@ import com.mobile.view.R;
      */
     protected void processMultiSelection(AdapterView<?> parent, int position){
         // Validate if checked or not
-        MultiFilterOptionInterface option = mCurrentSelectedOptions.get(position);
-        if( option == null) {
-            // Add item
-            addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
-        } else {
+        //MultiFilterOptionInterface option = mCurrentSelectedOptions.get(position);
+        MultiFilterOptionInterface option = (MultiFilterOptionInterface) parent.getItemAtPosition(position);
+        if(option.isSelected()) {
             // Uncheck
             cleanSelectedItem(option, position);
+        } else {
+            // Add item
+            addSelectedItem(option, position);
         }
     }
 
