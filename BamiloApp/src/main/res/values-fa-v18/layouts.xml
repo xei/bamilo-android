@@ -82,7 +82,6 @@
     <item name="pdv_fragment_rating" 	                type="layout">@layout/_def_pdv_fragment_rating</item>
     <item name="pdv_fragment_related_item" 	            type="layout">@layout/_def_pdv_fragment_related_item</item>
     <item name="pdv_fragment_gallery_item" 	            type="layout">@layout/_def_pdv_fragment_gallery_item</item>
-    <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_def_pdv_fragment_seller_info</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_def_pdv_fragment_related_item_price</item>
     <item name="config_confirmation_msg" 	            type="layout">@layout/_def_config_confirmation_msg</item>
     <item name="pdv_fragment_combo_group"               type="layout">@layout/_def_pdv_fragment_combo_group</item>
