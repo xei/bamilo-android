@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/addabletocart_item_container"
     android:layout_width="match_parent"
     android:layout_height="@dimen/catalog_list_item_height"
@@ -7,16 +8,33 @@
 
     <!-- IMAGE CONTAINER -->
 
-    <include
-        android:id="@+id/item_image_container"
-        layout="@layout/addabletocart_item_image"
+    <RelativeLayout
+        android:id="@+id/rlImageContainer"
         android:layout_width="@dimen/catalog_list_item_image_width"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/info_container"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/margin_padding_l"/>
+        android:layout_marginLeft="@dimen/margin_padding_l"
+        android:layout_marginStart="@dimen/margin_padding_l"
+        android:layout_marginTop="@dimen/margin_padding_l">
+
+        <include
+            android:id="@+id/item_image_container"
+            layout="@layout/addabletocart_item_image"
+            android:layout_width="@dimen/catalog_list_item_image_width"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/prgLoadingImage"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+    </RelativeLayout>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/new_arrival_badge"
@@ -40,6 +58,6 @@
         android:layout_marginBottom="@dimen/margin_padding_l"
         android:layout_marginLeft="@dimen/margin_padding_l"
         android:layout_marginRight="@dimen/margin_padding_l"
-        android:layout_toLeftOf="@id/item_image_container" />
+        android:layout_toLeftOf="@id/rlImageContainer" />
 
 </RelativeLayout>

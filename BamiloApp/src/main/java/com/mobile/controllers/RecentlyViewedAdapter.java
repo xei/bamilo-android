@@ -7,9 +7,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.service.objects.product.pojo.ProductMultiple;
+import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
@@ -70,10 +75,20 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
      * @param addableToCart
      * @author sergiopereira
      */
-    private void setImage(RecentlyViewedHolder prodItem, ProductMultiple addableToCart){
-        // Set is new image
-        //prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
-        // Set image
+    private void setImage(final RecentlyViewedHolder prodItem, ProductMultiple addableToCart){
+        ImageManager.getInstance().loadImage(addableToCart.getImageUrl(), prodItem.image, prodItem.prgLoadingImage, R.drawable.no_image_large, false, new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                prodItem.prgLoadingImage.setVisibility(View.GONE);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                prodItem.prgLoadingImage.setVisibility(View.GONE);
+                return false;
+            }
+        });
     }
 
     /**
@@ -131,6 +146,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
     public class RecentlyViewedHolder extends RecyclerView.ViewHolder {
 
         private ImageView image;
+        private ProgressBar prgLoadingImage;
         private TextView name;
         private TextView discount;
         private TextView price;
@@ -145,6 +161,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
         public RecentlyViewedHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.item_image);
+            prgLoadingImage = (ProgressBar) itemView.findViewById(R.id.prgLoadingImage);
             name = (TextView) itemView.findViewById(R.id.item_name);
             discount = (TextView) itemView.findViewById(R.id.item_discount);
             price = (TextView) itemView.findViewById(R.id.item_regprice);
