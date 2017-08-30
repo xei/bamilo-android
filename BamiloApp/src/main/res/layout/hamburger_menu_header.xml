@@ -1,15 +1,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/material_drawer_account_header_height"
-    android:clickable="true"
+    android:layout_height="wrap_content"
     android:background="@color/blue_3"
-    >
+    android:clickable="true">
 
 
     <RelativeLayout
         android:id="@+id/material_drawer_account_header"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/material_drawer_account_header_height">
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/material_drawer_account_header_height">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/material_drawer_account_header_current"
@@ -25,16 +25,12 @@
         <LinearLayout
             android:id="@+id/material_drawer_account_header_text_section"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_toLeftOf="@+id/material_drawer_account_header_current"
-            android:layout_alignBaseline="@+id/material_drawer_account_header_current"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/material_drawer_account_header_current"
             android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingEnd="56dp"
-            android:paddingLeft="0dp"
-            android:paddingRight="56dp"
-            android:paddingStart="0dp">
+            android:layout_marginLeft="@dimen/dimen_16dp"
+            android:orientation="vertical">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/material_drawer_account_header_name"
@@ -50,12 +46,11 @@
                 android:id="@+id/material_drawer_account_header_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif"
+                android:gravity="right"
                 android:lines="1"
                 android:maxLines="1"
-                android:gravity="right"
-
-                android:layout_marginTop="10dp"
                 android:textColor="#ffffff"
                 android:textSize="14sp" />
 
