@@ -326,6 +326,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         HashMap<String, Object> open_count = new HashMap<>();
         open_count.put("AppOpenCount", PushwooshCounter.getAppOpenCount());
         PushManager.sendTags(MainFragmentActivity.this, open_count, callBack);
+        //Clear application badge number
+        PushManager.getInstance(BamiloApplication.INSTANCE).setBadgeNumber(0);
 
         if(mAppOpenSource != EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION && mAppOpenSource != EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
             TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT));
