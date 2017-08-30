@@ -11,11 +11,14 @@ import com.emarsys.predict.RecommendedItem;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.extlibraries.emarsys.predict.RecommendationWidgetType;
 import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author sergiopereira
@@ -88,20 +91,28 @@ public class RecommendationsAdapter extends RecyclerView.Adapter<Recommendations
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Get item
-        RecommendedItem item = (RecommendedItem) mDataSet.get(position);
+        RecommendedItem item = mDataSet.get(position);
         String sku = "" + item.getData().get("item");
         holder.mName.setText("" + item.getData().get("title"));
 
         // Set image
         //RocketImageLoader.instance.loadImage("" + item.getData().get("image"), holder.mImage, holder.mProgress, R.drawable.no_image_large);
-        ImageManager.getInstance().loadImage(item.getData().get("image").toString(), holder.mImage, holder.mProgress, R.drawable.no_image_large, false);
+        Map<String, Object> data = item.getData();
+        Object imageObject = data.get("image");
+        if(imageObject != null) {
+            try {
+                ImageManager.getInstance().loadImage(imageObject.toString(), holder.mImage, holder.mProgress, R.drawable.no_image_large, false);
+            } catch (Exception e) {
+                Print.d(e.getMessage());
+            }
+        }
 
         // Set brand
-        holder.mBrand.setText("" + item.getData().get("brand"));
+        holder.mBrand.setText("" + data.get("brand"));
         // Set name
         // Set price
-        double price = (double) item.getData().get("price");
-        double special = (double) item.getData().get("msrp");
+        double price = (double) data.get("price");
+        double special = (double) data.get("msrp");
         if (price != special) {
             holder.mPrice.setText(CurrencyFormatter.formatCurrency(price));
             holder.mOldPrice.setText(CurrencyFormatter.formatCurrency(special));
