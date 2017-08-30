@@ -147,7 +147,7 @@
     <item name="dialog_list_item"                       type="layout">@layout/_def_dialog_list_item</item>
 
     <!-- RECENTLY VIEWED -->
-    <item name="addabletocart_item"                     type="layout">@layout/_def_addabletocart_item</item>
+    <!--<item name="addabletocart_item"                     type="layout">@layout/_def_addabletocart_item</item>-->
     <item name="addabletocart_item_image"               type="layout">@layout/_def_addabletocart_item_image</item>
     <item name="addabletocart_item_info"                type="layout">@layout/_def_addabletocart_item_info</item>
 

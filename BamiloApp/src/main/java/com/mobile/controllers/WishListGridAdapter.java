@@ -66,7 +66,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
 
     @Override
     public WishListProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new WishListProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.addabletocart_item, parent, false));
+        return new WishListProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.addable_to_cart_item, parent, false));
     }
 
     @Override

@@ -121,7 +121,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
 
     @Override
     public RecentlyViewedHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RecentlyViewedHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.addabletocart_item, parent, false));
+        return new RecentlyViewedHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.addable_to_cart_item, parent, false));
     }
 
     @Override
