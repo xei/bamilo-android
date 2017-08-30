@@ -48,7 +48,7 @@ import java.util.Locale;
 public class CheckoutConfirmationFragment extends NewBaseFragment implements View.OnClickListener, IResponseCallback {
     TextView next, address, telephone, user, order_count_title, order_price, ship_price, voucher_price, all_price, ship_time, all_voucher, voucher_error, all_price_title;
     SwitchCompat voucher_switch;
-    LinearLayout voucher_lay;
+    TextView tvVoucherValueTitle;
     LinearLayout voucher_layer;
     private EditText mVoucherView;
     private Button couponButton;
@@ -66,7 +66,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     public CheckoutConfirmationFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.CHECKOUT,
-                R.layout.checkout_confirmation,
+                R.layout.checkout_confirmation_fragment,
                 R.string.checkout_label,
                 ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_CONFIRMATION);
@@ -97,7 +97,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getBaseActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         triggerGetMultiStepFinish();
-        voucher_lay = (LinearLayout) view.findViewById(R.id.voucher_value_title);
+        tvVoucherValueTitle = (TextView) view.findViewById(R.id.checkout_order_voucher_price_title);
         next = (TextView) view.findViewById(R.id.checkout_confirmation_btn);
         address = (TextView) view.findViewById(R.id.checkout_address);
         telephone = (TextView) view.findViewById(R.id.checkout_telephone);
@@ -240,10 +240,12 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         all_price.setTextColor(getResources().getColor(R.color.checkout_order_green));
         all_voucher.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted() + mOrderFinish.getShippingValue() - mOrderFinish.getTotal()));
         if (mOrderFinish.hasCouponDiscount()) {
-            voucher_lay.setVisibility(View.VISIBLE);
+            tvVoucherValueTitle.setVisibility(View.VISIBLE);
+            voucher_price.setVisibility(View.VISIBLE);
             voucher_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getCouponDiscount()));
         } else {
-            voucher_lay.setVisibility(View.GONE);
+            tvVoucherValueTitle.setVisibility(View.GONE);
+            voucher_price.setVisibility(View.GONE);
         }
     }
 

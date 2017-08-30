@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:minHeight="@dimen/dimen_100dp"
     android:paddingTop="@dimen/dimen_10dp"
     android:layout_height="wrap_content"
@@ -21,15 +22,16 @@
             />
 
         <com.mobile.components.customfontviews.TextView
-            android:text="product name product name product name product name"
+            android:id="@+id/checkout_product"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/checkout_product_image"
-            android:layout_toRightOf="@+id/checkout_product_image"
-            android:layout_toEndOf="@+id/checkout_product_image"
-            android:id="@+id/checkout_product"
             android:layout_margin="0dp"
-            android:textColor="#737373" />
+            android:layout_toEndOf="@+id/checkout_product_image"
+            android:layout_toRightOf="@+id/checkout_product_image"
+            android:gravity="right"
+            android:textColor="@color/black_73"
+            tools:text="product name product name product name product name" />
 
         <com.mobile.components.customfontviews.TextView
             android:text="brand"
