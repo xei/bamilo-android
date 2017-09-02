@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- CATALOG WIZARD -->
+    <dimen name="product_tip_top_swipe">20dp</dimen>
+    <dimen name="product_tip_variations_top_margin">35dp</dimen>
+
+    <dimen name="default_circle_indicator_radius">2dp</dimen>
+
+    <!-- DATE PICKER -->
+    <dimen name="date_picker_component_width">200dp</dimen>
+    <dimen name="selected_calendar_layout_height">105dp</dimen>
+    <dimen name="selected_date_day_size">50dp</dimen>
+    <dimen name="selected_date_month_size">22dp</dimen>
+    <dimen name="selected_date_year_size">22dp</dimen>
+    <dimen name="date_picker_view_animator_height">200dp</dimen>
+    <dimen name="month_list_item_header_height">35dp</dimen>
+    <dimen name="filter_icon_size">18dp</dimen>
+    <dimen name="ratingbar_height">12dp</dimen>
+
+    <!-- BOTTOM SHEET -->
+    <integer name="dialog_max_items">4</integer>
+
+
+</resources>

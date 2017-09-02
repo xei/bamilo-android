@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- APP -->
+    <string name="app_name">Bamilo</string>
+    <item name="is_bamilo_specific" type="bool">true</item>
+
+    <!-- COUNTRIES -->
+    <!-- country.xml -->
+    
+    <!-- GA -->
+    <bool name="ga_debug_mode">false</bool>
+    <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
+    <integer name="ga_dispatchPeriod">0</integer>
+    -->
+
+    <!-- DEEP LINK -->
+    <string name="dp_package_id">com.bamilo.android</string>
+    <string name="dp_app_name_uppercase">BAMILO</string>
+    <string name="dp_app_name_lowercase">bamilo</string>
+    <string name="dp_intent_label">Bamilo</string>
+
+    <!-- ADJUST -->
+    <item name="adjust_enabled" type="bool">true</item>
+    <item name="adjust_is_production_env" type="bool">false</item>
+
+	<!-- GTM -->
+    <item name="gtm_debug" type="bool">false</item>
+    
+</resources>

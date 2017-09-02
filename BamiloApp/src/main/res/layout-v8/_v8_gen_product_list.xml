@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_grid_item_highlight"
+    card_view:cardCornerRadius="0dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginLeft="4dp">
+
+    <RelativeLayout
+        style="@style/grid_row_style"
+        android:minHeight="@dimen/catalog_list_item_height"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/image_loadable"
+            layout="@layout/_def_gen_image_loadable"
+            android:layout_width="89dp"
+            android:layout_height="110dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@color/color_accent" />
+
+
+        <!-- INFORMATION -->
+
+        <View
+            android:id="@+id/center_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/image_loadable" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/center_view"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/margin_padding_l"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            tools:text="Name" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/center_view"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/item_name"
+            android:textSize="11sp"
+            android:textColor="@color/lightgrey"
+            tools:text="BRAND" />
+
+
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/center_view"
+            android:layout_below="@id/rating_container"
+            android:layout_marginLeft="@dimen/dimen_4dp"
+            android:layout_marginBottom="1dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            tools:text="Discount" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_regprice"
+            style="@style/TextBase.Body.Black_800"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/item_discount"
+            android:layout_toLeftOf="@id/item_discount"
+            android:layout_below="@id/rating_container"
+            android:layout_marginRight="10dp"
+            tools:text="Price"
+            android:textSize="11sp"
+            android:textColor="@color/lightgrey" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/discount_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rating_container"
+            android:layout_alignBaseline="@id/item_regprice"
+            android:layout_toLeftOf="@id/item_regprice"
+            android:layout_marginRight="@dimen/margin_padding_xl"
+            android:gravity="center"
+            android:textSize="11sp"
+            android:textColor="@color/lightgrey"/>
+
+        <ImageView
+            style="@style/ShopFirstStyle"
+            android:id="@+id/item_shop_first"
+            android:layout_below="@id/item_discount"
+            android:layout_alignRight="@id/item_brand"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <RelativeLayout
+            android:id="@+id/rating_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/item_name"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:orientation="horizontal"
+            android:layout_below="@id/item_brand"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp">
+
+            <RatingBar
+                android:id="@+id/item_rating"
+                android:progressDrawable="@drawable/custom_rating_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:stepSize="0.1"
+                android:isIndicator="true"
+                tools:rating="3.5"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_reviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_toLeftOf="@id/item_rating"
+                android:textColor="@color/black_800"
+                android:textSize="11sp"
+                tools:text="(12)" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/image_is_favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/margin_padding_xl"
+            android:src="@drawable/selector_favorite" />
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

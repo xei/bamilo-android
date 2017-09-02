@@ -1,1 +1,1 @@
-include ':JumiaApp',':libraries:com.mobile.framework', ':JumiaWear'
+include ':BamiloApp', ':BamiloFramework'

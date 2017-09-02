@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="PW_APPID">82449-6B792</string>
+    <string name="PW_PROJECT_ID">A485292122163</string>
+    <string name="PW_TESTDEVICE_DEEPLINK">pw-82449-6B792</string>
+    <string name="PW_TESTDEVICE_DEEPLINK_LOWERCASE">pw-82449-6b792</string>
+
+    <!--Google Analytic-->
+    <string name="ga_trackingId">UA-57415371-2</string>
+</resources>
