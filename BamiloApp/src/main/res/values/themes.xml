@@ -78,6 +78,7 @@
         <item name="android:background">@color/tabBar</item>
         <item name="tabGravity">fill</item>
         <item name="tabMode">fixed</item>
+        <item name="tabMaxWidth">0dp</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabIndicatorColor">@color/orange_1</item>
     </style>
