@@ -170,7 +170,9 @@ public class StaticWebViewPageFragment extends BaseFragmentRequester implements 
      */
     @Override
     public void onDestroyView() {
+        mSuperWebViewView.removeAllViews();
         mSuperWebViewView.destroy();
+
         super.onDestroyView();
         Print.i(TAG, "ON DESTROY");
     }
