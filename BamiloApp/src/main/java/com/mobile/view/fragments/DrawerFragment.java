@@ -235,14 +235,14 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
             }
         }));
         items.add(new DrawerItem(true));
-        items.add(new DrawerItem(0, R.string.drawer_share, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        /*items.add(new DrawerItem(0, R.string.drawer_share, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
 
                 UIUtils.shareApp(getBaseActivity());
             }
-        }));
+        }));*/
         items.add(new DrawerItem(0, R.string.drawer_rateus, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
