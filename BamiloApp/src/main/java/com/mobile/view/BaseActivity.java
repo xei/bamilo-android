@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -40,7 +41,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -60,6 +60,7 @@ import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.checkout.CheckoutStepLogin;
 import com.mobile.service.objects.customer.Customer;
@@ -75,7 +76,6 @@ import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.ShopSelector;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -87,6 +87,7 @@ import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
+import com.mobile.utils.ui.FixedDrawerDrawable;
 import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
@@ -121,7 +122,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private static final int SEARCH_EDIT_SIZE = 2;
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
-    @KeyboardState public static int sCurrentAdjustState;
+    @KeyboardState
+    public static int sCurrentAdjustState;
     private final int activityLayoutId;
     private final int titleResId;
     public View mDrawerNavigation;
@@ -135,7 +137,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     protected RecyclerView mSearchListView;
     protected FrameLayout mSearchOverlay;
     protected boolean isSearchComponentOpened = false;
-    @NavigationAction.Type private int action;
+    @NavigationAction.Type
+    private int action;
     private Set<MyMenuItem> menuItems;
     private DialogProgressFragment baseActivityProgressDialog;
     private DialogGenericFragment dialogLogout;
@@ -362,19 +365,15 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * ############## NAVIGATION ##############
      */
 
-    /**
-     * Set the Action bar style
-     *
-     * @modified sergiopereira
-     */
     public void setupAppBarLayout() {
         // Get tab layout
         mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         // Get tool bar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTitleTextAppearance);
         setSupportActionBar(toolbar);
         mSupportActionBar = getSupportActionBar();
-        if(mSupportActionBar != null) {
+        if (mSupportActionBar != null) {
             mSupportActionBar.setDisplayHomeAsUpEnabled(true);
             mSupportActionBar.setHomeButtonEnabled(true);
             mSupportActionBar.setDisplayShowTitleEnabled(true);
@@ -487,21 +486,18 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-    /**
-     * Set the navigation drawer.
-     *
-     * @modified sergiopereira
-     */
     public void setupDrawerNavigation() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 hideKeyboard();
             }
         };
+        mDrawerToggle.setDrawerArrowDrawable(new FixedDrawerDrawable(this, R.drawable.ic_action_hamburger));
+        mDrawerToggle.setHomeAsUpIndicator(R.drawable.back_action_selector);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         mDrawerFragment.CreateDrawer();
@@ -709,7 +705,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         } else {
             Print.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
         }
-    }    @Override
+    }
+
+    @Override
     public void onTabUnselected(TabLayout.Tab tab) {
         // ...
     }
@@ -723,9 +721,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         if (isBackButtonEnabled) {
             Print.i(TAG, "SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(false);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         } else {
             Print.i(TAG, "NO SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(true);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
         // TODO: 7/29/2017 Cleanup
         mDrawerToggle.syncState();
@@ -775,6 +775,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             basket.setEnabled(true);
             View actionCartView = MenuItemCompat.getActionView(basket);
             mActionCartCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
+            mActionCartCount.setVisibility(View.INVISIBLE);
             View actionCartImage = actionCartView.findViewById(R.id.action_cart_image);
             actionCartImage.setOnClickListener(new OnClickListener() {
                 @Override
@@ -1264,12 +1265,17 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
         PurchaseEntity currentCart = BamiloApplication.INSTANCE.getCart();
         // Show 0 while the cart is not updated
-        final String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
+        final int quantity = currentCart == null ? 0 : currentCart.getCartCount();
 
         mActionCartCount.post(new Runnable() {
             @Override
             public void run() {
-                mActionCartCount.setText(quantity);
+                if (quantity > 0) {
+                    mActionCartCount.setVisibility(View.VISIBLE);
+                    mActionCartCount.setText(String.valueOf(quantity));
+                } else {
+                    mActionCartCount.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -1444,11 +1450,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void setActionBarTitle(@StringRes int actionBarTitleResId) {
         mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(getString(actionBarTitleResId));
+        HoloFontLoader.applyDefaultFont(toolbar);
     }
 
     public void setActionBarTitle(@NonNull String title) {
         mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(title);
+        HoloFontLoader.applyDefaultFont(toolbar);
     }
 
     /**
