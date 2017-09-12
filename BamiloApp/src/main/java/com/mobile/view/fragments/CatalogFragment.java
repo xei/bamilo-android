@@ -226,6 +226,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         mCatalogPage = null;
         Print.i(TAG, "ON VIEW CREATED");
         // Load user preferences
@@ -272,6 +273,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onStart() {
         super.onStart();
+
         Print.i(TAG, "ON START");
         // Validate data
         Bundle arguments = getArguments();
@@ -291,6 +293,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onResume() {
         super.onResume();
+
         Print.i(TAG, "ON RESUME");
         // Track current catalog page
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
@@ -306,6 +309,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         if (mGridView != null) {
             mCatalogGridPosition = ((GridLayoutManager) mGridView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
@@ -371,6 +375,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void notifyFragment(@Nullable Bundle bundle) {
         super.notifyFragment(bundle);
+
         if(bundle != null && bundle.containsKey(FilterMainFragment.FILTER_TAG)){
             onSubmitFilterValues((ContentValues) bundle.getParcelable(FilterMainFragment.FILTER_TAG));
         }
@@ -1007,6 +1012,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
+        super.handleSuccessEvent(baseResponse);
+
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         // Validate fragment state
@@ -1014,7 +1021,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        super.handleSuccessEvent(baseResponse);
+
         // Hide dialog progress
         hideActivityProgress();
         // Validate event type
