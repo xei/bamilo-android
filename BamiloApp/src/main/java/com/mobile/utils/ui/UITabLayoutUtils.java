@@ -94,14 +94,17 @@ public class UITabLayoutUtils {
 
 
     // TODO: 7/24/2017 we should change this approach
-    public static boolean isNotNavigationActionbarAutoHide(@NavigationAction.Type int action){
+    public static boolean isNavigationActionbarAutoHide(@NavigationAction.Type int action){
+        return action == NavigationAction.CATALOG;
+    }
+    /*public static boolean isNotNavigationActionbarAutoHide(@NavigationAction.Type int action){
         return action == NavigationAction.LOGIN_OUT || action == NavigationAction.CHECKOUT
                 || action == NavigationAction.PRODUCT || action == NavigationAction.FILTERS
                 || action == NavigationAction.MY_ACCOUNT_MY_ADDRESSES || action == NavigationAction.MY_ACCOUNT
                 || action == NavigationAction.MY_ACCOUNT_EMAIL_NOTIFICATION || action == NavigationAction.MY_ACCOUNT_USER_DATA
                 || action == NavigationAction.BASKET || action == NavigationAction.ABOUT
                 || action == NavigationAction.MY_ORDERS || action == NavigationAction.UNKNOWN;
-    }
+    }*/
 
     public static int getTabPosition(@NavigationAction.Type int action) {
         // Case Home
@@ -187,11 +190,17 @@ public class UITabLayoutUtils {
         // Update the cart tab
         try {
             // Show 0 while the cart is not updated
-            String quantity = BamiloApplication.INSTANCE.getCart() == null ? "0" : String.valueOf(BamiloApplication.INSTANCE.getCart().getCartCount());
+            int quantity = BamiloApplication.INSTANCE.getCart() == null ? 0 : BamiloApplication.INSTANCE.getCart().getCartCount();
             //noinspection ConstantConditions
             int pos = getTabPosition(NavigationAction.BASKET);
             //noinspection ConstantConditions
-            ((TextView) mTabLayout.getTabAt(pos).getCustomView().findViewById(R.id.action_cart_count)).setText(quantity);
+            TextView tvCartCount = (TextView) mTabLayout.getTabAt(pos).getCustomView().findViewById(R.id.action_cart_count);
+            if (quantity > 0) {
+                tvCartCount.setVisibility(View.VISIBLE);
+                tvCartCount.setText(String.valueOf(quantity));
+            } else {
+                tvCartCount.setVisibility(View.INVISIBLE);
+            }
         } catch (NullPointerException e) {
             // ...
         }

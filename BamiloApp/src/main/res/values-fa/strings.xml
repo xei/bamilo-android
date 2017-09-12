@@ -7,7 +7,7 @@
 
     <string name="action_label_receiver">اطلاعات تحویل گیرنده</string>
     <string name="action_label_basket">سبد کالا</string>
-    <string name="action_label_search_hint"> جستجو در بامیلو</string>
+    <string name="action_label_search_hint"> جستجو در %1$s</string>
     <string name="add_to_shopping_cart">افزودن به سبد خرید</string>
     <string name="added_bundle_to_shop_cart_dialog_text">کالاها به سبد خرید اضافه شدند.</string>
     <string name="added_to_shop_cart_dialog_text">کالا به سبد خرید شما اضافه شد.</string>
@@ -529,4 +529,13 @@
     <string name="special_price_filter">تخفیف</string>
     <string name="user_greeting">سلام %1$s</string>
     <string name="pdv_delivery_time">زمان تحویل:</string>
+    <string name="say_what_you_want_to_search">بگو دنبال چی هستی؟</string>
+    <string name="app_name_placeholder">بامیلو</string>
+    <string name="basket_fragment_title">سبد خرید شما</string>
+    <string name="checkout_choose_address_step">انتخاب آدرس</string>
+    <string name="checkout_confirmation_step">بررسی نهایی</string>
+    <string name="checkout_payment_method_step">انتخاب روش پرداخت</string>
+    <string name="checkout_add_new_address">افزودن آدرس</string>
+    <string name="checkout_edit_address">ویرایش آدرس</string>
+    <string name="categories_fragment_title">دسته بندی محصولات</string>
 </resources>

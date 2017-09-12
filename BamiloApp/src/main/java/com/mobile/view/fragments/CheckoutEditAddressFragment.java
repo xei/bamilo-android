@@ -34,7 +34,7 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     public CheckoutEditAddressFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.CHECKOUT,
-                R.string.checkout_label,
+                R.string.checkout_edit_address,
                 ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_BILLING);
     }

@@ -96,7 +96,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.CHECKOUT,
                 R.layout.new_checkout_payment,
-                R.string.checkout_label,
+                R.string.checkout_payment_method_step,
                 ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_PAYMENT);
     }
@@ -175,6 +175,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
+        getBaseActivity().setActionBarTitle(R.string.checkout_payment_method_step);
     }
 
     /*

@@ -12,7 +12,6 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
-import com.mobile.helpers.address.SetDefaultBillingAddressHelper;
 import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.helpers.checkout.GetStepAddressesHelper;
 import com.mobile.helpers.checkout.SetStepAddressesHelper;
@@ -45,7 +44,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.CHECKOUT,
                 R.layout.new_checkout_my_addresses,
-                R.string.checkout_label,
+                R.string.checkout_choose_address_step,
                 ConstantsCheckout.CHECKOUT_BILLING,true);
 
         //getBaseActivity().mAppBarLayout.setExpanded(true, true);
@@ -115,6 +114,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
+        getBaseActivity().setActionBarTitle(R.string.checkout_choose_address_step);
     }
 
     @Override
