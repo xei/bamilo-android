@@ -66,7 +66,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.CHECKOUT,
                 R.layout.checkout_confirmation,
-                R.string.checkout_label,
+                R.string.checkout_confirmation_step,
                 ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_CONFIRMATION);
     }
@@ -77,6 +77,12 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         Print.i(TAG, "ON CREATE");
         // Tracking checkout step
         // TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ADDRESSES);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getBaseActivity().setActionBarTitle(R.string.checkout_confirmation_step);
     }
 
     @Override

@@ -25,6 +25,7 @@ import com.mobile.service.database.CategoriesTableHelper;
 import com.mobile.service.objects.category.Categories;
 import com.mobile.service.objects.category.Category;
 import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.pojo.RestConstants;
 import com.mobile.service.rest.errors.ErrorCode;
 import com.mobile.service.utils.CollectionUtils;
@@ -32,11 +33,14 @@ import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.ShopSelector;
+import com.mobile.utils.MyMenuItem;
+import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import pl.openrnd.multilevellistview.ItemInfo;
 import pl.openrnd.multilevellistview.MultiLevelListView;
@@ -73,7 +77,11 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
      * Empty constructor as a nested fragment
      */
     public NavigationCategoryFragment() {
-        super(IS_NESTED_FRAGMENT, R.layout.navigation_fragment_categories);
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.CATEGORIES,
+                R.layout.navigation_fragment_categories,
+                R.string.categories_fragment_title,
+                NO_ADJUST_CONTENT);
     }
 
     /**
@@ -269,12 +277,16 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
      * Trigger to get categories
      */
     private void triggerGetCategories() {
-        ContentValues contentValues = new ContentValues();
-        // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
-        // Trigger
-        triggerContentEvent(new GetCategoriesHelper(), bundle, this);
+        if (mCategories != null) {
+            showCategoryList(mCategories);
+        } else {
+            ContentValues contentValues = new ContentValues();
+            // Create bundle
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
+            // Trigger
+            triggerContentEvent(new GetCategoriesHelper(), bundle, this);
+        }
     }
 
     /*private void triggerGetExternalLinksSection(){
@@ -297,6 +309,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
                 .addTitle(category.getName())
                 .addAppendListener(this)
                 .enableWarningErrorMessage()
+                .retainBackStackEntries()
                 .run();
     }
 

@@ -189,7 +189,9 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void onLoadShopData(StaticPage staticPage) {
         // Set title
-        getBaseActivity().setTitle(mTitle);
+        if (mTitle != null && !mTitle.trim().isEmpty()) {
+            getBaseActivity().setActionBarTitle(mTitle);
+        }
         // Validate
         if (staticPage.hasHtml() || staticPage.hasFeaturedBoxes()) {
             // Load featured box

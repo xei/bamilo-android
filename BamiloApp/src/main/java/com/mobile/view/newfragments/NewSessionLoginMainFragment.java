@@ -1,15 +1,18 @@
 package com.mobile.view.newfragments;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.mobile.adapters.SimplePagerAdapter;
 import com.mobile.app.BamiloApplication;
+import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.LogOut;
@@ -48,7 +51,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
 
 
-    private TabLayout tabLayout;
     private ViewPager viewPager;
     private FragmentType mParentFragmentType;
 
@@ -126,7 +128,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
         loginFragment = new LoginFragment();
         registerFragment = new RegisterFragment();
-        tabLayout = (TabLayout) view.findViewById(R.id.login_tabs);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         setupViewPager();
 //        tabLogin = tabLayout.newTab();
@@ -181,16 +182,23 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         List<BaseFragment> fragments = new ArrayList<>();
         fragments.add(registerFragment);
         fragments.add(loginFragment);
+        List<String> titles = new ArrayList<>();
+        titles.add(getString(R.string.register_label));
+        titles.add(getString(R.string.login_label));
 
-        SimplePagerAdapter adapter = new SimplePagerAdapter(getChildFragmentManager(), fragments);
+        SimplePagerAdapter adapter = new SimplePagerAdapter(getChildFragmentManager(), fragments, titles);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
+        getBaseActivity().setUpExtraTabLayout(viewPager);
+        TabLayout tabLayout = getBaseActivity().getExtraTabLayout();
+        tabLayout.setBackgroundColor(Color.WHITE);
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_1));
+        tabLayout.setTabTextColors(ContextCompat.getColor(getContext(), R.color.black_700),
+                Color.BLACK);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             tabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setCustomView(R.layout.tab_register);
-        tabLayout.getTabAt(1).setCustomView(R.layout.tab_login);
+        HoloFontLoader.applyDefaultFont(tabLayout);
     }
 
 
@@ -243,6 +251,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         outState.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, mParentFragmentType);
         outState.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, mNextStepFromParent);
         outState.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, isInCheckoutProcess);
+        TabLayout tabLayout = getBaseActivity().getExtraTabLayout();
         outState.putInt("selectedtab", tabLayout.getSelectedTabPosition());
 
     }

@@ -13,10 +13,17 @@ import java.util.List;
  */
 public class SimplePagerAdapter extends FragmentPagerAdapter {
     private List<BaseFragment> fragments;
+    private List<String> fragmentTitles;
 
     public SimplePagerAdapter(FragmentManager fm, List<BaseFragment> fragments) {
         super(fm);
         this.fragments = fragments;
+    }
+
+    public SimplePagerAdapter(FragmentManager fm, List<BaseFragment> fragments, List<String> fragmentTitles) {
+        super(fm);
+        this.fragments = fragments;
+        this.fragmentTitles = fragmentTitles;
     }
 
     @Override
@@ -33,5 +40,21 @@ public class SimplePagerAdapter extends FragmentPagerAdapter {
             return 0;
         }
         return fragments.size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        if (fragmentTitles != null && fragmentTitles.size() > position) {
+            return fragmentTitles.get(position);
+        }
+        return super.getPageTitle(position);
+    }
+
+    public List<String> getFragmentTitles() {
+        return fragmentTitles;
+    }
+
+    public void setFragmentTitles(List<String> fragmentTitles) {
+        this.fragmentTitles = fragmentTitles;
     }
 }

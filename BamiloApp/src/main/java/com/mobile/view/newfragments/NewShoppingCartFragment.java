@@ -112,10 +112,10 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      * Empty constructor
      */
     public NewShoppingCartFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.BASKET),
                 NavigationAction.BASKET,
                 R.layout.new_shopping_basket,
-                IntConstants.ACTION_BAR_NO_TITLE,
+                R.string.basket_fragment_title,
                 NO_ADJUST_CONTENT);
     }
 

@@ -4,14 +4,19 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
+import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.service.objects.home.TeaserCampaign;
 import com.mobile.service.utils.output.Print;
@@ -20,6 +25,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 
 /**
@@ -79,12 +85,14 @@ public class CampaignsFragment extends BaseFragment {
         ArrayList<TeaserCampaign> mCampaigns = getArguments().getParcelableArrayList(CAMPAIGNS_TAG);
         // Get pre selection 
         int selectedPosition = getArguments().getInt(CAMPAIGN_POSITION_TAG);
+
+        // in order to make the list RTL
+        Collections.reverse(mCampaigns);
+        selectedPosition = mCampaigns.size() - selectedPosition - 1;
+
         // Instantiate a ViewPager and a PagerAdapter.
         // Get view pager 
         ViewPager mCampaignPager = (ViewPager) view.findViewById(R.id.campaign_pager);
-        // Get tab pager
-        SlidingTabLayout mCampaignPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.campaign_pager_tab);
-        mCampaignPagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
         // Validate the current view
         CampaignPagerAdapter mCampaignPagerAdapter = (CampaignPagerAdapter) mCampaignPager.getAdapter();
         if(mCampaignPagerAdapter != null && mCampaignPagerAdapter.getCount() > 0) {
@@ -94,12 +102,29 @@ public class CampaignsFragment extends BaseFragment {
             //Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mCampaignPagerAdapter = new CampaignPagerAdapter(getChildFragmentManager(), mCampaigns);
             mCampaignPager.setAdapter(mCampaignPagerAdapter);
-            mCampaignPagerTabStrip.setViewPager(mCampaignPager);
+            if (mCampaignPagerAdapter.getCount() < 2) {
+                CharSequence title = mCampaignPagerAdapter.getPageTitle(0);
+                if (title != null && !title.toString().trim().isEmpty()) {
+                    getBaseActivity().setActionBarTitle(title.toString());
+                }
+            } else {
+                setupViewPagerTabs(mCampaignPager);
+            }
             // Show the pre selection
             mCampaignPager.setCurrentItem(selectedPosition, true);
         }
     }
-    
+
+    private void setupViewPagerTabs(ViewPager mCampaignPager) {
+        getBaseActivity().setUpExtraTabLayout(mCampaignPager);
+        TabLayout tabLayout = getBaseActivity().getExtraTabLayout();
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_1));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            tabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
+        HoloFontLoader.applyDefaultFont(tabLayout);
+    }
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onStart()

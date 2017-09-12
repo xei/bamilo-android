@@ -6,7 +6,7 @@
     <string name="action_label_add_address">Add New Address</string>
     <string name="action_label_receiver">Receiver Information</string>
     <string name="action_label_basket">Basket</string>
-    <string name="action_label_search_hint">Search on %s</string>
+    <string name="action_label_search_hint">Search on %1s</string>
     <string name="add_to_shopping_cart">Add to Cart</string>
     <string name="added_bundle_to_shop_cart_dialog_text">Products were added to shopping cart</string>
     <string name="added_to_shop_cart_dialog_text">Item was added to cart</string>
