@@ -325,7 +325,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getBaseActivity().onFragmentViewDestroyed();
+        getBaseActivity().onFragmentViewDestroyed(isNestedFragment);
         isOnStoppingProcess = true;
     }
 

@@ -288,7 +288,7 @@
     <string name="rating_placeholder">امتیازات (‎%s‎)</string>
     <string name="reviews_placeholder">نظرات کاربران (‎%s‎)</string>
     <string name="rating_average_placeholder">از نظر ‎%s‎ کاربران</string>
-    <string name="rat_rev">نظرات و پیشنهادات</string>
+    <string name="rat_rev">نظرات</string>
     <string name="fulfilled_by">تامین کننده: ‎%s‎</string>
     <string name="policy">قوانین و سیاست ها</string>
     <string name="shipment">روش ارسال ‎%1$d‎ از ‎%2$d‎</string>

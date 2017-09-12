@@ -1766,9 +1766,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mAppBarLayout.addView(mExtraTabLayout);
     }
 
-    public void onFragmentViewDestroyed() {
-        mAppBarLayout.removeView(mExtraTabLayout);
-        mExtraTabLayout = null;
+    public void onFragmentViewDestroyed(Boolean isNestedFragment) {
+        if (!isNestedFragment) {
+            mAppBarLayout.removeView(mExtraTabLayout);
+            mExtraTabLayout = null;
+        }
     }
 
 

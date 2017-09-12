@@ -1,13 +1,18 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
+import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.components.viewpager.RtlViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -36,7 +41,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private static final String TAG = ProductDetailsInfoFragment.class.getSimpleName();
 
-    private RtlViewPager mProductInfoPager;
+    private ViewPager mProductInfoPager;
 
     private int mPositionToStart = IntConstants.DEFAULT_POSITION;
 
@@ -97,10 +102,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get view pager
-        mProductInfoPager = (RtlViewPager) view.findViewById(R.id.product_info_pager);
-        // Get tab pager
-        SlidingTabLayout mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
-        mProductInfoTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
+        mProductInfoPager = (ViewPager) view.findViewById(R.id.product_info_pager);
         // Validate the current view
         validateVisibleTabs();
         ProductInfoPagerAdapter mProductInfoPagerAdapter = (ProductInfoPagerAdapter) mProductInfoPager.getAdapter();
@@ -111,18 +113,28 @@ public class ProductDetailsInfoFragment extends BaseFragment {
             // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mProductInfoPagerAdapter = new ProductInfoPagerAdapter(getChildFragmentManager());
             mProductInfoPager.setAdapter(mProductInfoPagerAdapter);
+            mProductInfoPager.setOffscreenPageLimit(mProductInfoPagerAdapter.getCount());
             //#RTL
             if(ShopSelector.isRtl()){
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     mProductInfoPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
                 }
-                mProductInfoPager.enableRtl();
             }
             setPagerPosition(getFragmentPosition(mPositionToStart));
-            mProductInfoTabStrip.setViewPager(mProductInfoPager);
+            setupViewPagerTabs(mProductInfoPager);
             // Show the pre selection
             mProductInfoPager.setCurrentItem(getFragmentPosition(mPositionToStart), true);
         }
+    }
+
+    private void setupViewPagerTabs(ViewPager viewPager) {
+        getBaseActivity().setUpExtraTabLayout(viewPager);
+        TabLayout tabLayout = getBaseActivity().getExtraTabLayout();
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_1));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            tabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
+        HoloFontLoader.applyDefaultFont(tabLayout);
     }
 
     public void setPagerPosition(int pos) {
@@ -263,9 +275,9 @@ public class ProductDetailsInfoFragment extends BaseFragment {
      */
     public int getFragmentPosition(int fragmentTitle){
         List<Integer> titles = getFragmentTitleValues();
-        if(ShopSelector.isRtl()){
+        /*if(ShopSelector.isRtl()){
             Collections.reverse(titles);
-        }
+        }*/
         if(titles.contains(fragmentTitle)){
             return titles.indexOf(fragmentTitle);
         } else {
@@ -277,12 +289,12 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
         ArrayList<Integer> titles = new ArrayList<>();
         if(mHasDesc){
-            titles.add(R.string.description);
+            titles.add(R.string.rat_rev);
         }
         if(mHasSpecs){
             titles.add(R.string.product_specifications);
         }
-        titles.add(R.string.rat_rev);
+        titles.add(R.string.description);
         return titles;
     }
 
