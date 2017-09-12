@@ -131,7 +131,7 @@
         <activity
             android:name=".MainFragmentTabletActivity"
             android:exported="true"
-            android:screenOrientation="unspecified"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ProductImageGalleryActivity"

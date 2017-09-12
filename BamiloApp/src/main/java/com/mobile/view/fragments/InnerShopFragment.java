@@ -152,7 +152,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     @Override
     public void onDestroyView() {
+        mMainContainer.removeView(mWebView);
+        mWebView.removeAllViews();
         mWebView.destroy();
+
         super.onDestroyView();
         Print.i(TAG, "ON DESTROY VIEW");
     }
