@@ -28,7 +28,7 @@
         android:fontFamily="@string/bamilo_regular_font"
         android:gravity="right|center_vertical"
         android:textColor="@color/black"
-        android:textSize="13sp"
+        android:textSize="11sp"
         android:singleLine="true"
         android:layout_marginLeft="2dp" />
 </LinearLayout>

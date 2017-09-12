@@ -12,9 +12,10 @@
         style="@style/HeaderStyle"
         android:text="@string/seller_info" />
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextBase.Title.Black"
@@ -58,19 +59,11 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/pdv_seller_delivery_info_column"
-                style="@style/TextBase.Title.Black"
-                android:layout_marginBottom="@dimen/margin_padding_xl"
-                android:layout_marginLeft="@dimen/margin_padding_xl"
-                android:layout_marginRight="@dimen/margin_padding_xl"
-                android:layout_marginTop="@dimen/margin_padding_xl"
-                android:gravity="right|center_vertical"
-                android:text="@string/extimated_time_column" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
 
             <!-- TITLE -->
 
@@ -87,15 +80,31 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/pdv_seller_delivery_info"
                 style="@style/TextBase.Body.Black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_padding_xl"
                 android:layout_marginTop="@dimen/margin_padding_xl"
+                android:layout_weight="4"
                 android:gravity="right|center_vertical"
                 android:maxLines="2"
                 android:singleLine="false"
                 android:visibility="gone"
                 tools:text="Delivery info"
                 tools:visibility="visible" />
-        </TableRow>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdv_seller_delivery_info_column"
+                style="@style/TextBase.Title.Black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_padding_xl"
+                android:layout_marginLeft="@dimen/margin_padding_xl"
+                android:layout_marginRight="@dimen/margin_padding_xl"
+                android:layout_marginTop="@dimen/margin_padding_xl"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:text="@string/pdv_delivery_time" />
+        </LinearLayout>
 
 
         <View
@@ -103,49 +112,49 @@
             android:layout_height="1dp"
             android:background="@color/black_400" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/pdv_seller_name_column"
-                style="@style/TextBase.Title.Black.ShopFirstDrawRight"
-                android:layout_margin="@dimen/margin_padding_xl"
-                android:gravity="right|center_vertical"
-                android:text="@string/seller_column" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
 
             <!--Shop First -->
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/pdv_seller_name"
                 style="@style/TextBase.Title.Black.ShopFirstDrawRight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_padding_xl"
                 android:layout_marginTop="@dimen/margin_padding_xl"
+                android:layout_weight="4"
                 android:gravity="right|center_vertical"
                 tools:text="Seller name ShopFirst" />
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent">
-
             <com.mobile.components.customfontviews.TextView
-                android:id="@+id/pdv_seller_warranty_column"
-                style="@style/TextBase.Title.Black"
-                android:layout_marginBottom="@dimen/margin_padding_xl"
-                android:layout_marginLeft="@dimen/margin_padding_xl"
-                android:layout_marginRight="@dimen/margin_padding_xl"
+                android:id="@+id/pdv_seller_name_column"
+                style="@style/TextBase.Title.Black.ShopFirstDrawRight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_padding_xl"
+                android:layout_weight="1"
                 android:gravity="right|center_vertical"
-                android:text="@string/warranty_column"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                android:text="@string/seller_column" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
 
             <!-- WARRANTY: OPTIONAL -->
             <RelativeLayout
                 android:id="@+id/pdv_seller_warranty_container"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="4"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -169,8 +178,23 @@
                     tools:text="WARRANTY: 1 YEAR"
                     tools:visibility="visible" />
             </RelativeLayout>
-        </TableRow>
-    </TableLayout>
+
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdv_seller_warranty_column"
+                style="@style/TextBase.Title.Black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_padding_xl"
+                android:layout_marginLeft="@dimen/margin_padding_xl"
+                android:layout_marginRight="@dimen/margin_padding_xl"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:text="@string/warranty_column"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </LinearLayout>
     <!--TEXT BLACK -->
 
     <com.mobile.components.customfontviews.TextView

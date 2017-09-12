@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:minHeight="48dp"
     android:background="@drawable/selector_clickableitem_highlight"
-    android:paddingLeft="@dimen/dimen_0dp"
+    android:paddingLeft="16dp"
     android:paddingStart="16dp"
     android:paddingRight="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="@dimen/dimen_15dp">
+    android:paddingEnd="16dp">
 
-    <com.mobile.components.customfontviews.CheckBox
-        android:id="@+id/dialog_item_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+    <ImageView
+        android:id="@+id/dialog_item_color_box"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:clickable="false"
-        android:focusable="false"
-        android:button="@drawable/selector_btn_check_filters"
-        />
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/dialog_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/dialog_item_color_box"
+        android:layout_toRightOf="@+id/dialog_products_count"
+        android:ellipsize="end"
+        android:gravity="right"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        tools:text="lskfjslkdfjsdlkfj"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_products_count"
@@ -28,44 +43,24 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/dialog_item_checkbox"
-        android:layout_toStartOf="@id/dialog_item_checkbox"
+        android:layout_toRightOf="@id/dialog_item_checkbox"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
-        android:fontFamily="@string/bamilo_regular_font"
         android:textSize="13sp"
-        android:visibility="visible"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="(1)"
         />
 
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/dialog_item_title"
-        android:layout_width="0dp"
-        android:layout_weight="1"
+    <com.mobile.components.customfontviews.CheckBox
+        android:id="@+id/dialog_item_checkbox"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="left|start"
-        android:textColor="@color/black"
-        android:textDirection="rtl"
-        android:layout_marginRight="10dp"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
-        android:layout_toLeftOf="@+id/dialog_products_count"
-        android:layout_toEndOf="@+id/dialog_item_color_box"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:fontFamily="@string/bamilo_regular_font"
-        android:textSize="13sp"
-        android:layout_toRightOf="@+id/dialog_item_color_box" />
-
-    <ImageView
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:id="@+id/dialog_item_color_box"
-        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="16dp"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="16dp"
-        android:visibility="gone" />
-
+        android:clickable="false"
+        android:focusable="false"
+        android:button="@drawable/selector_btn_check_filters"
+        />
     <!--android:drawableLeft="@drawable/selector_btn_check_filters"-->
-</LinearLayout>
+</RelativeLayout>

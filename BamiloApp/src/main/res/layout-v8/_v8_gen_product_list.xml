@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/selector_grid_item_highlight"
     card_view:cardCornerRadius="0dp"
     android:layout_marginTop="4dp"
@@ -24,8 +24,11 @@
             android:layout_width="89dp"
             android:layout_height="110dp"
             android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:background="@color/color_accent" />
 
 
@@ -63,41 +66,6 @@
             android:textColor="@color/lightgrey"
             tools:text="BRAND" />
 
-        <RelativeLayout
-            android:id="@+id/rating_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@id/item_name"
-            android:layout_marginLeft="@dimen/dimen_50dp"
-            android:gravity="right|center_vertical"
-            android:orientation="horizontal"
-            android:layout_below="@id/item_brand"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="2dp">
-
-            <RatingBar
-                android:id="@+id/item_rating"
-                android:progressDrawable="@drawable/custom_rating_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="12dp"
-                android:layout_alignParentRight="true"
-                android:stepSize="0.1"
-                tools:rating="3.5"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"/>
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/item_reviews"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_toLeftOf="@id/item_rating"
-                android:layout_alignTop="@+id/item_rating"
-                tools:text="(12)"
-                android:layout_height="wrap_content"
-                android:textSize="11sp"
-                android:textColor="@color/black_800" />
-        </RelativeLayout>
 
 
         <com.mobile.components.customfontviews.TextView
@@ -108,7 +76,6 @@
             android:layout_below="@id/rating_container"
             android:layout_marginLeft="@dimen/dimen_4dp"
             android:layout_marginBottom="1dp"
-            android:layout_marginTop="4dp"
             android:textSize="14sp"
             android:textColor="@color/black"
             tools:text="Discount" />
@@ -143,9 +110,43 @@
             android:id="@+id/item_shop_first"
             android:layout_below="@id/item_discount"
             android:layout_alignRight="@id/item_brand"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
+        <RelativeLayout
+            android:id="@+id/rating_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/item_name"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:orientation="horizontal"
+            android:layout_below="@id/item_brand"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp">
 
+            <RatingBar
+                android:id="@+id/item_rating"
+                android:progressDrawable="@drawable/custom_rating_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:stepSize="0.1"
+                android:isIndicator="true"
+                tools:rating="3.5"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_reviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_toLeftOf="@id/item_rating"
+                android:textColor="@color/black_800"
+                android:textSize="11sp"
+                tools:text="(12)" />
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/image_is_favourite"

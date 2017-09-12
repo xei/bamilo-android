@@ -10,21 +10,21 @@
 
     <ImageView
         android:id="@+id/material_drawer_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
         android:paddingLeft="0dp"
         android:paddingStart="0dp"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:src="@drawable/my_address_icon" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/material_drawer_name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/material_drawer_icon"
         android:layout_toRightOf="@+id/material_drawer_badge_container"
         android:gravity="center_vertical|right"
@@ -44,7 +44,8 @@
         android:layout_gravity="center_vertical"
         android:background="@drawable/drawer_cart_badge"
         android:gravity="center"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
 
         <com.mobile.components.customfontviews.TextView

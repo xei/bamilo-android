@@ -103,7 +103,7 @@
     <item name="dialog_list_item"                       type="layout">@layout/_v8_dialog_list_item</item>
 
     <!-- RECENTLY VIEWED -->
-    <item name="addabletocart_item"                     type="layout">@layout/_v8_addabletocart_item</item>
+    <!--<item name="addabletocart_item"                     type="layout">@layout/addable_to_cart_item</item>-->
     <item name="addabletocart_item_image"               type="layout">@layout/_v8_addabletocart_item_image</item>
     <item name="addabletocart_item_info"                type="layout">@layout/_v8_addabletocart_item_info</item>
 
