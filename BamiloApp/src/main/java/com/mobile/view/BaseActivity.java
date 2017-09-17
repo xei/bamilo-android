@@ -1233,7 +1233,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             myProfile.setVisible(true);
             myProfile.setEnabled(true);
             myProfileActionProvider = (MyProfileActionProvider) MenuItemCompat.getActionProvider(myProfile);
-            myProfileActionProvider.setFragmentNavigationAction(action);
+            // commented next line because options menu is the same in all pages
+//            myProfileActionProvider.setFragmentNavigationAction(action);
             myProfileActionProvider.setAdapterOnClickListener(myProfileClickListener);
         }
     }
@@ -1275,6 +1276,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                     case NavigationAction.HOME:
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_HOME);
                         onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.CATEGORIES:
+                        onSwitchFragment(FragmentType.CATEGORIES, null, true);
                         break;
                     case NavigationAction.LOGIN_OUT:
                         // SIGN IN
