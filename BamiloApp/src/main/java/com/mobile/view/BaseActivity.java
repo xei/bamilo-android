@@ -1407,6 +1407,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // android.os.BinderProxy@42128698 is not valid; is your activity running?
         if (!isFinishing()) {
             baseActivityProgressDialog = DialogProgressFragment.newInstance();
+            baseActivityProgressDialog.setCancelable(false);
             baseActivityProgressDialog.show(getSupportFragmentManager(), null);
         }
     }
