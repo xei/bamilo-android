@@ -151,7 +151,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this -action-after-onsaveinstancestate-h
      */
     private Intent mOnActivityResultIntent = null;
-    private TextView mActionCartCount;
+    private TextView mActionCartCount, mActionCartIndicatorCount;
     private MyProfileActionProvider myProfileActionProvider;
     private FragmentController mFragmentController;
     private boolean initialCountry = false;
@@ -546,6 +546,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 case BASKET:
                     setActionCart(menu);
                     break;
+                case BASKET_INDICATOR:
+                    setActionCartIndicator(menu);
+                    break;
                 case MY_PROFILE:
                     setActionProfile(menu);
                     break;
@@ -710,6 +713,24 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 }
             });
             updateCartInfoInActionBar();
+        } else {
+            basket.setVisible(false);
+        }
+    }
+
+    /**
+     * Set the cart-indicator menu item
+     */
+    private void setActionCartIndicator(final Menu menu) {
+        MenuItem basket = menu.findItem(MyMenuItem.BASKET_INDICATOR.resId);
+        // Validate country
+        if (!initialCountry) {
+            basket.setVisible(true);
+            basket.setEnabled(false);
+            View actionCartView = MenuItemCompat.getActionView(basket);
+            mActionCartIndicatorCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
+            mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
+            updateCartIndicatorInfoInActionBar();
         } else {
             basket.setVisible(false);
         }
@@ -1173,6 +1194,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void updateCartInfo() {
         Print.d(TAG, "ON UPDATE CART INFO");
         updateCartInfoInActionBar();
+        updateCartIndicatorInfoInActionBar();
 
         updateCartDrawerItem();
     }
@@ -1200,6 +1222,31 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                     mActionCartCount.setText(String.valueOf(quantity));
                 } else {
                     mActionCartCount.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+    }
+
+    public void updateCartIndicatorInfoInActionBar() {
+        Print.d(TAG, "ON UPDATE CART IN ACTION BAR");
+        if (mActionCartIndicatorCount == null) {
+            Print.w(TAG, "updateCartInfoInActionBar: cant find quantity in actionbar");
+            return;
+        }
+
+        PurchaseEntity currentCart = BamiloApplication.INSTANCE.getCart();
+        // Show 0 while the cart is not updated
+        final int quantity = currentCart == null ? 0 : currentCart.getCartCount();
+
+        mActionCartIndicatorCount.post(new Runnable() {
+            @Override
+            public void run() {
+                if (quantity > 0) {
+                    mActionCartIndicatorCount.setVisibility(View.VISIBLE);
+                    mActionCartIndicatorCount.setText(String.valueOf(quantity));
+                } else {
+                    mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
                 }
             }
         });
