@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -78,6 +79,7 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
+import com.mobile.utils.ConfigurationWrapper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.MyProfileActionProvider;
 import com.mobile.utils.NavigationAction;
@@ -95,6 +97,7 @@ import com.mobile.view.fragments.DrawerFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -194,11 +197,20 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.i(TAG, "ON START");
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            super.attachBaseContext(ConfigurationWrapper.wrapLocale(newBase, new Locale("fa", "ir")));
+        } else {
+            super.attachBaseContext(newBase);
+        }
+    }
+
     /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
-     */
+         * (non-Javadoc)
+         *
+         * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
+         */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
