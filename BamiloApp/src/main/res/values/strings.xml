@@ -508,7 +508,7 @@
     <string name="order_status_payment_title">روش پرداخت:</string>
     <string name="order_items">جزییات کالا</string>
     <string name="order_status_address_title">آدرس:</string>
-    <string name="cellphone_regex">(0|\\+98)?([ ]|,|-|[()]){0,2}9[1|2|3|4]([ ]|,|-|[()]){0,2}(?:[0-9]([ ]|,|-|[()]){0,2}){8}</string>
+    <string name="cellphone_regex">(\\+98|0)?9\\d{9}</string>
     <string name="sort_label">مرتب سازی</string>
     <string name="drawer_home">خانه</string>
     <string name="drawer_categories">دسته بندی</string>
