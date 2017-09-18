@@ -62,6 +62,7 @@ import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.service.database.SearchRecentQueriesTableHelper;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.checkout.CheckoutStepLogin;
 import com.mobile.service.objects.customer.Customer;
@@ -1491,6 +1492,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     public void onLogOut() {
         ProductDetailsFragment.clearSelectedRegionCityId();
+        SearchRecentQueriesTableHelper.deleteAllRecentQueries();
 
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();

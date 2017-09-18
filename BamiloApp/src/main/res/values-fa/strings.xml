@@ -360,7 +360,7 @@
     <string name="sign_up_to_our_newsletter">در خبرنامه عضو شوید</string>
     <string name="sign_up_to_our_newsletter_body">برای اطلاع از فروش های ویژه، جدیدترین ها و تخفیف ها</string>
     <string name="search_shop_in_shop_label">بازدید از فروشگاه ‎%s‎ ما</string>
-    <string name="search_categories_label">‎%1$s‎ در ‎%2$s‎</string>
+    <string name="search_categories_label">&#8207;‎%1$s‎ در ‎%2$s‎</string>
     <string name="on_label">فعال</string>
     <string name="visit_the_official_brand_store">مشاهده محصولات ‎%s‎</string>
     <string name="free_shipping_possible">می توانید از ارسال رایگان بهره مند شوید</string>

@@ -21,7 +21,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 	
 	private static final String TAG = SearchRecentQueriesTableHelper.class.getSimpleName();
 	
-	private static final String NUMBER_OF_SUGGESTIONS = "5";
+	private static final String NUMBER_OF_SUGGESTIONS = "10";
 	
 	// Table Name
 	public static final String TABLE_NAME = "search_recent";
