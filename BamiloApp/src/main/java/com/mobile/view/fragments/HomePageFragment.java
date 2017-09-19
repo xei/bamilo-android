@@ -84,7 +84,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Empty constructor
      */
     public HomePageFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET),
                 NavigationAction.HOME,
                 R.layout.home_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,

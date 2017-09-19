@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
@@ -29,7 +30,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +45,6 @@ import android.widget.Toast;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
-import com.mobile.components.customfontviews.MaterialEditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalSpaceItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -63,6 +62,7 @@ import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.service.database.SearchRecentQueriesTableHelper;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.checkout.CheckoutStepLogin;
 import com.mobile.service.objects.customer.Customer;
@@ -79,6 +79,7 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
+import com.mobile.utils.ConfigurationWrapper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.MyProfileActionProvider;
 import com.mobile.utils.NavigationAction;
@@ -153,7 +154,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this -action-after-onsaveinstancestate-h
      */
     private Intent mOnActivityResultIntent = null;
-    private TextView mActionCartCount;
+    private TextView mActionCartCount, mActionCartIndicatorCount;
     private MyProfileActionProvider myProfileActionProvider;
     private FragmentController mFragmentController;
     private boolean initialCountry = false;
@@ -205,11 +206,20 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.i(TAG, "ON START");
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            super.attachBaseContext(ConfigurationWrapper.wrapLocale(newBase, new Locale("fa", "ir")));
+        } else {
+            super.attachBaseContext(newBase);
+        }
+    }
+
     /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
-     */
+         * (non-Javadoc)
+         *
+         * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
+         */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -670,6 +680,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 case BASKET:
                     setActionCart(menu);
                     break;
+                case BASKET_INDICATOR:
+                    setActionCartIndicator(menu);
+                    break;
                 case MY_PROFILE:
                     setActionProfile(menu);
                     break;
@@ -834,6 +847,24 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 }
             });
             updateCartInfoInActionBar();
+        } else {
+            basket.setVisible(false);
+        }
+    }
+
+    /**
+     * Set the cart-indicator menu item
+     */
+    private void setActionCartIndicator(final Menu menu) {
+        MenuItem basket = menu.findItem(MyMenuItem.BASKET_INDICATOR.resId);
+        // Validate country
+        if (!initialCountry) {
+            basket.setVisible(true);
+            basket.setEnabled(false);
+            View actionCartView = MenuItemCompat.getActionView(basket);
+            mActionCartIndicatorCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
+            mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
+            updateCartIndicatorInfoInActionBar();
         } else {
             basket.setVisible(false);
         }
@@ -1319,6 +1350,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void updateCartInfo() {
         Print.d(TAG, "ON UPDATE CART INFO");
         updateCartInfoInActionBar();
+        updateCartIndicatorInfoInActionBar();
 
         updateCartDrawerItem();
     }
@@ -1352,6 +1384,31 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     }
 
+    public void updateCartIndicatorInfoInActionBar() {
+        Print.d(TAG, "ON UPDATE CART IN ACTION BAR");
+        if (mActionCartIndicatorCount == null) {
+            Print.w(TAG, "updateCartInfoInActionBar: cant find quantity in actionbar");
+            return;
+        }
+
+        PurchaseEntity currentCart = BamiloApplication.INSTANCE.getCart();
+        // Show 0 while the cart is not updated
+        final int quantity = currentCart == null ? 0 : currentCart.getCartCount();
+
+        mActionCartIndicatorCount.post(new Runnable() {
+            @Override
+            public void run() {
+                if (quantity > 0) {
+                    mActionCartIndicatorCount.setVisibility(View.VISIBLE);
+                    mActionCartIndicatorCount.setText(String.valueOf(quantity));
+                } else {
+                    mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+    }
+
     /**
      * Create the share intent to be used to store the needed information
      *
@@ -1379,7 +1436,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             myProfile.setVisible(true);
             myProfile.setEnabled(true);
             myProfileActionProvider = (MyProfileActionProvider) MenuItemCompat.getActionProvider(myProfile);
-            myProfileActionProvider.setFragmentNavigationAction(action);
+            // commented next line because options menu is the same in all pages
+//            myProfileActionProvider.setFragmentNavigationAction(action);
             myProfileActionProvider.setAdapterOnClickListener(myProfileClickListener);
         }
     }
@@ -1421,6 +1479,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                     case NavigationAction.HOME:
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_HOME);
                         onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.CATEGORIES:
+                        onSwitchFragment(FragmentType.CATEGORIES, null, true);
                         break;
                     case NavigationAction.LOGIN_OUT:
                         // SIGN IN
@@ -1553,6 +1614,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // android.os.BinderProxy@42128698 is not valid; is your activity running?
         if (!isFinishing()) {
             baseActivityProgressDialog = DialogProgressFragment.newInstance();
+            baseActivityProgressDialog.setCancelable(false);
             baseActivityProgressDialog.show(getSupportFragmentManager(), null);
         }
     }
@@ -1585,6 +1647,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     public void onLogOut() {
         ProductDetailsFragment.clearSelectedRegionCityId();
+        SearchRecentQueriesTableHelper.deleteAllRecentQueries();
 
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();

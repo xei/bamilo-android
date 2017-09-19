@@ -20,6 +20,15 @@
         app:actionLayout="@layout/action_bar_cart_item"
         app:showAsAction="always" />
 
+    <!-- CART INDICATOR -->
+    <item
+        android:id="@+id/menu_basket_indicator"
+        android:title="@string/action_label_basket"
+        android:visible="false"
+        android:enabled="false"
+        app:actionLayout="@layout/action_bar_cart_item"
+        app:showAsAction="always" />
+
     <!-- MY PROFILE PROVIDER -->
     <item
         android:id="@+id/menu_myprofile"
