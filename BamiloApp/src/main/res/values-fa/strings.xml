@@ -536,6 +536,7 @@
     <string name="checkout_confirmation_step">بررسی نهایی</string>
     <string name="checkout_payment_method_step">انتخاب روش پرداخت</string>
     <string name="checkout_add_new_address">افزودن آدرس</string>
+    <string name="my_profile_add_new_address">@string/checkout_add_new_address</string>
     <string name="checkout_edit_address">ویرایش آدرس</string>
     <string name="categories_fragment_title">دسته بندی محصولات</string>
     <string name="search_on_brands_categories">جستجوی نام، برند یا دسته‌بندی</string>

@@ -77,7 +77,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
      * Empty constructor as a nested fragment
      */
     public NavigationCategoryFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE, MyMenuItem.SEARCH_VIEW),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.BASKET, MyMenuItem.SEARCH_VIEW),
                 NavigationAction.CATEGORIES,
                 R.layout.navigation_fragment_categories,
                 R.string.categories_fragment_title,
