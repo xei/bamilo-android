@@ -250,7 +250,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         super.onStart();
 //        triggerGetDeliveryTime(selectedCityId);
         triggerGetRegions(ApiConstants.GET_REGIONS_API_PATH);
-
+        getBaseActivity().setActionBarTitle("");
     }
 
     /*
