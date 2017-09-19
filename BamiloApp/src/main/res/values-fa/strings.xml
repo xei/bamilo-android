@@ -538,4 +538,6 @@
     <string name="checkout_add_new_address">افزودن آدرس</string>
     <string name="checkout_edit_address">ویرایش آدرس</string>
     <string name="categories_fragment_title">دسته بندی محصولات</string>
+    <string name="search_on_brands_categories">جستجوی نام، برند یا دسته‌بندی</string>
+    <string name="search_hint">جستجو در بامیلو</string>
 </resources>

@@ -8,7 +8,7 @@
         android:icon="@drawable/selector_search_edit_icon"
         android:title="@string/search_label"
         android:visible="false"
-        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:actionViewClass="com.mobile.view.CustomSearchActionView"
         app:queryHint="@string/action_label_search_hint"
         app:showAsAction="always|collapseActionView" />
 

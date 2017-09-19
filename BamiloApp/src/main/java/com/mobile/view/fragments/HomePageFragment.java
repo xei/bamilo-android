@@ -138,6 +138,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON VIEW CREATED");
         // Get scroll view
         mScrollView = (NestedScrollView) view.findViewById(R.id.home_page_scroll);
+        mScrollView.setClipToPadding(false);
+        getBaseActivity().enableSearchBar(mScrollView);
         // Get recycler view
         mContainer = (ViewGroup) view.findViewById(R.id.home_page_container);
         // Validate shared prefs
