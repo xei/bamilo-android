@@ -116,7 +116,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
             showRetry();
         }
         mCategoryListNew.setClipToPadding(false);
-        getBaseActivity().enableSearchBar(mCategoryListNew);
+        getBaseActivity().enableSearchBar(false, mCategoryListNew);
     }
 
     /**

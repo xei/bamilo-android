@@ -16,6 +16,7 @@ public class CustomSearchActionView extends RelativeLayout {
     private ImageView imgMicOrClear;
     private VoiceSearchClickListener voiceSearchClickListener;
     private boolean voiceSearchEnabled;
+    private int mMaxWidth;
 
     public CustomSearchActionView(Context context) {
         super(context);
@@ -125,5 +126,39 @@ public class CustomSearchActionView extends RelativeLayout {
 
     public interface VoiceSearchClickListener {
         void onVoiceSearchClicked(View v);
+    }
+
+    /**
+     * Makes the view at most this many pixels wide
+     *
+     * @attr ref android.support.v7.appcompat.R.styleable#SearchView_android_maxWidth
+     */
+    public void setMaxWidth(int maxpixels) {
+        mMaxWidth = maxpixels;
+
+        requestLayout();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+
+        switch (widthMode) {
+            case MeasureSpec.AT_MOST:
+                // If there is an upper limit, don't exceed maximum width (explicit or implicit)
+                if (mMaxWidth > 0) {
+                    width = Math.min(mMaxWidth, width);
+                }
+                break;
+        }
+        widthMode = MeasureSpec.EXACTLY;
+
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+
+        super.onMeasure(MeasureSpec.makeMeasureSpec(width, widthMode),
+                MeasureSpec.makeMeasureSpec(height, heightMode));
     }
 }

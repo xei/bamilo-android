@@ -36,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -74,6 +75,7 @@ import com.mobile.service.tracking.TrackingEvent;
 import com.mobile.service.tracking.gtm.GTMValues;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.CustomerUtils;
+import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.ShopSelector;
@@ -382,9 +384,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-    public void enableSearchBar(final View ... views) {
+    public void enableSearchBar(final boolean autoHide, final View... views) {
         searchBarEnabled = true;
         final View searchBar = findViewById(R.id.searchBar);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) searchBar.getLayoutParams();
+        params.setMargins(params.leftMargin, 0, params.rightMargin, params.bottomMargin);
+        searchBar.setLayoutParams(params);
+        searchBarHidden = false;
         searchBar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -401,20 +407,27 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                                 v.getPaddingRight(), v.getPaddingBottom());
                     }
                 }
-                searchBarAutoHide = new TopViewAutoHideUtil(-searchBar.getHeight(), 0, searchBar);
-                searchBarAutoHide.setOnViewShowHideListener(new TopViewAutoHideUtil.OnViewShowHideListener() {
-                    @Override
-                    public void onViewHid() {
-                        searchBarHidden = true;
-                        mSearchMenuItem.setVisible(true);
-                    }
+                ViewGroup.MarginLayoutParams warningParams =
+                        (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
+                warningParams.topMargin = searchBar.getHeight();
+                findViewById(R.id.warning).setLayoutParams(warningParams);
 
-                    @Override
-                    public void onViewShowed() {
-                        searchBarHidden = false;
-                        mSearchMenuItem.setVisible(false);
-                    }
-                });
+                if (autoHide) {
+                    searchBarAutoHide = new TopViewAutoHideUtil(-searchBar.getHeight(), 0, searchBar);
+                    searchBarAutoHide.setOnViewShowHideListener(new TopViewAutoHideUtil.OnViewShowHideListener() {
+                        @Override
+                        public void onViewHid() {
+                            searchBarHidden = true;
+                            mSearchMenuItem.setVisible(true);
+                        }
+
+                        @Override
+                        public void onViewShowed() {
+                            searchBarHidden = false;
+                            mSearchMenuItem.setVisible(false);
+                        }
+                    });
+                }
             }
         });
     }
@@ -423,12 +436,20 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         searchBarEnabled = false;
         findViewById(R.id.searchBar).setVisibility(View.GONE);
         searchBarAutoHide = null;
+        ViewGroup.MarginLayoutParams warningParams =
+                (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
+        warningParams.topMargin = 0;
+        findViewById(R.id.warning).setLayoutParams(warningParams);
     }
 
     public boolean enableActionbarAutoHide(final View... views){
         actionBarAutoHideEnabled = false;
         if (!searchBarEnabled) {
             actionBarAutoHideEnabled = true;
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) toolbar.getLayoutParams();
+            params.topMargin = 0;
+            toolbar.setLayoutParams(params);
+
             toolbar.post(new Runnable() {
                 @Override
                 public void run() {
@@ -439,6 +460,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                                     v.getPaddingRight(), v.getPaddingBottom());
                         }
                     }
+                    ViewGroup.MarginLayoutParams warningParams =
+                            (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
+                    warningParams.topMargin = toolbar.getHeight();
+                    findViewById(R.id.warning).setLayoutParams(warningParams);
                     actionBarAutoHide = new TopViewAutoHideUtil(-toolbar.getHeight(), 0, toolbar);
                 }
             });
@@ -450,6 +475,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         actionBarAutoHideEnabled = false;
         actionBarAutoHide = null;
         findViewById(R.id.rlScrollableContent).setPadding(0, toolbar.getHeight(), 0, 0);
+        ViewGroup.MarginLayoutParams warningParams =
+                (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
+        warningParams.topMargin = 0;
+        findViewById(R.id.warning).setLayoutParams(warningParams);
     }
 
 
@@ -891,6 +920,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mSearchMenuItem = menu.findItem(R.id.menu_search);
         // Get search action view
         mSearchView = (CustomSearchActionView) MenuItemCompat.getActionView(mSearchMenuItem);
+        setSearchWidthToFillOnExpand();
         mSearchView.setVoiceSearchClickListener(new CustomSearchActionView.VoiceSearchClickListener() {
             @Override
             public void onVoiceSearchClicked(View v) {
@@ -928,26 +958,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-    /*private void setSearchWidthToFillOnExpand() {
+    private void setSearchWidthToFillOnExpand() {
         // Get the width of main content
         final int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
-        final int mainContentHeight = DeviceInfoHelper.getHeight(getApplicationContext());
         mSearchView.setMaxWidth(mainContentWidth);
-        mSearchAutoComplete.setDropDownAnchor(R.id.app_bar);
-        // Set measures
-        if (mSearchView != null) {
-            mSearchView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View v, int left, int top, int right, int bottom,
-                                           int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    // set DropDownView width
-                    mSearchAutoComplete.setDropDownWidth(mainContentWidth);
-                    mSearchAutoComplete.setDropDownHeight(mainContentHeight - mSupportActionBar.getHeight());
-                    mSearchAutoComplete.setDropDownBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.search_dropdown_background));
-                }
-            });
-        }
-    }*/
+    }
 
     /**
      * Set the search component
@@ -2014,7 +2029,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                     @Override
                     public void run() {
                         scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
-                                mAppBarLayout.getHeight(),
+                                toolbar.getHeight(),
                                 scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
                     }
                 });

@@ -10,10 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <!-- APP BAR-->
-        <include layout="@layout/toolbar" />
-
         <!-- SCROLLABLE CONTAINER -->
         <RelativeLayout
             android:id="@+id/rlScrollableContent"
@@ -64,6 +60,9 @@
                 android:visibility="gone" />
 
         </RelativeLayout>
+
+        <!-- APP BAR-->
+        <include layout="@layout/toolbar" />
 
     </android.support.design.widget.CoordinatorLayout>
 
