@@ -1014,6 +1014,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                if (mExtraTabLayout != null) {
+                    mExtraTabLayout.setVisibility(View.GONE);
+                }
                 toolbar.setBackgroundColor(Color.WHITE);
                 findViewById(R.id.searchBar).setVisibility(View.GONE);
                 Print.d(TAG, "SEARCH ON EXPAND");
@@ -1044,6 +1047,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
+                if (mExtraTabLayout != null) {
+                    mExtraTabLayout.setVisibility(View.VISIBLE);
+                }
                 isSearchComponentOpened = false;
                 toolbar.setBackgroundColor(ContextCompat.getColor(BaseActivity.this, R.color.appBar));
                 if (searchBarEnabled) {

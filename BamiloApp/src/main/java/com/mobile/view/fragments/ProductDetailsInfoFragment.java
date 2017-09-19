@@ -57,7 +57,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductDetailsInfoFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.PRODUCT,
                 R.layout.details_info_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
@@ -163,9 +163,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Set action title
-        if (TextUtils.isNotEmpty(mTitle)) {
-            getBaseActivity().setActionBarTitle(mTitle);
-        }
+        getBaseActivity().setActionBarTitle("");
     }
 
     /*
