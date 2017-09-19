@@ -782,7 +782,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             Pattern pattern = Pattern.compile(getString(R.string.cellphone_regex), Pattern.CASE_INSENSITIVE);
 
             Matcher matcher = pattern.matcher(cellphone.getText());
-            boolean result = matcher.find();
+            boolean result = matcher.matches();
             if (!result ){
                 cellphone.setVisibility(View.VISIBLE);
                 cellphone_error.setVisibility(View.VISIBLE);
