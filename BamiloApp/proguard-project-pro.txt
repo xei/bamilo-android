@@ -140,6 +140,7 @@
 #### com.mobile.utils
 -keep class com.mobile.utils.MyProfileActionProvider { public *; }
 -keep class com.mobile.utils.NavigationAction { public *; }
+-keep class com.mobile.view.CustomSearchActionView { public *; }
 -keep class com.mobile.utils.photoview.PhotoViewAttacher { public *; }
 -keep interface com.mobile.utils.photoview.PhotoViewAttacher$** { *; }
 #### com.mobile.view

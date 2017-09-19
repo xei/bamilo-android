@@ -1217,7 +1217,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         try {
             // Validate if exist search icon and bar
             if (!voiceTyping) {
-                if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
+                if (menuItems.contains(MyMenuItem.SEARCH_VIEW) && mSearchMenuItem != null) {
                     // Hide search bar
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
 
