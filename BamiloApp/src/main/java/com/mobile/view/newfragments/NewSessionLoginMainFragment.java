@@ -64,6 +64,8 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     private LoginFragment loginFragment;
     private RegisterFragment registerFragment;
     private LinearLayout loginRoot;
+    private TabLayout tabLayout;
+
     /**
      * Empty constructor
      */
@@ -190,7 +192,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
         getBaseActivity().setUpExtraTabLayout(viewPager);
-        TabLayout tabLayout = getBaseActivity().getExtraTabLayout();
+        tabLayout = getBaseActivity().getExtraTabLayout();
         tabLayout.setBackgroundColor(Color.WHITE);
         tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_1));
         tabLayout.setTabTextColors(ContextCompat.getColor(getContext(), R.color.black_700),
@@ -251,8 +253,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         outState.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, mParentFragmentType);
         outState.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, mNextStepFromParent);
         outState.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, isInCheckoutProcess);
-        TabLayout tabLayout = getBaseActivity().getExtraTabLayout();
-        outState.putInt("selectedtab", tabLayout.getSelectedTabPosition());
+        if (tabLayout != null) {
+            outState.putInt("selectedtab", tabLayout.getSelectedTabPosition());
+        }
 
     }
 
