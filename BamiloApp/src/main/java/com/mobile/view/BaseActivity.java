@@ -1673,6 +1673,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void onLogOut() {
         ProductDetailsFragment.clearSelectedRegionCityId();
         SearchRecentQueriesTableHelper.deleteAllRecentQueries();
+        mSearchListView.setAdapter(null);
 
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
