@@ -1344,7 +1344,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             return;
         }
         MenuItem searchMenuItem = mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId);
-        if (searchMenuItem != null && !searchMenuItem.isVisible()) {
+        if (searchMenuItem != null && !(searchMenuItem.isVisible() || searchBarEnabled)) {
             return;
         }
         // Validate current search
