@@ -1035,6 +1035,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             public boolean onMenuItemActionExpand(MenuItem item) {
                 if (mExtraTabLayout != null) {
                     mExtraTabLayout.setVisibility(View.GONE);
+                    View scrollContainer = findViewById(R.id.rlScrollableContent);
+                    scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                            toolbar.getHeight(),
+                            scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
                 }
                 toolbar.setBackgroundColor(Color.WHITE);
                 findViewById(R.id.searchBar).setVisibility(View.GONE);
@@ -1068,6 +1072,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 if (mExtraTabLayout != null) {
                     mExtraTabLayout.setVisibility(View.VISIBLE);
+                    View scrollContainer = findViewById(R.id.rlScrollableContent);
+                    scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                            scrollContainer.getPaddingTop() + mExtraTabLayout.getHeight(),
+                            scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
                 }
                 isSearchComponentOpened = false;
                 toolbar.setBackgroundColor(ContextCompat.getColor(BaseActivity.this, R.color.appBar));
@@ -1235,7 +1243,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.d(TAG, "SEARCH COMPONENT: HIDE");
         try {
             // Validate if exist search icon and bar
-            if (!voiceTyping) {
+            if (!voiceTyping && isSearchComponentOpened) {
                 if (menuItems.contains(MyMenuItem.SEARCH_VIEW) && mSearchMenuItem != null) {
                     // Hide search bar
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
