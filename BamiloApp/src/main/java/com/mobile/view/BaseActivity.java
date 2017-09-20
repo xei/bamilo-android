@@ -417,14 +417,18 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                     searchBarAutoHide.setOnViewShowHideListener(new TopViewAutoHideUtil.OnViewShowHideListener() {
                         @Override
                         public void onViewHid() {
-                            searchBarHidden = true;
-                            mSearchMenuItem.setVisible(true);
+                            if (searchBarEnabled) {
+                                searchBarHidden = true;
+                                mSearchMenuItem.setVisible(true);
+                            }
                         }
 
                         @Override
                         public void onViewShowed() {
-                            searchBarHidden = false;
-                            mSearchMenuItem.setVisible(false);
+                            if (searchBarEnabled) {
+                                searchBarHidden = false;
+                                mSearchMenuItem.setVisible(false);
+                            }
                         }
                     });
                 }
