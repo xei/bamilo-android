@@ -65,6 +65,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     private RegisterFragment registerFragment;
     private LinearLayout loginRoot;
     private TabLayout tabLayout;
+    private View rootView;
+    private boolean viewInitiated = false;
+    private boolean autoLoginFailed = false;
 
     /**
      * Empty constructor
@@ -124,14 +127,11 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
+        this.rootView = view;
+        if (autoLoginFailed || (mNextStepFromParent == null && !isInCheckoutProcess)) {
+            initViews();
+        }
 
-
-        loginRoot = (LinearLayout) view.findViewById(R.id.login_root);
-
-        loginFragment = new LoginFragment();
-        registerFragment = new RegisterFragment();
-        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        setupViewPager();
 //        tabLogin = tabLayout.newTab();
 //        tabLogin.setTag("Login");
 //        tabLayout.addTab(tabLogin);
@@ -178,6 +178,16 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         }*/
 
 
+    }
+
+    private void initViews() {
+        loginRoot = (LinearLayout) rootView.findViewById(R.id.login_root);
+
+        loginFragment = new LoginFragment();
+        registerFragment = new RegisterFragment();
+        viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
+        setupViewPager();
+        viewInitiated = true;
     }
 
     private void setupViewPager() {
@@ -229,12 +239,14 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
         // Case auto login
         if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-            loginRoot.setVisibility(View.GONE);
             triggerAutoLogin();
         }
         // Case show content
         else {
             Print.i(TAG, "USER WITHOUT CREDENTIALS");
+            if (!viewInitiated) {
+                initViews();
+            }
             // Show content
             showFragmentContentContainer();
         }
@@ -501,6 +513,10 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
             case AUTO_LOGIN_EVENT:
                 // Logout
                 LogOut.perform(getWeakBaseActivity());
+                autoLoginFailed = true;
+                if (!viewInitiated) {
+                    initViews();
+                }
            /* case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
                 // Tracking
