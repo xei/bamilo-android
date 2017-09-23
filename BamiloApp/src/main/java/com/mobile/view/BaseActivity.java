@@ -895,6 +895,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             basket.setVisible(true);
             basket.setEnabled(false);
             View actionCartView = MenuItemCompat.getActionView(basket);
+            actionCartView.findViewById(R.id.action_cart_image).setEnabled(false);
             mActionCartIndicatorCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
             mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
             updateCartIndicatorInfoInActionBar();
