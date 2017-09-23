@@ -53,5 +53,11 @@
             app:contentInsetStartWithNavigation="0dp" />
     </RelativeLayout>
 
+    <View
+        android:id="@+id/viewToobarElevationMock"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:background="@android:color/transparent" />
 
 </android.support.design.widget.AppBarLayout>

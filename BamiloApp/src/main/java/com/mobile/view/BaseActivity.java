@@ -368,6 +368,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
 
     public void setupAppBarLayout() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            findViewById(R.id.viewToobarElevationMock).setVisibility(View.VISIBLE);
+        }
         // Get tab layout
         mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         // Get tool bar
