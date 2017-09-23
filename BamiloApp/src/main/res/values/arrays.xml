@@ -38,7 +38,8 @@
 
     <!-- SHARE -->
 	<string-array name="app_sharing_array">
-        <item>@string/share_the_app</item>
+        <!--Share item removed in order to meet Cafebazaar policies-->
+        <!--<item>@string/share_the_app</item>-->
         <item>@string/rate_the_app</item>
     </string-array>
 
