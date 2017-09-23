@@ -1474,7 +1474,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             myProfile.setEnabled(true);
             myProfileActionProvider = (MyProfileActionProvider) MenuItemCompat.getActionProvider(myProfile);
             // commented next line because options menu is the same in all pages
-//            myProfileActionProvider.setFragmentNavigationAction(action);
+            myProfileActionProvider.setFragmentNavigationAction(action);
             myProfileActionProvider.setAdapterOnClickListener(myProfileClickListener);
         }
     }
