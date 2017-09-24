@@ -127,6 +127,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
+        viewInitiated = false;
         this.rootView = view;
         if (autoLoginFailed || (mNextStepFromParent == null && !isInCheckoutProcess)) {
             initViews();
