@@ -541,4 +541,6 @@
     <string name="categories_fragment_title">دسته بندی محصولات</string>
     <string name="search_on_brands_categories">جستجوی نام، برند یا دسته‌بندی</string>
     <string name="search_hint">جستجو در بامیلو</string>
+    <string name="my_bamilo_fragment_title">بامیلوی من</string>
+    <string name="home_page_fragment_title">خانه</string>
 </resources>

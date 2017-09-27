@@ -7,11 +7,12 @@ import android.view.ViewGroup;
 
 public class TopViewAutoHideUtil {
     private int minScrollRange, maxScrollRange;
-    private int viewScrolledAmount, totalScrolled = 0;
+    private int viewScrolledAmount;
     private View view;
     private ViewPropertyAnimatorCompat mScrollAnimator;
     private ValueAnimator mValueAnimator;
     private OnViewShowHideListener onViewShowHideListener;
+    private boolean searchBarHidden = false;
 
 
     public TopViewAutoHideUtil(int minScrollRange, int maxScrollRange, View view) {
@@ -24,7 +25,6 @@ public class TopViewAutoHideUtil {
         if (mValueAnimator != null && mValueAnimator.isRunning()) {
             mValueAnimator.cancel();
         }
-        totalScrolled += dy;
         int totalDy = viewScrolledAmount;
         totalDy += dy;
         int offset = constrain(totalDy, minScrollRange, maxScrollRange);
@@ -36,11 +36,12 @@ public class TopViewAutoHideUtil {
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         params.topMargin = offset;
         view.setLayoutParams(params);
-        totalScrolled += offset - viewScrolledAmount;
         if (onViewShowHideListener != null) {
             if (viewScrolledAmount == minScrollRange) {
+                searchBarHidden = true;
                 onViewShowHideListener.onViewHid();
             } else if (viewScrolledAmount == maxScrollRange) {
+                searchBarHidden = false;
                 onViewShowHideListener.onViewShowed();
             }
         }
@@ -51,6 +52,20 @@ public class TopViewAutoHideUtil {
             animateScroll(viewScrolledAmount, minScrollRange);
         } else {
             animateScroll(viewScrolledAmount, maxScrollRange);
+        }
+    }
+
+    public boolean showSearchBar() {
+        if (searchBarHidden) {
+            animateScroll(viewScrolledAmount, maxScrollRange);
+            return true;
+        }
+        return false;
+    }
+
+    public void syncState(int scrolledAmount) {
+        if (searchBarHidden && (Math.abs(scrolledAmount) < Math.abs(minScrollRange))) {
+            showSearchBar();
         }
     }
 
@@ -78,8 +93,13 @@ public class TopViewAutoHideUtil {
         this.onViewShowHideListener = onViewShowHideListener;
     }
 
+    public boolean isSearchBarHidden() {
+        return searchBarHidden;
+    }
+
     public interface OnViewShowHideListener {
         void onViewHid();
+
         void onViewShowed();
     }
 }

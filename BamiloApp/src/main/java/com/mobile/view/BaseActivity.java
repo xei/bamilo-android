@@ -175,7 +175,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public DrawerFragment mDrawerFragment;
     private boolean searchBarEnabled = false;
     private boolean voiceTyping = false;
-    private boolean searchBarHidden = false;
     private boolean actionBarAutoHideEnabled = false;
     private TopViewAutoHideUtil searchBarAutoHide;
     private TopViewAutoHideUtil actionBarAutoHide;
@@ -393,7 +392,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) searchBar.getLayoutParams();
         params.setMargins(params.leftMargin, 0, params.rightMargin, params.bottomMargin);
         searchBar.setLayoutParams(params);
-        searchBarHidden = false;
         searchBar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -421,7 +419,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         @Override
                         public void onViewHid() {
                             if (searchBarEnabled) {
-                                searchBarHidden = true;
                                 mSearchMenuItem.setVisible(true);
                             }
                         }
@@ -429,7 +426,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         @Override
                         public void onViewShowed() {
                             if (searchBarEnabled) {
-                                searchBarHidden = false;
                                 mSearchMenuItem.setVisible(false);
                             }
                         }
@@ -437,6 +433,16 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 }
             }
         });
+    }
+
+    public boolean showSearchBar() {
+        return searchBarEnabled && searchBarAutoHide != null && searchBarAutoHide.showSearchBar();
+    }
+
+    public void syncSearchBarState(int scrollAmount) {
+        if (searchBarEnabled && searchBarAutoHide != null) {
+            searchBarAutoHide.syncState(scrollAmount);
+        }
     }
 
     public void disableSearchBar() {
@@ -959,7 +965,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Set search
         setActionBarSearchBehavior(mSearchMenuItem);
         // Set visibility
-        if (searchBarEnabled && !searchBarHidden) {
+        if (searchBarEnabled && searchBarAutoHide != null && !searchBarAutoHide.isSearchBarHidden()) {
             mSearchMenuItem.setVisible(false);
         } else {
             mSearchMenuItem.setVisible(true);
@@ -2022,7 +2028,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     private void injectExtraTabLayout() {
         mExtraTabLayout = (TabLayout) getLayoutInflater().inflate(R.layout.extra_tab_layout, mAppBarLayout, false);
-        mAppBarLayout.addView(mExtraTabLayout);
+        ViewGroup tabLayoutContainer = (ViewGroup) findViewById(R.id.llExtraTabLayoutContainer);
+        tabLayoutContainer.addView(mExtraTabLayout);
         final View scrollContainer = findViewById(R.id.rlScrollableContent);
         scrollContainer.post(new Runnable() {
             @Override
@@ -2039,7 +2046,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         disableActionbarAutoHide();
         if (!isNestedFragment) {
             if (mExtraTabLayout != null) {
-                mAppBarLayout.removeView(mExtraTabLayout);
+                ViewGroup tabLayoutContainer = (ViewGroup) findViewById(R.id.llExtraTabLayoutContainer);
+                tabLayoutContainer.removeView(mExtraTabLayout);
                 mExtraTabLayout = null;
                 final View scrollContainer = findViewById(R.id.rlScrollableContent);
                 mAppBarLayout.post(new Runnable() {

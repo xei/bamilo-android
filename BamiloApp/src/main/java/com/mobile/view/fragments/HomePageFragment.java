@@ -84,11 +84,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Empty constructor
      */
     public HomePageFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET),
+        /*super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET),
                 NavigationAction.HOME,
                 R.layout.home_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);*/
+        super(true, R.layout.home_fragment_main);
         // Init position
         HomeMainTeaserHolder.sViewPagerPosition = HomeMainTeaserHolder.DEFAULT_POSITION;
     }
@@ -123,6 +124,16 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         } else {
             HomeNewsletterTeaserHolder.sInitialValue = null;
             HomeNewsletterTeaserHolder.sInitialGender = IntConstants.INVALID_POSITION;
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (mScrollView != null) {
+                getBaseActivity().syncSearchBarState(mScrollView.getScrollY());
+            }
         }
     }
 
