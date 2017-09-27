@@ -4,6 +4,7 @@
     android:id="@+id/fragmentTabs"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
+    app:tabMaxWidth="0dp"
     app:tabGravity="fill"
     app:tabMode="fixed"
     app:tabTextAppearance="@style/TabTextStyle" />

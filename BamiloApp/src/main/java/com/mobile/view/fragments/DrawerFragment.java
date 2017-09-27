@@ -16,7 +16,9 @@ import com.mobile.app.BamiloApplication;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.service.objects.cart.PurchaseEntity;
+import com.mobile.service.objects.configs.CountryConfigs;
 import com.mobile.service.objects.home.type.TeaserGroupType;
 import com.mobile.service.tracking.TrackingEvent;
 import com.mobile.service.utils.DeviceInfoHelper;
@@ -197,9 +199,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
 
-                Intent callintent = new Intent(Intent.ACTION_DIAL);
-                callintent.setData(Uri.parse(getResources().getString(R.string.call_center_number)));
-                startActivity(callintent);
+                UIUtils.onClickCallToOrder(getBaseActivity());
             }
         }));
         items.add(new DrawerItem(0, R.string.drawer_emailus, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {

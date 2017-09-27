@@ -323,7 +323,11 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
      *  Handles the item click of childs of app sharing list.
      */
     private void handleOnAppSocialListItemClick(int position) {
-        switch (position) {
+        /*Share item was removed in order to meet Cafebazaar policies*/
+        if (position == 0) {
+            goToMarketPage();
+        }
+        /*switch (position) {
             case POSITION_SHARE_APP:
                 String text;
                 String preText = getString(R.string.install_android, getString(R.string.app_name_placeholder));
@@ -340,7 +344,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
                 break;
         default:
             break;
-        }
+        }*/
     }
 
     /**

@@ -24,10 +24,10 @@
             <com.mobile.components.customfontviews.TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dimen_8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="@dimen/dimen_16dp"
                 android:layout_marginRight="@dimen/dimen_16dp"
-                android:layout_marginTop="@dimen/dimen_8dp"
+                android:layout_marginTop="0dp"
                 android:background="@drawable/mock_search_bar_bg"
                 android:drawablePadding="@dimen/dimen_8dp"
                 android:drawableRight="@drawable/ic_search_gray"
@@ -53,5 +53,11 @@
             app:contentInsetStartWithNavigation="0dp" />
     </RelativeLayout>
 
+    <View
+        android:id="@+id/viewToobarElevationMock"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:background="@android:color/transparent" />
 
 </android.support.design.widget.AppBarLayout>

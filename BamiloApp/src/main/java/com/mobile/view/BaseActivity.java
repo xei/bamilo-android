@@ -368,6 +368,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
 
     public void setupAppBarLayout() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            findViewById(R.id.viewToobarElevationMock).setVisibility(View.VISIBLE);
+        }
         // Get tab layout
         mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         // Get tool bar
@@ -417,14 +420,18 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                     searchBarAutoHide.setOnViewShowHideListener(new TopViewAutoHideUtil.OnViewShowHideListener() {
                         @Override
                         public void onViewHid() {
-                            searchBarHidden = true;
-                            mSearchMenuItem.setVisible(true);
+                            if (searchBarEnabled) {
+                                searchBarHidden = true;
+                                mSearchMenuItem.setVisible(true);
+                            }
                         }
 
                         @Override
                         public void onViewShowed() {
-                            searchBarHidden = false;
-                            mSearchMenuItem.setVisible(false);
+                            if (searchBarEnabled) {
+                                searchBarHidden = false;
+                                mSearchMenuItem.setVisible(false);
+                            }
                         }
                     });
                 }
@@ -891,6 +898,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             basket.setVisible(true);
             basket.setEnabled(false);
             View actionCartView = MenuItemCompat.getActionView(basket);
+            actionCartView.findViewById(R.id.action_cart_image).setEnabled(false);
             mActionCartIndicatorCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
             mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
             updateCartIndicatorInfoInActionBar();
@@ -1031,6 +1039,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             public boolean onMenuItemActionExpand(MenuItem item) {
                 if (mExtraTabLayout != null) {
                     mExtraTabLayout.setVisibility(View.GONE);
+                    View scrollContainer = findViewById(R.id.rlScrollableContent);
+                    scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                            toolbar.getHeight(),
+                            scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
                 }
                 toolbar.setBackgroundColor(Color.WHITE);
                 findViewById(R.id.searchBar).setVisibility(View.GONE);
@@ -1064,6 +1076,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 if (mExtraTabLayout != null) {
                     mExtraTabLayout.setVisibility(View.VISIBLE);
+                    View scrollContainer = findViewById(R.id.rlScrollableContent);
+                    scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                            scrollContainer.getPaddingTop() + mExtraTabLayout.getHeight(),
+                            scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
                 }
                 isSearchComponentOpened = false;
                 toolbar.setBackgroundColor(ContextCompat.getColor(BaseActivity.this, R.color.appBar));
@@ -1231,7 +1247,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.d(TAG, "SEARCH COMPONENT: HIDE");
         try {
             // Validate if exist search icon and bar
-            if (!voiceTyping) {
+            if (!voiceTyping && isSearchComponentOpened) {
                 if (menuItems.contains(MyMenuItem.SEARCH_VIEW) && mSearchMenuItem != null) {
                     // Hide search bar
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
@@ -1458,7 +1474,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             myProfile.setEnabled(true);
             myProfileActionProvider = (MyProfileActionProvider) MenuItemCompat.getActionProvider(myProfile);
             // commented next line because options menu is the same in all pages
-//            myProfileActionProvider.setFragmentNavigationAction(action);
+            myProfileActionProvider.setFragmentNavigationAction(action);
             myProfileActionProvider.setAdapterOnClickListener(myProfileClickListener);
         }
     }
@@ -1669,6 +1685,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void onLogOut() {
         ProductDetailsFragment.clearSelectedRegionCityId();
         SearchRecentQueriesTableHelper.deleteAllRecentQueries();
+        mSearchListView.setAdapter(null);
 
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();

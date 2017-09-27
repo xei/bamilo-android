@@ -142,7 +142,7 @@ public class MyProfileActionProvider extends ActionProvider {
         // Get current list
         ArrayList<Integer> list = (ArrayList<Integer>) getDropdownList();
         // Case Home or Cart
-        if (action == NavigationAction.HOME || action == NavigationAction.BASKET || action == NavigationAction.SAVED) {
+        /*if (action == NavigationAction.HOME || action == NavigationAction.BASKET || action == NavigationAction.SAVED) {
             // Remove home from array
             if(NavigationAction.SAVED == list.get(2)) list.remove(2);
             if(NavigationAction.HOME == list.get(0)) list.remove(0);
@@ -151,6 +151,9 @@ public class MyProfileActionProvider extends ActionProvider {
         else if (NavigationAction.HOME != list.get(0)) {
             list.add(0, NavigationAction.HOME);
             list.add(2, NavigationAction.SAVED);
+        }*/
+        if (list.indexOf(action) != -1) {
+            list.remove(list.indexOf(action));
         }
 
     }

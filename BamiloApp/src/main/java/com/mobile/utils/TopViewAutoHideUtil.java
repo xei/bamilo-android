@@ -47,7 +47,7 @@ public class TopViewAutoHideUtil {
     }
 
     public void onStopScroll(boolean scrollingToTop) {
-        if (Math.abs(totalScrolled) >= Math.abs(minScrollRange) && scrollingToTop) {
+        if ((Math.abs(viewScrolledAmount) >= Math.abs(minScrollRange)) && scrollingToTop) {
             animateScroll(viewScrolledAmount, minScrollRange);
         } else {
             animateScroll(viewScrolledAmount, maxScrollRange);
