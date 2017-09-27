@@ -277,7 +277,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             Pattern pattern = Pattern.compile(getString(R.string.cellphone_regex), Pattern.CASE_INSENSITIVE);
 
             Matcher matcher = pattern.matcher(cellphone.getText());
-            boolean result = matcher.find();
+            boolean result = matcher.matches();
             if (!result ){
                 cellphone.setVisibility(View.VISIBLE);
                 cellphone_error.setVisibility(View.VISIBLE);
@@ -312,12 +312,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     private void onClickCreateAddressButton() {
         Print.i(TAG, "ON CLICK: CREATE");
         // Validate
-        if (formValidated()==false) {
+        if (!formValidated()) {
             Print.i(TAG, "SAME FORM: INVALID");
-
-            return;
-        }
-        else {
+        } else {
 
             ContentValues values = new ContentValues();
             values.put("address_form[id]", id);

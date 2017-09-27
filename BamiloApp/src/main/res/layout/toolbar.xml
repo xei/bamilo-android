@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_behavior="com.mobile.view.NestedScrollCatchBehavior">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_below="@+id/toolbar"
+            android:background="?colorPrimary"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:visibility="gone">
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="@dimen/dimen_16dp"
+                android:layout_marginRight="@dimen/dimen_16dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/mock_search_bar_bg"
+                android:drawablePadding="@dimen/dimen_8dp"
+                android:drawableRight="@drawable/ic_search_gray"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dimen_16dp"
+                android:paddingRight="@dimen/dimen_16dp"
+                android:text="@string/search_on_brands_categories"
+                android:textColor="@color/black_800"
+                android:textSize="@dimen/dimen_12sp" />
+
+        </RelativeLayout>
+
+        <!-- ACTION BAR -->
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentTop="true"
+            android:background="?colorPrimary"
+            app:collapseIcon="@drawable/ic_back_gray"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/viewToobarElevationMock"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:background="@android:color/transparent" />
+
+</android.support.design.widget.AppBarLayout>

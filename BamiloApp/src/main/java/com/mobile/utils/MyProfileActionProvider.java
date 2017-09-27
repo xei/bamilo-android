@@ -98,14 +98,13 @@ public class MyProfileActionProvider extends ActionProvider {
         if (CollectionUtils.isEmpty(mSubMenuItems)) {
             mSubMenuItems = new ArrayList<>();
             mSubMenuItems.add(NavigationAction.HOME);
-            mSubMenuItems.add(NavigationAction.LOGIN_OUT);
+            boolean hasCredentials = BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials();
+            if (!hasCredentials) {
+                mSubMenuItems.add(NavigationAction.LOGIN_OUT);
+            }
+            mSubMenuItems.add(NavigationAction.CATEGORIES);
             mSubMenuItems.add(NavigationAction.SAVED);
             mSubMenuItems.add(NavigationAction.MY_ACCOUNT);
-            mSubMenuItems.add(NavigationAction.RECENT_SEARCHES);
-            mSubMenuItems.add(NavigationAction.RECENTLY_VIEWED);
-            mSubMenuItems.add(NavigationAction.MY_ORDERS);
-            mSubMenuItems.add(NavigationAction.FAQ);
-            mSubMenuItems.add(NavigationAction.ABOUT);
         }
         return mSubMenuItems;
     }
@@ -143,7 +142,7 @@ public class MyProfileActionProvider extends ActionProvider {
         // Get current list
         ArrayList<Integer> list = (ArrayList<Integer>) getDropdownList();
         // Case Home or Cart
-        if (action == NavigationAction.HOME || action == NavigationAction.BASKET || action == NavigationAction.SAVED) {
+        /*if (action == NavigationAction.HOME || action == NavigationAction.BASKET || action == NavigationAction.SAVED) {
             // Remove home from array
             if(NavigationAction.SAVED == list.get(2)) list.remove(2);
             if(NavigationAction.HOME == list.get(0)) list.remove(0);
@@ -152,6 +151,9 @@ public class MyProfileActionProvider extends ActionProvider {
         else if (NavigationAction.HOME != list.get(0)) {
             list.add(0, NavigationAction.HOME);
             list.add(2, NavigationAction.SAVED);
+        }*/
+        if (list.indexOf(action) != -1) {
+            list.remove(list.indexOf(action));
         }
 
     }
@@ -215,10 +217,12 @@ public class MyProfileActionProvider extends ActionProvider {
                     icon.setImageResource(R.drawable.ico_dropdown_home);
                     break;
                 case NavigationAction.LOGIN_OUT:
-                    boolean hasCredentials = BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials();
-                    int resTitle = hasCredentials ? R.string.sign_out : R.string.sign_in;
-                    title.setText(resTitle);
-                    icon.setImageResource(R.drawable.ico_dropdown_signin);
+                    title.setText(R.string.sign_in);
+                    icon.setImageResource(R.drawable.ico_dropdown_login);
+                    break;
+                case NavigationAction.CATEGORIES:
+                    title.setText(R.string.drawer_categories);
+                    icon.setImageResource(R.drawable.ico_dropdown_categories);
                     break;
                 case NavigationAction.SAVED:
                     title.setText(R.string.saved);

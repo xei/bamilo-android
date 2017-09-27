@@ -1,58 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.mobile.components.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!-- COORDINATOR -->
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/clMainParent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ScrollingActivity">
-
-        <!-- APP BAR-->
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:elevation="0dp">
-
-            <!-- ACTION BAR -->
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways" />
-
-            <!-- TAB BAR -->
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
-                style="@style/Widget.Custom.ActionBarTab"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize" />
-
-            <!-- CHECKOUT TAB BAR -->
-            <android.support.design.widget.TabLayout
-                android:id="@+id/checkout_tabs"
-                style="@style/Widget.Custom.ActionBarTab"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:visibility="gone" />
-
-
-        </android.support.design.widget.AppBarLayout>
+        android:layout_height="match_parent">
 
         <!-- SCROLLABLE CONTAINER -->
         <RelativeLayout
+            android:id="@+id/rlScrollableContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="false"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".ScrollingActivity">
+            android:paddingTop="?attr/actionBarSize">
 
             <!-- CONTENT LAYOUT -->
             <FrameLayout
@@ -94,6 +60,9 @@
                 android:visibility="gone" />
 
         </RelativeLayout>
+
+        <!-- APP BAR-->
+        <include layout="@layout/toolbar" />
 
     </android.support.design.widget.CoordinatorLayout>
 

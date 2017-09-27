@@ -1,38 +1,42 @@
 package com.mobile.view;
 
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -40,12 +44,10 @@ import android.widget.FrameLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalSpaceItemDecoration;
-import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.LogOut;
@@ -60,6 +62,8 @@ import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
+import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.service.database.SearchRecentQueriesTableHelper;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.checkout.CheckoutStepLogin;
 import com.mobile.service.objects.customer.Customer;
@@ -75,18 +79,20 @@ import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.ShopSelector;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
+import com.mobile.utils.ConfigurationWrapper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.MyProfileActionProvider;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TopViewAutoHideUtil;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
+import com.mobile.utils.ui.FixedDrawerDrawable;
 import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
@@ -94,6 +100,8 @@ import com.mobile.view.fragments.DrawerFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -116,12 +124,14 @@ import java.util.Set;
 public abstract class BaseActivity extends BaseTrackerActivity implements TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
+    private static final int RESULT_SPEECH = 1993;
 
     private static final int SEARCH_EDIT_DELAY = 500;
     private static final int SEARCH_EDIT_SIZE = 2;
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
-    @KeyboardState public static int sCurrentAdjustState;
+    @KeyboardState
+    public static int sCurrentAdjustState;
     private final int activityLayoutId;
     private final int titleResId;
     public View mDrawerNavigation;
@@ -130,12 +140,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public MenuItem mSearchMenuItem;
     private WarningFactory warningFactory;
     protected DialogFragment dialog;
-    protected SearchView mSearchView;
-    protected SearchAutoComplete mSearchAutoComplete;
+    protected CustomSearchActionView mSearchView;
+//    protected EditText mSearchAutoComplete;
     protected RecyclerView mSearchListView;
     protected FrameLayout mSearchOverlay;
     protected boolean isSearchComponentOpened = false;
-    @NavigationAction.Type private int action;
+    @NavigationAction.Type
+    private int action;
     private Set<MyMenuItem> menuItems;
     private DialogProgressFragment baseActivityProgressDialog;
     private DialogGenericFragment dialogLogout;
@@ -145,7 +156,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this -action-after-onsaveinstancestate-h
      */
     private Intent mOnActivityResultIntent = null;
-    private TextView mActionCartCount;
+    private TextView mActionCartCount, mActionCartIndicatorCount;
     private MyProfileActionProvider myProfileActionProvider;
     private FragmentController mFragmentController;
     private boolean initialCountry = false;
@@ -157,12 +168,18 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private ActionBar mSupportActionBar;
     private Toolbar toolbar;
     private boolean isBackButtonEnabled = false;
-    private TabLayout mTabLayout;
-    private TabLayout mCheckoutTabLayout;
+    private TabLayout mExtraTabLayout;
     private AppBarLayout mAppBarLayout;
     public ConfirmationCartMessageView mConfirmationCartMessageView;
 
     public DrawerFragment mDrawerFragment;
+    private boolean searchBarEnabled = false;
+    private boolean voiceTyping = false;
+    private boolean searchBarHidden = false;
+    private boolean actionBarAutoHideEnabled = false;
+    private TopViewAutoHideUtil searchBarAutoHide;
+    private TopViewAutoHideUtil actionBarAutoHide;
+
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
      */
@@ -191,11 +208,20 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.i(TAG, "ON START");
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            super.attachBaseContext(ConfigurationWrapper.wrapLocale(newBase, new Locale("fa", "ir")));
+        } else {
+            super.attachBaseContext(newBase);
+        }
+    }
+
     /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
-     */
+         * (non-Javadoc)
+         *
+         * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
+         */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -227,11 +253,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     /**
      * Using the ActionBarDrawerToggle, you must call it during onPostCreate() and onConfigurationChanged()...
      */
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onPostCreate(android.os.Bundle)
-     */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -240,11 +261,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mDrawerToggle.syncState();
     }
 
-    /*
- * (non-Javadoc)
- *
- * @see android.support.v4.app.FragmentActivity#onResume()
- */
     @Override
     public void onResume() {
         super.onResume();
@@ -275,11 +291,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v7.app.ActionBarActivity#onConfigurationChanged(android.content.res.Configuration)
-     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -288,10 +299,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.FragmentActivity#onPause()
-     */
     @Override
     public void onPause() {
         super.onPause();
@@ -300,22 +307,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         hideSearchComponent();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onStop()
-     */
     @Override
     protected void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onDestroy()
-     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -328,7 +325,17 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null) {
+        if (requestCode == RESULT_SPEECH) {
+            if (resultCode == RESULT_OK && null != data) {
+
+                ArrayList<String> text = data
+                        .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+                mSearchView.setText(text.get(0));
+                fireSearch(text.get(0));
+            }
+            voiceTyping = false;
+        } else if (data != null) {
             mOnActivityResultIntent = data;
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -352,8 +359,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         setAppBarLayout(oldNavAction, newNavAction);
         // Update Options Menu
         invalidateOptionsMenu();
-        // Select step on Checkout
-        setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
         setActionTitle(actionBarTitleResId);
     }
@@ -362,71 +367,126 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * ############## NAVIGATION ##############
      */
 
-    /**
-     * Set the Action bar style
-     *
-     * @modified sergiopereira
-     */
     public void setupAppBarLayout() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            findViewById(R.id.viewToobarElevationMock).setVisibility(View.VISIBLE);
+        }
         // Get tab layout
         mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         // Get tool bar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTitleTextAppearance);
         setSupportActionBar(toolbar);
         mSupportActionBar = getSupportActionBar();
-        if(mSupportActionBar != null) {
+        if (mSupportActionBar != null) {
             mSupportActionBar.setDisplayHomeAsUpEnabled(true);
             mSupportActionBar.setHomeButtonEnabled(true);
             mSupportActionBar.setDisplayShowTitleEnabled(true);
             mSupportActionBar.setElevation(0);
             mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
         }
-        // Set tab layout
-        setupTabBarLayout();
     }
 
-    public void setupTabBarLayout() {
-        // Get tab layout
-        mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        mCheckoutTabLayout = (TabLayout) findViewById(R.id.checkout_tabs);
-        mCheckoutTabLayout.setVisibility(View.INVISIBLE);
-        UITabLayoutUtils.fillTabLayout(mTabLayout, this);
-        UITabLayoutUtils.updateTabCartInfo(mTabLayout);
-        // Checkout Tab
-        UITabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
+    public void enableSearchBar(final boolean autoHide, final View... views) {
+        searchBarEnabled = true;
+        final View searchBar = findViewById(R.id.searchBar);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) searchBar.getLayoutParams();
+        params.setMargins(params.leftMargin, 0, params.rightMargin, params.bottomMargin);
+        searchBar.setLayoutParams(params);
+        searchBarHidden = false;
+        searchBar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchMenuItem.expandActionView();
+            }
+        });
+        searchBar.setVisibility(View.VISIBLE);
+        searchBar.post(new Runnable() {
+            @Override
+            public void run() {
+                if (views != null) {
+                    for (View v : views) {
+                        v.setPadding(v.getPaddingLeft(), searchBar.getHeight(),
+                                v.getPaddingRight(), v.getPaddingBottom());
+                    }
+                }
+                ViewGroup.MarginLayoutParams warningParams =
+                        (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
+                warningParams.topMargin = searchBar.getHeight();
+                findViewById(R.id.warning).setLayoutParams(warningParams);
+
+                if (autoHide) {
+                    searchBarAutoHide = new TopViewAutoHideUtil(-searchBar.getHeight(), 0, searchBar);
+                    searchBarAutoHide.setOnViewShowHideListener(new TopViewAutoHideUtil.OnViewShowHideListener() {
+                        @Override
+                        public void onViewHid() {
+                            if (searchBarEnabled) {
+                                searchBarHidden = true;
+                                mSearchMenuItem.setVisible(true);
+                            }
+                        }
+
+                        @Override
+                        public void onViewShowed() {
+                            if (searchBarEnabled) {
+                                searchBarHidden = false;
+                                mSearchMenuItem.setVisible(false);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
-    /**
-     * Handles changes on Checkout tabs.
-     */
-    final TabLayout.OnTabSelectedListener mCheckoutOnTabSelectedListener = new android.support.design.widget.TabLayout.OnTabSelectedListener() {
-        @Override
-        public void onTabSelected(android.support.design.widget.TabLayout.Tab tab) {
-            onCheckoutHeaderSelectedListener(tab.getPosition());
+    public void disableSearchBar() {
+        searchBarEnabled = false;
+        findViewById(R.id.searchBar).setVisibility(View.GONE);
+        searchBarAutoHide = null;
+        ViewGroup.MarginLayoutParams warningParams =
+                (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
+        warningParams.topMargin = 0;
+        findViewById(R.id.warning).setLayoutParams(warningParams);
+    }
+
+    public boolean enableActionbarAutoHide(final View... views){
+        actionBarAutoHideEnabled = false;
+        if (!searchBarEnabled) {
+            actionBarAutoHideEnabled = true;
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) toolbar.getLayoutParams();
+            params.topMargin = 0;
+            toolbar.setLayoutParams(params);
+
+            toolbar.post(new Runnable() {
+                @Override
+                public void run() {
+                    findViewById(R.id.rlScrollableContent).setPadding(0, 0, 0, 0);
+                    if (views != null) {
+                        for (View v : views) {
+                            v.setPadding(v.getPaddingLeft(), toolbar.getHeight(),
+                                    v.getPaddingRight(), v.getPaddingBottom());
+                        }
+                    }
+                    ViewGroup.MarginLayoutParams warningParams =
+                            (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
+                    warningParams.topMargin = toolbar.getHeight();
+                    findViewById(R.id.warning).setLayoutParams(warningParams);
+                    actionBarAutoHide = new TopViewAutoHideUtil(-toolbar.getHeight(), 0, toolbar);
+                }
+            });
         }
+        return actionBarAutoHideEnabled;
+    }
 
-        @Override
-        public void onTabUnselected(android.support.design.widget.TabLayout.Tab tab) {
-
-        }
-
-        @Override
-        public void onTabReselected(android.support.design.widget.TabLayout.Tab tab) {
-
-        }
-    };
-
-
-    /**
-     * Handles clicks on Checkout Header
-     * Verifies if click is available for this header position, if so, will select position and then mCheckoutOnTabSelectedListener will handle next steps.
-     */
-    final android.view.View.OnClickListener mCheckoutOnClickListener = new android.view.View.OnClickListener() {
-        @Override
-        public void onClick(android.view.View v) {
-            onCheckoutHeaderClickListener((int) v.getTag());
-        }
-    };
+    public void disableActionbarAutoHide() {
+        actionBarAutoHideEnabled = false;
+        actionBarAutoHide = null;
+        findViewById(R.id.rlScrollableContent).setPadding(0, toolbar.getHeight(), 0, 0);
+        ViewGroup.MarginLayoutParams warningParams =
+                (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
+        warningParams.topMargin = 0;
+        findViewById(R.id.warning).setLayoutParams(warningParams);
+    }
 
 
     /*
@@ -434,35 +494,77 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
 
     private void setAppBarLayout(@NavigationAction.Type int oldNavAction, @NavigationAction.Type int newNavAction) {
+        CoordinatorLayout.LayoutParams containerParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
+        CoordinatorLayout.Behavior containerBehavior = containerParams.getBehavior();
+        if (containerBehavior instanceof NestedScrollCatchBehavior) {
+            ((NestedScrollCatchBehavior) containerBehavior).setNestedScrollListener(new NestedScrollCatchBehavior.NestedScrollListener() {
+                @Override
+                public void onDirectionNestedPreScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dx, int dy, int[] consumed, @VerticalScrollingBehavior.ScrollDirection int scrollDirection) {
+
+                }
+
+                @Override
+                public void onDirectionNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int scrollDirection) {
+                    if (searchBarEnabled && searchBarAutoHide != null) {
+                        searchBarAutoHide.onScroll(-dyConsumed);
+                    }
+
+                    if (actionBarAutoHideEnabled && actionBarAutoHide != null) {
+                        actionBarAutoHide.onScroll(-dyConsumed);
+                    }
+                }
+
+                @Override
+                public void onDirectionNestedFling(CoordinatorLayout coordinatorLayout, View child, View target, float velocityX, float velocityY, @VerticalScrollingBehavior.ScrollDirection int scrollDirection) {
+                    if (searchBarEnabled && searchBarAutoHide != null) {
+                        searchBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
+                    }
+
+                    if (actionBarAutoHideEnabled && actionBarAutoHide != null) {
+                        actionBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
+                    }
+                }
+
+                @Override
+                public void onStopNestedDirectionScroll(CoordinatorLayout coordinatorLayout, View child, View target, int scrollDirection) {
+                    if (searchBarEnabled && searchBarAutoHide != null) {
+                        searchBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
+                    }
+
+                    if (actionBarAutoHideEnabled && actionBarAutoHide != null) {
+                        actionBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
+                    }
+                }
+            });
+        }
         try {
             // Case enable/disable actionbar auto-hide
-            if (UITabLayoutUtils.isNotNavigationActionbarAutoHide(newNavAction)) {
-                AppBarLayout.LayoutParams params =
+            if (!UITabLayoutUtils.isNavigationActionbarAutoHide(newNavAction)) {
+                /*AppBarLayout.LayoutParams params =
                         (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
                 params.setScrollFlags(0);
-                toolbar.setLayoutParams(params);
-            } else if (UITabLayoutUtils.isNotNavigationActionbarAutoHide(oldNavAction)) {
-                AppBarLayout.LayoutParams params =
+                toolbar.setLayoutParams(params);*/
+                actionBarAutoHideEnabled = false;
+            } else if (!UITabLayoutUtils.isNavigationActionbarAutoHide(oldNavAction)) {
+                /*AppBarLayout.LayoutParams params =
                         (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
                 params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
                         | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
-                toolbar.setLayoutParams(params);
+                toolbar.setLayoutParams(params);*/
+                actionBarAutoHideEnabled = true;
             }
 
             // Case action without tab layout
             if (!UITabLayoutUtils.isNavigationActionWithTabLayout(newNavAction)) {
-                mTabLayout.setVisibility(View.GONE);
                 mAppBarLayout.setExpanded(true, true);
             }
             // Case action with tab layout
             else {
                 // Case from other tab
                 if (!UITabLayoutUtils.isNavigationActionWithTabLayout(oldNavAction)) {
-                    mTabLayout.setVisibility(View.VISIBLE);
                     mAppBarLayout.setExpanded(true, true);
                 }
                 //noinspection ConstantConditions
-                mTabLayout.getTabAt(UITabLayoutUtils.getTabPosition(newNavAction)).select();
             }
         } catch (NullPointerException e) {
             // ...
@@ -487,21 +589,18 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-    /**
-     * Set the navigation drawer.
-     *
-     * @modified sergiopereira
-     */
     public void setupDrawerNavigation() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 hideKeyboard();
             }
         };
+        mDrawerToggle.setDrawerArrowDrawable(new FixedDrawerDrawable(this, R.drawable.ic_action_hamburger));
+        mDrawerToggle.setHomeAsUpIndicator(R.drawable.back_action_selector);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         mDrawerFragment.CreateDrawer();
@@ -511,40 +610,33 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     public void updateCartDrawerItem() {
         mDrawerFragment.CreateDrawer();
-        /*DrawerFragment navigationCategoryFragment = new DrawerFragment();// NavigationCategoryFragment.getInstance(bundle);
+        /*DrawerFragment navigationCategoryFragment = new DrawerFragment();
+        NavigationCategoryFragment.getInstance(bundle);
         fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
-        *//*PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+        PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
         if (cart != null && cart.getCartCount() != 0) {
             mainDrawer.updateBadge(drawer_identifier_cart, new StringHolder(cart.getCartCount() + ""));
         }*/
-    }/*
+    }
 
     /*
      * ############### OPTIONS MENU #################
      */
 
-    /**
-     * Close the navigation drawer if open.
-     *
-     * @modified sergiopereira
-     */
     public void closeNavigationDrawer() {
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
             mDrawerLayout.closeDrawer(mDrawerNavigation);
         }
     }
 
-    /**
-     *
-     */
     private void setupContentViews() {
         Print.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
         // Warning layout
         try {
             warningFactory = new WarningFactory(findViewById(R.id.warning));
             //view for configurable confirmation message when adding to carte, in case of hasCartPopup = true
-            mConfirmationCartMessageView = new ConfirmationCartMessageView(findViewById(R.id.configurableCartView),this);
-        } catch(IllegalStateException ex){
+            mConfirmationCartMessageView = new ConfirmationCartMessageView(findViewById(R.id.configurableCartView), this);
+        } catch (IllegalStateException ex) {
             Print.e(TAG, ex.getLocalizedMessage(), ex);
         }
     }
@@ -623,6 +715,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                     break;
                 case BASKET:
                     setActionCart(menu);
+                    break;
+                case BASKET_INDICATOR:
+                    setActionCartIndicator(menu);
                     break;
                 case MY_PROFILE:
                     setActionProfile(menu);
@@ -709,7 +804,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         } else {
             Print.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
         }
-    }    @Override
+    }
+
+    @Override
     public void onTabUnselected(TabLayout.Tab tab) {
         // ...
     }
@@ -723,9 +820,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         if (isBackButtonEnabled) {
             Print.i(TAG, "SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(false);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         } else {
             Print.i(TAG, "NO SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(true);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
         // TODO: 7/29/2017 Cleanup
         mDrawerToggle.syncState();
@@ -775,6 +874,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             basket.setEnabled(true);
             View actionCartView = MenuItemCompat.getActionView(basket);
             mActionCartCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
+            mActionCartCount.setVisibility(View.INVISIBLE);
             View actionCartImage = actionCartView.findViewById(R.id.action_cart_image);
             actionCartImage.setOnClickListener(new OnClickListener() {
                 @Override
@@ -783,6 +883,25 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 }
             });
             updateCartInfoInActionBar();
+        } else {
+            basket.setVisible(false);
+        }
+    }
+
+    /**
+     * Set the cart-indicator menu item
+     */
+    private void setActionCartIndicator(final Menu menu) {
+        MenuItem basket = menu.findItem(MyMenuItem.BASKET_INDICATOR.resId);
+        // Validate country
+        if (!initialCountry) {
+            basket.setVisible(true);
+            basket.setEnabled(false);
+            View actionCartView = MenuItemCompat.getActionView(basket);
+            actionCartView.findViewById(R.id.action_cart_image).setEnabled(false);
+            mActionCartIndicatorCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
+            mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
+            updateCartIndicatorInfoInActionBar();
         } else {
             basket.setVisible(false);
         }
@@ -799,6 +918,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     /**
      * Method used to set the search bar in the Action bar.
+     *
      * @author Andre Lopes
      * @modified sergiopereira
      */
@@ -807,56 +927,49 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Get search menu item
         mSearchMenuItem = menu.findItem(R.id.menu_search);
         // Get search action view
-        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
-        mSearchView.setQueryHint(getString(R.string.action_label_search_hint, getString(R.string.app_name_placeholder)));
+        mSearchView = (CustomSearchActionView) MenuItemCompat.getActionView(mSearchMenuItem);
+        setSearchWidthToFillOnExpand();
+        mSearchView.setVoiceSearchClickListener(new CustomSearchActionView.VoiceSearchClickListener() {
+            @Override
+            public void onVoiceSearchClicked(View v) {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+//                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, new Locale("fa"));
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fa-IR");
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.search_hint));
+
+                try {
+                    startActivityForResult(intent, RESULT_SPEECH);
+                    voiceTyping = true;
+                } catch (ActivityNotFoundException a) {
+                    mSearchView.setVoiceSearchEnabled(false);
+                }
+            }
+        });
         // Get edit text
         mSearchOverlay = (FrameLayout) findViewById(R.id.search_overlay);
-        mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         mSearchListView = (RecyclerView) mSearchOverlay.findViewById(R.id.search_overlay_listview);
         mSearchListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mSearchListView.addItemDecoration(new HorizontalSpaceItemDecoration(getApplicationContext(), R.drawable._gen_divider_horizontal_black_400));
-        //#RTL
-        if (ShopSelector.isRtl()) {
-            mSearchAutoComplete.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
-        }
         // Set font
         HoloFontLoader.applyDefaultFont(mSearchView);
-        HoloFontLoader.applyDefaultFont(mSearchAutoComplete);
-        // Set the ime options
-        mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        // Set text color for old android versions
-        mSearchAutoComplete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.search_edit_color));
-        mSearchAutoComplete.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.search_hint_color));
         // Initial state
         MenuItemCompat.collapseActionView(mSearchMenuItem);
-        // Calculate the max width to fill action bar
-        setSearchWidthToFillOnExpand();
         // Set search
         setActionBarSearchBehavior(mSearchMenuItem);
         // Set visibility
-        mSearchMenuItem.setVisible(true);
+        if (searchBarEnabled && !searchBarHidden) {
+            mSearchMenuItem.setVisible(false);
+        } else {
+            mSearchMenuItem.setVisible(true);
+        }
     }
 
     private void setSearchWidthToFillOnExpand() {
         // Get the width of main content
         final int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
-        final int mainContentHeight = DeviceInfoHelper.getHeight(getApplicationContext());
         mSearchView.setMaxWidth(mainContentWidth);
-        mSearchAutoComplete.setDropDownAnchor(R.id.app_bar);
-        // Set measures
-        if (mSearchView != null) {
-            mSearchView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View v, int left, int top, int right, int bottom,
-                                           int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    // set DropDownView width
-                    mSearchAutoComplete.setDropDownWidth(mainContentWidth);
-                    mSearchAutoComplete.setDropDownHeight(mainContentHeight - mSupportActionBar.getHeight());
-                    mSearchAutoComplete.setDropDownBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.search_dropdown_background));
-                }
-            });
-        }
     }
 
     /**
@@ -864,7 +977,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     public void setActionBarSearchBehavior(final MenuItem mSearchMenuItem) {
         Print.d(TAG, "SEARCH MODE: NEW BEHAVIOUR");
-        if (mSearchAutoComplete == null) {
+        if (mSearchView == null) {
             Print.w(TAG, "SEARCH COMPONENT IS NULL");
             return;
         }
@@ -872,8 +985,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         /*
          * Clear and add text listener
          */
-        // mSearchAutoComplete.clearTextChangedListeners();
-        mSearchAutoComplete.addTextChangedListener(new TextWatcher() {
+        mSearchView.addTextChangedListener(new TextWatcher() {
             private final Handler handle = new Handler();
 
             @Override
@@ -890,7 +1002,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 handle.removeCallbacks(run);
                 if (s.length() >= SEARCH_EDIT_SIZE && isSearchComponentOpened) {
                     handle.postDelayed(run, SEARCH_EDIT_DELAY);
-                } else if(TextUtils.isEmpty(s) && isSearchComponentOpened){
+                } else if (TextUtils.isEmpty(s) && isSearchComponentOpened) {
                     getSuggestions();
                 }
             }
@@ -899,7 +1011,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         /*
          * Set IME action listener
          */
-        mSearchAutoComplete.setOnEditorActionListener(new OnEditorActionListener() {
+        mSearchView.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(android.widget.TextView textView, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
@@ -909,19 +1021,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         getSuggestions();
                         return false;
                     }
-                    //Save searched text
-                    BamiloApplication.INSTANCE.setSearchedTerm(searchTerm);
-                    // Collapse search view
-                    MenuItemCompat.collapseActionView(mSearchMenuItem);
-                    Suggestion suggestion = new Suggestion();
-                    suggestion.setQuery(searchTerm);
-                    suggestion.setResult(searchTerm);
-                    suggestion.setTarget(searchTerm);
-                    suggestion.setType(Suggestion.SUGGESTION_OTHER);
-                    // Save query
-                    GetSearchSuggestionsHelper.saveSearchQuery(suggestion);
-                    // Show query
-                    showSearchOther(suggestion);
+                    fireSearch(searchTerm);
                     return true;
                 }
                 return false;
@@ -934,8 +1034,18 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, new OnActionExpandListener() {
             private final Handler handle = new Handler();
             public int restoreSoftInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
+
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                if (mExtraTabLayout != null) {
+                    mExtraTabLayout.setVisibility(View.GONE);
+                    View scrollContainer = findViewById(R.id.rlScrollableContent);
+                    scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                            toolbar.getHeight(),
+                            scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
+                }
+                toolbar.setBackgroundColor(Color.WHITE);
+                findViewById(R.id.searchBar).setVisibility(View.GONE);
                 Print.d(TAG, "SEARCH ON EXPAND");
                 closeNavigationDrawer();
                 isSearchComponentOpened = true;
@@ -945,13 +1055,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 restoreSoftInputMode = getWindow().getAttributes().softInputMode;
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 // Re-set the searched text if it exists
-                mSearchAutoComplete.post(new Runnable() {
+                mSearchView.post(new Runnable() {
                     @Override
                     public void run() {
                         String searchedTerm = BamiloApplication.INSTANCE.getSearchedTerm();
+                        mSearchView.setFocus((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE));
                         if (TextUtils.isNotEmpty(searchedTerm)) {
-                            mSearchAutoComplete.setText(searchedTerm);
-                            mSearchAutoComplete.setSelection(searchedTerm.length());
+                            mSearchView.setText(searchedTerm);
+                            mSearchView.setSelection(searchedTerm.length());
                         } else {
                             handle.removeCallbacks(run);
                             handle.postDelayed(run, SEARCH_EDIT_DELAY);
@@ -963,12 +1074,24 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                Print.d(TAG, "SEARCH ON COLLAPSE");
+                if (mExtraTabLayout != null) {
+                    mExtraTabLayout.setVisibility(View.VISIBLE);
+                    View scrollContainer = findViewById(R.id.rlScrollableContent);
+                    scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                            scrollContainer.getPaddingTop() + mExtraTabLayout.getHeight(),
+                            scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
+                }
                 isSearchComponentOpened = false;
+                toolbar.setBackgroundColor(ContextCompat.getColor(BaseActivity.this, R.color.appBar));
+                if (searchBarEnabled) {
+                    findViewById(R.id.searchBar).setVisibility(View.VISIBLE);
+                }
+                Print.d(TAG, "SEARCH ON COLLAPSE");
                 setActionMenuItemsVisibility(true);
                 setAppBarLayout(NavigationAction.UNKNOWN, action);
                 mSearchOverlay.setVisibility(View.GONE);
                 getWindow().setSoftInputMode(restoreSoftInputMode);
+                hideKeyboard();
                 return true;
             }
         });
@@ -976,17 +1099,35 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         /*
          * Set focus listener, for back pressed with IME
          */
-        mSearchAutoComplete.setOnFocusChangeListener(new OnFocusChangeListener() {
+        mSearchView.setOnFieldFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    Print.i(TAG,"SEARCH ON FOCUS CHANGE");
-                    MenuItemCompat.collapseActionView(mSearchMenuItem);
-                    setActionMenuItemsVisibility(true);
+                    Print.i(TAG, "SEARCH ON FOCUS CHANGE");
+                    if (!voiceTyping && isSearchComponentOpened) {
+                        MenuItemCompat.collapseActionView(mSearchMenuItem);
+                        setActionMenuItemsVisibility(true);
+                    }
                 }
             }
         });
 
+    }
+
+    private void fireSearch(String searchTerm) {
+        //Save searched text
+        BamiloApplication.INSTANCE.setSearchedTerm(searchTerm);
+        // Collapse search view
+        MenuItemCompat.collapseActionView(mSearchMenuItem);
+        Suggestion suggestion = new Suggestion();
+        suggestion.setQuery(searchTerm);
+        suggestion.setResult(searchTerm);
+        suggestion.setTarget(searchTerm);
+        suggestion.setType(Suggestion.SUGGESTION_OTHER);
+        // Save query
+        GetSearchSuggestionsHelper.saveSearchQuery(suggestion);
+        // Show query
+        showSearchOther(suggestion);
     }
 
     /**
@@ -997,13 +1138,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private final Runnable run = new Runnable() {
         @Override
         public void run() {
-            Print.i(TAG, "SEARCH: RUN GET SUGGESTIONS: " + mSearchAutoComplete.getText());
+            Print.i(TAG, "SEARCH: RUN GET SUGGESTIONS: " + mSearchView.getText());
             getSuggestions();
         }
     };
 
     /**
      * Execute search
+     *
      * @author sergiopereira
      */
     public void showSearchCategory(final Suggestion suggestion) {
@@ -1105,15 +1247,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Print.d(TAG, "SEARCH COMPONENT: HIDE");
         try {
             // Validate if exist search icon and bar
-            if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
-                // Hide search bar
-                MenuItemCompat.collapseActionView(mSearchMenuItem);
+            if (!voiceTyping && isSearchComponentOpened) {
+                if (menuItems.contains(MyMenuItem.SEARCH_VIEW) && mSearchMenuItem != null) {
+                    // Hide search bar
+                    MenuItemCompat.collapseActionView(mSearchMenuItem);
 
-                // Show hidden items
-                setActionMenuItemsVisibility(true);
-                // Forced the IME option on collapse
-                mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-                mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                    // Show hidden items
+                    setActionMenuItemsVisibility(true);
+                }
             }
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING NPE ON HIDE SEARCH COMPONENT");
@@ -1132,7 +1273,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private void getSuggestions() {
         beginInMillis = System.currentTimeMillis();
         mGABeginInMillis = System.currentTimeMillis();
-        final String text = mSearchAutoComplete.getText().toString();
+        final String text = mSearchView.getText();
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
         SearchSuggestionClient mSearchSuggestionClient = new SearchSuggestionClient();
         mSearchSuggestionClient.getSuggestions(getApplicationContext(), new IResponseCallback() {
@@ -1173,13 +1314,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private void processErrorSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
 
-        SuggestionsStruct suggestionsStruct = (SuggestionsStruct)baseResponse.getContentData();
+        SuggestionsStruct suggestionsStruct = (SuggestionsStruct) baseResponse.getContentData();
 
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
         Print.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
         // Validate current search component
-        if (mSearchAutoComplete != null && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
+        if (mSearchView != null && !mSearchView.getText().equals(requestQuery)) {
             Print.w(TAG, "SEARCH ERROR: WAS DISCARDED FOR QUERY " + requestQuery);
             return;
         }
@@ -1187,9 +1328,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             return;
         }
         // Hide dropdown
-        if(suggestionsStruct.size() == 0)
-            mSearchAutoComplete.dismissDropDown();
-        else{
+        if (suggestionsStruct.size() == 0) {
+//            mSearchAutoComplete.dismissDropDown();
+        }else {
             //show dropdown with recent queries
             SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
             searchSuggestionsAdapter.setOnViewHolderClickListener(this);
@@ -1205,13 +1346,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private void processSuccessSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
-        SuggestionsStruct suggestionsStruct = (SuggestionsStruct)baseResponse.getContentData();
+        SuggestionsStruct suggestionsStruct = (SuggestionsStruct) baseResponse.getContentData();
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
         Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
 
         // Validate current objects
-        if (menuItems == null || mCurrentMenu == null || mSearchAutoComplete == null) {
+        if (menuItems == null || mCurrentMenu == null || mSearchView == null) {
             return;
         }
         // Validate current menu items
@@ -1219,11 +1360,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             return;
         }
         MenuItem searchMenuItem = mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId);
-        if (searchMenuItem != null && !searchMenuItem.isVisible()) {
+        if (searchMenuItem != null && !(searchMenuItem.isVisible() || searchBarEnabled)) {
             return;
         }
         // Validate current search
-        if (!TextUtils.equals(mSearchAutoComplete.getText().toString(), requestQuery)) {
+        if (!TextUtils.equals(mSearchView.getText(), requestQuery)) {
             Print.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
             return;
         }
@@ -1246,7 +1387,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void updateCartInfo() {
         Print.d(TAG, "ON UPDATE CART INFO");
         updateCartInfoInActionBar();
-        UITabLayoutUtils.updateTabCartInfo(mTabLayout);
+        updateCartIndicatorInfoInActionBar();
 
         updateCartDrawerItem();
     }
@@ -1264,12 +1405,42 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
         PurchaseEntity currentCart = BamiloApplication.INSTANCE.getCart();
         // Show 0 while the cart is not updated
-        final String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
+        final int quantity = currentCart == null ? 0 : currentCart.getCartCount();
 
         mActionCartCount.post(new Runnable() {
             @Override
             public void run() {
-                mActionCartCount.setText(quantity);
+                if (quantity > 0) {
+                    mActionCartCount.setVisibility(View.VISIBLE);
+                    mActionCartCount.setText(String.valueOf(quantity));
+                } else {
+                    mActionCartCount.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+    }
+
+    public void updateCartIndicatorInfoInActionBar() {
+        Print.d(TAG, "ON UPDATE CART IN ACTION BAR");
+        if (mActionCartIndicatorCount == null) {
+            Print.w(TAG, "updateCartInfoInActionBar: cant find quantity in actionbar");
+            return;
+        }
+
+        PurchaseEntity currentCart = BamiloApplication.INSTANCE.getCart();
+        // Show 0 while the cart is not updated
+        final int quantity = currentCart == null ? 0 : currentCart.getCartCount();
+
+        mActionCartIndicatorCount.post(new Runnable() {
+            @Override
+            public void run() {
+                if (quantity > 0) {
+                    mActionCartIndicatorCount.setVisibility(View.VISIBLE);
+                    mActionCartIndicatorCount.setText(String.valueOf(quantity));
+                } else {
+                    mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -1302,6 +1473,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             myProfile.setVisible(true);
             myProfile.setEnabled(true);
             myProfileActionProvider = (MyProfileActionProvider) MenuItemCompat.getActionProvider(myProfile);
+            // commented next line because options menu is the same in all pages
             myProfileActionProvider.setFragmentNavigationAction(action);
             myProfileActionProvider.setAdapterOnClickListener(myProfileClickListener);
         }
@@ -1344,6 +1516,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                     case NavigationAction.HOME:
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_HOME);
                         onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.CATEGORIES:
+                        onSwitchFragment(FragmentType.CATEGORIES, null, true);
                         break;
                     case NavigationAction.LOGIN_OUT:
                         // SIGN IN
@@ -1444,11 +1619,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void setActionBarTitle(@StringRes int actionBarTitleResId) {
         mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(getString(actionBarTitleResId));
+        HoloFontLoader.applyDefaultFont(toolbar);
     }
 
     public void setActionBarTitle(@NonNull String title) {
         mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(title);
+        HoloFontLoader.applyDefaultFont(toolbar);
     }
 
     /**
@@ -1474,6 +1651,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // android.os.BinderProxy@42128698 is not valid; is your activity running?
         if (!isFinishing()) {
             baseActivityProgressDialog = DialogProgressFragment.newInstance();
+            baseActivityProgressDialog.setCancelable(false);
             baseActivityProgressDialog.show(getSupportFragmentManager(), null);
         }
     }
@@ -1506,7 +1684,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     public void onLogOut() {
         ProductDetailsFragment.clearSelectedRegionCityId();
-        
+        SearchRecentQueriesTableHelper.deleteAllRecentQueries();
+        mSearchListView.setAdapter(null);
+
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
         // Goto Home
@@ -1610,13 +1790,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     /*
-     * ########## CHECKOUT HEADER ##########
+     * ########## CHECKOUT ##########
      */
 
     /**
      * Set the current checkout step otherwise return false
      */
-    public void setCheckoutHeader(@ConstantsCheckout.CheckoutType int checkoutStep) {
+    /*public void setCheckoutHeader(@ConstantsCheckout.CheckoutType int checkoutStep) {
         Print.i(TAG, "SET CHECKOUT HEADER STEP ID: " + checkoutStep);
         switch (checkoutStep) {
             case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
@@ -1638,9 +1818,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-    /**
+    *//**
      * Update the base components out checkout
-     */
+     *//*
     private void updateBaseComponentsOutCheckout(final int visibility) {
         Print.d(TAG, "SET BASE FOR NON CHECKOUT: HIDE");
         // Set header visibility
@@ -1652,9 +1832,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }, 5);
     }
 
-    /**
+    *//**
      * Update the base components in checkout
-     */
+     *//*
     private void updateBaseComponentsInCheckout(int visibility) {
         Print.d(TAG, "SET BASE FOR CHECKOUT: SHOW");
         mCheckoutTabLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -1668,9 +1848,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mCheckoutTabLayout.setVisibility(visibility);
     }
 
-    /**
+    *//**
      * Set the selected checkout step
-     */
+     *//*
     private void selectCheckoutStep(int step) {
         TabLayout.Tab tab = mCheckoutTabLayout.getTabAt(step);
         if(tab != null) {
@@ -1678,9 +1858,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-    /**
+    *//**
      * Checkout header click listener associated to each item on layout
-     */
+     *//*
     public void onCheckoutHeaderClickListener(int step) {
         Print.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER " + step);
         FragmentType fragmentType = ConstantsCheckout.getFragmentType(step);
@@ -1694,10 +1874,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-    /**
+    *//**
      * When user changes checkout step.
      * @param step - selected position on header.
-     */
+     *//*
     public void onCheckoutHeaderSelectedListener(int step) {
         // CASE TAB_CHECKOUT_ABOUT_YOU - step == 0 - click is never allowed
         // CASE TAB_CHECKOUT_BILLING
@@ -1714,14 +1894,15 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             popBackStackUntilTag(FragmentType.CHECKOUT_SHIPPING.toString());
         }
         // CASE TAB_CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
-    }
+    }*/
 
     /**
      * Method used to remove all native checkout entries from the back stack on the Fragment Controller
      * Note: This method must be updated in case of adding more screens to native checkout.
+     *
      * @author ricardosoares
      */
-    public void removeAllNativeCheckoutFromBackStack(){
+    public void removeAllNativeCheckoutFromBackStack() {
         // Remove all native checkout tags
         FragmentController.getInstance().removeAllEntriesWithTag(CheckoutStepManager.getAllNativeCheckout());
     }
@@ -1791,7 +1972,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             public void onRequestComplete(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST COMPLETE: AUTO LOGIN");
                 // Get customer
-                Customer customer = ((CheckoutStepLogin)((NextStepStruct)baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
+                Customer customer = ((CheckoutStepLogin) ((NextStepStruct) baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
                 // Get origin
                 ContentValues credentialValues = BamiloApplication.INSTANCE.getCustomerUtils().getCredentials();
                 // Track
@@ -1805,15 +1986,15 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         });
     }
 
-    public void showWarning(@WarningFactory.WarningErrorType final int warningFact){
+    public void showWarning(@WarningFactory.WarningErrorType final int warningFact) {
         warningFactory.showWarning(warningFact);
     }
 
-    public void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact, final String message){
+    public void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact, final String message) {
         warningFactory.showWarning(warningFact, message);
     }
 
-    public void hideWarningMessage(){
+    public void hideWarningMessage() {
         warningFactory.hideWarning();
     }
 
@@ -1822,6 +2003,55 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     public WeakReference<BaseActivity> getWeakBaseActivity() {
         return new WeakReference<>(this);
+    }
+
+    public TabLayout getExtraTabLayout() {
+        if (mExtraTabLayout == null) {
+            injectExtraTabLayout();
+        }
+        return mExtraTabLayout;
+    }
+
+    public void setUpExtraTabLayout(ViewPager viewPager) {
+        if (mExtraTabLayout == null) {
+            injectExtraTabLayout();
+        }
+        mExtraTabLayout.setupWithViewPager(viewPager);
+        HoloFontLoader.applyDefaultFont(mExtraTabLayout);
+    }
+
+    private void injectExtraTabLayout() {
+        mExtraTabLayout = (TabLayout) getLayoutInflater().inflate(R.layout.extra_tab_layout, mAppBarLayout, false);
+        mAppBarLayout.addView(mExtraTabLayout);
+        final View scrollContainer = findViewById(R.id.rlScrollableContent);
+        scrollContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                        scrollContainer.getPaddingTop() + mExtraTabLayout.getHeight(),
+                        scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
+            }
+        });
+    }
+
+    public void onFragmentViewDestroyed(Boolean isNestedFragment) {
+        disableSearchBar();
+        disableActionbarAutoHide();
+        if (!isNestedFragment) {
+            if (mExtraTabLayout != null) {
+                mAppBarLayout.removeView(mExtraTabLayout);
+                mExtraTabLayout = null;
+                final View scrollContainer = findViewById(R.id.rlScrollableContent);
+                mAppBarLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                                toolbar.getHeight(),
+                                scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
+                    }
+                });
+            }
+        }
     }
 
 
@@ -1837,13 +2067,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         String text = selectedSuggestion.getResult();
         //Save searched text
         BamiloApplication.INSTANCE.setSearchedTerm(text);
-        mSearchAutoComplete.dismissDropDown();
         // Collapse search view
         MenuItemCompat.collapseActionView(mSearchMenuItem);
         // Save query
         GetSearchSuggestionsHelper.saveSearchQuery(selectedSuggestion);
 
-        switch (selectedSuggestion.getType()){
+        switch (selectedSuggestion.getType()) {
             case Suggestion.SUGGESTION_PRODUCT:
                 showSearchProduct(selectedSuggestion);
                 break;
@@ -1869,7 +2098,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void onViewHolderItemClick(View view, RecyclerView.Adapter<?> adapter, int position) {
 
     }
-
 
 
 }

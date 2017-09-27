@@ -45,7 +45,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     public MyAccountCreateAddressFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MY_ACCOUNT,
-                R.string.my_addresses,
+                R.string.my_profile_add_new_address,
                 ADJUST_CONTENT,
                 ConstantsCheckout.NO_CHECKOUT);
     }

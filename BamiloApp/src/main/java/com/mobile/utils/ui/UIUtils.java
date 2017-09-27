@@ -295,12 +295,15 @@ public class UIUtils {
         TrackerDelegator.trackCall(activity);
         // Get phone number
         SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, "021 72516"); //In case phone # not fetched properly
+        // TODO: 9/26/2017 Change expiration policies
+        String mPhone2Call = activity.getString(R.string.call_center_number); /*sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null);*/ //In case phone # not fetched properly
         // Make a call
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + mPhone2Call));
-        if (intent.resolveActivity(activity.getPackageManager()) != null) {
-            activity.startActivity(intent);
+        if (mPhone2Call != null) {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + mPhone2Call));
+            if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                activity.startActivity(intent);
+            }
         }
     }
 

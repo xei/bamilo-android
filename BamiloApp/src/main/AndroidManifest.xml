@@ -96,6 +96,7 @@
         <activity
             android:name=".SplashScreenActivity"
             android:noHistory="true"
+            android:resizeableActivity="false"
             android:screenOrientation="unspecified">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -118,9 +119,11 @@
         <activity
             android:name=".MainFragmentActivity"
             android:exported="true"
+            android:resizeableActivity="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".BankActivity">
+        <activity android:name=".BankActivity"
+            android:resizeableActivity="false">
             <intent-filter>
                 <action android:name="com.payment.browser" />
 
@@ -130,24 +133,29 @@
         </activity>
         <activity
             android:name=".MainFragmentTabletActivity"
+            android:resizeableActivity="false"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ProductImageGalleryActivity"
+            android:resizeableActivity="false"
             android:exported="true"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".OverLoadErrorActivity"
+            android:resizeableActivity="false"
             android:exported="true"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".RedirectInfoActivity"
+            android:resizeableActivity="false"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.pushwoosh.DeepLinkActivity"
+            android:resizeableActivity="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

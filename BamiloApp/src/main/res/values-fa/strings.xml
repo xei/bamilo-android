@@ -7,7 +7,7 @@
 
     <string name="action_label_receiver">اطلاعات تحویل گیرنده</string>
     <string name="action_label_basket">سبد کالا</string>
-    <string name="action_label_search_hint"> جستجو در بامیلو</string>
+    <string name="action_label_search_hint"> جستجو در %1$s</string>
     <string name="add_to_shopping_cart">افزودن به سبد خرید</string>
     <string name="added_bundle_to_shop_cart_dialog_text">کالاها به سبد خرید اضافه شدند.</string>
     <string name="added_to_shop_cart_dialog_text">کالا به سبد خرید شما اضافه شد.</string>
@@ -288,7 +288,7 @@
     <string name="rating_placeholder">امتیازات (‎%s‎)</string>
     <string name="reviews_placeholder">نظرات کاربران (‎%s‎)</string>
     <string name="rating_average_placeholder">از نظر ‎%s‎ کاربران</string>
-    <string name="rat_rev">نظرات و پیشنهادات</string>
+    <string name="rat_rev">نظرات</string>
     <string name="fulfilled_by">تامین کننده: ‎%s‎</string>
     <string name="policy">قوانین و سیاست ها</string>
     <string name="shipment">روش ارسال ‎%1$d‎ از ‎%2$d‎</string>
@@ -360,7 +360,7 @@
     <string name="sign_up_to_our_newsletter">در خبرنامه عضو شوید</string>
     <string name="sign_up_to_our_newsletter_body">برای اطلاع از فروش های ویژه، جدیدترین ها و تخفیف ها</string>
     <string name="search_shop_in_shop_label">بازدید از فروشگاه ‎%s‎ ما</string>
-    <string name="search_categories_label">‎%1$s‎ در ‎%2$s‎</string>
+    <string name="search_categories_label">&#8207;‎%1$s‎ در ‎%2$s‎</string>
     <string name="on_label">فعال</string>
     <string name="visit_the_official_brand_store">مشاهده محصولات ‎%s‎</string>
     <string name="free_shipping_possible">می توانید از ارسال رایگان بهره مند شوید</string>
@@ -529,4 +529,16 @@
     <string name="special_price_filter">تخفیف</string>
     <string name="user_greeting">سلام %1$s</string>
     <string name="pdv_delivery_time">زمان تحویل:</string>
+    <string name="say_what_you_want_to_search">بگو دنبال چی هستی؟</string>
+    <string name="app_name_placeholder">بامیلو</string>
+    <string name="basket_fragment_title">سبد خرید شما</string>
+    <string name="checkout_choose_address_step">انتخاب آدرس</string>
+    <string name="checkout_confirmation_step">بررسی نهایی</string>
+    <string name="checkout_payment_method_step">انتخاب روش پرداخت</string>
+    <string name="checkout_add_new_address">افزودن آدرس</string>
+    <string name="my_profile_add_new_address">@string/checkout_add_new_address</string>
+    <string name="checkout_edit_address">ویرایش آدرس</string>
+    <string name="categories_fragment_title">دسته بندی محصولات</string>
+    <string name="search_on_brands_categories">جستجوی نام، برند یا دسته‌بندی</string>
+    <string name="search_hint">جستجو در بامیلو</string>
 </resources>

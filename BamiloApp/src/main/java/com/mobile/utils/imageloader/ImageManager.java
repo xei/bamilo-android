@@ -62,9 +62,9 @@ public final class ImageManager {
         DrawableRequestBuilder<?> builder = Glide.with(mContext)
                 .load(imageUrl)
                 .placeholder(placeHolderImageId)
-                .crossFade()
                 .listener(listener)
-                .dontAnimate()
+                .dontTransform()
+                .animate(android.R.anim.fade_in)
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
 
         if(isThumbnail) {

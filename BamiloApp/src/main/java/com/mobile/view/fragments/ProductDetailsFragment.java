@@ -151,7 +151,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * Empty constructor
      */
     public ProductDetailsFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.PRODUCT,
                 R.layout.pdv_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
@@ -250,7 +250,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         super.onStart();
 //        triggerGetDeliveryTime(selectedCityId);
         triggerGetRegions(ApiConstants.GET_REGIONS_API_PATH);
-
+        getBaseActivity().setActionBarTitle("");
     }
 
     /*
@@ -682,8 +682,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Set title
         ((TextView) mTitleContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrandName());
         ((TextView) mTitleContainer.findViewById(R.id.pdv_product_subtitle)).setText(mProduct.getName());
-        // Set AB title
-        getBaseActivity().setActionBarTitle(mProduct.getBrandName());
     }
 
     /**

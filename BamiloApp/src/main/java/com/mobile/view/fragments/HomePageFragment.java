@@ -84,7 +84,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Empty constructor
      */
     public HomePageFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET),
                 NavigationAction.HOME,
                 R.layout.home_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
@@ -138,6 +138,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON VIEW CREATED");
         // Get scroll view
         mScrollView = (NestedScrollView) view.findViewById(R.id.home_page_scroll);
+        mScrollView.setClipToPadding(false);
+        getBaseActivity().enableSearchBar(true, mScrollView);
         // Get recycler view
         mContainer = (ViewGroup) view.findViewById(R.id.home_page_container);
         // Validate shared prefs

@@ -493,7 +493,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 fragment = newFragmentInstance(StaticWebViewPageFragment.class, bundle);
                 break;
             case MY_ACCOUNT:
-                removeEntries = true;
+                removeEntries = false;
                 fragment = newFragmentInstance(MyAccountFragment.class, bundle);
                 break;
             case MY_USER_DATA:
@@ -560,7 +560,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 fragment = newFragmentInstance(MyAccountNewslettersFragment.class, bundle);
                 break;
             case WISH_LIST:
-                removeEntries = true;
+                removeEntries = false;
                 fragment = newFragmentInstance(WishListFragment.class, bundle);
                 break;
             case RECENT_SEARCHES_LIST:
