@@ -12,7 +12,7 @@ public class TopViewAutoHideUtil {
     private ViewPropertyAnimatorCompat mScrollAnimator;
     private ValueAnimator mValueAnimator;
     private OnViewShowHideListener onViewShowHideListener;
-    private boolean searchBarHidden = false;
+    private boolean searchBarHidden = true;
 
 
     public TopViewAutoHideUtil(int minScrollRange, int maxScrollRange, View view) {

@@ -965,7 +965,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Set search
         setActionBarSearchBehavior(mSearchMenuItem);
         // Set visibility
-        if (searchBarEnabled && searchBarAutoHide != null && !searchBarAutoHide.isSearchBarHidden()) {
+        if (searchBarEnabled) {
             mSearchMenuItem.setVisible(false);
         } else {
             mSearchMenuItem.setVisible(true);
