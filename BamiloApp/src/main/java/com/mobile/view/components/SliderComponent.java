@@ -3,10 +3,12 @@ package com.mobile.view.components;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator;
@@ -19,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SliderComponent implements BaseComponent<List<SliderComponent.Item>> {
+    private static final float SLIDE_WIDTH_RATIO = 2.1375F;
     private List<Item> items;
     private OnSlideClickListener onSlideClickListener;
 
@@ -31,12 +34,12 @@ public class SliderComponent implements BaseComponent<List<SliderComponent.Item>
         View rootView = View.inflate(context, R.layout.component_slider, null);
 
         final PreviewViewPager vpSlider = (PreviewViewPager) rootView.findViewById(R.id.vpSlider);
-        InfiniteCirclePageIndicator indicatorSlider = (InfiniteCirclePageIndicator) rootView.findViewById(R.id.indicatorSlider);
+        final InfiniteCirclePageIndicator indicatorSlider = (InfiniteCirclePageIndicator) rootView.findViewById(R.id.indicatorSlider);
 
         // reversing the list to make the user feel RTL
         Collections.reverse(items);
 
-        final SliderAdapter adapter = new SliderAdapter(context, items, items.size() - 1);
+        final SliderAdapter adapter = new SliderAdapter(context, items);
         adapter.onSlideClickListener = new OnSlideClickListener() {
             @Override
             public void onSlideClicked(View v, int position, Item item) {
@@ -47,31 +50,6 @@ public class SliderComponent implements BaseComponent<List<SliderComponent.Item>
         };
         final SliderInfiniteAdapter infinitePagerAdapter = new SliderInfiniteAdapter(adapter);
         infinitePagerAdapter.enableInfinitePages(adapter.getCount() > 1);
-        ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                int realPosition = infinitePagerAdapter.getVirtualPosition(position);
-                adapter.setSelectedPagePosition(realPosition);
-                for (int i = 0 ; i < vpSlider.getChildCount() ; i++) {
-                    vpSlider.getChildAt(i).animate().alpha(0.6F).start();
-                }
-                View view = vpSlider.findViewWithTag(String.valueOf(realPosition));
-                if (view != null) {
-                    view.animate().alpha(1F).start();
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        };
-        vpSlider.addOnPageChangeListener(onPageChangeListener);
         vpSlider.setAdapter(infinitePagerAdapter);
         vpSlider.setPageMargin((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 4, context.getResources().getDisplayMetrics()));
@@ -81,8 +59,23 @@ public class SliderComponent implements BaseComponent<List<SliderComponent.Item>
             vpSlider.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         }
         indicatorSlider.setViewPager(vpSlider, items.size() - 1);
-        onPageChangeListener.onPageSelected(items.size() - 1);
+        infinitePagerAdapter.setOneItemMode();
+        int slideWidth = calculatePageWidth(context, vpSlider);
+        int slideHeight = (int) (slideWidth / SLIDE_WIDTH_RATIO);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) vpSlider.getLayoutParams();
+        params.height = slideHeight;
+        vpSlider.setLayoutParams(params);
         return rootView;
+    }
+
+    private int calculatePageWidth(Context context, ViewPager vpSlider) {
+        int pagerSidePadding = vpSlider.getPaddingRight() + vpSlider.getPaddingRight();
+        int pageMargins = vpSlider.getPageMargin() * 2;
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        int screenWidth = displayMetrics.widthPixels;
+        return screenWidth - (pageMargins + pagerSidePadding);
     }
 
     @Override
@@ -135,12 +128,10 @@ public class SliderComponent implements BaseComponent<List<SliderComponent.Item>
         private Context mContext;
         private List<Item> items;
         private OnSlideClickListener onSlideClickListener;
-        private int selectedPagePosition;
 
-        public SliderAdapter(Context context, List<Item> items, int initialPosition) {
+        public SliderAdapter(Context context, List<Item> items) {
             this.mContext = context;
             this.items = items;
-            this.selectedPagePosition = initialPosition;
         }
 
         @Override
@@ -159,11 +150,6 @@ public class SliderComponent implements BaseComponent<List<SliderComponent.Item>
                 });
             }
             rootView.setTag(String.valueOf(position));
-            if (position == selectedPagePosition) {
-                rootView.setAlpha(1F);
-            } else {
-                rootView.setAlpha(.6F);
-            }
             container.addView(rootView);
             return rootView;
         }
@@ -188,14 +174,6 @@ public class SliderComponent implements BaseComponent<List<SliderComponent.Item>
                 return 0;
             }
             return items.size();
-        }
-
-        public int getSelectedPagePosition() {
-            return selectedPagePosition;
-        }
-
-        public void setSelectedPagePosition(int selectedPagePosition) {
-            this.selectedPagePosition = selectedPagePosition;
         }
     }
 

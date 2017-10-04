@@ -98,5 +98,6 @@
 
     <!-- BOTTOM SHEET -->
     <integer name="dialog_max_items">4</integer>
+    <dimen name="slider_padding">120dp</dimen>
 
 </resources>

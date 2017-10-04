@@ -404,7 +404,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             public void run() {
                 if (views != null) {
                     for (View v : views) {
-                        v.setPadding(v.getPaddingLeft(), searchBar.getHeight(),
+                        v.setPadding(v.getPaddingLeft(), (int) getResources().getDimension(R.dimen.search_bar_height),
                                 v.getPaddingRight(), v.getPaddingBottom());
                     }
                 }

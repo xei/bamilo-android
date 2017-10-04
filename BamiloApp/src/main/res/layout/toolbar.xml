@@ -15,7 +15,7 @@
         <RelativeLayout
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="@dimen/search_bar_height"
             android:layout_below="@+id/toolbar"
             android:background="?colorPrimary"
             android:clickable="true"

@@ -583,6 +583,8 @@
     <dimen name="drawer_item_icon">18dp</dimen>
 
     <dimen name="material_drawer_account_header_height">110dp</dimen>
+    <dimen name="slider_padding">16dp</dimen>
+    <dimen name="search_bar_height">46dp</dimen>
 
 
 </resources>
