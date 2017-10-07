@@ -163,5 +163,6 @@
     <!-- BOTTOM SHEET -->
     <integer name="dialog_max_items">7</integer>
     <dimen name="slider_padding">120dp</dimen>
+    <dimen name="home_categories_carousel_image_size">64dp</dimen>
 
 </resources>

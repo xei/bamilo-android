@@ -63,6 +63,7 @@
 
     <integer name="grid_num_columns">2</integer>
     <dimen name="slider_padding">160dp</dimen>
+    <dimen name="home_categories_carousel_image_size">72dp</dimen>
 
 
 </resources>

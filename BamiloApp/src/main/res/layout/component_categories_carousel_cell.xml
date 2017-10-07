@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/imgCategoryIcon"
+        android:layout_width="@dimen/home_categories_carousel_image_size"
+        android:layout_height="@dimen/home_categories_carousel_image_size"
+        android:layout_centerHorizontal="true" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tvCategoryTitle"
+        android:layout_width="match_parent"
+        android:layout_height="36sp"
+        android:layout_below="@+id/imgCategoryIcon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:gravity="center_horizontal|top"
+        android:maxLines="2"
+        android:textColor="@color/blue_3"
+        android:textSize="10sp"
+        tools:text="text \n text" />
+
+</RelativeLayout>
