@@ -41,7 +41,7 @@ public class FrontPageFragment extends BaseFragment{
 
         List<BaseFragment> fragments = new ArrayList<>();
         final BaseFragment fragment1, fragment2;
-        fragment1 = new HomePageFragment();
+        fragment1 = new MyBamiloFragment();
         fragment2 = new HomeFragment();
         fragments.add(fragment1);
         fragments.add(fragment2);

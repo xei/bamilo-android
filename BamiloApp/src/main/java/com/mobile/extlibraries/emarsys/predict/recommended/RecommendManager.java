@@ -19,7 +19,9 @@ import com.mobile.service.objects.cart.PurchaseCartItem;
 import com.mobile.service.objects.product.pojo.ProductComplete;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -27,6 +29,9 @@ public class RecommendManager {
 
     private static final String TAG = "RecommendManager";
     private static final int RecommendLimit = 15;
+    private static final int HOME_PAGE_COUNT = 6;
+    private static final int HOME_RECOMMENDATION_LIMIT = 300;
+    private static final String HOME_LOGIC_PREFIX = "HOME_";
 
     public void sendPurchaseRecommend() {
         Transaction transaction = new Transaction();
@@ -47,36 +52,76 @@ public class RecommendManager {
         //sharedCart().clear();
     }
 
-   public void sendHomeRecommend(final RecommendListCompletionHandler callBack) {
-       setEmail();
-       Transaction transaction = new Transaction();
-       transaction.cart(getCartItems());
+    public void sendHomeRecommend(final RecommendListCompletionHandler callBack) {
+        setEmail();
+        Transaction transaction = new Transaction();
+        transaction.cart(getCartItems());
 
-           String logic = "PERSONAL";
-           RecommendationRequest recommend = new RecommendationRequest(logic);
-           recommend.setLimit(RecommendLimit);
-           transaction.recommend(recommend, new CompletionHandler() {
-               @Override
-               public void onCompletion(RecommendationResult result) {
-                   // Process result
-                   Log.d(TAG, result.getFeatureId());
+        String logic = "PERSONAL";
+        RecommendationRequest recommend = new RecommendationRequest(logic);
+        recommend.setLimit(RecommendLimit);
+        transaction.recommend(recommend, new CompletionHandler() {
+            @Override
+            public void onCompletion(RecommendationResult result) {
+                // Process result
+                Log.d(TAG, result.getFeatureId());
 
-                   String category = result.getTopic();
+                String category = result.getTopic();
 
-                       List<Item> data = new ArrayList<>();
+                List<Item> data = new ArrayList<>();
 
-                       for (RecommendedItem next : result.getProducts()) {
-                           Item item = new Item(next);
-                           data.add(item);
-                       }
+                for (RecommendedItem next : result.getProducts()) {
+                    Item item = new Item(next);
+                    data.add(item);
+                }
 
-                       callBack.onRecommendedRequestComplete(category, result.getProducts());
-               }
-           });
+                callBack.onRecommendedRequestComplete(category, result.getProducts());
+            }
+        });
 
 
-       sendTransaction(transaction);
-   }
+        sendTransaction(transaction);
+    }
+
+    public static Map<String, List<String>> createHomeExcludeItemListsMap(List<String>... itemLists) {
+        Map<String, List<String>> resultMap = new HashMap<>();
+        if (itemLists != null && itemLists.length > 0) {
+            for (int i = 0; i < itemLists.length; i++) {
+                String key = HOME_LOGIC_PREFIX + i;
+                resultMap.put(key, itemLists[i]);
+            }
+        }
+        return resultMap;
+    }
+
+    public void getEmarsysHomes(final RecommendListCompletionHandler callBack, Map<String, List<String>> excludeItemLists) {
+        setEmail();
+        Transaction transaction = new Transaction();
+        transaction.cart(getCartItems());
+        for (int i = 0; i < HOME_PAGE_COUNT; i++) {
+            String logic = HOME_LOGIC_PREFIX + i;
+            RecommendationRequest recommend = new RecommendationRequest(logic);
+            List<String> excludeValues = excludeItemLists.get(logic);
+            if (excludeValues != null) {
+                recommend.excludeItemsWhereIn("item", excludeValues);
+            }
+            recommend.setLimit(HOME_RECOMMENDATION_LIMIT);
+            transaction.recommend(recommend, new CompletionHandler() {
+                @Override
+                public void onCompletion(RecommendationResult result) {
+                    // Process result
+                    Log.d(TAG, result.getFeatureId());
+
+                    String category = result.getTopic();
+
+                    callBack.onRecommendedRequestComplete(category, result.getProducts());
+                }
+
+
+            });
+        }
+        sendTransaction(transaction);
+    }
 
     public void sendCartRecommend(final RecommendListCompletionHandler callBack) {
         sendRecommend(null, "CART", null, null, null, null, callBack);
@@ -180,22 +225,20 @@ public class RecommendManager {
         });
     }
 
-    private List<CartItem> getCartItems()
-    {
+    private List<CartItem> getCartItems() {
         List<CartItem> result = new ArrayList<>();
         if (BamiloApplication.INSTANCE.getCart() == null) return result;
         List<PurchaseCartItem> cartItems = BamiloApplication.INSTANCE.getCart().getCartItems();
         if (cartItems == null) return result;
-        for (PurchaseCartItem purchaseCartItem:cartItems) {
-            CartItem item = new CartItem(purchaseCartItem.getSku(), (float)purchaseCartItem.getPrice(), purchaseCartItem.getQuantity());
+        for (PurchaseCartItem purchaseCartItem : cartItems) {
+            CartItem item = new CartItem(purchaseCartItem.getSku(), (float) purchaseCartItem.getPrice(), purchaseCartItem.getQuantity());
             result.add(item);
         }
 
         return result;
     }
 
-    public Item getCartItem(ProductComplete product)
-    {
+    public Item getCartItem(ProductComplete product) {
         Item item = new Item();
         item.setItemID(product.getSku());
 
@@ -208,8 +251,7 @@ public class RecommendManager {
 
             Session.getInstance().setCustomerEmail(BamiloApplication.CUSTOMER.getEmail());
             Session.getInstance().setCustomerId("" + BamiloApplication.CUSTOMER.getId());
-        }
-        else {
+        } else {
             Session.getInstance().setCustomerEmail(null);
             Session.getInstance().setCustomerId(null);
         }
