@@ -91,10 +91,6 @@ public class SliderComponent implements BaseComponent<List<SliderComponent.Item>
         this.onSlideClickListener = onSlideClickListener;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
     public List<Item> getItems() {
         return items;
     }

@@ -262,13 +262,13 @@ public class InfiniteCirclePageIndicator extends View implements PageIndicator {
             return;
         }
         if (mViewPager != null) {
-            mViewPager.setOnPageChangeListener(null);
+            mViewPager.addOnPageChangeListener(null);
         }
         if (view.getAdapter() == null) {
             throw new IllegalStateException("ViewPager does not have adapter instance.");
         }
         mViewPager = (InfiniteViewPager)view;
-        mViewPager.setOnPageChangeListener(this);
+        mViewPager.addOnPageChangeListener(this);
         invalidate();
     }
 
@@ -302,7 +302,6 @@ public class InfiniteCirclePageIndicator extends View implements PageIndicator {
     }
 
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        mCurrentPage = ((InfinitePagerAdapter) mViewPager.getAdapter()).getVirtualPosition(position);
         mPageOffset = positionOffset;
         invalidate();
 
