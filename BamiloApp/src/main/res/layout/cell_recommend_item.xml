@@ -65,20 +65,6 @@
                 tools:text="Brand" />
 
             <com.mobile.components.customfontviews.TextView
-                android:id="@+id/old_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:ellipsize="end"
-                android:fontFamily="@string/bamilo_regular_font"
-                android:gravity="right|center_vertical"
-                android:singleLine="true"
-                android:textColor="@color/recommendation_grey"
-                android:textSize="10sp"
-                tools:text="19000 ریال" />
-
-            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,6 +77,20 @@
                 android:textColor="@color/recommendation_black"
                 android:textSize="12sp"
                 tools:text="18000 ریال" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/old_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:ellipsize="end"
+                android:fontFamily="@string/bamilo_regular_font"
+                android:gravity="right|center_vertical"
+                android:singleLine="true"
+                android:textColor="@color/recommendation_grey"
+                android:textSize="10sp"
+                tools:text="19000 ریال" />
 
 
         </LinearLayout>
