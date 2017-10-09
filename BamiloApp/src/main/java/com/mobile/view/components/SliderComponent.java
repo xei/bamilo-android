@@ -61,7 +61,9 @@ public class SliderComponent implements BaseComponent<List<SliderComponent.Item>
         indicatorSlider.setViewPager(vpSlider, items.size() - 1);
         infinitePagerAdapter.setOneItemMode();
         int slideWidth = calculatePageWidth(context, vpSlider);
-        int slideHeight = (int) (slideWidth / SLIDE_WIDTH_RATIO);
+        // 5 times : 1 for paddingBottom of constraintLayout, 2 for cardView compatPadding, 2 for cardView elevation
+        int slideContainerPadding = (int) context.getResources().getDimension(R.dimen.slider_slide_padding) * 5;
+        int slideHeight = (int) (slideWidth / SLIDE_WIDTH_RATIO) + slideContainerPadding;
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) vpSlider.getLayoutParams();
         params.height = slideHeight;
         vpSlider.setLayoutParams(params);
