@@ -43,6 +43,23 @@
         <!-- #### Button View -->
         <item name="android:buttonStyle">@style/Widget.Custom.Button</item>
         <item name="buttonStyle">@style/Widget.Custom.Button</item>
+
+        <!--Popup menu styling-->
+        <item name="textAppearanceLargePopupMenu">@style/PopupTextAppearanceLarge</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/PopupTextAppearanceLarge</item>
+
+        <item name="textAppearanceSmallPopupMenu">@style/PopupTextAppearanceSmall</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/PopupTextAppearanceSmall</item>
+
+        <item name="popupMenuStyle">@style/Widget.AppCompat.Light.PopupMenu</item>
+        <item name="android:popupMenuStyle">@style/Widget.AppCompat.Light.PopupMenu</item>
+    </style>
+
+    <style name="PopupTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Large">
+        <item name="android:textColor">@color/extradarkgrey</item>
+    </style>
+    <style name="PopupTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/extradarkgrey</item>
     </style>
 
     <!-- MATERIAL|CUSTOM WIDGETS -->

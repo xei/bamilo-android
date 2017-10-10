@@ -543,4 +543,6 @@
     <string name="search_hint">جستجو در بامیلو</string>
     <string name="my_bamilo_fragment_title">بامیلوی من</string>
     <string name="home_page_fragment_title">خانه</string>
+    <string name="choose_category">انتخاب دسته‌بندی</string>
+    <string name="all_categories">همه‌ی دسته‌بندی‌ها</string>
 </resources>
