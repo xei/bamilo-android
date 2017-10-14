@@ -79,7 +79,7 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
                 public void onClick(View v) {
                     if (onRecommendItemClickListener != null) {
                         onRecommendItemClickListener.onRecommendItemClicked(v,
-                                items.get(holder.getAdapterPosition()), holder.getAdapterPosition());
+                                items.get(holder.getAdapterPosition() - 1), holder.getAdapterPosition() - 1);
                     }
                 }
             });

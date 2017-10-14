@@ -94,7 +94,7 @@ public class RecommendManager {
         return resultMap;
     }
 
-    public void getEmarsysHomes(final RecommendListCompletionHandler callBack, Map<String, List<String>> excludeItemLists) {
+    public void getEmarsysHomes(final RecommendListCompletionHandler callBack, EmarsysErrorCallback errorCallback, Map<String, List<String>> excludeItemLists) {
         setEmail();
         Transaction transaction = new Transaction();
         transaction.cart(getCartItems());
@@ -120,7 +120,7 @@ public class RecommendManager {
 
             });
         }
-        sendTransaction(transaction);
+        sendTransactionWithErrorCallback(transaction, errorCallback);
     }
 
     public void sendCartRecommend(final RecommendListCompletionHandler callBack) {
@@ -225,6 +225,19 @@ public class RecommendManager {
         });
     }
 
+    private void sendTransactionWithErrorCallback(Transaction transaction, final EmarsysErrorCallback callback) {
+        // Firing the EmarsysPredictSDKQueue. Should be the last call on the page,
+        // called only once.
+        Session.getInstance().sendTransaction(transaction, new ErrorHandler() {
+            @Override
+            public void onError(@NonNull Error error) {
+                if (callback != null) {
+                    callback.onEmarsysRecommendError(error);
+                }
+            }
+        });
+    }
+
     private List<CartItem> getCartItems() {
         List<CartItem> result = new ArrayList<>();
         if (BamiloApplication.INSTANCE.getCart() == null) return result;
@@ -255,6 +268,10 @@ public class RecommendManager {
             Session.getInstance().setCustomerEmail(null);
             Session.getInstance().setCustomerId(null);
         }
+    }
+
+    public interface EmarsysErrorCallback {
+        void onEmarsysRecommendError(Error error);
     }
 
 }

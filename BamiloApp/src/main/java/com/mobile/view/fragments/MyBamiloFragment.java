@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import com.emarsys.predict.Error;
 import com.emarsys.predict.RecommendedItem;
+import com.mobile.adapters.ErrorItemRecyclerAdapter;
 import com.mobile.adapters.RecommendGridAdapter;
 import com.mobile.adapters.RecommendItemsDiffUtilCallback;
 import com.mobile.components.customfontviews.TextView;
@@ -24,6 +26,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.Item;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -42,6 +45,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     private String selectedCategory = null;
     private boolean useDiffUtil = true;
     private int recommendListScrollPosition;
+    private boolean loadInProgress;
 
     public MyBamiloFragment() {
         super(true, R.layout.fragment_my_bamilo);
@@ -58,10 +62,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         srlRecommendItemsList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                useDiffUtil = false;
-                recommendListScrollPosition = 0;
-                recommendItemsMap = new HashMap<>();
-                requestForRecommendLists();
+                refreshRecommends();
             }
         });
         rvRecommendedItemsList.setClipToPadding(false);
@@ -70,6 +71,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         srlRecommendItemsList.setColorSchemeResources(R.color.appBar);
         recommendListItems = new ArrayList<>();
         recommendGridAdapter = new RecommendGridAdapter(recommendListItems, this);
+        recommendGridAdapter.setCategoryDropdownTitle(selectedCategory);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), RECOMMEND_LIST_COLUMN_COUNT);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -153,6 +155,13 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         }
     }
 
+    private void refreshRecommends() {
+        useDiffUtil = false;
+        recommendListScrollPosition = 0;
+        recommendItemsMap = new HashMap<>();
+        requestForRecommendLists();
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -162,29 +171,49 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     @Override
     public void onStart() {
         super.onStart();
+        srlRecommendItemsList.setRefreshing(loadInProgress);
         rvRecommendedItemsList.post(new Runnable() {
             @Override
             public void run() {
                 if (recommendListScrollPosition == 0) {
                     ((GridLayoutManager) rvRecommendedItemsList.getLayoutManager()).scrollToPositionWithOffset(recommendListScrollPosition, rvRecommendedItemsList.getPaddingTop());
                 } else {
-                    ((GridLayoutManager) rvRecommendedItemsList.getLayoutManager()).scrollToPosition(recommendListScrollPosition);
+                    rvRecommendedItemsList.getLayoutManager().scrollToPosition(recommendListScrollPosition);
                 }
             }
         });
     }
 
     private void requestForRecommendLists() {
-        srlRecommendItemsList.setRefreshing(true);
-        new RecommendManager().getEmarsysHomes(this, RecommendManager.createHomeExcludeItemListsMap(null));
+        loadInProgress = true;
+        srlRecommendItemsList.setRefreshing(loadInProgress);
+        new RecommendManager().getEmarsysHomes(this, new RecommendManager.EmarsysErrorCallback() {
+            @Override
+            public void onEmarsysRecommendError(Error error) {
+                loadInProgress = false;
+                srlRecommendItemsList.setRefreshing(loadInProgress);
+                srlRecommendItemsList.setEnabled(false);
+                rvRecommendedItemsList.setAdapter(new ErrorItemRecyclerAdapter(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        srlRecommendItemsList.setEnabled(true);
+                        recommendListItems.clear();
+                        recommendGridAdapter.notifyDataSetChanged();
+                        rvRecommendedItemsList.setAdapter(recommendGridAdapter);
+                        refreshRecommends();
+                    }
+                }, ErrorLayoutFactory.NO_NETWORK_LAYOUT));
+            }
+        }, RecommendManager.createHomeExcludeItemListsMap(null));
     }
 
     @Override
     public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+        loadInProgress = false;
         String CATEGORY_DELIMITER = ">";
         String temp[] = category.split(CATEGORY_DELIMITER);
         category = temp[temp.length - 1];
-        srlRecommendItemsList.setRefreshing(false);
+        srlRecommendItemsList.setRefreshing(loadInProgress);
         List<Item> itemDataList = new ArrayList<>();
         for (RecommendedItem r : data) {
             itemDataList.add(new Item(r));
