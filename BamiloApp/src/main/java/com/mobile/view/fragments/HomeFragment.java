@@ -1,5 +1,6 @@
 package com.mobile.view.fragments;
 
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
@@ -11,10 +12,12 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.service.database.CategoriesTableHelper;
 import com.mobile.service.objects.home.type.TeaserGroupType;
+import com.mobile.utils.ColorSequenceHolder;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.R;
 import com.mobile.view.components.CategoriesCarouselComponent;
 import com.mobile.view.components.SliderComponent;
+import com.mobile.view.components.TileComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +26,29 @@ public class HomeFragment extends BaseFragment implements SliderComponent.OnSlid
 
     private NestedScrollView mRootScrollView;
     private LinearLayout mContainerLinearLayout;
+    private ColorSequenceHolder colorSequenceHolder;
 
     public HomeFragment() {
-        super(true, R.layout.home_fragment_main);
+        super(true, R.layout.fragment_home);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRootScrollView = (NestedScrollView) view.findViewById(R.id.home_page_scroll);
+        mRootScrollView = (NestedScrollView) view.findViewById(R.id.nsvHomeContainer);
         mRootScrollView.setClipToPadding(false);
-        mContainerLinearLayout = (LinearLayout) view.findViewById(R.id.home_page_container);
+        mRootScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == 0) {
+                    getBaseActivity().syncSearchBarState(mRootScrollView.getScrollY());
+                }
+            }
+        });
+        mContainerLinearLayout = (LinearLayout) view.findViewById(R.id.llHomeContainer);
         getBaseActivity().enableSearchBar(true, mRootScrollView);
+
+        initColorSeqHolder();
 
         List<SliderComponent.Item> items = new ArrayList<>();
         items.add(new SliderComponent.Item("http://zpvliimg.bamilo.com/cms/info_app/hp_slider/6409_home-appliences_v1.jpg",
@@ -59,6 +73,44 @@ public class HomeFragment extends BaseFragment implements SliderComponent.OnSlid
         categoryItems.add(new CategoriesCarouselComponent.CategoryItem("لوازم برقی", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_homeapp.png", "catalog_category::home_kitchen_appliance"));
         categoryItems.add(new CategoriesCarouselComponent.CategoryItem("ابزار آلات", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_tools.png", "catalog_category::tools-parent"));
         addCategoriesCarouselComponent(mContainerLinearLayout, categoryItems);
+
+
+        List<TileComponent.TileItem> tileItems = new ArrayList<>();
+        tileItems.add(new TileComponent.TileItem("https://s-media-cache-ak0.pinimg.com/736x/f9/2d/c8/f92dc8bc83ac618b2cbd95fa698b0c4a--photo-blue-landscape-photos.jpg", ""));
+        tileItems.add(new TileComponent.TileItem("https://zeal4adventure.files.wordpress.com/2013/07/img_7260.jpg?w=656", ""));
+        tileItems.add(new TileComponent.TileItem("http://mistyisletours.co.uk/wp-content/uploads/2016/01/Eilean-Donan.jpg", ""));
+        tileItems.add(new TileComponent.TileItem("https://i.pinimg.com/736x/1e/53/8c/1e538ce3c82cfa5b377118d713278f80--watercolor-landscape-paintings-watercolor-projects.jpg", ""));
+        tileItems.add(new TileComponent.TileItem("http://www.urban-studios.com.au/wp-content/uploads/2016/09/Zen-Garden-9.jpg", ""));
+        addTileComponent(mContainerLinearLayout, tileItems);
+
+        tileItems = new ArrayList<>();
+        tileItems.add(new TileComponent.TileItem("http://mistyisletours.co.uk/wp-content/uploads/2016/01/Eilean-Donan.jpg", ""));
+        tileItems.add(new TileComponent.TileItem("https://i.pinimg.com/736x/1e/53/8c/1e538ce3c82cfa5b377118d713278f80--watercolor-landscape-paintings-watercolor-projects.jpg", ""));
+        tileItems.add(new TileComponent.TileItem("http://www.urban-studios.com.au/wp-content/uploads/2016/09/Zen-Garden-9.jpg", ""));
+        addTileComponent(mContainerLinearLayout, tileItems);
+
+        tileItems = new ArrayList<>();
+        tileItems.add(new TileComponent.TileItem("http://mistyisletours.co.uk/wp-content/uploads/2016/01/Eilean-Donan.jpg", ""));
+        addTileComponent(mContainerLinearLayout, tileItems);
+
+//        addCategoriesCarouselComponent(mContainerLinearLayout, categoryItems);
+//        addSliderComponent(mContainerLinearLayout, items);
+    }
+
+    private void initColorSeqHolder() {
+        TypedArray colorsTypedArray = getResources().obtainTypedArray(R.array.tileColorSequence);
+        List<Integer> colors = new ArrayList<>();
+        for (int i = 0; i < colorsTypedArray.length(); i++) {
+            colors.add(colorsTypedArray.getColor(i, 0));
+        }
+        colorsTypedArray.recycle();
+        colorSequenceHolder = new ColorSequenceHolder(colors);
+    }
+
+    private void addTileComponent(ViewGroup container, List<TileComponent.TileItem> items) {
+        TileComponent tileComponent = new TileComponent(colorSequenceHolder);
+        tileComponent.setContent(items);
+        container.addView(tileComponent.getView(getContext()));
     }
 
     private void addCategoriesCarouselComponent(ViewGroup container, List<CategoriesCarouselComponent.CategoryItem> categoryItems) {

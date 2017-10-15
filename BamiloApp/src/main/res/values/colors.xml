@@ -144,4 +144,17 @@
 
     <color name="primary_gray_1">#DD53585B</color>
 
+    <!--Color palette-->
+
+    <!--End of Color Palette-->
+
+    <array name="tileColorSequence">
+        <item>#F9EFEA</item>
+        <item>#ECECEC</item>
+        <item>#E2E8EF</item>
+        <item>#E9F7F7</item>
+        <item>#F5F1F7</item>
+        <item>#ECEBDE</item>
+    </array>
+
 </resources>

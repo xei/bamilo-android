@@ -13,6 +13,7 @@ public class TopViewAutoHideUtil {
     private ValueAnimator mValueAnimator;
     private OnViewShowHideListener onViewShowHideListener;
     private boolean searchBarHidden = true;
+    private int totalScrollAmount;
 
 
     public TopViewAutoHideUtil(int minScrollRange, int maxScrollRange, View view) {
@@ -22,6 +23,7 @@ public class TopViewAutoHideUtil {
     }
 
     public void onScroll(int dy) {
+        totalScrollAmount += dy;
         if (mValueAnimator != null && mValueAnimator.isRunning()) {
             mValueAnimator.cancel();
         }
@@ -30,6 +32,10 @@ public class TopViewAutoHideUtil {
         int offset = constrain(totalDy, minScrollRange, maxScrollRange);
         viewScrolledAmount = offset;
         scrollPosition(offset);
+    }
+
+    public void onSmoothScroll(int dy) {
+        animateScroll(viewScrolledAmount, constrain(dy + viewScrolledAmount, minScrollRange, maxScrollRange));
     }
 
     private void scrollPosition(int offset) {
@@ -48,7 +54,7 @@ public class TopViewAutoHideUtil {
     }
 
     public void onStopScroll(boolean scrollingToTop) {
-        if ((Math.abs(viewScrolledAmount) >= Math.abs(minScrollRange)) && scrollingToTop) {
+        if (totalScrollAmount < minScrollRange && viewScrolledAmount < minScrollRange / 2) {
             animateScroll(viewScrolledAmount, minScrollRange);
         } else {
             animateScroll(viewScrolledAmount, maxScrollRange);
@@ -91,6 +97,14 @@ public class TopViewAutoHideUtil {
 
     public void setOnViewShowHideListener(OnViewShowHideListener onViewShowHideListener) {
         this.onViewShowHideListener = onViewShowHideListener;
+    }
+
+    public int getMinScrollRange() {
+        return minScrollRange;
+    }
+
+    public int getMaxScrollRange() {
+        return maxScrollRange;
     }
 
     public boolean isSearchBarHidden() {

@@ -46,6 +46,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     private boolean useDiffUtil = true;
     private int recommendListScrollPosition;
     private boolean loadInProgress;
+    private int scrolledAmount = 0;
 
     public MyBamiloFragment() {
         super(true, R.layout.fragment_my_bamilo);
@@ -137,12 +138,6 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
                     }
                 });
                 listPopupWindow.show();
-                /*PopupMenu popupMenu = new PopupMenu(getContext(), v, Gravity.CENTER_HORIZONTAL);
-                Menu menu = popupMenu.getMenu();
-                for (String key : recommendItemsMap.keySet()) {
-                    menu.add(key);
-                }
-                popupMenu.show();*/
             }
         });
         if (recommendItemsMap == null) {
@@ -152,6 +147,28 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
             requestForRecommendLists();
         } else {
             updateUi();
+        }
+        rvRecommendedItemsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                scrolledAmount += dy;
+                if (((GridLayoutManager) rvRecommendedItemsList.getLayoutManager()).findFirstVisibleItemPosition() == 0) {
+                    if (rvRecommendedItemsList != null) {
+                        getBaseActivity().syncSearchBarState(0);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (rvRecommendedItemsList != null) {
+                getBaseActivity().syncSearchBarState(scrolledAmount);
+            }
         }
     }
 

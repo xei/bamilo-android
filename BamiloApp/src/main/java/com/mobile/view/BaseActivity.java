@@ -23,6 +23,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.ScrollerCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -178,6 +179,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private boolean actionBarAutoHideEnabled = false;
     private TopViewAutoHideUtil searchBarAutoHide;
     private TopViewAutoHideUtil actionBarAutoHide;
+    private ScrollerCompat nestedScrollerCompat;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -225,6 +227,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+        nestedScrollerCompat = ScrollerCompat.create(this);
         /*
          * In case of rotation the activity is restarted and the locale too.<br>
          * These method forces the right locale used before the rotation.
@@ -523,12 +526,18 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 @Override
                 public void onDirectionNestedFling(CoordinatorLayout coordinatorLayout, View child, View target, float velocityX, float velocityY, @VerticalScrollingBehavior.ScrollDirection int scrollDirection) {
                     if (searchBarEnabled && searchBarAutoHide != null) {
+                        nestedScrollerCompat.fling(0, 0, (int) velocityX, (int) velocityX, 0, 0, searchBarAutoHide.getMinScrollRange(),
+                                searchBarAutoHide.getMaxScrollRange());
+                        nestedScrollerCompat.computeScrollOffset();
+                        searchBarAutoHide.onSmoothScroll(nestedScrollerCompat.getFinalY());
+                    }
+                    /*if (searchBarEnabled && searchBarAutoHide != null) {
                         searchBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
                     }
 
                     if (actionBarAutoHideEnabled && actionBarAutoHide != null) {
                         actionBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
-                    }
+                    }*/
                 }
 
                 @Override
