@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:color="@color/black_700" android:state_enabled="false" />
-    <item android:color="@color/orange_2" android:state_pressed="true" />
+    <item android:color="@color/orange_light" android:state_pressed="true" />
     <item android:color="@color/link_color" />
 </selector>

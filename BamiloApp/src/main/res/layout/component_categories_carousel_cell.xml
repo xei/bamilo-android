@@ -23,7 +23,7 @@
         android:ellipsize="end"
         android:gravity="center_horizontal|top"
         android:maxLines="2"
-        android:textColor="@color/blue_3"
+        android:textColor="@color/blue_app_primary"
         android:textSize="10sp"
         tools:text="text \n text" />
 

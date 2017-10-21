@@ -125,7 +125,7 @@ public class SearchDropDownAdapter extends RecyclerView.Adapter<SearchDropDownAd
         if(index != -1 && indexHighlitght != -1) {
             SpannableString title = new SpannableString(titleString);
             title.setSpan(new StyleSpan(Typeface.BOLD), index, index + query.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            title.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.blue_1)), indexHighlitght, indexHighlitght+highlight.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            title.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.blue_lighter)), indexHighlitght, indexHighlitght+highlight.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textView.setText(title);
         } else {
             textView.setText(titleString);

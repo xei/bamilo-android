@@ -113,7 +113,7 @@ public class CheckBoxField extends DynamicFormItem implements IDynamicFormItemFi
         this.mandatoryControl.setId(parent.getNextId());
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_lighter));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);

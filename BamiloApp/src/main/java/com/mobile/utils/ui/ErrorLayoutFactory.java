@@ -7,7 +7,6 @@ import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,7 +17,6 @@ import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompleti
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.home.holder.RecommendationsCartHolder;
-import com.mobile.utils.home.holder.RecommendationsHolder;
 import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
@@ -139,7 +137,7 @@ public class ErrorLayoutFactory {
                 case CATALOG_UNEXPECTED_ERROR:
                     new Builder()
                     .setContent(R.drawable.ic_filter_empty, R.string.server_error)
-                    .setButton(R.string.catalog_edit_filters, R.color.orange_1);
+                    .setButton(R.string.catalog_edit_filters, R.color.orange_lighter);
                     break;
                 case NO_FAVOURITES_LAYOUT:
                     new Builder()

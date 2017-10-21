@@ -8,10 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.mobile.adapters.SimplePagerAdapter;
-import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -50,7 +48,7 @@ public class FrontPageFragment extends BaseFragment{
 
         getBaseActivity().setUpExtraTabLayout(pager);
         final TabLayout tabLayout = getBaseActivity().getExtraTabLayout();
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_1));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_lighter));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             tabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }

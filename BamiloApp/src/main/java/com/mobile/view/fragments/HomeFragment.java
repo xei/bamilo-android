@@ -16,6 +16,7 @@ import com.mobile.utils.ColorSequenceHolder;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.R;
 import com.mobile.view.components.CategoriesCarouselComponent;
+import com.mobile.view.components.DailyDealsComponent;
 import com.mobile.view.components.SliderComponent;
 import com.mobile.view.components.TileComponent;
 
@@ -89,12 +90,43 @@ public class HomeFragment extends BaseFragment implements SliderComponent.OnSlid
         tileItems.add(new TileComponent.TileItem("http://www.urban-studios.com.au/wp-content/uploads/2016/09/Zen-Garden-9.jpg", ""));
         addTileComponent(mContainerLinearLayout, tileItems);
 
+//        addCategoriesCarouselComponent(mContainerLinearLayout, categoryItems);
+//        addSliderComponent(mContainerLinearLayout, items);
+        DailyDealsComponent.DealItem dealItem = new DailyDealsComponent.DealItem();
+//        dealItem.componentBackgroundColor = "#a3cf62";
+        dealItem.dealTitle = "پیشنهاد تست";
+        dealItem.dealTitleColor = "#16918c";
+        dealItem.moreOptionsTitle = "ادامه";
+        dealItem.moreOptionsTitleColor = "#ad0000";
+        dealItem.moreOptionsTargetLink = "kooft:dard";
+        dealItem.countDownTextColor = "#009600";
+        dealItem.countDownRemainingSeconds = 4000;
+        dealItem.countDownStartTimeSeconds = System.currentTimeMillis() / 1000 ;
+
+        DailyDealsComponent.Product tempProduct = new DailyDealsComponent.Product();
+        tempProduct.thumb = "http://zpvliimg.bamilo.com/p/luxineh-0489-6375151-1-catalog.jpg";
+        tempProduct.sku = "UN623HLBGHJSNAFAMZ";
+        tempProduct.name = "ظرف غذای استیل";
+        tempProduct.brand = "Luxineh";
+        tempProduct.maxSavingPercentage = 12;
+        tempProduct.price = 2455000;
+        tempProduct.oldPrice = 3300000;
+
+        List<DailyDealsComponent.Product> dealProducts = new ArrayList<>();
+        dealProducts.add(tempProduct);
+        dealProducts.add(tempProduct.cloneThis());
+        dealProducts.add(tempProduct.cloneThis());
+        dealProducts.add(tempProduct.cloneThis());
+        dealProducts.add(tempProduct.cloneThis());
+        dealProducts.add(tempProduct.cloneThis());
+        dealProducts.add(tempProduct.cloneThis());
+
+        dealItem.dealProducts = dealProducts;
+        addDailyDealsComponent(mContainerLinearLayout, dealItem);
+
         tileItems = new ArrayList<>();
         tileItems.add(new TileComponent.TileItem("http://mistyisletours.co.uk/wp-content/uploads/2016/01/Eilean-Donan.jpg", ""));
         addTileComponent(mContainerLinearLayout, tileItems);
-
-//        addCategoriesCarouselComponent(mContainerLinearLayout, categoryItems);
-//        addSliderComponent(mContainerLinearLayout, items);
     }
 
     private void initColorSeqHolder() {
@@ -105,6 +137,12 @@ public class HomeFragment extends BaseFragment implements SliderComponent.OnSlid
         }
         colorsTypedArray.recycle();
         colorSequenceHolder = new ColorSequenceHolder(colors);
+    }
+
+    private void addDailyDealsComponent(ViewGroup container, DailyDealsComponent.DealItem dealItem) {
+        DailyDealsComponent dailyDealsComponent = new DailyDealsComponent();
+        dailyDealsComponent.setContent(dealItem);
+        container.addView(dailyDealsComponent.getView(getContext()));
     }
 
     private void addTileComponent(ViewGroup container, List<TileComponent.TileItem> items) {

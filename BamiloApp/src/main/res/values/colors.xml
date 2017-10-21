@@ -30,7 +30,7 @@
     <color name="green_campaign_bar">@color/green_1</color>
     <color name="yellow_campaign_bar">@color/yellow_1</color>
     <color name="red_campaign_bar">@color/red_1</color>
-    <color name="orange_tab_bar">@color/orange_1</color>
+    <color name="orange_tab_bar">@color/orange_lighter</color>
     <color name="text_root">#e0e0e0</color>
     <!-- WIZARDS -->
     <color name="wizard_text_color">#c3c3c3</color>
@@ -59,15 +59,12 @@
     <color name="black_400">#e2e2e2</color>
     <color name="black_300">#f0f0f0</color>
     <color name="black_200">#f5f5f5</color>
-    <color name="gray_5">#959698</color>
-    <color name="gray_10">#ededed</color>
     <color name="white">@android:color/white</color>
-    <color name="orange_1">#f68b1e</color>
-    <color name="orange_2">#f17e0a</color>
-    <color name="orange_3">#fe6b0c</color>
-    <color name="blue_1">#416998</color>
-    <color name="blue_2">#235693</color>
-    <color name="blue_3">#1A365E</color>
+    <color name="orange_lighter">#f68b1e</color>
+    <color name="orange_light">#f17e0a</color>
+    <color name="blue_lighter">#416998</color>
+    <color name="blue_light">#235693</color>
+    <color name="blue_app_primary">#1A365E</color>
     <color name="red_1">#cc0000</color>
     <color name="red_2">#ad0000</color>
     <color name="green_1">#a3cf62</color>
@@ -78,11 +75,11 @@
     <color name="teal_brighter">#3fd2c0</color>
 
     <!-- ANDROID 5.0: MATERIAL STYLE -->
-    <color name="appBar">@color/blue_3</color>
-    <color name="tabBar">@color/blue_3</color>
-    <color name="statusBar">@color/blue_3</color>
+    <color name="appBar">@color/blue_app_primary</color>
+    <color name="tabBar">@color/blue_app_primary</color>
+    <color name="statusBar">@color/blue_app_primary</color>
     <color name="black">@android:color/black</color>
-    <color name="color_accent">@color/blue_3</color>
+    <color name="color_accent">@color/blue_app_primary</color>
     <color name="search_hint_color">@color/white</color>
     <color name="search_edit_color">@color/white</color>
     <color name="splash_background_color">@color/black_300</color>
@@ -115,7 +112,7 @@
     <color name="cart_item_total">#D9D9D9</color>
     <color name="splash_backgroung_color">@android:color/white</color>
     <!--<color name="blue_new">#4990e2</color>-->
-    <color name="blue_new">@color/blue_3</color>
+    <color name="blue_new">@color/blue_app_primary</color>
     <color name="red_error">#b90f00</color>
     <color name="grey_pending">#dedede</color>
 
@@ -135,9 +132,9 @@
     <color name="drawer_orange">#ff9900</color>
     <color name="fefefe">#fefefe</color>
 
-    <color name="button_primary_color">@color/orange_3</color>
+    <color name="button_primary_color">@color/orange_1</color>
     <color name="button_secondary_color">@color/teal</color>
-    <color name="link_color">@color/orange_3</color>
+    <color name="link_color">@color/orange_1</color>
     <color name="filter_clear_button_text">@color/teal_bright</color>
     <color name="filter_sort_title_text">@color/teal_bright</color>
     <color name="filter_sort_sub_text">@color/teal_brighter</color>
@@ -145,7 +142,14 @@
     <color name="primary_gray_1">#DD53585B</color>
 
     <!--Color palette-->
+    <color name="orange_1">#fe6b0c</color>
 
+    <color name="gray_4">#858688</color>
+    <color name="gray_5">#959698</color>
+    <color name="gray_9">#dbdbdb</color>
+    <color name="gray_10">#ededed</color>
+
+    <color name="blue_1">#1a365e</color>
     <!--End of Color Palette-->
 
     <array name="tileColorSequence">

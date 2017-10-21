@@ -95,7 +95,7 @@
     </style>
 
     <style name="TextBase.SubHead.Orange">
-        <item name="android:textColor">@color/orange_1</item>
+        <item name="android:textColor">@color/orange_lighter</item>
     </style>
 
     <style name="TextBase.Body">
@@ -109,7 +109,7 @@
     <style name="TextBase.Body.Black_800" />
 
     <style name="TextBase.Body.Blue_1">
-        <item name="android:textColor">@color/blue_1</item>
+        <item name="android:textColor">@color/blue_lighter</item>
     </style>
 
     <style name="TextBase.Caption">

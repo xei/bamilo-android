@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:text="@string/continue_without_log_in"
             android:textAlignment="center"
-            android:textColor="@color/blue_3"
+            android:textColor="@color/blue_app_primary"
             android:textSize="12sp"
             android:visibility="gone"
             app:met_primaryColor="@color/transparent" />

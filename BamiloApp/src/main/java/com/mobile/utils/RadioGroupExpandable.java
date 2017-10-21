@@ -229,7 +229,7 @@ public class RadioGroupExpandable extends RadioGroup {
                 }
             };
             spannableString.setSpan(clickableSpan, 0, linklabel.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.blue_1)), 0, linklabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.blue_lighter)), 0, linklabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setText(spannableString);
             ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setMovementMethod(LinkMovementMethod.getInstance());
