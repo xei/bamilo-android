@@ -13,9 +13,9 @@
         android:id="@+id/cvCategoryDropDown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
+        android:background="@drawable/touch_feedback"
         android:clickable="true"
-        android:foreground="?attr/selectableItemBackground"
+        android:foreground="@drawable/touch_feedback"
         app:cardCornerRadius="1dp"
         app:cardElevation="2dp"
         app:cardUseCompatPadding="true">

@@ -1,6 +1,7 @@
 package com.mobile.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,7 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
         holder.tvProductPrice.setText(CurrencyFormatter.formatCurrency(product.price));
         if (product.oldPrice > 0 && product.maxSavingPercentage > 0) {
             holder.tvProductOldPrice.setVisibility(View.VISIBLE);
+            holder.tvProductOldPrice.setPaintFlags(holder.tvProductOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.tvProductDiscountPercentage.setVisibility(View.VISIBLE);
             holder.tvProductOldPrice.setText(CurrencyFormatter.formatCurrency(product.oldPrice));
             holder.tvProductDiscountPercentage.setText(String.format(locale,
