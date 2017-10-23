@@ -24,6 +24,7 @@ import com.mobile.service.objects.configs.AvailableCountries;
 import com.mobile.service.objects.configs.CountryConfigs;
 import com.mobile.service.objects.customer.Customer;
 import com.mobile.service.objects.customer.CustomerEmailCheck;
+import com.mobile.service.objects.home.HomePageComponents;
 import com.mobile.service.objects.home.HomePageObject;
 import com.mobile.service.objects.orders.MyOrder;
 import com.mobile.service.objects.orders.OrderStatus;
@@ -162,7 +163,7 @@ public interface AigApiInterface {
     String getExternalLinks = "getExternalLinks";*/
 
     @GET("/")
-    void getHome(Callback<BaseResponse<HomePageObject>> callback);
+    void getHome(Callback<BaseResponse<HomePageComponents>> callback);
     String getHome = "getHome";
 
     @GET("/{path}")

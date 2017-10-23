@@ -14,19 +14,21 @@ import android.widget.ImageView;
 import com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator;
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.PreviewViewPager;
+import com.mobile.service.objects.home.model.BaseComponent;
+import com.mobile.service.objects.home.model.SliderComponent;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SliderComponent implements BaseComponent<List<SliderComponent.Item>> {
+public class SliderViewComponent extends BaseViewComponent<List<SliderViewComponent.Item>> {
     private static final float SLIDE_WIDTH_RATIO = 2.1375F;
     private List<Item> items;
     private OnSlideClickListener onSlideClickListener;
 
-    public SliderComponent(List<Item> items) {
-        this.items = items;
+    public SliderViewComponent() {
     }
 
     @Override
@@ -83,6 +85,22 @@ public class SliderComponent implements BaseComponent<List<SliderComponent.Item>
     @Override
     public void setContent(List<Item> content) {
         this.items = content;
+    }
+
+    @Override
+    public void setComponent(BaseComponent component) {
+        if (!(component instanceof SliderComponent)) {
+            return;
+        }
+        List<Item> sliderItems = new ArrayList<>();
+        SliderComponent sliderComponent = (SliderComponent) component;
+
+        for (SliderComponent.Slide slide : sliderComponent.getSlides()) {
+            Item tempItem = new Item(slide.getPortraitImage(), slide.getTarget());
+            sliderItems.add(tempItem);
+        }
+
+        setContent(sliderItems);
     }
 
     public OnSlideClickListener getOnSlideClickListener() {

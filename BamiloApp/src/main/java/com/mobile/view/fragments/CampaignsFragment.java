@@ -238,7 +238,11 @@ public class CampaignsFragment extends BaseFragment {
          */
         @Override
         public CharSequence getPageTitle(int position) {
-            return mCampaigns.get(position).getTitle().toUpperCase();
+            String title = "";
+            if (mCampaigns.get(position).getTitle() != null) {
+                title = mCampaigns.get(position).getTitle().toUpperCase();
+            }
+            return title;
         }
         
     }

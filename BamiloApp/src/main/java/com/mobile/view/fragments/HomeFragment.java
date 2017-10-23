@@ -4,30 +4,42 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.service.database.CategoriesTableHelper;
+import com.mobile.helpers.teasers.GetHomeHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.service.objects.home.HomePageComponents;
+import com.mobile.service.objects.home.TeaserCampaign;
+import com.mobile.service.objects.home.model.BaseComponent;
 import com.mobile.service.objects.home.type.TeaserGroupType;
+import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.output.Print;
 import com.mobile.utils.ColorSequenceHolder;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.R;
-import com.mobile.view.components.CategoriesCarouselComponent;
-import com.mobile.view.components.DailyDealsComponent;
-import com.mobile.view.components.SliderComponent;
-import com.mobile.view.components.TileComponent;
+import com.mobile.view.components.BaseViewComponent;
+import com.mobile.view.components.CategoriesCarouselViewComponent;
+import com.mobile.view.components.DailyDealViewComponent;
+import com.mobile.view.components.SliderViewComponent;
+import com.mobile.view.components.TileViewComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends BaseFragment implements SliderComponent.OnSlideClickListener, TargetLink.OnAppendDataListener, TargetLink.OnCampaignListener {
+public class HomeFragment extends BaseFragment implements SliderViewComponent.OnSlideClickListener, TargetLink.OnCampaignListener, TileViewComponent.OnTileClickListener, DailyDealViewComponent.OnCountDownDealItemClickListener, CategoriesCarouselViewComponent.OnCarouselItemClickListener, IResponseCallback {
 
     private NestedScrollView mRootScrollView;
     private LinearLayout mContainerLinearLayout;
+    private SwipeRefreshLayout srlHomeRoot;
     private ColorSequenceHolder colorSequenceHolder;
+    private HomePageComponents mHomePageComponents;
+    private List<DailyDealViewComponent> dailyDealViewComponents;
 
     public HomeFragment() {
         super(true, R.layout.fragment_home);
@@ -48,85 +60,39 @@ public class HomeFragment extends BaseFragment implements SliderComponent.OnSlid
         });
         mContainerLinearLayout = (LinearLayout) view.findViewById(R.id.llHomeContainer);
         getBaseActivity().enableSearchBar(true, mRootScrollView);
+        srlHomeRoot = (SwipeRefreshLayout) view.findViewById(R.id.srlHomeRoot);
+        srlHomeRoot.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadHomePage();
+            }
+        });
+        srlHomeRoot.setColorSchemeResources(R.color.appBar);
+        srlHomeRoot.setProgressViewOffset(false, mRootScrollView.getPaddingTop(), srlHomeRoot.getProgressViewEndOffset());
+
 
         initColorSeqHolder();
+        if (mHomePageComponents == null ||
+                mHomePageComponents.getComponents() == null) {
+            loadHomePage();
+        } else {
+            showComponents(mHomePageComponents);
+        }
+    }
 
-        List<SliderComponent.Item> items = new ArrayList<>();
-        items.add(new SliderComponent.Item("http://zpvliimg.bamilo.com/cms/info_app/hp_slider/6409_home-appliences_v1.jpg",
-                "campaign::selected-sale"));
-        items.add(new SliderComponent.Item("http://zpvliimg.bamilo.com/cms/info_app/hp_slider/6404_sportshoes_v1.jpg",
-                "shop_in_shop::sports-promotion"));
-        items.add(new SliderComponent.Item("http://zpvliimg.bamilo.com/cms/info_app/hp_slider/6400_car-acc_v1.jpg",
-                "catalog::VXp2bWp4SmtqYks4L0FNR0ljQ1hRdz09"));
-        items.add(new SliderComponent.Item("http://zpvliimg.bamilo.com/cms/info_app/hp_slider/6403_BASTYLE_v1.jpg",
-                "catalog::cUQ4WUo5aHFjYWFPOThzZUFLcWgxdUhBdWdHUG05V3lJOExqVlRpMVUrTT0="));
-        addSliderComponent(mContainerLinearLayout, items);
+    @Override
+    public void onPause() {
+        if (dailyDealViewComponents != null) {
+            for (DailyDealViewComponent component : dailyDealViewComponents) {
+                component.pause();
+            }
+        }
+        super.onPause();
+    }
 
-        List<CategoriesCarouselComponent.CategoryItem> categoryItems = new ArrayList<>();
-        categoryItems.add(new CategoriesCarouselComponent.CategoryItem("خانه و سبک زندگی", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_home.png", "catalog_category::home_furniture_lifestyle"));
-        categoryItems.add(new CategoriesCarouselComponent.CategoryItem("مد و لباس مردانه", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_fam.png", "catalog_category::fashion_for_men"));
-        categoryItems.add(new CategoriesCarouselComponent.CategoryItem("مد و لباس زنانه ", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_faw.png", "catalog_category::fashion_for_women"));
-        categoryItems.add(new CategoriesCarouselComponent.CategoryItem("زیبایی و سلامت", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_perfume.png", "catalog_category::health_beauty_personal_care"));
-        categoryItems.add(new CategoriesCarouselComponent.CategoryItem("سرگرمی، نوزاد", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_kid.png", "catalog_category::children"));
-        categoryItems.add(new CategoriesCarouselComponent.CategoryItem("لوازم جانبی الکترونیکی", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_ea.png", "catalog_category::electronic_accessories"));
-        categoryItems.add(new CategoriesCarouselComponent.CategoryItem("فرهنگ و هنر", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_book.png", "catalog_category::books_digitalconent_education"));
-        categoryItems.add(new CategoriesCarouselComponent.CategoryItem("ورزش", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_sport.png", "catalog_category::sports-outdoors"));
-        categoryItems.add(new CategoriesCarouselComponent.CategoryItem("لوازم برقی", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_homeapp.png", "catalog_category::home_kitchen_appliance"));
-        categoryItems.add(new CategoriesCarouselComponent.CategoryItem("ابزار آلات", "http://zpvliimg.bamilo.com/cms/info_app/featured_stores/o_tools.png", "catalog_category::tools-parent"));
-        addCategoriesCarouselComponent(mContainerLinearLayout, categoryItems);
-
-
-        List<TileComponent.TileItem> tileItems = new ArrayList<>();
-        tileItems.add(new TileComponent.TileItem("https://s-media-cache-ak0.pinimg.com/736x/f9/2d/c8/f92dc8bc83ac618b2cbd95fa698b0c4a--photo-blue-landscape-photos.jpg", ""));
-        tileItems.add(new TileComponent.TileItem("https://zeal4adventure.files.wordpress.com/2013/07/img_7260.jpg?w=656", ""));
-        tileItems.add(new TileComponent.TileItem("http://mistyisletours.co.uk/wp-content/uploads/2016/01/Eilean-Donan.jpg", ""));
-        tileItems.add(new TileComponent.TileItem("https://i.pinimg.com/736x/1e/53/8c/1e538ce3c82cfa5b377118d713278f80--watercolor-landscape-paintings-watercolor-projects.jpg", ""));
-        tileItems.add(new TileComponent.TileItem("http://www.urban-studios.com.au/wp-content/uploads/2016/09/Zen-Garden-9.jpg", ""));
-        addTileComponent(mContainerLinearLayout, tileItems);
-
-        tileItems = new ArrayList<>();
-        tileItems.add(new TileComponent.TileItem("http://mistyisletours.co.uk/wp-content/uploads/2016/01/Eilean-Donan.jpg", ""));
-        tileItems.add(new TileComponent.TileItem("https://i.pinimg.com/736x/1e/53/8c/1e538ce3c82cfa5b377118d713278f80--watercolor-landscape-paintings-watercolor-projects.jpg", ""));
-        tileItems.add(new TileComponent.TileItem("http://www.urban-studios.com.au/wp-content/uploads/2016/09/Zen-Garden-9.jpg", ""));
-        addTileComponent(mContainerLinearLayout, tileItems);
-
-//        addCategoriesCarouselComponent(mContainerLinearLayout, categoryItems);
-//        addSliderComponent(mContainerLinearLayout, items);
-        DailyDealsComponent.DealItem dealItem = new DailyDealsComponent.DealItem();
-//        dealItem.componentBackgroundColor = "#a3cf62";
-        dealItem.dealTitle = "پیشنهاد تست";
-        dealItem.dealTitleColor = "#16918c";
-        dealItem.moreOptionsTitle = "ادامه";
-        dealItem.moreOptionsTitleColor = "#ad0000";
-        dealItem.moreOptionsTargetLink = "kooft:dard";
-        dealItem.countDownTextColor = "#009600";
-        dealItem.countDownRemainingSeconds = 4000;
-        dealItem.countDownStartTimeSeconds = System.currentTimeMillis() / 1000 ;
-
-        DailyDealsComponent.Product tempProduct = new DailyDealsComponent.Product();
-        tempProduct.thumb = "http://zpvliimg.bamilo.com/p/luxineh-0489-6375151-1-catalog.jpg";
-        tempProduct.sku = "UN623HLBGHJSNAFAMZ";
-        tempProduct.name = "ظرف غذای استیل";
-        tempProduct.brand = "Luxineh";
-        tempProduct.maxSavingPercentage = 12;
-        tempProduct.price = 2455000;
-        tempProduct.oldPrice = 3300000;
-
-        List<DailyDealsComponent.Product> dealProducts = new ArrayList<>();
-        dealProducts.add(tempProduct);
-        dealProducts.add(tempProduct.cloneThis());
-        dealProducts.add(tempProduct.cloneThis());
-        dealProducts.add(tempProduct.cloneThis());
-        dealProducts.add(tempProduct.cloneThis());
-        dealProducts.add(tempProduct.cloneThis());
-        dealProducts.add(tempProduct.cloneThis());
-
-        dealItem.dealProducts = dealProducts;
-        addDailyDealsComponent(mContainerLinearLayout, dealItem);
-
-        tileItems = new ArrayList<>();
-        tileItems.add(new TileComponent.TileItem("http://mistyisletours.co.uk/wp-content/uploads/2016/01/Eilean-Donan.jpg", ""));
-        addTileComponent(mContainerLinearLayout, tileItems);
+    private void loadHomePage() {
+        srlHomeRoot.setRefreshing(true);
+        triggerContentEventNoLoading(new GetHomeHelper(), null, this);
     }
 
     private void initColorSeqHolder() {
@@ -139,35 +105,14 @@ public class HomeFragment extends BaseFragment implements SliderComponent.OnSlid
         colorSequenceHolder = new ColorSequenceHolder(colors);
     }
 
-    private void addDailyDealsComponent(ViewGroup container, DailyDealsComponent.DealItem dealItem) {
-        DailyDealsComponent dailyDealsComponent = new DailyDealsComponent();
-        dailyDealsComponent.setContent(dealItem);
-        container.addView(dailyDealsComponent.getView(getContext()));
-    }
-
-    private void addTileComponent(ViewGroup container, List<TileComponent.TileItem> items) {
-        TileComponent tileComponent = new TileComponent(colorSequenceHolder);
-        tileComponent.setContent(items);
-        container.addView(tileComponent.getView(getContext()));
-    }
-
-    private void addCategoriesCarouselComponent(ViewGroup container, List<CategoriesCarouselComponent.CategoryItem> categoryItems) {
-        CategoriesCarouselComponent categoriesCarouselComponent = new CategoriesCarouselComponent(categoryItems);
-        container.addView(categoriesCarouselComponent.getView(getContext()));
-    }
-
-    private void addSliderComponent(ViewGroup container, List<SliderComponent.Item> items) {
-        SliderComponent component = new SliderComponent(items);
-        container.addView(component.getView(getContext()));
-        component.setOnSlideClickListener(this);
-    }
-
     @Override
-    public void onSlideClicked(View v, int position, SliderComponent.Item item) {
-        new TargetLink(getWeakBaseActivity(), item.targetLink)
-                .addTitle(null)
-                .setOrigin(TeaserGroupType.MAIN_TEASERS)
-                .addAppendListener(this)
+    public void onSlideClicked(View v, int position, SliderViewComponent.Item item) {
+        fireTargetLink(null, item.targetLink);
+    }
+
+    private void fireTargetLink(String title, String targetLink) {
+        new TargetLink(getWeakBaseActivity(), targetLink)
+                .addTitle(title)
                 .addCampaignListener(this)
                 .retainBackStackEntries()
                 .enableWarningErrorMessage()
@@ -184,28 +129,117 @@ public class HomeFragment extends BaseFragment implements SliderComponent.OnSlid
         }
     }
 
-    /**
-     * Append some data
-     */
-    @Override
-    public void onAppendData(FragmentType next, String title, String id, Bundle bundle) {
-        if (next == FragmentType.PRODUCT_DETAILS) {
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-            /*if(TextUtils.isNotEmpty(mRichRelevanceHash)){
-                bundle.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRichRelevanceHash );
-            }*/
-        } else if (next == FragmentType.CATALOG) {
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-            CategoriesTableHelper.updateCategoryCounter(id, title);
-        }
-    }
-
     @NonNull
     @Override
     public Bundle onTargetCampaign(String title, String id, TeaserGroupType mOrigin) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mOrigin);
-//        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, createCampaignsData(title, id, mOrigin));
+        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, createCampaignsData(title, id, mOrigin));
         return bundle;
+    }
+
+    @NonNull
+    private ArrayList<TeaserCampaign> createCampaignsData(@NonNull String title, @NonNull String id, TeaserGroupType group) {
+        ArrayList<TeaserCampaign> campaigns;
+        campaigns = TargetLink.createCampaignList(title, id);
+        return campaigns;
+    }
+
+    @Override
+    public void onTileClicked(View v, TileViewComponent.TileItem item) {
+        fireTargetLink(null, item.targetLink);
+    }
+
+    @Override
+    public void onMoreButtonClicked(View v, String targetLink) {
+        fireTargetLink(null, targetLink);
+    }
+
+    @Override
+    public void onProductItemClicked(View v, DailyDealViewComponent.Product product) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, product.sku);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, String.format("%s %s", product.brand, product.name));
+        bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+        // Goto PDV
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    public void showComponents(HomePageComponents homePageComponents) {
+        List<BaseComponent> components = homePageComponents.getComponents();
+        if (components != null) {
+            mContainerLinearLayout.removeAllViews();
+            for (BaseComponent component : components) {
+                BaseViewComponent viewComponent = BaseViewComponent.createFromBaseComponent(component);
+                if (viewComponent instanceof TileViewComponent) {
+                    ((TileViewComponent) viewComponent).setColorSequenceHolder(colorSequenceHolder);
+                    ((TileViewComponent) viewComponent).setOnTileClickListener(this);
+                } else if (viewComponent instanceof SliderViewComponent) {
+                    ((SliderViewComponent) viewComponent).setOnSlideClickListener(this);
+                } else if (viewComponent instanceof CategoriesCarouselViewComponent) {
+                    ((CategoriesCarouselViewComponent) viewComponent).setOnCarouselItemClickListener(this);
+                } else if (viewComponent instanceof DailyDealViewComponent) {
+                    ((DailyDealViewComponent) viewComponent).setOnCountDownDealItemClickListener(this);
+                }
+                mContainerLinearLayout.addView(viewComponent.getView(getContext()));
+            }
+        }
+    }
+
+    @Override
+    public void onCarouselClicked(View v, int position, CategoriesCarouselViewComponent.CategoryItem item) {
+        if (position == 0) {
+            getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES, null, true);
+        } else {
+            fireTargetLink(item.title, item.targetLink);
+        }
+    }
+
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        loadHomePage();
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        srlHomeRoot.setRefreshing(false);
+        showFragmentContentContainer();
+        Print.i(TAG, "ON SUCCESS");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        EventType eventType = baseResponse.getEventType();
+        switch (eventType) {
+            case GET_HOME_EVENT: {
+                HomePageComponents homePageComponents = (HomePageComponents) baseResponse.getContentData();
+                this.mHomePageComponents = homePageComponents;
+                showComponents(homePageComponents);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        srlHomeRoot.setRefreshing(false);
+        Print.i(TAG, "ON ERROR RESPONSE");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Check base errors
+        if (super.handleErrorEvent(baseResponse)) return;
+        // Check home types
+        EventType eventType = baseResponse.getEventType();
+        switch (eventType) {
+            case GET_HOME_EVENT:
+                Print.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
+                showFragmentFallBack();
+                break;
+        }
     }
 }

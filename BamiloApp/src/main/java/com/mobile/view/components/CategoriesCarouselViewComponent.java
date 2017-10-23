@@ -2,7 +2,6 @@ package com.mobile.view.components;
 
 import android.content.Context;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,31 +10,33 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobile.service.objects.home.model.BaseComponent;
+import com.mobile.service.objects.home.model.CarouselComponent;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 import com.mobile.view.widget.LimitedCountLinearLayoutManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CategoriesCarouselComponent implements BaseComponent<List<CategoriesCarouselComponent.CategoryItem>> {
+public class CategoriesCarouselViewComponent extends BaseViewComponent<List<CategoriesCarouselViewComponent.CategoryItem>> {
 
     private List<CategoryItem> categoryItems;
     private OnCarouselItemClickListener onCarouselItemClickListener;
 
-    public CategoriesCarouselComponent(List<CategoryItem> categoryItems) {
-        this.categoryItems = categoryItems;
-    }
-
     @Override
     public View getView(Context context) {
-        View rootView = LayoutInflater.from(context).inflate(R.layout.component_categories_carousel, null);
-        RecyclerView rvCarouselItems = (RecyclerView) rootView.findViewById(R.id.rvCarouselItems);
-        LimitedCountLinearLayoutManager layoutManager = new LimitedCountLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false,
-                context.getResources().getInteger(R.integer.categories_carousel_items_quantity));
-        rvCarouselItems.setLayoutManager(layoutManager);
-        rvCarouselItems.setAdapter(new CarouselAdapter(categoryItems, onCarouselItemClickListener));
+        if (categoryItems != null) {
+            View rootView = LayoutInflater.from(context).inflate(R.layout.component_categories_carousel, null);
+            RecyclerView rvCarouselItems = (RecyclerView) rootView.findViewById(R.id.rvCarouselItems);
+            LimitedCountLinearLayoutManager layoutManager = new LimitedCountLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false,
+                    context.getResources().getInteger(R.integer.categories_carousel_items_quantity));
+            rvCarouselItems.setLayoutManager(layoutManager);
+            rvCarouselItems.setAdapter(new CarouselAdapter(categoryItems, onCarouselItemClickListener));
 
-        return rootView;
+            return rootView;
+        }
+        return null;
     }
 
     @Override
@@ -43,12 +44,26 @@ public class CategoriesCarouselComponent implements BaseComponent<List<Categorie
         this.categoryItems = content;
     }
 
+    @Override
+    public void setComponent(BaseComponent component) {
+        if (!(component instanceof CarouselComponent)) {
+            return;
+        }
+        List<CategoryItem> categoryItems = new ArrayList<>();
+        CarouselComponent carouselComponent = (CarouselComponent) component;
+        for (CarouselComponent.CarouselItem carouselItem : carouselComponent.getCarouselItems()) {
+            CategoryItem tempItem = new CategoryItem(carouselItem.getTitle(), carouselItem.getPortraitImage(), carouselItem.getTarget());
+            categoryItems.add(tempItem);
+        }
+        setContent(categoryItems);
+    }
+
     public void setOnCarouselItemClickListener(OnCarouselItemClickListener onCarouselItemClickListener) {
         this.onCarouselItemClickListener = onCarouselItemClickListener;
     }
 
     public static class CategoryItem {
-        public CategoryItem(String title, int imageResourceId, String targetLink) {
+        public CategoryItem(String title, @DrawableRes int imageResourceId, String targetLink) {
             this.title = title;
             this.imageResourceId = imageResourceId;
             this.targetLink = targetLink;
@@ -89,7 +104,14 @@ public class CategoriesCarouselComponent implements BaseComponent<List<Categorie
 
         @Override
         public void onBindViewHolder(final CarouselViewHolder holder, int position) {
-            final CategoryItem item = categoryItems.get(position);
+            final CategoryItem item;
+            // the first item is all categories button
+            if (position == 0) {
+                Context context = holder.itemView.getContext();
+                item = new CategoryItem(context.getString(R.string.all_categories), R.drawable.carousel_categories_icon, null);
+            } else {
+                item = categoryItems.get(position - 1);
+            }
             holder.tvCategoryTitle.setText(item.title);
             if (item.imageResourceId == 0) {
                 setImageToLoad(item.imageUrl, holder.imgCategoryIcon);
@@ -113,7 +135,7 @@ public class CategoriesCarouselComponent implements BaseComponent<List<Categorie
         @Override
         public int getItemCount() {
             if (categoryItems != null) {
-                return categoryItems.size();
+                return categoryItems.size() + 1;
             }
             return 0;
         }

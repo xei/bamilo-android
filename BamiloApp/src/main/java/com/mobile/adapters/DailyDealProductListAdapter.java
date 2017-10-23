@@ -12,7 +12,7 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
-import com.mobile.view.components.DailyDealsComponent;
+import com.mobile.view.components.DailyDealViewComponent;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,9 +22,10 @@ import java.util.Locale;
  */
 
 public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealProductListAdapter.ProductListViewHolder> {
-    private List<DailyDealsComponent.Product> products;
+    private List<DailyDealViewComponent.Product> products;
+    private OnDealProductItemClickListener onDealProductItemClickListener;
 
-    public DailyDealProductListAdapter(List<DailyDealsComponent.Product> products) {
+    public DailyDealProductListAdapter(List<DailyDealViewComponent.Product> products) {
         this.products = products;
     }
 
@@ -35,10 +36,10 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
     }
 
     @Override
-    public void onBindViewHolder(ProductListViewHolder holder, int position) {
+    public void onBindViewHolder(final ProductListViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
         Locale locale = new Locale("fa", "ir");
-        DailyDealsComponent.Product product = products.get(position);
+        final DailyDealViewComponent.Product product = products.get(position);
 
         if (product.thumb != null) {
             try {
@@ -61,6 +62,14 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
             holder.tvProductOldPrice.setVisibility(View.INVISIBLE);
             holder.tvProductDiscountPercentage.setVisibility(View.INVISIBLE);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onDealProductItemClickListener != null) {
+                    onDealProductItemClickListener.onDealProductClicked(v, products.get(holder.getAdapterPosition()));
+                }
+            }
+        });
     }
 
     @Override
@@ -71,12 +80,20 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
         return products.size();
     }
 
-    public List<DailyDealsComponent.Product> getProducts() {
+    public List<DailyDealViewComponent.Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<DailyDealsComponent.Product> products) {
+    public void setProducts(List<DailyDealViewComponent.Product> products) {
         this.products = products;
+    }
+
+    public OnDealProductItemClickListener getOnDealProductItemClickListener() {
+        return onDealProductItemClickListener;
+    }
+
+    public void setOnDealProductItemClickListener(OnDealProductItemClickListener onDealProductItemClickListener) {
+        this.onDealProductItemClickListener = onDealProductItemClickListener;
     }
 
     public static class ProductListViewHolder extends RecyclerView.ViewHolder {
@@ -93,5 +110,9 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
             tvProductDiscountPercentage = (TextView) itemView.findViewById(R.id.tvDealProductDiscountPercentage);
             imgProductThumb = (ImageView) itemView.findViewById(R.id.imgDealProductThumb);
         }
+    }
+
+    public interface OnDealProductItemClickListener {
+        void onDealProductClicked(View v, DailyDealViewComponent.Product product);
     }
 }

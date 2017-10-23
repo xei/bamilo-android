@@ -6,20 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.mobile.service.objects.home.model.BaseComponent;
+import com.mobile.service.objects.home.model.TileComponent;
 import com.mobile.utils.ColorSequenceHolder;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class TileComponent implements BaseComponent<List<TileComponent.TileItem>> {
+public class TileViewComponent extends BaseViewComponent<List<TileViewComponent.TileItem>> {
     private List<TileItem> tileItems;
     private ColorSequenceHolder colorSequenceHolder;
     private OnTileClickListener onTileClickListener;
-
-    public TileComponent(ColorSequenceHolder colorSequenceHolder) {
-        this.colorSequenceHolder = colorSequenceHolder;
-    }
 
     @Override
     public View getView(Context context) {
@@ -80,12 +79,32 @@ public class TileComponent implements BaseComponent<List<TileComponent.TileItem>
         this.tileItems = content;
     }
 
+    @Override
+    public void setComponent(BaseComponent component) {
+        if (!(component instanceof TileComponent)) {
+            return;
+        }
+        TileComponent tileComponent = (TileComponent) component;
+        List<TileItem> tileItems = new ArrayList<>();
+
+        for (TileComponent.Tile tile : tileComponent.getTiles()) {
+            TileItem tempTile = new TileItem(tile.getPortraitImage(), tile.getTarget());
+            tileItems.add(tempTile);
+        }
+
+        setContent(tileItems);
+    }
+
     public OnTileClickListener getOnTileClickListener() {
         return onTileClickListener;
     }
 
     public void setOnTileClickListener(OnTileClickListener onTileClickListener) {
         this.onTileClickListener = onTileClickListener;
+    }
+
+    public void setColorSequenceHolder(ColorSequenceHolder colorSequenceHolder) {
+        this.colorSequenceHolder = colorSequenceHolder;
     }
 
     public static class TileItem {

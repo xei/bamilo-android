@@ -13,9 +13,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mobile.adapters.DailyDealProductListAdapter;
+import com.mobile.service.objects.home.model.BaseComponent;
+import com.mobile.service.objects.home.model.DailyDealComponent;
+import com.mobile.service.utils.TextUtils;
 import com.mobile.view.R;
 import com.mobile.view.widget.LimitedCountLinearLayoutManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,7 +27,7 @@ import java.util.Locale;
  * Created on 10/15/2017.
  */
 
-public class DailyDealsComponent implements BaseComponent<DailyDealsComponent.DealItem> {
+public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewComponent.DealItem> {
     private Handler mHandler;
     private DealItem mDealItem;
     private View rootView;
@@ -41,7 +45,7 @@ public class DailyDealsComponent implements BaseComponent<DailyDealsComponent.De
     };
     private boolean paused;
 
-    public DailyDealsComponent() {
+    public DailyDealViewComponent() {
         mHandler = new Handler();
         mLocale = new Locale("fa", "ir");
     }
@@ -56,7 +60,7 @@ public class DailyDealsComponent implements BaseComponent<DailyDealsComponent.De
                 if (mDealItem.countDownRemainingSeconds > System.currentTimeMillis() / 1000 - mDealItem.countDownStartTimeSeconds) {
                     tvDealCountDown = (TextView) rootView.findViewById(R.id.tvDealCountDown);
                     tvDealCountDown.setVisibility(View.VISIBLE);
-                    if (mDealItem.countDownTextColor != null) {
+                    if (TextUtils.validateColorString(mDealItem.countDownTextColor)) {
                         tvDealCountDown.setTextColor(Color.parseColor(mDealItem.countDownTextColor));
                     }
                     start();
@@ -68,7 +72,7 @@ public class DailyDealsComponent implements BaseComponent<DailyDealsComponent.De
 
             // Component prefs
             rootView.setVisibility(View.VISIBLE);
-            if (mDealItem.componentBackgroundColor != null) {
+            if (TextUtils.validateColorString(mDealItem.componentBackgroundColor)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     rootView.findViewById(R.id.llDailyDealsComponentContainer)
                             .setBackground(createComponentBackground(context, Color.parseColor(mDealItem.componentBackgroundColor)));
@@ -81,17 +85,17 @@ public class DailyDealsComponent implements BaseComponent<DailyDealsComponent.De
             // Deal title prefs
             TextView tvDealTitle = (TextView) rootView.findViewById(R.id.tvDealTitle);
             tvDealTitle.setText(mDealItem.dealTitle);
-            if (mDealItem.dealTitleColor != null) {
+            if (TextUtils.validateColorString(mDealItem.dealTitleColor)) {
                 tvDealTitle.setTextColor(Color.parseColor(mDealItem.dealTitleColor));
             }
 
             // More items button
-            if (mDealItem.moreOptionsTitle != null &&
-                    mDealItem.moreOptionsTargetLink != null) {
+            if (TextUtils.isNotEmpty(mDealItem.moreOptionsTitle) &&
+                    TextUtils.isNotEmpty(mDealItem.moreOptionsTargetLink)) {
                 TextView tvDealMoreItems = (TextView) rootView.findViewById(R.id.tvDealMoreItems);
                 tvDealMoreItems.setVisibility(View.VISIBLE);
                 tvDealMoreItems.setText(mDealItem.moreOptionsTitle);
-                if (mDealItem.moreOptionsTitleColor != null) {
+                if (TextUtils.validateColorString(mDealItem.moreOptionsTitleColor)) {
                     tvDealMoreItems.setTextColor(Color.parseColor(mDealItem.moreOptionsTitleColor));
                 }
                 tvDealMoreItems.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +110,14 @@ public class DailyDealsComponent implements BaseComponent<DailyDealsComponent.De
 
             // Product list
             DailyDealProductListAdapter adapter = new DailyDealProductListAdapter(mDealItem.dealProducts);
+            adapter.setOnDealProductItemClickListener(new DailyDealProductListAdapter.OnDealProductItemClickListener() {
+                @Override
+                public void onDealProductClicked(View v, Product product) {
+                    if (onCountDownDealItemClickListener != null) {
+                        onCountDownDealItemClickListener.onProductItemClicked(v, product);
+                    }
+                }
+            });
             RecyclerView rvDealProducts = (RecyclerView) rootView.findViewById(R.id.rvDealProducts);
             rvDealProducts.setAdapter(adapter);
             rvDealProducts.setLayoutManager(new LimitedCountLinearLayoutManager(context,
@@ -139,7 +151,7 @@ public class DailyDealsComponent implements BaseComponent<DailyDealsComponent.De
                 long hours = secondsRemaining / 3600;
                 long minutes = secondsRemaining / 60 % 60;
                 long seconds = secondsRemaining % 60;
-                String remainingText = String.format(mLocale, "%d:%02d:%02d", hours, minutes, seconds);
+                String remainingText = String.format(mLocale, "%02d:%02d:%02d", hours, minutes, seconds);
                 tvDealCountDown.setText(remainingText);
             } else {
                 rootView.setVisibility(View.GONE);
@@ -152,6 +164,50 @@ public class DailyDealsComponent implements BaseComponent<DailyDealsComponent.De
     @Override
     public void setContent(DealItem content) {
         this.mDealItem = content;
+    }
+
+    @Override
+    public void setComponent(BaseComponent component) {
+        if (!(component instanceof DailyDealComponent)) {
+            return;
+        }
+        DailyDealComponent dailyDealComponent = (DailyDealComponent) component;
+        DealItem dealItem = new DealItem();
+
+        dealItem.componentBackgroundColor = dailyDealComponent.getBackgroundColor();
+
+        dealItem.dealTitle = dailyDealComponent.getTitle();
+        dealItem.dealTitleColor = dailyDealComponent.getTitleTextColor();
+
+        dealItem.moreOptionsTitle = dailyDealComponent.getMoreOptionsTitle();
+        dealItem.moreOptionsTargetLink = dailyDealComponent.getMoreOptionsTarget();
+        dealItem.moreOptionsTitleColor = dailyDealComponent.getMoreOptionsTitleColor();
+
+        dealItem.countDownTextColor = dailyDealComponent.getCounterTextColor();
+        dealItem.countDownRemainingSeconds = dailyDealComponent.getRemainingSeconds();
+        dealItem.countDownStartTimeSeconds = System.currentTimeMillis() / 1000;
+
+        List<Product> dealProducts = new ArrayList<>();
+        if (dailyDealComponent.getProducts() != null) {
+            for (DailyDealComponent.Product product : dailyDealComponent.getProducts()) {
+                Product tempProduct = new Product();
+                tempProduct.sku = product.getSku();
+                tempProduct.name = product.getName();
+                tempProduct.brand = product.getBrand();
+                tempProduct.thumb = product.getImage();
+                tempProduct.maxSavingPercentage = product.getMaxSavingPercentage();
+                if (product.getSpecialPrice() == 0) {
+                    tempProduct.price = product.getPrice();
+                } else {
+                    tempProduct.price = product.getSpecialPrice();
+                    tempProduct.oldPrice = product.getPrice();
+                }
+                dealProducts.add(tempProduct);
+            }
+        }
+        dealItem.dealProducts = dealProducts;
+
+        setContent(dealItem);
     }
 
     public void pause() {
@@ -201,21 +257,8 @@ public class DailyDealsComponent implements BaseComponent<DailyDealsComponent.De
         public String name;
         public String brand;
         public int maxSavingPercentage;
-        public int price;
-        public int oldPrice;
-
-        // TODO: 10/17/2017 Remove this method
-        public Product cloneThis() {
-            Product c = new Product();
-            c.thumb = this.thumb;
-            c.sku = this.sku;
-            c.name = this.name;
-            c.brand = this.brand;
-            c.maxSavingPercentage = this.maxSavingPercentage;
-            c.price = this.price;
-            c.oldPrice = this.oldPrice;
-            return c;
-        }
+        public long price;
+        public long oldPrice;
     }
 
     public interface OnCountDownDealItemClickListener {

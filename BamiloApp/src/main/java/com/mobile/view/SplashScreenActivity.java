@@ -3,6 +3,7 @@ package com.mobile.view;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -37,11 +38,14 @@ import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.utils.ConfigurationWrapper;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+
+import java.util.Locale;
 
 /**
  * <p> This class creates a splash screen. It also initializes hockey and the backend </p> <p/> <p> Copyright (C) 2012 Rocket Internet - All Rights Reserved
@@ -315,6 +319,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             onProcessAutoCountrySelection();
         } else if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) {
             onProcessRequiresUserError();
+        }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            super.attachBaseContext(ConfigurationWrapper.wrapLocale(newBase, new Locale("fa", "ir")));
+        } else {
+            super.attachBaseContext(newBase);
         }
     }
 

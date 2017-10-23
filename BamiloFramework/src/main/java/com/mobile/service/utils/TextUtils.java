@@ -10,6 +10,8 @@ import com.mobile.service.objects.cart.PurchaseCartItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TextUtils {
 
@@ -17,6 +19,7 @@ public class TextUtils {
 
     /**
      * Returns true if the string is null or 0-length.
+     *
      * @param str the string to be examined
      * @return true if str is null or zero length
      */
@@ -26,6 +29,7 @@ public class TextUtils {
 
     /**
      * Returns true if the string is not null and 0-length.
+     *
      * @param str the string to be examined
      * @return true if str is not null and zero length
      */
@@ -35,6 +39,7 @@ public class TextUtils {
 
     /**
      * Returns true if the sub string is part of string.
+     *
      * @param str the string to be examined
      * @param sub the sub string to find
      * @return true if str is not null and zero length
@@ -54,6 +59,7 @@ public class TextUtils {
      * Returns true if a and b are equal, including if they are both null.
      * <p><i>Note: In platform versions 1.1 and earlier, this method only worked well if
      * both the arguments were instances of String.</i></p>
+     *
      * @param a first CharSequence to check
      * @param b second CharSequence to check
      * @return true if a and b are equal
@@ -78,10 +84,9 @@ public class TextUtils {
      * String.split() returns [''] when the string to be split is empty. This returns []. This does
      * not remove any empty strings from the result. For example split("a,", ","  ) returns {"a", ""}.
      *
-     * @param text the string to split
+     * @param text       the string to split
      * @param expression the regular expression to match
      * @return an array of strings. The array will be empty if text is empty
-     *
      * @throws NullPointerException if expression or text is null
      */
     public static String[] split(String text, String expression) {
@@ -95,11 +100,11 @@ public class TextUtils {
     /**
      * Constructs a String based on placeholder with HTML support.
      *
-     * @param text The normal text.
+     * @param text        The normal text.
      * @param placeHolder The placeholder String.
      * @return A spanned String.
      */
-    public static Spanned placeHolderText(String placeHolder, String text){
+    public static Spanned placeHolderText(String placeHolder, String text) {
         String textEncoded = htmlEncode(text);
         String placeHolderText = String.format(placeHolder, textEncoded);
         return Html.fromHtml(placeHolderText);
@@ -107,6 +112,7 @@ public class TextUtils {
 
     /**
      * Html-encode the string.
+     *
      * @param s the string to be encoded
      * @return the encoded string
      */
@@ -155,31 +161,38 @@ public class TextUtils {
     /**
      * Remove escaped line breaks
      */
-    public static String unEscape(String literal){
+    public static String unEscape(String literal) {
         return literal.replaceAll("\\\\n", "\n");
     }
 
-    public static String joinCartItemSKUes(PurchaseEntity purchaseEntity)
-    {
-        String csv="";
+    public static String joinCartItemSKUes(PurchaseEntity purchaseEntity) {
+        String csv = "";
         if (purchaseEntity == null) return csv;
         ArrayList<PurchaseCartItem> items = purchaseEntity.getCartItems();
         if (items == null || items.size() == 0) return csv;
         for (PurchaseCartItem item : items) {
             csv = csv.concat(item.getSku()).concat(",");
         }
-        csv = csv.substring(0, csv.length()-1);
+        csv = csv.substring(0, csv.length() - 1);
         return csv;
     }
 
-    public static String getResourceString(Context context, int resId)
-    {
+    public static String getResourceString(Context context, int resId) {
         return context.getResources().getString(resId);
     }
 
-    public static String getResourceString(Context context, int resId, Integer ... args)
-    {
+    public static String getResourceString(Context context, int resId, Integer... args) {
         String str = context.getResources().getString(resId);
         return String.format(str, args);
+    }
+
+    public static boolean validateColorString(String color) {
+        if (isEmpty(color)) {
+            return false;
+        }
+        String HEX_PATTERN = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
+        Pattern pattern = Pattern.compile(HEX_PATTERN);
+        Matcher matcher = pattern.matcher(color);
+        return matcher.matches();
     }
 }
