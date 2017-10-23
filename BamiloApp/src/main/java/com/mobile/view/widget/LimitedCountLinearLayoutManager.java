@@ -1,6 +1,7 @@
 package com.mobile.view.widget;
 
 import android.content.Context;
+import android.support.annotation.FloatRange;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 public class LimitedCountLinearLayoutManager extends LinearLayoutManager {
     private int itemMeasuredSize = 0;
     private int mItemsPerPage;
+    @FloatRange(from=0.0,to=1.0)
+    private float lastItemVisiblePartAmount = .5F;
 
 
     public LimitedCountLinearLayoutManager(Context context, int orientation, boolean reverseLayout, int itemsPerPage) {
@@ -44,7 +47,15 @@ public class LimitedCountLinearLayoutManager extends LinearLayoutManager {
 
     private int getItemSize() {
         int pageSize = getOrientation() == HORIZONTAL ? getWidth() : getHeight();
-        return Math.round((float) pageSize / (mItemsPerPage - 1 + 0.5F));
+        return Math.round((float) pageSize / (mItemsPerPage - 1 + lastItemVisiblePartAmount));
+    }
+
+    public void setLastItemVisiblePartAmount(@FloatRange(from=0.0,to=1.0) float lastItemVisiblePartAmount) {
+        this.lastItemVisiblePartAmount = lastItemVisiblePartAmount;
+    }
+
+    public float getLastItemVisiblePartAmount() {
+        return lastItemVisiblePartAmount;
     }
 
     public int getItemsPerPage() {

@@ -120,8 +120,10 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
             });
             RecyclerView rvDealProducts = (RecyclerView) rootView.findViewById(R.id.rvDealProducts);
             rvDealProducts.setAdapter(adapter);
-            rvDealProducts.setLayoutManager(new LimitedCountLinearLayoutManager(context,
-                    LinearLayoutManager.HORIZONTAL, false, 3));
+            LimitedCountLinearLayoutManager layoutManager = new LimitedCountLinearLayoutManager(context,
+                    LinearLayoutManager.HORIZONTAL, false, context.getResources().getInteger(R.integer.daily_deals_visible_items_count));
+            layoutManager.setLastItemVisiblePartAmount(0.25F);
+            rvDealProducts.setLayoutManager(layoutManager);
         }
         return rootView;
     }

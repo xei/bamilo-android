@@ -141,6 +141,8 @@
 
     <color name="primary_gray_1">#DD53585B</color>
 
+    <color name="touch_feedback_color">#40000000</color>
+
     <!--Color palette-->
     <color name="orange_1">#fe6b0c</color>
 
