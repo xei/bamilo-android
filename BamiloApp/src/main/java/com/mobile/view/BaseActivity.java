@@ -142,7 +142,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private WarningFactory warningFactory;
     protected DialogFragment dialog;
     protected CustomSearchActionView mSearchView;
-//    protected EditText mSearchAutoComplete;
+    //    protected EditText mSearchAutoComplete;
     protected RecyclerView mSearchListView;
     protected FrameLayout mSearchOverlay;
     protected boolean isSearchComponentOpened = false;
@@ -438,6 +438,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         });
     }
 
+    public void onSearchBarScrolled(int dy) {
+        if (searchBarEnabled && searchBarAutoHide != null) {
+            searchBarAutoHide.onScroll(-dy);
+        }
+    }
+
     public boolean showSearchBar() {
         return searchBarEnabled && searchBarAutoHide != null && searchBarAutoHide.showSearchBar();
     }
@@ -458,7 +464,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         findViewById(R.id.warning).setLayoutParams(warningParams);
     }
 
-    public boolean enableActionbarAutoHide(final View... views){
+    public boolean enableActionbarAutoHide(final View... views) {
         actionBarAutoHideEnabled = false;
         if (!searchBarEnabled) {
             actionBarAutoHideEnabled = true;
@@ -503,55 +509,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
 
     private void setAppBarLayout(@NavigationAction.Type int oldNavAction, @NavigationAction.Type int newNavAction) {
-        CoordinatorLayout.LayoutParams containerParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
-        CoordinatorLayout.Behavior containerBehavior = containerParams.getBehavior();
-        if (containerBehavior instanceof NestedScrollCatchBehavior) {
-            ((NestedScrollCatchBehavior) containerBehavior).setNestedScrollListener(new NestedScrollCatchBehavior.NestedScrollListener() {
-                @Override
-                public void onDirectionNestedPreScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dx, int dy, int[] consumed, @VerticalScrollingBehavior.ScrollDirection int scrollDirection) {
-
-                }
-
-                @Override
-                public void onDirectionNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int scrollDirection) {
-                    if (searchBarEnabled && searchBarAutoHide != null) {
-                        searchBarAutoHide.onScroll(-dyConsumed);
-                    }
-
-                    if (actionBarAutoHideEnabled && actionBarAutoHide != null) {
-                        actionBarAutoHide.onScroll(-dyConsumed);
-                    }
-                }
-
-                @Override
-                public void onDirectionNestedFling(CoordinatorLayout coordinatorLayout, View child, View target, float velocityX, float velocityY, @VerticalScrollingBehavior.ScrollDirection int scrollDirection) {
-                    if (searchBarEnabled && searchBarAutoHide != null) {
-                        nestedScrollerCompat.fling(0, 0, (int) velocityX, (int) velocityX, 0, 0, searchBarAutoHide.getMinScrollRange(),
-                                searchBarAutoHide.getMaxScrollRange());
-                        nestedScrollerCompat.computeScrollOffset();
-                        searchBarAutoHide.onSmoothScroll(nestedScrollerCompat.getFinalY());
-                    }
-                    /*if (searchBarEnabled && searchBarAutoHide != null) {
-                        searchBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
-                    }
-
-                    if (actionBarAutoHideEnabled && actionBarAutoHide != null) {
-                        actionBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
-                    }*/
-                }
-
-                @Override
-                public void onStopNestedDirectionScroll(CoordinatorLayout coordinatorLayout, View child, View target, int scrollDirection) {
-                    if (searchBarEnabled && searchBarAutoHide != null) {
-                        searchBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
-                    }
-
-                    if (actionBarAutoHideEnabled && actionBarAutoHide != null) {
-                        actionBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
-                    }
-                }
-            });
-        }
         try {
             // Case enable/disable actionbar auto-hide
             if (!UITabLayoutUtils.isNavigationActionbarAutoHide(newNavAction)) {
@@ -1345,7 +1302,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Hide dropdown
         if (suggestionsStruct.size() == 0) {
 //            mSearchAutoComplete.dismissDropDown();
-        }else {
+        } else {
             //show dropdown with recent queries
             SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
             searchSuggestionsAdapter.setOnViewHolderClickListener(this);

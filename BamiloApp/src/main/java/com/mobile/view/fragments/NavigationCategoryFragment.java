@@ -25,7 +25,6 @@ import com.mobile.service.database.CategoriesTableHelper;
 import com.mobile.service.objects.category.Categories;
 import com.mobile.service.objects.category.Category;
 import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.pojo.RestConstants;
 import com.mobile.service.rest.errors.ErrorCode;
 import com.mobile.service.utils.CollectionUtils;

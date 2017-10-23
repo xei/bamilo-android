@@ -40,6 +40,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
     private ColorSequenceHolder colorSequenceHolder;
     private HomePageComponents mHomePageComponents;
     private List<DailyDealViewComponent> dailyDealViewComponents;
+    private boolean isFragmentVisibleToUser = false;
 
     public HomeFragment() {
         super(true, R.layout.fragment_home);
@@ -60,6 +61,14 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
         });
         mContainerLinearLayout = (LinearLayout) view.findViewById(R.id.llHomeContainer);
         getBaseActivity().enableSearchBar(true, mRootScrollView);
+        mRootScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (isFragmentVisibleToUser) {
+                    getBaseActivity().onSearchBarScrolled(scrollY - oldScrollY);
+                }
+            }
+        });
         srlHomeRoot = (SwipeRefreshLayout) view.findViewById(R.id.srlHomeRoot);
         srlHomeRoot.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -122,6 +131,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        isFragmentVisibleToUser = isVisibleToUser;
         if (isVisibleToUser) {
             if (mRootScrollView != null) {
                 getBaseActivity().syncSearchBarState(mRootScrollView.getScrollY());

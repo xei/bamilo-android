@@ -47,6 +47,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     private int recommendListScrollPosition;
     private boolean loadInProgress;
     private int scrolledAmount = 0;
+    private boolean isFragmentVisibleToUser = false;
 
     public MyBamiloFragment() {
         super(true, R.layout.fragment_my_bamilo);
@@ -68,6 +69,15 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         });
         rvRecommendedItemsList.setClipToPadding(false);
         getBaseActivity().enableSearchBar(true, rvRecommendedItemsList);
+        rvRecommendedItemsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (isFragmentVisibleToUser) {
+                    getBaseActivity().onSearchBarScrolled(dy);
+                }
+            }
+        });
         srlRecommendItemsList.setProgressViewOffset(false, rvRecommendedItemsList.getPaddingTop(), srlRecommendItemsList.getProgressViewEndOffset());
         srlRecommendItemsList.setColorSchemeResources(R.color.appBar);
         recommendListItems = new ArrayList<>();
@@ -165,6 +175,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        isFragmentVisibleToUser = isVisibleToUser;
         if (isVisibleToUser) {
             if (rvRecommendedItemsList != null) {
                 getBaseActivity().syncSearchBarState(scrolledAmount);
