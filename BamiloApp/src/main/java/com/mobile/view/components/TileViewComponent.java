@@ -27,9 +27,9 @@ public class TileViewComponent extends BaseViewComponent<List<TileViewComponent.
             if (tileItems.size() == 1) {
                 enableHorizontalRow(rootView, tileItems.get(0));
             } else if (tileItems.size() == 3) {
-                enableThreeTilesState(rootView, tileItems.get(0), tileItems.get(1), tileItems.get(2));
+                enableThreeTilesState(rootView, tileItems.get(0), tileItems.get(2), tileItems.get(1));
             } else if (tileItems.size() == 5) {
-                enableFiveTilesState(rootView, tileItems.get(0), tileItems.get(1), tileItems.get(2), tileItems.get(3), tileItems.get(4));
+                enableFiveTilesState(rootView, tileItems.get(1), tileItems.get(0), tileItems.get(2), tileItems.get(4), tileItems.get(3));
             }
             return rootView;
         }
