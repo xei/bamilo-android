@@ -6,9 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputType;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.components.absspinner.PromptSpinnerAdapter;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -35,6 +39,7 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 import com.mobile.view.fragments.ProductDetailsFragment;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
@@ -49,7 +54,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     private EditText mEmailRView;
     private EditText mPasswordRView;
     private EditText mPhoneView;
-    private RadioGroup mGender;
+    private Spinner mGenderSpinner;
 
     private FragmentType mParentFragmentType;
 
@@ -57,7 +62,8 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
 
     private boolean isInCheckoutProcess;
     private TextView national_id_error_message, first_name_error_message, last_name_error_message,
-            email_error_message, password_error_message, phone_error_message;
+            email_error_message, password_error_message, phone_error_message, gender_error_message;
+    private String userGender;
 
     public RegisterFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
@@ -131,14 +137,15 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         mEmailRView = (EditText) view.findViewById(R.id.email);
         mPasswordRView = (EditText) view.findViewById(R.id.password);
         mPhoneView = (EditText) view.findViewById(R.id.phone);
-        mGender = (RadioGroup) view.findViewById(R.id.radio_group_gender);
+        mGenderSpinner = (Spinner) view.findViewById(R.id.gender);
+        gender_error_message = (TextView) view.findViewById(R.id.gender_error_message);
+        fillGenderDropDown();
         phone_error_message = (TextView) view.findViewById(R.id.phone_error_message);
         national_id_error_message = (TextView) view.findViewById(R.id.national_id_error_message);
         first_name_error_message = (TextView) view.findViewById(R.id.first_name_error_message);
         last_name_error_message = (TextView) view.findViewById(R.id.last_name_error_message);
         email_error_message = (TextView) view.findViewById(R.id.email_error_message);
         password_error_message = (TextView) view.findViewById(R.id.password_error_message);
-        phone_error_message = (TextView) view.findViewById(R.id.phone_error_message);
         view.findViewById(R.id.register_button_create).setOnClickListener(this);
         mEmailRView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
@@ -150,6 +157,31 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
             mPasswordRView.setText(savedInstanceState.getString("mPasswordRView"));
             mPhoneView.setText(savedInstanceState.getString("mPhoneView"));
         }
+    }
+
+    private void fillGenderDropDown() {
+        ArrayList<String> gender = new ArrayList<>();
+        gender.add(getString(R.string.gender_male));
+        gender.add(getString(R.string.gender_female));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, gender);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
+        promptAdapter.setPrompt(getString(R.string.gender));
+        mGenderSpinner.setAdapter(promptAdapter);
+        mGenderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) {
+                    userGender = "male";
+                } else if (position == 2) {
+                    userGender = "female";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     @Override
@@ -215,7 +247,18 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         result = validateStringToPattern(context, R.string.email, mEmailRView, mEmailRView.getText().toString(), true, 0, 40, R.string.email_regex, getResources().getString(R.string.error_invalid_email), R.id.email_error_message) && result;
         result = validateStringToPattern(context, R.string.new_password, mPasswordRView, mPasswordRView.getText().toString(), true, 6, 50, R.string.normal_string_regex, "", R.id.password_error_message) && result;
         result = validateStringToPattern(context, R.string.phone, mPhoneView, mPhoneView.getText().toString(), true, 0, 40, R.string.normal_string_regex, "", R.id.phone_error_message) && result;
+        result &= validateUserGender();
         return result;
+    }
+
+    private boolean validateUserGender() {
+        if (userGender == null) {
+            gender_error_message.setVisibility(View.VISIBLE);
+            gender_error_message.setText(R.string.error_isrequired);
+            return false;
+        }
+        gender_error_message.setVisibility(View.GONE);
+        return true;
     }
 
 
@@ -229,7 +272,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         values.put("customer[password]", mPasswordRView.getText().toString());
         values.put("customer[phone]", mPhoneView.getText().toString());
         values.put("customer[phone_prefix]", "100");
-        values.put("customer[gender]", mGender.getCheckedRadioButtonId() == R.id.radio_gender_male ? "male" : "female");
+        values.put("customer[gender]", userGender);
 
         // Register user
         triggerRegister(ApiConstants.USER_REGISTRATION_API_PATH, values);

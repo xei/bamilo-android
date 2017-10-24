@@ -568,7 +568,7 @@
     <dimen name="checkout_footer_font_size">16sp</dimen>
     <dimen name="checkout_footer_height">57dp</dimen>
     <dimen name="checkout_totalbar_height">50dp</dimen>
-    <dimen name="register_font_size">14sp</dimen>
+    <dimen name="register_font_size">12sp</dimen>
     <dimen name="cart_discout_shadow_height">5dp</dimen>
     <dimen name="order_status_fontsize">10sp</dimen>
     <dimen name="filter_icon_size">18dp</dimen>
