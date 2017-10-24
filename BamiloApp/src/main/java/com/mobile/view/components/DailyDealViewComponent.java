@@ -16,6 +16,7 @@ import com.mobile.adapters.DailyDealProductListAdapter;
 import com.mobile.service.objects.home.model.BaseComponent;
 import com.mobile.service.objects.home.model.DailyDealComponent;
 import com.mobile.service.utils.TextUtils;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 import com.mobile.view.widget.LimitedCountLinearLayoutManager;
 
@@ -104,6 +105,11 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
                         if (onCountDownDealItemClickListener != null) {
                             onCountDownDealItemClickListener.onMoreButtonClicked(v, mDealItem.moreOptionsTargetLink);
                         }
+                        if (mPage != null) {
+                            TrackerDelegator.trackComponentViewTap(mPage,
+                                    String.format(Locale.US, "%s_%d", BaseComponent.ComponentType.DailyDeal.toString(), mInstanceIndex),
+                                    mDealItem.moreOptionsTargetLink);
+                        }
                     }
                 });
             }
@@ -116,6 +122,9 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
                     if (onCountDownDealItemClickListener != null) {
                         onCountDownDealItemClickListener.onProductItemClicked(v, product);
                     }
+                    TrackerDelegator.trackComponentViewTap(mPage,
+                            String.format(Locale.US, "%s_%d", BaseComponent.ComponentType.DailyDeal.toString(), mInstanceIndex),
+                            product.sku);
                 }
             });
             RecyclerView rvDealProducts = (RecyclerView) rootView.findViewById(R.id.rvDealProducts);

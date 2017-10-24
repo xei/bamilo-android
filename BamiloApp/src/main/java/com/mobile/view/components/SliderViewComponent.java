@@ -16,12 +16,14 @@ import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.PreviewViewPager;
 import com.mobile.service.objects.home.model.BaseComponent;
 import com.mobile.service.objects.home.model.SliderComponent;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class SliderViewComponent extends BaseViewComponent<List<SliderViewComponent.Item>> {
     private static final float SLIDE_WIDTH_RATIO = 2.1375F;
@@ -45,6 +47,11 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
         adapter.onSlideClickListener = new OnSlideClickListener() {
             @Override
             public void onSlideClicked(View v, int position, Item item) {
+                if (mPage != null) {
+                    TrackerDelegator.trackComponentViewTap(mPage,
+                            String.format(Locale.US, "%s_%d", BaseComponent.ComponentType.Slider.toString(), mInstanceIndex),
+                            item.targetLink);
+                }
                 if (onSlideClickListener != null) {
                     onSlideClickListener.onSlideClicked(v, position, item);
                 }

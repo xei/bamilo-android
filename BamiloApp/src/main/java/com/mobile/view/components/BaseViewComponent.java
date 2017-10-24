@@ -19,11 +19,19 @@ public abstract class BaseViewComponent<T> {
         componentTypesMap.put(BaseComponent.ComponentType.Carousel, CategoriesCarouselViewComponent.class);
     }
 
+    protected String mPage;
+    protected int mInstanceIndex;
+
     public abstract View getView(Context context);
 
     public abstract void setContent(T content);
 
     public abstract void setComponent(BaseComponent component);
+
+    public void enableTracking(String page, int instanceIndex) {
+        this.mPage = page;
+        this.mInstanceIndex = instanceIndex;
+    }
 
     public static BaseViewComponent createFromBaseComponent(BaseComponent baseComponent) {
         BaseComponent.ComponentType componentType = BaseComponent.ComponentType.fromString(baseComponent.getType());

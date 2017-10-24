@@ -177,6 +177,11 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
     public void showComponents(HomePageComponents homePageComponents) {
         List<BaseComponent> components = homePageComponents.getComponents();
+        int tileComponentCount = 1,
+                sliderComponentCount = 1,
+                carouselComponentCount = 1,
+                dealComponentCount = 1;
+        String pageName = "HomePage";
         if (components != null) {
             mContainerLinearLayout.removeAllViews();
             for (BaseComponent component : components) {
@@ -184,12 +189,16 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
                 if (viewComponent instanceof TileViewComponent) {
                     ((TileViewComponent) viewComponent).setColorSequenceHolder(colorSequenceHolder);
                     ((TileViewComponent) viewComponent).setOnTileClickListener(this);
+                    viewComponent.enableTracking(pageName, tileComponentCount++);
                 } else if (viewComponent instanceof SliderViewComponent) {
                     ((SliderViewComponent) viewComponent).setOnSlideClickListener(this);
+                    viewComponent.enableTracking(pageName, sliderComponentCount++);
                 } else if (viewComponent instanceof CategoriesCarouselViewComponent) {
                     ((CategoriesCarouselViewComponent) viewComponent).setOnCarouselItemClickListener(this);
+                    viewComponent.enableTracking(pageName, carouselComponentCount++);
                 } else if (viewComponent instanceof DailyDealViewComponent) {
                     ((DailyDealViewComponent) viewComponent).setOnCountDownDealItemClickListener(this);
+                    viewComponent.enableTracking(pageName, dealComponentCount++);
                 }
                 mContainerLinearLayout.addView(viewComponent.getView(getContext()));
             }

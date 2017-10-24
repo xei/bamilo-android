@@ -12,12 +12,15 @@ import android.widget.TextView;
 
 import com.mobile.service.objects.home.model.BaseComponent;
 import com.mobile.service.objects.home.model.CarouselComponent;
+import com.mobile.service.pojo.RestConstants;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 import com.mobile.view.widget.LimitedCountLinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CategoriesCarouselViewComponent extends BaseViewComponent<List<CategoriesCarouselViewComponent.CategoryItem>> {
 
@@ -88,8 +91,10 @@ public class CategoriesCarouselViewComponent extends BaseViewComponent<List<Cate
     }
 
     private class CarouselAdapter extends RecyclerView.Adapter<CarouselViewHolder> {
+        private static final String ALL_CATEGORIES_SCREEN = "all-categories-screen";
         private List<CategoryItem> categoryItems;
         private OnCarouselItemClickListener onCarouselItemClickListener;
+        private CategoryItem allCategoriesItem;
 
         private CarouselAdapter(List<CategoryItem> categoryItems,
                                 OnCarouselItemClickListener onCarouselItemClickListener) {
@@ -103,12 +108,14 @@ public class CategoriesCarouselViewComponent extends BaseViewComponent<List<Cate
         }
 
         @Override
-        public void onBindViewHolder(final CarouselViewHolder holder, int position) {
-            final CategoryItem item;
+        public void onBindViewHolder(final CarouselViewHolder holder, final int position) {
             // the first item is all categories button
+            CategoryItem item;
             if (position == 0) {
                 Context context = holder.itemView.getContext();
-                item = new CategoryItem(context.getString(R.string.all_categories), R.drawable.carousel_categories_icon, null);
+                allCategoriesItem = new CategoryItem(context.getString(R.string.all_categories), R.drawable.carousel_categories_icon,
+                        ALL_CATEGORIES_SCREEN);
+                item = allCategoriesItem;
             } else {
                 item = categoryItems.get(position - 1);
             }
@@ -121,6 +128,19 @@ public class CategoriesCarouselViewComponent extends BaseViewComponent<List<Cate
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    CategoryItem item;
+                    if (position == 0) {
+                        item = allCategoriesItem;
+                    } else {
+                        item = categoryItems.get(holder.getAdapterPosition() - 1);
+                    }
+                    if (mPage != null) {
+                        TrackerDelegator.trackComponentViewTap(mPage,
+                                String.format(Locale.US, "%s_%d",
+                                        BaseComponent.ComponentType.Carousel.toString(),
+                                        mInstanceIndex),
+                                item.targetLink);
+                    }
                     if (onCarouselItemClickListener != null) {
                         onCarouselItemClickListener.onCarouselClicked(v, holder.getAdapterPosition(), item);
                     }

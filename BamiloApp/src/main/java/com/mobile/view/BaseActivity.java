@@ -334,6 +334,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
                 mSearchView.setText(text.get(0));
+                TrackerDelegator.trackVoiceSearch(text.get(0));
                 fireSearch(text.get(0));
             }
             voiceTyping = false;
@@ -442,10 +443,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         if (searchBarEnabled && searchBarAutoHide != null) {
             searchBarAutoHide.onScroll(-dy);
         }
-    }
-
-    public boolean showSearchBar() {
-        return searchBarEnabled && searchBarAutoHide != null && searchBarAutoHide.showSearchBar();
     }
 
     public void syncSearchBarState(int scrollAmount) {
@@ -993,6 +990,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         getSuggestions();
                         return false;
                     }
+                    TrackerDelegator.trackSearch(searchTerm);
                     fireSearch(searchTerm);
                     return true;
                 }
@@ -2037,6 +2035,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get suggestion
         Suggestion selectedSuggestion = ((SearchDropDownAdapter) adapter).getItem(position);
+        TrackerDelegator.trackSearchSuggestion(selectedSuggestion.getResult(), selectedSuggestion.getQuery());
         // Get text suggestion
         String text = selectedSuggestion.getResult();
         //Save searched text

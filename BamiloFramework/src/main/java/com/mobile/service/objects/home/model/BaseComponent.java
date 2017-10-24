@@ -80,10 +80,10 @@ public abstract class BaseComponent implements IJSONSerializable {
     }
 
     public enum ComponentType {
-        Slider("main_teasers"),
-        Tile("tile_teaser"),
-        DailyDeal("daily_deals"),
-        Carousel("featured_stores");
+        Slider(RestConstants.MAIN_TEASER),
+        Tile(RestConstants.TILE_TEASER),
+        DailyDeal(RestConstants.DAILY_DEALS),
+        Carousel(RestConstants.FEATURED_STORES);
         private final String name;
 
         ComponentType(String s) {

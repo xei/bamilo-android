@@ -26,6 +26,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.Item;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
@@ -37,6 +38,8 @@ import java.util.Map;
 public class MyBamiloFragment extends BaseFragment implements RecommendListCompletionHandler, RecommendGridAdapter.OnRecommendItemClickListener {
 
     private static final int RECOMMEND_LIST_COLUMN_COUNT = 2;
+    private static final String TRACKER_SCREEN_NAME = "MyBamilo";
+    private static final String TRACKER_LOGIC = "Home";
     private RecyclerView rvRecommendedItemsList;
     private SwipeRefreshLayout srlRecommendItemsList;
     private RecommendGridAdapter recommendGridAdapter;
@@ -284,6 +287,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
 
     @Override
     public void onRecommendItemClicked(View v, Item item, int position) {
+        TrackerDelegator.trackEmarsysRecommendation(TRACKER_SCREEN_NAME, TRACKER_LOGIC);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, item.getItemID());
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, String.format("%s %s", item.getBrand(), item.getTitle()));

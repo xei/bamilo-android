@@ -361,4 +361,8 @@ public class RestConstants {
     public static final String MORE_OPTION = "more_option";
     public static final String COUNTER = "counter";
     public static final java.lang.String REMAINING_SECONDS = "remaining_seconds";
+    public static final String MAIN_TEASER = "main_teasers";
+    public static final String TILE_TEASER = "tile_teaser";
+    public static final String DAILY_DEALS = "daily_deals";
+    public static final String FEATURED_STORES = "featured_stores";
 }

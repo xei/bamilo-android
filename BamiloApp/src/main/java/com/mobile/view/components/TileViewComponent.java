@@ -9,11 +9,13 @@ import android.widget.ImageView;
 import com.mobile.service.objects.home.model.BaseComponent;
 import com.mobile.service.objects.home.model.TileComponent;
 import com.mobile.utils.ColorSequenceHolder;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TileViewComponent extends BaseViewComponent<List<TileViewComponent.TileItem>> {
     private List<TileItem> tileItems;
@@ -62,6 +64,11 @@ public class TileViewComponent extends BaseViewComponent<List<TileViewComponent.
             public void onClick(View v) {
                 if (onTileClickListener != null) {
                     onTileClickListener.onTileClicked(v, item);
+                }
+                if (mPage != null) {
+                    TrackerDelegator.trackComponentViewTap(mPage,
+                            String.format(Locale.US, "%s_%d", BaseComponent.ComponentType.Tile.toString(), mInstanceIndex),
+                            item.targetLink);
                 }
             }
         });
