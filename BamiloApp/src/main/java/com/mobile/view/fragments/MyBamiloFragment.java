@@ -243,7 +243,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         loadInProgress = false;
         String CATEGORY_DELIMITER = ">";
         String temp[] = category.split(CATEGORY_DELIMITER);
-        category = temp[temp.length - 1];
+        category = temp[0];
         srlRecommendItemsList.setRefreshing(loadInProgress);
         List<Item> itemDataList = new ArrayList<>();
         for (RecommendedItem r : data) {
