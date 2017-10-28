@@ -27,6 +27,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.service.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.service.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.service.objects.catalog.filters.CatalogFilter;
+import com.mobile.service.objects.catalog.filters.CatalogFilters;
 import com.mobile.service.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.service.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.service.objects.catalog.filters.FilterOptionInterface;
@@ -50,21 +51,23 @@ import com.mobile.utils.catalog.filters.FilterRatingFragment;
 import com.mobile.view.R;
 import com.mobile.view.newfragments.SubCategoryFilterFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
- *
+ * <p>
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential.
  *
  * @author ricardosoares
  * @version 1.0
  * @date 2015/09/07
- *
- *
  */
 public class FilterMainFragment extends BaseFragment implements IResponseCallback, View.OnClickListener {
 
@@ -145,7 +148,11 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         // Received arguments
         else {
             mTargetType = (FragmentType) argumentsBundle.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
-            mFilters = argumentsBundle.getParcelableArrayList(FILTER_TAG);
+            try {
+                mFilters = new CatalogFilters(new JSONObject(argumentsBundle.getString(FILTER_TAG)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             currentFilterPosition = IntConstants.DEFAULT_POSITION;
             filterSelectionController = new FilterSelectionController(mFilters);
             mInitialSelectedFilterValues = filterSelectionController.getValues();
@@ -177,7 +184,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        filtersKey = (ListView)view.findViewById(R.id.filters_key);
+        filtersKey = (ListView) view.findViewById(R.id.filters_key);
         mTxFilterTitle = (TextView) view.findViewById(R.id.filter_title);
         mDiscountBox = (SwitchCompat) view.findViewById(R.id.dialog_filter_check_discount);
         mSubCategoryLayout = view.findViewById(R.id.subcateories_layout);
@@ -191,26 +198,24 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
             }
         });
 
-        int y=0;
-        for (CatalogFilter x :mFilters)
-        {
-            if (x instanceof  CatalogPriceFilter)
-            {
+        int y = 0;
+        for (CatalogFilter x : mFilters) {
+            if (x instanceof CatalogPriceFilter) {
                 break;
             }
             y++;
         }
 
 
-        if(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption() != null){
+        if (((CatalogPriceFilter) mFilters.get(y)).getOption().getCheckBoxOption() != null) {
             mDiscountBox.setVisibility(View.VISIBLE);
            /* mDiscountBox.setText(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption().getLabel());*/
-            mDiscountBox.setChecked(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption().isSelected());
+            mDiscountBox.setChecked(((CatalogPriceFilter) mFilters.get(y)).getOption().getCheckBoxOption().isSelected());
             final int finalY = y;
             mDiscountBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    ((CatalogPriceFilter)mFilters.get(finalY)).getOption().getCheckBoxOption().setSelected(isChecked);
+                    ((CatalogPriceFilter) mFilters.get(finalY)).getOption().getCheckBoxOption().setSelected(isChecked);
                 }
             });
         }
@@ -232,7 +237,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     }
 
     private void onFiltersKeyItemClick(int position) {
-        if(currentFilterPosition != position) {
+        if (currentFilterPosition != position) {
             loadFilterFragment(position);
         }
     }
@@ -299,15 +304,13 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         // Get view id
         int id = view.getId();
         // Cancel
-        if (id == R.id.dialog_filter_button_cancel){
+        if (id == R.id.dialog_filter_button_cancel) {
             processOnClickClean();
         }
         // Save
-        else if (id == R.id.dialog_filter_button_done){
+        else if (id == R.id.dialog_filter_button_done) {
             processOnClickDone();
-        }
-        else if (id == R.id.subcateories_text)
-        {
+        } else if (id == R.id.subcateories_text) {
             processOnSubCategoryClick();
         }
     }
@@ -326,12 +329,13 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
 
     /**
      * Process the click on clean button
+     *
      * @author sergiopereira
      */
-    private void processOnClickClean(){
+    private void processOnClickClean() {
         Print.d(TAG, "CLICKED ON: CLEAR");
         if (currentFragment instanceof FilterPriceFragment) {
-           ((FilterPriceFragment) currentFragment).clearFilterValues();
+            ((FilterPriceFragment) currentFragment).clearFilterValues();
         }
         filterSelectionController.initAllInitialFilterValues();
         // Clean all saved values
@@ -342,7 +346,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         }
         // Update adapter
         ((BaseAdapter) filtersKey.getAdapter()).notifyDataSetChanged();
-        if(currentFragment != null) {
+        if (currentFragment != null) {
             currentFragment.cleanValues();
         }
     }
@@ -350,6 +354,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     /**
      * Process the click on save button.
      * Create a content values and send it to parent
+     *
      * @author sergiopereira
      */
     private void processOnClickDone() {
@@ -365,7 +370,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
 
         // Communicate with parent
         toCancelFilters = false;
-       // argumentsBundle.putString(FILTER_CATEGORY, "women_tops_tshirts");
+        // argumentsBundle.putString(FILTER_CATEGORY, "women_tops_tshirts");
         if (argumentsBundle == null) {
             argumentsBundle = new Bundle();
         }
@@ -378,8 +383,6 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
 //        getBaseActivity().onBackPressed();
         getBaseActivity().onSwitchFragment(mTargetType, argumentsBundle, FragmentController.ADD_TO_BACK_STACK);
     }
-
-
 
 
     private class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {
@@ -400,25 +403,26 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
             // Get Filter
             CatalogFilter filter = getItem(position);
             // Validate current view
-            if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_sub_item_1, null);
+            if (convertView == null)
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_sub_item_1, null);
 
             TextView filterTitleTextView = ((TextView) convertView.findViewById(R.id.dialog_item_title));
             TextView filtersNumberTextView = ((TextView) convertView.findViewById(R.id.dialog_item_count));
 
-            if(filter.hasAppliedFilters()) {
+            if (filter.hasAppliedFilters()) {
                 //filterTitleTextView.setTypeface(null, Typeface.BOLD);
-                if(!(filter instanceof CatalogPriceFilter)){
-                    filtersNumberTextView.setText(convertView.getResources().getString(R.string.parenthesis_placeholder, ((CatalogCheckFilter)filter).getSelectedFilterOptions().size()));
+                if (!(filter instanceof CatalogPriceFilter)) {
+                    filtersNumberTextView.setText(convertView.getResources().getString(R.string.parenthesis_placeholder, ((CatalogCheckFilter) filter).getSelectedFilterOptions().size()));
                     filtersNumberTextView.setVisibility(View.VISIBLE);
                 }
             } else {
                 filtersNumberTextView.setVisibility(View.GONE);
-               // filterTitleTextView.setTypeface(null, Typeface.NORMAL);
+                // filterTitleTextView.setTypeface(null, Typeface.NORMAL);
             }
             // Set title
             filterTitleTextView.setText(filter.getName());
 
-            if(position == FilterMainFragment.this.currentFilterPosition) {
+            if (position == FilterMainFragment.this.currentFilterPosition) {
                 convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black_400));
 
             } else {
@@ -431,7 +435,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
 
     @Override
     public boolean allowBackPressed() {
-        if(toCancelFilters){
+        if (toCancelFilters) {
             filterSelectionController.goToInitialValues();
         }
         return super.allowBackPressed();
@@ -460,15 +464,11 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
                 // Get categories
                 mCategories = (Categories) baseResponse.getContentData();
 
-                if (!mCategories.get(1).hasChildren())
-                {
+                if (!mCategories.get(1).hasChildren()) {
                     mSubCategoryLayout.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     mSubCategoryLayout.setVisibility(View.VISIBLE);
                 }
-
 
 
                 break;
