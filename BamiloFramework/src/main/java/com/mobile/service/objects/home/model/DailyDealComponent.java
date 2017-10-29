@@ -55,6 +55,8 @@ public class DailyDealComponent extends BaseComponent {
             if (counterObject != null) {
                 counterRemainingSeconds = counterObject.optLong(RestConstants.REMAINING_SECONDS, -1);
                 counterTextColor = counterObject.optString(RestConstants.TEXT_COLOR);
+            } else {
+                counterRemainingSeconds = -1;
             }
         }
 
