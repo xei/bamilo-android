@@ -61,16 +61,12 @@ public class TopViewAutoHideUtil {
         }
     }
 
-    public boolean showSearchBar() {
-        if (searchBarHidden) {
-            animateScroll(viewScrolledAmount, maxScrollRange);
-            return true;
-        }
-        return false;
+    public void showSearchBar() {
+        animateScroll(viewScrolledAmount, maxScrollRange);
     }
 
     public void syncState(int scrolledAmount) {
-        if (searchBarHidden && (Math.abs(scrolledAmount) < Math.abs(minScrollRange))) {
+        if (Math.abs(scrolledAmount) < Math.abs(minScrollRange)) {
             showSearchBar();
         }
     }
