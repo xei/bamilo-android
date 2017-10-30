@@ -365,4 +365,5 @@ public class RestConstants {
     public static final String TILE_TEASER = "tile_teaser";
     public static final String DAILY_DEALS = "daily_deals";
     public static final String FEATURED_STORES = "featured_stores";
+    public static final String PAYMENT_LANDING_PAGE = "payment_landing_page_url";
 }
