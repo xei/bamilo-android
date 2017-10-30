@@ -34,15 +34,17 @@ public abstract class BaseViewComponent<T> {
     }
 
     public static BaseViewComponent createFromBaseComponent(BaseComponent baseComponent) {
-        BaseComponent.ComponentType componentType = BaseComponent.ComponentType.fromString(baseComponent.getType());
-        Class clazz = componentTypesMap.get(componentType);
-        if (clazz != null) {
-            try {
-                BaseViewComponent baseViewComponent = (BaseViewComponent) Class.forName(clazz.getName()).newInstance();
-                baseViewComponent.setComponent(baseComponent);
-                return baseViewComponent;
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (baseComponent != null) {
+            BaseComponent.ComponentType componentType = BaseComponent.ComponentType.fromString(baseComponent.getType());
+            Class clazz = componentTypesMap.get(componentType);
+            if (clazz != null) {
+                try {
+                    BaseViewComponent baseViewComponent = (BaseViewComponent) Class.forName(clazz.getName()).newInstance();
+                    baseViewComponent.setComponent(baseComponent);
+                    return baseViewComponent;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         return null;
