@@ -38,6 +38,7 @@
                 app:layout_constraintDimensionRatio="h,168:120"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:background="#f9efef" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
@@ -67,6 +68,7 @@
                 app:layout_constraintDimensionRatio="h,168:120"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:background="#ececec" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
@@ -94,6 +96,7 @@
                 app:layout_constraintDimensionRatio="h,344:120"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:background="#e2e8ef" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
@@ -123,6 +126,7 @@
                 app:layout_constraintDimensionRatio="h,168:120"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:background="#e9f7f7" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
@@ -154,6 +158,7 @@
                 app:layout_constraintDimensionRatio="h,168:120"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:background="#f5f1f7" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

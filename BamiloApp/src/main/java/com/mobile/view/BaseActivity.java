@@ -417,7 +417,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 warningParams.topMargin = searchBar.getHeight();
                 findViewById(R.id.warning).setLayoutParams(warningParams);
 
-                if (autoHide) {
+                if (autoHide && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     searchBarAutoHide = new TopViewAutoHideUtil(-searchBar.getHeight(), 0, searchBar);
                     searchBarAutoHide.setOnViewShowHideListener(new TopViewAutoHideUtil.OnViewShowHideListener() {
                         @Override

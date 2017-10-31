@@ -91,15 +91,20 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
     @Override
     public void onPause() {
+        stopDealComponentsTimer();
+        super.onPause();
+    }
+
+    private void stopDealComponentsTimer() {
         if (dailyDealViewComponents != null) {
             for (DailyDealViewComponent component : dailyDealViewComponents) {
                 component.pause();
             }
         }
-        super.onPause();
     }
 
     private void loadHomePage() {
+        stopDealComponentsTimer();
         srlHomeRoot.setRefreshing(true);
         triggerContentEventNoLoading(new GetHomeHelper(), null, this);
     }
@@ -218,7 +223,11 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
     @Override
     protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
+        loadHomePage();
+    }
+
+    @Override
+    protected void onClickContinueButton() {
         loadHomePage();
     }
 

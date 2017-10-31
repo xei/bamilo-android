@@ -196,7 +196,7 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
 
         dealItem.countDownTextColor = dailyDealComponent.getCounterTextColor();
         dealItem.countDownRemainingSeconds = dailyDealComponent.getRemainingSeconds();
-        dealItem.countDownStartTimeSeconds = System.currentTimeMillis() / 1000;
+        dealItem.countDownStartTimeSeconds = dailyDealComponent.getInitialTimeSeconds();
 
         List<Product> dealProducts = new ArrayList<>();
         if (dailyDealComponent.getProducts() != null) {
