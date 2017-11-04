@@ -172,7 +172,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private Toolbar toolbar;
     private boolean isBackButtonEnabled = false;
     private TabLayout mExtraTabLayout;
-    private float mExtraTabLayoutHeight;
+    private float mExtraTabLayoutHeight = -1;
     private AppBarLayout mAppBarLayout;
     public ConfirmationCartMessageView mConfirmationCartMessageView;
 
@@ -1989,9 +1989,20 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         HoloFontLoader.applyDefaultFont(mExtraTabLayout);
     }
 
+    public void setUpExtraTabLayout(ViewPager viewPager, float height) {
+        this.mExtraTabLayoutHeight = height;
+        if (mExtraTabLayout == null) {
+            injectExtraTabLayout();
+        }
+        mExtraTabLayout.setupWithViewPager(viewPager);
+        HoloFontLoader.applyDefaultFont(mExtraTabLayout);
+    }
+
     private void injectExtraTabLayout() {
         mExtraTabLayout = (TabLayout) getLayoutInflater().inflate(R.layout.extra_tab_layout, mAppBarLayout, false);
-        mExtraTabLayoutHeight = getResources().getDimension(R.dimen.tab_layout_height);
+        if (mExtraTabLayoutHeight == -1) {
+            mExtraTabLayoutHeight = getResources().getDimension(R.dimen.tab_layout_height);
+        }
         ViewGroup tabLayoutContainer = (ViewGroup) findViewById(R.id.llExtraTabLayoutContainer);
         tabLayoutContainer.addView(mExtraTabLayout);
         setScrollContentPadding(findViewById(R.id.rlScrollableContent));
@@ -2005,6 +2016,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 ViewGroup tabLayoutContainer = (ViewGroup) findViewById(R.id.llExtraTabLayoutContainer);
                 tabLayoutContainer.removeView(mExtraTabLayout);
                 mExtraTabLayout = null;
+                mExtraTabLayoutHeight = -1;
                 final View scrollContainer = findViewById(R.id.rlScrollableContent);
                 mAppBarLayout.post(new Runnable() {
                     @Override
@@ -2064,12 +2076,17 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     }
 
-    private void setScrollContentPadding(View scrollContainer) {
+    private void setScrollContentPadding(final View scrollContainer) {
         Assert.assertNotNull(scrollContainer);
 
-        scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
-                scrollContainer.getPaddingTop() + (int)mExtraTabLayoutHeight,
-                scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
+        scrollContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                        scrollContainer.getPaddingTop() + (int) mExtraTabLayoutHeight,
+                        scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
+            }
+        });
     }
 
 }
