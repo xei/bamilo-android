@@ -332,12 +332,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     {
 
         ArrayList<String> gender = new ArrayList<>();
-        gender.add("مرد");
-        gender.add("زن");
+        gender.add(getString(R.string.gender_male));
+        gender.add(getString(R.string.gender_female));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, gender);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-        promptAdapter.setPrompt("جنسیت");
+        promptAdapter.setPrompt(getString(R.string.gender));
         gender_spinner.setAdapter(promptAdapter);
         gender_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

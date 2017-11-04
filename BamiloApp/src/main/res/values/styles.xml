@@ -24,7 +24,7 @@
     <style name="activity_sectionheader_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/orange_1</item>
+        <item name="android:textColor">@color/orange_lighter</item>
         <item name="android:textSize">@dimen/text_s</item>
         <item name="android:layout_marginLeft">@dimen/margin_huge</item>
         <item name="android:layout_marginStart">@dimen/margin_huge</item>
@@ -308,7 +308,7 @@
         <item name="android:inputType">textEmailAddress</item>
         <item name="met_floatingLabel">highlight</item>
         <item name="met_underlineColor">@color/black_700</item>
-        <item name="met_primaryColor">@color/blue_2</item>
+        <item name="met_primaryColor">@color/blue_light</item>
         <item name="met_floatingLabelSidePadding">@dimen/form_padding</item>
     </style>
 
@@ -326,4 +326,8 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="HomePageTabsTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/primary_tab_color_selector</item>
+    </style>
 </resources>

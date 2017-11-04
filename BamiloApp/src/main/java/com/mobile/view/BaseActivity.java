@@ -23,6 +23,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.ScrollerCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -141,7 +142,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private WarningFactory warningFactory;
     protected DialogFragment dialog;
     protected CustomSearchActionView mSearchView;
-//    protected EditText mSearchAutoComplete;
+    //    protected EditText mSearchAutoComplete;
     protected RecyclerView mSearchListView;
     protected FrameLayout mSearchOverlay;
     protected boolean isSearchComponentOpened = false;
@@ -175,10 +176,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public DrawerFragment mDrawerFragment;
     private boolean searchBarEnabled = false;
     private boolean voiceTyping = false;
-    private boolean searchBarHidden = false;
     private boolean actionBarAutoHideEnabled = false;
     private TopViewAutoHideUtil searchBarAutoHide;
     private TopViewAutoHideUtil actionBarAutoHide;
+    private ScrollerCompat nestedScrollerCompat;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -226,6 +227,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+        nestedScrollerCompat = ScrollerCompat.create(this);
         /*
          * In case of rotation the activity is restarted and the locale too.<br>
          * These method forces the right locale used before the rotation.
@@ -332,6 +334,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
                 mSearchView.setText(text.get(0));
+                TrackerDelegator.trackVoiceSearch(text.get(0));
                 fireSearch(text.get(0));
             }
             voiceTyping = false;
@@ -393,7 +396,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) searchBar.getLayoutParams();
         params.setMargins(params.leftMargin, 0, params.rightMargin, params.bottomMargin);
         searchBar.setLayoutParams(params);
-        searchBarHidden = false;
         searchBar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -406,7 +408,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             public void run() {
                 if (views != null) {
                     for (View v : views) {
-                        v.setPadding(v.getPaddingLeft(), searchBar.getHeight(),
+                        v.setPadding(v.getPaddingLeft(), (int) getResources().getDimension(R.dimen.search_bar_height),
                                 v.getPaddingRight(), v.getPaddingBottom());
                     }
                 }
@@ -415,13 +417,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 warningParams.topMargin = searchBar.getHeight();
                 findViewById(R.id.warning).setLayoutParams(warningParams);
 
-                if (autoHide) {
+                if (autoHide && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     searchBarAutoHide = new TopViewAutoHideUtil(-searchBar.getHeight(), 0, searchBar);
                     searchBarAutoHide.setOnViewShowHideListener(new TopViewAutoHideUtil.OnViewShowHideListener() {
                         @Override
                         public void onViewHid() {
                             if (searchBarEnabled) {
-                                searchBarHidden = true;
                                 mSearchMenuItem.setVisible(true);
                             }
                         }
@@ -429,7 +430,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         @Override
                         public void onViewShowed() {
                             if (searchBarEnabled) {
-                                searchBarHidden = false;
                                 mSearchMenuItem.setVisible(false);
                             }
                         }
@@ -437,6 +437,18 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 }
             }
         });
+    }
+
+    public void onSearchBarScrolled(int dy) {
+        if (searchBarEnabled && searchBarAutoHide != null) {
+            searchBarAutoHide.onScroll(-dy);
+        }
+    }
+
+    public void syncSearchBarState(int scrollAmount) {
+        if (searchBarEnabled && searchBarAutoHide != null) {
+            searchBarAutoHide.syncState(scrollAmount);
+        }
     }
 
     public void disableSearchBar() {
@@ -449,7 +461,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         findViewById(R.id.warning).setLayoutParams(warningParams);
     }
 
-    public boolean enableActionbarAutoHide(final View... views){
+    public boolean enableActionbarAutoHide(final View... views) {
         actionBarAutoHideEnabled = false;
         if (!searchBarEnabled) {
             actionBarAutoHideEnabled = true;
@@ -494,49 +506,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
 
     private void setAppBarLayout(@NavigationAction.Type int oldNavAction, @NavigationAction.Type int newNavAction) {
-        CoordinatorLayout.LayoutParams containerParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
-        CoordinatorLayout.Behavior containerBehavior = containerParams.getBehavior();
-        if (containerBehavior instanceof NestedScrollCatchBehavior) {
-            ((NestedScrollCatchBehavior) containerBehavior).setNestedScrollListener(new NestedScrollCatchBehavior.NestedScrollListener() {
-                @Override
-                public void onDirectionNestedPreScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dx, int dy, int[] consumed, @VerticalScrollingBehavior.ScrollDirection int scrollDirection) {
-
-                }
-
-                @Override
-                public void onDirectionNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int scrollDirection) {
-                    if (searchBarEnabled && searchBarAutoHide != null) {
-                        searchBarAutoHide.onScroll(-dyConsumed);
-                    }
-
-                    if (actionBarAutoHideEnabled && actionBarAutoHide != null) {
-                        actionBarAutoHide.onScroll(-dyConsumed);
-                    }
-                }
-
-                @Override
-                public void onDirectionNestedFling(CoordinatorLayout coordinatorLayout, View child, View target, float velocityX, float velocityY, @VerticalScrollingBehavior.ScrollDirection int scrollDirection) {
-                    if (searchBarEnabled && searchBarAutoHide != null) {
-                        searchBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
-                    }
-
-                    if (actionBarAutoHideEnabled && actionBarAutoHide != null) {
-                        actionBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
-                    }
-                }
-
-                @Override
-                public void onStopNestedDirectionScroll(CoordinatorLayout coordinatorLayout, View child, View target, int scrollDirection) {
-                    if (searchBarEnabled && searchBarAutoHide != null) {
-                        searchBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
-                    }
-
-                    if (actionBarAutoHideEnabled && actionBarAutoHide != null) {
-                        actionBarAutoHide.onStopScroll(scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP);
-                    }
-                }
-            });
-        }
         try {
             // Case enable/disable actionbar auto-hide
             if (!UITabLayoutUtils.isNavigationActionbarAutoHide(newNavAction)) {
@@ -959,7 +928,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Set search
         setActionBarSearchBehavior(mSearchMenuItem);
         // Set visibility
-        if (searchBarEnabled && !searchBarHidden) {
+        if (searchBarEnabled) {
             mSearchMenuItem.setVisible(false);
         } else {
             mSearchMenuItem.setVisible(true);
@@ -1021,6 +990,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         getSuggestions();
                         return false;
                     }
+                    TrackerDelegator.trackSearch(searchTerm);
                     fireSearch(searchTerm);
                     return true;
                 }
@@ -1330,7 +1300,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Hide dropdown
         if (suggestionsStruct.size() == 0) {
 //            mSearchAutoComplete.dismissDropDown();
-        }else {
+        } else {
             //show dropdown with recent queries
             SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
             searchSuggestionsAdapter.setOnViewHolderClickListener(this);
@@ -2022,7 +1992,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     private void injectExtraTabLayout() {
         mExtraTabLayout = (TabLayout) getLayoutInflater().inflate(R.layout.extra_tab_layout, mAppBarLayout, false);
-        mAppBarLayout.addView(mExtraTabLayout);
+        ViewGroup tabLayoutContainer = (ViewGroup) findViewById(R.id.llExtraTabLayoutContainer);
+        tabLayoutContainer.addView(mExtraTabLayout);
         final View scrollContainer = findViewById(R.id.rlScrollableContent);
         scrollContainer.post(new Runnable() {
             @Override
@@ -2039,7 +2010,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         disableActionbarAutoHide();
         if (!isNestedFragment) {
             if (mExtraTabLayout != null) {
-                mAppBarLayout.removeView(mExtraTabLayout);
+                ViewGroup tabLayoutContainer = (ViewGroup) findViewById(R.id.llExtraTabLayoutContainer);
+                tabLayoutContainer.removeView(mExtraTabLayout);
                 mExtraTabLayout = null;
                 final View scrollContainer = findViewById(R.id.rlScrollableContent);
                 mAppBarLayout.post(new Runnable() {
@@ -2063,6 +2035,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get suggestion
         Suggestion selectedSuggestion = ((SearchDropDownAdapter) adapter).getItem(position);
+        TrackerDelegator.trackSearchSuggestion(selectedSuggestion.getResult(), selectedSuggestion.getQuery());
         // Get text suggestion
         String text = selectedSuggestion.getResult();
         //Save searched text

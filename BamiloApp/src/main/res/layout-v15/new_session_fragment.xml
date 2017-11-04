@@ -10,7 +10,7 @@
             android:id="@+id/tabs"
             android:background="@color/black_400"
             app:tabTextColor="@color/black"
-            app:tabSelectedTextColor="@color/orange_1"
+            app:tabSelectedTextColor="@color/orange_lighter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMode="fixed"

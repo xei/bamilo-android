@@ -4,7 +4,6 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -15,7 +14,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.service.objects.home.TeaserCampaign;
@@ -118,7 +116,7 @@ public class CampaignsFragment extends BaseFragment {
     private void setupViewPagerTabs(ViewPager mCampaignPager) {
         getBaseActivity().setUpExtraTabLayout(mCampaignPager);
         TabLayout tabLayout = getBaseActivity().getExtraTabLayout();
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_1));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_lighter));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             tabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
@@ -240,7 +238,11 @@ public class CampaignsFragment extends BaseFragment {
          */
         @Override
         public CharSequence getPageTitle(int position) {
-            return mCampaigns.get(position).getTitle().toUpperCase();
+            String title = "";
+            if (mCampaigns.get(position).getTitle() != null) {
+                title = mCampaigns.get(position).getTitle().toUpperCase();
+            }
+            return title;
         }
         
     }

@@ -44,6 +44,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map.Entry;
 
 public class TrackerDelegator {
@@ -56,6 +57,11 @@ public class TrackerDelegator {
     public static final String AUTOLOGIN_KEY = "auto_login";
     public static final String SEARCH_CRITERIA_KEY = "search_criteria";
     public static final String SEARCH_RESULTS_KEY = "search_results";
+    static final String CATEGORY_SEARCH_RESULTS = "SearchResults";
+    static final String CATEGORY_SEARCH_SUGGESTIONS = "SearchSuggestions";
+    static final String ACTION_SEARCH = "Search";
+    static final String ACTION_TAPPED = "tapped";
+    private static String CATEGORY_EMARSYS = "Emarsys";
     public static final String SKU_KEY = RestConstants.SKU;
     public static final String PRICE_KEY = RestConstants.PRICE;
     public static final String LOCATION_KEY = "location";
@@ -157,7 +163,7 @@ public class TrackerDelegator {
         storeFirstCustomer(customer);
 
         //GTM
-        if(event.compareTo(TrackingEvent.LOGIN_AUTO_SUCCESS) == 0){
+        if (event.compareTo(TrackingEvent.LOGIN_AUTO_SUCCESS) == 0) {
             GTMManager.get().gtmTrackAutoLogin(customer);
         } else {
             GTMManager.get().gtmTrackLogin(customer, event, location);
@@ -177,11 +183,10 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackEvent(event, "", 0L);
 
         //GTM
-        if(event.compareTo(TrackingEvent.LOGIN_AUTO_FAIL) == 0){
+        if (event.compareTo(TrackingEvent.LOGIN_AUTO_FAIL) == 0) {
             GTMManager.get().gtmTrackAutoLoginFailed();
-        }
-        else {
-            GTMManager.get().gtmTrackLoginFailed(location,method);
+        } else {
+            GTMManager.get().gtmTrackLoginFailed(location, method);
         }
     }
 
@@ -222,7 +227,7 @@ public class TrackerDelegator {
         bundle.putParcelable(AdjustTracker.CUSTOMER, BamiloApplication.CUSTOMER);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putString(AdjustTracker.SEARCH_TERM, criteria);
-        if(params.containsKey(AdjustTracker.CATEGORY))
+        if (params.containsKey(AdjustTracker.CATEGORY))
             bundle.putString(AdjustTracker.CATEGORY, params.getString(AdjustTracker.CATEGORY));
 
         bundle.putString(AdjustTracker.CATEGORY_ID, params.getString(AdjustTracker.CATEGORY_ID));
@@ -338,7 +343,7 @@ public class TrackerDelegator {
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(TrackingEvent.SIGNUP_SUCCESS, bundle);
         //GTM
-        GTMManager.get().gtmTrackRegister(customer.getIdAsString(),location);
+        GTMManager.get().gtmTrackRegister(customer.getIdAsString(), location);
         storeFirstCustomer(customer);
     }
 
@@ -349,8 +354,10 @@ public class TrackerDelegator {
     }
 
     public static void trackSessionFailed(EventType eventType) {
-        if(eventType == EventType.AUTO_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.EMAILAUTH);
-        if(eventType == EventType.GUEST_LOGIN_EVENT) TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
+        if (eventType == EventType.AUTO_LOGIN_EVENT)
+            TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.EMAILAUTH);
+        if (eventType == EventType.GUEST_LOGIN_EVENT)
+            TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
     }
 
     /**
@@ -467,7 +474,7 @@ public class TrackerDelegator {
             isFirstCustomer = false;
         } else {
             isFirstCustomer = checkFirstCustomer(customer);
-            if(isFirstCustomer) removeFirstCustomer(customer);
+            if (isFirstCustomer) removeFirstCustomer(customer);
         }
 
         // GA
@@ -505,7 +512,7 @@ public class TrackerDelegator {
         boolean isNewCustomer = prefs.getBoolean(customer.getEmail(), true);
         if (isNewCustomer) {
             Print.d(TAG, "store first customer1");
-            prefs.edit().putBoolean(customer.getEmail(),true).apply();
+            prefs.edit().putBoolean(customer.getEmail(), true).apply();
         }
     }
 
@@ -552,15 +559,14 @@ public class TrackerDelegator {
      * Tracking timing of screen loading
      */
     public static void trackScreenLoadTiming(int screenNameId, long start, String label) {
-       // int location = params.getInt(LOCATION_KEY);
-       // long start = params.getLong(START_TIME_KEY);
+        // int location = params.getInt(LOCATION_KEY);
+        // long start = params.getLong(START_TIME_KEY);
         // GA
         AnalyticsGoogle.get().trackLoadTimingNew(R.string.gaScreen, start, screenNameId, label);
     }
 
     /**
      * Tracking a page
-     *
      */
     public static void trackPage(@NonNull TrackingPage screen, long loadTime, boolean justGTM) {
         // GTM
@@ -674,7 +680,7 @@ public class TrackerDelegator {
      */
     public static void trackGACampaign(Context context, String utm) {
         Print.i(TAG, "UTM INFO ->" + utm);
-        if(!TextUtils.isEmpty(utm)) {
+        if (!TextUtils.isEmpty(utm)) {
             // GA
             AnalyticsGoogle.get().setGACampaign(utm);
             // GTM
@@ -716,7 +722,7 @@ public class TrackerDelegator {
         String location = GTMValues.PRODUCTDETAILPAGE;
         //GTM
         GTMManager.get().gtmTrackAddToWishList(productSku, productBrand, productPrice, averageRating,
-                productDiscount, CurrencyFormatter.getCurrencyCode(),location, categories, "");
+                productDiscount, CurrencyFormatter.getCurrencyCode(), location, categories, "");
     }
 
     /**
@@ -741,7 +747,8 @@ public class TrackerDelegator {
         bundle.putDouble(AdjustTracker.VALUE, price);
         AdjustTracker.get().trackEvent(TrackingEvent.REMOVE_FROM_WISHLIST, bundle);
         //GTM
-        if(averageRatingTotal != -1d) GTMManager.get().gtmTrackRemoveFromWishList(productSku, price, averageRatingTotal, EUR_CURRENCY);
+        if (averageRatingTotal != -1d)
+            GTMManager.get().gtmTrackRemoveFromWishList(productSku, price, averageRatingTotal, EUR_CURRENCY);
     }
 
     /**
@@ -749,12 +756,12 @@ public class TrackerDelegator {
      */
     public static void trackCatalogFilter(ContentValues catalogFilterValues) {
         // Validate filters
-        if(catalogFilterValues != null) {
+        if (catalogFilterValues != null) {
             // GA
             String filter = catalogFilterValues.toString();
             AnalyticsGoogle.get().trackEvent(TrackingEvent.CATALOG_FILTER, filter, 0L);
             //GTM
-            if(catalogFilterValues.containsKey(TrackerDelegator.CATALOG_FILTER_KEY)){
+            if (catalogFilterValues.containsKey(TrackerDelegator.CATALOG_FILTER_KEY)) {
                 String activeFilters = catalogFilterValues.getAsString(TrackerDelegator.CATALOG_FILTER_KEY);
                 if (!TextUtils.isEmpty(activeFilters)) {
                     String[] filters = activeFilters.split(",");
@@ -777,7 +784,6 @@ public class TrackerDelegator {
 
     /**
      * Tracking a cart view for GTM
-     *
      */
     public static void trackViewCart(int quantityCart, double cartValue) {
         // GTM
@@ -786,7 +792,6 @@ public class TrackerDelegator {
 
     /**
      * Tracking add address for GTM
-     *
      */
     public static void trackAddAddress(boolean success) {
         // GTM
@@ -795,7 +800,6 @@ public class TrackerDelegator {
 
     /**
      * Tracking add address for GTM
-     *
      */
     public static void trackFailedPayment(String paymentMethod, PurchaseEntity order) {
         if (order != null) {
@@ -804,18 +808,18 @@ public class TrackerDelegator {
     }
 
 
-    private static void trackScreenGTM(TrackingPage page, long loadTime){
+    private static void trackScreenGTM(TrackingPage page, long loadTime) {
         //GMT
         String screenName = "";
-        if(page.getName() != -1){
+        if (page.getName() != -1) {
             screenName = sContext.getString(page.getName());
         }
 
-        if(TextUtils.isNotEmpty(screenName))
+        if (TextUtils.isNotEmpty(screenName))
             GTMManager.get().gtmTrackViewScreen(screenName, loadTime);
     }
 
-    public static void trackNewsletterGTM(String customerId, String location){
+    public static void trackNewsletterGTM(String customerId, String location) {
         // User
         if (TextUtils.isEmpty(customerId)) {
             customerId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "";
@@ -853,7 +857,7 @@ public class TrackerDelegator {
      *
      */
     public static void trackAppOpenAdjust(Context context, long launchtime) {
-        if(ShopSelector.getShopId() == null)
+        if (ShopSelector.getShopId() == null)
             return;
         // Get device info
         Bundle info = DeviceInfoHelper.getInfo(context);
@@ -871,7 +875,7 @@ public class TrackerDelegator {
     public static void trackCall(Context context) {
         String userId = "";
         if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) {
-            userId= BamiloApplication.CUSTOMER.getIdAsString();
+            userId = BamiloApplication.CUSTOMER.getIdAsString();
         }
         //Adjust
         Bundle bundle = new Bundle();
@@ -880,7 +884,6 @@ public class TrackerDelegator {
         bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(TrackingEvent.CALL, bundle);
     }
-
 
 
     /**
@@ -901,6 +904,7 @@ public class TrackerDelegator {
 
     /**
      * Track the new cart for each user interaction, add or remove.
+     *
      * @author sergiopereira
      */
     public static void trackAddToCart(PurchaseEntity purchase) {
@@ -908,6 +912,7 @@ public class TrackerDelegator {
 
     /**
      * Track the new cart for each user interaction, add or remove.
+     *
      * @author sergiopereira
      */
     public static void trackRemoveFromCart(PurchaseEntity purchase) {
@@ -929,19 +934,19 @@ public class TrackerDelegator {
      * validate if there's any product added from a banner when finished a success order
      */
     public static void trackBannerClick(final List<PurchaseItem> items) {
-        final HashMap<String,String> skus = BamiloApplication.INSTANCE.getBannerFlowSkus();
+        final HashMap<String, String> skus = BamiloApplication.INSTANCE.getBannerFlowSkus();
         if (skus != null && skus.size() > 0 && !CollectionUtils.isEmpty(items)) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     for (PurchaseItem item : items) {
-                            if (skus.containsKey(item.sku)) {
-                                Print.e(TAG, "BANNER KEY:" +item.sku + " VALUE:" + skus.get(item.sku));
-                                // fires the GA event when the user finish a order, originating in one of the home teasers
-                                AnalyticsGoogle.get().trackBannerFlowPurchase(skus.get(item.sku),
-                                        TrackingEvent.MAIN_BANNER_CLICK.getAction(),
-                                        item.sku, (long) item.getPriceForTracking());
-                            }
+                        if (skus.containsKey(item.sku)) {
+                            Print.e(TAG, "BANNER KEY:" + item.sku + " VALUE:" + skus.get(item.sku));
+                            // fires the GA event when the user finish a order, originating in one of the home teasers
+                            AnalyticsGoogle.get().trackBannerFlowPurchase(skus.get(item.sku),
+                                    TrackingEvent.MAIN_BANNER_CLICK.getAction(),
+                                    item.sku, (long) item.getPriceForTracking());
+                        }
                     }
                     BamiloApplication.INSTANCE.clearBannerFlowSkus();
                 }
@@ -952,17 +957,17 @@ public class TrackerDelegator {
     /**
      * fires a GA event every time the user taps on one of the home teasers
      */
-    public static void trackBannerClicked(TeaserGroupType groupType, String targetKey, int position){
+    public static void trackBannerClicked(TeaserGroupType groupType, String targetKey, int position) {
         AnalyticsGoogle.get().trackEventBannerClick(getCategoryFromTeaserGroupType(groupType), targetKey, position);
     }
 
     /**
      * this function matchs the home page teaser type with a tracking event
      */
-    public static int getCategoryFromTeaserGroupType(TeaserGroupType groupType){
+    public static int getCategoryFromTeaserGroupType(TeaserGroupType groupType) {
         // Default value
         TrackingEvent event;
-        switch (groupType){
+        switch (groupType) {
             case MAIN_TEASERS:
                 event = TrackingEvent.MAIN_BANNER_CLICK;
                 break;
@@ -970,30 +975,30 @@ public class TrackerDelegator {
                 event = TrackingEvent.SMALL_BANNER_CLICK;
                 break;
             case CAMPAIGNS:
-                event =  TrackingEvent.CAMPAIGNS_BANNER_CLICK;
+                event = TrackingEvent.CAMPAIGNS_BANNER_CLICK;
                 break;
             case SHOP_TEASERS:
-                event =  TrackingEvent.SHOP_BANNER_CLICK;
+                event = TrackingEvent.SHOP_BANNER_CLICK;
                 break;
             case BRAND_TEASERS:
-                event =  TrackingEvent.BRAND_BANNER_CLICK;
+                event = TrackingEvent.BRAND_BANNER_CLICK;
                 break;
             case SHOP_OF_WEEK:
-                event =  TrackingEvent.SHOPS_WEEK_BANNER_CLICK;
+                event = TrackingEvent.SHOPS_WEEK_BANNER_CLICK;
                 break;
             case FEATURED_STORES:
-                event =  TrackingEvent.FEATURE_BANNER_CLICK;
+                event = TrackingEvent.FEATURE_BANNER_CLICK;
                 break;
             case TOP_SELLERS:
-                event =  TrackingEvent.TOP_SELLER_BANNER_CLICK;
+                event = TrackingEvent.TOP_SELLER_BANNER_CLICK;
                 break;
             default:
-                event =  TrackingEvent.UNKNOWN_BANNER_CLICK;
+                event = TrackingEvent.UNKNOWN_BANNER_CLICK;
                 Print.w(TAG, "UNKNOWN TEASER GROUP");
                 break;
 
         }
-         return event.getCategory();
+        return event.getCategory();
     }
 
     /**
@@ -1055,7 +1060,7 @@ public class TrackerDelegator {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try  {
+                try {
                     TrackerDelegator.trackSearch(bundle);
                 } catch (NullPointerException e) {
                     Print.i(TAG, "WARNING: EXCEPTION ON TRACK SEARCH ");
@@ -1133,7 +1138,7 @@ public class TrackerDelegator {
             params.putString(TrackerDelegator.COUPON_KEY, String.valueOf(cart.getCouponDiscount()));
             params.putInt(TrackerDelegator.CART_COUNT, cart.getCartCount());
             params.putDouble(TrackerDelegator.GRAND_TOTAL, total);
-            if(!TextUtils.isEmpty(shipping) && !TextUtils.isEmpty(tax) && !TextUtils.isEmpty(payment)){
+            if (!TextUtils.isEmpty(shipping) && !TextUtils.isEmpty(tax) && !TextUtils.isEmpty(payment)) {
                 params.putString(TrackerDelegator.SHIPPING_KEY, shipping);
                 params.putString(TrackerDelegator.TAX_KEY, tax);
                 params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, payment);
@@ -1150,5 +1155,26 @@ public class TrackerDelegator {
     }
 
     public static void trackOpenPushNotification() {
+    }
+
+    public static void trackSearch(String searchTerm) {
+        AnalyticsGoogle.get().sendEvent(CATEGORY_SEARCH_RESULTS, ACTION_SEARCH, searchTerm, -1);
+    }
+
+    public static void trackSearchSuggestion(String categoryName, String productName) {
+        AnalyticsGoogle.get().sendEvent(CATEGORY_SEARCH_SUGGESTIONS, ACTION_TAPPED,
+                String.format(Locale.US, "%s/%s", productName, categoryName), -1);
+    }
+
+    public static void trackVoiceSearch(String searchTerm) {
+        AnalyticsGoogle.get().sendEvent(CATEGORY_SEARCH_RESULTS, ACTION_TAPPED, searchTerm, -1);
+    }
+
+    public static void trackComponentViewTap(String page, String componentName, String target) {
+        AnalyticsGoogle.get().sendEvent(String.format(Locale.US, "%s+%s", page, componentName), ACTION_TAPPED, target, -1);
+    }
+
+    public static void trackEmarsysRecommendation(String screenName, String logic) {
+        AnalyticsGoogle.get().sendEvent(CATEGORY_EMARSYS, ACTION_TAPPED, String.format(Locale.US, "%s-%s", screenName, logic), -1);
     }
 }

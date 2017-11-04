@@ -531,5 +531,7 @@
     <string name="return_to_app">بازگشت به برنامه</string>
     <string name="birthday_placeholder">----/--/--</string>
     <string name="order_summary_total_items">مجموع کالاها</string>
+    <string name="choose_category">انتخاب دسته‌بندی</string>
+    <string name="all_categories">همه‌ی دسته‌بندی‌ها</string>
 
 </resources>

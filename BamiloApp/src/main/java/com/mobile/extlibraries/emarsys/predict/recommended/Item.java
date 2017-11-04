@@ -15,6 +15,7 @@ public class Item implements Serializable {
     private String image;
     private String category;
     private double price;
+    private double specialPrice;
     private boolean available;
     private String brand;
 
@@ -133,7 +134,19 @@ public class Item implements Serializable {
                     setBrand((String) data.get(key));
                 }
                 break;
+                case "msrp": {
+                    setSpecialPrice((Double) data.get("msrp"));
+                }
+                break;
             }
         }
+    }
+
+    public double getSpecialPrice() {
+        return specialPrice;
+    }
+
+    public void setSpecialPrice(double specialPrice) {
+        this.specialPrice = specialPrice;
     }
 }

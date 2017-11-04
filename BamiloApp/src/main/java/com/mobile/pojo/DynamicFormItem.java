@@ -1131,7 +1131,7 @@ public class DynamicFormItem {
                 this.mandatoryControl = new TextView(this.context);
                 this.mandatoryControl.setLayoutParams(params);
                 this.mandatoryControl.setText("*");
-                this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
+                this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_lighter));
                 this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
                 this.mandatoryControl.setVisibility(View.VISIBLE);
                 this.control.addView(this.mandatoryControl);
@@ -1450,7 +1450,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_lighter));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
@@ -1552,7 +1552,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_lighter));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.mandatoryControl);
@@ -1638,7 +1638,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_lighter));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
 

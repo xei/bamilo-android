@@ -63,5 +63,7 @@
     <dimen name="home_main_teaser_height">320dp</dimen>
 
     <integer name="grid_num_columns">2</integer>
+    <dimen name="slider_padding">120dp</dimen>
+    <dimen name="home_categories_carousel_image_size">72dp</dimen>
 
 </resources>

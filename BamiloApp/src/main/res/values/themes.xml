@@ -12,7 +12,7 @@
         <!-- Color for UI controls like checkboxes and text fields -->
         <item name="colorAccent">@color/color_accent</item>
         <!-- Color for UI controls (switch|checkbox|radio) -->
-        <item name="colorControlActivated">@color/orange_1</item>
+        <item name="colorControlActivated">@color/orange_lighter</item>
         <!-- Color for UI controls like checkboxes and text fields -->
         <item name="android:navigationBarColor">@color/black</item>
         <!-- Color for app background -->
@@ -43,6 +43,23 @@
         <!-- #### Button View -->
         <item name="android:buttonStyle">@style/Widget.Custom.Button</item>
         <item name="buttonStyle">@style/Widget.Custom.Button</item>
+
+        <!--Popup menu styling-->
+        <item name="textAppearanceLargePopupMenu">@style/PopupTextAppearanceLarge</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/PopupTextAppearanceLarge</item>
+
+        <item name="textAppearanceSmallPopupMenu">@style/PopupTextAppearanceSmall</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/PopupTextAppearanceSmall</item>
+
+        <item name="popupMenuStyle">@style/Widget.AppCompat.Light.PopupMenu</item>
+        <item name="android:popupMenuStyle">@style/Widget.AppCompat.Light.PopupMenu</item>
+    </style>
+
+    <style name="PopupTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Large">
+        <item name="android:textColor">@color/extradarkgrey</item>
+    </style>
+    <style name="PopupTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/extradarkgrey</item>
     </style>
 
     <!-- MATERIAL|CUSTOM WIDGETS -->
@@ -80,7 +97,7 @@
         <item name="tabMode">fixed</item>
         <item name="tabMaxWidth">0dp</item>
         <item name="tabIndicatorHeight">2dp</item>
-        <item name="tabIndicatorColor">@color/orange_1</item>
+        <item name="tabIndicatorColor">@color/orange_lighter</item>
     </style>
 
     <!-- Checkout Tab Layout -->
@@ -89,7 +106,7 @@
         <item name="tabGravity">center</item>
         <item name="tabMode">fixed</item>
         <item name="tabIndicatorHeight">2dp</item>
-        <item name="tabIndicatorColor">@color/orange_1</item>
+        <item name="tabIndicatorColor">@color/orange_lighter</item>
     </style>
 
     <!-- Sliding Tab Layout -->
@@ -98,7 +115,7 @@
         <item name="stsBottomBorderThickness">0dp</item>
         <item name="stsDividerColor">@color/white</item>
         <item name="stsDividerThickness">0dp</item>
-        <item name="stsIndicatorColor">@color/orange_1</item>
+        <item name="stsIndicatorColor">@color/orange_lighter</item>
         <item name="stsIndicatorThickness">2.5dp</item>
     </style>
 
@@ -129,8 +146,8 @@
     <style name="Widget.Custom.RadioButton" parent="android:Widget.CompoundButton.RadioButton">
     </style>
     <style name="RadioButtonTheme">
-        <item name="android:colorControlActivated">@color/blue_1</item>
-        <item name="colorControlActivated">@color/blue_1</item>
+        <item name="android:colorControlActivated">@color/blue_lighter</item>
+        <item name="colorControlActivated">@color/blue_lighter</item>
         <item name="android:colorControlNormal">@color/black_800</item>
         <item name="colorControlNormal">@color/black_800</item>
     </style>
@@ -157,7 +174,7 @@
 
     <!-- Switch View :: based on Widget.AppCompat.CompoundButton.Switch -->
     <style name="Widget.Custom.Switch">
-        <item name="colorControlActivated">@color/blue_1</item>
+        <item name="colorControlActivated">@color/blue_lighter</item>
         <item name="colorSwitchThumbNormal">@color/black_200</item>
         <item name="switchTextAppearance">@style/TextBase.Button.Switch</item>
     </style>

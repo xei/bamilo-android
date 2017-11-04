@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.components.viewpager.RtlViewPager;
@@ -27,7 +26,6 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -130,7 +128,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     private void setupViewPagerTabs(ViewPager viewPager) {
         getBaseActivity().setUpExtraTabLayout(viewPager);
         TabLayout tabLayout = getBaseActivity().getExtraTabLayout();
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_1));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_lighter));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             tabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }

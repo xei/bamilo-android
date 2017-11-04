@@ -568,7 +568,7 @@
     <dimen name="checkout_footer_font_size">16sp</dimen>
     <dimen name="checkout_footer_height">57dp</dimen>
     <dimen name="checkout_totalbar_height">50dp</dimen>
-    <dimen name="register_font_size">14sp</dimen>
+    <dimen name="register_font_size">12sp</dimen>
     <dimen name="cart_discout_shadow_height">5dp</dimen>
     <dimen name="order_status_fontsize">10sp</dimen>
     <dimen name="filter_icon_size">18dp</dimen>
@@ -583,6 +583,10 @@
     <dimen name="drawer_item_icon">18dp</dimen>
 
     <dimen name="material_drawer_account_header_height">110dp</dimen>
+    <dimen name="slider_padding">16dp</dimen>
+    <dimen name="search_bar_height">46dp</dimen>
+    <dimen name="home_categories_carousel_image_size">54dp</dimen>
+    <dimen name="slider_slide_padding">2dp</dimen>
 
 
 </resources>

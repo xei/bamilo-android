@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,12 +15,13 @@
         <RelativeLayout
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="@dimen/search_bar_height"
             android:layout_below="@+id/toolbar"
             android:background="?colorPrimary"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <com.mobile.components.customfontviews.TextView
                 android:layout_width="match_parent"
@@ -51,13 +53,20 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp" />
+
+        <LinearLayout
+            android:id="@+id/llExtraTabLayoutContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchBar"
+            android:orientation="vertical" />
     </RelativeLayout>
 
     <View
         android:id="@+id/viewToobarElevationMock"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:visibility="gone"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"
+        android:visibility="gone" />
 
 </android.support.design.widget.AppBarLayout>

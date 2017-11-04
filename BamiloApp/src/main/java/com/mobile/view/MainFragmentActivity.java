@@ -46,6 +46,7 @@ import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.ComboFragment;
 import com.mobile.view.fragments.DrawerFragment;
 import com.mobile.view.fragments.FilterMainFragment;
+import com.mobile.view.fragments.FrontPageFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountAboutFragment;
@@ -422,7 +423,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                     popBackStack(FragmentType.HOME.toString());
                     return;
                 }
-                fragment = newFragmentInstance(HomePageFragment.class, bundle);
+                fragment = newFragmentInstance(FrontPageFragment.class, bundle);
                 break;
             case CATALOG_SELLER:
             case CATALOG_BRAND:

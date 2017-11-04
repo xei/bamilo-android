@@ -231,6 +231,27 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     }
 
     /**
+     * Build and send an event.
+     * @author sergiopereira
+     */
+    public void sendEvent(String category, String action, String label, long value) {
+        Print.i(TAG, "TRACK EVENT: category->" + category + " action->" + action + " label->" + label + " value->" + value);
+
+        HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
+                .setCategory(category)
+                .setAction(action)
+                .setLabel(label)
+                .setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+                .setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR));
+        // Only set Value if is a valid Value
+        if(value != NO_VALUE){
+            builder.setValue(value);
+        }
+
+        mTracker.send(builder.build());
+    }
+
+    /**
      * Build and send a social action.
      * @author sergiopereira
      */

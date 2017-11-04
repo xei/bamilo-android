@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class CheckoutFinish implements IJSONSerializable, Parcelable {
 
     private PaymentMethodForm mPaymentMethodForm;
+    private String paymentLandingPage;
     private String mPaymentUrl;
     private String mOrderNumber;
     private RichRelevance mRichRelevance;
@@ -50,6 +51,9 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
         mOrderNumber = jsonObject.getString(RestConstants.ORDER_NR);
         // Get order count
         mOrdersCount = jsonObject.optString(RestConstants.ORDERS_COUNT);
+
+        // Get payment landing page url
+        paymentLandingPage = jsonObject.optString(RestConstants.PAYMENT_LANDING_PAGE);
 
         /**
          * TODO : Improve the parser for Related products and Recommended products.
@@ -176,4 +180,11 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
     };
 
 
+    public String getPaymentLandingPage() {
+        return paymentLandingPage;
+    }
+
+    public void setPaymentLandingPage(String paymentLandingPage) {
+        this.paymentLandingPage = paymentLandingPage;
+    }
 }

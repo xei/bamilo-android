@@ -36,6 +36,7 @@ import com.mobile.service.objects.catalog.Catalog;
 import com.mobile.service.objects.catalog.CatalogPage;
 import com.mobile.service.objects.catalog.FeaturedBox;
 import com.mobile.service.objects.catalog.filters.CatalogFilter;
+import com.mobile.service.objects.catalog.filters.CatalogFilters;
 import com.mobile.service.objects.catalog.filters.FilterSelectionController;
 import com.mobile.service.objects.product.pojo.ProductRegular;
 import com.mobile.service.pojo.BaseResponse;
@@ -62,6 +63,9 @@ import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -227,7 +231,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mCatalogPage = null;
+//        mCatalogPage = null;
         Print.i(TAG, "ON VIEW CREATED");
         // Load user preferences
         mLevel = Integer.parseInt(CustomerPreferences.getCatalogLayout(getBaseActivity()));
@@ -417,7 +421,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Case catalog was recover
         else {
-            mCurrentFilterValues = new FilterSelectionController(mCatalogPage.getFilters()).getValues();
+//            mCurrentFilterValues = new FilterSelectionController(mCatalogPage.getFilters()).getValues();
             onRecoverCatalogContainer(mCatalogPage);
             TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
         }
@@ -751,12 +755,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, mKey);
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
-            ArrayList<CatalogFilter> filters = mCatalogPage.getFilters();
+            CatalogFilters filters = (CatalogFilters) mCatalogPage.getFilters();
             bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
-            bundle.putParcelableArrayList(FILTER_TAG, filters);
+            bundle.putString(FILTER_TAG, filters.toJSON().toString());
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
             getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, false);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
         }
     }

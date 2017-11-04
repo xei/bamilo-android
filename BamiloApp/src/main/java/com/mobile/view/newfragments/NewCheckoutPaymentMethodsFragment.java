@@ -2,6 +2,8 @@ package com.mobile.view.newfragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -419,12 +421,14 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         PaymentMethodForm mPaymentSubmitted = mCheckoutFinish.getPaymentMethodForm();
         // Case external payment
         if (mPaymentSubmitted.isExternalPayment()) {
-            Bundle bundle = new Bundle();
+            /*Bundle bundle = new Bundle();
             bundle.putParcelable(ConstantsIntentExtra.DATA, mCheckoutFinish.getPaymentMethodForm());
             if(mCheckoutFinish.getRichRelevance() != null) {
                 bundle.putParcelable(RestConstants.RECOMMENDED_PRODUCTS, mCheckoutFinish.getRichRelevance());
             }
-            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, bundle, FragmentController.ADD_TO_BACK_STACK);*/
+            switchToPaymentPage();
+            getBaseActivity().onSwitchFragment(FragmentType.HOME, null, false);
         } else {
             // Case other
             Bundle bundle = new Bundle();
@@ -446,6 +450,23 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
+    }
+
+    private void switchToPaymentPage() {
+        String resNum = mCheckoutFinish.getOrderNumber();
+
+        String PARAM_RESOURCE_NUMBER = "ResNum";
+        String PARAM_SET_DEVICE = "setDevice";
+        String DEVICE_MOBILE = "mobile";
+        String uri = Uri.parse(mCheckoutFinish.getPaymentLandingPage())
+                .buildUpon()
+                .appendQueryParameter(PARAM_RESOURCE_NUMBER, resNum)
+                .appendQueryParameter(PARAM_SET_DEVICE, DEVICE_MOBILE)
+                .build().toString();
+
+
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.valueOf(uri)));
+        startActivity(browserIntent);
     }
 
     private void setTotal(@NonNull PurchaseEntity cart) {

@@ -205,7 +205,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         getBaseActivity().setUpExtraTabLayout(viewPager);
         tabLayout = getBaseActivity().getExtraTabLayout();
         tabLayout.setBackgroundColor(Color.WHITE);
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_1));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_lighter));
         tabLayout.setTabTextColors(ContextCompat.getColor(getContext(), R.color.black_700),
                 Color.BLACK);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {

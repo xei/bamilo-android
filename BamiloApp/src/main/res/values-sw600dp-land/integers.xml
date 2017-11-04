@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="categories_carousel_items_quantity">6</integer>
+    <integer name="daily_deals_visible_items_count">4</integer>
+</resources>

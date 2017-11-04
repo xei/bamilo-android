@@ -5,7 +5,7 @@ import com.emarsys.predict.RecommendedItem;
 
 import java.util.List;
 
-public abstract class RecommendListCompletionHandler {
+public interface RecommendListCompletionHandler {
 
-    public abstract void onRecommendedRequestComplete(String category, List<RecommendedItem> data);
+    void onRecommendedRequestComplete(String category, List<RecommendedItem> data);
 }

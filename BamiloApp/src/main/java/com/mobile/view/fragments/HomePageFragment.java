@@ -33,8 +33,6 @@ import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.TeaserViewFactory;
@@ -45,7 +43,6 @@ import com.mobile.utils.home.holder.RecommendationsHolder;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -84,11 +81,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Empty constructor
      */
     public HomePageFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET),
+        /*super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET),
                 NavigationAction.HOME,
                 R.layout.home_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);*/
+        super(true, R.layout.home_fragment_main);
         // Init position
         HomeMainTeaserHolder.sViewPagerPosition = HomeMainTeaserHolder.DEFAULT_POSITION;
     }
@@ -123,6 +121,16 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         } else {
             HomeNewsletterTeaserHolder.sInitialValue = null;
             HomeNewsletterTeaserHolder.sInitialGender = IntConstants.INVALID_POSITION;
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (mScrollView != null) {
+                getBaseActivity().syncSearchBarState(mScrollView.getScrollY());
+            }
         }
     }
 

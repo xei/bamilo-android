@@ -354,4 +354,16 @@ public class RestConstants {
     public static final String SELECTED = "selected";
     public static final java.lang.String LOWER_VALUE = "lowerValue";
     public static final java.lang.String UPPER_VALUE = "upperValue";
+    public static final java.lang.String WEIGHT = "weight";
+    public static final java.lang.String BACKGROUND_COLOR = "background_color";
+    public static final java.lang.String TEXT_COLOR = "text_color";
+    public static final String HEADER = "header";
+    public static final String MORE_OPTION = "more_option";
+    public static final String COUNTER = "counter";
+    public static final java.lang.String REMAINING_SECONDS = "remaining_seconds";
+    public static final String MAIN_TEASER = "main_teasers";
+    public static final String TILE_TEASER = "tile_teaser";
+    public static final String DAILY_DEALS = "daily_deals";
+    public static final String FEATURED_STORES = "featured_stores";
+    public static final String PAYMENT_LANDING_PAGE = "payment_landing_page_url";
 }

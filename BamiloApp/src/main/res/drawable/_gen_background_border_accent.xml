@@ -4,6 +4,6 @@
 
     <stroke
         android:width="@dimen/border_xxs"
-        android:color="@color/orange_1" />
+        android:color="@color/orange_lighter" />
     <solid android:color="@null" />
 </shape>

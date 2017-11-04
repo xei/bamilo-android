@@ -24,6 +24,7 @@ import java.util.ArrayList;
  *
  */
 public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSerializable {
+    private JSONObject mJsonObject;
 
     public CatalogFilters(){}
 
@@ -34,6 +35,7 @@ public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSer
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
+        this.mJsonObject = jsonObject;
         // Validate json
         if (jsonObject.has(RestConstants.FILTERS)) {
             JSONArray filtersArray = jsonObject.getJSONArray(RestConstants.FILTERS);
@@ -67,7 +69,7 @@ public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSer
 
     @Override
     public JSONObject toJSON() {
-        return null;
+        return mJsonObject;
     }
 
     @Override
