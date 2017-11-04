@@ -100,6 +100,8 @@ import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.DrawerFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 
+import junit.framework.Assert;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -170,6 +172,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private Toolbar toolbar;
     private boolean isBackButtonEnabled = false;
     private TabLayout mExtraTabLayout;
+    private float mExtraTabLayoutHeight;
     private AppBarLayout mAppBarLayout;
     public ConfirmationCartMessageView mConfirmationCartMessageView;
 
@@ -499,7 +502,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         warningParams.topMargin = 0;
         findViewById(R.id.warning).setLayoutParams(warningParams);
     }
-
 
     /*
      * ############## CONTENT VIEWS ##############
@@ -1046,10 +1048,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 if (mExtraTabLayout != null) {
                     mExtraTabLayout.setVisibility(View.VISIBLE);
-                    View scrollContainer = findViewById(R.id.rlScrollableContent);
-                    scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
-                            scrollContainer.getPaddingTop() + mExtraTabLayout.getHeight(),
-                            scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
+                    setScrollContentPadding(findViewById(R.id.rlScrollableContent));
                 }
                 isSearchComponentOpened = false;
                 toolbar.setBackgroundColor(ContextCompat.getColor(BaseActivity.this, R.color.appBar));
@@ -1992,17 +1991,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     private void injectExtraTabLayout() {
         mExtraTabLayout = (TabLayout) getLayoutInflater().inflate(R.layout.extra_tab_layout, mAppBarLayout, false);
+        mExtraTabLayoutHeight = getResources().getDimension(R.dimen.tab_layout_height);
         ViewGroup tabLayoutContainer = (ViewGroup) findViewById(R.id.llExtraTabLayoutContainer);
         tabLayoutContainer.addView(mExtraTabLayout);
-        final View scrollContainer = findViewById(R.id.rlScrollableContent);
-        scrollContainer.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
-                        scrollContainer.getPaddingTop() + mExtraTabLayout.getHeight(),
-                        scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
-            }
-        });
+        setScrollContentPadding(findViewById(R.id.rlScrollableContent));
     }
 
     public void onFragmentViewDestroyed(Boolean isNestedFragment) {
@@ -2072,5 +2064,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     }
 
+    private void setScrollContentPadding(View scrollContainer) {
+        Assert.assertNotNull(scrollContainer);
+
+        scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                scrollContainer.getPaddingTop() + (int)mExtraTabLayoutHeight,
+                scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
+    }
 
 }
