@@ -51,7 +51,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         indexedItems = new HashMap<>();
         itemsReviewButtonVisibility = new HashMap<>();
         int count = 0;
-        if (TextUtils.isNotEmpty(packagedOrder.getCms().trim())) {
+        if (TextUtils.isNotEmpty(packagedOrder.getCms())) {
             count++; // cms message item
         }
         count++; // header item
@@ -96,7 +96,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
                     packagedOrder.getProductsCount(),
                     context.getString(R.string.product_quantity_unit)));
         } else if (viewType == ITEM_CMS_MESSAGE) {
-            if (TextUtils.isNotEmpty(packagedOrder.getCms().trim())) {
+            if (TextUtils.isNotEmpty(packagedOrder.getCms())) {
                 holder.rlCMSMessage.setVisibility(View.VISIBLE);
                 holder.tvCMSMessage.setText(packagedOrder.getCms());
             } else {
@@ -112,13 +112,15 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             int index = headerPositions.indexOf(position);
             Package p = packagedOrder.getPackages().get(index);
             holder.tvPackageTitle.setText(p.getTitle());
-            holder.tvPackageDeliveryTime.setText(p.getCalculatedDeliveryTime());
+            if (TextUtils.isNotEmpty(p.getCalculatedDeliveryTime())) {
+                holder.tvPackageDeliveryTime.setText(p.getCalculatedDeliveryTime());
+            }
         } else if (viewType == ITEM_ORDER_ITEM) {
             PackageItem item = indexedItems.get(position);
             holder.tvProductName.setText(item.getName());
             holder.tvProductPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.imgProductThumb.setOnClickListener(null);
-            if (item.getImage() != null) {
+            if (TextUtils.isNotEmpty(item.getImage())) {
                 try {
                     holder.imgProductThumb.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -136,14 +138,22 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             }
             String propertyFormat = "%s : %s\n";
             StringBuilder productProperties = new StringBuilder();
-            productProperties.append(String.format(locale, "%s : %d\n", context.getString(R.string.quantity_label), item.getQuantity()));
-            productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.brand_label), item.getBrand()));
-            productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.seller_label), item.getSeller()));
-            productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.fee_label), CurrencyFormatter.formatCurrency(item.getPrice())));
-            if (TextUtils.isNotEmpty(item.getColor().trim())) {
+            if (item.getQuantity() != 0) {
+                productProperties.append(String.format(locale, "%s : %d\n", context.getString(R.string.quantity_label), item.getQuantity()));
+            }
+            if (TextUtils.isNotEmpty(item.getBrand())) {
+                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.brand_label), item.getBrand()));
+            }
+            if (TextUtils.isNotEmpty(item.getSeller())) {
+                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.seller_label), item.getSeller()));
+            }
+            if (item.getPrice() != 0) {
+                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.fee_label), CurrencyFormatter.formatCurrency(item.getPrice())));
+            }
+            if (TextUtils.isNotEmpty(item.getColor())) {
                 productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.color_label), item.getColor()));
             }
-            if (TextUtils.isNotEmpty(item.getSize().trim())) {
+            if (TextUtils.isNotEmpty(item.getSize())) {
                 productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.size_label), item.getSize()));
             }
             holder.tvProductDetails.setText(productProperties.substring(0, productProperties.length() - 1));
@@ -156,7 +166,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
                         .start();
                 holder.tvProductDetails.setVisibility(View.VISIBLE);
                 holder.btnReviewProduct.setVisibility(View.VISIBLE);
-                if (item.getSku() == null) {
+                if (TextUtils.isEmpty(item.getSku())) {
                     holder.tvItemIsOutOfStock.setVisibility(View.VISIBLE);
                     holder.btnReviewProduct.setEnabled(false);
                 } else {
@@ -210,12 +220,12 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
     public int getItemViewType(int position) {
         int count = getItemCount();
         if (position == 0) {
-            if (TextUtils.isNotEmpty(packagedOrder.getCms().trim())) {
+            if (TextUtils.isNotEmpty(packagedOrder.getCms())) {
                 return ITEM_CMS_MESSAGE;
             } else {
                 return ITEM_LIST_HEADER;
             }
-        } else if (position == 1 && TextUtils.isNotEmpty(packagedOrder.getCms().trim())) {
+        } else if (position == 1 && TextUtils.isNotEmpty(packagedOrder.getCms())) {
             return ITEM_LIST_HEADER;
         } else if (position == count - 1) {
             return ITEM_LIST_FOOTER;
