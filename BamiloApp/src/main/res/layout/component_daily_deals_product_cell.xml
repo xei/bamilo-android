@@ -21,7 +21,8 @@
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="h,176:220"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/tvDealProductName"

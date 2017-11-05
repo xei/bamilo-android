@@ -97,7 +97,7 @@
             android:name=".SplashScreenActivity"
             android:noHistory="true"
             android:resizeableActivity="false"
-            android:screenOrientation="unspecified">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -91,15 +91,20 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
     @Override
     public void onPause() {
+        stopDealComponentsTimer();
+        super.onPause();
+    }
+
+    private void stopDealComponentsTimer() {
         if (dailyDealViewComponents != null) {
             for (DailyDealViewComponent component : dailyDealViewComponents) {
                 component.pause();
             }
         }
-        super.onPause();
     }
 
     private void loadHomePage() {
+        stopDealComponentsTimer();
         srlHomeRoot.setRefreshing(true);
         triggerContentEventNoLoading(new GetHomeHelper(), null, this);
     }
@@ -186,21 +191,23 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
             mContainerLinearLayout.removeAllViews();
             for (BaseComponent component : components) {
                 BaseViewComponent viewComponent = BaseViewComponent.createFromBaseComponent(component);
-                if (viewComponent instanceof TileViewComponent) {
-                    ((TileViewComponent) viewComponent).setColorSequenceHolder(colorSequenceHolder);
-                    ((TileViewComponent) viewComponent).setOnTileClickListener(this);
-                    viewComponent.enableTracking(pageName, tileComponentCount++);
-                } else if (viewComponent instanceof SliderViewComponent) {
-                    ((SliderViewComponent) viewComponent).setOnSlideClickListener(this);
-                    viewComponent.enableTracking(pageName, sliderComponentCount++);
-                } else if (viewComponent instanceof CategoriesCarouselViewComponent) {
-                    ((CategoriesCarouselViewComponent) viewComponent).setOnCarouselItemClickListener(this);
-                    viewComponent.enableTracking(pageName, carouselComponentCount++);
-                } else if (viewComponent instanceof DailyDealViewComponent) {
-                    ((DailyDealViewComponent) viewComponent).setOnCountDownDealItemClickListener(this);
-                    viewComponent.enableTracking(pageName, dealComponentCount++);
+                if (viewComponent != null) {
+                    if (viewComponent instanceof TileViewComponent) {
+                        ((TileViewComponent) viewComponent).setColorSequenceHolder(colorSequenceHolder);
+                        ((TileViewComponent) viewComponent).setOnTileClickListener(this);
+                        viewComponent.enableTracking(pageName, tileComponentCount++);
+                    } else if (viewComponent instanceof SliderViewComponent) {
+                        ((SliderViewComponent) viewComponent).setOnSlideClickListener(this);
+                        viewComponent.enableTracking(pageName, sliderComponentCount++);
+                    } else if (viewComponent instanceof CategoriesCarouselViewComponent) {
+                        ((CategoriesCarouselViewComponent) viewComponent).setOnCarouselItemClickListener(this);
+                        viewComponent.enableTracking(pageName, carouselComponentCount++);
+                    } else if (viewComponent instanceof DailyDealViewComponent) {
+                        ((DailyDealViewComponent) viewComponent).setOnCountDownDealItemClickListener(this);
+                        viewComponent.enableTracking(pageName, dealComponentCount++);
+                    }
+                    mContainerLinearLayout.addView(viewComponent.getView(getContext()));
                 }
-                mContainerLinearLayout.addView(viewComponent.getView(getContext()));
             }
         }
     }
@@ -216,7 +223,11 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
     @Override
     protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
+        loadHomePage();
+    }
+
+    @Override
+    protected void onClickContinueButton() {
         loadHomePage();
     }
 

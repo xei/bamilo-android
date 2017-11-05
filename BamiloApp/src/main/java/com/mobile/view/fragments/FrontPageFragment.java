@@ -46,15 +46,16 @@ public class FrontPageFragment extends BaseFragment{
         SimplePagerAdapter pagerAdapter = new SimplePagerAdapter(getChildFragmentManager(), fragments);
         pager.setAdapter(pagerAdapter);
 
-        getBaseActivity().setUpExtraTabLayout(pager);
+        int tabLayoutHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TAB_LAYOUT_HEIGHT_DP,
+                getResources().getDisplayMetrics());
+        getBaseActivity().setUpExtraTabLayout(pager, tabLayoutHeight);
         final TabLayout tabLayout = getBaseActivity().getExtraTabLayout();
         tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.orange_lighter));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             tabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) tabLayout.getLayoutParams();
-        params.height =
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TAB_LAYOUT_HEIGHT_DP, getResources().getDisplayMetrics());
+        params.height = tabLayoutHeight;
         tabLayout.setLayoutParams(params);
         tabLayout.getTabAt(0).setCustomView(R.layout.front_page_tab_my_bamilo);
         tabLayout.getTabAt(1).setCustomView(R.layout.front_page_tab_home);

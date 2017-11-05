@@ -30,6 +30,7 @@ public class DailyDealComponent extends BaseComponent {
     // Counter
     private String counterTextColor;
     private long counterRemainingSeconds;
+    private long initialTimeSeconds;
 
     private List<Product> products;
 
@@ -54,7 +55,10 @@ public class DailyDealComponent extends BaseComponent {
             JSONObject counterObject = headerObject.optJSONObject(RestConstants.COUNTER);
             if (counterObject != null) {
                 counterRemainingSeconds = counterObject.optLong(RestConstants.REMAINING_SECONDS, -1);
+                initialTimeSeconds = System.currentTimeMillis() / 1000;
                 counterTextColor = counterObject.optString(RestConstants.TEXT_COLOR);
+            } else {
+                counterRemainingSeconds = -1;
             }
         }
 
@@ -153,6 +157,14 @@ public class DailyDealComponent extends BaseComponent {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public long getInitialTimeSeconds() {
+        return initialTimeSeconds;
+    }
+
+    public void setInitialTimeSeconds(long initialTimeSeconds) {
+        this.initialTimeSeconds = initialTimeSeconds;
     }
 
     public static class Product implements IJSONSerializable {

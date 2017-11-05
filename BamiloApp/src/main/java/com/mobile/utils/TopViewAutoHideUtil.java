@@ -1,7 +1,6 @@
 package com.mobile.utils;
 
 import android.animation.ValueAnimator;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -9,7 +8,6 @@ public class TopViewAutoHideUtil {
     private int minScrollRange, maxScrollRange;
     private int viewScrolledAmount;
     private View view;
-    private ViewPropertyAnimatorCompat mScrollAnimator;
     private ValueAnimator mValueAnimator;
     private OnViewShowHideListener onViewShowHideListener;
     private boolean searchBarHidden = true;
@@ -32,10 +30,6 @@ public class TopViewAutoHideUtil {
         int offset = constrain(totalDy, minScrollRange, maxScrollRange);
         viewScrolledAmount = offset;
         scrollPosition(offset);
-    }
-
-    public void onSmoothScroll(int dy) {
-        animateScroll(viewScrolledAmount, constrain(dy + viewScrolledAmount, minScrollRange, maxScrollRange));
     }
 
     private void scrollPosition(int offset) {
@@ -61,16 +55,12 @@ public class TopViewAutoHideUtil {
         }
     }
 
-    public boolean showSearchBar() {
-        if (searchBarHidden) {
-            animateScroll(viewScrolledAmount, maxScrollRange);
-            return true;
-        }
-        return false;
+    public void showSearchBar() {
+        animateScroll(viewScrolledAmount, maxScrollRange);
     }
 
     public void syncState(int scrolledAmount) {
-        if (searchBarHidden && (Math.abs(scrolledAmount) < Math.abs(minScrollRange))) {
+        if (Math.abs(scrolledAmount) < Math.abs(minScrollRange)) {
             showSearchBar();
         }
     }

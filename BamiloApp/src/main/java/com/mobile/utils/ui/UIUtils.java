@@ -300,7 +300,7 @@ public class UIUtils {
         // Make a call
         if (mPhone2Call != null) {
             Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:" + mPhone2Call));
+            intent.setData(Uri.parse(mPhone2Call));
             if (intent.resolveActivity(activity.getPackageManager()) != null) {
                 activity.startActivity(intent);
             }
