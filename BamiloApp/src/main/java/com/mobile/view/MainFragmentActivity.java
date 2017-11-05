@@ -49,6 +49,7 @@ import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.FrontPageFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
+import com.mobile.view.fragments.ItemTrackingFragment;
 import com.mobile.view.fragments.MyAccountAboutFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
@@ -504,7 +505,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 fragment = newFragmentInstance(MyOrdersFragment.class, bundle);
                 break;
             case ORDER_STATUS:
-                fragment = newFragmentInstance(OrderStatusFragment.class, bundle);
+                fragment = newFragmentInstance(ItemTrackingFragment.class, bundle);
                 break;
             case ORDER_RETURN_CONDITIONS:
                 fragment = newFragmentInstance(OrderReturnConditionsFragment.class, bundle);

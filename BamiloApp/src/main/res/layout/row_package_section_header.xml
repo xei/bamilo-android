@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/item_tracking_package_section_bg"
+    android:padding="16dp">
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tvPackageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        tools:text="بسته ۱" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tvPackageDeliveryTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/tvPackageTitle"
+        android:gravity="left"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        tools:text="چهارشنبه ۲۵ اردیبهشت" />
+
+</RelativeLayout>

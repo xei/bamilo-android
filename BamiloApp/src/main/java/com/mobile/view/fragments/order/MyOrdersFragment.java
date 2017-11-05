@@ -242,8 +242,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         OrdersAdapter adapter = (OrdersAdapter) parent.getAdapter();
         Order selectedOrder = adapter.getItem(position);
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.ARG_1, String.valueOf(selectedOrder.getNumber()));
-        bundle.putString(ConstantsIntentExtra.ARG_2, selectedOrder.getDate());
+        bundle.putString(ConstantsIntentExtra.ORDER_NUMBER, String.valueOf(selectedOrder.getNumber()));
         // Validate if frame order status
         if (mOrderStatusContainer == null) {
             getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);

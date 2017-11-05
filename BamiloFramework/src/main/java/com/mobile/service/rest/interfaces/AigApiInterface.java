@@ -28,6 +28,7 @@ import com.mobile.service.objects.home.HomePageComponents;
 import com.mobile.service.objects.home.HomePageObject;
 import com.mobile.service.objects.orders.MyOrder;
 import com.mobile.service.objects.orders.OrderStatus;
+import com.mobile.service.objects.orders.PackagedOrder;
 import com.mobile.service.objects.product.BundleList;
 import com.mobile.service.objects.product.DeliveryTimeCollection;
 import com.mobile.service.objects.product.OfferList;
@@ -211,7 +212,7 @@ public interface AigApiInterface {
     String getSearchSuggestions = "getSearchSuggestions";
 
     @GET("/{path}")
-    void trackOrder(@Path(value="path", encode=false) String path, Callback<BaseResponse<OrderStatus>> callback);
+    void trackOrder(@Path(value="path", encode=false) String path, Callback<BaseResponse<PackagedOrder>> callback);
     String trackOrder = "trackOrder";
 
     @GET("/{path}")
