@@ -30,7 +30,9 @@ public class PackageItem implements IJSONSerializable {
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        sku = jsonObject.optString(RestConstants.SKU);
+        if (!jsonObject.isNull(RestConstants.SKU)) {
+            sku = jsonObject.optString(RestConstants.SKU);
+        }
         name = jsonObject.optString(RestConstants.NAME);
         brand = jsonObject.optString(RestConstants.BRAND);
         seller = jsonObject.optString(RestConstants.SELLER);

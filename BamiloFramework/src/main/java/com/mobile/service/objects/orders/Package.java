@@ -23,7 +23,9 @@ public class Package implements IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         title = jsonObject.optString(RestConstants.TITLE);
-        calculatedDeliveryTime = jsonObject.optString(RestConstants.DELIVERY_TIME);
+        if (!jsonObject.isNull(RestConstants.DELIVERY_TIME)) {
+            calculatedDeliveryTime = jsonObject.optString(RestConstants.DELIVERY_TIME);
+        }
 
         JSONArray itemsArray = jsonObject.getJSONArray(RestConstants.PRODUCTS);
         if (itemsArray != null) {
