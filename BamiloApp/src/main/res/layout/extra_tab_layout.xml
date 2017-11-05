@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragmentTabs"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
+    android:layout_height="@dimen/tab_layout_height"
     app:tabMaxWidth="0dp"
     app:tabGravity="fill"
     app:tabMode="fixed"
