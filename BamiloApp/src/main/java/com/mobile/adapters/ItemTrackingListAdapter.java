@@ -21,6 +21,7 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
+import com.mobile.view.widget.ItemTrackingProgressBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,6 +116,8 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             holder.tvPackageDeliveryTime.setText(p.getCalculatedDeliveryTime());
         } else if (viewType == ITEM_ORDER_ITEM) {
             PackageItem item = indexedItems.get(position);
+            ItemTrackingProgressBar itemTrackingProgressBar = holder.itemTrackingProgressBar;
+            itemTrackingProgressBar.setItemHistories(item.getHistories());
             holder.tvProductName.setText(item.getName());
             holder.tvProductPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.imgProductThumb.setOnClickListener(null);
@@ -264,6 +267,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         TextView tvProductName, tvProductPrice;
         TextView tvProductDetails, tvItemIsOutOfStock;
         Button btnReviewProduct;
+        ItemTrackingProgressBar itemTrackingProgressBar;
 
 
         public ItemTrackingViewHolder(View itemView) {
@@ -286,6 +290,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             tvPackageDeliveryTime = (TextView) itemView.findViewById(R.id.tvPackageDeliveryTime);
 
             clPackagedOrderItem = (ConstraintLayout) itemView.findViewById(R.id.clPackagedOrderItem);
+            itemTrackingProgressBar = (ItemTrackingProgressBar) itemView.findViewById(R.id.itemTrackingProgressBar);
             imgProductThumb = (ImageView) itemView.findViewById(R.id.imgProductThumb);
             imgArrowSeeMore = (ImageView) itemView.findViewById(R.id.imgArrowSeeMore);
             tvProductName = (TextView) itemView.findViewById(R.id.tvProductName);

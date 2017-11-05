@@ -161,6 +161,11 @@
     <color name="blue_1">#1a365e</color>
     <!--End of Color Palette-->
 
+    <!--Item tracking progressbar colors-->
+    <color name="progress_neutral">#d8d8d8</color>
+    <color name="progress_success">#00b09b</color>
+    <color name="progress_failure">#d80056</color>
+
     <array name="tileColorSequence">
         <item>#F9EFEA</item>
         <item>#ECECEC</item>

@@ -156,7 +156,14 @@ public class PackageItem implements IJSONSerializable {
     }
 
     public static class History implements IJSONSerializable {
+        public static final String STATUS_ACTIVE = "active",
+                STATUS_INACTIVE = "inactive", STATUS_SUCCESS = "success",
+                STATUS_FAILED = "failed";
+        public static final String NAME_NEW = "new", NAME_APPROVED = "exportable",
+                NAME_RECEIVED = "item_received", NAME_SHIPPED = "shipped", NAME_DELIVERED = "delivered";
+
         private String key;
+        private String displayName;
         private String name;
         private String status;
         private int progress;
@@ -166,10 +173,11 @@ public class PackageItem implements IJSONSerializable {
         @Override
         public boolean initialize(JSONObject jsonObject) throws JSONException {
             key = jsonObject.optString(RestConstants.KEY);
+            displayName = jsonObject.optString(RestConstants.NAME_FA);
             name = jsonObject.optString(RestConstants.NAME);
             status = jsonObject.optString(RestConstants.STATUS);
             progress = jsonObject.getInt(RestConstants.PROGRESS);
-            multiplier = jsonObject.optInt(RestConstants.MULTIPLIER);
+            multiplier = jsonObject.optInt(RestConstants.WIDTH_MULTIPLIER);
             date = jsonObject.optString(RestConstants.DATE);
             return false;
         }
@@ -192,12 +200,12 @@ public class PackageItem implements IJSONSerializable {
             this.key = key;
         }
 
-        public String getName() {
-            return name;
+        public String getDisplayName() {
+            return displayName;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setDisplayName(String displayName) {
+            this.displayName = displayName;
         }
 
         public String getStatus() {
@@ -230,6 +238,14 @@ public class PackageItem implements IJSONSerializable {
 
         public void setDate(String date) {
             this.date = date;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 }

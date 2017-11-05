@@ -371,9 +371,10 @@ public class RestConstants {
     public static final String TOTAL_COST = "total_cost";
     public static final String PACKAGES = "packages";
     public static final String PROGRESS = "progress";
-    public static final String MULTIPLIER = "multiplier";
+    public static final String WIDTH_MULTIPLIER = "widthMultiplier";
     public static final String CALCULATED_DELIVERY_TIME = "calculated_delivery_time";
     public static final String HISTORIES = "histories";
     public static final String ITEMS = "items";
     public static final String COLOR = "color";
+    public static final String NAME_FA = "name_fa";
 }
