@@ -30,11 +30,17 @@
             style="@style/HeaderStyle"
             android:text="@string/my_order_history_label" />
 
-        <ListView
-            android:id="@+id/orders_list"
-            style="@style/ListViewStyle"
-            tools:layout_height="match_parent"
-            tools:layout_width="match_parent" />
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srlOrderList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/orders_list"
+                style="@style/ListViewStyle"
+                tools:layout_height="match_parent"
+                tools:layout_width="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 

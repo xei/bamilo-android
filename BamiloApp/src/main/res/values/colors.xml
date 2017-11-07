@@ -120,6 +120,7 @@
     <color name="recommendation_black">#1b1b1b</color>
     <color name="recommendation_grey">#929292</color>
     <color name="order_status_textcolor">#555555</color>
+    <color name="order_paid_price_color">#00b09b</color>
     <color name="transparent">#00000000</color>
 
     <color name="recommendation_cart_grey">#505050</color>

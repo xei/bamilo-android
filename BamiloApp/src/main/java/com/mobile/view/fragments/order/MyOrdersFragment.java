@@ -1,6 +1,7 @@
 package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -45,6 +46,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     private long mGABeginRequestMillis;
     private ArrayList<Order> mOrdersList;
     private ListView mOrdersListView;
+    private SwipeRefreshLayout srlOrderList;
     private OrdersAdapter mOrdersAdapter;
     private int mPageIndex = IntConstants.FIRST_PAGE;
     boolean isLoadingMore;
@@ -92,6 +94,15 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON VIEW CREATED");
         // Get views
         mOrdersListView = (ListView) view.findViewById(R.id.orders_list);
+        srlOrderList = (SwipeRefreshLayout) view.findViewById(R.id.srlOrderList);
+        srlOrderList.setColorSchemeResources(R.color.appBar);
+        srlOrderList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPageIndex = IntConstants.FIRST_PAGE;
+                triggerGetOrderList(mPageIndex, false);
+            }
+        });
         // Get container order status
         mOrderStatusContainer = view.findViewById(R.id.my_orders_frame_order_status);
     }
@@ -162,7 +173,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         }
         // Case first time
         else if (CollectionUtils.isEmpty(mOrdersList)) {
-            triggerGetOrderList(mPageIndex);
+            triggerGetOrderList(mPageIndex, true);
         }
         // Case recover saved state
         else {
@@ -181,9 +192,11 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         } else {
             mOrdersAdapter.updateOrders(mOrdersList);
         }
+        this.mOrdersList = mOrdersAdapter.getOrders();
+        mOrdersAdapter.setLoadMoreProgressEnabled(mPageIndex < mMaxPages);
         mOrdersListView.setAdapter(mOrdersAdapter);
         // Case frame for order status
-        if(mOrderStatusContainer != null) {
+        if (mOrderStatusContainer != null) {
             mOrdersListView.performItemClick(null, 0, mOrdersAdapter.getItemId(0));
         }
         // Show container
@@ -196,6 +209,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     private void appendToList(ArrayList<Order> orders) {
         if (mOrdersAdapter != null) {
             mOrdersAdapter.appendOrders(orders);
+            mOrdersAdapter.setLoadMoreProgressEnabled(mPageIndex < mMaxPages);
             mOrdersList = mOrdersAdapter.getOrders();
         }
     }
@@ -229,7 +243,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         if (isBottomReached && !isLoadingMore && mPageIndex < mMaxPages) {
             Log.i(TAG, "LOADING MORE DATA");
             isLoadingMore = true;
-            triggerGetOrderList(mPageIndex + 1);
+            triggerGetOrderList(mPageIndex + 1, true);
         }
     }
 
@@ -256,9 +270,14 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
      * ######### TRIGGERS #########
      */
 
-    private void triggerGetOrderList(int page) {
+    private void triggerGetOrderList(int page, boolean showDefaultProgress) {
         if (page == IntConstants.FIRST_PAGE) {
-            triggerContentEvent(new GetMyOrdersListHelper(), GetMyOrdersListHelper.createBundle(page), this);
+            if (!showDefaultProgress) {
+                triggerContentEventNoLoading(new GetMyOrdersListHelper(), GetMyOrdersListHelper.createBundle(page), this);
+                srlOrderList.setRefreshing(true);
+            } else {
+                triggerContentEvent(new GetMyOrdersListHelper(), GetMyOrdersListHelper.createBundle(page), this);
+            }
         } else {
             triggerContentEventNoLoading(new GetMyOrdersListHelper(), GetMyOrdersListHelper.createBundle(page), this);
         }
@@ -278,6 +297,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         }
         // Hide dialog progress
         hideActivityProgress();
+        srlOrderList.setRefreshing(false);
         // Validate event
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
@@ -298,7 +318,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
 
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaMyOrders, mGABeginRequestMillis,
-                        BamiloApplication.CUSTOMER==null?"":""+BamiloApplication.CUSTOMER.getId());
+                        BamiloApplication.CUSTOMER == null ? "" : "" + BamiloApplication.CUSTOMER.getId());
                 break;
             default:
                 break;
