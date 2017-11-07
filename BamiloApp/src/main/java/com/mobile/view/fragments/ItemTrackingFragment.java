@@ -64,11 +64,11 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
         srlItemTrackingStatus.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadOrderInfo(orderNumber);
+                loadOrderInfo(orderNumber, false);
             }
         });
         if (mAdapter == null) {
-            loadOrderInfo(orderNumber);
+            loadOrderInfo(orderNumber, true);
         } else {
             mAdapter.setOnItemTrackingListClickListener(this);
             rvItemsList.setAdapter(mAdapter);
@@ -80,10 +80,14 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
         super.onStart();
     }
 
-    private void loadOrderInfo(String orderNumber) {
+    private void loadOrderInfo(String orderNumber, boolean showDefaultProgress) {
         EventTask task = isNestedFragment ? EventTask.ACTION_TASK : EventTask.NORMAL_TASK;
-        srlItemTrackingStatus.setRefreshing(true);
-        triggerContentEventNoLoading(new GetOrderStatusHelper(), GetOrderStatusHelper.createBundle(orderNumber, task), this);
+        if (!showDefaultProgress) {
+            srlItemTrackingStatus.setRefreshing(true);
+            triggerContentEventNoLoading(new GetOrderStatusHelper(), GetOrderStatusHelper.createBundle(orderNumber, task), this);
+        } else {
+            triggerContentEvent(new GetOrderStatusHelper(), GetOrderStatusHelper.createBundle(orderNumber, task), this);
+        }
     }
 
     @Override
@@ -93,18 +97,16 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
 
     @Override
     protected void onClickRetryButton(View view) {
-        loadOrderInfo(orderNumber);
+        loadOrderInfo(orderNumber, true);
     }
 
     @Override
     protected void onClickContinueButton() {
-        loadOrderInfo(orderNumber);
+        loadOrderInfo(orderNumber, true);
     }
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        hideActivityProgress();
-        showFragmentContentContainer();
         srlItemTrackingStatus.setRefreshing(false);
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
@@ -119,9 +121,9 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case TRACK_ORDER_EVENT:
+                showFragmentContentContainer();
                 // Get order status
-                PackagedOrder order = (PackagedOrder) baseResponse.getContentData();
-                this.packagedOrder = order;
+                this.packagedOrder = (PackagedOrder) baseResponse.getContentData();
                 if (packagedOrder != null) {
                     showOrderStatus(packagedOrder);
                 } else {
@@ -148,7 +150,6 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        hideActivityProgress();
         srlItemTrackingStatus.setRefreshing(false);
         // Specific errors
         EventType eventType = baseResponse.getEventType();
