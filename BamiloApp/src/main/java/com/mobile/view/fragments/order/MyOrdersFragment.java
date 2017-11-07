@@ -53,6 +53,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     private View mOrderStatusContainer;
     private int mMaxPages;
     private boolean isErrorOnLoadingMore;
+    private int mScrollPosition;
 
     /**
      * Empty constructor
@@ -113,6 +114,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON START");
         // Validate the state
         onValidateDataState();
+        mOrdersListView.setSelection(mScrollPosition);
     }
 
     @Override
@@ -133,6 +135,9 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
 
     @Override
     public void onPause() {
+        if (mOrdersListView != null) {
+            mScrollPosition = mOrdersListView.getFirstVisiblePosition();
+        }
         super.onPause();
         Print.i(TAG, "ON PAUSE");
     }
