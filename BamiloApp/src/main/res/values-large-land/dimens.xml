@@ -13,7 +13,6 @@
 
     <!--LOGIN-->
     <dimen name="register_container_width">552dp</dimen>
-    <dimen name="slider_padding">160dp</dimen>
 
 
 
