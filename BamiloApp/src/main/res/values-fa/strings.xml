@@ -559,4 +559,5 @@
     <string name="item_is_out_of_stock">موجودی کالا تمام شده است</string>
     <string name="brand_label">برند</string>
     <string name="color_label">رنگ</string>
+    <string name="deal_item_out_of_stock_label">تمام شد</string>
 </resources>

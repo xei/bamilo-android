@@ -547,5 +547,6 @@
     <string name="seller_label">فروشنده</string>
     <string name="fee_label">قیمت واحد</string>
     <string name="color_label">رنگ</string>
+    <string name="deal_item_out_of_stock_label">تمام شد</string>
 
 </resources>

@@ -175,6 +175,7 @@ public class DailyDealComponent extends BaseComponent {
         private long price;
         private long specialPrice;
         private String image;
+        private boolean hasStock;
 
         public String getSku() {
             return sku;
@@ -241,6 +242,7 @@ public class DailyDealComponent extends BaseComponent {
             price = jsonObject.optLong(RestConstants.PRICE);
             specialPrice = jsonObject.optLong(RestConstants.SPECIAL_PRICE);
             image = jsonObject.optString(RestConstants.IMAGE);
+            hasStock = jsonObject.optBoolean(RestConstants.HAS_STOCK);
             return false;
         }
 
@@ -252,6 +254,14 @@ public class DailyDealComponent extends BaseComponent {
         @Override
         public int getRequiredJson() {
             return RequiredJson.NONE;
+        }
+
+        public boolean isHasStock() {
+            return hasStock;
+        }
+
+        public void setHasStock(boolean hasStock) {
+            this.hasStock = hasStock;
         }
     }
 }

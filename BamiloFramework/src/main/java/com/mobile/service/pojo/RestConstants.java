@@ -378,4 +378,5 @@ public class RestConstants {
     public static final String COLOR = "color";
     public static final String NAME_FA = "name_fa";
     public static final String DELIVERY_NOTICE = "delivery_notice";
+    public static final String HAS_STOCK = "has_stock";
 }
