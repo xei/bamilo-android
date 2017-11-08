@@ -22,6 +22,18 @@
                 android:layout_height="70dp" />
 
             <com.mobile.components.customfontviews.TextView
+                android:id="@+id/tvDeliveryNotice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pink_10"
+                android:padding="16dp"
+                android:textColor="@color/pink_3"
+                android:textSize="13sp"
+                android:visibility="gone"
+                tools:text="This is a test message"
+                tools:visibility="visible" />
+
+            <com.mobile.components.customfontviews.TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/black_400"

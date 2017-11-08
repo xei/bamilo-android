@@ -22,6 +22,18 @@
                 android:layout_height="70dp" />
 
             <com.mobile.components.customfontviews.TextView
+                android:id="@+id/tvDeliveryNotice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pink_10"
+                android:padding="16dp"
+                android:textColor="@color/pink_3"
+                android:textSize="13sp"
+                android:visibility="gone"
+                tools:text="This is a test message"
+                tools:visibility="visible" />
+
+            <com.mobile.components.customfontviews.TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/black_400"
@@ -56,10 +68,10 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:layout_toRightOf="@+id/voucher_switch"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/voucher_switch"
+                        android:gravity="right"
                         android:padding="@dimen/dimen_10dp"
                         android:text="@string/checkout_voucher_title"
                         android:textColor="@color/black_73"
@@ -238,9 +250,9 @@
                     style="@style/Divider"
                     android:layout_width="wrap_content"
                     android:layout_height="2dp"
+                    android:layout_below="@+id/checkout_order_ship_price"
                     android:layout_marginBottom="@dimen/dimen_3dp"
-                    android:layout_marginTop="@dimen/dimen_3dp"
-                    android:layout_below="@+id/checkout_order_ship_price" />
+                    android:layout_marginTop="@dimen/dimen_3dp" />
 
 
                 <com.mobile.components.customfontviews.TextView

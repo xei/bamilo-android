@@ -23,6 +23,7 @@ public class MultiStepShipping implements IJSONSerializable, Parcelable {
     private ShippingForm mForm;
 
     private String estimatedDeliveryTime;
+    private String deliveryNotice;
 
     /**
      * Empty constructor
@@ -36,6 +37,7 @@ public class MultiStepShipping implements IJSONSerializable, Parcelable {
         this.mOrderSummary = step.mOrderSummary;
         this.mForm = step.mForm;
         this.estimatedDeliveryTime = step.estimatedDeliveryTime;
+        this.deliveryNotice = step.getDeliveryNotice();
     }
 
     /*
@@ -48,6 +50,9 @@ public class MultiStepShipping implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         estimatedDeliveryTime = jsonObject.getJSONObject(RestConstants.ESTIMATED_DELIVERY_TIME).optString(RestConstants.DELIVERY_MESSAGE);
+        if (!jsonObject.isNull(RestConstants.DELIVERY_NOTICE)) {
+            deliveryNotice = jsonObject.optString(RestConstants.DELIVERY_NOTICE);
+        }
         // Get shipping form
         mForm = new ShippingForm();
         mForm.initialize(jsonObject);
@@ -88,12 +93,14 @@ public class MultiStepShipping implements IJSONSerializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(estimatedDeliveryTime);
+        dest.writeString(deliveryNotice);
         dest.writeValue(mOrderSummary);
         dest.writeValue(mForm);
     }
 
     private MultiStepShipping(Parcel in) {
         estimatedDeliveryTime = in.readString();
+        deliveryNotice = in.readString();
         mOrderSummary = (PurchaseEntity) in.readValue(PurchaseEntity.class.getClassLoader());
         mForm = (ShippingForm) in.readValue(ShippingForm.class.getClassLoader());
     }
@@ -114,5 +121,13 @@ public class MultiStepShipping implements IJSONSerializable, Parcelable {
 
     public void setEstimatedDeliveryTime(String estimatedDeliveryTime) {
         this.estimatedDeliveryTime = estimatedDeliveryTime;
+    }
+
+    public String getDeliveryNotice() {
+        return deliveryNotice;
+    }
+
+    public void setDeliveryNotice(String deliveryNotice) {
+        this.deliveryNotice = deliveryNotice;
     }
 }
