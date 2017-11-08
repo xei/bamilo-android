@@ -53,6 +53,7 @@ public class ItemTrackingProgressBar extends View implements HoloFontLoader.Font
     private int mFontStyle;
     private TextPaint mTextPaint;
     private Paint mPaint;
+    private boolean breakDownText;
 
     public ItemTrackingProgressBar(Context context) {
         super(context);
@@ -73,7 +74,7 @@ public class ItemTrackingProgressBar extends View implements HoloFontLoader.Font
         float dip = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
         ovalRadius = (int) (DEFAULT_OVAL_RAD_DIP * dip);
         borderWidth = (int) (DEFAULT_BORDER_WIDTH_DIP * dip);
-        textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 11, getResources().getDisplayMetrics());
+        textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics());
         defaultNeutralColor = ContextCompat.getColor(getContext(), R.color.progress_neutral);
         defaultSuccessColor = ContextCompat.getColor(getContext(), R.color.progress_success);
         defaultFailureColor = ContextCompat.getColor(getContext(), R.color.progress_failure);
@@ -110,18 +111,27 @@ public class ItemTrackingProgressBar extends View implements HoloFontLoader.Font
             int lineStartX = ovalRadius + (baseDistance / 2);
             int lineStopX = width - (2 * ovalRadius) - (baseDistance / 2);
             int lineY = height / 2 - (4 * ovalRadius);
+            mPaint.setColor(defaultNeutralColor);
             canvas.drawLine(lineStartX, lineY, lineStopX, lineY, mPaint);
 
-
             int progress = 0;
-            int progressSum = itemHistories.size() * 100;
+            int progressSum;
+            int multipliersSum = 0;
+            for (int i = 0; i < itemHistories.size() - 1; i++) {
+                PackageItem.History history = itemHistories.get(i);
+                progress += history.getProgress() * history.getMultiplier();
+                multipliersSum += history.getMultiplier();
+            }
+            progressSum = multipliersSum * 100;
+            progress = (int) (progress * 100F / progressSum);
+
             for (PackageItem.History history : itemHistories) {
-                if (history.getProgress() == 0) {
+                float textWidth = mTextPaint.measureText(history.getDisplayName());
+                if (textWidth > (baseDistance - ovalRadius)) {
+                    breakDownText = true;
                     break;
                 }
-                progress += history.getProgress();
             }
-            progress = (int) (progress * 100F / progressSum);
 
 
             if (progress > 0) {
@@ -129,8 +139,9 @@ public class ItemTrackingProgressBar extends View implements HoloFontLoader.Font
                 int prgWidth = lineStopX - lineStartX;
                 int progressStopX = lineStopX - (prgWidth * progress / 100);
                 canvas.drawLine(lineStopX, lineY, progressStopX, lineY, mPaint);
-
-                canvas.drawLine(progressStopX, lineY - ovalRadius, progressStopX, lineY + ovalRadius, mPaint);
+                if (progress % (100 / multipliersSum) != 0) {
+                    canvas.drawLine(progressStopX, lineY - ovalRadius, progressStopX, lineY + ovalRadius, mPaint);
+                }
             }
 
             int lastActiveItemPosition = -1;
@@ -172,7 +183,11 @@ public class ItemTrackingProgressBar extends View implements HoloFontLoader.Font
             } else if (itemHistories.get(0).getStatus().equals(PackageItem.History.STATUS_FAILED)) {
                 mTextPaint.setColor(defaultFailureColor);
             }
-            StaticLayout textBoundary = new StaticLayout(itemHistories.get(0).getDisplayName(), mTextPaint,
+            String displayName = itemHistories.get(0).getDisplayName();
+            if (breakDownText) {
+                displayName = displayName.replaceAll(" ", "\n");
+            }
+            StaticLayout textBoundary = new StaticLayout(displayName, mTextPaint,
                     baseDistance - ovalRadius, Layout.Alignment.ALIGN_CENTER, 0.8f, 0.0f, false);
             canvas.translate(cx - textBoundary.getWidth() / 2, cy + (3 * ovalRadius));
             textBoundary.draw(canvas);
@@ -206,7 +221,11 @@ public class ItemTrackingProgressBar extends View implements HoloFontLoader.Font
                 } else if (history.getStatus().equals(PackageItem.History.STATUS_FAILED)) {
                     mTextPaint.setColor(defaultFailureColor);
                 }
-                textBoundary = new StaticLayout(history.getDisplayName(), mTextPaint,
+                displayName = history.getDisplayName();
+                if (breakDownText) {
+                    displayName = displayName.replaceAll(" ", "\n");
+                }
+                textBoundary = new StaticLayout(displayName, mTextPaint,
                         baseDistance - ovalRadius, Layout.Alignment.ALIGN_CENTER, .8f, 0.0f, false);
                 canvas.save();
                 canvas.translate(cx - textBoundary.getWidth() / 2, cy + (3 * ovalRadius));
