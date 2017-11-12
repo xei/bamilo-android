@@ -142,6 +142,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private static final int SEARCH_EDIT_SIZE = 2;
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
     private static final String HAMBURGER_ICON_ITEM_TRACKING_SHOWCASE = "hamburger_icon_item_tracking_showcase";
+    private static final int SHOWCASE_DELAY = 500;
 
     @KeyboardState
     public static int sCurrentAdjustState;
@@ -282,7 +283,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 }
             });
             ShowcasePerformer.createSimpleCircleShowcase(this, HAMBURGER_ICON_ITEM_TRACKING_SHOWCASE,
-                    actionView, getString(R.string.showcase_hamburger_icon_item_tracking), getString(R.string.showcase_got_it))
+                    actionView, getString(R.string.showcase_hamburger_icon_item_tracking), getString(R.string.showcase_got_it), SHOWCASE_DELAY)
                     .show();
         }
 

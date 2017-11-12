@@ -26,29 +26,30 @@ public class ShowcasePerformer {
 
     public static FancyShowCaseView createSimpleCircleShowcase(final Activity activity, String showcaseName,
                                                                View view, final String message,
-                                                               final String buttonTitle) {
+                                                               final String buttonTitle, int delay) {
 
         return createSimpleShowcase(activity, showcaseName, FocusShape.CIRCLE,
-                view, message, buttonTitle);
+                view, message, buttonTitle, delay);
     }
 
     public static FancyShowCaseView createSimpleRectShowcase(final Activity activity, String showcaseName,
                                                              View view, final String message,
-                                                             final String buttonTitle) {
+                                                             final String buttonTitle, int delay) {
 
         return createSimpleShowcase(activity, showcaseName, FocusShape.ROUNDED_RECTANGLE,
-                view, message, buttonTitle);
+                view, message, buttonTitle, delay);
     }
 
     private static FancyShowCaseView createSimpleShowcase(final Activity activity, String showcaseName,
                                                           FocusShape showcaseShape,
                                                           final View view, final String message,
-                                                          final String buttonTitle) {
+                                                          final String buttonTitle, int delay) {
         return new FancyShowCaseView.Builder(activity)
                 .focusOn(view)
                 .showOnce(showcaseName)
                 .enableTouchOnFocusedView(true)
                 .focusShape(showcaseShape)
+                .delay(delay)
                 .roundRectRadius((int) activity.getResources().getDimension(R.dimen.showcase_rect_round_radius))
                 .customView(R.layout.showcase_simple_layout, new OnViewInflateListener() {
                     @Override

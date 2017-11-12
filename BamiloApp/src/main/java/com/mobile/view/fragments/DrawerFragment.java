@@ -433,7 +433,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
             if (position != -1) {
                 View v = mDrawerRecycler.getLayoutManager().findViewByPosition(position);
                 mDrawerRecycler.getLayoutManager().isViewPartiallyVisible(v, true, true);
-                ShowcasePerformer.createSimpleRectShowcase(activity, DRAWER_MENU_ITEM_TRACKING_SHOWCASE, v, getString(R.string.showcase_drawer_item_tracking), getString(R.string.showcase_got_it)).show();
+                ShowcasePerformer.createSimpleRectShowcase(activity, DRAWER_MENU_ITEM_TRACKING_SHOWCASE, v, getString(R.string.showcase_drawer_item_tracking), getString(R.string.showcase_got_it), 0).show();
             }
         }
     }

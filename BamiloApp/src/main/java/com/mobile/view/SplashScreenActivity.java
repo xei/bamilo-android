@@ -62,9 +62,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private final static String TAG = SplashScreenActivity.class.getSimpleName();
 
-    private static final int SPLASH_DURATION_IN = 1250;
+    private static final int SPLASH_DURATION_IN = 500;
 
-    private static final int SPLASH_DURATION_OUT = 750;
+    private static final int SPLASH_DURATION_OUT = 500;
 
     private DialogGenericFragment dialog;
 
