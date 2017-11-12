@@ -14,11 +14,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.view.ViewPager;
@@ -42,6 +42,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
@@ -98,6 +99,7 @@ import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.DrawerFragment;
+import com.mobile.view.fragments.DrawerFragmentAdapter;
 import com.mobile.view.fragments.ProductDetailsFragment;
 
 import junit.framework.Assert;
@@ -106,6 +108,13 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
+
+import me.toptas.fancyshowcase.FancyShowCaseView;
+import me.toptas.fancyshowcase.OnViewInflateListener;
+
+import static android.widget.RelativeLayout.ALIGN_PARENT_END;
+import static android.widget.RelativeLayout.CENTER_IN_PARENT;
+import static android.widget.RelativeLayout.CENTER_VERTICAL;
 
 /**
  * All activities extend this activity, in order to access methods that are shared and used in all activities.
@@ -132,6 +141,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private static final int SEARCH_EDIT_DELAY = 500;
     private static final int SEARCH_EDIT_SIZE = 2;
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
+    private static final String HAMBURGER_ICON_ITEM_TRACKING_SHOWCASE = "hamburger_icon_item_tracking_showcase";
 
     @KeyboardState
     public static int sCurrentAdjustState;
@@ -253,6 +263,48 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         updateContentViewsIfInitialCountrySelection();
         // Set title in AB or TitleBar
         setTitle(titleResId);
+
+
+        // perform showcase on drawer hamburger icon
+        View actionView = getToolbarNavigationIcon(toolbar);
+        if (actionView != null) {
+            actionView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isBackButtonEnabled) {
+                        onBackPressed();
+                    } else {
+                        mDrawerLayout.openDrawer(GravityCompat.START);
+                    }
+                    if (FancyShowCaseView.isVisible(BaseActivity.this)) {
+                        FancyShowCaseView.hideCurrent(BaseActivity.this);
+                    }
+                }
+            });
+            ShowcasePerformer.createSimpleCircleShowcase(this, HAMBURGER_ICON_ITEM_TRACKING_SHOWCASE,
+                    actionView, getString(R.string.showcase_hamburger_icon_item_tracking), getString(R.string.showcase_got_it))
+                    .show();
+        }
+
+    }
+
+    public static View getToolbarNavigationIcon(Toolbar toolbar) {
+        //check if contentDescription previously was set
+        boolean hadContentDescription = TextUtils.isEmpty(toolbar.getNavigationContentDescription());
+        String contentDescription = !hadContentDescription ? toolbar.getNavigationContentDescription().toString() : "navigationIcon";
+        toolbar.setNavigationContentDescription(contentDescription);
+        ArrayList<View> potentialViews = new ArrayList<>();
+        //find the view based on it's content description, set programatically or with android:contentDescription
+        toolbar.findViewsWithText(potentialViews, contentDescription, View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
+        //Nav icon is always instantiated at this point because calling setNavigationContentDescription ensures its existence
+        View navIcon = null;
+        if (potentialViews.size() > 0) {
+            navIcon = potentialViews.get(0); //navigation icon is ImageButton
+        }
+        //Clear content description if not previously present
+        if (hadContentDescription)
+            toolbar.setNavigationContentDescription(null);
+        return navIcon;
     }
 
     /**
@@ -568,6 +620,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 hideKeyboard();
+                if (mDrawerFragment != null) {
+                    mDrawerFragment.performShowcase(BaseActivity.this, R.string.drawer_order_tracking);
+                }
             }
         };
         mDrawerToggle.setDrawerArrowDrawable(new FixedDrawerDrawable(this, R.drawable.ic_action_hamburger));
@@ -595,6 +650,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
 
     public void closeNavigationDrawer() {
+        if (FancyShowCaseView.isVisible(BaseActivity.this)) {
+            FancyShowCaseView.hideCurrent(this);
+        }
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
             mDrawerLayout.closeDrawer(mDrawerNavigation);
         }

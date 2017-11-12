@@ -63,4 +63,7 @@ dependencies {
     /** TESTS **/
     testCompile 'junit:junit:4.12'
     testCompile files('libs/json.jar')
+
+    /** SHOWCASE VIEWER **/
+    compile 'com.github.faruktoptas:FancyShowCaseView:1.0.0'
 }

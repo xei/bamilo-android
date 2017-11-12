@@ -1,55 +1,61 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.RelativeLayout;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.controllers.LogOut;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.service.objects.cart.PurchaseEntity;
-import com.mobile.service.objects.configs.CountryConfigs;
 import com.mobile.service.objects.home.type.TeaserGroupType;
-import com.mobile.service.tracking.TrackingEvent;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.output.Print;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
+import com.mobile.view.ShowcasePerformer;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+
+import me.toptas.fancyshowcase.OnViewInflateListener;
+
+import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
+import static android.widget.RelativeLayout.ALIGN_PARENT_END;
+import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
+import static android.widget.RelativeLayout.CENTER_HORIZONTAL;
+import static android.widget.RelativeLayout.CENTER_IN_PARENT;
+import static android.widget.RelativeLayout.CENTER_VERTICAL;
 
 /**
  * Class used to show the cart info and a navigation container, menu or categories
+ *
  * @author sergiopereira
  */
-public class DrawerFragment extends BaseFragment implements OnClickListener{
+public class DrawerFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = DrawerFragment.class.getSimpleName();
+    private static final String DRAWER_MENU_ITEM_TRACKING_SHOWCASE = "drawer_menu_item_tracking_showcase";
 
     private FragmentType mSavedStateType;
     private RecyclerView mDrawerRecycler;
     private DialogGenericFragment dialogLogout;
+    private ArrayList<DrawerItem> mDrawerItems;
 
     /**
      * Constructor via bundle
+     *
      * @return CampaignsFragment
      * @author sergiopereira
      */
@@ -86,7 +92,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
         Print.i(TAG, "ON CREATE");
         mSavedStateType = savedInstanceState != null ? (FragmentType) savedInstanceState.getSerializable(TAG) : null;
     }
-    
+
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
@@ -100,7 +106,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
         LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseActivity());
         mDrawerRecycler.setLayoutManager(layoutManager);
 
-       CreateDrawer();
+        CreateDrawer();
 
         if (mSavedStateType == null) {
             Print.d(TAG, "SAVED IS NULL");
@@ -111,13 +117,13 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
 
     public void CreateDrawer() {
         if (mDrawerRecycler == null) return;
-        ArrayList<DrawerItem> items = new ArrayList<>();
+        mDrawerItems = new ArrayList<>();
         if (BamiloApplication.isCustomerLoggedIn()) {
             String gender = BamiloApplication.CUSTOMER.getGender();
-            items.add(new DrawerItem(getString(R.string.user_greeting, BamiloApplication.CUSTOMER.getFirstName()), BamiloApplication.CUSTOMER.getEmail(), gender, null));
+            mDrawerItems.add(new DrawerItem(getString(R.string.user_greeting, BamiloApplication.CUSTOMER.getFirstName()), BamiloApplication.CUSTOMER.getEmail(), gender, null));
 
         } else {
-            items.add(new DrawerItem(getString(R.string.welcome_label), getString(R.string.register_login_title), "male", new View.OnClickListener() {
+            mDrawerItems.add(new DrawerItem(getString(R.string.welcome_label), getString(R.string.register_login_title), "male", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (!BamiloApplication.isCustomerLoggedIn()) {
@@ -136,14 +142,14 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
             cartItems = cart.getCartCount();
         }
 
-        items.add(new DrawerItem(R.drawable.drawer_home, R.string.drawer_home, false, 0, R.color.drawer_orange, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(R.drawable.drawer_home, R.string.drawer_home, false, 0, R.color.drawer_orange, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
                 getBaseActivity().onSwitchFragment(FragmentType.HOME, null, true);
             }
         }));
-        items.add(new DrawerItem(R.drawable.drawer_categories, R.string.drawer_categories, false, 0, R.color.drawer_orange, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(R.drawable.drawer_categories, R.string.drawer_categories, false, 0, R.color.drawer_orange, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -151,8 +157,8 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES, null, true);
             }
         }));
-        items.add(new DrawerItem(true));
-        items.add(new DrawerItem(R.drawable.drawer_order_tracking, R.string.drawer_order_tracking, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(true));
+        mDrawerItems.add(new DrawerItem(R.drawable.drawer_order_tracking, R.string.drawer_order_tracking, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -160,8 +166,8 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, null, true);
             }
         }));
-        items.add(new DrawerItem(true));
-        items.add(new DrawerItem(R.drawable.drawer_wishlist, R.string.drawer_wishlist, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(true));
+        mDrawerItems.add(new DrawerItem(R.drawable.drawer_wishlist, R.string.drawer_wishlist, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -169,7 +175,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 getBaseActivity().onSwitchFragment(FragmentType.WISH_LIST, null, true);
             }
         }));
-        items.add(new DrawerItem(R.drawable.drawer_recently_viewed, R.string.drawer_recently_viewed, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(R.drawable.drawer_recently_viewed, R.string.drawer_recently_viewed, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -177,7 +183,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 getBaseActivity().onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST, null, true);
             }
         }));
-        items.add(new DrawerItem(R.drawable.drawer_cart, R.string.drawer_cart, true, cartItems, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(R.drawable.drawer_cart, R.string.drawer_cart, true, cartItems, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -185,7 +191,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, null, true);
             }
         }));
-        items.add(new DrawerItem(R.drawable.drawer_profile, R.string.my_account, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(R.drawable.drawer_profile, R.string.my_account, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -193,8 +199,8 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT, null, true);
             }
         }));
-        items.add(new DrawerItem(true));
-        items.add(new DrawerItem(0, R.string.drawer_contactus, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(true));
+        mDrawerItems.add(new DrawerItem(0, R.string.drawer_contactus, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -202,7 +208,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 UIUtils.onClickCallToOrder(getBaseActivity());
             }
         }));
-        items.add(new DrawerItem(0, R.string.drawer_emailus, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(0, R.string.drawer_emailus, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -210,7 +216,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 UIUtils.emailToCS(getBaseActivity());
             }
         }));
-        items.add(new DrawerItem(0, R.string.drawer_bug_report, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(0, R.string.drawer_bug_report, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -218,7 +224,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 UIUtils.emailBugs(getBaseActivity());
             }
         }));
-        items.add(new DrawerItem(0, R.string.drawer_faq, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(0, R.string.drawer_faq, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -234,8 +240,8 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                         .run();
             }
         }));
-        items.add(new DrawerItem(true));
-        /*items.add(new DrawerItem(0, R.string.drawer_share, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(true));
+        /*mDrawerItems.add(new DrawerItem(0, R.string.drawer_share, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -243,7 +249,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
                 UIUtils.shareApp(getBaseActivity());
             }
         }));*/
-        items.add(new DrawerItem(0, R.string.drawer_rateus, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(0, R.string.drawer_rateus, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
@@ -253,8 +259,8 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
         }));
         boolean hasCredentials = BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials();
         if (hasCredentials) {
-            items.add(new DrawerItem(true));
-            items.add(new DrawerItem(R.drawable.drawer_logout, R.string.sign_out, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+            mDrawerItems.add(new DrawerItem(true));
+            mDrawerItems.add(new DrawerItem(R.drawable.drawer_logout, R.string.sign_out, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
@@ -279,18 +285,15 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
             }));
         }
 
-
-
-
-        DrawerFragmentAdapter adapter = new DrawerFragmentAdapter(getBaseActivity(), items);
+        DrawerFragmentAdapter adapter = new DrawerFragmentAdapter(getBaseActivity(), mDrawerItems);
         mDrawerRecycler.setAdapter(adapter);
     }
 
     private void addListItems() {
-        Print.i(TAG,"ADD LIST ITEMS");
+        Print.i(TAG, "ADD LIST ITEMS");
         onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, new Bundle());
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onStart()
@@ -311,7 +314,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
         super.onResume();
         Print.i(TAG, "ON RESUME");
     }
-    
+
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
@@ -343,7 +346,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
         super.onStop();
         Print.i(TAG, "ON STOP");
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onDestroyView()
@@ -353,7 +356,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
         super.onDestroyView();
         Print.i(TAG, "ON DESTROY VIEW");
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onDestroy()
@@ -363,28 +366,29 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
     }
-    
+
     /**
      * ########### LAYOUT ###########  
      */
 
     /**
      * Method used to switch between the filter fragments
+     *
      * @author sergiopereira
      */
     public void onSwitchChildFragment(FragmentType filterType, Bundle bundle) {
         Print.i(TAG, "ON SWITCH CHILD FRAG: " + filterType);
         switch (filterType) {
-        case NAVIGATION_CATEGORIES_ROOT_LEVEL:
-            DrawerFragment navigationCategoryFragment = new DrawerFragment();//.getInstance(bundle);
-            fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
-            break;
-        default:
-            Print.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
-            break;
+            case NAVIGATION_CATEGORIES_ROOT_LEVEL:
+                DrawerFragment navigationCategoryFragment = new DrawerFragment();//.getInstance(bundle);
+                fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
+                break;
+            default:
+                Print.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
+                break;
         }
     }
-    
+
     /**
      * Method used to associate the container and fragment.
      */
@@ -417,4 +421,20 @@ public class DrawerFragment extends BaseFragment implements OnClickListener{
     }
 
 
+    public void performShowcase(BaseActivity activity, @StringRes int titleResId) {
+        if (mDrawerRecycler != null && mDrawerItems != null) {
+            int position = -1;
+            for (int i = 0; i < mDrawerItems.size(); i++) {
+                if (mDrawerItems.get(i).getName() == titleResId) {
+                    position = i;
+                    break;
+                }
+            }
+            if (position != -1) {
+                View v = mDrawerRecycler.getLayoutManager().findViewByPosition(position);
+                mDrawerRecycler.getLayoutManager().isViewPartiallyVisible(v, true, true);
+                ShowcasePerformer.createSimpleRectShowcase(activity, DRAWER_MENU_ITEM_TRACKING_SHOWCASE, v, getString(R.string.showcase_drawer_item_tracking), getString(R.string.showcase_got_it)).show();
+            }
+        }
+    }
 }

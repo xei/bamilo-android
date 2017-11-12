@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+
     <style name="myImageView">
         <!-- 3dp so the background border to be visible -->
         <item name="android:padding">3dp</item>
@@ -58,7 +59,7 @@
         <item name="android:numStars">5</item>
     </style>
 
-    <style name="StarBar.Indicator" >
+    <style name="StarBar.Indicator">
         <item name="android:isIndicator">true</item>
     </style>
 
@@ -69,13 +70,13 @@
         <item name="android:maxHeight">11dp</item>
     </style>
 
-    <style name="StarBar.Small.Indicator" >
+    <style name="StarBar.Small.Indicator">
         <item name="android:isIndicator">true</item>
     </style>
 
-    <style name="StarBar.Big"/>
+    <style name="StarBar.Big" />
 
-    <style name="StarBar.Big.Indicator" >
+    <style name="StarBar.Big.Indicator">
         <item name="android:isIndicator">true</item>
     </style>
 
@@ -124,7 +125,7 @@
         <item name="android:paddingBottom">@dimen/rounded_margin_mid</item>
     </style>
 
-<!--divider-->
+    <!--divider-->
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
@@ -260,7 +261,7 @@
 
     <!-- HORIZONTAL LIST -->
 
-    <style name="HorizontalListStyle" >
+    <style name="HorizontalListStyle">
         <item name="android:fadingEdge">horizontal</item>
         <item name="android:fadingEdgeLength">@dimen/home_horizontal_fade</item>
         <item name="android:requiresFadingEdge">horizontal</item>
@@ -329,5 +330,9 @@
     <style name="HomePageTabsTextStyle" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/primary_tab_color_selector</item>
+    </style>
+
+    <style name="ShowCaseButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/showcase_dismiss_button_bg</item>
     </style>
 </resources>

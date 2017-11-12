@@ -560,4 +560,7 @@
     <string name="brand_label">برند</string>
     <string name="color_label">رنگ</string>
     <string name="deal_item_out_of_stock_label">تمام شد</string>
+    <string name="showcase_got_it">متوجه شدم</string>
+    <string name="showcase_hamburger_icon_item_tracking">می تونید از اینجا سفارشتون رو با جزئیات بیشتری پیگیری کنید</string>
+    <string name="showcase_drawer_item_tracking">از این پس میتونید از وضعیت کالاهای سفارش خود مطلع شوید</string>
 </resources>
