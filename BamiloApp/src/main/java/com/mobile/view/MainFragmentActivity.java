@@ -93,6 +93,7 @@ import com.pushwoosh.fragment.PushEventListener;
 import com.pushwoosh.fragment.PushFragment;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
+import me.toptas.fancyshowcase.FancyShowCaseView;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -666,6 +667,10 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
     @Override
     public void onBackPressed() {
         Print.i(TAG, "ON BACK PRESSED");
+        if (FancyShowCaseView.isVisible(this)) {
+            FancyShowCaseView.hideCurrent(this);
+            return;
+        }
         // This situation only occurs when user goes to Choose Country screen on maintenance page and presses back
         if (isInMaintenance()) {
             Intent newIntent = new Intent(this, SplashScreenActivity.class);
