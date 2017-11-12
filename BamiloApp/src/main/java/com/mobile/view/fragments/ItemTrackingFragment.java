@@ -23,6 +23,7 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
+import com.mobile.view.fragments.order.MyOrdersFragment;
 
 import java.util.EnumSet;
 
@@ -37,6 +38,16 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
     private String orderNumber;
     private PackagedOrder packagedOrder;
     private ItemTrackingListAdapter mAdapter;
+
+    /**
+     * Constructor as nested fragment, called from {@link MyOrdersFragment#}.
+     */
+    public static ItemTrackingFragment getNestedInstance(Bundle bundle) {
+        ItemTrackingFragment orderStatusFragment = new ItemTrackingFragment();
+        orderStatusFragment.setArguments(bundle);
+        orderStatusFragment.isNestedFragment = true;
+        return orderStatusFragment;
+    }
 
     public ItemTrackingFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),

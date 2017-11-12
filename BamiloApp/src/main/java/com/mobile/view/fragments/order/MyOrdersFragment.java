@@ -29,6 +29,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
+import com.mobile.view.fragments.ItemTrackingFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -267,7 +268,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
             getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             adapter.notifySelectedData(position);
-            FragmentController.getInstance().addChildFragment(this, mOrderStatusContainer.getId(), OrderStatusFragment.getNestedInstance(bundle), OrderStatusFragment.TAG);
+            FragmentController.getInstance().addChildFragment(this, mOrderStatusContainer.getId(), ItemTrackingFragment.getNestedInstance(bundle), OrderStatusFragment.TAG);
         }
     }
 

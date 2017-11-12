@@ -39,6 +39,6 @@
         android:paddingLeft="@dimen/dimen_40dp"
         android:paddingRight="@dimen/dimen_40dp"
         android:paddingTop="@dimen/dimen_10dp"
-        android:text="@string/return_to_app" />
+        android:text="@string/bank_return_page_order_status" />
 
 </RelativeLayout>

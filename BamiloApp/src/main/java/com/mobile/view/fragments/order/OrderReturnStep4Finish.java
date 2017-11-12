@@ -214,8 +214,7 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
                 showWarningSuccessMessage(response.getSuccessMessage());
                 OrderStatus order = (OrderStatus) response.getMetadata().getData();
                 Bundle bundle = new Bundle();
-                bundle.putString(ConstantsIntentExtra.ARG_1, String.valueOf(order.getId()));
-                bundle.putString(ConstantsIntentExtra.ARG_2, order.getDate());
+                bundle.putString(ConstantsIntentExtra.ORDER_NUMBER, String.valueOf(order.getId()));
                 // Validate if frame order status
                 getBaseActivity().popBackStackUntilTag(FragmentType.ORDER_STATUS.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);

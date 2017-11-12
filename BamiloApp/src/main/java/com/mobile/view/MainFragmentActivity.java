@@ -261,7 +261,12 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             FragmentController.getInstance().init();
             // Case invalid deep link goto HOME else goto deep link
             if (!DeepLinkManager.onSwitchToDeepLink(this, getIntent())) {
-                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                Bundle args = getIntent().getExtras();
+                if (args != null && args.containsKey(ConstantsIntentExtra.ORDER_NUMBER)) {
+                    onSwitchFragment(FragmentType.ORDER_STATUS, args, true);
+                } else {
+                    onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                }
             } else {
                 TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK));
                 mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
