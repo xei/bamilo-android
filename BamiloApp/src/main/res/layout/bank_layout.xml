@@ -11,34 +11,60 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="98dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
         android:src="@drawable/ic_success_checkout" />
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/launch_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/tvPaymentMessage"
+        style="@style/TextBase.Display_1"
         android:layout_below="@+id/checkout_image"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:gravity="center_vertical|center_horizontal"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:layout_marginRight="@dimen/margin_60px"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:gravity="center_horizontal"
+        android:singleLine="false"
+        android:text="@string/thank_you_order_title"
+        android:textColor="@color/green_1" />
 
-        android:text="@string/payment_successful"
-        android:textColor="@color/black"
-        android:textSize="25dp"
-        android:textStyle="bold" />
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tvOrderInfo"
+        style="@style/TextBase.Body"
+        android:layout_below="@+id/tvPaymentMessage"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:layout_marginRight="@dimen/margin_60px"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:gravity="center_horizontal"
+        android:paddingBottom="@dimen/dimen_16dp"
+        android:singleLine="false"
+        android:text="@string/order_success"
+        android:textColor="@color/black_800"
+        android:visibility="invisible" />
 
     <com.mobile.components.customfontviews.Button
-        android:id="@+id/back_main"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnOrderDetails"
+        style="@style/Button_1.Secondary.Text_Black_800.Border_400"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/tvOrderInfo"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:layout_marginRight="@dimen/margin_60px"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:text="@string/my_order_details_label" />
+
+    <com.mobile.components.customfontviews.Button
+        android:id="@+id/btnReturn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/btnOrderDetails"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:layout_marginRight="@dimen/margin_60px"
+        android:layout_marginTop="@dimen/dimen_16dp"
         android:background="@color/button_primary_color"
         android:paddingBottom="@dimen/dimen_10dp"
         android:paddingLeft="@dimen/dimen_40dp"
         android:paddingRight="@dimen/dimen_40dp"
         android:paddingTop="@dimen/dimen_10dp"
-        android:text="@string/bank_return_page_order_status" />
+        android:text="@string/return_label"
+        tools:visibility="visible" />
 
 </RelativeLayout>
