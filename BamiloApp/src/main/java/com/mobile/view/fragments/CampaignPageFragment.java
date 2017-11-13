@@ -1027,10 +1027,11 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         }
 
         private void setHeaderImage(final CampaignItemHolder holder){
+
             if(!TextUtils.isEmpty(mBannerImage)){
                 // just in order to have a position tag in order to not crash on the onCLick
                 holder.itemView.setTag(R.id.position, -1);
-                holder.mBannerImageView.setVisibility(View.GONE);
+                holder.mBannerImageView.setVisibility(View.VISIBLE);
                 // Set image
                 /*RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
                     @Override
