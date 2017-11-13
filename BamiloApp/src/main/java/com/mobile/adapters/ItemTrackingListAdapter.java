@@ -104,7 +104,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
                 holder.rlCMSMessage.setVisibility(View.GONE);
             }
         } else if (viewType == ITEM_LIST_FOOTER) {
-            holder.tvRecipientValue.setText(String.format(locale, "%s %s", packagedOrder.getCustomerFirstName(), packagedOrder.getCustomerLastName()));
+            holder.tvRecipientValue.setText(String.format(locale, "%s %s", packagedOrder.getShippingAddress().getFirstName(), packagedOrder.getShippingAddress().getLastName()));
             holder.tvDeliveryAddressValue.setText(packagedOrder.getShippingAddress().getAddress());
             holder.tvShipmentCostValue.setText(packagedOrder.getDeliveryCost() == 0 ? context.getString(R.string.free_label) :
                     CurrencyFormatter.formatCurrency(packagedOrder.getDeliveryCost()));
