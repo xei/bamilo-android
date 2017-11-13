@@ -14,7 +14,7 @@
         android:layout_marginTop="98dp"
         android:src="@drawable/ic_success_checkout" />
 
-    <TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/launch_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:textSize="25dp"
         android:textStyle="bold" />
 
-    <Button
+    <com.mobile.components.customfontviews.Button
         android:id="@+id/back_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

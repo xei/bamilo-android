@@ -1,7 +1,6 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -326,7 +325,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         // Validate the current data
         if (mGridView.getAdapter() == null) {
             // Set adapter
-            CampaignAdapter mArrayAdapter = new CampaignAdapter(mCampaign.getItems(), mIOnProductClick);
+            CampaignAdapter mArrayAdapter = new CampaignAdapter(mCampaign.getItems(), mCampaign.getName(), mIOnProductClick);
             mGridView.setAdapter(mArrayAdapter);
             // Add banner to header
             if (bannerState != HIDDEN) {
@@ -620,12 +619,14 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         private boolean isToShowHeader = false;
 
         private String mBannerImage;
+        private String mCampaignTitle;
 
         /**
          * Constructor
          */
-        public CampaignAdapter(ArrayList<CampaignItem> items, IOnProductClick onClickBuyListener) {
+        public CampaignAdapter(ArrayList<CampaignItem> items, String mCampaignTitle, IOnProductClick onClickBuyListener) {
             mItems = items;
+            this.mCampaignTitle = mCampaignTitle;
             mOnClickListener = onClickBuyListener;
         }
 
@@ -964,7 +965,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         public void onBindViewHolder(final CampaignItemHolder holder, final int position) {
             // Case header
             if(isHeader(position)){
-                setHeaderImage(holder);
+                setHeader(holder);
                 return;
             }
             // get position - 1 to ignore header position.
@@ -1026,8 +1027,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
         }
 
-        private void setHeaderImage(final CampaignItemHolder holder){
-
+        private void setHeader(final CampaignItemHolder holder){
+            holder.mCampaignTitle.setText(mCampaignTitle);
             if(!TextUtils.isEmpty(mBannerImage)){
                 // just in order to have a position tag in order to not crash on the onCLick
                 holder.itemView.setTag(R.id.position, -1);
@@ -1100,6 +1101,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         private final View mTimerContainer;
         private final TextView mTimer;
         private final ImageView mBannerImageView;
+        private final TextView mCampaignTitle;
 
         public CampaignItemHolder(final View itemView) {
             super(itemView);
@@ -1141,6 +1143,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             mTimer = (TextView) itemView.findViewById(R.id.campaign_item_stock_timer);
             // Get banner
             mBannerImageView = (ImageView) itemView.findViewById(R.id.campaign_header_image);
+            // Get campaign title
+            mCampaignTitle = (TextView) itemView.findViewById(R.id.tvCampaignTitle);
         }
     }
 
