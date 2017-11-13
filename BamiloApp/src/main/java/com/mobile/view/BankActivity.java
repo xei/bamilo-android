@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -63,6 +64,13 @@ public class BankActivity extends Activity {
             if (bundle != null) {
                 String msgFromBrowserUrl = bundle.getString("msg_from_browser");
                 mOrderNumber = bundle.getString(ConstantsIntentExtra.ORDER_NUMBER);
+                if (mOrderNumber != null) {
+                    try {
+                        Integer.parseInt(mOrderNumber);
+                    } catch (Exception e) {
+                        mOrderNumber = null;
+                    }
+                }
                 if (mOrderNumber == null) {
                     btnOrderDetails.setVisibility(View.INVISIBLE);
                     btnReturn.setVisibility(View.VISIBLE);
@@ -71,14 +79,15 @@ public class BankActivity extends Activity {
                     btnOrderDetails.setVisibility(View.INVISIBLE);
                     btnReturn.setVisibility(View.VISIBLE);
                     launchInfo.setText(R.string.payment_unsuccessful);
-                    launchInfo.setTextColor(Color.BLACK);
+                    launchInfo.setTextColor(ContextCompat.getColor(this, R.color.black_800));
                     launchInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                     checkout_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_reject_checkout));
                 } else {
                     launchInfo.setText(R.string.thank_you_order_title);
                     tvOrderInfo.setVisibility(View.VISIBLE);
                     if (mOrderNumber != null) {
-                        tvOrderInfo.setText(String.format("%s %s", getString(R.string.bank_activity_order_number_title), mOrderNumber));
+                        tvOrderInfo.setText(String.format("%s\n%s %s", getString(R.string.order_success),
+                                getString(R.string.bank_activity_order_number_title), mOrderNumber));
                     } else {
                         tvOrderInfo.setText(R.string.order_success);
                     }
