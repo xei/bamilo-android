@@ -3,6 +3,7 @@ package com.mobile.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +69,7 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
             holder.tvProductOldPrice.setText(CurrencyFormatter.formatCurrency(product.oldPrice));
             holder.tvProductDiscountPercentage.setVisibility(View.VISIBLE);
             holder.tvProductDiscountPercentage.setBackgroundResource(R.drawable.gray_badge_bg);
-            holder.tvProductDiscountPercentage.setTextColor(Color.WHITE);
+            holder.tvProductDiscountPercentage.setTextColor(ContextCompat.getColor(context, R.color.recommendation_grey));
             holder.tvProductDiscountPercentage.setText(String.format(locale,
                     context.getString(R.string.daily_deals_item_percentage_placeholder), product.maxSavingPercentage));
         } else {
