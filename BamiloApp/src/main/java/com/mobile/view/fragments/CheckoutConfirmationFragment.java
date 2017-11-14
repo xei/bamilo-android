@@ -2,6 +2,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +13,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Switch;
+import android.widget.ScrollView;
 
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
@@ -48,6 +49,7 @@ import java.util.Locale;
 public class CheckoutConfirmationFragment extends NewBaseFragment implements View.OnClickListener, IResponseCallback {
     TextView next, address, telephone, user, order_count_title, order_price,
             ship_price, voucher_price, all_price, ship_time, all_voucher, voucher_error, all_price_title;
+    NestedScrollView svCheckoutConfirmation;
     TextView tvDeliveryNotice;
     SwitchCompat voucher_switch;
     TextView tvVoucherValueTitle;
@@ -70,7 +72,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
                 NavigationAction.CHECKOUT,
                 R.layout.checkout_confirmation_fragment,
                 R.string.checkout_confirmation_step,
-                ADJUST_CONTENT,
+                NO_ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_CONFIRMATION);
     }
 
@@ -107,6 +109,13 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         triggerGetMultiStepFinish();
         tvVoucherValueTitle = (TextView) view.findViewById(R.id.checkout_order_voucher_price_title);
         next = (TextView) view.findViewById(R.id.checkout_confirmation_btn);
+        svCheckoutConfirmation = (NestedScrollView) view.findViewById(R.id.checkout_scrollview);
+        svCheckoutConfirmation.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                getBaseActivity().hideKeyboard();
+            }
+        });
         address = (TextView) view.findViewById(R.id.checkout_address);
         telephone = (TextView) view.findViewById(R.id.checkout_telephone);
         user = (TextView) view.findViewById(R.id.checkout_user_reciver);
@@ -242,7 +251,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
     private void showOrderdetail() {
         all_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
-       // order_count_title.setText(mOrderFinish.getCartCount()+" "+getContext().getString(R.string.checkout_count_title));
+        // order_count_title.setText(mOrderFinish.getCartCount()+" "+getContext().getString(R.string.checkout_count_title));
         all_price_title.setText(String.format(new Locale("fa"), getString(R.string.checkout_confirmation_total_price), mOrderFinish.getCartCount()));
         order_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted()));
         all_price_title.setTextColor(getResources().getColor(R.color.checkout_order_green));
