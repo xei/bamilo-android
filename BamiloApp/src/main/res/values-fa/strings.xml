@@ -565,4 +565,12 @@
     <string name="showcase_drawer_item_tracking">از این پس میتونید از وضعیت کالاهای سفارش خود مطلع شوید</string>
     <string name="bank_return_page_order_status">جزئیات سفارش</string>
     <string name="bank_activity_order_number_title">شماره سفارش:</string>
+
+    <string name="address_city_placeholder">شهر</string>
+    <string name="address_province_placeholder">استان</string>
+    <string name="address_district_placeholder">محله</string>
+    <string name="address_national_id_length_error">تعداد ارقام باید ۱۰ رقم باشد</string>
+    <string name="address_phone_number_invalidity_error">شماره موبایل معتبر نیست</string>
+    <string name="address_postal_code_hint">کد پستی (اختیاری)</string>
+
 </resources>

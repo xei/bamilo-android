@@ -74,7 +74,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     protected boolean isCityIdAnEditText = false;
     private Bundle mFormSavedState;
     Spinner address_spinner ,city_spinner,postal_spinner;
-    TextView name_error , family_error , national_error,cellphone_error ,address_error;
+    TextView name_error , family_error , cellphone_error ,address_error;
     EditText name;
     EditText family;
     EditText address;
@@ -137,7 +137,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
         name_error = (TextView) view.findViewById(R.id.address_name_error);
         family_error = (TextView) view.findViewById(R.id.address_last_name_error);
-        national_error = (TextView) view.findViewById(R.id.address_national_id_error);
         cellphone_error = (TextView) view.findViewById(R.id.address_cellphone_error);
         address_error = (TextView) view.findViewById(R.id.address_text_error);
         address_postal_code_error = (TextView) view.findViewById(R.id.address_postal_code_error);

@@ -30,6 +30,8 @@ public class Customer implements IJSONSerializable, Parcelable {
     private String email;
     private String gender;
     private String birthday;
+    private String nationalId;
+    private String phoneNumber;
     private boolean guest;
     private HashSet<String> mWishListCache;
 
@@ -55,6 +57,8 @@ public class Customer implements IJSONSerializable, Parcelable {
             email = jsonObject.getString(RestConstants.EMAIL);
             gender = jsonObject.optString(RestConstants.GENDER);
             birthday = jsonObject.optString(RestConstants.BIRTHDAY);
+            nationalId = jsonObject.optString(RestConstants.NATIONAL_ID);
+            phoneNumber = jsonObject.optString(RestConstants.PHONE);
             // Get wish list products
             JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.WISH_LIST_PRODUCTS);
             if (jsonArray != null && jsonArray.length() > 0) {
@@ -166,6 +170,22 @@ public class Customer implements IJSONSerializable, Parcelable {
         return mWishListCache;
     }
 
+    public String getNationalId() {
+        return nationalId;
+    }
+
+    public void setNationalId(String nationalId) {
+        this.nationalId = nationalId;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     /* (non-Javadoc)
      * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
      */
@@ -178,6 +198,8 @@ public class Customer implements IJSONSerializable, Parcelable {
             jsonObject.put(RestConstants.LAST_NAME, lastName);
             jsonObject.put(RestConstants.EMAIL, email);
             jsonObject.put(RestConstants.GENDER, gender);
+            jsonObject.put(RestConstants.NATIONAL_ID, nationalId);
+            jsonObject.put(RestConstants.PHONE, phoneNumber);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -212,6 +234,8 @@ public class Customer implements IJSONSerializable, Parcelable {
         dest.writeString(email);
         dest.writeString(gender);
         dest.writeString(birthday);
+        dest.writeString(nationalId);
+        dest.writeString(phoneNumber);
         dest.writeBooleanArray(new boolean[]{guest});
     }
 
@@ -225,6 +249,8 @@ public class Customer implements IJSONSerializable, Parcelable {
         this.email = in.readString();
         this.gender = in.readString();
         this.birthday = in.readString();
+        this.nationalId = in.readString();
+        this.phoneNumber = in.readString();
         in.readBooleanArray(new boolean[]{guest});
     }
 
@@ -241,5 +267,4 @@ public class Customer implements IJSONSerializable, Parcelable {
             return new Customer[size];
         }
     };
-
 }

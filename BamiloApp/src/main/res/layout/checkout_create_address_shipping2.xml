@@ -8,13 +8,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/margin_padding_l">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingBottom="@dimen/margin_padding_l"
             android:paddingLeft="0dp"
             android:paddingRight="0dp">
 
@@ -109,7 +109,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/deliver_postal_code"
+                    android:hint="@string/address_postal_code_hint"
                     android:inputType="textPersonName"
                     android:minEms="10"
                     android:text=""
@@ -176,27 +176,6 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/address_last_name_error"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="تکمیل این گزینه الزامی می‌باشد"
-                    android:textColor="#b90f00"
-                    android:textSize="@dimen/dimen_10dp"
-                    android:visibility="gone" />
-
-                <com.mobile.components.customfontviews.EditText
-                    android:id="@+id/address_national_id"
-                    style="@style/BlueFormTextField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/national_id"
-                    android:inputType="phone"
-                    android:minEms="2"
-                    android:text=""
-                    android:textColor="?attr/colorPrimary" />
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/address_national_id_error"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="تکمیل این گزینه الزامی می‌باشد"
