@@ -71,6 +71,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     private static final String SHIPPING_SAVED_STATE = "shippingSavedStateBundle";
     private static final String REGION_CITIES_POSITIONS = "regionsCitiesBundle";
     private static final String GENDER_MALE = "male", GENDER_FEMALE = "female";
+    private static final int UNKNOWN_POSTAL_CODE = -1;
     protected ViewGroup mShippingFormContainer;
     protected DynamicForm shippingFormGenerator;
     protected Form mFormShipping;
@@ -174,11 +175,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         gender_error = (TextView) view.findViewById(R.id.address_gender_error);
         address_postal_code_error = (TextView) view.findViewById(R.id.address_postal_code_error);
         // Spinner Drop down elements
-        ArrayList<AddressCity> city = new ArrayList<AddressCity>();
+        /*ArrayList<AddressCity> city = new ArrayList<AddressCity>();
         city.add(new AddressCity(0, getString(R.string.address_city_placeholder)));
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, city);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        city_spinner.setAdapter(adapter);
+        city_spinner.setAdapter(adapter);*/
+        city_spinner.setVisibility(View.GONE);
 
 
         postal_spinner.setVisibility(View.GONE);
@@ -434,7 +436,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Validate the current region selection and update the cities
      */
     protected void setCitiesOnSelectedRegion(String requestedRegionAndFields, final ArrayList<AddressCity> cities) {
-
+        city_spinner.setVisibility(View.VISIBLE);
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
@@ -487,7 +489,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             hideActivityProgress();
             showFragmentContentContainer();
         } else {
-            post_id = postalCodes.get(0).getValue();
+            if (!CollectionUtils.isEmpty(postalCodes)) {
+                post_id = postalCodes.get(0).getValue();
+            } else {
+                post_id = UNKNOWN_POSTAL_CODE;
+            }
             postal_spinner.setVisibility(View.GONE);
         }
 
@@ -636,7 +642,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             values.put("address_form[address2]", postal_code.getText().toString());
             values.put("address_form[region]", region_Id);
             values.put("address_form[city]", city_Id);
-            values.put("address_form[postcode]", post_id);
+            if (post_id != UNKNOWN_POSTAL_CODE) {
+                values.put("address_form[postcode]", "");
+            }
             values.put("address_form[phone]", cellphone.getText().toString());
             values.put("address_form[is_default_shipping]", 1);
             values.put("address_form[is_default_billing]", 1);
@@ -716,7 +724,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             address_region_error.setText(R.string.error_isrequired);
 
         }
-        if (city_spinner.getSelectedItem() == null || city_spinner.getSelectedItem().equals(getString(R.string.address_city_placeholder))) {
+        if (city_spinner.getVisibility() == View.VISIBLE && city_spinner.getSelectedItem() == null || city_spinner.getSelectedItem().equals(getString(R.string.address_city_placeholder))) {
             address_city_error.setVisibility(View.VISIBLE);
             address_city_error.setText(R.string.error_isrequired);
         }
