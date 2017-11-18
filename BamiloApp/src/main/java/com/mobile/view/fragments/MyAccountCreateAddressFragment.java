@@ -60,7 +60,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
         super.onViewCreated(view, savedInstanceState);
         hideActivityProgress();
         // Set total bar
-        if ( view.findViewById(R.id.checkout_total_label)!=null) {
+        if (view.findViewById(R.id.checkout_total_label) != null) {
             CheckoutStepManager.setTotalBarWithFullButton(view);
         }
         // Hide order summary
@@ -70,21 +70,11 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onResume() {
         super.onResume();
-        initializeFormData();
-    }
-
-    private void initializeFormData() {
-        // Get and show form
-        if (mFormShipping != null && regions != null) {
-            loadCreateAddressForm(mFormShipping);
-        } else {
-            triggerCreateAddressForm();
-        }
     }
 
     @Override
     protected void onClickRetryButton() {
-        initializeFormData();
+        triggerGetRegions(getRegionApi);
     }
 
     @Override
@@ -121,15 +111,6 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
         super.onCreateAddressErrorEvent(baseResponse);
-        int errorCode = baseResponse.getError().getCode();
-        if (errorCode == ErrorCode.REQUEST_ERROR) {
-            // Case is same form for both or is the first
-            showFormValidateMessages(shippingFormGenerator, baseResponse, EventType.CREATE_ADDRESS_EVENT);
-            showFragmentContentContainer();
-        } else {
-            Log.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode);
-            getBaseActivity().onBackPressed();
-        }
     }
 
     private void onErrorOccurred() {
