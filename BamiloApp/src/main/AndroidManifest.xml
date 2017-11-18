@@ -24,34 +24,34 @@
 
     <!-- <badges> -->
     <!-- for Samsung -->
-    <uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>
-    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
+    <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" />
 
     <!--for htc-->
-    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS"/>
-    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT"/>
+    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT" />
 
     <!--for sony-->
-    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
-    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE"/>
+    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
+    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE" />
 
     <!--for apex-->
-    <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT"/>
+    <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT" />
 
     <!--for solid-->
-    <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE"/>
+    <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE" />
 
     <!--for huawei-->
-    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE"/>
-    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS"/>
-    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" />
 
     <!--for ZUK-->
-    <uses-permission android:name="android.permission.READ_APP_BADGE"/>
+    <uses-permission android:name="android.permission.READ_APP_BADGE" />
 
     <!--for OPPO-->
-    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS"/>
-    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" />
     <!-- </badges> -->
 
     <!-- For rescheduling local notification and restarting location tracking after reboot -->
@@ -89,10 +89,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        tools:node="replace"
         android:supportsRtl="true"
         android:theme="@style/Theme.Custom"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute"
+        tools:node="replace">
         <activity
             android:name=".SplashScreenActivity"
             android:noHistory="true"
@@ -122,8 +122,10 @@
             android:resizeableActivity="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".BankActivity"
-            android:resizeableActivity="false">
+        <activity
+            android:name=".BankActivity"
+            android:resizeableActivity="false"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.payment.browser" />
 
@@ -133,20 +135,20 @@
         </activity>
         <activity
             android:name=".MainFragmentTabletActivity"
-            android:resizeableActivity="false"
             android:exported="true"
+            android:resizeableActivity="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ProductImageGalleryActivity"
-            android:resizeableActivity="false"
             android:exported="true"
+            android:resizeableActivity="false"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".OverLoadErrorActivity"
-            android:resizeableActivity="false"
             android:exported="true"
+            android:resizeableActivity="false"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -156,9 +158,10 @@
         <activity
             android:name="com.pushwoosh.DeepLinkActivity"
             android:resizeableActivity="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -170,7 +173,9 @@
         <!-- ######################################## -->
         <!-- ############# PushWoosh ################ -->
         <!-- ######################################## -->
-        <meta-data android:name="PW_NOTIFICATION_RECEIVER" android:value="com.mobile.libraries.emarsys.NotificationReceiver"/>
+        <meta-data
+            android:name="PW_NOTIFICATION_RECEIVER"
+            android:value="com.mobile.libraries.emarsys.NotificationReceiver" />
 
         <meta-data
             android:name="PW_APPID"
@@ -236,8 +241,7 @@
 
         <receiver
             android:name="com.mobile.extlibraries.emarsys.NotificationReceiver"
-            android:enabled="true"
-            ></receiver>
+            android:enabled="true"></receiver>
     </application>
 
 </manifest>

@@ -589,5 +589,7 @@
     <dimen name="slider_slide_padding">2dp</dimen>
 
     <dimen name="tab_layout_height">56dp</dimen>
+    <dimen name="showcase_rect_round_radius">4dp</dimen>
+    <dimen name="showcase_view_spacing">24dp</dimen>
 
 </resources>

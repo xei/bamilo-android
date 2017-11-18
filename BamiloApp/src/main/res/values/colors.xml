@@ -95,6 +95,7 @@
     <color name="address_separator">#D6D6D6</color>
     <color name="address_border">#9C9C9C</color>
 
+    <color name="item_tracking_package_section_bg">#f4f4f4</color>
     <color name="checkout_circle_green">#009600</color>
     <color name="checkout_order_green">#31a830</color>
     <color name="checkout_line_gray">#D9D9D9</color>
@@ -119,6 +120,7 @@
     <color name="recommendation_black">#1b1b1b</color>
     <color name="recommendation_grey">#929292</color>
     <color name="order_status_textcolor">#555555</color>
+    <color name="order_paid_price_color">#00b09b</color>
     <color name="transparent">#00000000</color>
 
     <color name="recommendation_cart_grey">#505050</color>
@@ -144,8 +146,14 @@
     <color name="touch_feedback_color">#40000000</color>
 
     <!--Color palette-->
+    <color name="pink_10">#fbe8ec</color>
+    <color name="pink_3">#e74775</color>
+
     <color name="orange_1">#fe6b0c</color>
 
+    <color name="gray_1">#53585b</color>
+    <color name="gray_2">#656668</color>
+    <color name="gray_3">#747577</color>
     <color name="gray_4">#858688</color>
     <color name="gray_5">#959698</color>
     <color name="gray_9">#dbdbdb</color>
@@ -153,6 +161,11 @@
 
     <color name="blue_1">#1a365e</color>
     <!--End of Color Palette-->
+
+    <!--Item tracking progressbar colors-->
+    <color name="progress_neutral">#d8d8d8</color>
+    <color name="progress_success">#00b09b</color>
+    <color name="progress_failure">#d80056</color>
 
     <array name="tileColorSequence">
         <item>#F9EFEA</item>

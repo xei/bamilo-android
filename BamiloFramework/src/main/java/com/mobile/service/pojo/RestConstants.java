@@ -366,4 +366,17 @@ public class RestConstants {
     public static final String DAILY_DEALS = "daily_deals";
     public static final String FEATURED_STORES = "featured_stores";
     public static final String PAYMENT_LANDING_PAGE = "payment_landing_page_url";
+    public static final String TOTAL_PRODUCT_COUNT = "total_products_count";
+    public static final String DELIVERY_COST = "delivery_cost";
+    public static final String TOTAL_COST = "total_cost";
+    public static final String PACKAGES = "packages";
+    public static final String PROGRESS = "progress";
+    public static final String WIDTH_MULTIPLIER = "widthMultiplier";
+    public static final String CALCULATED_DELIVERY_TIME = "calculated_delivery_time";
+    public static final String HISTORIES = "histories";
+    public static final String ITEMS = "items";
+    public static final String COLOR = "color";
+    public static final String NAME_FA = "name_fa";
+    public static final String DELIVERY_NOTICE = "delivery_notice";
+    public static final String HAS_STOCK = "has_stock";
 }

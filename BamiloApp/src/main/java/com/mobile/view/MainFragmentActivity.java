@@ -49,6 +49,7 @@ import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.FrontPageFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
+import com.mobile.view.fragments.ItemTrackingFragment;
 import com.mobile.view.fragments.MyAccountAboutFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
@@ -92,6 +93,7 @@ import com.pushwoosh.fragment.PushEventListener;
 import com.pushwoosh.fragment.PushFragment;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
+import me.toptas.fancyshowcase.FancyShowCaseView;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -259,7 +261,12 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             FragmentController.getInstance().init();
             // Case invalid deep link goto HOME else goto deep link
             if (!DeepLinkManager.onSwitchToDeepLink(this, getIntent())) {
-                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                Bundle args = getIntent().getExtras();
+                if (args != null && args.containsKey(ConstantsIntentExtra.ORDER_NUMBER)) {
+                    onSwitchFragment(FragmentType.ORDER_STATUS, args, true);
+                } else {
+                    onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                }
             } else {
                 TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK));
                 mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
@@ -504,7 +511,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 fragment = newFragmentInstance(MyOrdersFragment.class, bundle);
                 break;
             case ORDER_STATUS:
-                fragment = newFragmentInstance(OrderStatusFragment.class, bundle);
+                fragment = newFragmentInstance(ItemTrackingFragment.class, bundle);
                 break;
             case ORDER_RETURN_CONDITIONS:
                 fragment = newFragmentInstance(OrderReturnConditionsFragment.class, bundle);
@@ -665,6 +672,10 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
     @Override
     public void onBackPressed() {
         Print.i(TAG, "ON BACK PRESSED");
+        if (FancyShowCaseView.isVisible(this)) {
+            FancyShowCaseView.hideCurrent(this);
+            return;
+        }
         // This situation only occurs when user goes to Choose Country screen on maintenance page and presses back
         if (isInMaintenance()) {
             Intent newIntent = new Intent(this, SplashScreenActivity.class);

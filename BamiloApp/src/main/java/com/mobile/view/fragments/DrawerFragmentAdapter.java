@@ -1,23 +1,17 @@
 package com.mobile.view.fragments;
 
 import android.content.Context;
-import android.graphics.Paint;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import com.emarsys.predict.RecommendedItem;
-import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.RecommendationWidgetType;
 import com.mobile.service.utils.CollectionUtils;
-import com.mobile.service.utils.shop.CurrencyFormatter;
-import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -33,10 +27,10 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (position == 0) return 0;
         else if (mDataSet.get(position).isDivider()) {
             return 2;
-        }
-        else return 1;
+        } else return 1;
         //return super.getItemViewType(position);
     }
+
     private Context mContext;
 
     private final ArrayList<DrawerItem> mDataSet;
@@ -87,8 +81,7 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (viewType == 1) {
             View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.bamilo_drawer_item, parent, false);
             vh = new DrawerItemViewHolder(mView);
-        }
-        else if (viewType == 2) {
+        } else if (viewType == 2) {
             View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.drawer_item_divider, parent, false);
             vh = new DividerViewHolder(mView);
         }
@@ -127,19 +120,18 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             } else {
                 vh.material_drawer_badge_container.setVisibility(View.GONE);
             }
-        }
-        else if (holder instanceof HeaderViewHolder) {
+        } else if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder vh = (HeaderViewHolder) holder;
             vh.material_drawer_account_header_name.setText(item.getUserName());
             vh.material_drawer_account_header_email.setText(item.getEmail());
             if (item.getGender().equals("female")) {
                 vh.material_drawer_account_header_current.setImageResource(R.drawable.drawer_profile_woman);
-            }
-            else {
+            } else {
                 vh.material_drawer_account_header_current.setImageResource(R.drawable.drawer_profile_man);
 
             }
-            if (item.getLoginListener() != null) vh.material_drawer_account_header_email.setOnClickListener(item.getLoginListener());
+            if (item.getLoginListener() != null)
+                vh.material_drawer_account_header_email.setOnClickListener(item.getLoginListener());
         }
     }
 
@@ -203,4 +195,7 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
+    public interface ItemVisibilityListener {
+        void onItemGotVisible(View v, @StringRes int name);
+    }
 }

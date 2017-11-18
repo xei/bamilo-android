@@ -84,6 +84,18 @@
             app:layout_constraintTop_toBottomOf="@+id/tvDealProductPrice"
             tools:text="۲۰۰۰۰ ریال" />
 
+        <View
+            android:id="@+id/viewOutOfStockCover"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.5"
+            android:background="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/tvDealProductDiscountPercentage"
             android:layout_width="wrap_content"

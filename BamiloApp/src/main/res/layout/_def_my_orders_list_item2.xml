@@ -3,63 +3,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/order_item_container"
     style="@style/SingleLineGroupStyle"
-    android:background="#f1f1f1"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="horizontal"
-    tools:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-
+    tools:layout_width="match_parent">
 
 
     <LinearLayout
-        android:background="#f1f1f1"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#333333"
-            android:textSize="12sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            />
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/gray_4"
+            android:textSize="12sp" />
 
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_item_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#777777"
-            android:textSize="12sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            />
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/gray_4"
+            android:textSize="12sp" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#777777"
-            android:textSize="12sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            />
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/order_paid_price_color"
+            android:textSize="12sp" />
     </LinearLayout>
+
     <ImageView
         android:id="@+id/go_icon"
-        android:layout_width="@dimen/dimen_40dp"
-        android:layout_height="@dimen/dimen_40dp"
-        android:padding="5dp"
+        android:layout_width="@dimen/dimen_36dp"
+        android:layout_height="@dimen/dimen_36dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/black_arrow_right_rtl"/>
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_forward_gray" />
 
 
 </LinearLayout>

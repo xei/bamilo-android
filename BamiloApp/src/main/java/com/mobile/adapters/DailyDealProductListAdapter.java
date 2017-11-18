@@ -1,7 +1,9 @@
 package com.mobile.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,11 +55,21 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
         holder.tvProductName.setText(product.name);
         holder.tvProductBrand.setText(product.brand);
         holder.tvProductPrice.setText(CurrencyFormatter.formatCurrency(product.price));
-        if (product.oldPrice > 0 && product.maxSavingPercentage > 0) {
+        holder.viewOutOfStockCover.setVisibility(View.GONE);
+        if (!product.hasStock) {
+            holder.tvProductOldPrice.setVisibility(View.INVISIBLE);
+            holder.tvProductDiscountPercentage.setVisibility(View.VISIBLE);
+            holder.tvProductDiscountPercentage.setBackgroundResource(R.drawable.gray_1_badge_bg);
+            holder.tvProductDiscountPercentage.setTextColor(Color.WHITE);
+            holder.tvProductDiscountPercentage.setText(R.string.deal_item_out_of_stock_label);
+            holder.viewOutOfStockCover.setVisibility(View.VISIBLE);
+        } else if (product.oldPrice > 0 && product.maxSavingPercentage > 0) {
             holder.tvProductOldPrice.setVisibility(View.VISIBLE);
             holder.tvProductOldPrice.setPaintFlags(holder.tvProductOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tvProductDiscountPercentage.setVisibility(View.VISIBLE);
             holder.tvProductOldPrice.setText(CurrencyFormatter.formatCurrency(product.oldPrice));
+            holder.tvProductDiscountPercentage.setVisibility(View.VISIBLE);
+            holder.tvProductDiscountPercentage.setBackgroundResource(R.drawable.gray_badge_bg);
+            holder.tvProductDiscountPercentage.setTextColor(ContextCompat.getColor(context, R.color.recommendation_grey));
             holder.tvProductDiscountPercentage.setText(String.format(locale,
                     context.getString(R.string.daily_deals_item_percentage_placeholder), product.maxSavingPercentage));
         } else {
@@ -102,6 +114,7 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
         TextView tvProductName, tvProductBrand, tvProductPrice,
                 tvProductOldPrice, tvProductDiscountPercentage;
         ImageView imgProductThumb;
+        View viewOutOfStockCover;
 
         public ProductListViewHolder(View itemView) {
             super(itemView);
@@ -111,6 +124,7 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
             tvProductOldPrice = (TextView) itemView.findViewById(R.id.tvDealProductOldPrice);
             tvProductDiscountPercentage = (TextView) itemView.findViewById(R.id.tvDealProductDiscountPercentage);
             imgProductThumb = (ImageView) itemView.findViewById(R.id.imgDealProductThumb);
+            viewOutOfStockCover = itemView.findViewById(R.id.viewOutOfStockCover);
         }
     }
 

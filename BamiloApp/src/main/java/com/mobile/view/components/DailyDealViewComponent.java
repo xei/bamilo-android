@@ -213,6 +213,7 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
                     tempProduct.price = product.getSpecialPrice();
                     tempProduct.oldPrice = product.getPrice();
                 }
+                tempProduct.hasStock = product.isHasStock();
                 dealProducts.add(tempProduct);
             }
         }
@@ -270,6 +271,7 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
         public int maxSavingPercentage;
         public long price;
         public long oldPrice;
+        public boolean hasStock;
     }
 
     public interface OnCountDownDealItemClickListener {

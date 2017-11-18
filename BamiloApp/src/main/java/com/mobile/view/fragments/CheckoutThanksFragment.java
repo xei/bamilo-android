@@ -328,7 +328,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Validate orderNumber from tag
         String orderNumber = view.getTag() == null ? null : view.getTag().toString();
         if (!TextUtils.isEmpty(orderNumber)) {
-            bundle.putString(ConstantsIntentExtra.ARG_1, view.getTag().toString());
+            bundle.putString(ConstantsIntentExtra.ORDER_NUMBER, orderNumber);
             getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
