@@ -11,9 +11,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.rest.errors.ErrorCode;
 import com.mobile.service.tracking.TrackingEvent;
-import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -53,7 +51,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        showOrderInfo();
         mCheckoutTotalBar = view.findViewById(R.id.checkout_total_bar);
     }
 
@@ -66,13 +63,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
         } else {
             triggerCreateAddressForm();
         }*/
-    }
-
-    protected void showOrderInfo() {
-        // Show order summary
-        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
-        // Set the checkout total bar
-        CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
     }
 
     @Override
