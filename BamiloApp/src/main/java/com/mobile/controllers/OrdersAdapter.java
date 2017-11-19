@@ -12,12 +12,16 @@ import com.mobile.service.objects.orders.Order;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.shop.CurrencyFormatter;
-import com.mobile.utils.PersianDateTime;
+import com.mobile.utils.PersianDateTimeConverter;
 import com.mobile.view.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * Created by alexandrapires on 10/22/15.
@@ -73,12 +77,20 @@ public class OrdersAdapter extends BaseAdapter {
         convertView.setTag(TAG_ORDER_ITEM);
         Order order = getOrders().get(position);
         String date = order.getDate();
-        int Year = Integer.parseInt(date.substring(0, 4));
-        int Month = Integer.parseInt(date.substring(5, 7));
-        int Day = Integer.parseInt(date.substring(8, 10));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance(Locale.US);
+        try {
+            calendar.setTime(sdf.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
 
-        PersianDateTime pd = PersianDateTime.valueOf(new GregorianCalendar(Year, Month, Day, 0, 0, 0));
+        PersianDateTimeConverter pd = PersianDateTimeConverter.valueOf(new GregorianCalendar(year, month, day, 0, 0, 0));
 
         TextView tvPrice = (TextView) convertView.findViewById(R.id.order_item_price);
         tvPrice.setText(String.format(context.getResources().getString(R.string.order_total), CurrencyFormatter.formatCurrency(order.getTotal())));

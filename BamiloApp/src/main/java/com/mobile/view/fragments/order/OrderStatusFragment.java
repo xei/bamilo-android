@@ -29,20 +29,25 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.PersianDateTime;
+import com.mobile.utils.PersianDateTimeConverter;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragmentAutoState;
 import com.mobile.view.newfragments.OrderTrackingHeader;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * Class used to show the order status.
+ *
  * @author spereira
  */
 public class OrderStatusFragment extends BaseFragmentAutoState implements IResponseCallback {
@@ -212,10 +217,18 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         ((TextView) group.findViewById(R.id.order_status_number_value)).setText(orderStatus.getId());
 
         String date = orderStatus.getDate();
-        int Year = Integer.parseInt(date.substring(0,4));
-        int Month = Integer.parseInt(date.substring(5,7));
-        int Day = Integer.parseInt(date.substring(8,10));
-        PersianDateTime pd = PersianDateTime.valueOf(new GregorianCalendar(Year,Month,Day,0,0,0));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance(Locale.US);
+        try {
+            calendar.setTime(sdf.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        PersianDateTimeConverter pd = PersianDateTimeConverter.valueOf(new GregorianCalendar(year, month, day, 0, 0, 0));
 
         int quantity = 0;
         for (OrderTrackerItem item : orderStatus.getItems()) {
@@ -247,7 +260,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
             ((TextView) view.findViewById(R.id.order_status_address_item_name)).setText(name);
             ((TextView) view.findViewById(R.id.order_status_address_item_street)).setText(address.getAddress());
             ((TextView) view.findViewById(R.id.order_status_address_item_region)).setText(address.getCity());
-            if(TextUtils.isNotEmpty(address.getPostcode())) {
+            if (TextUtils.isNotEmpty(address.getPostcode())) {
                 TextView postCode = (TextView) view.findViewById(R.id.order_status_address_item_postcode);
                 postCode.setText(address.getPostcode());
                 postCode.setVisibility(View.VISIBLE);
@@ -269,10 +282,10 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                 final OrderTrackerItem item = items.get(i);
                 // Create new layout item
                 View view = inflater.inflate(R.layout.order_list_item, group, false);
-                ((TextView)view.findViewById(R.id.order_item_state)).setText(item.getStatus());
-                ((TextView)view.findViewById(R.id.order_item_name)).setText(item.getName());
-                ((TextView)view.findViewById(R.id.order_item_quantity)).setText("تعداد: " + item.getQuantity());
-                ((TextView)view.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(item.getPrice()));
+                ((TextView) view.findViewById(R.id.order_item_state)).setText(item.getStatus());
+                ((TextView) view.findViewById(R.id.order_item_name)).setText(item.getName());
+                ((TextView) view.findViewById(R.id.order_item_quantity)).setText("تعداد: " + item.getQuantity());
+                ((TextView) view.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(item.getPrice()));
                 //RocketImageLoader.instance.loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image), null, R.drawable.no_image_small);
                 ImageManager.getInstance().loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image), null, R.drawable.no_image_large, false);
                 // Add to parent
@@ -288,19 +301,19 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     @Override
     public void onClick(View view) {
         // Case reorder
-        if(view.getId() == R.id.order_status_item_button_reorder){
+        if (view.getId() == R.id.order_status_item_button_reorder) {
             onClickReOrder(view);
         }
         //case order item
-        else if(view.getId() == R.id.order_list_item){
+        else if (view.getId() == R.id.order_list_item) {
             goToProductDetails(view);
         }
         //case return item
-        else if(view.getId() == R.id.order_status_item_button_return){
+        else if (view.getId() == R.id.order_status_item_button_return) {
             onClickReturn(view);
         }
         //case return all selected items
-        else if(view.getId() == R.id.return_selected_button){
+        else if (view.getId() == R.id.return_selected_button) {
             onClickReturnMultiSelected();
         }
         // Case default
@@ -336,12 +349,12 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
 
     /**
      * Check whether there is more then 2 items with action online return type
-      */
-    private boolean displayReturnSelected(){
+     */
+    private boolean displayReturnSelected() {
         int count = 0;
-        for (OrderTrackerItem item  : mOrder.getItems()) {
+        for (OrderTrackerItem item : mOrder.getItems()) {
             if (CollectionUtils.isNotEmpty(item.getOrderActions()) && !item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()) {
-                if(++count > 1) {
+                if (++count > 1) {
                     return true;
                 }
             }
@@ -350,10 +363,10 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     }
 
     @Nullable
-    private OrderTrackerItem getOrderItem(final String sku){
-        for (OrderTrackerItem  item : mOrder.getItems()) {
-            if(TextUtils.equals(sku, item.getSku())){
-               return item;
+    private OrderTrackerItem getOrderItem(final String sku) {
+        for (OrderTrackerItem item : mOrder.getItems()) {
+            if (TextUtils.equals(sku, item.getSku())) {
+                return item;
             }
         }
         return null;
@@ -381,7 +394,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         // Get sku from view
         String simpleSku = (String) view.getTag(R.id.target_simple_sku);
         // Validate sku
-        if(TextUtils.isNotEmpty(simpleSku)) {
+        if (TextUtils.isNotEmpty(simpleSku)) {
             triggerAddItemToCart(simpleSku);
         }
     }
@@ -448,12 +461,12 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         triggerContentEvent(new GetOrderStatusHelper(), GetOrderStatusHelper.createBundle(orderNr, task), this);
     }
 
-    private void checkState(OrderStatus order){
-        if(mOrder != null && order != null && TextUtils.equals(mOrder.getId(),order.getId())){
-            for (int i = 0; i < mOrder.getItems().size(); i++){
+    private void checkState(OrderStatus order) {
+        if (mOrder != null && order != null && TextUtils.equals(mOrder.getId(), order.getId())) {
+            for (int i = 0; i < mOrder.getItems().size(); i++) {
                 final OrderTrackerItem itemSaved = mOrder.getItems().get(i);
                 final OrderTrackerItem itemNew = order.getItems().get(i);
-                if(TextUtils.equals(itemSaved.getSku(), itemNew.getSku())){
+                if (TextUtils.equals(itemSaved.getSku(), itemNew.getSku())) {
                     itemNew.setCheckedForAction(itemSaved.isCheckedForAction());
                 }
             }

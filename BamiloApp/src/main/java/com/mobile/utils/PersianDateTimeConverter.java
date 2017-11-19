@@ -7,7 +7,7 @@ package com.mobile.utils;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class PersianDateTime {
+public class PersianDateTimeConverter {
 
     protected int year = 0;
     protected int month = 0;
@@ -16,7 +16,7 @@ public class PersianDateTime {
     protected int minute = 0;
     protected int second = 0;
 
-    public PersianDateTime(String date) {
+    public PersianDateTimeConverter(String date) {
         date = date.replace("/", "-");
         String[] main = date.split(" ");
         String[] dates = main[0].split("-");
@@ -32,25 +32,25 @@ public class PersianDateTime {
 
     }
 
-    public PersianDateTime(int year, int month, int day) {
+    public PersianDateTimeConverter(int year, int month, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
     }
 
-    public PersianDateTime(int year, int month, int day, int hour, int minute, int second) {
+    public PersianDateTimeConverter(int year, int month, int day, int hour, int minute, int second) {
         this(year, month, day);
         this.hour = hour;
         this.minute = minute;
         this.second = second;
     }
 
-    public static PersianDateTime valueOf(Calendar ed) {
+    public static PersianDateTimeConverter valueOf(Calendar ed) {
         int g_days_in_month[] = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
         int j_days_in_month[] = new int[]{31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29};
         int i;
         int gy = ed.get(Calendar.YEAR) - 1600;
-        int gm = ed.get(Calendar.MONTH) - 1;
+        int gm = ed.get(Calendar.MONTH);
         int gd = ed.get(Calendar.DAY_OF_MONTH) - 1;
         int g_day_no = 365 * gy + (int) ((gy + 3) / 4) - (int) ((gy + 99) / 100) + ((int) ((gy + 399) / 400));
         for (i = 0; i < gm; ++i) {
@@ -75,17 +75,17 @@ public class PersianDateTime {
         int jm = i + 1;
         j_day_no++;
 
-        return new PersianDateTime(jy, jm, j_day_no, ed.get(Calendar.HOUR_OF_DAY), ed.get(Calendar.MINUTE), ed.get(Calendar.SECOND));
+        return new PersianDateTimeConverter(jy, jm, j_day_no, ed.get(Calendar.HOUR_OF_DAY), ed.get(Calendar.MINUTE), ed.get(Calendar.SECOND));
 
     }
 
-    public static PersianDateTime valueOf(Long milis) {
+    public static PersianDateTimeConverter valueOf(Long milis) {
         Calendar dt = new GregorianCalendar();
         dt.setTimeInMillis(milis);
-        return PersianDateTime.valueOf(dt);
+        return PersianDateTimeConverter.valueOf(dt);
     }
 
-    public static PersianDateTime Now() {
+    public static PersianDateTimeConverter Now() {
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DATE);
         int month = cal.get(Calendar.MONTH) + 1;
@@ -93,7 +93,7 @@ public class PersianDateTime {
         int second = cal.get(Calendar.SECOND);
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
-        return PersianDateTime.valueOf(new GregorianCalendar(year, month, day, hour, minute, second));
+        return PersianDateTimeConverter.valueOf(new GregorianCalendar(year, month, day, hour, minute, second));
     }
 
     public long getTimeStamp() {
@@ -162,11 +162,11 @@ public class PersianDateTime {
         return String.format("%d:%d:%d", hour, minute, second);
     }
 
-    public boolean after(PersianDateTime dt) {
+    public boolean after(PersianDateTimeConverter dt) {
         return this.getTimeStamp() > dt.getTimeStamp();
     }
 
-    public boolean before(PersianDateTime dt) {
+    public boolean before(PersianDateTimeConverter dt) {
         return this.getTimeStamp() < dt.getTimeStamp();
     }
 
@@ -174,7 +174,7 @@ public class PersianDateTime {
         return toGregorianDate(this);
     }
 
-    public static GregorianCalendar toGregorianDate(PersianDateTime pd) {
+    public static GregorianCalendar toGregorianDate(PersianDateTimeConverter pd) {
         GregorianCalendar dt = null;
         int miladiYear, i, dayCount, remainDay, marchDayDiff;
         // this buffer has day count of Miladi month from April to January for a none year.
