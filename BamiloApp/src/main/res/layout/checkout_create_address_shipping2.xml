@@ -82,6 +82,15 @@
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/address_postal_region_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="تکمیل این گزینه الزامی می‌باشد"
+                    android:textColor="#b90f00"
+                    android:textSize="@dimen/dimen_10dp"
+                    android:visibility="gone" />
+
                 <com.mobile.components.customfontviews.EditText
                     android:id="@+id/address_direction"
                     style="@style/BlueFormTextField"

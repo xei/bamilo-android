@@ -63,7 +63,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected String selectedCityOnShipping = "";
     protected PurchaseEntity orderSummary;
     Spinner address_spinner, city_spinner, postal_spinner, gender_spinner;
-    TextView name_error, family_error, cellphone_error, address_error, address_region_error, address_city_error, gender_error, address_postal_code_error;
+    TextView name_error, family_error, cellphone_error, address_error, address_region_error, address_postal_region_error,
+            address_city_error, gender_error, address_postal_code_error;
     EditText name;
     EditText family;
     EditText address;
@@ -141,6 +142,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         family_error = (TextView) view.findViewById(R.id.address_last_name_error);
         cellphone_error = (TextView) view.findViewById(R.id.address_cellphone_error);
         address_region_error = (TextView) view.findViewById(R.id.address_region_error);
+        address_postal_region_error = (TextView) view.findViewById(R.id.address_postal_region_error);
         address_city_error = (TextView) view.findViewById(R.id.address_city_error);
         address_error = (TextView) view.findViewById(R.id.address_text_error);
         gender_error = (TextView) view.findViewById(R.id.address_gender_error);
@@ -397,6 +399,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 post_id = UNKNOWN_POSTAL_CODE;
             }
             postal_spinner.setVisibility(View.GONE);
+            address_postal_region_error.setVisibility(View.GONE);
         }
 
     }
@@ -568,16 +571,23 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (address_spinner.getSelectedItem() == null || address_spinner.getSelectedItem().equals(getString(R.string.address_province_placeholder))) {
             address_region_error.setVisibility(View.VISIBLE);
             address_region_error.setText(R.string.error_isrequired);
-
+            flag = false;
         }
         if (city_spinner.getVisibility() == View.VISIBLE && (city_spinner.getSelectedItem() == null || city_spinner.getSelectedItem().equals(getString(R.string.address_city_placeholder)))) {
             address_city_error.setVisibility(View.VISIBLE);
             address_city_error.setText(R.string.error_isrequired);
+            flag = false;
+        }
+        if (postal_spinner.getVisibility() == View.VISIBLE && (postal_spinner.getSelectedItem() == null || postal_spinner.getSelectedItem().equals(getString(R.string.delivery_neighbourhood)))) {
+            address_postal_region_error.setVisibility(View.VISIBLE);
+            address_postal_region_error.setText(R.string.error_isrequired);
+            flag = false;
         }
         if (BamiloApplication.CUSTOMER.getGender().isEmpty()) {
             if (gender_spinner.getSelectedItem() == null || gender_spinner.getSelectedItem().equals(getString(R.string.gender))) {
                 gender_error.setVisibility(View.VISIBLE);
                 gender_error.setText(R.string.error_isrequired);
+                flag = false;
             }
         }
         if (name.getText().length() >= 0) {
