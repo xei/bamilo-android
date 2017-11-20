@@ -306,6 +306,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         gender_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                gender_error.setVisibility(View.GONE);
                 if (position == 1) {
                     gender_lable = GENDER_MALE;
                 } else if (position == 2) {
@@ -349,6 +350,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         city_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                address_city_error.setVisibility(View.GONE);
                 if (position == 0) {
                     city_Id = cities.get(position).getValue();
                     triggerGetPostalCodes(getPostalApi, city_Id, String.valueOf(city_Id));
@@ -383,6 +385,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             postal_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    address_postal_region_error.setVisibility(View.GONE);
                     post_id = postalCodes.get(position).getValue();
                 }
 
@@ -529,6 +532,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
+            address_region_error.setVisibility(View.GONE);
             if (((AddressRegion) object).getValue() != 0) {   //if not the place holder option, load cities of selected region
                 // Request the cities for this region id
                 int regionId = ((AddressRegion) object).getValue();
@@ -539,7 +543,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 showFragmentContentContainer();
             }
         } else if (object instanceof AddressCity) {
-
+            address_city_error.setVisibility(View.GONE);
             if (((AddressCity) object).getValue() != 0) {
                 // Request the postal codes for this city id
                 int cityId = ((AddressCity) object).getValue();
@@ -659,7 +663,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     protected void triggerGetRegions(String url) {
         Print.i(TAG, "TRIGGER: GET REGIONS: " + url);
-        triggerContentEventNoLoading(new GetRegionsHelper(), GetRegionsHelper.createBundle(url), this);
+        triggerContentEvent(new GetRegionsHelper(), GetRegionsHelper.createBundle(url), this);
     }
 
     /**
@@ -667,7 +671,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     protected void triggerGetCities(String url, int region, String tag) {
         Print.i(TAG, "TRIGGER: GET CITIES: " + url + " " + tag);
-        triggerContentEventNoLoading(new GetCitiesHelper(), GetCitiesHelper.createBundle(url, region, tag), this);
+        triggerContentEvent(new GetCitiesHelper(), GetCitiesHelper.createBundle(url, region, tag), this);
     }
 
     /**
@@ -730,6 +734,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         address_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                address_region_error.setVisibility(View.GONE);
                 if (position != 0) {
                     region_Id = regions.get(position - 1).getValue();
                     triggerGetCities(getCityApi, region_Id, String.valueOf(region_Id));
