@@ -774,8 +774,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     protected void onCreateAddressSuccessEvent(BaseResponse baseResponse) {
-
         Print.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
+        if (TextUtils.isEmpty(BamiloApplication.CUSTOMER.getGender())) {
+            BamiloApplication.CUSTOMER.setGender(gender_lable);
+        }
     }
 
     /**

@@ -138,6 +138,10 @@ public class Customer implements IJSONSerializable, Parcelable {
         return gender;
     }
 
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     /**
      * @param email the email to set
      */
