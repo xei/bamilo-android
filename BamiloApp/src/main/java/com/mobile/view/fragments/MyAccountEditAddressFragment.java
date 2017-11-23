@@ -53,21 +53,11 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
     @Override
     public void onStart() {
         super.onStart();
-        initializeFormData();
-    }
-
-    private void initializeFormData() {
-        // Get and show form
-        if(mFormResponse != null && mRegions != null){
-            loadEditAddressForm(mFormResponse);
-        } else {
-            triggerEditAddressForm();
-        }
     }
 
     @Override
     protected void onClickRetryButton() {
-        initializeFormData();
+
     }
 
     protected void onGetEditAddressFormErrorEvent(BaseResponse baseResponse){
@@ -86,14 +76,7 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
     }
 
     protected void onEditAddressErrorEvent(BaseResponse baseResponse){
-        int errorCode = baseResponse.getError().getCode();
-        if (errorCode == ErrorCode.REQUEST_ERROR) {
-            showFormValidateMessages(mEditFormGenerator, baseResponse, EventType.EDIT_ADDRESS_EVENT);
-            showFragmentContentContainer();
-        } else {
-            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode);
-            onErrorOccurred();
-        }
+        onErrorOccurred();
     }
 
     private void onErrorOccurred(){

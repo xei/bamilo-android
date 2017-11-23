@@ -7,4 +7,6 @@ public final class ApiConstants {
 
     public static final String GET_ADDRESS_POST_CODES_API_PATH = "form_field_call::customer/getaddresspostcodes/city_id/%s/";
     public static final String CREATE_ADDRESS_API_PATH = "form_submit::customer/addresscreate/";
+    public static final String GET_ADDRESS_API_PATH = "form_submit::customer/getaddressbyid/";
+    public static final String EDIT_ADDRESS_API_PATH = "form_submit::customer/addressedit/";
 }

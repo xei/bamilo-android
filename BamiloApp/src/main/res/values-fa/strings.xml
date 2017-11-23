@@ -573,4 +573,6 @@
     <string name="address_phone_number_invalidity_error">شماره موبایل معتبر نیست</string>
     <string name="address_postal_code_hint">کد پستی (اختیاری)</string>
 
+    <string name="address_at_least_two_chars_needed">حداقل ۲ کاراکتر باید وارد شود</string>
+
 </resources>

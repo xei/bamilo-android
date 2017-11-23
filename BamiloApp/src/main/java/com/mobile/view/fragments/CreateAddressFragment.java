@@ -510,6 +510,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             values.put("address_form[region]", region_Id);
             values.put("address_form[city]", city_Id);
             if (post_id != UNKNOWN_POSTAL_CODE) {
+                values.put("address_form[postcode]", post_id);
+            } else {
                 values.put("address_form[postcode]", "");
             }
             values.put("address_form[phone]", cellphone.getText().toString());
