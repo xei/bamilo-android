@@ -78,6 +78,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     String id, nameVal, familyVal, address1, address2, phone, shipping, billing;
     int region, city, postcode;
     private TextView address_postal_code_error;
+    private EventType errorType;
 
 
     /**
@@ -444,8 +445,38 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        onClickRetryButton();
-        triggerGetAddress(mAddressId);
+//        onClickRetryButton();
+        switch (errorType) {
+            case GET_REGIONS_EVENT:
+                triggerGetRegions();
+                break;
+            case GET_CITIES_EVENT: {
+                if (region != 0) {
+                    triggerGetCities(region);
+                } else {
+                    city_spinner.setSelection(0);
+                    errorType = EventType.GET_REGIONS_EVENT;
+                    onClickRetryButton(view);
+                }
+                break;
+            }
+            case GET_POSTAL_CODE_EVENT: {
+                if (city != 0) {
+                    triggerGetPostalCodes(city);
+                } else {
+                    postal_spinner.setSelection(0);
+                    errorType = EventType.GET_CITIES_EVENT;
+                    onClickRetryButton(view);
+                }
+                break;
+            }
+            case CREATE_ADDRESS_SIGNUP_EVENT:
+                onClickRetryButton();
+                break;
+            case CREATE_ADDRESS_EVENT:
+                onClickCreateAddressButton();
+                break;
+        }
     }
 
     /**
@@ -520,7 +551,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerGetCities(int region) {
         showFragmentContentContainer();
-        triggerContentEvent(new GetCitiesHelper(), GetCitiesHelper.createBundle(ApiConstants.GET_CITIES_API_PATH, region, null), this);
+        triggerContentEvent(new GetCitiesHelper(), GetCitiesHelper.createBundle(ApiConstants.GET_CITIES_API_PATH, region, String.valueOf(region)), this);
     }
 
     /**
@@ -528,7 +559,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     private void triggerGetPostalCodes(int city) {
         showFragmentContentContainer();
-        triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(ApiConstants.GET_ADDRESS_POST_CODES_API_PATH, city, null), this);
+        triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(ApiConstants.GET_ADDRESS_POST_CODES_API_PATH, city, String.valueOf(city)), this);
     }
 
     protected void triggerDefaultAddressForm(int mAddressId) {
@@ -603,7 +634,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         // Get type
-        EventType errorType = baseResponse.getEventType();
+        errorType = baseResponse.getEventType();
         // Validate
         if (isOnStoppingProcess || errorType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
