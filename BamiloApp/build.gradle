@@ -96,10 +96,10 @@ android {
             //### Fabric.io
             manifestPlaceholders = [crashlyticsApiKey: '93ef3db21e524147cf9702fd4dc34e7169e372d1']
         }
-
         staging {
             //### Fabric.io
             manifestPlaceholders = [crashlyticsApiKey: 'ddde4ad6ad210575fdac10a908040d1a93e74833']
+            applicationId 'com.bamilo.android.staging'
         }
     }
 
@@ -129,23 +129,17 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics-ndk:1.1.6@aar') {
         transitive = true;
     }
-
     /** ############### LOCAL LIBS ############### **/
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':BamiloFramework')
-
-
     /** ############### DEBUG TOOLS ############### **/
     // #MULTIDEX
     debugCompile 'com.android.support:multidex:1.0.1'
-
     // #STETHO :: http://facebook.github.io/stetho/
     debugCompile 'com.facebook.stetho:stetho:1.5.0'
     debugCompile 'com.facebook.stetho:stetho-okhttp:1.5.0'
-
     // #LEAK :: https://github.com/square/leakcanary
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
-
     // #SCAPEL :: https://github.com/JakeWharton/scalpel
     debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
 }
