@@ -10,6 +10,7 @@ public enum TrackingPage {
 
 
     HOME(R.string.ghomepage),
+    MY_BAMILO(R.string.gMyBamilo),
     PRODUCT_LIST(R.string.gproductlist),
     PRODUCT_DETAIL(R.string.gproductdetail),
     LOGIN_SIGN_UP(R.string.gsignup),
@@ -25,6 +26,8 @@ public enum TrackingPage {
     EMPTY_CART(R.string.gcartempty),
     FILLED_CART(R.string.gcartwithitems),
     CAMPAIGNS(R.string.gcampaignpage),
+    CAMPAIGN_PAGE(R.string.gCampaignPage),
+    STATIC_PAGE(R.string.gStaticPage),
     RECENTLY_VIEWED(R.string.grecentlyviewed),
     NEWSLETTER_SUBS(R.string.gnewslettersubs),
     RECENT_SEARCHES(R.string.grecentsearches),

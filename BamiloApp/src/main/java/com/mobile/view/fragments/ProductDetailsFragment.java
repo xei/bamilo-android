@@ -287,9 +287,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         }
 
-        // Tracking
-        TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL, getLoadTime(), false);
-
         if (mProduct != null) {
             sendRecommend();
         }
@@ -1299,7 +1296,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 params = new Bundle();
                 params.putParcelable(AdjustTracker.PRODUCT, mProduct);
                 params.putString(AdjustTracker.TREE, categoryTree);
-                TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, getLoadTime(), false);
+
+                // Tracking
+                TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL, getLoadTime(), false);
                 TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_DETAIL_LOADED, params);
                 // Database
                 LastViewedTableHelper.insertLastViewedProduct(product);

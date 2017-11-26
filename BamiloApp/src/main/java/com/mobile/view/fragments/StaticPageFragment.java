@@ -11,6 +11,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.service.objects.statics.StaticPage;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -34,6 +35,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     private String mContentId;
     //DROID-10
     private long mGABeginRequestMillis;
+    private boolean pageTracked = false;
     /**
      * Empty constructor
      */
@@ -163,6 +165,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
+
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
@@ -177,6 +180,11 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         textView.setText(((StaticPage)baseResponse.getMetadata().getData()).getHtml());
         //DROID-10
         TrackerDelegator.trackScreenLoadTiming(R.string.gaStaticPage, mGABeginRequestMillis, "");
+        if (!pageTracked) {
+            // Track current catalog page
+            TrackerDelegator.trackPage(TrackingPage.STATIC_PAGE, getLoadTime(), false);
+            pageTracked = true;
+        }
     }
 
     @Override

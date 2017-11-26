@@ -27,6 +27,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.Item;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
@@ -59,6 +60,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     private int scrolledAmount = 0;
     private int requestCompletionCount = 0;
     private boolean isFragmentVisibleToUser = false;
+    private boolean pageTracked = false;
 
     public MyBamiloFragment() {
         super(true, R.layout.fragment_my_bamilo);
@@ -289,6 +291,11 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         }
         if (requestCompletionCount == HOME_PAGES_COUNT) {
             updateUi();
+        }
+        if (!pageTracked) {
+            // Track current catalog page
+            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
+            pageTracked = true;
         }
     }
 

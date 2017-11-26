@@ -13,9 +13,12 @@
     <!-- PageView Names -->
     <string name="gnavigation">LeftMenu</string>
     <string name="ghomepage">ShopHome</string>
+    <string name="gMyBamilo">ShopHome</string>
     <string name="gcategories">ShopCategories</string>
     <string name="gbrands">ShopBrands</string>
-    <string name="gproductlist">ShopCatalogList</string>
+    <string name="gproductlist">Catalog</string>
+    <string name="gCampaignPage">CampaignPage</string>
+    <string name="gStaticPage">StaticPage</string>
     <string name="gshoppingcart">ShoppingCart</string>
     <string name="gcartwithitems">CartWithItem</string>
     <string name="gcartempty">CartEmpty</string>
@@ -27,7 +30,7 @@
     <string name="gaccount">Account</string>
     <string name="glogin">Login</string>
     <string name="gregister">Register</string>
-    <string name="gproductdetail">ShopProductDetail</string>
+    <string name="gproductdetail">PDVView</string>
     <string name="grateproduct">RateProduct</string>
     <string name="gcampaignpage">Campaign</string>
     <string name="gnewslettersubs">NewsletterSubscription</string>
