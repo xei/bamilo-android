@@ -443,11 +443,18 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         return 0;
     }
 
+    @Override
+    protected void onClickContinueButton() {
+        retry();
+    }
 
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-//        onClickRetryButton();
+        retry();
+    }
+
+    private void retry() {
         switch (errorType) {
             case GET_REGIONS_EVENT:
                 triggerGetRegions();
@@ -458,7 +465,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 } else {
                     city_spinner.setSelection(0);
                     errorType = EventType.GET_REGIONS_EVENT;
-                    onClickRetryButton(view);
+                    retry();
                 }
                 break;
             }
@@ -468,7 +475,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 } else {
                     postal_spinner.setSelection(0);
                     errorType = EventType.GET_CITIES_EVENT;
-                    onClickRetryButton(view);
+                    retry();
                 }
                 break;
             }
@@ -477,6 +484,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 break;
             case CREATE_ADDRESS_EVENT:
                 onClickCreateAddressButton();
+                break;
+            default:
+                getBaseActivity().onBackPressed();
                 break;
         }
     }
@@ -578,7 +588,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        showFragmentContentContainer();
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
@@ -608,9 +617,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             case GET_CITIES_EVENT:
                 Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
                 ArrayList<AddressCity> cities = (GetCitiesHelper.AddressCitiesStruct)baseResponse.getContentData();
-                setCities( cities);
-                // Show
-                showFragmentContentContainer();
+                setCities(cities);
                 break;
             case GET_POSTAL_CODE_EVENT:
                 Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
