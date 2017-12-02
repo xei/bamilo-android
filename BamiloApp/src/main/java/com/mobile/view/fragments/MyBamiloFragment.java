@@ -60,7 +60,6 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     private int scrolledAmount = 0;
     private int requestCompletionCount = 0;
     private boolean isFragmentVisibleToUser = false;
-    private boolean pageTracked = false;
 
     public MyBamiloFragment() {
         super(true, R.layout.fragment_my_bamilo);
@@ -211,6 +210,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         super.setUserVisibleHint(isVisibleToUser);
         isFragmentVisibleToUser = isVisibleToUser;
         if (isVisibleToUser) {
+            TrackerDelegator.trackPage(TrackingPage.MY_BAMILO, getLoadTime(), false);
             if (rvRecommendedItemsList != null) {
                 getBaseActivity().syncSearchBarState(scrolledAmount);
             }
@@ -291,11 +291,6 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         }
         if (requestCompletionCount == HOME_PAGES_COUNT) {
             updateUi();
-        }
-        if (!pageTracked) {
-            // Track current catalog page
-            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
-            pageTracked = true;
         }
     }
 

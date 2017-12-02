@@ -107,6 +107,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TrackerDelegator.trackPage(TrackingPage.CHECKOUT_FINISH, getLoadTime(), false);
         ProductDetailsFragment.clearSelectedRegionCityId();
         Print.i(TAG, "ON CREATE");
         // Get values
@@ -142,7 +143,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.CHECKOUT_THANKS, getLoadTime(), false);
     }
 
     @Override

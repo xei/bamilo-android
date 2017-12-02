@@ -30,6 +30,7 @@ import com.mobile.service.objects.addresses.FormListItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.tracking.TrackingEvent;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.ApiConstants;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.EventType;
@@ -99,6 +100,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TrackerDelegator.trackPage(TrackingPage.EDIT_ADDRESS, getLoadTime(), false);
         Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments() != null ? getArguments() : savedInstanceState;

@@ -28,6 +28,7 @@ import com.mobile.service.objects.product.pojo.ProductMultiple;
 import com.mobile.service.objects.product.pojo.ProductSimple;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -72,6 +73,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     private boolean isErrorOnLoadingMore = false;
 
     private View mClickedBuyButton;
+    private boolean pageTracked = false;
 
     /**
      * Empty constructor
@@ -522,6 +524,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 removeSelectedPosition();
                 break;
             case GET_WISH_LIST:
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.WISH_LIST, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 // Hide loading more
                 setLoadingMore(false);
                 // Show content

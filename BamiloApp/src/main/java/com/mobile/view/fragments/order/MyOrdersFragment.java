@@ -20,6 +20,7 @@ import com.mobile.service.objects.orders.Order;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.pojo.RestConstants;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
@@ -55,6 +56,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     private int mMaxPages;
     private boolean isErrorOnLoadingMore;
     private int mScrollPosition;
+    private boolean pageTracked = false;
 
     /**
      * Empty constructor
@@ -322,9 +324,11 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
                 } else
                     showOrders(orderList);
 
-                //DROID-10
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaMyOrders, mGABeginRequestMillis,
-                        BamiloApplication.CUSTOMER == null ? "" : "" + BamiloApplication.CUSTOMER.getId());
+
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.ORDER_LIST, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 break;
             default:
                 break;

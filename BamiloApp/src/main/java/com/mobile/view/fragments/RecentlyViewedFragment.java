@@ -67,6 +67,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     private View mClickedBuyButton;
 
     private ArrayList<String> list;
+    private boolean pageTracked = false;
 
     /**
      * Empty constructor
@@ -122,8 +123,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        // Tracking page
-        TrackerDelegator.trackPage(TrackingPage.RECENTLY_VIEWED, getLoadTime(), false);
         // Show Loading View
         showFragmentLoading();
         // Get RecentlyViewed
@@ -437,6 +436,10 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         // Validate the event type
         switch (eventType) {
             case GET_RECENTLY_VIEWED_LIST:
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.RECENTLY_VIEWED_PAGE, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 Print.i(TAG, "ON RESPONSE COMPLETE: GET_RECENTLY_VIEWED_LIST");
                 list = (ArrayList<String>)baseResponse.getContentData();
                 if (!CollectionUtils.isEmpty(list)) {

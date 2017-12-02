@@ -90,6 +90,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     private PurchaseEntity mOrderFinish;
 
     private boolean isShowingNoPaymentNecessary;
+    private boolean pageTracked = false;
 
     /**
      * Empty constructor
@@ -189,7 +190,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.PAYMENT_SCREEN, getLoadTime(), true);
     }
     
     /*
@@ -305,6 +305,10 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
         switch (eventType) {
             case GET_MULTI_STEP_PAYMENT:
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_METHOD, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();
                 bindPaymentMethods(responseData);
                 setTotal(responseData.getOrderSummary());

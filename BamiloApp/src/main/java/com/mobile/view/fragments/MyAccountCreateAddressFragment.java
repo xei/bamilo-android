@@ -5,25 +5,22 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.rest.errors.ErrorCode;
 import com.mobile.service.tracking.AnalyticsGoogle;
 import com.mobile.service.tracking.TrackingEvent;
-import com.mobile.service.utils.EventType;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -53,6 +50,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TrackerDelegator.trackPage(TrackingPage.PROFILE_CREATE_ADDRESS, getLoadTime(), false);
     }
 
     @Override

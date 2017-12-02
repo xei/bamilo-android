@@ -13,10 +13,12 @@ import com.mobile.helpers.address.GetMyAddressesHelper;
 import com.mobile.service.objects.addresses.Addresses;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -32,6 +34,7 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
     private View mCheckoutTotalBar;
     private FloatingActionButton fabNewAddress;
     private int mSelectedAddress;
+    private boolean pageTracked = false;
 
     public NewMyAccountAddressesFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
@@ -142,6 +145,11 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
         switch (eventType) {
             case GET_CUSTOMER_ADDRESSES_EVENT:
                 super.showAddresses((Addresses) baseResponse.getContentData(), -1);
+
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.MY_ADDRESSES, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 break;
             case GET_DELETE_ADDRESS_FORM_EVENT:
                 triggerGetAddresses();

@@ -29,12 +29,14 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.service.objects.cart.PurchaseCartItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 import com.mobile.view.newfragments.NewBaseFragment;
 
@@ -62,6 +64,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     private List<CardChoutItem> cardList = new ArrayList<>();
     private RecyclerView recyclerView;
     private CardCheckOutAdapter mAdapter;
+    private boolean pageTracked = false;
 
 
     /**
@@ -378,6 +381,10 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
                 hideActivityProgress();
                 break;
             case GET_MULTI_STEP_FINISH:
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_CONFIRMATION, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
 
                 if (mOrderFinish == null) {

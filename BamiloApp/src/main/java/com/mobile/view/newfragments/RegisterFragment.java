@@ -26,6 +26,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.tracking.gtm.GTMValues;
 import com.mobile.service.utils.ApiConstants;
 import com.mobile.service.utils.CollectionUtils;
@@ -85,6 +86,8 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TrackerDelegator.trackPage(TrackingPage.USER_SIGNUP, getLoadTime(), false);
+
         Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = savedInstanceState == null ? getArguments() : savedInstanceState;

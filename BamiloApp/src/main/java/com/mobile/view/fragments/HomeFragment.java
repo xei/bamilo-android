@@ -18,9 +18,11 @@ import com.mobile.service.objects.home.TeaserCampaign;
 import com.mobile.service.objects.home.model.BaseComponent;
 import com.mobile.service.objects.home.type.TeaserGroupType;
 import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.ColorSequenceHolder;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.R;
 import com.mobile.view.components.BaseViewComponent;
@@ -182,6 +184,11 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
     public void showComponents(HomePageComponents homePageComponents) {
         List<BaseComponent> components = homePageComponents.getComponents();
+        if (dailyDealViewComponents == null) {
+            dailyDealViewComponents = new ArrayList<>();
+        }
+        dailyDealViewComponents.clear();
+
         int tileComponentCount = 1,
                 sliderComponentCount = 1,
                 carouselComponentCount = 1,
@@ -204,6 +211,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
                         viewComponent.enableTracking(pageName, carouselComponentCount++);
                     } else if (viewComponent instanceof DailyDealViewComponent) {
                         ((DailyDealViewComponent) viewComponent).setOnCountDownDealItemClickListener(this);
+                        dailyDealViewComponents.add((DailyDealViewComponent) viewComponent);
                         viewComponent.enableTracking(pageName, dealComponentCount++);
                     }
                     mContainerLinearLayout.addView(viewComponent.getView(getContext()));
@@ -244,6 +252,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_HOME_EVENT: {
+                TrackerDelegator.trackPage(TrackingPage.HOME_PAGE, getLoadTime(), false);
                 HomePageComponents homePageComponents = (HomePageComponents) baseResponse.getContentData();
                 this.mHomePageComponents = homePageComponents;
                 showComponents(homePageComponents);

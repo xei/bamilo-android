@@ -18,10 +18,12 @@ import com.mobile.helpers.checkout.SetStepAddressesHelper;
 import com.mobile.service.objects.checkout.MultiStepAddresses;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CheckoutAddressesFragment;
 
@@ -39,6 +41,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     private FloatingActionButton fabNewAddress;
     private int mSelectedAddress;
     private FragmentType checkoutPaymentFragment;
+    private boolean pageTracked = false;
 
     public NewCheckoutAddressesFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
@@ -217,6 +220,11 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 }
                 super.showAddresses(multiStepAddresses.getAddresses(), mSelectedAddress);
                 hideActivityProgress();
+
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_ADDRESSES, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 break;
             case SET_MULTI_STEP_ADDRESSES:
                 int selectedId = ((AddressAdapter) mAddressView.getAdapter()).getSelectedId();

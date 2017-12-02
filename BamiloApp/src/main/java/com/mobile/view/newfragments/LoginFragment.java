@@ -31,6 +31,7 @@ import com.mobile.service.objects.customer.Customer;
 import com.mobile.service.objects.customer.CustomerEmailCheck;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.tracking.gtm.GTMValues;
 import com.mobile.service.utils.CustomerUtils;
 import com.mobile.service.utils.EventType;
@@ -81,6 +82,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TrackerDelegator.trackPage(TrackingPage.USER_LOGIN, getLoadTime(), false);
+
         Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = savedInstanceState == null ? getArguments() : savedInstanceState;
