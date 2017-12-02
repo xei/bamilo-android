@@ -44,7 +44,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     private static final String TRACKER_SCREEN_NAME = "MyBamilo";
     private static final String TRACKER_LOGIC = "Home";
     private static final int SMOOTH_SCROLL_LIMIT = 35;
-    private static final int BACK_TO_TOP_FAB_VISIBILITY_LIMIT = 15;
+    private static final int BACK_TO_TOP_FAB_VISIBILITY_LIMIT = 17;
     private static final int HOME_PAGES_COUNT = 6;
     FloatingActionButton fabBackToTop;
     private RecyclerView rvRecommendedItemsList;
@@ -103,7 +103,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
                 if (isFragmentVisibleToUser) {
                     getBaseActivity().onSearchBarScrolled(dy);
                 }
-                if (dy < 0 && ((GridLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() >
+                if (dy < 0 && ((GridLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition() >
                         BACK_TO_TOP_FAB_VISIBILITY_LIMIT) {
                     fabBackToTop.show();
                 } else {
