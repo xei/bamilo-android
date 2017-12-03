@@ -103,11 +103,13 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
                 if (isFragmentVisibleToUser) {
                     getBaseActivity().onSearchBarScrolled(dy);
                 }
-                if (dy < 0 && ((GridLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition() >
-                        BACK_TO_TOP_FAB_VISIBILITY_LIMIT) {
-                    fabBackToTop.show();
-                } else {
-                    fabBackToTop.hide();
+                if (dy != 0) {
+                    if (dy < 0 && ((GridLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition() >
+                            BACK_TO_TOP_FAB_VISIBILITY_LIMIT) {
+                        fabBackToTop.show();
+                    } else {
+                        fabBackToTop.hide();
+                    }
                 }
             }
         });
@@ -243,6 +245,11 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
                     ((GridLayoutManager) rvRecommendedItemsList.getLayoutManager()).scrollToPositionWithOffset(recommendListScrollPosition, rvRecommendedItemsList.getPaddingTop());
                 } else {
                     rvRecommendedItemsList.getLayoutManager().scrollToPosition(recommendListScrollPosition);
+                }
+                if (recommendListScrollPosition >= BACK_TO_TOP_FAB_VISIBILITY_LIMIT) {
+                    fabBackToTop.setVisibility(View.VISIBLE);
+                } else {
+                    fabBackToTop.setVisibility(View.INVISIBLE);
                 }
             }
         });
