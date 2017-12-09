@@ -106,9 +106,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Intercept event
         shouldHandleEvent = true;
 
-        // Initialize application
-        BamiloApplication.INSTANCE.init(initializationHandler);
-
         // throw new RuntimeException("This is a crash");
     }
 
@@ -134,6 +131,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
+
+        // Initialize application
+        BamiloApplication.INSTANCE.init(initializationHandler);
         // Intercept event
         shouldHandleEvent = true;
         // Show animated map

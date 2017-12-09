@@ -591,5 +591,6 @@
     <dimen name="tab_layout_height">56dp</dimen>
     <dimen name="showcase_rect_round_radius">4dp</dimen>
     <dimen name="showcase_view_spacing">24dp</dimen>
+    <dimen name="network_settings_layout_width">@dimen/match_parent</dimen>
 
 </resources>

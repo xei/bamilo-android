@@ -447,6 +447,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Case get product
         else if (TextUtils.isNotEmpty(mCompleteProductSku)) {
             triggerLoadProduct(mCompleteProductSku, mRichRelevanceHash);
+            triggerGetRegions(ApiConstants.GET_REGIONS_API_PATH);
         }
         // Case error
         else {

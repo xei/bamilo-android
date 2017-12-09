@@ -574,5 +574,8 @@
     <string name="address_postal_code_hint">کد پستی (اختیاری)</string>
 
     <string name="address_at_least_two_chars_needed">حداقل ۲ کاراکتر باید وارد شود</string>
+    <string name="internet_settings">تنظیمات اینترنت</string>
+    <string name="there_is_no_access_to_internet_label">دسترسی به اینترنت امکان‌پذیر نمی‌باشد</string>
+    <string name="retry_label">تلاش مجدد</string>
 
 </resources>

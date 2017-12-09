@@ -95,7 +95,6 @@
         tools:node="replace">
         <activity
             android:name=".SplashScreenActivity"
-            android:noHistory="true"
             android:resizeableActivity="false"
             android:screenOrientation="portrait">
             <intent-filter>

@@ -1,6 +1,8 @@
 package com.mobile.utils.ui;
 
 import android.content.Context;
+import android.content.Intent;
+import android.provider.Settings;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
@@ -9,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +51,7 @@ public class ErrorLayoutFactory {
     public static final int SSL_ERROR_LAYOUT = 11;
     public static final int UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT = 12;
     public static final int CAMPAIGN_UNAVAILABLE_LAYOUT = 13;
+    private static final int RES_NO_CONTENT = -1;
 
     @IntDef({
             NO_NETWORK_LAYOUT,
@@ -109,9 +113,10 @@ public class ErrorLayoutFactory {
                     break;
                 case NO_NETWORK_LAYOUT:
                     new Builder()
-                    .setContent(R.drawable.img_connect, R.string.error_no_connection, R.string.internet_no_connection_details_label)
-                    .setButton(R.string.try_again_retry, R.color.black,R.drawable._gen_selector_button_grey)
+                    .setContent(R.drawable.img_connect, RES_NO_CONTENT, R.string.there_is_no_access_to_internet_label)
+                    .setButton(R.string.retry_label, R.color.gray_1, R.drawable.network_connection_retry_btn_bg)
                     .showRetryButton()
+                    .showNetworkSettingsButtons()
                     .showButtonSpinning();
                     break;
                 case UNEXPECTED_ERROR_LAYOUT:
@@ -207,7 +212,11 @@ public class ErrorLayoutFactory {
             hideButtonSpinning();
             hideButton();
             setImage(image);
-            setPrincipalMessage(title);
+            if (title != RES_NO_CONTENT) {
+                setPrincipalMessage(title);
+            } else {
+                hideTitle();
+            }
             setDetailMessage(message);
             hideRecommendation();
             return this;
@@ -251,6 +260,17 @@ public class ErrorLayoutFactory {
             return showButton();
         }
 
+        Builder showNetworkSettingsButtons(){
+            mErrorLayout.findViewById(R.id.llNetworkSettings).setVisibility(View.VISIBLE);
+            mErrorLayout.findViewById(R.id.btnInternetSettings).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mErrorLayout.getContext().startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                }
+            });
+            return this;
+        }
+
         Builder setButton(@StringRes int message, @DrawableRes int background) {
             setButtonMessage(message);
             setButtonBackground(background);
@@ -261,6 +281,7 @@ public class ErrorLayoutFactory {
         Builder setButton(@StringRes int message, @ColorRes int color, @DrawableRes int background) {
             setButtonMessage(message);
             setButtonTextColor(color);
+            setButtonTextSize(14);
             setButtonBackground(background);
             showButton();
             return this;
@@ -309,6 +330,12 @@ public class ErrorLayoutFactory {
             return this;
         }
 
+        private Builder setButtonTextSize(int textSizeSP) {
+            ((TextView) mErrorLayout.findViewById(R.id.fragment_root_error_button_message))
+            .setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSP);
+            return this;
+        }
+
         private Builder setImage(@DrawableRes int image) {
             ImageView imageView = (ImageView) mErrorLayout.findViewById(R.id.fragment_root_error_image);
             imageView.setVisibility(View.VISIBLE);
@@ -327,6 +354,7 @@ public class ErrorLayoutFactory {
             TextView messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
             messageView.setVisibility(View.VISIBLE);
             messageView.setText(message);
+            messageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             return this;
         }
 
@@ -336,6 +364,12 @@ public class ErrorLayoutFactory {
             messageView.setTextColor(mErrorLayout.getResources().getColor(R.color.black_900));
             messageView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mErrorLayout.getResources().getDimension(R.dimen.dimen_16dp));
             messageView.setText(message);
+            return this;
+        }
+
+        private Builder hideTitle() {
+            TextView messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_label);
+            messageView.setVisibility(View.GONE);
             return this;
         }
 

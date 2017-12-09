@@ -263,7 +263,9 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
             public void onEmarsysRecommendError(Error error) {
                 loadInProgress = false;
                 fabBackToTop.hide();
-                srlRecommendItemsList.setRefreshing(loadInProgress);
+                getBaseActivity().syncSearchBarState(0);
+                showFragmentNoNetworkRetry();
+                /*srlRecommendItemsList.setRefreshing(loadInProgress);
                 srlRecommendItemsList.setEnabled(false);
                 rvRecommendedItemsList.setAdapter(new ErrorItemRecyclerAdapter(new View.OnClickListener() {
                     @Override
@@ -274,13 +276,26 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
                         rvRecommendedItemsList.setAdapter(recommendGridAdapter);
                         refreshRecommends();
                     }
-                }, ErrorLayoutFactory.NO_NETWORK_LAYOUT));
+                }, ErrorLayoutFactory.NO_NETWORK_LAYOUT));*/
             }
         }, RecommendManager.createHomeExcludeItemListsMap(null), HOME_PAGES_COUNT);
     }
 
+
+
+    @Override
+    protected void onClickRetryButton(View view) {
+//        showFragmentContentContainer();
+        srlRecommendItemsList.setEnabled(true);
+        recommendListItems.clear();
+        recommendGridAdapter.notifyDataSetChanged();
+        rvRecommendedItemsList.setAdapter(recommendGridAdapter);
+        refreshRecommends();
+    }
+
     @Override
     public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+        showFragmentContentContainer();
         loadInProgress = false;
         requestCompletionCount++;
         String CATEGORY_DELIMITER = ">";

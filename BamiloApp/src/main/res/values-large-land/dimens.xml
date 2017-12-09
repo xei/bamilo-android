@@ -13,6 +13,7 @@
 
     <!--LOGIN-->
     <dimen name="register_container_width">552dp</dimen>
+    <dimen name="network_settings_layout_width">@dimen/dimen_320dp</dimen>
 
 
 

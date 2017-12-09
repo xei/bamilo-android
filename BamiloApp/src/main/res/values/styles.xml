@@ -113,7 +113,7 @@
     </style>
 
     <style name="button_fallback_retry">
-        <item name="android:background">@drawable/_gen_selector_button_grey</item>
+        <item name="android:background">@drawable/network_connection_retry_btn_bg</item>
     </style>
 
     <!-- BUTTON CONTAINER HAS ALWAYS A BOTTOM PADDING -->
