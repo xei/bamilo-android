@@ -9,15 +9,17 @@ import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.LoginEventModel;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.EmarsysEventConstants;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EventFactory;
+import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
@@ -43,7 +45,6 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
-import com.mobile.view.fragments.ProductDetailsFragment;
 import com.pushwoosh.PushManager;
 
 import java.util.EnumSet;
@@ -286,7 +287,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), BamiloApplication.CUSTOMER.getEmail() + "");
                 Crashlytics.setUserEmail(BamiloApplication.CUSTOMER.getEmail());
 
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.Login, EventFactory.login("email", EmailHelper.getHost(customer.getEmail()), true));
+                //TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Login, EmarsysEventFactory.login("email", EmailHelper.getHost(customer.getEmail()), true));
+                TrackerManager.trackEvent(getBaseActivity(), EventConstants.Login, new LoginEventModel(true, "email", EmailHelper.getHost(customer.getEmail()), customer.getId()));
 
                 if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
@@ -351,7 +353,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
             case LOGIN_EVENT:
                 hideActivityProgress();
                 getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.email_password_invalid));
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.Login, EventFactory.login("email", EventConstants.UNKNOWN_EVENT_VALUE, false));
+                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Login, EmarsysEventFactory.login("email", EmarsysEventConstants.UNKNOWN_EVENT_VALUE, false));
                 break;
             default:
                 break;

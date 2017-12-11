@@ -3,8 +3,8 @@ package com.mobile.controllers;
 import android.support.annotation.NonNull;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.constants.EventConstants;
-import com.mobile.factories.EventFactory;
+import com.mobile.constants.tracking.EmarsysEventConstants;
+import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.managers.TrackerManager;
@@ -49,7 +49,7 @@ public class LogOut {
                     // Inform activity to update views
                     try {
                         baseActivity.onLogOut();
-                        TrackerManager.postEvent(baseActivity, EventConstants.Logout, EventFactory.logout(true));
+                        TrackerManager.trackEvent(baseActivity, EmarsysEventConstants.Logout, EmarsysEventFactory.logout(true));
                     } catch (IllegalStateException e){
                         e.printStackTrace();
                     }
@@ -57,7 +57,7 @@ public class LogOut {
 
                 @Override
                 public void onRequestError(BaseResponse baseResponse) {
-                    TrackerManager.postEvent(baseActivity, EventConstants.Logout, EventFactory.logout(false));
+                    TrackerManager.trackEvent(baseActivity, EmarsysEventConstants.Logout, EmarsysEventFactory.logout(false));
                 }
             });
         }

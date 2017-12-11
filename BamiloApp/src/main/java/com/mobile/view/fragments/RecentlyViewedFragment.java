@@ -11,11 +11,11 @@ import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.EmarsysEventConstants;
 import com.mobile.controllers.RecentlyViewedAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EventFactory;
+import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetRecentlyViewedHelper;
 import com.mobile.helpers.products.ValidateProductHelper;
@@ -406,7 +406,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, addableToCart.getCategories());
             TrackerDelegator.trackProductAddedToCart(bundle);
-            TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
+            TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

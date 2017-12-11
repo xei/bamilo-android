@@ -1,21 +1,15 @@
-package com.mobile.utils.pushwoosh;
+package com.mobile.utils.tracking;
 
-import com.mobile.app.BamiloApplication;
-import com.mobile.utils.EventTracker;
-import com.mobile.utils.emarsys.EmarsysTracker;
+import com.mobile.utils.tracking.emarsys.EmarsysTracker;
 import com.mobile.view.BaseActivity;
 import com.pushwoosh.inapp.InAppFacade;
 
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 
-/**
- * Created by shahrooz on 4/12/17.
- */
+public final class PushWooshTracker extends EmarsysTracker {
 
-public class PushWooshTracker extends EmarsysTracker {
     private static PushWooshTracker instance = null;
+
     protected PushWooshTracker() {}
 
     public static EmarsysTracker getInstance() {
@@ -26,7 +20,12 @@ public class PushWooshTracker extends EmarsysTracker {
     }
 
     @Override
-    public void postEvent(BaseActivity activity, String event, HashMap<String, Object> attributes) {
+    public String getTrackerName() {
+        return "PushWooshTracker";
+    }
+
+    @Override
+    public void trackEvent(BaseActivity activity, String event, HashMap<String, Object> attributes) {
         InAppFacade.postEvent(activity, event, attributes);
     }
 }

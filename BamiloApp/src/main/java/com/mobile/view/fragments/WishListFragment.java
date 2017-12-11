@@ -11,11 +11,11 @@ import android.view.View;
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.EmarsysEventConstants;
 import com.mobile.controllers.WishListGridAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EventFactory;
+import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.wishlist.GetWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
@@ -451,9 +451,9 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             triggerAddProductToCart(simple.getSku());
             TrackerDelegator.trackFavouriteAddedToCart(product, simple.getSku(), mGroupType);
             try {
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)BamiloApplication.INSTANCE.getCart().getTotal(), true));
+                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(simple.getSku(), (long)BamiloApplication.INSTANCE.getCart().getTotal(), true));
             } catch (Exception e) {
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), 0, true));
+                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(simple.getSku(), 0, true));
             }
         }
         // Case select a simple variation

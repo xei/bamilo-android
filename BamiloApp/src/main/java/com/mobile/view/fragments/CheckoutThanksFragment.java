@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
@@ -15,12 +14,12 @@ import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.components.recycler.VerticalSpaceItemDecoration;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.EmarsysEventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
-import com.mobile.factories.EventFactory;
+import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -43,7 +42,6 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.holder.RecommendationsCartHolder;
 import com.mobile.utils.home.holder.RichRelevanceAdapter;
 import com.mobile.utils.pushwoosh.PushwooshCounter;
-import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 import com.pushwoosh.PushManager;
 import com.pushwoosh.SendPushTagsCallBack;
@@ -195,7 +193,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 itemsId += cat.getSku() + ",";
             }
         }
-        TrackerManager.postEvent(getBaseActivity(), EventConstants.Purchase, EventFactory.purchase(categories, (long)cart.getTotal(), true));
+        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Purchase, EmarsysEventFactory.purchase(categories, (long)cart.getTotal(), true));
 
         //sendRecommend();
 

@@ -9,10 +9,10 @@ import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.EmarsysEventConstants;
 import com.mobile.controllers.OffersListAdapter;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EventFactory;
+import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -239,7 +239,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         Print.d(TAG, "SIMLPE SKU:" + sku + " PRICE:" + price);
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
         TrackerDelegator.trackAddOfferToCart(sku, price);
-        TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
+        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
     }
     
     /*

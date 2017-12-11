@@ -16,10 +16,10 @@ import android.util.Log;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.EmarsysEventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EventFactory;
+import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
 import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.managers.TrackerManager;
@@ -29,9 +29,10 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.DeepLinkManager;
-import com.mobile.utils.emarsys.EmarsysTracker;
-import com.mobile.utils.pushwoosh.PushWooshTracker;
+import com.mobile.utils.tracking.emarsys.EmarsysTracker;
+import com.mobile.utils.tracking.PushWooshTracker;
 import com.mobile.utils.pushwoosh.PushwooshCounter;
+import com.mobile.utils.tracking.ga.GATracker;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
@@ -44,10 +45,8 @@ import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.ComboFragment;
-import com.mobile.view.fragments.DrawerFragment;
 import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.FrontPageFragment;
-import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.ItemTrackingFragment;
 import com.mobile.view.fragments.MyAccountAboutFragment;
@@ -78,7 +77,6 @@ import com.mobile.view.fragments.order.MyOrdersFragment;
 import com.mobile.view.fragments.order.OrderReturnCallFragment;
 import com.mobile.view.fragments.order.OrderReturnConditionsFragment;
 import com.mobile.view.fragments.order.OrderReturnStepsMain;
-import com.mobile.view.fragments.order.OrderStatusFragment;
 import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
 import com.mobile.view.newfragments.NewCheckoutPaymentMethodsFragment;
 import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
@@ -109,7 +107,7 @@ import static com.mobile.view.fragments.CatalogFragment.FILTER_TAG;
 public class MainFragmentActivity extends BaseActivity implements PushEventListener {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
-    private EventFactory.OpenAppEventSourceType mAppOpenSource;
+    private EmarsysEventFactory.OpenAppEventSourceType mAppOpenSource;
 
     private BaseFragment fragment;
     //DROID-63 private NewBaseFragment newFragment;
@@ -169,8 +167,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         if (null != intent) {
             if (intent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
                 showMessage("push message is " + intent.getExtras().getString(PushManager.PUSH_RECEIVE_EVENT));
-                TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION));
-                mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION;
+                TrackerManager.trackEvent(MainFragmentActivity.this, EmarsysEventConstants.OpenApp, EmarsysEventFactory.openApp(EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION));
+                mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION;
             } else if (intent.hasExtra(PushManager.REGISTER_EVENT)) {
                 showMessage("register");
             } else if (intent.hasExtra(PushManager.UNREGISTER_EVENT)) {
@@ -268,8 +266,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                     onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 }
             } else {
-                TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK));
-                mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
+                TrackerManager.trackEvent(MainFragmentActivity.this, EmarsysEventConstants.OpenApp, EmarsysEventFactory.openApp(EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK));
+                mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
             }
         } else {
             mCurrentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
@@ -291,8 +289,9 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         Fabric.with(this, new Crashlytics());
         Crashlytics.setUserIdentifier(PushManager.getPushwooshHWID(this.getApplicationContext()));
 
-        TrackerManager.addEventTracker("EmarsysTracker", EmarsysTracker.getInstance());
-        TrackerManager.addEventTracker("PushWooshTracker", PushWooshTracker.getInstance());
+        TrackerManager.addTracker(EmarsysTracker.getInstance());
+        TrackerManager.addTracker(PushWooshTracker.getInstance());
+        TrackerManager.addTracker(GATracker.getInstance());
 
         /*
          * Used for on back pressed
@@ -337,10 +336,10 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         //Clear application badge number
         PushManager.getInstance(BamiloApplication.INSTANCE).setBadgeNumber(0);
 
-        if(mAppOpenSource != EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION && mAppOpenSource != EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
-            TrackerManager.postEvent(MainFragmentActivity.this, EventConstants.OpenApp, EventFactory.openApp(EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT));
+        if(mAppOpenSource != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION && mAppOpenSource != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
+            TrackerManager.trackEvent(MainFragmentActivity.this, EmarsysEventConstants.OpenApp, EmarsysEventFactory.openApp(EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT));
         }
-        mAppOpenSource = EventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_NONE;
+        mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_NONE;
     }
 
     /*
