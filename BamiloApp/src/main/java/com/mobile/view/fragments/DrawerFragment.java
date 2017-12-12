@@ -274,7 +274,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
                                     public void onClick(View v) {
                                         if (v.getId() == R.id.button2) {
                                             getBaseActivity().onBackPressed();
-                                            LogOut.perform(getWeakBaseActivity());
+                                            LogOut.perform(getWeakBaseActivity(), DrawerFragment.this);
                                         }
                                         dialogLogout.dismiss();
                                     }

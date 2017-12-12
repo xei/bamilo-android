@@ -84,8 +84,12 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
+        // Get addresses
+        if(mAddresses == null) {
             triggerGetForm();
+        } else {
+            showAddresses(mAddresses, -1);
+        }
     }
 
     @Override

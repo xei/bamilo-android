@@ -124,7 +124,11 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Get addresses
+        if(mAddresses == null) {
             triggerGetForm();
+        } else {
+            showAddresses(mAddresses, mSelectedAddress);
+        }
     }
 
     @Override

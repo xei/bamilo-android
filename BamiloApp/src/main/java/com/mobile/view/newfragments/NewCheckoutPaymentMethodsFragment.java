@@ -91,6 +91,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
     private boolean isShowingNoPaymentNecessary;
     private boolean pageTracked = false;
+    private PaymentMethodAdapter paymentMethodAdapter;
 
     /**
      * Empty constructor
@@ -348,6 +349,9 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
     	// Generic error
         if (super.handleErrorEvent(baseResponse)) {
+            if (baseResponse.getEventType() == EventType.SET_MULTI_STEP_PAYMENT) {
+                paymentMethodAdapter.notifyDataSetChanged();
+            }
             return;
         }
 
@@ -362,6 +366,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             break;
 
             case SET_MULTI_STEP_PAYMENT:
+                paymentMethodAdapter.notifyDataSetChanged();
                 TrackerDelegator.trackFailedPayment(paymentName, BamiloApplication.INSTANCE.getCart());
                 showWarningErrorMessage(baseResponse.getValidateMessage());
                 showFragmentContentContainer();
@@ -403,8 +408,8 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
                 methodList.add(method);
             }
 
-            PaymentMethodAdapter adapter = new PaymentMethodAdapter(methodList, -1);
-            adapter.mFragmentBridge = new PaymentMethodAdapter.IPaymentMethodAdapter() {
+            paymentMethodAdapter = new PaymentMethodAdapter(methodList, -1);
+            paymentMethodAdapter.mFragmentBridge = new PaymentMethodAdapter.IPaymentMethodAdapter() {
                 @Override
                 public void paymentMethodSelected(int selectedId) {
                     //int selectedId = ((PaymentMethodAdapter) mScrollView.getAdapter()).getSelectedId();
@@ -413,7 +418,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
                     setMultistepPayment(PaymentAction, values);
                 }
             };
-            mScrollView.setAdapter(adapter);
+            mScrollView.setAdapter(paymentMethodAdapter);
         } catch (Exception ex) {
 
         }

@@ -52,6 +52,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     TextView next, address, telephone, user, order_count_title, order_price,
             ship_price, voucher_price, all_price, ship_time, all_voucher, voucher_error, all_price_title;
     NestedScrollView svCheckoutConfirmation;
+    TextView tvDeliveryTimeHeader;
     TextView tvDeliveryNotice;
     SwitchCompat voucher_switch;
     TextView tvVoucherValueTitle;
@@ -136,6 +137,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         voucher_layer = (LinearLayout) view.findViewById(R.id.voucher_layout);
         mVoucherView = (EditText) view.findViewById(R.id.voucher_codename);
         tvDeliveryNotice = (TextView) view.findViewById(R.id.tvDeliveryNotice);
+        tvDeliveryTimeHeader = (TextView) view.findViewById(R.id.textView12);
         couponButton = (Button) view.findViewById(R.id.checkout_button_enter);
         next.setOnClickListener(this);
         couponButton.setOnClickListener(this);
@@ -460,7 +462,8 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         }
         // Check if the request is a partial request
         if (baseResponse.getEventType() == EventType.GET_MULTI_STEP_SHIPPING) {
-            showDeliveryTime("");
+            tvDeliveryTimeHeader.setVisibility(View.GONE);
+            ship_time.setVisibility(View.GONE);
             return;
         }
         // Generic error

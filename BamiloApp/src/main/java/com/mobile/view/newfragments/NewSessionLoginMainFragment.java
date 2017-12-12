@@ -513,7 +513,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                 break;*/
             case AUTO_LOGIN_EVENT:
                 // Logout
-                LogOut.perform(getWeakBaseActivity());
+                LogOut.perform(getWeakBaseActivity(), null);
                 autoLoginFailed = true;
                 if (!viewInitiated) {
                     initViews();

@@ -146,6 +146,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private AddressCities mCities;
     private int defaultRegionId, defaultCityId;
     private static Integer selectedRegionId = null, selectedCityId = null;
+    private View rootView;
 
     /**
      * Empty constructor
@@ -195,6 +196,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Print.d(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
+        this.rootView = view;
         // Title
         mTitleContainer = (ViewGroup) view.findViewById(R.id.pdv_title_container);
         // Slide show
@@ -1342,6 +1344,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 } else {
                     strDeliveryTime = String.format(new Locale("fa"), "%s %s\n%s %s", getString(R.string.tehran_delivery_time), deliveryTime.getTehranDeliveryTime(), getString(R.string.other_cities_delivery_time), deliveryTime.getOtherCitiesDeliveryTime());
                 }
+                rootView.findViewById(R.id.deliveryRow).setVisibility(View.VISIBLE);
                 mDeliveryTimeTextView.setText(strDeliveryTime);
                 mDeliveryTimeTextView.setVisibility(View.VISIBLE);
                 defaultRegionId = deliveryTimeCollection.getRegionId();
@@ -1355,6 +1358,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        // Hide dialog progress
+        hideActivityProgress();
         // Specific errors
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
@@ -1362,13 +1367,21 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        // Hide dialog progress
-        hideActivityProgress();
-        // Generic errors
-        if (super.handleErrorEvent(baseResponse)) return;
         // Validate type
         Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
+            case GET_PRODUCT_BUNDLE:
+                // do nothing
+                break;
+            case GET_REGIONS_EVENT:
+                hideDeliveryTimeBlock();
+                break;
+            case GET_CITIES_EVENT:
+                hideDeliveryTimeBlock();
+                break;
+            case GET_DELIVERY_TIME:
+                hideDeliveryTimeBlock();
+                break;
             case GET_PRODUCT_DETAIL:
                 showWarningErrorMessage(baseResponse.getErrorMessage(), eventType);
                 getBaseActivity().onBackPressed();
@@ -1377,9 +1390,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 setRelatedItems();
                 break;
             default:
+                super.handleErrorEvent(baseResponse);
                 break;
         }
 
+    }
+
+    private void hideDeliveryTimeBlock() {
+        rootView.findViewById(R.id.deliveryRow).setVisibility(View.GONE);
+        rootView.findViewById(R.id.tvDeliveryTimeSectionTitle).setVisibility(View.GONE);
+        mRegionSpinner.setVisibility(View.GONE);
+        mCitySpinner.setVisibility(View.GONE);
     }
 
     /**
@@ -1546,6 +1567,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setRegions(ArrayList<AddressRegion> regions) {
         Print.d(TAG, "SET REGIONS REGIONS: ");
+
+        rootView.findViewById(R.id.tvDeliveryTimeSectionTitle).setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.pdv_delivery_address_container).setVisibility(View.VISIBLE);
 
         // Create adapter
         List<AddressRegion> regionsWithEmptyItem = new ArrayList<>();

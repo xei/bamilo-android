@@ -18,6 +18,7 @@
         android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
+            android:id="@+id/tvDeliveryTimeSectionTitle"
             style="@style/TextBase.Title.Black"
             android:layout_marginBottom="@dimen/margin_padding_xl"
             android:layout_marginLeft="@dimen/margin_padding_xl"
@@ -25,13 +26,17 @@
             android:layout_marginTop="@dimen/margin_padding_xl"
             android:gravity="right|center_vertical"
             android:text="@string/calculate_delivery_time"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/pdv_delivery_address_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible" >
 
             <Spinner
                 android:id="@+id/pdv_delivery_region"
@@ -60,10 +65,13 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/deliveryRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="5">
+            android:visibility="gone"
+            android:weightSum="5"
+            tools:visibility="visible">
 
             <!-- TITLE -->
 

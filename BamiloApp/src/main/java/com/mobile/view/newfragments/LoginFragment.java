@@ -338,7 +338,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 break;
             case AUTO_LOGIN_EVENT:
                 // Logout
-                LogOut.perform(getWeakBaseActivity());
+                LogOut.perform(getWeakBaseActivity(), null);
             /*case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
                 // Tracking
