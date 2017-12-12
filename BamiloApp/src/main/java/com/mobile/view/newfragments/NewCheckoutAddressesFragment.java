@@ -99,13 +99,12 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                }
 
         super.setCheckoutStep(view, 1);
-
-
-
-
-
     }
 
+    @Override
+    protected void onClickRetryButton(View view) {
+        triggerGetForm();
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -183,7 +182,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
     @Override
     protected void triggerGetAddresses() {
-        triggerContentEventProgress(new GetStepAddressesHelper(), null, this);
+        triggerContentEvent(new GetStepAddressesHelper(), null, this);
     }
 
     /*
@@ -245,6 +244,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        hideActivityProgress();
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
@@ -254,7 +254,6 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
         }
-        hideActivityProgress();
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);

@@ -368,7 +368,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
     private void triggerAutoLogin() {
         Print.i(TAG, "TRIGGER AUTO LOGIN");
-        triggerContentEventProgress(new LoginAutoHelper(), LoginAutoHelper.createAutoLoginBundle(), this);
+        triggerContentEvent(new LoginAutoHelper(), LoginAutoHelper.createAutoLoginBundle(), this);
     }
 
 

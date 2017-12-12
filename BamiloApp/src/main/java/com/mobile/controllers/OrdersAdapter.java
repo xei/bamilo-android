@@ -66,8 +66,10 @@ public class OrdersAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (loadMoreProgressEnabled && position == getCount() - 1) {
-            if (convertView != null && convertView.getTag() != null) {
+            if (convertView == null || convertView.getTag() != null) {
                 convertView = LayoutInflater.from(context).inflate(R.layout.catalog_fragment_footer, parent, false);
+                android.widget.TextView tvLoadMore = (android.widget.TextView) convertView.findViewById(R.id.tvLoadMore);
+                tvLoadMore.setText(R.string.loading_more_orders);
             }
             return convertView;
         }

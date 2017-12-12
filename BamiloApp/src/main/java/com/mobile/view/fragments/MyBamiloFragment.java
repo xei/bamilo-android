@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 
 import com.emarsys.predict.Error;
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.adapters.ErrorItemRecyclerAdapter;
 import com.mobile.adapters.RecommendGridAdapter;
 import com.mobile.adapters.RecommendItemsDiffUtilCallback;
 import com.mobile.components.customfontviews.TextView;
@@ -29,7 +28,6 @@ import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompleti
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.service.tracking.TrackingPage;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -60,6 +58,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     private int scrolledAmount = 0;
     private int requestCompletionCount = 0;
     private boolean isFragmentVisibleToUser = false;
+    private Error currentError;
 
     public MyBamiloFragment() {
         super(true, R.layout.fragment_my_bamilo);
@@ -104,7 +103,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
                     getBaseActivity().onSearchBarScrolled(dy);
                 }
                 if (dy != 0) {
-                    if (dy < 0 && ((GridLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition() >
+                    if (dy < 0 && ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition() >
                             BACK_TO_TOP_FAB_VISIBILITY_LIMIT) {
                         fabBackToTop.show();
                     } else {
@@ -253,6 +252,9 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
                 }
             }
         });
+        if (currentError != null) {
+            handleError(currentError);
+        }
     }
 
     private void requestForRecommendLists() {
@@ -261,26 +263,30 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         new RecommendManager().getEmarsysHomes(this, new RecommendManager.EmarsysErrorCallback() {
             @Override
             public void onEmarsysRecommendError(Error error) {
-                loadInProgress = false;
-                fabBackToTop.hide();
-                getBaseActivity().syncSearchBarState(0);
-                showFragmentNoNetworkRetry();
-                /*srlRecommendItemsList.setRefreshing(loadInProgress);
-                srlRecommendItemsList.setEnabled(false);
-                rvRecommendedItemsList.setAdapter(new ErrorItemRecyclerAdapter(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        srlRecommendItemsList.setEnabled(true);
-                        recommendListItems.clear();
-                        recommendGridAdapter.notifyDataSetChanged();
-                        rvRecommendedItemsList.setAdapter(recommendGridAdapter);
-                        refreshRecommends();
-                    }
-                }, ErrorLayoutFactory.NO_NETWORK_LAYOUT));*/
+                currentError = error;
+                handleError(error);
             }
         }, RecommendManager.createHomeExcludeItemListsMap(null), HOME_PAGES_COUNT);
     }
 
+    private void handleError(Error error) {
+        loadInProgress = false;
+        fabBackToTop.hide();
+        getBaseActivity().syncSearchBarState(0);
+        Throwable cause = error.getCause();
+        while (true) {
+            if (cause == null || cause instanceof java.net.SocketTimeoutException) {
+                break;
+            } else {
+                cause = cause.getCause();
+            }
+        }
+        if (cause != null && cause instanceof java.net.SocketTimeoutException) {
+            showFragmentNetworkErrorRetry();
+        } else {
+            showFragmentNoNetworkRetry();
+        }
+    }
 
 
     @Override
@@ -295,6 +301,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
 
     @Override
     public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+        currentError = null;
         showFragmentContentContainer();
         loadInProgress = false;
         requestCompletionCount++;

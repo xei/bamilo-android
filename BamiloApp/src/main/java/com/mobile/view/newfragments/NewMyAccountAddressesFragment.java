@@ -130,10 +130,15 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
 
     @Override
     protected void triggerGetAddresses() {
-        triggerContentEventProgress(new GetMyAddressesHelper(), null, this);
+        triggerContentEvent(new GetMyAddressesHelper(), null, this);
     }
 
-       @Override
+    @Override
+    protected void onClickRetryButton(View view) {
+        triggerGetForm();
+    }
+
+    @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         /*if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");

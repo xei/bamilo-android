@@ -259,7 +259,8 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     // Process the click on retry button.
     @Override
     protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
+        getBaseActivity().onBackPressed();
+        /*super.onClickRetryButton(view);
 
         Bundle bundle = new Bundle();
         if (BamiloApplication.CUSTOMER != null) {
@@ -267,12 +268,12 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
+        }*/
     }
 
     /*
-     * Disable the next button case No payment options available
-     */
+         * Disable the next button case No payment options available
+         */
     @SuppressWarnings("ConstantConditions")
     private void validatePaymentIsAvailableOrIsNecessary() {
         try {
@@ -339,6 +340,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             return;

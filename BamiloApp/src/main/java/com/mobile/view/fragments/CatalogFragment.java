@@ -1221,22 +1221,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFeaturedBoxNoResult(featuredBox);
             showNoResult = true;
         }
-        // Case network errors except No network
-        else if (ErrorCode.isNetworkError(errorCode)
-                && errorCode != ErrorCode.NO_CONNECTIVITY
-                && errorCode != ErrorCode.HTTP_STATUS
-                && errorCode != ErrorCode.SERVER_OVERLOAD
-                && errorCode != ErrorCode.SERVER_IN_MAINTENANCE
-                && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
-            showFilterUnexpectedError();
-        }
         // Case No Network
         else if (super.handleErrorEvent(baseResponse)) {
             Print.i(TAG, "HANDLE BASE FRAGMENT");
         }
         // Case unexpected error
         else {
-            showContinueShopping();
+            showFragmentNetworkErrorRetry();
         }
     }
 

@@ -184,7 +184,7 @@
     <string name="search_label">جستجو</string>
     <string name="section_title_account">تنظیمات حساب کاربری</string>
     <string name="section_title_notification">با ما در ارتباط باشید</string>
-    <string name="server_error">بازیابی اطلاعات دچار مشکل شده است.</string>
+    <string name="server_error">خطا در برقراری ارتباط, مجدد تلاش کنید</string>
     <string name="server_error_title">مشکلی ایجاد شده است.</string>
     <string name="share_checkout_this_product">این کالاهایی که یافته ام را نیز مشاهده کنید:</string>
     <string name="share_subject">اشتراک گذاری %s</string>
@@ -577,5 +577,9 @@
     <string name="internet_settings">تنظیمات اینترنت</string>
     <string name="there_is_no_access_to_internet_label">دسترسی به اینترنت امکان‌پذیر نمی‌باشد</string>
     <string name="retry_label">تلاش مجدد</string>
+    <string name="network_timeout_error">خطا در برقراری ارتباط</string>
+    <string name="server_in_maintenance_warning">خطایی از سمت سرور رخ داده</string>
+    <string name="please_wait_for_a_while">لطفا کمی صبر کنید</string>
+    <string name="loading_more_orders">بارگذاری سفارشات بیشتر ...</string>
 
 </resources>

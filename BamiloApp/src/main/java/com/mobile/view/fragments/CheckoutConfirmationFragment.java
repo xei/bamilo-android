@@ -106,6 +106,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Print.i(TAG, "ON VIEW CREATED");
+        super.onViewCreated(view, savedInstanceState);
         super.setCheckoutStep(view, 2);
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getBaseActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -188,6 +189,10 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
     }
 
+    @Override
+    protected void onClickRetryButton(View view) {
+        getBaseActivity().onBackPressed();
+    }
 
     private void validateCoupon() {
         mVoucherCode = mVoucherView.getText().toString();
@@ -447,14 +452,21 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+        // Check if the request is a partial request
+        if (baseResponse.getEventType() == EventType.GET_MULTI_STEP_SHIPPING) {
+            showDeliveryTime("");
+            return;
+        }
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+            getBaseActivity().onBackPressed();
             return;
         }
         // Get event type and error
