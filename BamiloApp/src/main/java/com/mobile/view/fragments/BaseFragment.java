@@ -924,7 +924,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public boolean handleRequestError(int errorCode, BaseResponse response) {
         switch (errorCode) {
             case ErrorCode.ERROR_PARSING_SERVER_DATA:
-                showFragmentMaintenance();
+                showFragmentServerMaintenanceRetry();
                 return true;
             case ErrorCode.CUSTOMER_NOT_LOGGED_IN:
                 onLoginRequired();

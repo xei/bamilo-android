@@ -581,5 +581,6 @@
     <string name="server_in_maintenance_warning">خطایی از سمت سرور رخ داده</string>
     <string name="please_wait_for_a_while">لطفا کمی صبر کنید</string>
     <string name="loading_more_orders">بارگذاری سفارشات بیشتر ...</string>
+    <string name="please_select_a_payment_method">لطفا یکی از روش‌های پرداخت را انتخاب کنید!</string>
 
 </resources>

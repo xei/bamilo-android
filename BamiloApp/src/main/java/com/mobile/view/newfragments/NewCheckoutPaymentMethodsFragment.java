@@ -245,8 +245,12 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         int id = view.getId();
         // Submit
         if (id == R.id.payment_continue) {
-            setMultistepConfirmation();
-            getBaseActivity().hideKeyboard();
+            if (paymentMethodAdapter.getSelectedId() == -1) {
+                showWarningErrorMessage(getString(R.string.please_select_a_payment_method));
+            } else {
+                setMultistepConfirmation();
+                getBaseActivity().hideKeyboard();
+            }
         } else {
             // Case Unknown
             Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
@@ -346,12 +350,13 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         if (isOnStoppingProcess) {
             return;
         }
+        if (baseResponse.getEventType() == EventType.SET_MULTI_STEP_PAYMENT) {
+            paymentMethodAdapter.clearSelection();
+            paymentMethodAdapter.notifyDataSetChanged();
+        }
 
     	// Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            if (baseResponse.getEventType() == EventType.SET_MULTI_STEP_PAYMENT) {
-                paymentMethodAdapter.notifyDataSetChanged();
-            }
             return;
         }
 

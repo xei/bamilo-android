@@ -104,7 +104,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             @Override
             public void onClick(View v) {
                 RadioButton cb = (RadioButton) v;
-                int clickedPos = ((Integer) cb.getTag(R.string.address_item_key_1)).intValue();
+                int clickedPos = holder.getAdapterPosition();
 
                 if (cb.isChecked()) {
                     if (lastChecked != null && clickedPos != lastCheckedPos) {
@@ -126,7 +126,18 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
 
     }
 
+    public void clearSelection() {
+        for (AdapterItemSelection method : methodSelection) {
+            method.setSelected(false);
+        }
+        lastCheckedPos = -1;
+        lastChecked = null;
+    }
+
     public int getSelectedId() {
+        if (methodSelection == null || methodSelection.size() == 0 || lastCheckedPos < 0) {
+            return -1;
+        }
         return methodSelection.get(lastCheckedPos).id;
     }
 

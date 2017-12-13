@@ -165,9 +165,9 @@ public class ErrorLayoutFactory {
                 case NETWORK_ERROR_LAYOUT:
                     // TODO: 12/11/2017 change error icon
                     new Builder()
-                            .setContent(R.drawable.img_request_failure, R.string.network_timeout_error)
+                            .setContent(R.drawable.img_request_failure, R.string.network_timeout_error, R.string.please_wait_for_a_while)
                             .setButton(R.string.retry_label, R.color.retry_text_color, R.drawable.network_connection_retry_btn_bg)
-                            .showRetryButton()
+                            .showRetryButtonWithDelay(5000)
                             .showButtonSpinning();
                     break;
                 case MAINTENANCE_LAYOUT:
@@ -302,7 +302,7 @@ public class ErrorLayoutFactory {
             mErrorLayout.findViewById(R.id.btnInternetSettings).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mErrorLayout.getContext().startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                    mErrorLayout.getContext().startActivity(new Intent(Settings.ACTION_SETTINGS));
                 }
             });
             return this;

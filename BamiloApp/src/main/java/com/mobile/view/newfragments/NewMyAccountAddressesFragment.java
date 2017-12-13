@@ -173,6 +173,7 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        hideActivityProgress();
         /*if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;

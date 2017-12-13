@@ -32,6 +32,7 @@ import com.mobile.service.pojo.RestConstants;
 import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.tracking.gtm.GTMValues;
 import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -474,6 +475,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        hideActivityProgress();
         Print.i(TAG, "ON ERROR RESPONSE");
         // Get type
         EventType eventType = baseResponse.getEventType();
@@ -483,9 +485,11 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             return;
         }
         // Validate common errors
+        if (baseResponse.getEventType() == EventType.VALIDATE_PRODUCTS) {
+            baseResponse.setEventTask(EventTask.NORMAL_TASK);
+        }
         if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
-            hideActivityProgress();
             return;
         }
         // Validate type
