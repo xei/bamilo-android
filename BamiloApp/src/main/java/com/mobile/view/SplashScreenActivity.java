@@ -33,6 +33,7 @@ import com.mobile.service.rest.configs.AigRestContract;
 import com.mobile.service.rest.errors.ErrorCode;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.DeviceInfoHelper;
+import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
@@ -487,93 +488,82 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             Print.e(TAG, "shouldHandleEvent: " + shouldHandleEvent);
             return;
         }
-        // Get data
-        EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
 
         Print.i(TAG, "ERROR CODE: " + errorCode);
+        // Validate error code
+        Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode);
+        // Case network error
         if (ErrorCode.isNetworkError(errorCode)) {
-            switch (errorCode) {
-                case ErrorCode.IO:
-                case ErrorCode.CONNECT_ERROR:
-                case ErrorCode.HTTP_STATUS:
-                    // Validate if has redirect page otherwise continue
-                    if (!hasRedirectPage(CountryPersistentConfigs.getRedirectPage(getApplicationContext()))) {
-                        showUnexpectedError();
-                    }
-                    break;
-                case ErrorCode.TIME_OUT:
-                case ErrorCode.NO_CONNECTIVITY:
-                    showFragmentRetry();
-                    break;
-                case ErrorCode.SSL:
-                case ErrorCode.SERVER_IN_MAINTENANCE:
-                    setLayoutMaintenance(eventType);
-                    break;
-                case ErrorCode.REQUEST_ERROR:
-                    // Generic error message
-                    String msg = baseResponse.getErrorMessage();
-                    if(TextUtils.isNotEmpty(baseResponse.getErrorMessage())) {
-                        msg = getString(R.string.validation_errortext);
-                    }
-
-                    dialog = DialogGenericFragment.newInstance(
-                            true,
-                            false,
-                            getString(R.string.validation_title),
-                            msg,
-                            getResources().getString(R.string.ok_label),
-                            "",
-                            new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dialog.dismissAllowingStateLoss();
-                                    }
-                                }
-                            });
-                    dialog.show(getSupportFragmentManager(), null);
-                    break;
-                case ErrorCode.SERVER_OVERLOAD:
-                    Print.w("SHOW OVERLOAD");
-                    ActivitiesWorkFlow.showOverLoadErrorActivity(this);
-                    break;
-                default:
-                    if (dialog != null) {
-                        try {
-                            dialog.dismissAllowingStateLoss();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    dialog = DialogGenericFragment.createServerErrorDialog(SplashScreenActivity.this,
-                            new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Re-send initialize event
-                                    retryRequest();
-                                    dialog.dismissAllowingStateLoss();
-                                }
-                            }, true);
-                    dialog.show(getSupportFragmentManager(), null);
-
-                    break;
-            }
-
+            handleNetworkError(errorCode);
         }
-        else if (errorCode == ErrorCode.ERROR_PARSING_SERVER_DATA) {
-            setLayoutMaintenance(eventType);
+        // Case request error
+        else {
+            handleRequestError(errorCode);
         }
-        else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
-            if (BamiloApplication.INSTANCE.countriesAvailable != null && BamiloApplication.INSTANCE.countriesAvailable.size() > 0) {
-                //Print.i(TAG, "code1configs received response correctly!!!");
-                // Auto country selection
-                LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
-            } else {
-                setLayoutMaintenance(eventType);
-            }
+    }
+
+    /**
+     * Handle network events.
+     */
+    public boolean handleNetworkError(int errorCode) {
+        boolean result = true;
+        switch (errorCode) {
+            case ErrorCode.HTTP_STATUS:
+            case ErrorCode.IO:
+            case ErrorCode.CONNECT_ERROR:
+            case ErrorCode.TIME_OUT:
+                showFragmentNetworkErrorRetry();
+                break;
+            case ErrorCode.NO_CONNECTIVITY:
+                showFragmentNoNetworkRetry();
+                break;
+            case ErrorCode.SSL:
+            case ErrorCode.SERVER_IN_MAINTENANCE:
+            case ErrorCode.SERVER_OVERLOAD:
+                showFragmentServerMaintenanceRetry();
+                break;
+            default:
+                result = false;
+                break;
         }
+        return result;
+    }
+
+    /**
+     * Handle request errors
+     */
+    public boolean handleRequestError(int errorCode) {
+        switch (errorCode) {
+            case ErrorCode.ERROR_PARSING_SERVER_DATA:
+                showFragmentServerMaintenanceRetry();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Show the retry view from the root layout
+     */
+    protected void showFragmentNetworkErrorRetry() {
+        showErrorLayout(ErrorLayoutFactory.NETWORK_ERROR_LAYOUT, this);
+    }
+
+    /**
+     * Show the retry view from the root layout
+     * @author sergiopereira
+     */
+    protected void showFragmentNoNetworkRetry() {
+        showErrorLayout(ErrorLayoutFactory.NO_NETWORK_LAYOUT, this);
+    }
+
+    /**
+     * Show the retry view from the root layout
+     * @author sergiopereira
+     */
+    protected void showFragmentServerMaintenanceRetry() {
+        showErrorLayout(ErrorLayoutFactory.MAINTENANCE_LAYOUT, this);
     }
 
     /*
