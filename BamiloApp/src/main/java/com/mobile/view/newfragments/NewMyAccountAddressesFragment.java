@@ -85,11 +85,7 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
     public void onResume() {
         super.onResume();
         // Get addresses
-        if(mAddresses == null) {
-            triggerGetForm();
-        } else {
-            showAddresses(mAddresses, -1);
-        }
+        triggerGetForm();
     }
 
     @Override
@@ -154,7 +150,7 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
         switch (eventType) {
             case GET_CUSTOMER_ADDRESSES_EVENT:
                 super.showAddresses((Addresses) baseResponse.getContentData(), -1);
-
+                fabNewAddress.show();
                 if (!pageTracked) {
                     TrackerDelegator.trackPage(TrackingPage.MY_ADDRESSES, getLoadTime(), false);
                     pageTracked = true;

@@ -124,11 +124,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Get addresses
-        if(mAddresses == null) {
-            triggerGetForm();
-        } else {
-            showAddresses(mAddresses, mSelectedAddress);
-        }
+        triggerGetForm();
     }
 
     @Override
@@ -212,6 +208,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_MULTI_STEP_ADDRESSES:
+                fabNewAddress.show();
                 // Get form and show order
                 MultiStepAddresses multiStepAddresses = (MultiStepAddresses) baseResponse.getContentData();
                 //CheckoutStepManager.setTotalBar(mCheckoutTotalBar, multiStepAddresses.getOrderSummary());
