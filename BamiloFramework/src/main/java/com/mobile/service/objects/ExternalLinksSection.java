@@ -1,4 +1,3 @@
-/*
 package com.mobile.service.objects;
 
 import android.os.Parcel;
@@ -12,11 +11,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-*/
+
 /**
  * Created by msilva on 4/19/16.
  * Class that represents a External Links Section that will be presented in NavigationCategoriesFragment
- *//*
+ */
 
 public class ExternalLinksSection implements IJSONSerializable, Parcelable {
 
@@ -109,4 +108,3 @@ public class ExternalLinksSection implements IJSONSerializable, Parcelable {
 
 
 }
-*/

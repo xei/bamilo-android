@@ -3,6 +3,7 @@ package com.mobile.service.rest.interfaces;
 import com.mobile.service.forms.AddressForms;
 import com.mobile.service.forms.Form;
 import com.mobile.service.forms.ReturnReasonForm;
+import com.mobile.service.objects.ExternalLinksSection;
 import com.mobile.service.objects.addresses.Address;
 import com.mobile.service.objects.addresses.AddressCities;
 import com.mobile.service.objects.addresses.AddressPostalCodes;
@@ -160,9 +161,9 @@ public interface AigApiInterface {
     void getCategoriesPaginated(Callback<BaseResponse<Categories>> callback);
     String getCategoriesPaginated = "getCategoriesPaginated";
 
-    /*@GET("/")
+    @GET("/")
     void getExternalLinks(Callback<BaseResponse<ExternalLinksSection>> callback);
-    String getExternalLinks = "getExternalLinks";*/
+    String getExternalLinks = "getExternalLinks";
 
     @GET("/")
     void getHome(Callback<BaseResponse<HomePageComponents>> callback);
