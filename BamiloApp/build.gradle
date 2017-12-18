@@ -139,7 +139,7 @@ dependencies {
     debugCompile 'com.facebook.stetho:stetho:1.5.0'
     debugCompile 'com.facebook.stetho:stetho-okhttp:1.5.0'
     // #LEAK :: https://github.com/square/leakcanary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     // #SCAPEL :: https://github.com/JakeWharton/scalpel
     debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
 }
