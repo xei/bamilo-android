@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.crashlytics.android.Crashlytics;
 import com.emarsys.predict.Session;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -41,10 +42,13 @@ import com.mobile.utils.CheckVersion;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
+import com.pushwoosh.PushManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import io.fabric.sdk.android.Fabric;
 
 public class BamiloApplication extends Application {
 
@@ -79,6 +83,10 @@ public class BamiloApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // init crashlytics
+        Fabric.with(this, new Crashlytics());
+        Crashlytics.setUserIdentifier(PushManager.getPushwooshHWID(this.getApplicationContext()));
 
         // ON APPLICATION CREATE
         Print.i(TAG, "ON APPLICATION CREATE");

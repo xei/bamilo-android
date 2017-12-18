@@ -67,8 +67,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private static final int SPLASH_DURATION_OUT = 500;
 
-    private DialogGenericFragment dialog;
-
     private boolean shouldHandleEvent = true;
 
     private View mMainMapImage;
@@ -153,10 +151,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        // Validate dialog
-        if (dialog != null) {
-            dialog.dismissAllowingStateLoss();
-        }
     }
 
     /*
@@ -183,6 +177,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Print.i(TAG, "ON DESTROY");
         // Intercept event
         shouldHandleEvent = false;
+
+        // deallocate objects
+        mMainMapImage = null;
+        mMainFallBackStub = null;
+        mErrorFallBackStub = null;
+        mLastSuccessResponse = null;
+        mErrorLayoutFactory = null;
     }
 
 
@@ -291,15 +292,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         EventType eventType = response.getEventType();
         int errorCode = response.getError() != null ? response.getError().getCode() : ErrorCode.NO_ERROR;
         Print.i(TAG, "ON SUCCESS RESPONSE: " + eventType);
-
-        // Dismiss dialog
-        if (dialog != null && dialog.isVisible()) {
-            try {
-                dialog.dismissAllowingStateLoss();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
         // Case event
         if (eventType == EventType.INITIALIZE) {

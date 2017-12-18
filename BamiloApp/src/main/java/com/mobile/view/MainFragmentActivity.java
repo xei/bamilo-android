@@ -19,9 +19,9 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EventFactory;
 import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
 import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
+import com.mobile.factories.EventFactory;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.utils.CollectionUtils;
@@ -44,10 +44,8 @@ import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.ComboFragment;
-import com.mobile.view.fragments.DrawerFragment;
 import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.FrontPageFragment;
-import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.ItemTrackingFragment;
 import com.mobile.view.fragments.MyAccountAboutFragment;
@@ -78,7 +76,6 @@ import com.mobile.view.fragments.order.MyOrdersFragment;
 import com.mobile.view.fragments.order.OrderReturnCallFragment;
 import com.mobile.view.fragments.order.OrderReturnConditionsFragment;
 import com.mobile.view.fragments.order.OrderReturnStepsMain;
-import com.mobile.view.fragments.order.OrderStatusFragment;
 import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
 import com.mobile.view.newfragments.NewCheckoutPaymentMethodsFragment;
 import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
@@ -91,15 +88,14 @@ import com.pushwoosh.PushManager;
 import com.pushwoosh.SendPushTagsCallBack;
 import com.pushwoosh.fragment.PushEventListener;
 import com.pushwoosh.fragment.PushFragment;
-import com.crashlytics.android.Crashlytics;
-import io.fabric.sdk.android.Fabric;
-import me.toptas.fancyshowcase.FancyShowCaseView;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import me.toptas.fancyshowcase.FancyShowCaseView;
 
 import static com.mobile.view.fragments.CatalogFragment.FILTER_TAG;
 
@@ -287,9 +283,6 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 Print.d(TAG, "COULDN'T RECOVER BACK STACK");
             }
         }
-
-        Fabric.with(this, new Crashlytics());
-        Crashlytics.setUserIdentifier(PushManager.getPushwooshHWID(this.getApplicationContext()));
 
         TrackerManager.addEventTracker("EmarsysTracker", EmarsysTracker.getInstance());
         TrackerManager.addEventTracker("PushWooshTracker", PushWooshTracker.getInstance());
