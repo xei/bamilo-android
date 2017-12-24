@@ -14,6 +14,7 @@ import com.crashlytics.android.Crashlytics;
 import com.emarsys.predict.Session;
 import com.mobile.di.components.DaggerMainComponent;
 import com.mobile.di.components.MainComponent;
+import com.mobile.di.modules.AndroidModule;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.extlibraries.emarsys.predict.AndroidStorage;
@@ -143,6 +144,7 @@ public class BamiloApplication extends Application {
     private MainComponent createComponent() {
         return DaggerMainComponent
                 .builder()
+                .androidModule(new AndroidModule(this))
                 .build();
     }
 

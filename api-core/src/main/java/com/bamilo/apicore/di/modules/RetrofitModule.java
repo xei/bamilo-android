@@ -19,10 +19,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class ApiModule {
-
-    private static final String API_BASE_URL = "http://www.bamilo.com/mobapi/";
-    private static final String API_VERSION = "v2.6/";
+public class RetrofitModule {
 
     @Provides
     @Singleton
@@ -68,20 +65,6 @@ public class ApiModule {
     @Provides
     public Gson provideGson() {
         return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-    }
-
-    @Provides
-    @Singleton
-    @Named("apiBaseUrl")
-    public HttpUrl provideApiBaseUrl(@Named("apiVersion") String apiVersion) {
-        return HttpUrl.parse(API_BASE_URL + apiVersion);
-    }
-
-    @Provides
-    @Singleton
-    @Named("apiVersion")
-    public String provideApiVersion() {
-        return API_VERSION;
     }
 
     @Provides
