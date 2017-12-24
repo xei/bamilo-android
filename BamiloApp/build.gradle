@@ -142,6 +142,11 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     // #SCAPEL :: https://github.com/JakeWharton/scalpel
     debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
+    /** Dagger 2 **/
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+
+    compile project(':api-core')
 }
 
 /**

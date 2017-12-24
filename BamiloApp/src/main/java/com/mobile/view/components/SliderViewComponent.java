@@ -94,22 +94,6 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
         this.items = content;
     }
 
-    @Override
-    public void setComponent(BaseComponent component) {
-        if (!(component instanceof SliderComponent)) {
-            return;
-        }
-        List<Item> sliderItems = new ArrayList<>();
-        SliderComponent sliderComponent = (SliderComponent) component;
-
-        for (SliderComponent.Slide slide : sliderComponent.getSlides()) {
-            Item tempItem = new Item(slide.getPortraitImage(), slide.getTarget());
-            sliderItems.add(tempItem);
-        }
-
-        setContent(sliderItems);
-    }
-
     public OnSlideClickListener getOnSlideClickListener() {
         return onSlideClickListener;
     }

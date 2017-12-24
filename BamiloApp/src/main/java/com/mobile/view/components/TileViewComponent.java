@@ -86,22 +86,6 @@ public class TileViewComponent extends BaseViewComponent<List<TileViewComponent.
         this.tileItems = content;
     }
 
-    @Override
-    public void setComponent(BaseComponent component) {
-        if (!(component instanceof TileComponent)) {
-            return;
-        }
-        TileComponent tileComponent = (TileComponent) component;
-        List<TileItem> tileItems = new ArrayList<>();
-
-        for (TileComponent.Tile tile : tileComponent.getTiles()) {
-            TileItem tempTile = new TileItem(tile.getPortraitImage(), tile.getTarget());
-            tileItems.add(tempTile);
-        }
-
-        setContent(tileItems);
-    }
-
     public OnTileClickListener getOnTileClickListener() {
         return onTileClickListener;
     }

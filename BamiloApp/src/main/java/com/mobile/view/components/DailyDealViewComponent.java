@@ -177,51 +177,6 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
         this.mDealItem = content;
     }
 
-    @Override
-    public void setComponent(BaseComponent component) {
-        if (!(component instanceof DailyDealComponent)) {
-            return;
-        }
-        DailyDealComponent dailyDealComponent = (DailyDealComponent) component;
-        DealItem dealItem = new DealItem();
-
-        dealItem.componentBackgroundColor = dailyDealComponent.getBackgroundColor();
-
-        dealItem.dealTitle = dailyDealComponent.getTitle();
-        dealItem.dealTitleColor = dailyDealComponent.getTitleTextColor();
-
-        dealItem.moreOptionsTitle = dailyDealComponent.getMoreOptionsTitle();
-        dealItem.moreOptionsTargetLink = dailyDealComponent.getMoreOptionsTarget();
-        dealItem.moreOptionsTitleColor = dailyDealComponent.getMoreOptionsTitleColor();
-
-        dealItem.countDownTextColor = dailyDealComponent.getCounterTextColor();
-        dealItem.countDownRemainingSeconds = dailyDealComponent.getRemainingSeconds();
-        dealItem.countDownStartTimeSeconds = dailyDealComponent.getInitialTimeSeconds();
-
-        List<Product> dealProducts = new ArrayList<>();
-        if (dailyDealComponent.getProducts() != null) {
-            for (DailyDealComponent.Product product : dailyDealComponent.getProducts()) {
-                Product tempProduct = new Product();
-                tempProduct.sku = product.getSku();
-                tempProduct.name = product.getName();
-                tempProduct.brand = product.getBrand();
-                tempProduct.thumb = product.getImage();
-                tempProduct.maxSavingPercentage = product.getMaxSavingPercentage();
-                if (product.getSpecialPrice() == 0) {
-                    tempProduct.price = product.getPrice();
-                } else {
-                    tempProduct.price = product.getSpecialPrice();
-                    tempProduct.oldPrice = product.getPrice();
-                }
-                tempProduct.hasStock = product.isHasStock();
-                dealProducts.add(tempProduct);
-            }
-        }
-        dealItem.dealProducts = dealProducts;
-
-        setContent(dealItem);
-    }
-
     public void pause() {
         paused = true;
     }

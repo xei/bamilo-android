@@ -47,20 +47,6 @@ public class CategoriesCarouselViewComponent extends BaseViewComponent<List<Cate
         this.categoryItems = content;
     }
 
-    @Override
-    public void setComponent(BaseComponent component) {
-        if (!(component instanceof CarouselComponent)) {
-            return;
-        }
-        List<CategoryItem> categoryItems = new ArrayList<>();
-        CarouselComponent carouselComponent = (CarouselComponent) component;
-        for (CarouselComponent.CarouselItem carouselItem : carouselComponent.getCarouselItems()) {
-            CategoryItem tempItem = new CategoryItem(carouselItem.getTitle(), carouselItem.getPortraitImage(), carouselItem.getTarget());
-            categoryItems.add(tempItem);
-        }
-        setContent(categoryItems);
-    }
-
     public void setOnCarouselItemClickListener(OnCarouselItemClickListener onCarouselItemClickListener) {
         this.onCarouselItemClickListener = onCarouselItemClickListener;
     }

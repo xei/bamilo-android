@@ -12,6 +12,8 @@ import android.text.TextUtils;
 
 import com.crashlytics.android.Crashlytics;
 import com.emarsys.predict.Session;
+import com.mobile.di.components.DaggerMainComponent;
+import com.mobile.di.components.MainComponent;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.extlibraries.emarsys.predict.AndroidStorage;
@@ -51,6 +53,7 @@ import java.util.HashMap;
 import io.fabric.sdk.android.Fabric;
 
 public class BamiloApplication extends Application {
+    private static MainComponent component;
 
     private static final String TAG = BamiloApplication.class.getSimpleName();
     // Components
@@ -77,12 +80,19 @@ public class BamiloApplication extends Application {
     // Search
     public String mSavedSearchTerm;
 
+    public static MainComponent getComponent() {
+        return component;
+    }
+
     /**
      * Create application
      */
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // init dagger component
+        component = createComponent();
 
         // init crashlytics
         Fabric.with(this, new Crashlytics());
@@ -128,6 +138,12 @@ public class BamiloApplication extends Application {
             Darwin.initialize(getApplicationContext(), SHOP_ID);
             getCustomerUtils();
         }
+    }
+
+    private MainComponent createComponent() {
+        return DaggerMainComponent
+                .builder()
+                .build();
     }
 
     public synchronized void init(Handler initializationHandler) {
