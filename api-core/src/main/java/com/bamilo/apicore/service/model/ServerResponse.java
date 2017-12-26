@@ -8,8 +8,7 @@ import com.google.gson.JsonObject;
  * All model objects should implement this interface
  */
 
-public abstract class ServerResponse<T> {
-    private T data;
+public abstract class ServerResponse {
 
     public ServerResponse(JsonObject jsonObject, Gson gson) {
         initializeWithJson(jsonObject, gson);
@@ -18,14 +17,6 @@ public abstract class ServerResponse<T> {
     abstract EventType getEventType();
 
     abstract EventTask getEventTask();
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
 
     protected abstract void initializeWithJson(JsonObject jsonObject, Gson gson);
 }

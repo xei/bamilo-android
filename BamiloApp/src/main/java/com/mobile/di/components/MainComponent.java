@@ -1,5 +1,6 @@
 package com.mobile.di.components;
 
+import com.bamilo.apicore.di.modules.CatalogModule;
 import com.bamilo.apicore.di.modules.RetrofitModule;
 import com.bamilo.apicore.di.modules.HomeModule;
 import com.mobile.di.modules.AndroidModule;
@@ -22,4 +23,6 @@ import dagger.Component;
 })
 public interface MainComponent {
     HomeComponent plus(HomeModule homeModule);
+
+    CatalogComponent plus(CatalogModule catalogModule);
 }

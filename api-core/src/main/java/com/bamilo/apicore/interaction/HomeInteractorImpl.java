@@ -51,8 +51,7 @@ public class HomeInteractorImpl implements HomeInteractor {
                     .map(new Func1<JsonObject, HomeResponse>() {
                         @Override
                         public HomeResponse call(JsonObject jsonObject) {
-                            JsonObject data = jsonObject.getAsJsonObject(JsonConstants.RestConstants.METADATA);
-                            return new HomeResponse(data, mGson);
+                            return new HomeResponse(jsonObject, mGson);
                         }
                     })
                     .subscribeOn(schedulerProvider.getNetworkThreadScheduler())
