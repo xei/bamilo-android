@@ -22,11 +22,11 @@ public interface BamiloApiService {
     @Headers("Content-Type: application/json")
     Observable<JsonObject> loadCategoryCatalog(@Path("category-name") String category, @Path("filters") String filters, @Path("page") int page, @Path("max-items") int maxItems);
 
-    @GET("search/find/maxitems/{max-items}/page/{page}/hash/{hash}")
+    @GET("search/find/maxitems/{max-items}/page/{page}/hash/{hash}/{filters}")
     @Headers("Content-Type: application/json")
     Observable<JsonObject> loadHashCatalog(@Path("hash") String hash, @Path("filters") String filters, @Path("page") int page, @Path("max-items") int maxItems);
 
-    @GET("search/find/maxitems/{max-items}/page/{page}/q/{query}")
+    @GET("search/find/maxitems/{max-items}/page/{page}/q/{query}/{filters}")
     @Headers("Content-Type: application/json")
     Observable<JsonObject> loadSearchCatalog(@Path("query") String query, @Path("filters") String filters, @Path("page") int page, @Path("max-items") int maxItems);
 

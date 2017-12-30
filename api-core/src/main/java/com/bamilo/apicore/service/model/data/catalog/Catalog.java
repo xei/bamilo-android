@@ -13,6 +13,9 @@ public class Catalog {
     @SerializedName("total_products")
     @Expose
     private Long totalProducts;
+    @SerializedName("search_term")
+    @Expose
+    private String searchTerm;
     @SerializedName("title")
     @Expose
     private String title;
@@ -28,6 +31,9 @@ public class Catalog {
     @SerializedName("filters")
     @Expose
     private List<Filter> filters = null;
+    @SerializedName("error_message")
+    @Expose
+    private String errorMessage;
 
     public String getSort() {
         return sort;
@@ -85,4 +91,19 @@ public class Catalog {
         this.filters = filters;
     }
 
+    public String getSearchTerm() {
+        return searchTerm;
+    }
+
+    public void setSearchTerm(String searchTerm) {
+        this.searchTerm = searchTerm;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 }

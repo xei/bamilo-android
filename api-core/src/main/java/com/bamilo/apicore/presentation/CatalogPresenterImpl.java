@@ -43,7 +43,11 @@ public class CatalogPresenterImpl implements CatalogPresenter {
                     public void call(CatalogResponse catalogResponse) {
                         if (view != null) {
                             view.toggleProgress(false);
-                            view.performCatalog(catalogResponse.getCatalog());
+                            if (catalogResponse.isSuccess()) {
+                                view.performCatalog(catalogResponse.getCatalog());
+                            } else {
+                                view.showServerError(catalogResponse);
+                            }
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -78,7 +82,11 @@ public class CatalogPresenterImpl implements CatalogPresenter {
                     public void call(CatalogResponse catalogResponse) {
                         if (view != null) {
                             view.toggleProgress(false);
-                            view.performCatalog(catalogResponse.getCatalog());
+                            if (catalogResponse.isSuccess()) {
+                                view.performCatalog(catalogResponse.getCatalog());
+                            } else {
+                                view.showServerError(catalogResponse);
+                            }
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -113,7 +121,11 @@ public class CatalogPresenterImpl implements CatalogPresenter {
                     public void call(CatalogResponse catalogResponse) {
                         if (view != null) {
                             view.toggleProgress(false);
-                            view.performCatalog(catalogResponse.getCatalog());
+                            if (catalogResponse.isSuccess()) {
+                                view.performCatalog(catalogResponse.getCatalog());
+                            } else {
+                                view.showServerError(catalogResponse);
+                            }
                         }
                     }
                 }, new Action1<Throwable>() {

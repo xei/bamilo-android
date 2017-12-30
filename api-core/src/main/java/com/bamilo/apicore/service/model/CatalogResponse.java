@@ -22,6 +22,10 @@ import java.util.List;
 
 public class CatalogResponse extends ServerResponse {
     @Expose
+    @SerializedName(JsonConstants.RestConstants.SUCCESS)
+    private boolean success;
+
+    @Expose
     @SerializedName(JsonConstants.RestConstants.METADATA)
     private Catalog catalog;
 
@@ -46,6 +50,7 @@ public class CatalogResponse extends ServerResponse {
     @Override
     protected void initializeWithJson(JsonObject jsonObject, Gson gson) {
         if (jsonObject != null && gson != null) {
+            success = jsonObject.get(JsonConstants.RestConstants.SUCCESS).getAsBoolean();
             jsonObject = jsonObject.getAsJsonObject(JsonConstants.RestConstants.METADATA);
             if (jsonObject != null) {
                 catalog = gson.fromJson(jsonObject, Catalog.class);
@@ -77,5 +82,15 @@ public class CatalogResponse extends ServerResponse {
 
     public void setCatalog(Catalog catalog) {
         this.catalog = catalog;
+    }
+
+    @Override
+    public boolean isSuccess() {
+        return success;
+    }
+
+    @Override
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }

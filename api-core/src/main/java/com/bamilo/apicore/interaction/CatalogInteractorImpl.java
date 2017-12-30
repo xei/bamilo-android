@@ -72,7 +72,7 @@ public class CatalogInteractorImpl implements CatalogInteractor {
                     })
                     .subscribeOn(schedulerProvider.getNetworkThreadScheduler())
                     .observeOn(schedulerProvider.getMainThreadScheduler())
-                    .subscribe(categoryReplaySubject);
+                    .subscribe(hashReplaySubject);
         }
         return hashReplaySubject.asObservable();
     }
