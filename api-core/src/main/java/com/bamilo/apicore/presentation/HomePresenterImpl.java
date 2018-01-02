@@ -36,7 +36,7 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void destroy() {
-        if (!subscription.isUnsubscribed()) {
+        if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
         subscription = null;

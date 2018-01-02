@@ -1,4 +1,4 @@
-package com.bamilo.apicore.service.model.data;
+package com.bamilo.apicore.service.model.data.home;
 
 import com.bamilo.apicore.service.model.JsonConstants;
 import com.google.gson.annotations.Expose;

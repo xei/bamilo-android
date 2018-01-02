@@ -30,4 +30,8 @@ public interface BamiloApiService {
     @Headers("Content-Type: application/json")
     Observable<JsonObject> loadSearchCatalog(@Path("query") String query, @Path("filters") String filters, @Path("page") int page, @Path("max-items") int maxItems);
 
+    @GET("customer/orderlist/per_page/{items-per-page}/page/{page}")
+    @Headers("Content-Type: application/json")
+    Observable<JsonObject> loadOrdersList(@Path("items-per-page") int itemsPerPage, @Path("page") int page);
+
 }

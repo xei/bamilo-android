@@ -20,9 +20,9 @@ public abstract class ServerResponse {
         initializeWithJson(jsonObject, gson);
     }
 
-    abstract EventType getEventType();
+    public abstract EventType getEventType();
 
-    abstract EventTask getEventTask();
+    public abstract EventTask getEventTask();
 
     protected abstract void initializeWithJson(JsonObject jsonObject, Gson gson);
 

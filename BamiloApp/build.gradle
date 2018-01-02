@@ -109,6 +109,10 @@ android {
         disable 'ExtraTranslation', 'MissingTranslation'
     }
 
+    aaptOptions {
+        cruncherEnabled = false
+    }
+
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile

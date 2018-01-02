@@ -35,7 +35,7 @@ public class HomeInteractorImpl implements HomeInteractor {
 
     @Override
     public void destroy() {
-        if (homeSubscription != null && homeSubscription.isUnsubscribed()) {
+        if (homeSubscription != null && !homeSubscription.isUnsubscribed()) {
             homeSubscription.unsubscribe();
         }
         homeSubscription = null;

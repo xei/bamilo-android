@@ -1,6 +1,6 @@
 package com.bamilo.apicore.service.model;
 
-import com.bamilo.apicore.service.model.data.BaseComponent;
+import com.bamilo.apicore.service.model.data.home.BaseComponent;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -9,8 +9,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 /**
  * Created on 12/19/2017.
@@ -31,12 +29,12 @@ public class HomeResponse extends ServerResponse {
     }
 
     @Override
-    EventType getEventType() {
+    public EventType getEventType() {
         return EventType.GET_HOME_EVENT;
     }
 
     @Override
-    EventTask getEventTask() {
+    public EventTask getEventTask() {
         return EventTask.NORMAL_TASK;
     }
 

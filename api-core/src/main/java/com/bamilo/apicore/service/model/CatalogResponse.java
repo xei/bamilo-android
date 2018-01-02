@@ -38,12 +38,12 @@ public class CatalogResponse extends ServerResponse {
     }
 
     @Override
-    EventType getEventType() {
+    public EventType getEventType() {
         return EventType.GET_CATALOG_EVENT;
     }
 
     @Override
-    EventTask getEventTask() {
+    public EventTask getEventTask() {
         return EventTask.NORMAL_TASK;
     }
 

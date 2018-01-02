@@ -1,6 +1,7 @@
 package com.mobile.di.components;
 
 import com.bamilo.apicore.di.modules.CatalogModule;
+import com.bamilo.apicore.di.modules.OrdersListModule;
 import com.bamilo.apicore.di.modules.RetrofitModule;
 import com.bamilo.apicore.di.modules.HomeModule;
 import com.mobile.di.modules.AndroidModule;
@@ -25,4 +26,6 @@ public interface MainComponent {
     HomeComponent plus(HomeModule homeModule);
 
     CatalogComponent plus(CatalogModule catalogModule);
+
+    OrdersListComponent plus(OrdersListModule ordersListModule);
 }

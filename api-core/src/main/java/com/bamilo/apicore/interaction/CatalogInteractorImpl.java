@@ -98,19 +98,19 @@ public class CatalogInteractorImpl implements CatalogInteractor {
 
     @Override
     public void destroy() {
-        if (categorySubscription != null && categorySubscription.isUnsubscribed()) {
+        if (categorySubscription != null && !categorySubscription.isUnsubscribed()) {
             categorySubscription.unsubscribe();
         }
         categorySubscription = null;
         categoryReplaySubject = null;
 
-        if (hashSubscription != null && hashSubscription.isUnsubscribed()) {
+        if (hashSubscription != null && !hashSubscription.isUnsubscribed()) {
             hashSubscription.unsubscribe();
         }
         hashSubscription = null;
         hashReplaySubject = null;
 
-        if (searchSubscription != null && searchSubscription.isUnsubscribed()) {
+        if (searchSubscription != null && !searchSubscription.isUnsubscribed()) {
             searchSubscription.unsubscribe();
         }
         searchSubscription = null;

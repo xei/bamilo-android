@@ -1,4 +1,4 @@
-package com.bamilo.apicore.service.model.data;
+package com.bamilo.apicore.service.model.data.home;
 
 import com.bamilo.apicore.service.model.JsonConstants;
 import com.google.gson.annotations.Expose;
@@ -7,38 +7,45 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created on 12/20/2017.
+ * Created on 12/19/2017.
  */
 
-public class CarouselComponent extends BaseComponent {
+public class TileComponent extends BaseComponent {
+    public static final String TEMPLATE_1X = "1x", TEMPLATE_3X = "3x", TEMPLATE_5X = "5x";
+
+    @Expose
+    @SerializedName(JsonConstants.RestConstants.TILE_TEMPLATE)
+    private String tileTemplate;
     @Expose
     @SerializedName(JsonConstants.RestConstants.DATA)
-    private List<CarouselItem> carouselItems;
+    private List<Tile> tiles;
 
-    public List<CarouselItem> getCarouselItems() {
-        return carouselItems;
+    public String getTileTemplate() {
+        return tileTemplate;
     }
 
-    public void setCarouselItems(List<CarouselItem> carouselItems) {
-        this.carouselItems = carouselItems;
+    public void setTileTemplate(String tileTemplate) {
+        this.tileTemplate = tileTemplate;
     }
 
-    public static class CarouselItem {
+    public List<Tile> getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(List<Tile> tiles) {
+        this.tiles = tiles;
+    }
+
+    public static class Tile {
         @Expose
         @SerializedName(JsonConstants.RestConstants.IMAGE_PORTRAIT)
         private String portraitImage;
-
         @Expose
         @SerializedName(JsonConstants.RestConstants.IMAGE_LANDSCAPE)
         private String landscapeImage;
-
         @Expose
         @SerializedName(JsonConstants.RestConstants.TARGET)
         private String target;
-
-        @Expose
-        @SerializedName(JsonConstants.RestConstants.TITLE)
-        private String title;
 
         public String getPortraitImage() {
             return portraitImage;
@@ -62,14 +69,6 @@ public class CarouselComponent extends BaseComponent {
 
         public void setTarget(String target) {
             this.target = target;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
         }
     }
 }

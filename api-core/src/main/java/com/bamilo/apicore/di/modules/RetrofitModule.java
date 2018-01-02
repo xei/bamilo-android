@@ -1,16 +1,27 @@
 package com.bamilo.apicore.di.modules;
 
+import android.support.annotation.NonNull;
+
 import com.bamilo.apicore.service.BamiloApiService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
@@ -45,12 +56,6 @@ public class RetrofitModule {
     @Singleton
     public Converter.Factory provideGsonConverterFactory(Gson gson) {
         return GsonConverterFactory.create(gson);
-    }
-
-    @Provides
-    @Singleton
-    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor) {
-        return new OkHttpClient.Builder().addInterceptor(interceptor).build();
     }
 
     @Provides

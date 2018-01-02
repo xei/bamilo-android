@@ -207,3 +207,32 @@
 -keep class com.viewpagerindicator.** { *; }
 -keep interface com.viewpagerindicator.** { *; }
 #################################################################################
+
+-keepnames class * { @icepick.State *;}
+
+-dontwarn okio.**
+-dontwarn retrofit2.Platform$Java8
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn sun.misc.**
+
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+   long producerIndex;
+   long consumerIndex;
+}
+
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+
+-dontwarn com.google.errorprone.annotations.**
+
+# Model Classes
+-keep class com.bamilo.apicore.service.** { *; }
+
+# apache commons
+-keep class org.apache.commons.** { *; }
+-keep interface org.apache.commons.** { *; }

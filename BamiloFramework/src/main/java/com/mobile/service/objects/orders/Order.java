@@ -47,8 +47,16 @@ public class Order implements IJSONSerializable, Parcelable {
         return mNumber;
     }
 
+    public void setNumber(int mNumber) {
+        this.mNumber = mNumber;
+    }
+
     public String getDate() {
         return mDate;
+    }
+
+    public void setDate(String mDate) {
+        this.mDate = mDate;
     }
 
     public Date changemDateToDate(String date){
@@ -64,6 +72,10 @@ public class Order implements IJSONSerializable, Parcelable {
 
     public double getTotal() {
         return mTotal;
+    }
+
+    public void setTotal(double mTotal) {
+        this.mTotal = mTotal;
     }
 
     @Override

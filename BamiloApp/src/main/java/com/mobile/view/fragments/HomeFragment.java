@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import com.bamilo.apicore.di.modules.HomeModule;
 import com.bamilo.apicore.presentation.HomePresenter;
 import com.bamilo.apicore.service.model.ServerResponse;
-import com.bamilo.apicore.service.model.data.BaseComponent;
+import com.bamilo.apicore.service.model.data.home.BaseComponent;
 import com.bamilo.apicore.view.HomeView;
 import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -201,7 +201,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    public void showComponents(List<com.bamilo.apicore.service.model.data.BaseComponent> components) {
+    public void showComponents(List<BaseComponent> components) {
         if (dailyDealViewComponents == null) {
             dailyDealViewComponents = new ArrayList<>();
         }
@@ -214,7 +214,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
         String pageName = "HomePage";
         if (components != null) {
             mContainerLinearLayout.removeAllViews();
-            for (com.bamilo.apicore.service.model.data.BaseComponent component : components) {
+            for (BaseComponent component : components) {
                 BaseViewComponent viewComponent = BaseViewComponentFactory.createBaseViewComponent(component);
                 if (viewComponent != null) {
                     if (viewComponent instanceof TileViewComponent) {
@@ -274,7 +274,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
     @Override
     public void showServerError(ServerResponse response) {
-
+        // it isn't gonna happen
     }
 
     @Override

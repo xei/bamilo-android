@@ -1,6 +1,10 @@
 package com.mobile.view.components;
 
-import com.bamilo.apicore.service.model.data.*;
+import com.bamilo.apicore.service.model.data.home.BaseComponent;
+import com.bamilo.apicore.service.model.data.home.CarouselComponent;
+import com.bamilo.apicore.service.model.data.home.DealComponent;
+import com.bamilo.apicore.service.model.data.home.SliderComponent;
+import com.bamilo.apicore.service.model.data.home.TileComponent;
 
 import java.util.ArrayList;
 import java.util.List;
