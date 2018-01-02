@@ -289,6 +289,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
     @Override
     public void performHomeComponents(List<BaseComponent> components) {
+        showFragmentContentContainer();
         mComponents = components;
         showComponents(mComponents);
     }

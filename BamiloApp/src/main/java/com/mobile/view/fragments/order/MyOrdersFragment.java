@@ -418,6 +418,7 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
     @Override
     public void performOrdersList(OrdersListResponse ordersListResponse) {
         if (ordersListResponse != null && ordersListResponse.isSuccess()) {
+            showFragmentContentContainer();
             ArrayList<Order> orderList = new ArrayList<>();
 
             for (OrderListItem item : ordersListResponse.getOrderListItems()) {
