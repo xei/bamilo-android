@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.session.GetForgotPasswordFormHelper;
 import com.mobile.helpers.session.SetForgotPasswordHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.forms.Form;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
@@ -76,10 +78,16 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackPage(TrackingPage.FORGOT_PASSWORD, getLoadTime(), false);
+//        TrackerDelegator.trackPage(TrackingPage.FORGOT_PASSWORD, getLoadTime(), false);
 
         Print.i(TAG, "ON CREATE");
         mDynamicForm = null;
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.FORGOT_PASSWORD.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     @Override

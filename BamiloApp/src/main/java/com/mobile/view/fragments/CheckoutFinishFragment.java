@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -20,6 +21,7 @@ import com.mobile.helpers.checkout.GetStepFinishHelper;
 import com.mobile.helpers.checkout.SetStepFinishHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.forms.PaymentMethodForm;
 import com.mobile.service.objects.addresses.Address;
 import com.mobile.service.objects.cart.PurchaseCartItem;
@@ -147,6 +149,12 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         }
         // Track
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ORDER);
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_FINISH.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -223,7 +231,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.ORDER_CONFIRM, getLoadTime(), true);
+//        TrackerDelegator.trackPage(TrackingPage.ORDER_CONFIRM, getLoadTime(), true);
     }
 
     /*
@@ -628,7 +636,13 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                     showFragmentErrorRetry();
                 } else {
                     showMyOrder();
-                    TrackerDelegator.trackScreenLoadTiming(R.string.gaCheckoutConfirmation, mGABeginRequestMillis, "");
+//                    TrackerDelegator.trackScreenLoadTiming(R.string.gaCheckoutConfirmation, mGABeginRequestMillis, "");
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_FINISH.getName()), getString(R.string.gaScreen),
+                            "" ,
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                 }
                 break;
             case SET_MULTI_STEP_FINISH:

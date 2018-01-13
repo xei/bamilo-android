@@ -13,6 +13,7 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.LinearLayout;
 
 import com.mobile.adapters.NewCategoriesListAdapter;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.AnimatedExpandableListView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -22,6 +23,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.GetExternalLinksHelper;
 import com.mobile.helpers.categories.GetCategoriesHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.database.CategoriesTableHelper;
 import com.mobile.service.objects.ExternalLinks;
 import com.mobile.service.objects.ExternalLinksSection;
@@ -88,6 +90,13 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
                 R.layout.navigation_fragment_categories,
                 R.string.categories_fragment_title,
                 NO_ADJUST_CONTENT);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CATEGORY_MENU.getName()), getString(R.string.gaScreen), "", getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /**
@@ -334,7 +343,9 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
                 }
 
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.CATEGORY_MENU, getLoadTime(), false);
+//                    TrackerDelegator.trackPage(TrackingPage.CATEGORY_MENU, getLoadTime(), false);
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CATEGORIES.getName()), getString(R.string.gaScreen), "", getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
 

@@ -14,11 +14,14 @@ import com.bamilo.apicore.service.model.ServerResponse;
 import com.bamilo.apicore.service.model.data.home.BaseComponent;
 import com.bamilo.apicore.view.HomeView;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.home.TeaserCampaign;
 import com.mobile.service.objects.home.type.TeaserGroupType;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.NetworkConnectivity;
 import com.mobile.utils.ColorSequenceHolder;
 import com.mobile.utils.deeplink.TargetLink;
@@ -52,6 +55,14 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
     public HomeFragment() {
         super(true, R.layout.fragment_home);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Track only the screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.HOME.getName()), getString(R.string.gaScreen), "", getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     @Override

@@ -12,15 +12,20 @@ public enum TrackingPage {
     HOME(R.string.ghomepage),
     MY_BAMILO(R.string.gMyBamilo),
     PRODUCT_LIST(R.string.gproductlist),
+    PDV(R.string.gPDV),
     PRODUCT_DETAIL(R.string.gproductdetail),
     LOGIN_SIGN_UP(R.string.gsignup),
     FAVORITES(R.string.gfavourites),
     CART(R.string.gshoppingcart),
     REGISTRATION(R.string.gregister),
+    MY_ORDERS(R.string.gOrderList),
     ORDER_LIST(R.string.gOrderList),
     ORDER_DETAIL(R.string.gOrderDetail),
     PROFILE_CREATE_ADDRESS(R.string.gProfileCreateAddress),
+    CATEGORIES(R.string.gCategories),
     CATEGORY_MENU(R.string.gCategoryMenu),
+    CATALOG(R.string.gcatalog),
+    FILTER_VIEW(R.string.gFilterView),
     MY_ADDRESSES(R.string.gMyAddresses),
     CHECKOUT_ADDRESSES(R.string.gCheckoutAddresses),
     USER_LOGIN(R.string.gUserLogin),
@@ -45,6 +50,7 @@ public enum TrackingPage {
     EMPTY_CART(R.string.gcartempty),
     FILLED_CART(R.string.gcartwithitems),
     CAMPAIGNS(R.string.gcampaignpage),
+    CAMPAIGN(R.string.gCampaign),
     CAMPAIGN_PAGE(R.string.gCampaignPage),
     STATIC_PAGE(R.string.gStaticPage),
     RECENTLY_VIEWED(R.string.grecentlyviewed),
@@ -52,10 +58,10 @@ public enum TrackingPage {
     RECENT_SEARCHES(R.string.grecentsearches),
     ORDER_CONFIRM(R.string.gtrackconfirmorder),
     PAYMENT_SCREEN(R.string.gtrackpayment),
-    NEW_ADDRESS(R.string.gtrackaddaddress),
+    NEW_ADDRESS(R.string.gtracknewaddress),
+    ADD_ADDRESS(R.string.gtrackaddaddress),
     ADDRESS_SCREEN(R.string.gtrackaddress),
     MYORDERS_SCREEN(R.string.gtrackmyorders);
-
     /**
      * ############## CLASS ##############
      */

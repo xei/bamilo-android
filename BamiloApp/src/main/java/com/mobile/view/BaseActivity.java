@@ -42,11 +42,11 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalSpaceItemDecoration;
@@ -64,6 +64,7 @@ import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
+import com.mobile.managers.TrackerManager;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.service.database.SearchRecentQueriesTableHelper;
 import com.mobile.service.objects.cart.PurchaseEntity;
@@ -99,7 +100,6 @@ import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.DrawerFragment;
-import com.mobile.view.fragments.DrawerFragmentAdapter;
 import com.mobile.view.fragments.ProductDetailsFragment;
 
 import junit.framework.Assert;
@@ -110,11 +110,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import me.toptas.fancyshowcase.FancyShowCaseView;
-import me.toptas.fancyshowcase.OnViewInflateListener;
-
-import static android.widget.RelativeLayout.ALIGN_PARENT_END;
-import static android.widget.RelativeLayout.CENTER_IN_PARENT;
-import static android.widget.RelativeLayout.CENTER_VERTICAL;
 
 /**
  * All activities extend this activity, in order to access methods that are shared and used in all activities.
@@ -1402,7 +1397,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
         //DROID-10 TrackerDelegator.trackLoadTiming(params);
-        TrackerDelegator.trackScreenLoadTiming(R.string.gaSearchSuggestions, mGABeginInMillis, requestQuery);
+        // TrackerDelegator.trackScreenLoadTiming(R.string.gaSearchSuggestions, mGABeginInMillis, requestQuery);
+        BaseScreenModel screenModel = new BaseScreenModel(getString(R.string.gaSearchSuggestions), getString(R.string.gaScreen), requestQuery, mGABeginInMillis);
+        TrackerManager.trackScreenTiming(this, screenModel);
         SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
         searchSuggestionsAdapter.setOnViewHolderClickListener(this);
         mSearchListView.setAdapter(searchSuggestionsAdapter);

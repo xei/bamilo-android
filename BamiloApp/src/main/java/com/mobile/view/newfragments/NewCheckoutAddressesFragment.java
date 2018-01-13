@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.mobile.adapters.AddressAdapter;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -15,6 +16,7 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.helpers.checkout.GetStepAddressesHelper;
 import com.mobile.helpers.checkout.SetStepAddressesHelper;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.checkout.MultiStepAddresses;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.rest.errors.ErrorCode;
@@ -63,6 +65,13 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         /*Toolbar toolbar = (Toolbar) getBaseActivity().findViewById(R.id.toolbar);  // or however you need to do it for your code
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         params.setScrollFlags(0);*/
+
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_ADDRESSES.getName()), getString(R.string.gaScreen),
+                getString(R.string.gaCheckoutLabel),
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     @Override
@@ -225,7 +234,13 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 hideActivityProgress();
 
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_ADDRESSES, getLoadTime(), false);
+                    /*TrackerDelegator.trackPage(TrackingPage.CHECKOUT_ADDRESSES, getLoadTime(), false);*/
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_ADDRESSES.getName()), getString(R.string.gaScreen),
+                            getString(R.string.gaCheckoutLabel),
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
                 break;

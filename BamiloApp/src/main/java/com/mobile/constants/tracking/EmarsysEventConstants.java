@@ -1,10 +1,11 @@
-package com.mobile.constants;
+package com.mobile.constants.tracking;
 
 /**
  * Created by Narbeh M. on 4/26/17.
  */
 
-public final class EventConstants {
+public final class EmarsysEventConstants extends EventConstants {
+    //Keys
     public static String AppVersion = "AppVersion";
     public static String Platform = "Platform" ;
     public static String Connection = "Connection";
@@ -21,6 +22,7 @@ public final class EventConstants {
     public static String SKU = "SKU";
     public static String Categories = "Categories";
 
+    //Events
     public static String Login = "Login";
     public static String SignUp = "SignUp";
     public static String OpenApp = "OpenApp";

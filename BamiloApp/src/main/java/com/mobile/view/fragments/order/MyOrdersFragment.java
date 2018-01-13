@@ -15,11 +15,12 @@ import com.bamilo.apicore.service.model.ServerResponse;
 import com.bamilo.apicore.service.model.data.orders.OrderListItem;
 import com.bamilo.apicore.view.OrdersListView;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OrdersAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.service.objects.orders.MyOrder;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.orders.Order;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
@@ -100,6 +101,12 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
             mPageIndex = savedInstanceState.getInt(RestConstants.PAGE);
             mMaxPages = savedInstanceState.getInt(RestConstants.TOTAL_PAGES);
         }
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.ORDER_LIST.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     private void injectDependencies() {

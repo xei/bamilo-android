@@ -12,14 +12,16 @@
 
     <!-- PageView Names -->
     <string name="gnavigation">LeftMenu</string>
-    <string name="ghomepage">ShopHome</string>
+    <string name="ghomepage">Home</string>
     <string name="gMyBamilo">MyBamilo</string>
     <string name="gcategories">ShopCategories</string>
     <string name="gbrands">ShopBrands</string>
     <string name="gproductlist">Catalog</string>
+    <string name="gCampaign">Campaign</string>
     <string name="gCampaignPage">CampaignPage</string>
     <string name="gStaticPage">StaticPage</string>
     <string name="gshoppingcart">Cart</string>
+    <string name="gCategories">Categories</string>
     <string name="gCategoryMenu">CategoryMenu</string>
     <string name="gMyAddresses">MyAddresses</string>
     <string name="gCheckoutAddresses">CheckoutAddresses</string>
@@ -46,9 +48,11 @@
     <string name="gaccount">Account</string>
     <string name="glogin">Login</string>
     <string name="gregister">Register</string>
+    <string name="gMyOrders">MyOrders</string>
     <string name="gOrderList">OrderListView</string>
     <string name="gOrderDetail">OrderDetailView</string>
     <string name="gProfileCreateAddress">AddAddress</string>
+    <string name="gPDV">PDVView</string>
     <string name="gproductdetail">PDVView</string>
     <string name="grateproduct">RateProduct</string>
     <string name="gcampaignpage">Campaign</string>
@@ -61,7 +65,8 @@
     <string name="gtrackorder">TrackOrder</string>
     <string name="gtrackconfirmorder">ConfirmationOrder</string>
     <string name="gtrackpayment">Payment</string>
-    <string name="gtrackaddaddress">NewAddress</string>
+    <string name="gtracknewaddress">NewAddress</string>
+    <string name="gtrackaddaddress">AddAddress</string>
     <string name="gtrackaddress">Addresses</string>
     <string name="gtrackmyorders">MyOrders</string>
     <string name="gtrackfaq">FAQ</string>
@@ -79,6 +84,7 @@
 
     <!-- Event Categories -->
     <string name="gcatalog">Catalog</string>
+    <string name="gFilterView">FilterView</string>
     <string name="gsearchresult">SearchResults</string>
     <string name="gcheckout">Checkout</string>
     <string name="gcampaign">Campaign</string>
@@ -183,6 +189,10 @@
     <string name="gaLogin">Login</string>
     <string name="gaRegister">Register</string>
     <string name="gaAddress">Address</string>
+
+    <!--GA Fix Labels-->
+    <string name="gaMyProfileLabel">MyProfile</string>
+    <string name="gaCheckoutLabel">Checkout</string>
 
 
 

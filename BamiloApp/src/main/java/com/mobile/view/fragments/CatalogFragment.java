@@ -16,14 +16,15 @@ import android.widget.Toast;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.EmarsysEventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
-import com.mobile.factories.EventFactory;
+import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.helpers.search.SearchHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
@@ -63,9 +64,6 @@ import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -222,6 +220,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mCatalogGridPosition = savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, IntConstants.INVALID_POSITION);
             mTargetType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
         }
+
+        // Track screen without timing
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CATALOG.getName()), getString(R.string.gaScreen), mTitle, getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -620,7 +622,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 if (mClicked != null) {
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
-                    TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToFavorites, EventFactory.addToFavorites(mClicked.getCategoryKey(), true));
+//                    TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToFavorites, EmarsysEventFactory.addToFavorites(mClicked.getCategoryKey(), true));
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             }
@@ -685,7 +687,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             } else {
                 triggerAddToWishList(mWishListItemClicked.getSku());
                 TrackerDelegator.trackAddToFavorites(mWishListItemClicked);
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToFavorites, EventFactory.addToFavorites(mMainCategory, true));
+//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToFavorites, EmarsysEventFactory.addToFavorites(mMainCategory, true));
             }
         } else {
             // Save values to end action after login
@@ -1037,9 +1039,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             case GET_CATALOG_EVENT:
             default:
                 onRequestCatalogSuccess(baseResponse);
-
-                //DROID-10
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaCatalog, mGABeginRequestMillis, mTitle);
                 break;
         }
     }
@@ -1050,7 +1049,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onRequestCatalogSuccess(BaseResponse baseResponse) {
         if (!pageTracked) {
             // Track current catalog page
-            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
+//            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
+
+            //DROID-10
+//            TrackerDelegator.trackScreenLoadTiming(R.string.gaCatalog, mGABeginRequestMillis, mTitle);
+            BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CATALOG.getName()), getString(R.string.gaScreen), "", getLoadTime());
+            TrackerManager.trackScreenTiming(getContext(), screenModel);
+
+
             pageTracked = true;
         }
         // Get the catalog
@@ -1070,7 +1076,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             onUpdateCatalogContainer(catalogPage);
             if (catalogPage.getPage() == 1) {
                 TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.Search, EventFactory.search(mMainCategory, SearchHelper.getSearchTermsCommaSeparated(catalogPage.getSearchTerm())));
+//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Search, EmarsysEventFactory.search(mMainCategory, SearchHelper.getSearchTermsCommaSeparated(catalogPage.getSearchTerm())));
 
                 int actionBarHeight = 180;
                 TypedValue tv = new TypedValue();

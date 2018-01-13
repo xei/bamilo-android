@@ -220,6 +220,10 @@
             android:name="com.pushwoosh.GCMRegistrationService"
             android:exported="false"></service>
 
+        <service android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false"/>
+
         <!-- ######################################## -->
         <!-- ################# GTM ################## -->
         <!-- ######################################## -->

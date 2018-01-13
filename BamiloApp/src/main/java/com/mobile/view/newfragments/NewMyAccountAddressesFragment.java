@@ -6,10 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.address.GetMyAddressesHelper;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.addresses.Addresses;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.rest.errors.ErrorCode;
@@ -51,6 +53,12 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_ADDRESSES.getName()), getString(R.string.gaScreen),
+                getString(R.string.gaMyProfileLabel),
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
 
@@ -156,7 +164,14 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
                 super.showAddresses((Addresses) baseResponse.getContentData(), -1);
 
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.MY_ADDRESSES, getLoadTime(), false);
+                    /*TrackerDelegator.trackPage(TrackingPage.MY_ADDRESSES, getLoadTime(), false);*/
+
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_ADDRESSES.getName()), getString(R.string.gaScreen),
+                            getString(R.string.gaMyProfileLabel),
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
                 break;
