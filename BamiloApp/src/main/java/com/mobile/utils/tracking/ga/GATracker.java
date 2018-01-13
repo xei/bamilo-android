@@ -190,7 +190,7 @@ public final class GATracker implements IEventTracker, IScreenTracker {
     private void trackScreen(Tracker tracker, BaseScreenModel screenModel, boolean preInstallId, String simOperatorId) {
         tracker.setScreenName(screenModel.screenName);
 
-        HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
+        HitBuilders.ScreenViewBuilder builder = new HitBuilders.ScreenViewBuilder()
                 .setCustomDimension(CustomDimensions.PRE_INSTALL_ID, String.valueOf(preInstallId))
                 .setCustomDimension(CustomDimensions.SIM_OPERATOR_ID, simOperatorId);
 
