@@ -24,8 +24,8 @@ public final class PushWooshTracker extends EmarsysTracker {
         return "PushWooshTracker";
     }
 
-    @Override
+    /*@Override
     public void trackEvent(BaseActivity activity, String event, HashMap<String, Object> attributes) {
         InAppFacade.postEvent(activity, event, attributes);
-    }
+    }*/
 }

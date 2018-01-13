@@ -18,12 +18,14 @@ import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.categories.GetSubCategoriesHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.service.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.service.objects.catalog.filters.CatalogFilter;
@@ -36,6 +38,7 @@ import com.mobile.service.objects.category.Categories;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.pojo.RestConstants;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
@@ -178,6 +181,9 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         //TODO: add category url_key
         triggerGetCategories(mCategoryKey);
 
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.FILTER_VIEW.getName()), getString(R.string.gaScreen), "", getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     @Override

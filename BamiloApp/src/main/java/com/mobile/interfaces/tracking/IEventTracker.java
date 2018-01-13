@@ -1,32 +1,31 @@
 package com.mobile.interfaces.tracking;
 
-import com.mobile.classes.models.BaseEventModel;
-import com.mobile.view.BaseActivity;
+import android.content.Context;
 
-import java.util.HashMap;
+import com.mobile.classes.models.BaseEventModel;
 
 /**
  * Created by narbeh on 12/3/17.
  */
 
 public interface IEventTracker extends IBaseTracker {
-    void trackEventSearchFiltered(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventRecommendationTapped(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventSearchBarSearched(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventViewProduct(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventSearch(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventPurchased(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventTeaserPurchased(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventTeaserTapped(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventAddToCart(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventAddToWishList(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventRemoveFromWishList(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventAppOpened(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventLogout(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventLogin(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventSignup(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventCatalogViewChanged(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventCatalogSortChanged(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventCheckoutStart(BaseActivity activity, BaseEventModel eventModel);
-    void trackEventCheckoutFinished(BaseActivity activity, BaseEventModel eventModel);
+    void trackEventSearchFiltered(Context context, BaseEventModel eventModel);
+    void trackEventRecommendationTapped(Context context, BaseEventModel eventModel);
+    void trackEventSearchBarSearched(Context context, BaseEventModel eventModel);
+    void trackEventViewProduct(Context context, BaseEventModel eventModel);
+    void trackEventSearch(Context context, BaseEventModel eventModel);
+    void trackEventPurchased(Context context, BaseEventModel eventModel);
+    void trackEventTeaserPurchased(Context context, BaseEventModel eventModel);
+    void trackEventTeaserTapped(Context context, BaseEventModel eventModel);
+    void trackEventAddToCart(Context context, BaseEventModel eventModel);
+    void trackEventAddToWishList(Context context, BaseEventModel eventModel);
+    void trackEventRemoveFromWishList(Context context, BaseEventModel eventModel);
+    void trackEventAppOpened(Context context, BaseEventModel eventModel);
+    void trackEventLogout(Context context, BaseEventModel eventModel);
+    void trackEventLogin(Context context, BaseEventModel eventModel);
+    void trackEventSignup(Context context, BaseEventModel eventModel);
+    void trackEventCatalogViewChanged(Context context, BaseEventModel eventModel);
+    void trackEventCatalogSortChanged(Context context, BaseEventModel eventModel);
+    void trackEventCheckoutStart(Context context, BaseEventModel eventModel);
+    void trackEventCheckoutFinished(Context context, BaseEventModel eventModel);
 }

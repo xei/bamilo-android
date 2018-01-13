@@ -1,10 +1,9 @@
 package com.mobile.utils.tracking;
 
+import android.content.Context;
+
 import com.mobile.classes.models.BaseEventModel;
 import com.mobile.interfaces.tracking.IEventTracker;
-import com.mobile.view.BaseActivity;
-
-import java.util.HashMap;
 
 /**
  * Created by Narbeh M. on 4/29/17.
@@ -17,59 +16,59 @@ public abstract class BaseEventTracker implements IEventTracker {
     }
 
     @Override
-    public void trackEventAddToCart(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventAddToCart(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventAddToWishList(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventAddToWishList(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventAppOpened(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventAppOpened(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventCatalogSortChanged(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventCatalogSortChanged(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventCatalogViewChanged(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventCatalogViewChanged(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventCheckoutFinished(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventCheckoutFinished(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventCheckoutStart(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventCheckoutStart(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventLogin(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventLogin(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventLogout(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventLogout(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventPurchased(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventPurchased(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventRecommendationTapped(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventRecommendationTapped(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventRemoveFromWishList(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventRemoveFromWishList(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventSearch(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventSearch(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventSearchBarSearched(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventSearchBarSearched(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventSearchFiltered(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventSearchFiltered(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventSignup(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventSignup(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventTeaserPurchased(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventTeaserPurchased(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventTeaserTapped(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventTeaserTapped(Context context, BaseEventModel eventModel) { return; }
 
     @Override
-    public void trackEventViewProduct(BaseActivity activity, BaseEventModel eventModel) { return; }
+    public void trackEventViewProduct(Context context, BaseEventModel eventModel) { return; }
 }

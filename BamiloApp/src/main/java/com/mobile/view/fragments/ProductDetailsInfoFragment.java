@@ -11,12 +11,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
 import com.mobile.components.viewpager.RtlViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.product.pojo.ProductComplete;
 import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
@@ -87,6 +90,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
             mPositionToStart = bundle.getInt(ConstantsIntentExtra.PRODUCT_INFO_POS);
             mTitle = bundle.getString(ConstantsIntentExtra.FLAG_1);
         }
+
+        // Track Screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.WRITE_REVIEW.getName()), getString(R.string.gaScreen), "", getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*

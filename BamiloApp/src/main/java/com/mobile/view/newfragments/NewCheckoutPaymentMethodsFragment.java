@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.mobile.adapters.PaymentMethodAdapter;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -24,6 +25,7 @@ import com.mobile.helpers.checkout.GetStepPaymentHelper;
 import com.mobile.helpers.checkout.SetStepFinishHelper;
 import com.mobile.helpers.checkout.SetStepPaymentHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.forms.FormInputType;
 import com.mobile.service.forms.PaymentInfo;
 import com.mobile.service.forms.PaymentMethodForm;
@@ -130,6 +132,12 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             mVoucherCode = savedInstanceState.getString(ConstantsIntentExtra.ARG_1);
         }
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_PAYMENT);
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_PAYMENT_METHOD.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -306,7 +314,13 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         switch (eventType) {
             case GET_MULTI_STEP_PAYMENT:
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_METHOD, getLoadTime(), false);
+//                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_METHOD, getLoadTime(), false);
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_PAYMENT_METHOD.getName()), getString(R.string.gaScreen),
+                            "" ,
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
                 MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();

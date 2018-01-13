@@ -11,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.TrackerDelegator;
@@ -77,7 +79,13 @@ public class BankActivity extends Activity {
                     btnReturn.setVisibility(View.VISIBLE);
                 }
                 if (msgFromBrowserUrl.equals("reject")) {
-                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_FAILURE, 0, false);
+//                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_FAILURE, 0, false);
+
+                    // Track screen
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_PAYMENT_FAILURE.getName()), getString(R.string.gaScreen),
+                            "",
+                            0);
+                    TrackerManager.trackScreen(this, screenModel, false);
 
                     btnOrderDetails.setVisibility(View.INVISIBLE);
                     btnReturn.setVisibility(View.VISIBLE);

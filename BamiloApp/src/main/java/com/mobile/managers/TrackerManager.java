@@ -1,12 +1,15 @@
 package com.mobile.managers;
 
+import android.content.Context;
+
 import com.mobile.classes.models.BaseEventModel;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.interfaces.tracking.IBaseTracker;
 import com.mobile.interfaces.tracking.IEventTracker;
 import com.mobile.interfaces.tracking.IScreenTracker;
-import com.mobile.view.BaseActivity;
 
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 
 /**
@@ -20,34 +23,60 @@ public final class TrackerManager {
         trackers.put(tracker.getTrackerName(), tracker);
     }
 
-    public static void removeEventTracker(String key) {
-        trackers.remove(key);
+    public static boolean removeEventTracker(String key) {
+        if (trackers.containsKey(key)) {
+            trackers.remove(key);
+            return true;
+        }
+        return false;
     }
 
-    public static void trackEvent(BaseActivity activity, String eventName, BaseEventModel eventModel) {
+    public static void trackEvent(Context context, String eventName, BaseEventModel eventModel) {
         for (IBaseTracker tracker : trackers.values()) {
             if(tracker instanceof IEventTracker) {
                 Method eventMethod = null;
                 try {
-                    eventMethod = ((IEventTracker)tracker).getClass().getMethod("trackEvent" + eventName, BaseActivity.class, BaseEventModel.class);
+                    eventMethod = ((IEventTracker)tracker).getClass().getMethod("trackEvent" + eventName, Context.class, BaseEventModel.class);
                 }
-                catch (SecurityException e) { }
-                catch (NoSuchMethodException e) { }
+                catch (SecurityException e) {
+                    e.printStackTrace();
+                }
+                catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
 
                 try {
-                    eventMethod.invoke(activity, eventModel);
+                    eventMethod.invoke(context, eventModel);
                 }
-                catch (IllegalArgumentException e) { }
-                catch (IllegalAccessException e) { }
-                catch (InvocationTargetException e) { }
+                catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
+                catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    public static void trackScreen(BaseActivity activity, String screenName) {
+    public static void trackScreen(Context context, BaseScreenModel screenModel, boolean trackTiming) {
         for (IBaseTracker tracker : trackers.values()) {
             if(tracker instanceof IScreenTracker) {
-                ((IScreenTracker)tracker).trackScreen(activity, screenName);
+                if (trackTiming) {
+                    ((IScreenTracker) tracker).trackScreenAndTiming(context, screenModel);
+                } else {
+                    ((IScreenTracker) tracker).trackScreen(context, screenModel);
+                }
+            }
+        }
+    }
+
+    public static void trackScreenTiming(Context context, BaseScreenModel screenModel) {
+        for (IBaseTracker tracker : trackers.values()) {
+            if (tracker instanceof IScreenTracker) {
+                ((IScreenTracker) tracker).trackScreenTiming(context, screenModel);
             }
         }
     }

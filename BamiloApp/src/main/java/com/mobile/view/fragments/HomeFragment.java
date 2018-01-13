@@ -8,11 +8,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.home.HomePageComponents;
 import com.mobile.service.objects.home.TeaserCampaign;
 import com.mobile.service.objects.home.model.BaseComponent;
@@ -46,6 +48,14 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
     public HomeFragment() {
         super(true, R.layout.fragment_home);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Track only the screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.HOME.getName()), getString(R.string.gaScreen), "", getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     @Override
@@ -252,7 +262,9 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_HOME_EVENT: {
-                TrackerDelegator.trackPage(TrackingPage.HOME_PAGE, getLoadTime(), false);
+//                TrackerDelegator.trackPage(TrackingPage.HOME_PAGE, getLoadTime(), false);
+                BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.HOME.getName()), getString(R.string.gaScreen), "", getLoadTime());
+                TrackerManager.trackScreenTiming(getContext(), screenModel);
                 HomePageComponents homePageComponents = (HomePageComponents) baseResponse.getContentData();
                 this.mHomePageComponents = homePageComponents;
                 showComponents(homePageComponents);

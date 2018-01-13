@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.classes.models.LoginEventModel;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
@@ -83,7 +84,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackPage(TrackingPage.USER_LOGIN, getLoadTime(), false);
+//        TrackerDelegator.trackPage(TrackingPage.USER_LOGIN, getLoadTime(), false);
 
         Print.i(TAG, "ON CREATE");
         // Get arguments
@@ -98,6 +99,12 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         if (isInCheckoutProcess && mParentFragmentType != FragmentType.MY_ACCOUNT) {
             checkoutStep = ConstantsCheckout.CHECKOUT_ABOUT_YOU;
         }
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.USER_LOGIN.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
 
 
     }
@@ -201,7 +208,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         switch (eventType) {
             case EMAIL_CHECK:
                 //DROID-10
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaLogin, mGABeginRequestMillis, mCustomerEmail);
+//                TrackerDelegator.trackScreenLoadTiming(R.string.gaLogin, mGABeginRequestMillis, mCustomerEmail);
                 mLoginErrorMessage.setVisibility(View.GONE);
                 // Get value
                 boolean exist = ((CustomerEmailCheck) baseResponse.getMetadata().getData()).exist();
@@ -353,7 +360,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
             case LOGIN_EVENT:
                 hideActivityProgress();
                 getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.email_password_invalid));
-                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Login, EmarsysEventFactory.login("email", EmarsysEventConstants.UNKNOWN_EVENT_VALUE, false));
+//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Login, EmarsysEventFactory.login("email", EmarsysEventConstants.UNKNOWN_EVENT_VALUE, false));
                 break;
             default:
                 break;

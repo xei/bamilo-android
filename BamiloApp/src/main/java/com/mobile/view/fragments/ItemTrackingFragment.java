@@ -7,12 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.mobile.adapters.ItemTrackingListAdapter;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.checkout.GetOrderStatusHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.orders.PackageItem;
 import com.mobile.service.objects.orders.PackagedOrder;
 import com.mobile.service.objects.product.pojo.ProductComplete;
@@ -66,6 +68,12 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
 
         Bundle args = getArguments();
         orderNumber = args.getString(ConstantsIntentExtra.ORDER_NUMBER);
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.ORDER_DETAIL.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     @Override
@@ -145,7 +153,13 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
                 }
 
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.ORDER_DETAIL, getLoadTime(), false);
+//                    TrackerDelegator.trackPage(TrackingPage.ORDER_DETAIL, getLoadTime(), false);
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.ORDER_DETAIL.getName()), getString(R.string.gaScreen),
+                            packagedOrder.getOrderId(),
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
                 break;

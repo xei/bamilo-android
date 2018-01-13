@@ -9,12 +9,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OrdersAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.account.GetMyOrdersListHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.orders.MyOrder;
 import com.mobile.service.objects.orders.Order;
 import com.mobile.service.pojo.BaseResponse;
@@ -84,6 +86,12 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
             mPageIndex = savedInstanceState.getInt(RestConstants.PAGE);
             mMaxPages = savedInstanceState.getInt(RestConstants.TOTAL_PAGES);
         }
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.ORDER_LIST.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -326,7 +334,13 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
 
 
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.ORDER_LIST, getLoadTime(), false);
+                    /*TrackerDelegator.trackPage(TrackingPage.ORDER_LIST, getLoadTime(), false);*/
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_ORDERS.getName()), getString(R.string.gaScreen),
+                            "",
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
                 break;

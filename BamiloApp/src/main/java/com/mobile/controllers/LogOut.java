@@ -49,7 +49,7 @@ public class LogOut {
                     // Inform activity to update views
                     try {
                         baseActivity.onLogOut();
-                        TrackerManager.trackEvent(baseActivity, EmarsysEventConstants.Logout, EmarsysEventFactory.logout(true));
+//                        TrackerManager.trackEvent(baseActivity, EmarsysEventConstants.Logout, EmarsysEventFactory.logout(true));
                     } catch (IllegalStateException e){
                         e.printStackTrace();
                     }
@@ -57,7 +57,7 @@ public class LogOut {
 
                 @Override
                 public void onRequestError(BaseResponse baseResponse) {
-                    TrackerManager.trackEvent(baseActivity, EmarsysEventConstants.Logout, EmarsysEventFactory.logout(false));
+//                    TrackerManager.trackEvent(baseActivity, EmarsysEventConstants.Logout, EmarsysEventFactory.logout(false));
                 }
             });
         }

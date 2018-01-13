@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.mobile.adapters.CartItemAdapter;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.tracking.EmarsysEventConstants;
@@ -145,6 +146,12 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 
         selectedPosition = 0;
         //recommendManager = new RecommendManager();
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CART.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     @Override
@@ -427,7 +434,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     public void triggerChangeItemQuantityInShoppingCart(int position, int quantity) {
         PurchaseCartItem item = items.get(position);
         TrackerDelegator.trackAddToCartGTM(item, quantity, mItemRemovedCartValue);
-        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(item.getSku(), (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
+//        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(item.getSku(), (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
         item.setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();
@@ -520,7 +527,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 params.putString(TrackerDelegator.CARTVALUE_KEY, mItemRemovedCartValue);
                 TrackerDelegator.trackProductRemoveFromCart(params);
                 // DROID-10 TrackerDelegator.trackLoadTiming(params);
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaRemoveItemFromShoppingCart, mGABeginRequestMillis, mItemRemovedSku);
+//                TrackerDelegator.trackScreenLoadTiming(R.string.gaRemoveItemFromShoppingCart, mGABeginRequestMillis, mItemRemovedSku);
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                 hideActivityProgress();
                 break;
@@ -530,7 +537,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
                 // DROID-10 TrackerDelegator.trackLoadTiming(params);
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaChangeItemQuantityInShoppingCart, mGABeginRequestMillis, mQuantityChangedItem.getSku());
+//                TrackerDelegator.trackScreenLoadTiming(R.string.gaChangeItemQuantityInShoppingCart, mGABeginRequestMillis, mQuantityChangedItem.getSku());
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:
@@ -540,13 +547,19 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
                 //DROID-10 TrackerDelegator.trackLoadTiming(params);
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaShoppingCart, mGABeginRequestMillis, TextUtils.joinCartItemSKUes(purchaseEntity));
+//                TrackerDelegator.trackScreenLoadTiming(R.string.gaShoppingCart, mGABeginRequestMillis, TextUtils.joinCartItemSKUes(purchaseEntity));
                 params.clear();
                 params.putParcelable(AdjustTracker.CART, purchaseEntity);
                 TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
                 displayShoppingCart(purchaseEntity);
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
+//                    TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CART.getName()), getString(R.string.gaScreen),
+                            "",
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
                 break;
@@ -559,7 +572,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
                 //DROID-10 TrackerDelegator.trackLoadTiming(params);
                 PurchaseEntity defPurchaseEntity = (PurchaseEntity) baseResponse.getMetadata().getData();
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaShoppingCart, mGABeginRequestMillis, TextUtils.joinCartItemSKUes(defPurchaseEntity));
+//                TrackerDelegator.trackScreenLoadTiming(R.string.gaShoppingCart, mGABeginRequestMillis, TextUtils.joinCartItemSKUes(defPurchaseEntity));
                 displayShoppingCart(defPurchaseEntity);
                 break;
         }

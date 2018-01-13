@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.absspinner.PromptSpinnerAdapter;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
@@ -81,7 +82,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackPage(TrackingPage.USER_SIGNUP, getLoadTime(), false);
+//        TrackerDelegator.trackPage(TrackingPage.USER_SIGNUP, getLoadTime(), false);
 
         Print.i(TAG, "ON CREATE");
         // Get arguments
@@ -96,6 +97,12 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         if (isInCheckoutProcess && mParentFragmentType != FragmentType.MY_ACCOUNT) {
             checkoutStep = ConstantsCheckout.CHECKOUT_ABOUT_YOU;
         }
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.USER_SIGNUP.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
 
 
     }
@@ -319,7 +326,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 hideActivityProgress();
                 // Tracking
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
-                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.SignUp, EmarsysEventFactory.signup("email", EmailHelper.getHost(BamiloApplication.CUSTOMER.getEmail()), true));
+//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.SignUp, EmarsysEventFactory.signup("email", EmailHelper.getHost(BamiloApplication.CUSTOMER.getEmail()), true));
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 // Finish
@@ -356,7 +363,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 hideActivityProgress();
                 // Tracking
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.SignUp, EmarsysEventFactory.signup("email", EmarsysEventConstants.UNKNOWN_EVENT_VALUE, false));
+//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.SignUp, EmarsysEventFactory.signup("email", EmarsysEventConstants.UNKNOWN_EVENT_VALUE, false));
 
                 // Validate and show errors
                 showFragmentContentContainer();

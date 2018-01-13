@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
@@ -19,6 +20,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetFaqTermsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.database.SectionsTablesHelper;
 import com.mobile.service.objects.catalog.ITargeting;
 import com.mobile.service.objects.statics.MobileAbout;
@@ -111,7 +113,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackPage(TrackingPage.USER_PROFILE, getLoadTime(), false);
+//        TrackerDelegator.trackPage(TrackingPage.USER_PROFILE, getLoadTime(), false);
 
         Print.i(TAG, "ON CREATE");
         if(savedInstanceState != null){
@@ -119,6 +121,12 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         } else {
             setTargets(CountryPersistentConfigs.getMoreInfo(this.getContext()));
         }
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.USER_PROFILE.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
     
     /*

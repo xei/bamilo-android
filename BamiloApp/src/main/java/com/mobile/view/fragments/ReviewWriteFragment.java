@@ -122,7 +122,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackPage(TrackingPage.WRITE_REVIEW, getLoadTime(), false);
+//        TrackerDelegator.trackPage(TrackingPage.WRITE_REVIEW, getLoadTime(), false);
         Print.i(TAG, "ON CREATE");
         // Validate the saved state
         if (savedInstanceState != null) {

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
@@ -20,6 +21,7 @@ import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.addresses.Address;
 import com.mobile.service.objects.addresses.AddressCity;
 import com.mobile.service.objects.addresses.AddressPostalCode;
@@ -100,7 +102,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackPage(TrackingPage.EDIT_ADDRESS, getLoadTime(), false);
+//        TrackerDelegator.trackPage(TrackingPage.EDIT_ADDRESS, getLoadTime(), false);
         Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments() != null ? getArguments() : savedInstanceState;
@@ -108,6 +110,12 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             mAddressId = arguments.getInt(ConstantsIntentExtra.ARG_1, INVALID_ADDRESS_ID);
         }
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_EDIT_ADDRESS);
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.EDIT_ADDRESS.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*

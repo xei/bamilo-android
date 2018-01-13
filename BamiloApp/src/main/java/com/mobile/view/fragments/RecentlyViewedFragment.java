@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -89,6 +90,12 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.RECENTLY_VIEWED.getName()), getString(R.string.gaScreen),
+                "" ,
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -406,7 +413,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, addableToCart.getCategories());
             TrackerDelegator.trackProductAddedToCart(bundle);
-            TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
+//            TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -437,7 +444,13 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         switch (eventType) {
             case GET_RECENTLY_VIEWED_LIST:
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.RECENTLY_VIEWED_PAGE, getLoadTime(), false);
+//                    TrackerDelegator.trackPage(TrackingPage.RECENTLY_VIEWED_PAGE, getLoadTime(), false);
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.RECENTLY_VIEWED.getName()), getString(R.string.gaScreen),
+                            "" ,
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
+
                     pageTracked = true;
                 }
                 Print.i(TAG, "ON RESPONSE COMPLETE: GET_RECENTLY_VIEWED_LIST");

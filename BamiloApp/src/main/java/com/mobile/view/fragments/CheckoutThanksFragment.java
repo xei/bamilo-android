@@ -193,7 +193,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 itemsId += cat.getSku() + ",";
             }
         }
-        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Purchase, EmarsysEventFactory.purchase(categories, (long)cart.getTotal(), true));
+//        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Purchase, EmarsysEventFactory.purchase(categories, (long)cart.getTotal(), true));
 
         //sendRecommend();
 

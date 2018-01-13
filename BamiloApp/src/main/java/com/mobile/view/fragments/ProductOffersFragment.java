@@ -239,7 +239,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         Print.d(TAG, "SIMLPE SKU:" + sku + " PRICE:" + price);
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
         TrackerDelegator.trackAddOfferToCart(sku, price);
-        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
+//        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
     }
     
     /*
