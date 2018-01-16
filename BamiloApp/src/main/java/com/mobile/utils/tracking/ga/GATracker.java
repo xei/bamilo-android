@@ -14,6 +14,7 @@ import com.mobile.interfaces.tracking.IEventTracker;
 import com.mobile.interfaces.tracking.IScreenTracker;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.DeviceInfoHelper;
+import com.mobile.service.utils.TextUtils;
 import com.mobile.view.R;
 
 /**
@@ -26,6 +27,12 @@ public final class GATracker implements IEventTracker, IScreenTracker {
     private static GATracker instance = null;
 
     private Tracker mTracker;
+
+    private String mUtmCampaign;
+    private String mUtmMedium;
+    private String mUtmSource;
+    private String mUtmContent;
+    private String mUtmTerm;
 
     protected GATracker() {}
 
@@ -43,13 +50,8 @@ public final class GATracker implements IEventTracker, IScreenTracker {
 
     @Override
     public void setCampaignUrl(String campaignUrl) {
-
+        setGACampaign(campaignUrl);
     }
-
-    /*@Override
-    public void trackEvent(Context context, String event, HashMap<String, Object> attributes) {
-
-    }*/
 
     @Override
     public void trackScreenAndTiming(Context context, BaseScreenModel screenModel) {
@@ -190,6 +192,59 @@ public final class GATracker implements IEventTracker, IScreenTracker {
         trackEvent(context, eventModel);
     }
 
+    private void setGACampaign(String campaignString) {
+        // Clean data before every campaign tracking
+        mUtmCampaign = null;
+        mUtmMedium = null;
+        mUtmSource = null;
+        mUtmContent = null;
+        mUtmTerm = null;
+        if (!TextUtils.isEmpty(campaignString)) {
+            String[] items = campaignString.split("&");
+            for(String item :items) {
+                String[] terms = item.split("=");
+                if (terms.length != 2) continue;
+
+                if (terms[0].toLowerCase().endsWith("utm_campaign")) {
+                    mUtmCampaign = terms[1]; //getUtmParameter(campaignString, "utm_campaign=");
+                } else if (terms[0].toLowerCase().endsWith("utm_source")) {
+                    mUtmSource = terms[1];// getUtmParameter(campaignString, "utm_source=");
+                } else if (terms[0].toLowerCase().endsWith("utm_medium")) {
+                    mUtmMedium = terms[1]; // getUtmParameter(campaignString, "utm_medium=");
+                } else if (terms[0].toLowerCase().endsWith("utm_content")) {
+                    mUtmContent = terms[1]; // getUtmParameter(campaignString, "utm_medium=");
+                } else if (terms[0].toLowerCase().endsWith("utm_term")) {
+                    mUtmTerm = terms[1]; // getUtmParameter(campaignString, "utm_medium=");
+                }
+            }
+            if (TextUtils.isEmpty(mUtmSource) && TextUtils.isNotEmpty(mUtmCampaign)) {
+                mUtmSource = "push";
+            }
+            if (TextUtils.isEmpty(mUtmMedium) && TextUtils.isNotEmpty(mUtmCampaign)) {
+                mUtmMedium = "referrer";
+            }
+        }
+    }
+
+    private void trackGACampaign() {
+        //setting as empty string or a null object, will show on GA has "not set"
+        if(mUtmCampaign != null){
+            mTracker.set("&cn", mUtmCampaign);
+        }
+        if(mUtmSource != null){
+            mTracker.set("&cs", mUtmSource);
+        }
+        if(mUtmMedium != null){
+            mTracker.set("&cm", mUtmMedium);
+        }
+        if(mUtmContent != null){
+            mTracker.set("&cc", mUtmContent);
+        }
+        if(mUtmTerm != null){
+            mTracker.set("&ck", mUtmTerm);
+        }
+    }
+
     private Tracker getTracker(Context context) {
         if (mTracker == null) {
             String mCurrentKey = context.getString(R.string.ga_trackingId);
@@ -197,7 +252,7 @@ public final class GATracker implements IEventTracker, IScreenTracker {
             mAnalytics.setLocalDispatchPeriod(GA_DISPATCH_PERIOD);
             mTracker = mAnalytics.newTracker(mCurrentKey);
         }
-
+        trackGACampaign();
         return mTracker;
     }
 
@@ -250,6 +305,6 @@ public final class GATracker implements IEventTracker, IScreenTracker {
             builder.setValue(simpleEventModel.value);
         }
 
-        mTracker.send(builder.build());
+        tracker.send(builder.build());
     }
 }

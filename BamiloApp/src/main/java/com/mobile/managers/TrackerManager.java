@@ -83,7 +83,7 @@ public final class TrackerManager {
 
     public static void setCampaignUrl(String campaignUrl) {
         for (IBaseTracker tracker : trackers.values()) {
-
+            tracker.setCampaignUrl(campaignUrl);
         }
     }
 }
