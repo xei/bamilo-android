@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map.Entry;
 
 public class TrackerDelegator {
     private final static String TAG = TrackerDelegator.class.getSimpleName();
@@ -107,7 +106,7 @@ public class TrackerDelegator {
      */
     public static void onPauseActivity() {
         AdjustTracker.onPause();
-        AnalyticsGoogle.get().dispatchHits();
+//        AnalyticsGoogle.get().dispatchHits();
     }
 
     /**
@@ -144,7 +143,7 @@ public class TrackerDelegator {
             customerId = customer.getIdAsString();
         }
 
-        AnalyticsGoogle.get().trackEvent(event, customerId, 0L);
+//        AnalyticsGoogle.get().trackEvent(event, customerId, 0L);
 
         if (customer == null) {
             return;
@@ -196,7 +195,7 @@ public class TrackerDelegator {
             customerId = BamiloApplication.CUSTOMER.getIdAsString();
         }
 
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.LOGOUT_SUCCESS, customerId, 0L);
+//        AnalyticsGoogle.get().trackEvent(TrackingEvent.LOGOUT_SUCCESS, customerId, 0L);
         //Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
@@ -219,7 +218,7 @@ public class TrackerDelegator {
             customerId = BamiloApplication.CUSTOMER.getIdAsString();
         }
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.CATALOG_SEARCH, criteria, results);
+//        AnalyticsGoogle.get().trackEvent(TrackingEvent.CATALOG_SEARCH, criteria, results);
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
@@ -277,7 +276,7 @@ public class TrackerDelegator {
             userId = BamiloApplication.CUSTOMER.getIdAsString();
         }
         // GA
-        AnalyticsGoogle.get().trackShare(sku);
+//        AnalyticsGoogle.get().trackShare(sku);
         //Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
@@ -300,13 +299,13 @@ public class TrackerDelegator {
             user_id = BamiloApplication.CUSTOMER.getIdAsString();
         }
 
-        if (ratingValues != null && ratingValues.size() > 0) {
+        /*if (ratingValues != null && ratingValues.size() > 0) {
             for (Entry<String, Long> pairs : ratingValues.entrySet()) {
 
                 // GA
                 AnalyticsGoogle.get().trackRateProduct(product.getSku(), pairs.getValue(), pairs.getKey());
             }
-        }
+        }*/
         //Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
@@ -334,7 +333,7 @@ public class TrackerDelegator {
         // Validate customer
         if (customer == null) return;
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP_SUCCESS, customer.getIdAsString(), 0L);
+//        AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP_SUCCESS, customer.getIdAsString(), 0L);
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
@@ -427,7 +426,7 @@ public class TrackerDelegator {
         // Create external order
         ExternalOrder order = new ExternalOrder(result);
         // GA
-        AnalyticsGoogle.get().trackPurchase(order.number, order.valueConverted, order.items);
+//        AnalyticsGoogle.get().trackPurchase(order.number, order.valueConverted, order.items);
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
@@ -478,7 +477,7 @@ public class TrackerDelegator {
         }
 
         // GA
-        AnalyticsGoogle.get().trackPurchase(orderNr, cartValue, items);
+//        AnalyticsGoogle.get().trackPurchase(orderNr, cartValue, items);
         //GA Banner Flow
         trackBannerClick(items);
         // Adjust
@@ -638,7 +637,7 @@ public class TrackerDelegator {
         String sku = bundle.getString(SKU_KEY);
         String location = bundle.getString(LOCATION_KEY);
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_CART, sku, (long) price);
+//        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_CART, sku, (long) price);
         //Adjust
         Bundle params = new Bundle();
         params.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
@@ -709,7 +708,7 @@ public class TrackerDelegator {
         // User
         String customerId = (BamiloApplication.CUSTOMER != null) ? BamiloApplication.CUSTOMER.getIdAsString() : "";
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_WISHLIST, productSku, (long) productPrice);
+//        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_WISHLIST, productSku, (long) productPrice);
         //Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
@@ -736,7 +735,7 @@ public class TrackerDelegator {
         // User
         String customerId = (BamiloApplication.CUSTOMER != null) ? BamiloApplication.CUSTOMER.getIdAsString() : "";
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.REMOVE_FROM_WISHLIST, productSku, (long) price);
+//        AnalyticsGoogle.get().trackEvent(TrackingEvent.REMOVE_FROM_WISHLIST, productSku, (long) price);
         //Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
@@ -843,7 +842,7 @@ public class TrackerDelegator {
         // Get device info
         Bundle info = DeviceInfoHelper.getInfo(context);
         // GA
-        AnalyticsGoogle.get().setCustomData(info);
+//        AnalyticsGoogle.get().setCustomData(info);
         // GTM
         String campaingId = GTMManager.getUtmParams(context, GTMManager.CAMPAIGN_ID_KEY);
         GTMManager.saveUtmParameters(context, GTMManager.CAMPAIGN_ID_KEY, "");

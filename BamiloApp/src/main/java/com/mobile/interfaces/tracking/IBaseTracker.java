@@ -6,4 +6,5 @@ package com.mobile.interfaces.tracking;
 
 public interface IBaseTracker {
     String getTrackerName();
+    void setCampaignUrl(String campaignUrl);
 }

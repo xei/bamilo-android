@@ -19,17 +19,17 @@ import android.widget.ProgressBar;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.tracking.EmarsysEventConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -82,7 +82,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public int DISCOUNT = R.id.discount;
     private TeaserCampaign mTeaserCampaign;
     private Campaign mCampaign;
-    private boolean pageTracked = false;
 
     private HeaderFooterGridView mGridView;
 
@@ -156,8 +155,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 //noinspection ResourceType
                 bannerState = savedInstanceState.getInt(BANNER_STATE);
         }
-        // Tracking
-        TrackerDelegator.trackCampaignView(mTeaserCampaign);
 
         // Track screen
         BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CAMPAIGN_PAGE.getName()), getString(R.string.gaScreen), "", getLoadTime());
@@ -201,8 +198,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        // Track page
-        TrackerDelegator.trackPage(TrackingPage.CAMPAIGNS, getLoadTime(), false);
     }
 
     /*
@@ -472,11 +467,14 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             TrackerDelegator.trackProductAddedToCart(bundle);
-            try {
-//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(sku, (long)BamiloApplication.INSTANCE.getCart().getTotal(), true));
-            } catch (Exception e) {
-//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(sku, 0, true));
-            }
+
+            SimpleEventModel addToCartModel = new SimpleEventModel();
+            addToCartModel.category = getString(TrackingPage.CAMPAIGN_PAGE.getName());
+            addToCartModel.action = EventActionKeys.ADD_TO_CART;
+            addToCartModel.label = sku;
+            addToCartModel.value = (long) price;
+            TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartModel);
+
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -561,12 +559,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 // Track screen Timing
                 BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CAMPAIGN.getName()), getString(R.string.gaScreen), mCampaign.getName(), getLoadTime());
                 TrackerManager.trackScreenTiming(getContext(), screenModel);
-
-                if (!pageTracked) {
-                    // Track current catalog page
-                    TrackerDelegator.trackPage(TrackingPage.CAMPAIGN_PAGE, getLoadTime(), false);
-                    pageTracked = true;
-                }
 
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:

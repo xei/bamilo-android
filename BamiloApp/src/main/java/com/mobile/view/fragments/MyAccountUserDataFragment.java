@@ -17,16 +17,14 @@ import com.mobile.helpers.account.GetUserDataFormHelper;
 import com.mobile.helpers.account.SetChangePasswordHelper;
 import com.mobile.helpers.account.SetUserDataHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.pojo.DynamicForm;
 import com.mobile.service.forms.Form;
-import com.mobile.service.objects.customer.Customer;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.utils.CustomerUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
-import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.KeyboardUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -346,8 +344,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
                 showFragmentContentContainer();
                 break;
             case EDIT_USER_DATA_EVENT:
-                // Tracking
-                TrackerDelegator.trackCustomerInfo((Customer) baseResponse.getContentData());
                 // Warning user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE,  getBaseActivity().getResources().getString(R.string.edit_user_success));
                 showFragmentContentContainer();

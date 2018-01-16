@@ -43,7 +43,6 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.ShopSelector;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -405,8 +404,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
         if (mReviews.size() < IntConstants.MAX_ITEMS_PER_PAGE || (mReviews.size() > IntConstants.MAX_ITEMS_PER_PAGE && mReviews.size() == mProductRatingPage.getCommentsCount())) {
             isLoadingMore = true;
         }
-        // Tracking
-        TrackerDelegator.trackViewReview(mProduct);
     }
 
 

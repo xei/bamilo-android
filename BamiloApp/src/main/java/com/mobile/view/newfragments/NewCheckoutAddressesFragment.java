@@ -25,9 +25,7 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
-import com.mobile.view.fragments.CheckoutAddressesFragment;
 
 import java.util.EnumSet;
 
@@ -37,7 +35,7 @@ import java.util.EnumSet;
 
 public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
-    private static final String TAG = CheckoutAddressesFragment.class.getSimpleName();
+    private static final String TAG = NewCheckoutAddressesFragment.class.getSimpleName();
 
     private View mCheckoutTotalBar;
     private FloatingActionButton fabNewAddress;

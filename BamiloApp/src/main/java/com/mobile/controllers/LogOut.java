@@ -4,11 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.constants.tracking.EmarsysEventConstants;
-import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.managers.TrackerManager;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.rest.AigHttpClient;
 import com.mobile.service.utils.EventTask;

@@ -3,6 +3,9 @@ package com.mobile.view.components;
 import android.content.Context;
 import android.view.View;
 
+import com.mobile.service.objects.home.model.BaseComponent;
+import com.mobile.service.pojo.RestConstants;
+
 public abstract class BaseViewComponent<T> {
 
     String mPage;
@@ -15,5 +18,26 @@ public abstract class BaseViewComponent<T> {
     public void enableTracking(String page, int instanceIndex) {
         this.mPage = page;
         this.mInstanceIndex = instanceIndex;
+    }
+
+    public enum ComponentType {
+        Slider(RestConstants.MAIN_TEASER),
+        Tile(RestConstants.TILE_TEASER),
+        DailyDeal(RestConstants.DAILY_DEALS),
+        Carousel(RestConstants.FEATURED_STORES);
+        private final String name;
+
+        ComponentType(String s) {
+            name = s;
+        }
+
+        public boolean equalsName(String otherName) {
+            // (otherName == null) check is not needed because name.equals(null) returns false
+            return name.equals(otherName);
+        }
+
+        public String toString() {
+            return this.name;
+        }
     }
 }

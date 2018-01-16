@@ -11,16 +11,17 @@ import com.crashlytics.android.Crashlytics;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.classes.models.LoginEventModel;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.tracking.EmarsysEventConstants;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
 import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
@@ -35,7 +36,7 @@ import com.mobile.service.objects.customer.CustomerEmailCheck;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.tracking.TrackingPage;
-import com.mobile.service.tracking.gtm.GTMValues;
+import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.CustomerUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
@@ -244,19 +245,13 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 if (nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                     // Tracking
-                    if (eventType == EventType.GUEST_LOGIN_EVENT) {
-                        TrackerDelegator.storeFirstCustomer(customer);
-                        TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
+                    TrackerDelegator.trackLoginSuccessful(customer, true, false);
 
-                        // Set hide change password
-                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(), true);
-                    } else if (eventType == EventType.AUTO_LOGIN_EVENT) {
-                        TrackerDelegator.trackLoginSuccessful(customer, true, false);
-                    } else {
-                        TrackerDelegator.trackLoginSuccessful(customer, false, true);
-                        // Set hide change password
-                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(), true);
-                    }
+                    // Global Tracker
+                    SimpleEventModel sem = new SimpleEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                            Constants.LOGIN_METHOD_EMAIL, customer.getId());
+                    TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
+
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
                 }
@@ -278,6 +273,11 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
+
+                // Global Tracker
+                SimpleEventModel sem = new SimpleEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                        Constants.LOGIN_METHOD_EMAIL, customer.getId());
+                TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
 
                /* RecommendManager recommendManager = new RecommendManager();
                 recommendManager.setEmail(BamiloApplication.CUSTOMER.getEmail(), ""+BamiloApplication.CUSTOMER.getId());*/

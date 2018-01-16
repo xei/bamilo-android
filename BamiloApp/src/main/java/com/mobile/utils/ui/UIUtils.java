@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.components.customfontviews.CheckBox;
-import com.mobile.service.Darwin;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.DeviceInfoHelper;

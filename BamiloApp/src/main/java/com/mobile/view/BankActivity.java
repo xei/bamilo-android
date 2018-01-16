@@ -12,14 +12,22 @@ import android.widget.TextView;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.managers.TrackerManager;
+import com.mobile.service.objects.cart.PurchaseCartItem;
+import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.output.Print;
-import com.mobile.utils.TrackerDelegator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * for process bank payment from browser
@@ -79,7 +87,6 @@ public class BankActivity extends Activity {
                     btnReturn.setVisibility(View.VISIBLE);
                 }
                 if (msgFromBrowserUrl.equals("reject")) {
-//                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_FAILURE, 0, false);
 
                     // Track screen
                     BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_PAYMENT_FAILURE.getName()), getString(R.string.gaScreen),
@@ -94,7 +101,24 @@ public class BankActivity extends Activity {
                     launchInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                     checkout_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_reject_checkout));
                 } else {
-                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_FINISH, 0, false);
+
+                    // Track Checkout Finish
+                    SimpleEventModel sem = new SimpleEventModel();
+                    sem.category = CategoryConstants.CHECKOUT;
+                    sem.action = EventActionKeys.CHECKOUT_FINISH;
+                    sem.label = null;
+                    sem.value = SimpleEventModel.NO_VALUE;
+                    PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+                    if (cart != null && cart.getCartItems() != null) {
+                        ArrayList<PurchaseCartItem> cartItems = cart.getCartItems();
+                        List<String> skus = new ArrayList<>();
+                        for (PurchaseCartItem item : cartItems) {
+                            skus.add(item.getSku());
+                        }
+                        sem.label = android.text.TextUtils.join(",", skus);
+                        sem.value = (long) cart.getTotal();
+                    }
+                    TrackerManager.trackEvent(this, EventConstants.CheckoutFinished, sem);
 
                     launchInfo.setText(R.string.thank_you_order_title);
                     tvOrderInfo.setVisibility(View.VISIBLE);

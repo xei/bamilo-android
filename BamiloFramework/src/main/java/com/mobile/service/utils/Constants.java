@@ -32,4 +32,9 @@ public class Constants {
      */
 
     public static final String SHARED_PREFERENCES = "whitelabel_prefs";
+
+    /**
+     * Consts
+     * */
+    public static final String LOGIN_METHOD_EMAIL = "email";
 }

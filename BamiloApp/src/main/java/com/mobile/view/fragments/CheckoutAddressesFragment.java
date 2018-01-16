@@ -15,14 +15,11 @@ import com.mobile.helpers.checkout.SetStepAddressesHelper;
 import com.mobile.service.objects.checkout.MultiStepAddresses;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.rest.errors.ErrorCode;
-import com.mobile.service.tracking.TrackingEvent;
-import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -61,8 +58,6 @@ public class CheckoutAddressesFragment extends BaseAddressesFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        // Tracking checkout step
-        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ADDRESSES);
     }
 
     @Override
@@ -84,7 +79,6 @@ public class CheckoutAddressesFragment extends BaseAddressesFragment {
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.ADDRESS_SCREEN, getLoadTime(), true);
     }
 
     @Override

@@ -12,9 +12,13 @@ import android.widget.LinearLayout;
 
 import com.mobile.adapters.SimplePagerAdapter;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
@@ -22,13 +26,12 @@ import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.LoginAutoHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.checkout.CheckoutStepLogin;
 import com.mobile.service.objects.customer.Customer;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
-import com.mobile.service.tracking.TrackingPage;
-import com.mobile.service.tracking.gtm.GTMValues;
-import com.mobile.service.utils.CustomerUtils;
+import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
@@ -238,8 +241,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        // Tracking
-        TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGN_UP, getLoadTime(), false);
 
         // Case auto login
         if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
@@ -430,18 +431,13 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                 if(nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                     // Tracking
-                    if (eventType == EventType.GUEST_LOGIN_EVENT) {
-                        TrackerDelegator.storeFirstCustomer(customer);
-                        TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
-                        // Set hide change password
-                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(),true);
-                    } else if (eventType == EventType.AUTO_LOGIN_EVENT) {
-                        TrackerDelegator.trackLoginSuccessful(customer, true, false);
-                    } else {
-                        TrackerDelegator.trackLoginSuccessful(customer, false, true);
-                        // Set hide change password
-                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(),true);
-                    }
+                    TrackerDelegator.trackLoginSuccessful(customer, true, false);
+
+                    // Global Tracker
+                    SimpleEventModel sem = new SimpleEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                            Constants.LOGIN_METHOD_EMAIL, customer.getId());
+                    TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
+
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
                     /*RecommendManager recommendManager = new RecommendManager();

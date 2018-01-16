@@ -20,7 +20,6 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;

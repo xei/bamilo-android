@@ -31,7 +31,17 @@ public class EmarsysTracker extends BaseEventTracker {
     }
 
     @Override
+    public void setCampaignUrl(String campaignUrl) {
+
+    }
+
+    @Override
     public void trackEventAddToCart(Context context, BaseEventModel eventModel) {
+
+    }
+
+    @Override
+    public void trackEventRemoveFromCart(Context context, BaseEventModel eventModel) {
 
     }
 
@@ -97,6 +107,11 @@ public class EmarsysTracker extends BaseEventTracker {
 
     @Override
     public void trackEventSearch(Context context, BaseEventModel eventModel) {
+
+    }
+
+    @Override
+    public void trackEventSearchSuggestions(Context context, BaseEventModel eventModel) {
 
     }
 

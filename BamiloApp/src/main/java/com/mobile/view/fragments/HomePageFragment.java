@@ -27,13 +27,11 @@ import com.mobile.service.objects.home.type.TeaserGroupType;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.tracking.AdjustTracker;
-import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
@@ -411,7 +409,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         TeaserGroupType origin = TeaserGroupType.values()[id];
         if (view.getTag(R.id.target_list_position) != null) {
             origin.setTrackingPosition((int) view.getTag(R.id.target_list_position));
-            TrackerDelegator.trackBannerClicked(origin, TargetLink.getIdFromTargetLink(link), (int) view.getTag(R.id.target_list_position));
+//            TrackerDelegator.trackBannerClicked(origin, TargetLink.getIdFromTargetLink(link), (int) view.getTag(R.id.target_list_position));
         }
 
         if(origin == TeaserGroupType.TOP_SELLERS){
@@ -540,7 +538,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                     Print.i(TAG, "SHOW FALL BAK");
                     showFragmentFallBack();
                 }
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaHome, mGABeginRequestMillis, "");
+//                TrackerDelegator.trackScreenLoadTiming(R.string.gaHome, mGABeginRequestMillis, "");
 
                 break;
             case SUBMIT_FORM:// Newsletter Form Response
@@ -597,7 +595,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      */
     private void trackPage(boolean justGTM) {
         // Generic track page
-        TrackerDelegator.trackPage(TrackingPage.HOME, mLoadTime, justGTM);
+//        TrackerDelegator.trackPage(TrackingPage.HOME, mLoadTime, justGTM);
         // Adjust track page
         trackPageAdjust();
     }
@@ -615,7 +613,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 if (BamiloApplication.CUSTOMER != null) {
                     bundle.putParcelable(AdjustTracker.CUSTOMER, BamiloApplication.CUSTOMER);
                 }
-                TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
+//                TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
             }
         } catch (IllegalStateException e) {
             Print.w(TAG, "WARNING: ISE ON TRACK PAGE ADJUST");

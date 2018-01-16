@@ -13,7 +13,6 @@ import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
-import com.mobile.utils.TrackerDelegator;
 
 import java.util.ArrayList;
 
@@ -47,8 +46,6 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
         BamiloApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
-        // Track the new cart value
-        TrackerDelegator.trackAddToCart(cart);
 
         AddMultipleStruct addMultipleStruct = new AddMultipleStruct();
         addMultipleStruct.setPurchaseEntity(cart);
