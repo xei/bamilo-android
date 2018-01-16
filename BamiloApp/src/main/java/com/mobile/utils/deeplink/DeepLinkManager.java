@@ -12,6 +12,7 @@ import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.home.TeaserCampaign;
 import com.mobile.service.rest.RestUrlUtils;
 import com.mobile.service.utils.CollectionUtils;
@@ -723,7 +724,7 @@ public class DeepLinkManager {
             String mUtm = payload.getString(ConstantsIntentExtra.UTM_STRING);
 
             // ## Google Analytics "General Campaign Measurement" ##
-            TrackerDelegator.trackGACampaign(BamiloApplication.INSTANCE.getApplicationContext(), mUtm);
+            TrackerManager.setCampaignUrl(mUtm);
             Print.i(TAG, "UTM FROM GCM: " + mUtm);
             // Get value from deep link key
             String deepLink = payload.getString(DEEP_LINK_PAGE_INDICATION);
@@ -747,7 +748,7 @@ public class DeepLinkManager {
         Uri uri = intent.getData();
         if (uri == null) return;
 
-        TrackerDelegator.trackGACampaign(BamiloApplication.INSTANCE.getApplicationContext(), uri.toString());
+        TrackerManager.setCampaignUrl(uri.toString());
     }
 
     // ####################### DEEP LINK #######################
