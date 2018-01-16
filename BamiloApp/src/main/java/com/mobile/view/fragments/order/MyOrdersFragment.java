@@ -33,7 +33,6 @@ import com.mobile.service.utils.NetworkConnectivity;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
@@ -449,12 +448,6 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
             }
         } else {
             onLoginRequired();
-        }
-
-
-        if (!pageTracked) {
-            TrackerDelegator.trackPage(TrackingPage.ORDER_LIST, getLoadTime(), false);
-            pageTracked = true;
         }
     }
 }

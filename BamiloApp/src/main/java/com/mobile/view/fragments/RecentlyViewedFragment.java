@@ -7,16 +7,16 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.tracking.EmarsysEventConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.RecentlyViewedAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetRecentlyViewedHelper;
 import com.mobile.helpers.products.ValidateProductHelper;
@@ -414,7 +414,15 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, addableToCart.getCategories());
             TrackerDelegator.trackProductAddedToCart(bundle);
-//            TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
+
+            // Global Tracker
+            SimpleEventModel addToCartModel = new SimpleEventModel();
+            addToCartModel.category = getString(TrackingPage.PDV.getName());
+            addToCartModel.action = EventActionKeys.ADD_TO_CART;
+            addToCartModel.label = sku;
+            addToCartModel.value = (long) addableToCart.getPrice();
+            TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartModel);
+
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -445,7 +453,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         switch (eventType) {
             case GET_RECENTLY_VIEWED_LIST:
                 if (!pageTracked) {
-//                    TrackerDelegator.trackPage(TrackingPage.RECENTLY_VIEWED_PAGE, getLoadTime(), false);
                     // Track screen timing
                     BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.RECENTLY_VIEWED.getName()), getString(R.string.gaScreen),
                             "" ,

@@ -31,7 +31,6 @@ import com.mobile.service.objects.addresses.AddressRegions;
 import com.mobile.service.objects.addresses.FormListItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.tracking.TrackingEvent;
 import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.ApiConstants;
 import com.mobile.service.utils.CollectionUtils;
@@ -39,7 +38,6 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -109,7 +107,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         if (arguments != null) {
             mAddressId = arguments.getInt(ConstantsIntentExtra.ARG_1, INVALID_ADDRESS_ID);
         }
-        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_EDIT_ADDRESS);
 
         // Track screen
         BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.EDIT_ADDRESS.getName()), getString(R.string.gaScreen),

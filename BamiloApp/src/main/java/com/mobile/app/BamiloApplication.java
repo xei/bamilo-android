@@ -42,7 +42,6 @@ import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 import com.pushwoosh.PushManager;
@@ -291,20 +290,7 @@ public class BamiloApplication extends Application {
      * add a sku to a list of sku products that were added from a banner flow
      */
     public void setBannerFlowSkus(String sku,TeaserGroupType groupType) {
-        if(bannerSkus == null){
-            bannerSkus = new HashMap<>();
-        }
-        String category = getString(TrackerDelegator.getCategoryFromTeaserGroupType(groupType)) +"_"+groupType.getTrackingPosition();
-
-        if(!TextUtils.isEmpty(sku)){
-            if(bannerSkus.size() == 0){
-                bannerSkus.put(sku, category);
-            } else {
-                if(!bannerSkus.containsKey(sku)){
-                    bannerSkus.put(sku, category);
-                }
-            }
-        }
+        bannerSkus = new HashMap<>();
     }
 
     /**

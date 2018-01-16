@@ -17,16 +17,18 @@ import android.widget.Toast;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.SimpleEventModel;
+import com.mobile.classes.models.SimpleEventModelFactory;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.tracking.EmarsysEventConstants;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
-import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.products.GetCatalogPageHelper;
-import com.mobile.helpers.search.SearchHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -142,6 +144,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private boolean sortChanged = false;
     private FragmentType mTargetType;
     private boolean pageTracked = false;
+
+    private SimpleEventModel addToWishListEventModel, removeFromWishListEventModel;
 
     /**
      * Empty constructor
@@ -783,7 +787,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Flag to reload or not an initial catalog in case generic error
         mSortOrFilterApplied = true;
         // Track catalog filtered
-        TrackerDelegator.trackCatalogFilter(mCurrentFilterValues);
+        SimpleEventModel sem = SimpleEventModelFactory.createModelForCatalogFilter(mCurrentFilterValues);
+        TrackerManager.trackEvent(getContext(), EventConstants.SearchFiltered, sem);
     }
 
     /**
@@ -810,7 +815,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             manager.requestLayout();
             ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(mLevel);
             // Track catalog
-            TrackerDelegator.trackCatalogSwitchLayout(trackView());
+            SimpleEventModel sem =
+                    new SimpleEventModel(CategoryConstants.CATALOG, EventActionKeys.CATALOG_VIEW_CHANGED,
+                            trackView(), SimpleEventModel.NO_VALUE);
+            TrackerManager.trackEvent(getContext(), EventConstants.CatalogViewChanged, sem);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON SWITCH CATALOG COLUMNS", e);
         }
@@ -882,7 +890,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get new data
         triggerGetInitialCatalogPage();
         // Track catalog sorted
-        TrackerDelegator.trackCatalogSorter(mSelectedSort);
+        SimpleEventModel sem =
+                new SimpleEventModel(CategoryConstants.CATALOG, EventActionKeys.CATALOG_SORT, mSelectedSort.toString(), SimpleEventModel.NO_VALUE);
+        TrackerManager.trackEvent(getContext(), EventConstants.CatalogSortChanged, sem);
     }
 
     @Override
@@ -957,6 +967,19 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Trigger to add item from wish list.
      */
     private void triggerAddToWishList(String sku) {
+        addToWishListEventModel = new SimpleEventModel();
+        addToWishListEventModel.category = getString(TrackingPage.CART.getName());
+        addToWishListEventModel.action = EventActionKeys.ADD_TO_WISHLIST;
+        addToWishListEventModel.label = sku;
+        addToWishListEventModel.value = SimpleEventModel.NO_VALUE;
+        if (mCatalogPage != null && mCatalogPage.getProducts() != null) {
+            for (ProductRegular item : mCatalogPage.getProducts()) {
+                if (item.getSku().equals(sku)) {
+                    addToWishListEventModel.value = (long) item.getPrice();
+                    break;
+                }
+            }
+        }
         triggerContentEventProgress(new AddToWishListHelper(), AddToWishListHelper.createBundle(sku), this);
     }
 
@@ -964,6 +987,19 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Trigger to remove item from wish list.
      */
     private void triggerRemoveFromWishList(String sku) {
+        removeFromWishListEventModel = new SimpleEventModel();
+        removeFromWishListEventModel.category = getString(TrackingPage.CART.getName());
+        removeFromWishListEventModel.action = EventActionKeys.REMOVE_FROM_WISHLIST;
+        removeFromWishListEventModel.label = sku;
+        removeFromWishListEventModel.value = SimpleEventModel.NO_VALUE;
+        if (mCatalogPage != null && mCatalogPage.getProducts() != null) {
+            for (ProductRegular item : mCatalogPage.getProducts()) {
+                if (item.getSku().equals(sku)) {
+                    removeFromWishListEventModel.value = (long) item.getPrice();
+                    break;
+                }
+            }
+        }
         triggerContentEventProgress(new RemoveFromWishListHelper(), RemoveFromWishListHelper.createBundle(sku), this);
     }
 
@@ -1032,7 +1068,15 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Validate event type
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
+                if (removeFromWishListEventModel != null) {
+                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, removeFromWishListEventModel);
+                }
+                updateWishListProduct();
+                break;
             case ADD_PRODUCT_TO_WISH_LIST:
+                if (addToWishListEventModel != null) {
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, addToWishListEventModel);
+                }
                 updateWishListProduct();
                 break;
 
@@ -1048,11 +1092,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void onRequestCatalogSuccess(BaseResponse baseResponse) {
         if (!pageTracked) {
-            // Track current catalog page
-//            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
-
-            //DROID-10
-//            TrackerDelegator.trackScreenLoadTiming(R.string.gaCatalog, mGABeginRequestMillis, mTitle);
             BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CATALOG.getName()), getString(R.string.gaScreen), "", getLoadTime());
             TrackerManager.trackScreenTiming(getContext(), screenModel);
 
@@ -1076,7 +1115,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             onUpdateCatalogContainer(catalogPage);
             if (catalogPage.getPage() == 1) {
                 TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
-//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Search, EmarsysEventFactory.search(mMainCategory, SearchHelper.getSearchTermsCommaSeparated(catalogPage.getSearchTerm())));
+
+                // Global tracking
+                SimpleEventModel sem = new SimpleEventModel();
+                sem.category = CategoryConstants.CATALOG;
+                sem.action = EventActionKeys.SEARCH;
+                sem.label = catalogPage.getSearchTerm();
+                sem.value = catalogPage.getTotal();
+                TrackerManager.trackEvent(getContext(), EventConstants.Search, sem);
 
                 int actionBarHeight = 180;
                 TypedValue tv = new TypedValue();

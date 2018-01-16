@@ -19,10 +19,8 @@ import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.tracking.EmarsysEventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.cart.ShoppingCartAddMultipleItemsHelper;
 import com.mobile.helpers.cart.ShoppingCartChangeItemQuantityHelper;
@@ -30,13 +28,11 @@ import com.mobile.helpers.cart.ShoppingCartRemoveItemHelper;
 import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.managers.TrackerManager;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.service.objects.cart.PurchaseCartItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
-import com.mobile.service.tracking.AdjustTracker;
-import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.DarwinRegex;
 import com.mobile.service.utils.DeviceInfoHelper;
@@ -44,11 +40,9 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.cart.UICartUtils;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
@@ -159,8 +153,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         if (!TextUtils.isEmpty(mItemsToCartDeepLink)) addItemsToCart(mItemsToCartDeepLink);
         // Case normal
         else triggerGetShoppingCart();
-        // Track page
-        TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
     }
 
     @Override
@@ -279,7 +271,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
         });
         getBaseActivity().hideKeyboard();
-        TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, getLoadTime(), false);
     }
 
     /**
@@ -335,7 +326,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
         // Case checkout
         else if (items != null && items.size() > 0) {
-            TrackerDelegator.trackCheckout(items);
             Bundle bundle = new Bundle();
             bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -376,8 +366,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         if (intent.resolveActivity(getBaseActivity().getPackageManager()) != null) {
             startActivity(intent);
         }
-        // Tracking
-        TrackerDelegator.trackCall(getBaseActivity());
     }
 
     /*
@@ -434,8 +422,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     public void triggerChangeItemQuantityInShoppingCart(int position, int quantity) {
         PurchaseCartItem item = items.get(position);
-        TrackerDelegator.trackAddToCartGTM(item, quantity, mItemRemovedCartValue);
-//        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(item.getSku(), (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
         item.setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();
@@ -511,54 +497,23 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 displayShoppingCart(removeVoucherPurchaseEntity);
                 break;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-                //Print.i(TAG, "code1removing and tracking" + itemRemoved_price);
-                params = new Bundle();
-                params.putString(TrackerDelegator.SKU_KEY, mItemRemovedSku);
-                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
-                params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-                params.putDouble(TrackerDelegator.PRICE_KEY, mItemRemovedPriceTracking);
-                params.putLong(TrackerDelegator.QUANTITY_KEY, mItemRemovedQuantity);
-                params.putDouble(TrackerDelegator.RATING_KEY, mItemRemovedRating);
-                params.putString(TrackerDelegator.CARTVALUE_KEY, mItemRemovedCartValue);
-                TrackerDelegator.trackProductRemoveFromCart(params);
-                // DROID-10 TrackerDelegator.trackLoadTiming(params);
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaRemoveItemFromShoppingCart, mGABeginRequestMillis, mItemRemovedSku);
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                 hideActivityProgress();
                 break;
             case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 hideActivityProgress();
-                params = new Bundle();
-                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
-                params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-                // DROID-10 TrackerDelegator.trackLoadTiming(params);
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaChangeItemQuantityInShoppingCart, mGABeginRequestMillis, mQuantityChangedItem.getSku());
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:
                 hideActivityProgress();
                 PurchaseEntity purchaseEntity = (PurchaseEntity) baseResponse.getContentData();
-                params = new Bundle();
-                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
-                params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-                //DROID-10 TrackerDelegator.trackLoadTiming(params);
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaShoppingCart, mGABeginRequestMillis, TextUtils.joinCartItemSKUes(purchaseEntity));
-                params.clear();
-                params.putParcelable(AdjustTracker.CART, purchaseEntity);
-                TrackerDelegator.trackPage(TrackingPage.CART_LOADED, getLoadTime(), false);
-                TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
                 displayShoppingCart(purchaseEntity);
                 break;
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
                 onAddItemsToShoppingCartRequestSuccess(baseResponse);
                 break;
             default:
-                params = new Bundle();
-                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
-                params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-                //DROID-10 TrackerDelegator.trackLoadTiming(params);
                 PurchaseEntity defPurchaseEntity = (PurchaseEntity) baseResponse.getMetadata().getData();
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaShoppingCart, mGABeginRequestMillis, TextUtils.joinCartItemSKUes(defPurchaseEntity));
                 displayShoppingCart(defPurchaseEntity);
                 break;
         }
@@ -694,9 +649,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Cart price rules
         LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
         CheckoutStepManager.showPriceRules(getActivity(), priceRulesContainer, cart.getPriceRules());
-        // Tracking
-        TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
-        TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(), false);
         // Show content
         showFragmentContentContainer();
     }

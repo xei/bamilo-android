@@ -31,7 +31,6 @@ import com.mobile.service.objects.category.Categories;
 import com.mobile.service.objects.category.Category;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
-import com.mobile.service.rest.errors.ErrorCode;
 import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.Constants;
@@ -40,7 +39,6 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
@@ -343,7 +341,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
                 }
 
                 if (!pageTracked) {
-//                    TrackerDelegator.trackPage(TrackingPage.CATEGORY_MENU, getLoadTime(), false);
                     BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CATEGORIES.getName()), getString(R.string.gaScreen), "", getLoadTime());
                     TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;

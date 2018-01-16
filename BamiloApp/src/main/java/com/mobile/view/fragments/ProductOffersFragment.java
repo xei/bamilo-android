@@ -5,18 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.tracking.EmarsysEventConstants;
 import com.mobile.controllers.OffersListAdapter;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.campaign.CampaignItem;
 import com.mobile.service.objects.product.OfferList;
 import com.mobile.service.objects.product.pojo.ProductOffer;
@@ -26,7 +22,6 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.view.R;
@@ -238,8 +233,7 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         // GA OFFER TRACKING
         Print.d(TAG, "SIMLPE SKU:" + sku + " PRICE:" + price);
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
-        TrackerDelegator.trackAddOfferToCart(sku, price);
-//        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
+//        TrackerDelegator.trackAddOfferToCart(sku, price);
     }
     
     /*

@@ -13,14 +13,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mobile.adapters.DailyDealProductListAdapter;
-import com.mobile.service.objects.home.model.BaseComponent;
-import com.mobile.service.objects.home.model.DailyDealComponent;
+import com.mobile.classes.models.SimpleEventModel;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.utils.TextUtils;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 import com.mobile.view.widget.LimitedCountLinearLayoutManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -106,9 +106,11 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
                             onCountDownDealItemClickListener.onMoreButtonClicked(v, mDealItem.moreOptionsTargetLink);
                         }
                         if (mPage != null) {
-                            TrackerDelegator.trackComponentViewTap(mPage,
-                                    String.format(Locale.US, "%s_%d", BaseComponent.ComponentType.DailyDeal.toString(), mInstanceIndex),
-                                    mDealItem.moreOptionsTargetLink);
+                            String category = String.format(Locale.US, "%s+%s_%d", mPage, ComponentType.DailyDeal.toString(), mInstanceIndex);
+                            String action = EventActionKeys.TEASER_TAPPED;
+                            String label = mDealItem.moreOptionsTargetLink;
+                            SimpleEventModel sem = new SimpleEventModel(category, action, label, SimpleEventModel.NO_VALUE);
+                            TrackerManager.trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
                         }
                     }
                 });
@@ -122,9 +124,14 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
                     if (onCountDownDealItemClickListener != null) {
                         onCountDownDealItemClickListener.onProductItemClicked(v, product);
                     }
-                    TrackerDelegator.trackComponentViewTap(mPage,
-                            String.format(Locale.US, "%s_%d", BaseComponent.ComponentType.DailyDeal.toString(), mInstanceIndex),
-                            product.sku);
+
+                    if (mPage != null) {
+                        String category = String.format(Locale.US, "%s+%s_%d", mPage, ComponentType.DailyDeal.toString(), mInstanceIndex);
+                        String action = EventActionKeys.TEASER_TAPPED;
+                        String label = product.sku;
+                        SimpleEventModel sem = new SimpleEventModel(category, action, label, SimpleEventModel.NO_VALUE);
+                        TrackerManager.trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
+                    }
                 }
             });
             RecyclerView rvDealProducts = (RecyclerView) rootView.findViewById(R.id.rvDealProducts);

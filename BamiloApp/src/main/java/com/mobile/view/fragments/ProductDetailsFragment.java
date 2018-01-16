@@ -25,14 +25,16 @@ import android.widget.Spinner;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.SimpleEventModel;
+import com.mobile.classes.models.SimpleEventModelFactory;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.tracking.EmarsysEventConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.datamanagement.DataManager;
-import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
@@ -276,16 +278,33 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             if (args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)) {
                 ProductComplete mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
                 if (BamiloApplication.isCustomerLoggedIn() && mClicked != null) {
-                    triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
-//                    TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToFavorites, EmarsysEventFactory.addToFavorites(mClicked.getCategoryKey(), true));
+
+                    // Global Tracker
+                    SimpleEventModel sem = new SimpleEventModel();
+                    sem.category = getString(TrackingPage.PRODUCT_DETAIL.getName());
+                    sem.action = EventActionKeys.ADD_TO_WISHLIST;
+                    sem.label = mClicked.getSku();
+                    sem.value = (long) mClicked.getPrice();
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, sem);
+
+                    triggerAddToWishList(mClicked.getSku());
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             } else if (args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)) {
                 ProductComplete mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
                 if (BamiloApplication.isCustomerLoggedIn() && mClicked != null) {
-                    triggerRemoveFromWishList(mClicked.getSku());
                     TrackerDelegator.trackRemoveFromFavorites(mClicked);
+
+                    // Global Tracker
+                    SimpleEventModel sem = new SimpleEventModel();
+                    sem.category = getString(TrackingPage.PRODUCT_DETAIL.getName());
+                    sem.action = EventActionKeys.REMOVE_FROM_WISHLIST;
+                    sem.label = mClicked.getSku();
+                    sem.value = (long) mClicked.getPrice();
+                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, sem);
+
+                    triggerRemoveFromWishList(mClicked.getSku());
                 }
                 args.remove(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
             }
@@ -518,8 +537,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Show container
         showFragmentContentContainer();
         // Tracking
-        TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath);
-//        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.ViewProduct, EmarsysEventFactory.viewProduct(mProduct.getCategoryKey(), (long) mProduct.getPrice()));
+        SimpleEventModel sem = SimpleEventModelFactory.createModelForPDV(mProduct, mNavSource);
+        TrackerManager.trackEvent(getContext(), EventConstants.ViewProduct, sem);
     }
 
     /**
@@ -995,11 +1014,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             triggerAddItemToCart(simple.getSku());
             // Tracking
             TrackerDelegator.trackProductAddedToCart(mProduct, mGroupType);
-            try {
-//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(simple.getSku(), (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
-            } catch (Exception e) {
-//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToCart, EmarsysEventFactory.addToCart(simple.getSku(), 0, true));
-            }
+
+            // Global Tracker
+            SimpleEventModel addToCartModel = new SimpleEventModel();
+            addToCartModel.category = getString(TrackingPage.PDV.getName());
+            addToCartModel.action = EventActionKeys.ADD_TO_CART;
+            addToCartModel.label = mProduct.getSku();
+            addToCartModel.value = (long) mProduct.getPrice();
+            TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartModel);
         }
         // Case select a simple variation
         else if (mProduct.hasMultiSimpleVariations()) {
@@ -1024,10 +1046,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 if (view.isSelected()) {
                     triggerRemoveFromWishList(mProduct.getSku());
                     TrackerDelegator.trackRemoveFromFavorites(mProduct);
+
+                    // Global Tracker
+                    SimpleEventModel sem = new SimpleEventModel(getString(TrackingPage.PDV.getName()),
+                            EventActionKeys.REMOVE_FROM_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice());
+                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, sem);
                 } else {
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
-//                    TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToFavorites, EmarsysEventFactory.addToFavorites(mProduct.getCategoryKey(), true));
+
+                    // Global Tracker
+                    SimpleEventModel sem = new SimpleEventModel(getString(TrackingPage.PDV.getName()),
+                            EventActionKeys.ADD_TO_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice());
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, sem);
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO WISH LIST", e);
@@ -1059,10 +1090,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 if (view.isSelected()) {
                     triggerRemoveFromWishList(mProduct.getSku());
                     TrackerDelegator.trackRemoveFromFavorites(mProduct);
+
+                    // Global Tracker
+                    SimpleEventModel sem = new SimpleEventModel(getString(TrackingPage.PDV.getName()),
+                            EventActionKeys.REMOVE_FROM_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice());
+                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, sem);
                 } else {
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
-//                    TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToFavorites, EmarsysEventFactory.addToFavorites(mProduct.getCategoryKey(), true));
+
+                    // Global Tracker
+                    SimpleEventModel sem = new SimpleEventModel(getString(TrackingPage.PDV.getName()),
+                            EventActionKeys.ADD_TO_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice());
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, sem);
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO SAVED", e);
@@ -1292,19 +1332,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
                 // Show product or update partial
                 displayProduct(mProduct);
-                // Tracking
-                Bundle params = new Bundle();
-                /* DROID-10 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gproductdetail);
-                params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-                TrackerDelegator.trackLoadTiming(params);*/
-//                TrackerDelegator.trackScreenLoadTiming(R.string.gaProductDetail, mGABeginRequestMillis, mProduct.getSku());
 
                 // Track Screen Timing
                 BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.PDV.getName()), getString(R.string.gaScreen), mProduct.getSku(), getLoadTime());
                 TrackerManager.trackScreenTiming(getContext(), screenModel);
 
                 // Tracking
-                params = new Bundle();
+                Bundle params = new Bundle();
                 params.putParcelable(AdjustTracker.PRODUCT, mProduct);
                 params.putString(AdjustTracker.TREE, categoryTree);
 

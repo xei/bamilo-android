@@ -14,10 +14,12 @@ public class EventConstants {
     public static String SearchBarSearched = "SearchBarSearched";
     public static String ViewProduct = "ViewProduct";
     public static String Search = "Search";
+    public static String SearchSuggestions = "SearchSuggestions";
     public static String Purchased = "Purchased";
     public static String TeaserPurchased = "TeaserPurchased";
     public static String TeaserTapped = "TeaserTapped";
     public static String AddToCart = "AddToCart";
+    public static String RemoveFromCart = "AddToCart";
     public static String AddToWishList = "AddToWishList";
     public static String RemoveFromWishList = "RemoveFromWishList";
     public static String AppOpened = "AppOpened";

@@ -8,18 +8,20 @@ import android.view.ViewGroup;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.components.recycler.VerticalSpaceItemDecoration;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.tracking.EmarsysEventConstants;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
-import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -29,7 +31,6 @@ import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.product.RichRelevance;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
-import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
@@ -105,7 +106,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackPage(TrackingPage.CHECKOUT_FINISH, getLoadTime(), false);
         ProductDetailsFragment.clearSelectedRegionCityId();
         Print.i(TAG, "ON CREATE");
         // Get values
@@ -122,6 +122,22 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         }
         recommendManager = new RecommendManager();
 
+        SimpleEventModel sem = new SimpleEventModel();
+        sem.category = CategoryConstants.CHECKOUT;
+        sem.action = EventActionKeys.CHECKOUT_FINISH;
+        sem.label = null;
+        sem.value = SimpleEventModel.NO_VALUE;
+        PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+        if (cart != null && cart.getCartItems() != null) {
+            ArrayList<PurchaseCartItem> cartItems = cart.getCartItems();
+            List<String> skus = new ArrayList<>();
+            for (PurchaseCartItem item : cartItems) {
+                skus.add(item.getSku());
+            }
+            sem.label = android.text.TextUtils.join(",", skus);
+            sem.value = (long) cart.getTotal();
+        }
+        TrackerManager.trackEvent(getContext(), EventConstants.CheckoutFinished, sem);
     }
 
     @Override
@@ -193,8 +209,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 itemsId += cat.getSku() + ",";
             }
         }
-//        TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Purchase, EmarsysEventFactory.purchase(categories, (long)cart.getTotal(), true));
-
         //sendRecommend();
 
         // Related Products
@@ -380,8 +394,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Get user id
         String userId = "";
         if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) userId = BamiloApplication.CUSTOMER.getIdAsString();
-        // Tracking
-        TrackerDelegator.trackCheckoutContinueShopping(userId);
         // Goto home
         getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }

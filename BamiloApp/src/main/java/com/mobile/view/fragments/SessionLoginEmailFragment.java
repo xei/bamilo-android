@@ -6,9 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
@@ -16,24 +20,23 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.GetLoginFormHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
+import com.mobile.pojo.DynamicForm;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.service.forms.Form;
 import com.mobile.service.forms.FormInputType;
 import com.mobile.service.objects.checkout.CheckoutStepLogin;
 import com.mobile.service.objects.configs.AuthInfo;
 import com.mobile.service.objects.customer.Customer;
 import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.tracking.TrackingPage;
-import com.mobile.service.tracking.gtm.GTMValues;
+import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.CustomerUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
-import com.mobile.pojo.DynamicForm;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.LoginHeaderComponent;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -153,8 +156,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        // validate if there was an error related to facebook
-        TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGN_UP, getLoadTime(), false);
     }
 
     /*
@@ -288,7 +289,12 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         }
         // Case invalid
         else {
-            TrackerDelegator.trackLoginFailed(TrackerDelegator.ISNT_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
+            SimpleEventModel sem = new SimpleEventModel();
+            sem.category = CategoryConstants.ACCOUNT;
+            sem.action = EventActionKeys.LOGIN_FAILED;
+            sem.label = Constants.LOGIN_METHOD_EMAIL;
+            sem.value = SimpleEventModel.NO_VALUE;
+            TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
         }
     }
 
@@ -342,7 +348,12 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 // Set hide change password
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 // Tracking
-                TrackerDelegator.trackLoginSuccessful(customer, false, false);
+                SimpleEventModel sem = new SimpleEventModel();
+                sem.category = CategoryConstants.ACCOUNT;
+                sem.action = EventActionKeys.LOGIN_SUCCESS;
+                sem.label = Constants.LOGIN_METHOD_EMAIL;
+                sem.value = customer.getId();
+                TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
                 // Finish
                 getActivity().onBackPressed();
                 return;
@@ -376,7 +387,12 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         // Case login event
         else if (eventType == EventType.LOGIN_EVENT) {
             // Tracking
-            TrackerDelegator.trackLoginFailed(false, GTMValues.LOGIN, GTMValues.EMAILAUTH);
+            SimpleEventModel sem = new SimpleEventModel();
+            sem.category = CategoryConstants.ACCOUNT;
+            sem.action = EventActionKeys.LOGIN_FAILED;
+            sem.label = Constants.LOGIN_METHOD_EMAIL;
+            sem.value = SimpleEventModel.NO_VALUE;
+            TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
             // Validate and show errors
             showFragmentContentContainer();
             showFormValidateMessages(mDynamicForm, baseResponse, eventType);

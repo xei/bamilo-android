@@ -27,7 +27,6 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.FulfillmentUiBuilder;
 import com.mobile.view.R;
 
@@ -84,8 +83,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         Print.i(TAG, "ON CREATE");
         // Validate the saved values
         mSavedState = savedInstanceState;
-        // Tracking
-        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_SHIPPING);
     }
     
     /*

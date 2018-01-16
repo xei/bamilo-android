@@ -29,7 +29,6 @@ import com.mobile.service.objects.customer.Customer;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
 import com.mobile.service.rest.AigHttpClient;
-import com.mobile.service.tracking.TrackingEvent;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
@@ -111,7 +110,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -258,7 +256,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "";
         String email = BamiloApplication.INSTANCE.getCustomerUtils().getEmail();
         String payment = mPaymentSubmitted.getName();
-        TrackerDelegator.trackPaymentMethod(userId, email, payment);
 
         List<NameValuePair> parameters = new ArrayList<>();
 

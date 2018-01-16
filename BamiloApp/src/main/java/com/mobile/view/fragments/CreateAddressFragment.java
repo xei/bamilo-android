@@ -36,7 +36,6 @@ import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -190,7 +189,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Get order summary
         orderSummary = BamiloApplication.INSTANCE.getCart();
         Print.i(TAG, "ON RESUME");
-//        TrackerDelegator.trackPage(TrackingPage.NEW_ADDRESS, getLoadTime(), true);
     }
 
     /*

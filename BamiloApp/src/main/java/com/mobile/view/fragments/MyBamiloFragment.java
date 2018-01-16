@@ -20,8 +20,12 @@ import com.emarsys.predict.RecommendedItem;
 import com.mobile.adapters.RecommendGridAdapter;
 import com.mobile.adapters.RecommendItemsDiffUtilCallback;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.Item;
@@ -29,7 +33,6 @@ import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompleti
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.tracking.TrackingPage;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -219,7 +222,6 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
                 TrackerManager.trackScreen(getContext(), screenModel, false);
                 screenTracked = true;
             }
-//            TrackerDelegator.trackPage(TrackingPage.MY_BAMILO, getLoadTime(), false);
             if (rvRecommendedItemsList != null) {
                 getBaseActivity().syncSearchBarState(scrolledAmount);
             }
@@ -371,7 +373,12 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
 
     @Override
     public void onRecommendItemClicked(View v, Item item, int position) {
-        TrackerDelegator.trackEmarsysRecommendation(TRACKER_SCREEN_NAME, TRACKER_LOGIC);
+        SimpleEventModel sem = new SimpleEventModel();
+        sem.category = CategoryConstants.EMARSYS;
+        sem.action = EventActionKeys.CLICK;
+        sem.label = String.format("%s-%s", TRACKER_SCREEN_NAME, TRACKER_LOGIC);
+        sem.value = SimpleEventModel.NO_VALUE;
+        TrackerManager.trackEvent(getContext(), EventConstants.RecommendationTapped, sem);
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, item.getItemID());

@@ -11,11 +11,9 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.tracking.AnalyticsGoogle;
 import com.mobile.service.tracking.TrackingEvent;
-import com.mobile.service.tracking.TrackingPage;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -50,7 +48,6 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackPage(TrackingPage.PROFILE_CREATE_ADDRESS, getLoadTime(), false);
     }
 
     @Override

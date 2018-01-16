@@ -722,7 +722,6 @@ public class DeepLinkManager {
             // Get UTM
             String mUtm = payload.getString(ConstantsIntentExtra.UTM_STRING);
 
-            TrackerDelegator.trackOpenPushNotification();
             // ## Google Analytics "General Campaign Measurement" ##
             TrackerDelegator.trackGACampaign(BamiloApplication.INSTANCE.getApplicationContext(), mUtm);
             Print.i(TAG, "UTM FROM GCM: " + mUtm);

@@ -55,6 +55,9 @@ public abstract class BaseEventTracker implements IEventTracker {
     public void trackEventSearch(Context context, BaseEventModel eventModel) { return; }
 
     @Override
+    public void trackEventSearchSuggestions(Context context, BaseEventModel eventModel) { return; }
+
+    @Override
     public void trackEventSearchBarSearched(Context context, BaseEventModel eventModel) { return; }
 
     @Override
