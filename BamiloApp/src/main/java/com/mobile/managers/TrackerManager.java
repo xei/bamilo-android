@@ -46,7 +46,7 @@ public final class TrackerManager {
                 }
 
                 try {
-                    eventMethod.invoke(context, eventModel);
+                    eventMethod.invoke(tracker, context, eventModel);
                 }
                 catch (IllegalArgumentException e) {
                     e.printStackTrace();
