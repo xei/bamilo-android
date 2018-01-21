@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.AuthEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -17,6 +18,7 @@ import com.mobile.constants.tracking.EventActionKeys;
 import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
+import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -282,9 +284,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         // Case invalid
         else {
             // Tracking
-            SimpleEventModel sem = new SimpleEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
-                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE);
-            TrackerManager.trackEvent(getContext(), EventConstants.Signup, sem);
+            AuthEventModel authEventModel = new AuthEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
+                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+                    AuthEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+            TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
         }
     }
 
@@ -323,18 +326,24 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         Print.d(TAG, "ON SUCCESS: " + eventType);
         switch (eventType) {
             case REGISTER_ACCOUNT_EVENT:
-                // Tracking
-                SimpleEventModel sem = new SimpleEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
-                        Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE);
-                if (BamiloApplication.CUSTOMER != null) {
-                    sem.value = BamiloApplication.CUSTOMER.getId();
-                }
-                TrackerManager.trackEvent(getContext(), EventConstants.Signup, sem);
-
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 // Finish
                 getActivity().onBackPressed();
+
+                // Tracking
+                long customerId = SimpleEventModel.NO_VALUE;
+                String customerEmail = "";
+                if (BamiloApplication.CUSTOMER != null) {
+                    customerId = BamiloApplication.CUSTOMER.getId();
+                    customerEmail = BamiloApplication.CUSTOMER.getEmail();
+                }
+                AuthEventModel authEventModel = new AuthEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
+                        Constants.LOGIN_METHOD_EMAIL, customerId,
+                        AuthEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, customerEmail != null ? EmailHelper.getHost(customerEmail) : "",
+                                true));
+                TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
+
                 // Set facebook login
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 break;
@@ -364,9 +373,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 break;
             case REGISTER_ACCOUNT_EVENT:
                 // Tracking
-                SimpleEventModel sem = new SimpleEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
-                        Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE);
-                TrackerManager.trackEvent(getContext(), EventConstants.Signup, sem);
+                AuthEventModel authEventModel = new AuthEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+                        Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+                        AuthEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+                TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
                 // Validate and show errors
                 showFragmentContentContainer();
                 // Show validate messages

@@ -1750,12 +1750,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mSearchListView.setAdapter(null);
 
         // Global Tracker
-        SimpleEventModel sem = new SimpleEventModel();
-        sem.category = CategoryConstants.ACCOUNT;
-        sem.action = EventActionKeys.LOGOUT;
-        sem.label = null;
-        sem.value = SimpleEventModel.NO_VALUE;
-        TrackerManager.trackEvent(this, EventConstants.Logout, sem);
+        AuthEventModel authEventModel =
+                new AuthEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGOUT, null, SimpleEventModel.NO_VALUE,
+                        AuthEventModel.createAuthEventModelAttributes(null, null, true));
+        TrackerManager.trackEvent(this, EventConstants.Logout, authEventModel);
 
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();

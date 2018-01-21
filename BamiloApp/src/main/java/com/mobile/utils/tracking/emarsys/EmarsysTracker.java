@@ -90,7 +90,10 @@ public class EmarsysTracker extends BaseEventTracker {
 
     @Override
     public void trackEventLogout(Context context, BaseEventModel eventModel) {
-
+        if (eventModel instanceof AuthEventModel) {
+            AuthEventModel aem = (AuthEventModel) eventModel;
+            sendEventToEmarsys(context, EmarsysEventConstants.Logout, aem.emarsysAttributes);
+        }
     }
 
     @Override
@@ -130,7 +133,10 @@ public class EmarsysTracker extends BaseEventTracker {
 
     @Override
     public void trackEventSignup(Context context, BaseEventModel eventModel) {
-
+        if (eventModel instanceof AuthEventModel) {
+            AuthEventModel aem = (AuthEventModel) eventModel;
+            sendEventToEmarsys(context, EmarsysEventConstants.SignUp, aem.emarsysAttributes);
+        }
     }
 
     @Override
