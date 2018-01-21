@@ -9,10 +9,10 @@ import java.util.Map;
  * Created by narbeh on 12/5/17.
  */
 
-public final class AuthEventModel extends SimpleEventModel {
+public final class EmarsysEventModel extends SimpleEventModel {
     public Map<String, Object> emarsysAttributes;
 
-    public AuthEventModel(String category, String action, String label, long value, Map<String, Object> emarsysAttributes) {
+    public EmarsysEventModel(String category, String action, String label, long value, Map<String, Object> emarsysAttributes) {
         super(category, action, label, value);
         this.emarsysAttributes = emarsysAttributes;
     }
@@ -22,6 +22,12 @@ public final class AuthEventModel extends SimpleEventModel {
         attributes.put(EmarsysEventConstants.Method, loginMethod);
         attributes.put(EmarsysEventConstants.EmailDomain, emailDomain != null ? emailDomain : "");
         attributes.put(EmarsysEventConstants.Success, success);
+        return attributes;
+    }
+
+    public static Map<String, Object> createAppOpenEventModelAttributes(String source) {
+        HashMap<String, Object> attributes= new HashMap<>();
+        attributes.put(EmarsysEventConstants.Source, source);
         return attributes;
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseEventModel;
-import com.mobile.classes.models.AuthEventModel;
+import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.constants.tracking.EmarsysEventConstants;
 import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
 import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
@@ -82,16 +82,16 @@ public class EmarsysTracker extends BaseEventTracker {
 
     @Override
     public void trackEventLogin(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof AuthEventModel) {
-            AuthEventModel aem = (AuthEventModel) eventModel;
+        if (eventModel instanceof EmarsysEventModel) {
+            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
             sendEventToEmarsys(context, EmarsysEventConstants.Login, aem.emarsysAttributes);
         }
     }
 
     @Override
     public void trackEventLogout(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof AuthEventModel) {
-            AuthEventModel aem = (AuthEventModel) eventModel;
+        if (eventModel instanceof EmarsysEventModel) {
+            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
             sendEventToEmarsys(context, EmarsysEventConstants.Logout, aem.emarsysAttributes);
         }
     }
@@ -133,8 +133,8 @@ public class EmarsysTracker extends BaseEventTracker {
 
     @Override
     public void trackEventSignup(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof AuthEventModel) {
-            AuthEventModel aem = (AuthEventModel) eventModel;
+        if (eventModel instanceof EmarsysEventModel) {
+            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
             sendEventToEmarsys(context, EmarsysEventConstants.SignUp, aem.emarsysAttributes);
         }
     }

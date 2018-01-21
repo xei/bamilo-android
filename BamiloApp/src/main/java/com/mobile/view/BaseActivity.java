@@ -46,7 +46,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.classes.models.AuthEventModel;
+import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
@@ -1750,9 +1750,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mSearchListView.setAdapter(null);
 
         // Global Tracker
-        AuthEventModel authEventModel =
-                new AuthEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGOUT, null, SimpleEventModel.NO_VALUE,
-                        AuthEventModel.createAuthEventModelAttributes(null, null, true));
+        EmarsysEventModel authEventModel =
+                new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGOUT, null, SimpleEventModel.NO_VALUE,
+                        EmarsysEventModel.createAuthEventModelAttributes(null, null, true));
         TrackerManager.trackEvent(this, EventConstants.Logout, authEventModel);
 
         // Track logout
@@ -1987,9 +1987,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             triggerAutoLogin();
         } else {
             // Track auto login failed if hasn't saved credentials
-            AuthEventModel authEventModel = new AuthEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+            EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
                     Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-                    AuthEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+                    EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
             TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
         }
         // Validate the user credentials
@@ -2048,9 +2048,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 ContentValues credentialValues = BamiloApplication.INSTANCE.getCustomerUtils().getCredentials();
 
                 // Global Tracker
-                AuthEventModel authEventModel = new AuthEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
                         Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                        AuthEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                 true));
                 TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
 
