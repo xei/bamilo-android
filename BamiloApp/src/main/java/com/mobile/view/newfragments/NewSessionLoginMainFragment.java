@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import com.mobile.adapters.SimplePagerAdapter;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.AuthEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsCheckout;
@@ -23,6 +24,7 @@ import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
 import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
+import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.LoginAutoHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -434,9 +436,11 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                     TrackerDelegator.trackLoginSuccessful(customer, true, false);
 
                     // Global Tracker
-                    SimpleEventModel sem = new SimpleEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
-                            Constants.LOGIN_METHOD_EMAIL, customer.getId());
-                    TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
+                    AuthEventModel authEventModel = new AuthEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                            Constants.LOGIN_METHOD_EMAIL, customer.getId(),
+                            AuthEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                                    true));
+                    TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
 
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());

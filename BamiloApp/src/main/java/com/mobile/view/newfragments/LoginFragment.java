@@ -10,7 +10,7 @@ import android.view.View;
 import com.crashlytics.android.Crashlytics;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
-import com.mobile.classes.models.LoginEventModel;
+import com.mobile.classes.models.AuthEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
@@ -248,9 +248,11 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                     TrackerDelegator.trackLoginSuccessful(customer, true, false);
 
                     // Global Tracker
-                    SimpleEventModel sem = new SimpleEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
-                            Constants.LOGIN_METHOD_EMAIL, customer.getId());
-                    TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
+                    AuthEventModel authEventModel = new AuthEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                            Constants.LOGIN_METHOD_EMAIL, customer.getId(),
+                            AuthEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                                    true));
+                    TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
 
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
@@ -274,11 +276,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
 
-                // Global Tracker
-                SimpleEventModel sem = new SimpleEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
-                        Constants.LOGIN_METHOD_EMAIL, customer.getId());
-                TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
-
                /* RecommendManager recommendManager = new RecommendManager();
                 recommendManager.setEmail(BamiloApplication.CUSTOMER.getEmail(), ""+BamiloApplication.CUSTOMER.getId());*/
                 //Emarsys
@@ -294,8 +291,12 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), BamiloApplication.CUSTOMER.getEmail() + "");
                 Crashlytics.setUserEmail(BamiloApplication.CUSTOMER.getEmail());
 
-                //TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Login, EmarsysEventFactory.login("email", EmailHelper.getHost(customer.getEmail()), true));
-                TrackerManager.trackEvent(getBaseActivity(), EventConstants.Login, new LoginEventModel(true, "email", EmailHelper.getHost(customer.getEmail()), customer.getId()));
+                // Global Tracker
+                AuthEventModel authEventModel = new AuthEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                        Constants.LOGIN_METHOD_EMAIL, customer.getId(),
+                        AuthEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                                true));
+                TrackerManager.trackEvent(getBaseActivity(), EventConstants.Login, authEventModel);
 
                 if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
