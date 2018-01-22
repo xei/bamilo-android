@@ -154,7 +154,7 @@ public final class GATracker implements IEventTracker, IScreenTracker {
 
     @Override
     public void trackEventAppOpened(Context context, BaseEventModel eventModel) {
-        trackEvent(context, eventModel);
+
     }
 
     @Override
