@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.classes.models.SimpleEventModelFactory;
 import com.mobile.components.customfontviews.TextView;
@@ -145,7 +146,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private FragmentType mTargetType;
     private boolean pageTracked = false;
 
-    private SimpleEventModel addToWishListEventModel, removeFromWishListEventModel;
+    private EmarsysEventModel addToWishListEventModel;
+    private SimpleEventModel removeFromWishListEventModel;
 
     /**
      * Empty constructor
@@ -624,7 +626,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)) {
                 ProductRegular mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
                 if (mClicked != null) {
-                    triggerAddToWishList(mClicked.getSku());
+                    triggerAddToWishList(mClicked.getSku(), mClicked.getCategoryKey());
                     TrackerDelegator.trackAddToFavorites(mClicked);
 //                    TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToFavorites, EmarsysEventFactory.addToFavorites(mClicked.getCategoryKey(), true));
                 }
@@ -689,7 +691,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 triggerRemoveFromWishList(mWishListItemClicked.getSku());
                 TrackerDelegator.trackRemoveFromFavorites(mWishListItemClicked);
             } else {
-                triggerAddToWishList(mWishListItemClicked.getSku());
+                triggerAddToWishList(mWishListItemClicked.getSku(), mMainCategory);
                 TrackerDelegator.trackAddToFavorites(mWishListItemClicked);
 //                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToFavorites, EmarsysEventFactory.addToFavorites(mMainCategory, true));
             }
@@ -966,12 +968,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Trigger to add item from wish list.
      */
-    private void triggerAddToWishList(String sku) {
-        addToWishListEventModel = new SimpleEventModel();
-        addToWishListEventModel.category = getString(TrackingPage.CART.getName());
-        addToWishListEventModel.action = EventActionKeys.ADD_TO_WISHLIST;
-        addToWishListEventModel.label = sku;
-        addToWishListEventModel.value = SimpleEventModel.NO_VALUE;
+    private void triggerAddToWishList(String sku, String categoryKey) {
+        addToWishListEventModel = new EmarsysEventModel(getString(TrackingPage.CATALOG.getName()), EventActionKeys.ADD_TO_WISHLIST, sku,
+                SimpleEventModel.NO_VALUE, EmarsysEventModel.createAddToWishListEventModelAttributes(categoryKey, true));
         if (mCatalogPage != null && mCatalogPage.getProducts() != null) {
             for (ProductRegular item : mCatalogPage.getProducts()) {
                 if (item.getSku().equals(sku)) {

@@ -39,4 +39,12 @@ public final class EmarsysEventModel extends SimpleEventModel {
 
         return attributes;
     }
+
+    public static Map<String, Object> createAddToWishListEventModelAttributes(String categoryUrlKey, boolean success) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put(EmarsysEventConstants.CategoryUrlKey, categoryUrlKey != null ? categoryUrlKey : "");
+        attributes.put(EmarsysEventConstants.Success, success);
+
+        return attributes;
+    }
 }

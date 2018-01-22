@@ -151,6 +151,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private static Integer selectedRegionId = null, selectedCityId = null;
     private View rootView;
     private EmarsysEventModel addToCartEventModel;
+    private EmarsysEventModel addToWishListEventModel;
 
     /**
      * Empty constructor
@@ -284,12 +285,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     TrackerDelegator.trackAddToFavorites(mClicked);
 
                     // Global Tracker
-                    SimpleEventModel sem = new SimpleEventModel();
-                    sem.category = getString(TrackingPage.PRODUCT_DETAIL.getName());
-                    sem.action = EventActionKeys.ADD_TO_WISHLIST;
-                    sem.label = mClicked.getSku();
-                    sem.value = (long) mClicked.getPrice();
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, sem);
+                    addToWishListEventModel = new EmarsysEventModel(getString(TrackingPage.PRODUCT_DETAIL.getName()),
+                            EventActionKeys.ADD_TO_WISHLIST, mClicked.getSku(), (long) mClicked.getPrice(), null);
 
                     triggerAddToWishList(mClicked.getSku());
                 }
@@ -1055,9 +1052,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     TrackerDelegator.trackAddToFavorites(mProduct);
 
                     // Global Tracker
-                    SimpleEventModel sem = new SimpleEventModel(getString(TrackingPage.PDV.getName()),
-                            EventActionKeys.ADD_TO_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice());
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, sem);
+                    addToWishListEventModel = new EmarsysEventModel(getString(TrackingPage.PDV.getName()),
+                            EventActionKeys.ADD_TO_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice(), null);
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO WISH LIST", e);
@@ -1099,9 +1095,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     TrackerDelegator.trackAddToFavorites(mProduct);
 
                     // Global Tracker
-                    SimpleEventModel sem = new SimpleEventModel(getString(TrackingPage.PDV.getName()),
-                            EventActionKeys.ADD_TO_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice());
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, sem);
+                    addToWishListEventModel = new EmarsysEventModel(getString(TrackingPage.PDV.getName()),
+                            EventActionKeys.ADD_TO_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice(), null);
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO SAVED", e);
@@ -1317,11 +1312,24 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
+                // Force wish list reload for next time
+                WishListFragment.sForceReloadWishListFromNetwork = true;
+                // Update value
+                updateWishListValue();
+                break;
             case ADD_PRODUCT_TO_WISH_LIST:
                 // Force wish list reload for next time
                 WishListFragment.sForceReloadWishListFromNetwork = true;
                 // Update value
                 updateWishListValue();
+
+                // Tracking add to wish list
+                if (addToWishListEventModel != null) {
+                    if (mProduct != null) {
+                        addToWishListEventModel.emarsysAttributes = EmarsysEventModel.createAddToWishListEventModelAttributes(mProduct.getCategoryKey(), true);
+                    }
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, addToWishListEventModel);
+                }
                 break;
             case GET_PRODUCT_DETAIL:
                 ProductComplete product = (ProductComplete) baseResponse.getContentData();

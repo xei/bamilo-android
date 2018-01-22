@@ -55,7 +55,10 @@ public class EmarsysTracker extends BaseEventTracker {
 
     @Override
     public void trackEventAddToWishList(Context context, BaseEventModel eventModel) {
-
+        if (eventModel instanceof EmarsysEventModel) {
+            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
+            sendEventToEmarsys(context, EmarsysEventConstants.AddToFavorites, aem.emarsysAttributes);
+        }
     }
 
     @Override

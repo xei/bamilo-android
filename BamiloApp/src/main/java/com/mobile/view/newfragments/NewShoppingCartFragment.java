@@ -17,10 +17,12 @@ import android.widget.ImageView;
 import com.mobile.adapters.CartItemAdapter;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.classes.models.SimpleEventModelFactory;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.tracking.EmarsysEventConstants;
 import com.mobile.constants.tracking.EventActionKeys;
 import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
@@ -112,8 +114,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     //RecommendManager recommendManager;
 
     private SimpleEventModel removeFromWishListEventModel,
-            addToWishListEventModel,
             removeFromCartEventModel;
+    private EmarsysEventModel addToWishListEventModel;
 
     /**
      * Empty constructor
@@ -925,15 +927,14 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     };
 
     private void triggerAddToWishList(String sku) {
-        addToWishListEventModel = new SimpleEventModel();
-        addToWishListEventModel.category = getString(TrackingPage.CART.getName());
-        addToWishListEventModel.action = EventActionKeys.ADD_TO_WISHLIST;
-        addToWishListEventModel.label = sku;
-        addToWishListEventModel.value = SimpleEventModel.NO_VALUE;
+        addToWishListEventModel = new EmarsysEventModel(getString(TrackingPage.CART.getName()), EventActionKeys.ADD_TO_WISHLIST,
+                sku, SimpleEventModel.NO_VALUE,
+                EmarsysEventModel.createAddToWishListEventModelAttributes(null, false));
         if (items != null) {
             for (PurchaseCartItem item : items) {
                 if (item.getSku().equals(sku)) {
                     addToWishListEventModel.value = (long) item.getPrice();
+                    addToWishListEventModel.emarsysAttributes = EmarsysEventModel.createAddToWishListEventModelAttributes(item.getCategoryKey(), true);
                     break;
                 }
             }
