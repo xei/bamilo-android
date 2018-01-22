@@ -42,7 +42,10 @@ public class EmarsysTracker extends BaseEventTracker {
 
     @Override
     public void trackEventAddToCart(Context context, BaseEventModel eventModel) {
-
+        if (eventModel instanceof EmarsysEventModel) {
+            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
+            sendEventToEmarsys(context, EmarsysEventConstants.AddToCart, aem.emarsysAttributes);
+        }
     }
 
     @Override

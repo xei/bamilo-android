@@ -7,7 +7,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
@@ -25,6 +27,7 @@ import com.mobile.managers.TrackerManager;
 import com.mobile.service.database.LastViewedTableHelper;
 import com.mobile.service.objects.campaign.CampaignItem;
 import com.mobile.service.objects.cart.AddedItemStructure;
+import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.product.ValidProductList;
 import com.mobile.service.objects.product.pojo.ProductMultiple;
 import com.mobile.service.objects.product.pojo.ProductSimple;
@@ -70,6 +73,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
     private ArrayList<String> list;
     private boolean pageTracked = false;
+    private EmarsysEventModel addToCartEventModel;
 
     /**
      * Empty constructor
@@ -416,12 +420,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             TrackerDelegator.trackProductAddedToCart(bundle);
 
             // Global Tracker
-            SimpleEventModel addToCartModel = new SimpleEventModel();
-            addToCartModel.category = getString(TrackingPage.PDV.getName());
-            addToCartModel.action = EventActionKeys.ADD_TO_CART;
-            addToCartModel.label = sku;
-            addToCartModel.value = (long) addableToCart.getPrice();
-            TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartModel);
+            addToCartEventModel = new EmarsysEventModel(getString(TrackingPage.RECENTLY_VIEWED.getName()),
+                    EventActionKeys.ADD_TO_CART, sku, (long) addableToCart.getPrice(), null);
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -473,6 +473,20 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT");
                 int position = ((AddedItemStructure) baseResponse.getMetadata().getData()).getCurrentPos();
                 updateLayoutAfterAction(position);
+
+                // Tracking add to cart
+                if (addToCartEventModel != null) {
+                    PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+                    if (cart != null) {
+                        addToCartEventModel.emarsysAttributes = EmarsysEventModel
+                                .createAddToCartEventModelAttributes(addToCartEventModel.label, (long) cart.getTotal(), true);
+                    } else {
+                        addToCartEventModel.emarsysAttributes = EmarsysEventModel
+                                .createAddToCartEventModelAttributes(addToCartEventModel.label, 0, true);
+
+                    }
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
+                }
                 break;
             case VALIDATE_PRODUCTS:
                 mProducts = (ValidProductList) baseResponse.getContentData();
