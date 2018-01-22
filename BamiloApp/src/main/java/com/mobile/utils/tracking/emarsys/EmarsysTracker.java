@@ -111,6 +111,14 @@ public class EmarsysTracker extends BaseEventTracker {
     }
 
     @Override
+    public void trackEventPurchase(Context context, BaseEventModel eventModel) {
+        if (eventModel instanceof EmarsysEventModel) {
+            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
+            sendEventToEmarsys(context, EmarsysEventConstants.Purchase, aem.emarsysAttributes);
+        }
+    }
+
+    @Override
     public void trackEventRecommendationTapped(Context context, BaseEventModel eventModel) {
 
     }

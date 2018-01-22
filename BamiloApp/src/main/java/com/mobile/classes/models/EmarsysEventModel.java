@@ -47,4 +47,13 @@ public final class EmarsysEventModel extends SimpleEventModel {
 
         return attributes;
     }
+
+    public static Map<String, Object> createPurchaseEventModelAttributes(String categories, long basketValue, boolean success) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put(EmarsysEventConstants.Categories, categories);
+        attributes.put(EmarsysEventConstants.BasketValue, basketValue);
+        attributes.put(EmarsysEventConstants.Success, success);
+
+        return attributes;
+    }
 }
