@@ -40,7 +40,7 @@ public final class EmarsysEventModel extends SimpleEventModel {
         return attributes;
     }
 
-    public static Map<String, Object> createAddToWishListEventModelAttributes(String categoryUrlKey, boolean success) {
+    public static Map<String, Object> createAddToWishListEventModelAttributes(String sku, String categoryUrlKey, boolean success) {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put(EmarsysEventConstants.CategoryUrlKey, categoryUrlKey != null ? categoryUrlKey : "");
         attributes.put(EmarsysEventConstants.Success, success);
@@ -69,6 +69,13 @@ public final class EmarsysEventModel extends SimpleEventModel {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put(EmarsysEventConstants.CategoryUrlKey, categoryUrlKey);
         attributes.put(EmarsysEventConstants.Price, price);
+
+        return attributes;
+    }
+
+    public static Map<String, Object> createRemoveFromCarttEventModelAttributes(String sku) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put(EmarsysEventConstants.SKU, sku);
 
         return attributes;
     }

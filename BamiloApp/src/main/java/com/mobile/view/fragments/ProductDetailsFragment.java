@@ -1328,7 +1328,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Tracking add to wish list
                 if (addToWishListEventModel != null) {
                     if (mProduct != null) {
-                        addToWishListEventModel.emarsysAttributes = EmarsysEventModel.createAddToWishListEventModelAttributes(mProduct.getCategoryKey(), true);
+                        addToWishListEventModel.emarsysAttributes = EmarsysEventModel.createAddToWishListEventModelAttributes(mProduct.getSku(), mProduct.getCategoryKey(), true);
                     }
                     TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, addToWishListEventModel);
                 }

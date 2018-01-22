@@ -27,6 +27,7 @@ public final class EmarsysEventConstants extends EventConstants {
     public static String SignUp = "SignUp";
     public static String OpenApp = "OpenApp";
     public static String AddToCart = "AddToCart";
+    public static String RemoveFromCart = "RemoveFromCart";
     public static String AddToFavorites = "AddToFavorites";
     public static String Purchase = "Purchase";
     public static String Search = "Search";

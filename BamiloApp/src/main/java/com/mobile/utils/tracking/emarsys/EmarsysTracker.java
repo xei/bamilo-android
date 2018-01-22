@@ -50,7 +50,10 @@ public class EmarsysTracker extends BaseEventTracker {
 
     @Override
     public void trackEventRemoveFromCart(Context context, BaseEventModel eventModel) {
-
+        if (eventModel instanceof EmarsysEventModel) {
+            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
+            sendEventToEmarsys(context, EmarsysEventConstants.RemoveFromCart, aem.emarsysAttributes);
+        }
     }
 
     @Override
@@ -65,7 +68,7 @@ public class EmarsysTracker extends BaseEventTracker {
     public void trackEventAppOpened(Context context, BaseEventModel eventModel) {
         if (eventModel instanceof EmarsysEventModel) {
             EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            sendEventToEmarsys(context, EmarsysEventConstants.AppOpened, aem.emarsysAttributes);
+            sendEventToEmarsys(context, EmarsysEventConstants.OpenApp, aem.emarsysAttributes);
         }
     }
 

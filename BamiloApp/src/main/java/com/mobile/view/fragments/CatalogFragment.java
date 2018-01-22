@@ -971,7 +971,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void triggerAddToWishList(String sku, String categoryKey) {
         addToWishListEventModel = new EmarsysEventModel(getString(TrackingPage.CATALOG.getName()), EventActionKeys.ADD_TO_WISHLIST, sku,
-                SimpleEventModel.NO_VALUE, EmarsysEventModel.createAddToWishListEventModelAttributes(categoryKey, true));
+                SimpleEventModel.NO_VALUE, EmarsysEventModel.createAddToWishListEventModelAttributes(sku, categoryKey, true));
         if (mCatalogPage != null && mCatalogPage.getProducts() != null) {
             for (ProductRegular item : mCatalogPage.getProducts()) {
                 if (item.getSku().equals(sku)) {
