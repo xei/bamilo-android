@@ -31,6 +31,8 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.tracking.PushWooshTracker;
+import com.mobile.utils.tracking.emarsys.EmarsysTracker;
 import com.mobile.utils.tracking.ga.GATracker;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
@@ -287,8 +289,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             }
         }
 
-        /*TrackerManager.addTracker(EmarsysTracker.getInstance());
-        TrackerManager.addTracker(PushWooshTracker.getInstance());*/
+        TrackerManager.addTracker(EmarsysTracker.getInstance());
+        TrackerManager.addTracker(PushWooshTracker.getInstance());
         TrackerManager.addTracker(GATracker.getInstance());
 
         /*
