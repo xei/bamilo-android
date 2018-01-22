@@ -1119,7 +1119,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 // Global tracking
                 EmarsysEventModel searchEventModel = new EmarsysEventModel(CategoryConstants.CATALOG, EventActionKeys.SEARCH,
                         catalogPage.getSearchTerm(), catalogPage.getTotal(),
-                        EmarsysEventModel.createSearchEventModelAttributes(mMainCategory, 
+                        EmarsysEventModel.createSearchEventModelAttributes(mMainCategory,
                                 SearchHelper.getSearchTermsCommaSeparated(catalogPage.getSearchTerm())));
                 TrackerManager.trackEvent(getContext(), EventConstants.Search, searchEventModel);
 

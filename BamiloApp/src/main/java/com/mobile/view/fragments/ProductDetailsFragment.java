@@ -537,8 +537,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Show container
         showFragmentContentContainer();
         // Tracking
-        SimpleEventModel sem = SimpleEventModelFactory.createModelForPDV(mProduct, mNavSource);
-        TrackerManager.trackEvent(getContext(), EventConstants.ViewProduct, sem);
+        EmarsysEventModel viewProductEventModel = new EmarsysEventModel(mNavSource, EventActionKeys.VIEW_PRODUCT, mProduct.getSku(),
+                (long) mProduct.getPrice(), EmarsysEventModel.createViewProductEventModelAttributes(mProduct.getCategoryKey(),
+                (long) mProduct.getPrice()));
+        TrackerManager.trackEvent(getContext(), EventConstants.ViewProduct, viewProductEventModel);
     }
 
     /**

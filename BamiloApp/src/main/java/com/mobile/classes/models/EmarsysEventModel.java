@@ -64,4 +64,12 @@ public final class EmarsysEventModel extends SimpleEventModel {
 
         return attributes;
     }
+
+    public static Map<String, Object> createViewProductEventModelAttributes(String categoryUrlKey, long price) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put(EmarsysEventConstants.CategoryUrlKey, categoryUrlKey);
+        attributes.put(EmarsysEventConstants.Price, price);
+
+        return attributes;
+    }
 }
