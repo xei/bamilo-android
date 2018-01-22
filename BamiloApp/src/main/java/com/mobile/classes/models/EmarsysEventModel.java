@@ -56,4 +56,12 @@ public final class EmarsysEventModel extends SimpleEventModel {
 
         return attributes;
     }
+
+    public static Map<String, Object> createSearchEventModelAttributes(String categoryUrlKey, String keywords) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put(EmarsysEventConstants.CategoryUrlKey, categoryUrlKey != null ? categoryUrlKey : "");
+        attributes.put(EmarsysEventConstants.Keywords, keywords);
+
+        return attributes;
+    }
 }

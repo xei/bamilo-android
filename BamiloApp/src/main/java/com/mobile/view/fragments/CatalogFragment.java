@@ -30,6 +30,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.helpers.products.GetCatalogPageHelper;
+import com.mobile.helpers.search.SearchHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -1116,12 +1117,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
 
                 // Global tracking
-                SimpleEventModel sem = new SimpleEventModel();
-                sem.category = CategoryConstants.CATALOG;
-                sem.action = EventActionKeys.SEARCH;
-                sem.label = catalogPage.getSearchTerm();
-                sem.value = catalogPage.getTotal();
-                TrackerManager.trackEvent(getContext(), EventConstants.Search, sem);
+                EmarsysEventModel searchEventModel = new EmarsysEventModel(CategoryConstants.CATALOG, EventActionKeys.SEARCH,
+                        catalogPage.getSearchTerm(), catalogPage.getTotal(),
+                        EmarsysEventModel.createSearchEventModelAttributes(mMainCategory, 
+                                SearchHelper.getSearchTermsCommaSeparated(catalogPage.getSearchTerm())));
+                TrackerManager.trackEvent(getContext(), EventConstants.Search, searchEventModel);
 
                 int actionBarHeight = 180;
                 TypedValue tv = new TypedValue();

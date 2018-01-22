@@ -130,7 +130,10 @@ public class EmarsysTracker extends BaseEventTracker {
 
     @Override
     public void trackEventSearch(Context context, BaseEventModel eventModel) {
-
+        if (eventModel instanceof EmarsysEventModel) {
+            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
+            sendEventToEmarsys(context, EmarsysEventConstants.Search, aem.emarsysAttributes);
+        }
     }
 
     @Override
