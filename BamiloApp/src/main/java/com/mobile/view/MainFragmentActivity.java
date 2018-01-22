@@ -31,7 +31,6 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.DeepLinkManager;
-import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.utils.tracking.ga.GATracker;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
@@ -86,15 +85,12 @@ import com.mobile.view.newfragments.SubCategoryFilterFragment;
 import com.pushwoosh.BasePushMessageReceiver;
 import com.pushwoosh.BaseRegistrationReceiver;
 import com.pushwoosh.PushManager;
-import com.pushwoosh.SendPushTagsCallBack;
 import com.pushwoosh.fragment.PushEventListener;
 import com.pushwoosh.fragment.PushFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import me.toptas.fancyshowcase.FancyShowCaseView;
 
@@ -314,27 +310,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         super.onResume();
         Print.d(TAG, "ON RESUME");
         registerReceivers();
-        SendPushTagsCallBack callBack = new SendPushTagsCallBack() {
-            @Override
-            public void taskStarted() {
 
-            }
-
-            @Override
-            public void onSentTagsSuccess(Map<String, String> map) {
-                Print.d(TAG, "callback is" + map);
-            }
-
-            @Override
-            public void onSentTagsError(Exception e) {
-
-            }
-        };
-
-        PushwooshCounter.setAppOpenCount();
-        HashMap<String, Object> open_count = new HashMap<>();
-        open_count.put("AppOpenCount", PushwooshCounter.getAppOpenCount());
-        PushManager.sendTags(MainFragmentActivity.this, open_count, callBack);
         //Clear application badge number
         PushManager.getInstance(BamiloApplication.INSTANCE).setBadgeNumber(0);
 

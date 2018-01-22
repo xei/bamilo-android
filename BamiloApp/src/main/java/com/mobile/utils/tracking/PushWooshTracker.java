@@ -3,8 +3,10 @@ package com.mobile.utils.tracking;
 import android.app.Activity;
 import android.content.Context;
 
+import com.mobile.classes.models.BaseEventModel;
+import com.mobile.utils.pushwoosh.PushWooshCounter;
 import com.mobile.utils.tracking.emarsys.EmarsysTracker;
-import com.mobile.view.BaseActivity;
+import com.pushwoosh.PushManager;
 import com.pushwoosh.inapp.InAppFacade;
 
 import java.util.HashMap;
@@ -17,6 +19,24 @@ public final class PushWooshTracker extends EmarsysTracker {
     private Activity activity;
 
     protected PushWooshTracker() {}
+
+    @Override
+    public void trackEventAppOpened(Context context, BaseEventModel eventModel) {
+        super.trackEventAppOpened(context, eventModel);
+        PushWooshCounter.increaseAppOpenCount();
+        HashMap<String, Object> openCount = new HashMap<>();
+        openCount.put("AppOpenCount", PushWooshCounter.getAppOpenCount());
+        PushManager.sendTags(context, openCount, null);
+    }
+
+    @Override
+    public void trackEventPurchase(Context context, BaseEventModel eventModel) {
+        super.trackEventPurchase(context, eventModel);
+        PushWooshCounter.increasePurchseCount();
+        HashMap<String, Object> purchaseCount = new HashMap<>();
+        purchaseCount.put("PurchaseCount", PushWooshCounter.getPurchaseCount());
+        PushManager.sendTags(context,purchaseCount,null);
+    }
 
     public static EmarsysTracker getInstance(Activity activity) {
         if(instance == null) {
