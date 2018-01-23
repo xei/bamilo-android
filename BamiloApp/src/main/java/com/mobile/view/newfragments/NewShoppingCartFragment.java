@@ -22,7 +22,6 @@ import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.classes.models.SimpleEventModelFactory;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.tracking.EmarsysEventConstants;
 import com.mobile.constants.tracking.EventActionKeys;
 import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
@@ -421,7 +420,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 
         removeFromCartEventModel = new EmarsysEventModel(getString(TrackingPage.CART.getName()), EventActionKeys.REMOVE_FROM_CART,
                 item.getSku(), (long) item.getPrice(),
-                EmarsysEventModel.createRemoveFromCarttEventModelAttributes(item.getSku()));
+                EmarsysEventModel.createRemoveFromCartEventModelAttributes(item.getSku()));
 
         mItemRemovedSku = item.getConfigSimpleSKU();
         mItemRemovedPriceTracking = item.getPriceForTracking();

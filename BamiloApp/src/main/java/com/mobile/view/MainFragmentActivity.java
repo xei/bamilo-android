@@ -290,7 +290,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         }
 
         TrackerManager.addTracker(EmarsysTracker.getInstance());
-        TrackerManager.addTracker(PushWooshTracker.getInstance());
+        TrackerManager.addTracker(PushWooshTracker.getInstance(this));
         TrackerManager.addTracker(GATracker.getInstance());
 
         /*

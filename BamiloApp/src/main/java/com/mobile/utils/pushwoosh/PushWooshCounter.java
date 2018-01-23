@@ -30,15 +30,17 @@ public class PushWooshCounter {
 
     public static void increaseAppOpenCount() {
         SharedPreferences sharedPreferences = BamiloApplication.INSTANCE.getBaseContext().getSharedPreferences(AppOpenCount_PREFERENCES, Context.MODE_PRIVATE);
+        appOpenCountValue = sharedPreferences.getInt("appOpenCountValue",0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("appOpenCountValue", appOpenCountValue+1);
-        editor.commit();
+        editor.apply();
     }
 
     public static void increasePurchseCount() {
         SharedPreferences sharedPreferences = BamiloApplication.INSTANCE.getBaseContext().getSharedPreferences(PurchaseCount_PREFERENCES, Context.MODE_PRIVATE);
+        purchaseCountValue = sharedPreferences.getInt("purchaseCountValue",0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("purchaseCountValue", purchaseCountValue+1);
-        editor.commit();
+        editor.apply();
     }
 }
