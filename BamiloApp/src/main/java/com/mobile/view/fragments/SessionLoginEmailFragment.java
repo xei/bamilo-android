@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -16,6 +17,7 @@ import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
+import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.GetLoginFormHelper;
 import com.mobile.helpers.session.LoginHelper;
@@ -289,12 +291,10 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         }
         // Case invalid
         else {
-            SimpleEventModel sem = new SimpleEventModel();
-            sem.category = CategoryConstants.ACCOUNT;
-            sem.action = EventActionKeys.LOGIN_FAILED;
-            sem.label = Constants.LOGIN_METHOD_EMAIL;
-            sem.value = SimpleEventModel.NO_VALUE;
-            TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
+            EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+                Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+                EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+            TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
         }
     }
 
@@ -348,12 +348,11 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 // Set hide change password
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 // Tracking
-                SimpleEventModel sem = new SimpleEventModel();
-                sem.category = CategoryConstants.ACCOUNT;
-                sem.action = EventActionKeys.LOGIN_SUCCESS;
-                sem.label = Constants.LOGIN_METHOD_EMAIL;
-                sem.value = customer.getId();
-                TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
+                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                        Constants.LOGIN_METHOD_EMAIL, customer.getId(),
+                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                                true));
+                TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
                 // Finish
                 getActivity().onBackPressed();
                 return;
@@ -387,12 +386,10 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         // Case login event
         else if (eventType == EventType.LOGIN_EVENT) {
             // Tracking
-            SimpleEventModel sem = new SimpleEventModel();
-            sem.category = CategoryConstants.ACCOUNT;
-            sem.action = EventActionKeys.LOGIN_FAILED;
-            sem.label = Constants.LOGIN_METHOD_EMAIL;
-            sem.value = SimpleEventModel.NO_VALUE;
-            TrackerManager.trackEvent(getContext(), EventConstants.Login, sem);
+            EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+                    EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+            TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
             // Validate and show errors
             showFragmentContentContainer();
             showFormValidateMessages(mDynamicForm, baseResponse, eventType);

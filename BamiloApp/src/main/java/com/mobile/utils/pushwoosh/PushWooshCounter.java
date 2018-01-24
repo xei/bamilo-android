@@ -9,7 +9,7 @@ import com.mobile.app.BamiloApplication;
  * Created by shahrooz on 4/16/17.
  */
 
-public class PushwooshCounter {
+public class PushWooshCounter {
     private static final String PurchaseCount_PREFERENCES="purchase_prefs" ;
     private static final String AppOpenCount_PREFERENCES="AppOpen_prefs" ;
     private static int purchaseCountValue;
@@ -28,17 +28,19 @@ public class PushwooshCounter {
         return appOpenCountValue;
     }
 
-    public static void setAppOpenCount() {
+    public static void increaseAppOpenCount() {
         SharedPreferences sharedPreferences = BamiloApplication.INSTANCE.getBaseContext().getSharedPreferences(AppOpenCount_PREFERENCES, Context.MODE_PRIVATE);
+        appOpenCountValue = sharedPreferences.getInt("appOpenCountValue",0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("appOpenCountValue", appOpenCountValue+1);
-        editor.commit();
+        editor.apply();
     }
 
-    public static void setPurchaseCount() {
+    public static void increasePurchseCount() {
         SharedPreferences sharedPreferences = BamiloApplication.INSTANCE.getBaseContext().getSharedPreferences(PurchaseCount_PREFERENCES, Context.MODE_PRIVATE);
+        purchaseCountValue = sharedPreferences.getInt("purchaseCountValue",0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("purchaseCountValue", purchaseCountValue+1);
-        editor.commit();
+        editor.apply();
     }
 }

@@ -123,6 +123,11 @@ public final class GATracker implements IEventTracker, IScreenTracker {
     }
 
     @Override
+    public void trackEventPurchase(Context context, BaseEventModel eventModel) {
+
+    }
+
+    @Override
     public void trackEventTeaserPurchased(Context context, BaseEventModel eventModel) {
         trackEvent(context, eventModel);
     }
@@ -154,7 +159,7 @@ public final class GATracker implements IEventTracker, IScreenTracker {
 
     @Override
     public void trackEventAppOpened(Context context, BaseEventModel eventModel) {
-        trackEvent(context, eventModel);
+
     }
 
     @Override

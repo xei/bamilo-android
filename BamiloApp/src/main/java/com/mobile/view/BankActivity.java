@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.tracking.CategoryConstants;
@@ -86,6 +87,17 @@ public class BankActivity extends Activity {
                     btnOrderDetails.setVisibility(View.INVISIBLE);
                     btnReturn.setVisibility(View.VISIBLE);
                 }
+                PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+                if (cart == null) {
+                    cart = new PurchaseEntity();
+                }
+                ArrayList<PurchaseCartItem> cartItems=  cart.getCartItems();
+                StringBuilder categories = new StringBuilder();
+                if (cartItems != null) {
+                    for (PurchaseCartItem cat : cartItems) {
+                        categories.append(cat.getCategories());
+                    }
+                }
                 if (msgFromBrowserUrl.equals("reject")) {
 
                     // Track screen
@@ -93,6 +105,11 @@ public class BankActivity extends Activity {
                             "",
                             0);
                     TrackerManager.trackScreen(this, screenModel, false);
+
+                    // Track Purchase
+                    EmarsysEventModel purchaseEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                            EmarsysEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), true));
+                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
 
                     btnOrderDetails.setVisibility(View.INVISIBLE);
                     btnReturn.setVisibility(View.VISIBLE);
@@ -102,15 +119,18 @@ public class BankActivity extends Activity {
                     checkout_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_reject_checkout));
                 } else {
 
+                    // Track Purchase
+                    EmarsysEventModel purchaseEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                            EmarsysEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), false));
+                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
+
                     // Track Checkout Finish
                     SimpleEventModel sem = new SimpleEventModel();
                     sem.category = CategoryConstants.CHECKOUT;
                     sem.action = EventActionKeys.CHECKOUT_FINISH;
                     sem.label = null;
                     sem.value = SimpleEventModel.NO_VALUE;
-                    PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
-                    if (cart != null && cart.getCartItems() != null) {
-                        ArrayList<PurchaseCartItem> cartItems = cart.getCartItems();
+                    if (cartItems != null) {
                         List<String> skus = new ArrayList<>();
                         for (PurchaseCartItem item : cartItems) {
                             skus.add(item.getSku());

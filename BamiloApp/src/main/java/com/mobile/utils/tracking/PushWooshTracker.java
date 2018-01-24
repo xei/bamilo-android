@@ -1,20 +1,47 @@
 package com.mobile.utils.tracking;
 
+import android.app.Activity;
+import android.content.Context;
+
+import com.mobile.classes.models.BaseEventModel;
+import com.mobile.utils.pushwoosh.PushWooshCounter;
 import com.mobile.utils.tracking.emarsys.EmarsysTracker;
-import com.mobile.view.BaseActivity;
+import com.pushwoosh.PushManager;
 import com.pushwoosh.inapp.InAppFacade;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public final class PushWooshTracker extends EmarsysTracker {
 
     private static PushWooshTracker instance = null;
 
+    private Activity activity;
+
     protected PushWooshTracker() {}
 
-    public static EmarsysTracker getInstance() {
+    @Override
+    public void trackEventAppOpened(Context context, BaseEventModel eventModel) {
+        super.trackEventAppOpened(context, eventModel);
+        PushWooshCounter.increaseAppOpenCount();
+        HashMap<String, Object> openCount = new HashMap<>();
+        openCount.put("AppOpenCount", PushWooshCounter.getAppOpenCount());
+        PushManager.sendTags(context, openCount, null);
+    }
+
+    @Override
+    public void trackEventPurchase(Context context, BaseEventModel eventModel) {
+        super.trackEventPurchase(context, eventModel);
+        PushWooshCounter.increasePurchseCount();
+        HashMap<String, Object> purchaseCount = new HashMap<>();
+        purchaseCount.put("PurchaseCount", PushWooshCounter.getPurchaseCount());
+        PushManager.sendTags(context,purchaseCount,null);
+    }
+
+    public static EmarsysTracker getInstance(Activity activity) {
         if(instance == null) {
             instance = new PushWooshTracker();
+            instance.activity = activity;
         }
         return instance;
     }
@@ -24,8 +51,10 @@ public final class PushWooshTracker extends EmarsysTracker {
         return "PushWooshTracker";
     }
 
-    /*@Override
-    public void trackEvent(BaseActivity activity, String event, HashMap<String, Object> attributes) {
-        InAppFacade.postEvent(activity, event, attributes);
-    }*/
+    @Override
+    protected void sendEventToEmarsys(Context context, String event, Map<String, Object> attributes) {
+        Map<String, Object> pushWooshAttrs = getBasicAttributes();
+        pushWooshAttrs.putAll(attributes);
+        InAppFacade.postEvent(activity, event, pushWooshAttrs);
+    }
 }

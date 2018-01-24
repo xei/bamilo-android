@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
@@ -42,16 +43,11 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.holder.RecommendationsCartHolder;
 import com.mobile.utils.home.holder.RichRelevanceAdapter;
-import com.mobile.utils.pushwoosh.PushwooshCounter;
 import com.mobile.view.R;
-import com.pushwoosh.PushManager;
-import com.pushwoosh.SendPushTagsCallBack;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author sergiopereira
@@ -209,7 +205,11 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 itemsId += cat.getSku() + ",";
             }
         }
-        //sendRecommend();
+
+        // Track Purchase
+        EmarsysEventModel purchaseEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                EmarsysEventModel.createPurchaseEventModelAttributes(categories, (long) cart.getTotal(), true));
+        TrackerManager.trackEvent(getContext(), EventConstants.Purchase, purchaseEventModel);
 
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
@@ -230,27 +230,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         btnContinueShopping.setOnClickListener(this);
         // Add a link to order status
         setOrderStatusLink(view, mOrderNumber);
-        PushwooshCounter.setPurchaseCount();
-        HashMap<String, Object> open_count = new HashMap<>();
-        open_count.put("PurchaseCount",PushwooshCounter.getPurchaseCount());
-        SendPushTagsCallBack callBack = new SendPushTagsCallBack() {
-            @Override
-            public void taskStarted() {
-
-            }
-
-            @Override
-            public void onSentTagsSuccess(Map<String, String> map) {
-                Print.d(TAG, "PurchaseCount app callback is"+map);
-            }
-
-            @Override
-            public void onSentTagsError(Exception e) {
-
-            }
-        };
-        PushManager.sendTags(getBaseActivity(),open_count,callBack);
-
     }
 
     /**

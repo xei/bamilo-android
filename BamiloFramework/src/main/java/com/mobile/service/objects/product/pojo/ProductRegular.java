@@ -63,8 +63,9 @@ public class ProductRegular extends ProductBase {
             mBrand.initialize(brandObject);
         }
         // Category
-        mCategoryUrlKey = jsonObject.optString(RestConstants.CATEGORY_URL_KEY);
-        mCategoryName = jsonObject.optString(RestConstants.CATEGORY_NAME);
+        JSONObject categoryObject = jsonObject.optJSONObject(RestConstants.CATEGORY_ENTITY);
+        mCategoryUrlKey = categoryObject.optString(RestConstants.URL_KEY);
+        mCategoryName = categoryObject.optString(RestConstants.NAME);
         // Free shipping info
         hasFreeShipping = jsonObject.optBoolean(RestConstants.FREE_SHIPPING_POSSIBLE);
         // Optional

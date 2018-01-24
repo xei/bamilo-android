@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -25,6 +26,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.campaign.CampaignItem;
+import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.product.WishList;
 import com.mobile.service.objects.product.pojo.ProductMultiple;
 import com.mobile.service.objects.product.pojo.ProductSimple;
@@ -76,6 +78,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
 
     private View mClickedBuyButton;
     private boolean pageTracked = false;
+    private EmarsysEventModel addToCartEventModel;
 
     /**
      * Empty constructor
@@ -468,13 +471,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             triggerAddProductToCart(simple.getSku());
             TrackerDelegator.trackFavouriteAddedToCart(product, simple.getSku(), mGroupType);
 
-            SimpleEventModel addToCartModel = new SimpleEventModel();
-            addToCartModel.category = getString(TrackingPage.WISH_LIST.getName());
-            addToCartModel.action = EventActionKeys.ADD_TO_CART;
-            addToCartModel.label = product.getSku();
-            addToCartModel.value = (long) product.getPrice();
-            TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartModel);
-
+            addToCartEventModel = new EmarsysEventModel(getString(TrackingPage.WISH_LIST.getName()),
+                    EventActionKeys.ADD_TO_CART, product.getSku(), (long) product.getPrice(), null);
         }
         // Case select a simple variation
         else if (product.hasMultiSimpleVariations()) {
@@ -539,6 +537,20 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         super.handleSuccessEvent(baseResponse);
         // Validate event type
         switch (eventType) {
+            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+                // Tracking add to cart
+                if (addToCartEventModel != null) {
+                    PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+                    if (cart != null) {
+                        addToCartEventModel.emarsysAttributes =
+                                EmarsysEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label, (long) cart.getTotal(), true);
+                    } else {
+                        addToCartEventModel.emarsysAttributes =
+                                EmarsysEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label, 0, true);
+                    }
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
+                }
+                break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 // Remove selected position
                 removeSelectedPosition();

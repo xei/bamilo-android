@@ -46,6 +46,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
@@ -60,6 +61,7 @@ import com.mobile.controllers.LogOut;
 import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
@@ -1748,12 +1750,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mSearchListView.setAdapter(null);
 
         // Global Tracker
-        SimpleEventModel sem = new SimpleEventModel();
-        sem.category = CategoryConstants.ACCOUNT;
-        sem.action = EventActionKeys.LOGOUT;
-        sem.label = null;
-        sem.value = SimpleEventModel.NO_VALUE;
-        TrackerManager.trackEvent(this, EventConstants.Logout, sem);
+        EmarsysEventModel authEventModel =
+                new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGOUT, null, SimpleEventModel.NO_VALUE,
+                        EmarsysEventModel.createAuthEventModelAttributes(null, null, true));
+        TrackerManager.trackEvent(this, EventConstants.Logout, authEventModel);
 
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
@@ -1987,12 +1987,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             triggerAutoLogin();
         } else {
             // Track auto login failed if hasn't saved credentials
-            SimpleEventModel sem = new SimpleEventModel();
-            sem.category = CategoryConstants.ACCOUNT;
-            sem.action = EventActionKeys.LOGIN_FAILED;
-            sem.label = Constants.LOGIN_METHOD_EMAIL;
-            sem.value = SimpleEventModel.NO_VALUE;
-            TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, sem);
+            EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+                    EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+            TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
         }
         // Validate the user credentials
         if (BamiloApplication.SHOP_ID != null && BamiloApplication.INSTANCE.getCart() == null) {
@@ -2050,12 +2048,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 ContentValues credentialValues = BamiloApplication.INSTANCE.getCustomerUtils().getCredentials();
 
                 // Global Tracker
-                SimpleEventModel sem = new SimpleEventModel();
-                sem.category = CategoryConstants.ACCOUNT;
-                sem.action = EventActionKeys.LOGIN_SUCCESS;
-                sem.label = Constants.LOGIN_METHOD_EMAIL;
-                sem.value = customer.getId();
-                TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, sem);
+                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                        Constants.LOGIN_METHOD_EMAIL, customer.getId(),
+                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                                true));
+                TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
 
                 // Track
                 Bundle params = new Bundle();

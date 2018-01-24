@@ -46,6 +46,9 @@ public abstract class BaseEventTracker implements IEventTracker {
     public void trackEventPurchased(Context context, BaseEventModel eventModel) { return; }
 
     @Override
+    public void trackEventPurchase(Context context, BaseEventModel eventModel) { return; }
+
+    @Override
     public void trackEventRecommendationTapped(Context context, BaseEventModel eventModel) { return; }
 
     @Override

@@ -236,3 +236,7 @@
 # apache commons
 -keep class org.apache.commons.** { *; }
 -keep interface org.apache.commons.** { *; }
+
+# Trackers
+-keep interface com.mobile.interfaces.tracking.** { *; }
+-keep class com.mobile.utils.tracking.** { *; }
