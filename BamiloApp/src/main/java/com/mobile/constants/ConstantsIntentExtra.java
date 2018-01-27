@@ -109,4 +109,5 @@ public class ConstantsIntentExtra {
     public static final String CATEGORY_URL = "category_url";
     public static final String ORDER_NUMBER = "order_number";
     public static final String ADDRESS = "address";
+    public static final String REDIRECT_TO_REVIEWS = "redirect_to_reviews";
 }
