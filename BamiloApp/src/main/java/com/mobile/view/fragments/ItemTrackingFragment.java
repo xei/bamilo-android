@@ -6,23 +6,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.bamilo.apicore.di.modules.ItemTrackingModule;
+import com.bamilo.apicore.presentation.ItemTrackingPresenter;
+import com.bamilo.apicore.service.model.ItemTrackingResponse;
+import com.bamilo.apicore.service.model.ServerResponse;
+import com.bamilo.apicore.service.model.data.itemtracking.CompleteOrder;
+import com.bamilo.apicore.service.model.data.itemtracking.PackageItem;
+import com.bamilo.apicore.view.ItemTrackingView;
 import com.mobile.adapters.ItemTrackingListAdapter;
+import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.checkout.GetOrderStatusHelper;
-import com.mobile.helpers.products.GetProductHelper;
-import com.mobile.interfaces.IResponseCallback;
 import com.mobile.managers.TrackerManager;
-import com.mobile.service.objects.orders.PackageItem;
-import com.mobile.service.objects.orders.PackagedOrder;
-import com.mobile.service.objects.product.pojo.ProductComplete;
-import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.tracking.TrackingPage;
-import com.mobile.service.utils.EventTask;
-import com.mobile.service.utils.EventType;
-import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.NetworkConnectivity;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
@@ -30,18 +29,23 @@ import com.mobile.view.fragments.order.MyOrdersFragment;
 
 import java.util.EnumSet;
 
+import javax.inject.Inject;
+
 /**
  * Created on 10/28/2017.
  */
 
-public class ItemTrackingFragment extends BaseFragment implements IResponseCallback, ItemTrackingListAdapter.OnItemTrackingListClickListener {
+public class ItemTrackingFragment extends BaseFragment implements ItemTrackingView, ItemTrackingListAdapter.OnItemTrackingListClickListener {
 
     private RecyclerView rvItemsList;
     private SwipeRefreshLayout srlItemTrackingStatus;
     private String orderNumber;
-    private PackagedOrder packagedOrder;
     private ItemTrackingListAdapter mAdapter;
     private boolean pageTracked = false;
+    private boolean showDefaultProgress;
+
+    @Inject
+    ItemTrackingPresenter presenter;
 
     /**
      * Constructor as nested fragment, called from {@link MyOrdersFragment#}.
@@ -64,6 +68,11 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        BamiloApplication
+                .getComponent()
+                .plus(new ItemTrackingModule(this))
+                .inject(this);
 
         Bundle args = getArguments();
         orderNumber = args.getString(ConstantsIntentExtra.ORDER_NUMBER);
@@ -102,13 +111,8 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
     }
 
     private void loadOrderInfo(String orderNumber, boolean showDefaultProgress) {
-        EventTask task = isNestedFragment ? EventTask.ACTION_TASK : EventTask.NORMAL_TASK;
-        if (!showDefaultProgress) {
-            srlItemTrackingStatus.setRefreshing(true);
-            triggerContentEventNoLoading(new GetOrderStatusHelper(), GetOrderStatusHelper.createBundle(orderNumber, task), this);
-        } else {
-            triggerContentEvent(new GetOrderStatusHelper(), GetOrderStatusHelper.createBundle(orderNumber, task), this);
-        }
+        this.showDefaultProgress = showDefaultProgress;
+        presenter.loadOrderDetails(orderNumber, NetworkConnectivity.isConnected(getContext()));
     }
 
     @Override
@@ -126,84 +130,10 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
         loadOrderInfo(orderNumber, true);
     }
 
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        srlItemTrackingStatus.setRefreshing(false);
-        EventType eventType = baseResponse.getEventType();
-        // Validate fragment visibility
-        if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-        // Handle success
-        super.handleSuccessEvent(baseResponse);
-
-        // Validate
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        switch (eventType) {
-            case TRACK_ORDER_EVENT:
-                showFragmentContentContainer();
-                // Get order status
-                this.packagedOrder = (PackagedOrder) baseResponse.getContentData();
-                if (packagedOrder != null) {
-                    showOrderStatus(packagedOrder);
-                } else {
-                    showFragmentErrorRetry();
-                }
-
-                if (!pageTracked) {
-//                    TrackerDelegator.trackPage(TrackingPage.ORDER_DETAIL, getLoadTime(), false);
-
-                    // Track screen timing
-                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.ORDER_DETAIL.getName()), getString(R.string.gaScreen),
-                            packagedOrder.getOrderId(),
-                            getLoadTime());
-                    TrackerManager.trackScreenTiming(getContext(), screenModel);
-                    pageTracked = true;
-                }
-                break;
-            case GET_PRODUCT_DETAIL:
-                ProductComplete product = (ProductComplete) baseResponse.getContentData();
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(ConstantsIntentExtra.PRODUCT, product);
-                bundle.putInt(ConstantsIntentExtra.PRODUCT_INFO_POS, R.string.rat_rev);
-                bundle.putString(ConstantsIntentExtra.FLAG_1, product.getBrandName());
-                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle, false);
-                break;
-        }
-    }
-
-    private void showOrderStatus(PackagedOrder packagedOrder) {
-        mAdapter = new ItemTrackingListAdapter(packagedOrder);
+    private void showOrderStatus(CompleteOrder order) {
+        mAdapter = new ItemTrackingListAdapter(order);
         mAdapter.setOnItemTrackingListClickListener(this);
         rvItemsList.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        srlItemTrackingStatus.setRefreshing(false);
-        // Specific errors
-        EventType eventType = baseResponse.getEventType();
-        // Validate fragment visibility
-        if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-        // Validate generic errors
-        if (super.handleErrorEvent(baseResponse)) {
-            return;
-        }
-        // Validate event type
-        Print.i(TAG, "ON ERROR EVENT: " + eventType);
-        switch (eventType) {
-            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-
-                break;
-            case TRACK_ORDER_EVENT:
-                showFragmentErrorRetry();
-                break;
-        }
     }
 
     @Override
@@ -231,9 +161,68 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    private void triggerLoadProduct(String sku) {
-        triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(sku, null), this);
-        //recommendManager = new RecommendManager();
-        //sendRecommend();
+    @Override
+    public void performOrderDetails(CompleteOrder order) {
+        showOrderStatus(order);
+    }
+
+    @Override
+    public void showMessage(com.bamilo.apicore.service.model.EventType eventType, String message) {
+        showWarningErrorMessage(message);
+    }
+
+    @Override
+    public void showOfflineMessage(com.bamilo.apicore.service.model.EventType eventType) {
+        if (isNestedFragment) {
+            showNoNetworkWarning();
+        } else {
+            showFragmentNoNetworkRetry();
+        }
+    }
+
+    @Override
+    public void showConnectionError(com.bamilo.apicore.service.model.EventType eventType) {
+        if (isNestedFragment) {
+            showUnexpectedErrorWarning();
+        } else {
+            showFragmentNetworkErrorRetry();
+        }
+    }
+
+    @Override
+    public void showServerError(com.bamilo.apicore.service.model.EventType eventType, ServerResponse response) {
+        if (eventType == com.bamilo.apicore.service.model.EventType.TRACK_ORDER_EVENT &&
+                response instanceof ItemTrackingResponse) {
+            ItemTrackingResponse itemTrackingResponse = (ItemTrackingResponse)response;
+            if (itemTrackingResponse.getMessages() != null && !itemTrackingResponse.getMessages().isEmpty()) {
+                showWarningErrorMessage(itemTrackingResponse.getMessages().get(0));
+            }
+            getBaseActivity().onBackPressed();
+        }
+    }
+
+    @Override
+    public void toggleProgress(com.bamilo.apicore.service.model.EventType eventType, boolean show) {
+        if (show) {
+            if (!showDefaultProgress) {
+                srlItemTrackingStatus.setRefreshing(true);
+            } else {
+                showFragmentLoading();
+            }
+        } else {
+            showFragmentContentContainer();
+            srlItemTrackingStatus.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void showRetry(com.bamilo.apicore.service.model.EventType eventType) {
+        showConnectionError(eventType);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.destroy();
     }
 }

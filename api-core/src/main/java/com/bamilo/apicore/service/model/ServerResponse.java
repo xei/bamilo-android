@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
 
 public abstract class ServerResponse {
 
-    @SerializedName("success")
+    @SerializedName(JsonConstants.RestConstants.SUCCESS)
     @Expose
     private boolean success;
 

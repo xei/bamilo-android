@@ -14,10 +14,6 @@ import java.util.List;
 
 public class ItemTrackingResponse extends ServerResponse{
     @Expose
-    @SerializedName(JsonConstants.RestConstants.SUCCESS)
-    private boolean success;
-
-    @Expose
     @SerializedName(JsonConstants.RestConstants.MESSAGES)
     private List<String> messages;
 
@@ -47,19 +43,10 @@ public class ItemTrackingResponse extends ServerResponse{
     protected void initializeWithJson(JsonObject jsonObject, Gson gson) {
         if (jsonObject != null && gson != null) {
             ItemTrackingResponse temp = gson.fromJson(jsonObject, getClass());
-            this.success = temp.success;
+            this.setSuccess(temp.isSuccess());
+            this.messages = temp.messages;
             this.completeOrder = temp.completeOrder;
         }
-    }
-
-    @Override
-    public boolean isSuccess() {
-        return success;
-    }
-
-    @Override
-    public void setSuccess(boolean success) {
-        this.success = success;
     }
 
     public CompleteOrder getCompleteOrder() {

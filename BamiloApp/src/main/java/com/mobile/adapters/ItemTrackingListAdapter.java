@@ -1,6 +1,5 @@
 package com.mobile.adapters;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.constraint.ConstraintLayout;
@@ -13,8 +12,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mobile.service.objects.orders.Package;
-import com.mobile.service.objects.orders.PackageItem;
+import com.bamilo.apicore.service.model.data.itemtracking.CompleteOrder;
+import com.bamilo.apicore.service.model.data.itemtracking.Package;
+import com.bamilo.apicore.service.model.data.itemtracking.PackageItem;
 import com.mobile.service.objects.orders.PackagedOrder;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
@@ -35,28 +35,28 @@ import java.util.Locale;
 public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingListAdapter.ItemTrackingViewHolder> {
     private static final int ITEM_LIST_HEADER = 1, ITEM_SECTION_HEADER = 2, ITEM_ORDER_ITEM = 3,
             ITEM_LIST_FOOTER = 4, ITEM_CMS_MESSAGE = 5;
-    private PackagedOrder packagedOrder;
+    private CompleteOrder completeOrder;
     private List<Integer> headerPositions;
     private HashMap<Integer, PackageItem> indexedItems;
     private HashMap<Integer, Boolean> itemsReviewButtonVisibility;
     private int count;
     private OnItemTrackingListClickListener onItemTrackingListClickListener;
 
-    public ItemTrackingListAdapter(PackagedOrder packagedOrder) {
-        this.packagedOrder = packagedOrder;
-        calculateItemCount(packagedOrder);
+    public ItemTrackingListAdapter(CompleteOrder completeOrder) {
+        this.completeOrder = completeOrder;
+        calculateItemCount(completeOrder);
     }
 
-    private void calculateItemCount(PackagedOrder packagedOrder) {
+    private void calculateItemCount(CompleteOrder completeOrder) {
         headerPositions = new ArrayList<>();
         indexedItems = new HashMap<>();
         itemsReviewButtonVisibility = new HashMap<>();
         int count = 0;
-        if (TextUtils.isNotEmpty(packagedOrder.getCms())) {
+        if (TextUtils.isNotEmpty(completeOrder.getCms())) {
             count++; // cms message item
         }
         count++; // header item
-        for (Package p : packagedOrder.getPackages()) {
+        for (Package p : completeOrder.getPackages()) {
             // index of package title item
             headerPositions.add(count);
             count++; // package title item
@@ -90,31 +90,31 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         Locale locale = new Locale("fa", "ir");
         Context context = holder.itemView.getContext();
         if (viewType == ITEM_LIST_HEADER) {
-            holder.tvOrderNumberValue.setText(packagedOrder.getOrderId());
-            holder.tvOrderCostValue.setText(CurrencyFormatter.formatCurrency(packagedOrder.getTotalCost()));
-            holder.tvOrderDateValue.setText(packagedOrder.getCreationDate());
+            holder.tvOrderNumberValue.setText(completeOrder.getOrderNumber());
+            holder.tvOrderCostValue.setText(CurrencyFormatter.formatCurrency(completeOrder.getGrandTotal()));
+            holder.tvOrderDateValue.setText(completeOrder.getCreationDate());
             holder.tvOrderQuantityValue.setText(String.format(locale, "%d %s",
-                    packagedOrder.getProductsCount(),
+                    completeOrder.getTotalProductsCount(),
                     context.getString(R.string.product_quantity_unit)));
         } else if (viewType == ITEM_CMS_MESSAGE) {
-            if (TextUtils.isNotEmpty(packagedOrder.getCms())) {
+            if (TextUtils.isNotEmpty(completeOrder.getCms())) {
                 holder.rlCMSMessage.setVisibility(View.VISIBLE);
-                holder.tvCMSMessage.setText(packagedOrder.getCms());
+                holder.tvCMSMessage.setText(completeOrder.getCms());
             } else {
                 holder.rlCMSMessage.setVisibility(View.GONE);
             }
         } else if (viewType == ITEM_LIST_FOOTER) {
-            holder.tvRecipientValue.setText(String.format(locale, "%s %s", packagedOrder.getShippingAddress().getFirstName(), packagedOrder.getShippingAddress().getLastName()));
-            holder.tvDeliveryAddressValue.setText(packagedOrder.getShippingAddress().getAddress());
-            holder.tvShipmentCostValue.setText(packagedOrder.getDeliveryCost() == 0 ? context.getString(R.string.free_label) :
-                    CurrencyFormatter.formatCurrency(packagedOrder.getDeliveryCost()));
-            holder.tvPaymentMethodValue.setText(packagedOrder.getPaymentMethodName());
+            holder.tvRecipientValue.setText(String.format(locale, "%s %s", completeOrder.getShippingAddress().getFirstName(), completeOrder.getShippingAddress().getLastName()));
+            holder.tvDeliveryAddressValue.setText(completeOrder.getShippingAddress().getAddress1());
+            holder.tvShipmentCostValue.setText(completeOrder.getPayment().getDeliveryCost() == 0 ? context.getString(R.string.free_label) :
+                    CurrencyFormatter.formatCurrency(completeOrder.getPayment().getDeliveryCost()));
+            holder.tvPaymentMethodValue.setText(completeOrder.getPayment().getMethod());
         } else if (viewType == ITEM_SECTION_HEADER) {
             int index = headerPositions.indexOf(position);
-            Package p = packagedOrder.getPackages().get(index);
+            Package p = completeOrder.getPackages().get(index);
             holder.tvPackageTitle.setText(p.getTitle());
-            if (TextUtils.isNotEmpty(p.getCalculatedDeliveryTime())) {
-                holder.tvPackageDeliveryTime.setText(p.getCalculatedDeliveryTime());
+            if (TextUtils.isNotEmpty(p.getDeliveryTime())) {
+                holder.tvPackageDeliveryTime.setText(p.getDeliveryTime());
             }
         } else if (viewType == ITEM_ORDER_ITEM) {
             PackageItem item = indexedItems.get(position);
@@ -153,11 +153,11 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             if (item.getPrice() != 0) {
                 productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.fee_label), CurrencyFormatter.formatCurrency(item.getPrice())));
             }
-            if (TextUtils.isNotEmpty(item.getColor())) {
-                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.color_label), item.getColor()));
+            if (TextUtils.isNotEmpty(item.getFilters().getColor())) {
+                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.color_label), item.getFilters().getColor()));
             }
-            if (TextUtils.isNotEmpty(item.getSize())) {
-                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.size_label), item.getSize()));
+            if (TextUtils.isNotEmpty(item.getFilters().getSize())) {
+                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.size_label), item.getFilters().getSize()));
             }
             holder.tvProductDetails.setText(productProperties.substring(0, productProperties.length() - 1));
 
@@ -223,12 +223,12 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
     public int getItemViewType(int position) {
         int count = getItemCount();
         if (position == 0) {
-            if (TextUtils.isNotEmpty(packagedOrder.getCms())) {
+            if (TextUtils.isNotEmpty(completeOrder.getCms())) {
                 return ITEM_CMS_MESSAGE;
             } else {
                 return ITEM_LIST_HEADER;
             }
-        } else if (position == 1 && TextUtils.isNotEmpty(packagedOrder.getCms())) {
+        } else if (position == 1 && TextUtils.isNotEmpty(completeOrder.getCms())) {
             return ITEM_LIST_HEADER;
         } else if (position == count - 1) {
             return ITEM_LIST_FOOTER;
@@ -239,13 +239,13 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         }
     }
 
-    public PackagedOrder getPackagedOrder() {
-        return packagedOrder;
+    public CompleteOrder getCompleteOrder() {
+        return completeOrder;
     }
 
-    public void setPackagedOrder(PackagedOrder packagedOrder) {
-        this.packagedOrder = packagedOrder;
-        calculateItemCount(packagedOrder);
+    public void setCompleteOrder(CompleteOrder completeOrder) {
+        this.completeOrder = completeOrder;
+        calculateItemCount(completeOrder);
     }
 
     public OnItemTrackingListClickListener getOnItemTrackingListClickListener() {

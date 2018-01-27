@@ -5,9 +5,12 @@ import com.bamilo.apicore.service.model.EventType;
 import com.bamilo.apicore.service.model.ItemTrackingResponse;
 import com.bamilo.apicore.view.ItemTrackingView;
 
+import javax.inject.Inject;
+
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscription;
 import rx.functions.Action1;
+import rx.subscriptions.Subscriptions;
 
 /**
  * Created by mohsen on 1/27/18.
@@ -19,8 +22,10 @@ public class ItemTrackingPresenterImpl implements ItemTrackingPresenter {
     private ItemTrackingView view;
     private Subscription subscription;
 
+    @Inject
     public ItemTrackingPresenterImpl(ItemTrackingInteractor interactor) {
         this.interactor = interactor;
+        subscription = Subscriptions.empty();
     }
 
     @Override

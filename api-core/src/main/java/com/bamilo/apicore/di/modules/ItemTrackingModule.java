@@ -21,18 +21,18 @@ public class ItemTrackingModule {
     }
 
     @Provides
-    public ItemTrackingView provideOrdersListView() {
+    public ItemTrackingView provideItemTrackingView() {
         return itemTrackingView;
     }
 
     @Provides
-    public ItemTrackingPresenter provideOrdersListPresentater(ItemTrackingPresenterImpl itemTrackingPresenter) {
+    public ItemTrackingPresenter provideItemTrackingPresenter(ItemTrackingPresenterImpl itemTrackingPresenter) {
         itemTrackingPresenter.setView(itemTrackingView);
         return itemTrackingPresenter;
     }
 
     @Provides
-    public ItemTrackingInteractor provideOrdersListInteractor(ItemTrackingInteractorImpl itemTrackingInteractor) {
+    public ItemTrackingInteractor provideItemTrackingInteractor(ItemTrackingInteractorImpl itemTrackingInteractor) {
         return itemTrackingInteractor;
     }
 }

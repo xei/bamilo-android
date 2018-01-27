@@ -5,6 +5,11 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class History {
+    public static final String STATUS_ACTIVE = "active",
+            STATUS_INACTIVE = "inactive", STATUS_SUCCESS = "success",
+            STATUS_FAILED = "failed";
+    public static final String NAME_NEW = "new", NAME_APPROVED = "exportable",
+            NAME_RECEIVED = "item_received", NAME_SHIPPED = "shipped", NAME_DELIVERED = "delivered";
 
     @SerializedName("name")
     @Expose

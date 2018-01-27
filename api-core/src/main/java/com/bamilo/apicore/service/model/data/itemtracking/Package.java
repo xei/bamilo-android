@@ -9,7 +9,7 @@ public class Package {
 
     @SerializedName("products")
     @Expose
-    private List<Product> products = null;
+    private List<PackageItem> packageItems = null;
     @SerializedName("title")
     @Expose
     private String title;
@@ -20,12 +20,12 @@ public class Package {
     @Expose
     private Delay delay;
 
-    public List<Product> getProducts() {
-        return products;
+    public List<PackageItem> getPackageItems() {
+        return packageItems;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setPackageItems(List<PackageItem> packageItems) {
+        this.packageItems = packageItems;
     }
 
     public String getTitle() {
