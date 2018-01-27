@@ -1,6 +1,7 @@
 package com.bamilo.apicore.presentation;
 
 import com.bamilo.apicore.interaction.ItemTrackingInteractor;
+import com.bamilo.apicore.service.model.EventType;
 import com.bamilo.apicore.service.model.ItemTrackingResponse;
 import com.bamilo.apicore.view.ItemTrackingView;
 
@@ -31,18 +32,18 @@ public class ItemTrackingPresenterImpl implements ItemTrackingPresenter {
     @Override
     public void loadOrderDetails(String orderNumber, final boolean isConnected) {
         if (view != null) {
-            view.toggleProgress(true);
+            view.toggleProgress(EventType.TRACK_ORDER_EVENT, true);
         }
         subscription = interactor.loadOrderDetails(orderNumber)
                 .subscribe(new Action1<ItemTrackingResponse>() {
                     @Override
                     public void call(ItemTrackingResponse itemTrackingResponse) {
                         if (view != null) {
-                            view.toggleProgress(false);
+                            view.toggleProgress(EventType.TRACK_ORDER_EVENT, false);
                             if (itemTrackingResponse.isSuccess()) {
                                 view.performOrderDetails(itemTrackingResponse.getCompleteOrder());
                             } else {
-                                view.showServerError(itemTrackingResponse);
+                                view.showServerError(EventType.TRACK_ORDER_EVENT, itemTrackingResponse);
                             }
                         }
                     }
@@ -50,17 +51,17 @@ public class ItemTrackingPresenterImpl implements ItemTrackingPresenter {
                     @Override
                     public void call(Throwable throwable) {
                         if (view != null) {
-                            view.toggleProgress(false);
+                            view.toggleProgress(EventType.TRACK_ORDER_EVENT, false);
                         }
 
                         if (!isConnected) {
                             if (view != null) {
-                                view.showOfflineMessage();
+                                view.showOfflineMessage(EventType.TRACK_ORDER_EVENT);
                             }
                         } else if (throwable instanceof HttpException) {
-                            view.showConnectionError();
+                            view.showConnectionError(EventType.TRACK_ORDER_EVENT);
                         } else {
-                            view.showRetry();
+                            view.showRetry(EventType.TRACK_ORDER_EVENT);
                         }
                     }
                 });

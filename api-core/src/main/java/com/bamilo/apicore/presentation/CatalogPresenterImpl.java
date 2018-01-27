@@ -2,6 +2,7 @@ package com.bamilo.apicore.presentation;
 
 import com.bamilo.apicore.interaction.CatalogInteractor;
 import com.bamilo.apicore.service.model.CatalogResponse;
+import com.bamilo.apicore.service.model.EventType;
 import com.bamilo.apicore.view.CatalogView;
 
 import javax.inject.Inject;
@@ -34,7 +35,7 @@ public class CatalogPresenterImpl implements CatalogPresenter {
     @Override
     public void loadCategoryCatalog(String category, String filters, int page, int maxItems, final boolean isConnected) {
         if (view != null) {
-            view.toggleProgress(true);
+            view.toggleProgress(EventType.GET_CATALOG_EVENT, true);
         }
         categorySubscription = interactor
                 .loadCategoryCatalog(category, filters, page, maxItems)
@@ -42,11 +43,11 @@ public class CatalogPresenterImpl implements CatalogPresenter {
                     @Override
                     public void call(CatalogResponse catalogResponse) {
                         if (view != null) {
-                            view.toggleProgress(false);
+                            view.toggleProgress(EventType.GET_CATALOG_EVENT, false);
                             if (catalogResponse.isSuccess()) {
                                 view.performCatalog(catalogResponse.getCatalog());
                             } else {
-                                view.showServerError(catalogResponse);
+                                view.showServerError(EventType.GET_CATALOG_EVENT, catalogResponse);
                             }
                         }
                     }
@@ -54,17 +55,17 @@ public class CatalogPresenterImpl implements CatalogPresenter {
                     @Override
                     public void call(Throwable throwable) {
                         if (view != null) {
-                            view.toggleProgress(false);
+                            view.toggleProgress(EventType.GET_CATALOG_EVENT, false);
                         }
 
                         if (!isConnected) {
                             if (view != null) {
-                                view.showOfflineMessage();
+                                view.showOfflineMessage(EventType.GET_CATALOG_EVENT);
                             }
                         } else if (throwable instanceof HttpException) {
-                            view.showConnectionError();
+                            view.showConnectionError(EventType.GET_CATALOG_EVENT);
                         } else {
-                            view.showRetry();
+                            view.showRetry(EventType.GET_CATALOG_EVENT);
                         }
                     }
                 });
@@ -73,7 +74,7 @@ public class CatalogPresenterImpl implements CatalogPresenter {
     @Override
     public void loadHashCatalog(String hash, String filters, int page, int maxItems, final boolean isConnected) {
         if (view != null) {
-            view.toggleProgress(true);
+            view.toggleProgress(EventType.GET_CATALOG_EVENT, true);
         }
         categorySubscription = interactor
                 .loadHashCatalog(hash, filters, page, maxItems)
@@ -81,11 +82,11 @@ public class CatalogPresenterImpl implements CatalogPresenter {
                     @Override
                     public void call(CatalogResponse catalogResponse) {
                         if (view != null) {
-                            view.toggleProgress(false);
+                            view.toggleProgress(EventType.GET_CATALOG_EVENT, false);
                             if (catalogResponse.isSuccess()) {
                                 view.performCatalog(catalogResponse.getCatalog());
                             } else {
-                                view.showServerError(catalogResponse);
+                                view.showServerError(EventType.GET_CATALOG_EVENT, catalogResponse);
                             }
                         }
                     }
@@ -93,17 +94,17 @@ public class CatalogPresenterImpl implements CatalogPresenter {
                     @Override
                     public void call(Throwable throwable) {
                         if (view != null) {
-                            view.toggleProgress(false);
+                            view.toggleProgress(EventType.GET_CATALOG_EVENT, false);
                         }
 
                         if (!isConnected) {
                             if (view != null) {
-                                view.showOfflineMessage();
+                                view.showOfflineMessage(EventType.GET_CATALOG_EVENT);
                             }
                         } else if (throwable instanceof HttpException) {
-                            view.showConnectionError();
+                            view.showConnectionError(EventType.GET_CATALOG_EVENT);
                         } else {
-                            view.showRetry();
+                            view.showRetry(EventType.GET_CATALOG_EVENT);
                         }
                     }
                 });
@@ -112,7 +113,7 @@ public class CatalogPresenterImpl implements CatalogPresenter {
     @Override
     public void loadSearchCatalog(String query, String filters, int page, int maxItems, final boolean isConnected) {
         if (view != null) {
-            view.toggleProgress(true);
+            view.toggleProgress(EventType.GET_CATALOG_EVENT, true);
         }
         categorySubscription = interactor
                 .loadSearchCatalog(query, filters, page, maxItems)
@@ -120,11 +121,11 @@ public class CatalogPresenterImpl implements CatalogPresenter {
                     @Override
                     public void call(CatalogResponse catalogResponse) {
                         if (view != null) {
-                            view.toggleProgress(false);
+                            view.toggleProgress(EventType.GET_CATALOG_EVENT, false);
                             if (catalogResponse.isSuccess()) {
                                 view.performCatalog(catalogResponse.getCatalog());
                             } else {
-                                view.showServerError(catalogResponse);
+                                view.showServerError(EventType.GET_CATALOG_EVENT, catalogResponse);
                             }
                         }
                     }
@@ -132,17 +133,17 @@ public class CatalogPresenterImpl implements CatalogPresenter {
                     @Override
                     public void call(Throwable throwable) {
                         if (view != null) {
-                            view.toggleProgress(false);
+                            view.toggleProgress(EventType.GET_CATALOG_EVENT, false);
                         }
 
                         if (!isConnected) {
                             if (view != null) {
-                                view.showOfflineMessage();
+                                view.showOfflineMessage(EventType.GET_CATALOG_EVENT);
                             }
                         } else if (throwable instanceof HttpException) {
-                            view.showConnectionError();
+                            view.showConnectionError(EventType.GET_CATALOG_EVENT);
                         } else {
-                            view.showRetry();
+                            view.showRetry(EventType.GET_CATALOG_EVENT);
                         }
                     }
                 });

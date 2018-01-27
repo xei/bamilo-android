@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.bamilo.apicore.di.modules.HomeModule;
 import com.bamilo.apicore.presentation.HomePresenter;
+import com.bamilo.apicore.service.model.EventType;
 import com.bamilo.apicore.service.model.ServerResponse;
 import com.bamilo.apicore.service.model.data.home.BaseComponent;
 import com.bamilo.apicore.view.HomeView;
@@ -269,33 +270,33 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
     }
 
     @Override
-    public void showMessage(String message) {
+    public void showMessage(EventType eventType, String message) {
         showWarningErrorMessage(message);
     }
 
     @Override
-    public void showOfflineMessage() {
+    public void showOfflineMessage(EventType eventType) {
         showFragmentNoNetworkRetry();
     }
 
     @Override
-    public void showConnectionError() {
+    public void showConnectionError(EventType eventType) {
         showFragmentNetworkErrorRetry();
     }
 
     @Override
-    public void showServerError(ServerResponse response) {
+    public void showServerError(EventType eventType, ServerResponse response) {
         // it isn't gonna happen
     }
 
     @Override
-    public void toggleProgress(boolean show) {
+    public void toggleProgress(EventType eventType, boolean show) {
         srlHomeRoot.setRefreshing(show);
     }
 
     @Override
-    public void showRetry() {
-        showConnectionError();
+    public void showRetry(EventType eventType) {
+        showConnectionError(eventType);
     }
 
     @Override
