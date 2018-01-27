@@ -100,7 +100,7 @@ def initvars
 
 #Create Address
   @myaddresses = "My Addresses"
-  @newaddress = "Add new address"
+  @newaddress = "Add new billingAddress"
   @otheradsresses ="Other Addresses"
   @error_first_name ="Please fill in the First name"
   @error_last_name ="Please fill in the Last name"
@@ -231,7 +231,7 @@ def initvars
     
     @newsletter_subscription="Newsletter Subscription"
     
-    @invalid_email_message="Invalid email address"
+    @invalid_email_message="Invalid email billingAddress"
     
     @save="Save"
     @settings = "Settings"
@@ -249,7 +249,7 @@ def initvars
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
-    @add_new_address = "Add new address"
+    @add_new_address = "Add new billingAddress"
     @size= "Size"
     @call_to_order = "Call to order"
     @add_all_items_to_cart = "Add All Items to Cart"
@@ -421,7 +421,7 @@ def initvars
     @number_items="Articles"
     @remember_my_email= "Remember my email"
     
-    @add_new_address = "Add new address"
+    @add_new_address = "Add new billingAddress"
     @call_to_order = "Valider la commande"
     @add_all_items_to_cart = "Tout ajouter au Panier"
     @continue_shopping = "Continuer votre shopping!"
@@ -589,7 +589,7 @@ def initvars
     @number_items="Articles"
     @remember_my_email= "Remember my email"
     
-    @add_new_address = "Add new address"
+    @add_new_address = "Add new billingAddress"
     @call_to_order = "Valider la commande"
     @add_all_items_to_cart = "Tout ajouter au Panier"
     @continue_shopping = "Continuer votre shopping!"
@@ -757,7 +757,7 @@ def initvars
     @number_items="Articles"
     @remember_my_email= "Remember my email"
     
-    @add_new_address = "Add new address"
+    @add_new_address = "Add new billingAddress"
     @call_to_order = "Valider la commande"
     @add_all_items_to_cart = "Tout ajouter au Panier"
     @continue_shopping = "Continuer votre shopping!"
@@ -889,7 +889,7 @@ def initvars
     
     @newsletter_subscription="Newsletter Subscription"
     
-    @invalid_email_message="Invalid email address"
+    @invalid_email_message="Invalid email billingAddress"
     
     @save="Save"
     @settings = "Settings"
@@ -907,7 +907,7 @@ def initvars
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
-    @add_new_address = "Add new address"
+    @add_new_address = "Add new billingAddress"
     @size= "Size"
     @call_to_order = "Call to order"
     @add_all_items_to_cart = "Add All Items to Cart"
@@ -1043,7 +1043,7 @@ def initvars
     
     @newsletter_subscription="Newsletter Subscription"
     
-    @invalid_email_message="Invalid email address"
+    @invalid_email_message="Invalid email billingAddress"
     
     @save="Save"
     @settings = "Settings"
@@ -1061,7 +1061,7 @@ def initvars
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
-    @add_new_address = "Add new address"
+    @add_new_address = "Add new billingAddress"
     @size= "Size"
     @call_to_order = "Call to order"
     @add_all_items_to_cart = "Add All Items to Cart"
@@ -1197,7 +1197,7 @@ def initvars
     
     @newsletter_subscription="Newsletter Subscription"
     
-    @invalid_email_message="Invalid email address"
+    @invalid_email_message="Invalid email billingAddress"
     
     @save="Save"
     @settings = "Settings"
@@ -1215,7 +1215,7 @@ def initvars
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
-    @add_new_address = "Add new address"
+    @add_new_address = "Add new billingAddress"
     @size= "Size"
     @call_to_order = "Call to order"
     @add_all_items_to_cart = "Add All Items to Cart"
@@ -1351,7 +1351,7 @@ def initvars
     
     @newsletter_subscription="Newsletter Subscription"
     
-    @invalid_email_message="Invalid email address"
+    @invalid_email_message="Invalid email billingAddress"
     
     @save="Save"
     @settings = "Settings"
@@ -1369,7 +1369,7 @@ def initvars
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
-    @add_new_address = "Add new address"
+    @add_new_address = "Add new billingAddress"
     @size= "Size"
     @call_to_order = "Call to order"
     @add_all_items_to_cart = "Add All Items to Cart"
@@ -1516,7 +1516,7 @@ def initvars
 
         @newsletter_subscription="Newsletter Subscription"
 
-        @invalid_email_message="Invalid email address"
+        @invalid_email_message="Invalid email billingAddress"
 
         @save="Save"
         @settings = "Settings"
@@ -1534,9 +1534,9 @@ def initvars
         @number_items="Items"
         @remember_my_email= "Remember my email"
 
-        @add_new_address = "Add new address"
+        @add_new_address = "Add new billingAddress"
         @size= "Size"
-        @edited_address_msg = "Edited address successfully"
+        @edited_address_msg = "Edited billingAddress successfully"
 
         @call_to_order = "Call to order"
         @add_all_items_to_cart = "Add All Items to Cart"
@@ -1688,7 +1688,7 @@ def initvars
 
                 @newsletter_subscription="Newsletter Subscription"
 
-                @invalid_email_message="Invalid email address"
+                @invalid_email_message="Invalid email billingAddress"
 
                 @save="Save"
                 @settings = "Settings"
@@ -1706,7 +1706,7 @@ def initvars
                 @number_items="Items"
                 @remember_my_email= "Remember my email"
 
-                @add_new_address = "Add new address"
+                @add_new_address = "Add new billingAddress"
                 @size= "Size"
                 @call_to_order = "Call to order"
                 @add_all_items_to_cart = "Add All Items to Cart"

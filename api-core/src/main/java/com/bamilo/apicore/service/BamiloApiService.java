@@ -34,4 +34,8 @@ public interface BamiloApiService {
     @Headers("Content-Type: application/json")
     Observable<JsonObject> loadOrdersList(@Path("items-per-page") int itemsPerPage, @Path("page") int page);
 
+    @GET("customer/trackingorder/ordernr/{order-number}")
+    @Headers("Content-Type: application/json")
+    Observable<JsonObject> loadOrderDetails(@Path("order-number") String orderNumber);
+
 }

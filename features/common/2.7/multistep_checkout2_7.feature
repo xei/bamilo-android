@@ -40,7 +40,7 @@ Scenario: Native Checkout Add Product
 * I should see the Address
 * I press New Address
 * I wait for 4 seconds
-* I fill the new address form
+* I fill the new billingAddress form
 * I wait for 4 seconds
 * I press Next
 * I wait for 5 seconds

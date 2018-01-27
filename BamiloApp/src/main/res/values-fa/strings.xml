@@ -404,7 +404,7 @@
     <string name="return_method">روش برگرداندن محصول</string>
     <!-- Used as label for Refund Method Online Return Details Screen -->
     <string name="return_payment">روش برگرداندن مبلغ سفارش</string>
-    <!-- Used as error message warning when a Shipping or Billing address is not valid anymore -->
+    <!-- Used as error message warning when a Shipping or BillbillingAddressress is not valid anymore -->
     <string name="invalid_address_shipping_billing">نشانی وارد شده صحیح نمی‌باشد، لطفا نشانی را تغییر دهید.</string>
     <!-- Used as error message warning when a Address is not valid anymore -->
     <string name="invalid_address_other">نشانی وارد شده صحیح نمی‌باشد.</string>
