@@ -13,6 +13,7 @@ import com.bamilo.apicore.service.model.ServerResponse;
 import com.bamilo.apicore.service.model.data.itemtracking.CompleteOrder;
 import com.bamilo.apicore.service.model.data.itemtracking.PackageItem;
 import com.bamilo.apicore.view.ItemTrackingView;
+import com.google.gson.Gson;
 import com.mobile.adapters.ItemTrackingListAdapter;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
@@ -21,6 +22,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.tracking.TrackingPage;
+import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.NetworkConnectivity;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -46,6 +48,11 @@ public class ItemTrackingFragment extends BaseFragment implements ItemTrackingVi
 
     @Inject
     ItemTrackingPresenter presenter;
+
+    @Inject
+    Gson mGson;
+
+    private boolean shouldReloadPage = false;
 
     /**
      * Constructor as nested fragment, called from {@link MyOrdersFragment#}.
@@ -108,6 +115,10 @@ public class ItemTrackingFragment extends BaseFragment implements ItemTrackingVi
     @Override
     public void onStart() {
         super.onStart();
+        if (shouldReloadPage) {
+            loadOrderInfo(orderNumber, true);
+            shouldReloadPage = false;
+        }
     }
 
     private void loadOrderInfo(String orderNumber, boolean showDefaultProgress) {
@@ -131,9 +142,24 @@ public class ItemTrackingFragment extends BaseFragment implements ItemTrackingVi
     }
 
     private void showOrderStatus(CompleteOrder order) {
-        mAdapter = new ItemTrackingListAdapter(order);
+        boolean cancellationEnabled = false;
+        if (order.getCancellation() != null) {
+            cancellationEnabled = order.getCancellation().isCancellationServiceEnabled() &&
+                    CollectionUtils.isNotEmpty(order.getCancellation().getReasons());
+        }
+        mAdapter = new ItemTrackingListAdapter(order, cancellationEnabled);
         mAdapter.setOnItemTrackingListClickListener(this);
         rvItemsList.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onCancelItemButtonClicked(View v, PackageItem item) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.COMPLETE_ORDER, mGson.toJson(mAdapter.getCompleteOrder()));
+        bundle.putString(ConstantsIntentExtra.CANCELING_ORDER_ITEM_ID, item.getId());
+        // Goto Cancellation Fragment
+        getBaseActivity().onSwitchFragment(FragmentType.ORDER_CANCELLATION, bundle, false);
+        shouldReloadPage = true;
     }
 
     @Override
@@ -194,8 +220,9 @@ public class ItemTrackingFragment extends BaseFragment implements ItemTrackingVi
         if (eventType == com.bamilo.apicore.service.model.EventType.TRACK_ORDER_EVENT &&
                 response instanceof ItemTrackingResponse) {
             ItemTrackingResponse itemTrackingResponse = (ItemTrackingResponse)response;
-            if (itemTrackingResponse.getMessages() != null && !itemTrackingResponse.getMessages().isEmpty()) {
-                showWarningErrorMessage(itemTrackingResponse.getMessages().get(0));
+            if (itemTrackingResponse.getMessages() != null && itemTrackingResponse.getMessages().getErrors() != null &&
+                    !itemTrackingResponse.getMessages().getErrors().isEmpty()) {
+                showWarningErrorMessage(itemTrackingResponse.getMessages().getErrors().get(0).getMessage());
             }
             getBaseActivity().onBackPressed();
         }

@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
     android:background="@color/white"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true">
 
     <com.mobile.view.widget.ItemTrackingProgressBar
         android:id="@+id/itemTrackingProgressBar"
@@ -75,6 +76,20 @@
         app:layout_constraintRight_toLeftOf="@+id/imgProductThumb"
         tools:text="۳۵۵۰۰۰ ریال" />
 
+    <com.mobile.components.customfontviews.Button
+        android:id="@+id/btnCancelItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="@string/order_cancellation_cancel_item_btn"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:backgroundTint="@color/order_cancellation_button_bg_tint"
+        app:layout_constraintBottom_toBottomOf="@+id/tvProductPrice"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:visibility="visible" />
+
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tvProductDetails"
@@ -95,17 +110,17 @@
 
     <com.mobile.components.customfontviews.Button
         android:id="@+id/btnReviewProduct"
-        style="@style/Button_Action_Secondary"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="20dp"
+        android:gravity="center"
         android:text="@string/add_review"
         android:textColor="@color/white"
         android:textSize="12sp"
         android:visibility="gone"
-        android:gravity="center"
+        app:backgroundTint="@color/button_secondary_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProductDetails"
@@ -123,10 +138,10 @@
         android:textColor="@color/gray_2"
         android:textSize="10sp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btnReviewProduct"
         app:layout_constraintLeft_toRightOf="@+id/btnReviewProduct"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btnReviewProduct"
-        app:layout_constraintBottom_toBottomOf="@+id/btnReviewProduct"
         tools:visibility="visible" />
 
     <View

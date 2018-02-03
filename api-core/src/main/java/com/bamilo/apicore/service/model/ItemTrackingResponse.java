@@ -13,9 +13,6 @@ import java.util.List;
  */
 
 public class ItemTrackingResponse extends ServerResponse{
-    @Expose
-    @SerializedName(JsonConstants.RestConstants.MESSAGES)
-    private List<String> messages;
 
     @Expose
     @SerializedName(JsonConstants.RestConstants.METADATA)
@@ -44,7 +41,7 @@ public class ItemTrackingResponse extends ServerResponse{
         if (jsonObject != null && gson != null) {
             ItemTrackingResponse temp = gson.fromJson(jsonObject, getClass());
             this.setSuccess(temp.isSuccess());
-            this.messages = temp.messages;
+            this.setMessages(temp.getMessages());
             this.completeOrder = temp.completeOrder;
         }
     }
@@ -55,13 +52,5 @@ public class ItemTrackingResponse extends ServerResponse{
 
     public void setCompleteOrder(CompleteOrder completeOrder) {
         this.completeOrder = completeOrder;
-    }
-
-    public List<String> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<String> messages) {
-        this.messages = messages;
     }
 }

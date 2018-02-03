@@ -57,16 +57,14 @@ public class ItemTrackingPresenterImpl implements ItemTrackingPresenter {
                     public void call(Throwable throwable) {
                         if (view != null) {
                             view.toggleProgress(EventType.TRACK_ORDER_EVENT, false);
-                        }
 
-                        if (!isConnected) {
-                            if (view != null) {
+                            if (!isConnected) {
                                 view.showOfflineMessage(EventType.TRACK_ORDER_EVENT);
+                            } else if (throwable instanceof HttpException) {
+                                view.showConnectionError(EventType.TRACK_ORDER_EVENT);
+                            } else {
+                                view.showRetry(EventType.TRACK_ORDER_EVENT);
                             }
-                        } else if (throwable instanceof HttpException) {
-                            view.showConnectionError(EventType.TRACK_ORDER_EVENT);
-                        } else {
-                            view.showRetry(EventType.TRACK_ORDER_EVENT);
                         }
                     }
                 });

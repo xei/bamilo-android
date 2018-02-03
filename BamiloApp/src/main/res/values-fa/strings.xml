@@ -582,5 +582,15 @@
     <string name="please_wait_for_a_while">لطفا کمی صبر کنید</string>
     <string name="loading_more_orders">بارگذاری سفارشات بیشتر ...</string>
     <string name="please_select_a_payment_method">لطفا یکی از روش‌های پرداخت را انتخاب کنید!</string>
+    <string name="order_cancellation_cancel_item_btn">لغو کالا</string>
+    <string name="submit_cancellation_request_title">ثبت درخواست لغو</string>
+    <string name="submit_cancellation_request_button_label">ثبت درخواست</string>
+    <string name="order_cancellation_subtitle_label">آیتم‌هایی که قصد لغو آنها را دارید انتخاب کنید</string>
+    <string name="order_cancellation_explanation_label">توضیحات</string>
+    <string name="order_cancellation_item_quantity_label">تعداد:</string>
+    <string name="prompt_choose_cancellation_reason">علت لغو کالا را مشخص کنید</string>
+    <string name="choosing_cancellation_reason_is_required">انتخاب دلیل لغو کالا الزامیست</string>
+    <string name="order_cancellation_you_should_select_one_item">لطفا حداقل یک مورد را انتخاب نمایید</string>
+    <string name="order_cancellation_success_notice">درخواست لغو سفارش شما با موفقیت ثبت شد.</string>
 
 </resources>

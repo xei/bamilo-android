@@ -10,6 +10,9 @@ public class PackageItem {
     @SerializedName("sku")
     @Expose
     private String sku;
+    @SerializedName("simple_sku")
+    @Expose
+    private String simpleSku;
     @SerializedName("filters")
     @Expose
     private Filters filters;
@@ -149,5 +152,13 @@ public class PackageItem {
 
     public void setRefund(Refund refund) {
         this.refund = refund;
+    }
+
+    public String getSimpleSku() {
+        return simpleSku;
+    }
+
+    public void setSimpleSku(String simpleSku) {
+        this.simpleSku = simpleSku;
     }
 }

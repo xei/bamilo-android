@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.bamilo.apicore.service.model.data.itemtracking.CompleteOrder;
 import com.bamilo.apicore.service.model.data.itemtracking.Package;
 import com.bamilo.apicore.service.model.data.itemtracking.PackageItem;
-import com.mobile.service.objects.orders.PackagedOrder;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
@@ -35,6 +34,7 @@ import java.util.Locale;
 public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingListAdapter.ItemTrackingViewHolder> {
     private static final int ITEM_LIST_HEADER = 1, ITEM_SECTION_HEADER = 2, ITEM_ORDER_ITEM = 3,
             ITEM_LIST_FOOTER = 4, ITEM_CMS_MESSAGE = 5;
+    private boolean cancellationEnabled;
     private CompleteOrder completeOrder;
     private List<Integer> headerPositions;
     private HashMap<Integer, PackageItem> indexedItems;
@@ -42,7 +42,8 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
     private int count;
     private OnItemTrackingListClickListener onItemTrackingListClickListener;
 
-    public ItemTrackingListAdapter(CompleteOrder completeOrder) {
+    public ItemTrackingListAdapter(CompleteOrder completeOrder, boolean cancellationEnabled) {
+        this.cancellationEnabled = cancellationEnabled;
         this.completeOrder = completeOrder;
         calculateItemCount(completeOrder);
     }
@@ -123,6 +124,22 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             holder.tvProductName.setText(item.getName());
             holder.tvProductPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.imgProductThumb.setOnClickListener(null);
+            if (cancellationEnabled && item.getCancellation() != null) {
+                if (item.getCancellation().isCancelable()) {
+                    holder.btnCancelItem.setVisibility(View.VISIBLE);
+                    holder.btnCancelItem.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (onItemTrackingListClickListener != null) {
+                                PackageItem item = indexedItems.get(holder.getAdapterPosition());
+                                onItemTrackingListClickListener.onCancelItemButtonClicked(view, item);
+                            }
+                        }
+                    });
+                } else {
+                    holder.btnCancelItem.setVisibility(View.GONE);
+                }
+            }
             if (TextUtils.isNotEmpty(item.getImage())) {
                 try {
                     holder.imgProductThumb.setOnClickListener(new View.OnClickListener() {
@@ -256,6 +273,14 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         this.onItemTrackingListClickListener = onItemTrackingListClickListener;
     }
 
+    public boolean isCancellationEnabled() {
+        return cancellationEnabled;
+    }
+
+    public void setCancellationEnabled(boolean cancellationEnabled) {
+        this.cancellationEnabled = cancellationEnabled;
+    }
+
     public static class ItemTrackingViewHolder extends RecyclerView.ViewHolder {
         // cms message item
         TextView tvCMSMessage;
@@ -276,7 +301,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         ImageView imgProductThumb, imgArrowSeeMore;
         TextView tvProductName, tvProductPrice;
         TextView tvProductDetails, tvItemIsOutOfStock;
-        Button btnReviewProduct;
+        Button btnReviewProduct, btnCancelItem;
         ItemTrackingProgressBar itemTrackingProgressBar;
 
 
@@ -308,10 +333,13 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             tvProductDetails = (TextView) itemView.findViewById(R.id.tvProductDetails);
             tvItemIsOutOfStock = (TextView) itemView.findViewById(R.id.tvItemIsOutOfStockMsg);
             btnReviewProduct = (Button) itemView.findViewById(R.id.btnReviewProduct);
+            btnCancelItem = (Button) itemView.findViewById(R.id.btnCancelItem);
         }
     }
 
     public interface OnItemTrackingListClickListener {
+        void onCancelItemButtonClicked(View v, PackageItem item);
+
         void onReviewButtonClicked(View v, PackageItem item);
 
         void onProductThumbClickListener(View v, PackageItem item);

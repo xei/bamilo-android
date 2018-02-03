@@ -4,9 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+import com.bamilo.apicore.service.model.JsonConstants;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mobile.service.rest.cookies.AigPersistentHttpCookie;
 import com.mobile.service.utils.TextUtils;
-import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.security.Base64;
 import com.mobile.view.R;
 
@@ -29,6 +33,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
@@ -89,7 +94,7 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor,
+    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor, JsonManipulatorInterceptor jsonManipulatorInterceptor,
                                             @Named("cookieSharedPrefs") final SharedPreferences cookieSharedPrefs) {
 
         return new OkHttpClient
@@ -118,8 +123,15 @@ public class ApiModule {
                         return cookies;
                     }
                 })
+                .addInterceptor(jsonManipulatorInterceptor)
                 .addInterceptor(interceptor)
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    public JsonManipulatorInterceptor provideJsonManipulatorInterceptor(Gson gson) {
+        return new JsonManipulatorInterceptor(gson);
     }
 
     /**
@@ -141,5 +153,29 @@ public class ApiModule {
             }
         }
         return cookie;
+    }
+
+    /**
+     * To manipulate type inconsistency
+     */
+    public static class JsonManipulatorInterceptor implements Interceptor {
+        private Gson gson;
+
+        private JsonManipulatorInterceptor(Gson gson) {
+            this.gson = gson;
+        }
+
+        @Override
+        public Response intercept(@NonNull Chain chain) throws IOException {
+            Request request = chain.request();
+            Response response = chain.proceed(request);
+            JsonObject bodyJson = gson.fromJson(response.body().string(), JsonObject.class);
+            JsonElement messages = bodyJson.get(JsonConstants.RestConstants.MESSAGES);
+            if (messages instanceof JsonArray) {
+                bodyJson.add(JsonConstants.RestConstants.MESSAGES, null);
+            }
+            return response.newBuilder()
+                    .body(ResponseBody.create(response.body().contentType(), gson.toJson(bodyJson))).build();
+        }
     }
 }

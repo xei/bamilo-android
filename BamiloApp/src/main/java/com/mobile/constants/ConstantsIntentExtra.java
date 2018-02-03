@@ -85,6 +85,9 @@ public class ConstantsIntentExtra {
 
     // ########### MY ORDER ##############
     public static final String ORDER_FINISH = mPackage + "OrderFinish";
+    public static final String COMPLETE_ORDER = mPackage + "CompleteOrder";
+    public static final String ORDER_CANCELLATION_REQUEST_BODY = mPackage + "CancellationRequestBody";
+    public static final String CANCELING_ORDER_ITEM_ID = mPackage + "CancelingOrderItemId";
 
     // ############ BANNER TRACKING ###############
     public static final String TRACKING_ORIGIN_TYPE = "bannerGroupType";

@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
 
 
-public class Button extends android.widget.Button implements FontStyleProvider {
+public class Button extends android.support.v7.widget.AppCompatButton implements FontStyleProvider {
     
     private String mFontFamily;
     

@@ -46,4 +46,12 @@ public class OrderCancellation {
     public void setNoticeMessage(String noticeMessage) {
         this.noticeMessage = noticeMessage;
     }
+
+    public String getRefundMessage() {
+        return refundMessage;
+    }
+
+    public void setRefundMessage(String refundMessage) {
+        this.refundMessage = refundMessage;
+    }
 }

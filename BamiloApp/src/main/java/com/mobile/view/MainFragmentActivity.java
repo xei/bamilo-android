@@ -57,6 +57,8 @@ import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.NavigationCategoryFragment;
+import com.mobile.view.fragments.OrderCancellationFragment;
+import com.mobile.view.fragments.OrderCancellationSuccessFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -356,6 +358,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        PushWooshTracker.destroyTracker();
         Print.i(TAG, "ON DESTROY");
     }
 
@@ -494,6 +497,12 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 break;
             case ORDER_STATUS:
                 fragment = newFragmentInstance(ItemTrackingFragment.class, bundle);
+                break;
+            case ORDER_CANCELLATION:
+                fragment = newFragmentInstance(OrderCancellationFragment.class, bundle);
+                break;
+            case ORDER_CANCELLATION_SUCCESS:
+                fragment = newFragmentInstance(OrderCancellationSuccessFragment.class, bundle);
                 break;
             case ORDER_RETURN_CONDITIONS:
                 fragment = newFragmentInstance(OrderReturnConditionsFragment.class, bundle);
