@@ -558,5 +558,6 @@
     <string name="choosing_cancellation_reason_is_required">انتخاب دلیل لغو کالا الزامیست</string>
     <string name="order_cancellation_you_should_select_one_item">لطفا حداقل یک مورد را انتخاب نمایید</string>
     <string name="order_cancellation_success_notice">درخواست لغو سفارش شما با موفقیت ثبت شد.</string>
+    <string name="order_cancellation_status_will_update">وضعیت سفارش شما بزودی بروزرسانی خواهد شد.</string>
 
 </resources>
