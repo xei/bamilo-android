@@ -312,7 +312,7 @@
     <string name="continue_without_log_in">ادامه بدون ورود به حساب کاربری</string>
     <string name="placeholder_discount">-‎%s‎</string>
     <string name="edit_user_success">ویرایش اطلاعات کاربر موفقیت‌آمیز بود.</string>
-    <string name="password">رمز عبور</string>
+    <string name="password">کلمه عبور</string>
     <string name="more">بیشتر</string>
     <string name="app_version">نسخه برنامه</string>
     <string name="update_now">بروزرسانی</string>\
@@ -593,5 +593,7 @@
     <string name="order_cancellation_you_should_select_one_item">لطفا حداقل یک مورد را انتخاب نمایید</string>
     <string name="order_cancellation_success_notice">درخواست لغو سفارش شما با موفقیت ثبت شد.</string>
     <string name="order_cancellation_status_will_update">وضعیت سفارش شما بزودی بروزرسانی خواهد شد.</string>
+    <string name="mobile_number">شماره موبایل</string>
+    <string name="error_invalid_value">مقدار وارد شده معتبر نیست</string>
 
 </resources>
