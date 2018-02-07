@@ -48,7 +48,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 NavigationAction.CHECKOUT,
                 R.layout.new_checkout_my_addresses,
                 R.string.checkout_choose_address_step,
-                ConstantsCheckout.CHECKOUT_BILLING,true);
+                ConstantsCheckout.CHECKOUT_BILLING, true);
 
         //getBaseActivity().mAppBarLayout.setExpanded(true, true);
     }
@@ -101,9 +101,9 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         mSelectedAddress = -1;
 
         if ((savedInstanceState != null)
-                     && (savedInstanceState.getInt("mSelectedAddress", -1) != -1)) {
+                && (savedInstanceState.getInt("mSelectedAddress", -1) != -1)) {
             mSelectedAddress = savedInstanceState.getInt("mSelectedAddress", -1);
-               }
+        }
 
         super.setCheckoutStep(view, 1);
     }
@@ -131,11 +131,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Get addresses
-        if(mAddresses == null) {
-            triggerGetForm();
-        } else {
-            showAddresses(mAddresses, mSelectedAddress);
-        }
+        triggerGetForm();
     }
 
     @Override
@@ -205,7 +201,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         triggerContentEventProgress(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
     }
 
-    private void triggerSetDefaultAddress(int selectedAddress){
+    private void triggerSetDefaultAddress(int selectedAddress) {
         triggerContentEventNoLoading(new SetDefaultShippingAddressHelper(), SetDefaultShippingAddressHelper.createBundle(selectedAddress), this);
     }
 

@@ -42,7 +42,7 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
                 NavigationAction.MY_ACCOUNT_MY_ADDRESSES,
                 R.layout.new_my_account_addresses,
                 R.string.my_addresses,
-                ConstantsCheckout.NO_CHECKOUT,false);
+                ConstantsCheckout.NO_CHECKOUT, false);
     }
 
     /*
@@ -59,7 +59,6 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
                 getLoadTime());
         TrackerManager.trackScreen(getContext(), screenModel, false);
     }
-
 
 
     @Override
@@ -81,7 +80,6 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -92,11 +90,7 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
     public void onResume() {
         super.onResume();
         // Get addresses
-        if(mAddresses == null) {
-            triggerGetForm();
-        } else {
-            showAddresses(mAddresses, -1);
-        }
+        triggerGetForm();
     }
 
     @Override
@@ -155,7 +149,7 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }*/
-           hideActivityProgress();
+        hideActivityProgress();
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {

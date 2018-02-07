@@ -4,6 +4,8 @@ import com.bamilo.apicore.scheduler.SchedulerProvider;
 import com.bamilo.apicore.service.BamiloApiService;
 import com.bamilo.apicore.service.model.ItemTrackingResponse;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import javax.inject.Inject;
@@ -40,6 +42,28 @@ public class ItemTrackingInteractorImpl implements ItemTrackingInteractor {
                     .map(new Func1<JsonObject, ItemTrackingResponse>() {
                         @Override
                         public ItemTrackingResponse call(JsonObject jsonObject) {
+                            // TODO: 2/7/18 REMOVE THESE FUCKIN LINES AFTER RESOLVING SERVER ISSUE
+                            /**
+                             * it will remove inconsistent part of request body
+                             */
+                            try {
+                                JsonObject metadata = jsonObject.get("metadata").getAsJsonObject();
+                                JsonArray packages = metadata.get("packages").getAsJsonArray();
+                                for (JsonElement pkgElement : packages) {
+                                    JsonObject pkg;
+                                    pkg = pkgElement.getAsJsonObject();
+                                    JsonArray products = pkg.get("products").getAsJsonArray();
+                                    for (JsonElement productElement : products) {
+                                        JsonObject product = productElement.getAsJsonObject();
+                                        JsonElement filters = product.get("filters");
+                                        if (filters instanceof JsonArray) {
+                                            product.add("filters", null);
+                                        }
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             return new ItemTrackingResponse(jsonObject, mGson);
                         }
                     })

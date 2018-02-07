@@ -11,40 +11,55 @@ import java.util.List;
  */
 
 public class DealComponent extends BaseComponent {
-    @Expose
-    @SerializedName(JsonConstants.RestConstants.BACKGROUND_COLOR)
-    private String backgroundColor;
 
     @Expose
-    @SerializedName(JsonConstants.RestConstants.HEADER)
-    private DealHeader dealHeader;
+    @SerializedName(JsonConstants.RestConstants.DATA)
+    private Deal deal;
 
-    @Expose
-    @SerializedName(JsonConstants.RestConstants.BODY)
-    private DealBody dealBody;
-
-    public String getBackgroundColor() {
-        return backgroundColor;
+    public Deal getDeal() {
+        return deal;
     }
 
-    public void setBackgroundColor(String backgroundColor) {
-        this.backgroundColor = backgroundColor;
+    public void setDeal(Deal deal) {
+        this.deal = deal;
     }
 
-    public DealHeader getDealHeader() {
-        return dealHeader;
-    }
+    public static class Deal {
+        @Expose
+        @SerializedName(JsonConstants.RestConstants.BACKGROUND_COLOR)
+        private String backgroundColor;
 
-    public void setDealHeader(DealHeader dealHeader) {
-        this.dealHeader = dealHeader;
-    }
+        @Expose
+        @SerializedName(JsonConstants.RestConstants.HEADER)
+        private DealHeader dealHeader;
 
-    public DealBody getDealBody() {
-        return dealBody;
-    }
+        @Expose
+        @SerializedName(JsonConstants.RestConstants.BODY)
+        private DealBody dealBody;
 
-    public void setDealBody(DealBody dealBody) {
-        this.dealBody = dealBody;
+        public String getBackgroundColor() {
+            return backgroundColor;
+        }
+
+        public void setBackgroundColor(String backgroundColor) {
+            this.backgroundColor = backgroundColor;
+        }
+
+        public DealHeader getDealHeader() {
+            return dealHeader;
+        }
+
+        public void setDealHeader(DealHeader dealHeader) {
+            this.dealHeader = dealHeader;
+        }
+
+        public DealBody getDealBody() {
+            return dealBody;
+        }
+
+        public void setDealBody(DealBody dealBody) {
+            this.dealBody = dealBody;
+        }
     }
 
     public static class DealHeader {

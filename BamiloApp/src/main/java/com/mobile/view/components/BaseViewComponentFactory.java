@@ -42,9 +42,9 @@ public class BaseViewComponentFactory {
     private static DailyDealViewComponent createDailyDealViewComponent(DealComponent dealComponent) {
         DailyDealViewComponent.DealItem dealItem = new DailyDealViewComponent.DealItem();
 
-        dealItem.componentBackgroundColor = dealComponent.getBackgroundColor();
-        if (dealComponent.getDealHeader() != null) {
-            DealComponent.DealHeader dealHeader = dealComponent.getDealHeader();
+        dealItem.componentBackgroundColor = dealComponent.getDeal().getBackgroundColor();
+        if (dealComponent.getDeal().getDealHeader() != null) {
+            DealComponent.DealHeader dealHeader = dealComponent.getDeal().getDealHeader();
             dealItem.dealTitle = dealHeader.getTitle();
             dealItem.dealTitleColor = dealHeader.getTitleTextColor();
 
@@ -64,9 +64,9 @@ public class BaseViewComponentFactory {
         }
 
         List<DailyDealViewComponent.Product> dealProducts = new ArrayList<>();
-        if (dealComponent.getDealBody() != null) {
-            if (dealComponent.getDealBody().getProducts() != null) {
-                for (DealComponent.Product product : dealComponent.getDealBody().getProducts()) {
+        if (dealComponent.getDeal().getDealBody() != null) {
+            if (dealComponent.getDeal().getDealBody().getProducts() != null) {
+                for (DealComponent.Product product : dealComponent.getDeal().getDealBody().getProducts()) {
                     DailyDealViewComponent.Product tempProduct = new DailyDealViewComponent.Product();
                     tempProduct.sku = product.getSku();
                     tempProduct.name = product.getName();
