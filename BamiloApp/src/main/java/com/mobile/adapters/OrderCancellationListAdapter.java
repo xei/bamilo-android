@@ -157,9 +157,9 @@ public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCanc
         }
         if (selectedCount == null) {
             selectedCount = 1;
-        } else if (selectedCount < 0) {
-            selectedCount *= -1;
         }
+        selectedCount = Math.abs(selectedCount);
+
         if (!item.getCancellation().isCancelable()) {
             holder.tvProductQuantity.setText(String.valueOf(item.getQuantity()));
         } else {
@@ -197,14 +197,13 @@ public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCanc
             public void onClick(View view) {
                 PackageItem item = items.get(holder.getAdapterPosition());
                 Integer count = selectedItemsCount.get(item.getId());
+                boolean unselected = true;
                 if (count == null) {
                     count = 1;
+                } else if (count > 0) {
+                    unselected = false;
                 }
-                boolean unselected = false;
-                if (count < 0) {
-                    unselected = true;
-                    count *= -1;
-                }
+                count = Math.abs(count);
                 if (view.getId() == R.id.imgNumberPickerPlus) {
                     if (count < item.getQuantity()) {
                         ++count;
@@ -214,7 +213,7 @@ public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCanc
                         --count;
                     }
                 }
-                selectedItemsCount.put(item.getId(), unselected ? -1 * count : count);
+                selectedItemsCount.put(item.getId(), unselected ? -Math.abs(count) : Math.abs(count));
                 notifyItemChanged(holder.getAdapterPosition(), selectedItemsCount.get(item.getId()));
             }
         };

@@ -121,10 +121,12 @@ public class OrderCancellationFragment extends BaseFragment implements OrderCanc
                     }
                     boolean ready = true;
                     List<CancellationRequestBody.Item> cancelingItems = new ArrayList<>();
+                    int itemsWithoutReason = 0;
                     for (String itemId : cancelingItemsIds) {
                         String reasonId = cancellationAdapter.getSelectedItemCancellationReason(itemId);
                         if (reasonId == null) {
                             cancellationAdapter.notifyItemToSelectCancellationReason(itemId);
+                            itemsWithoutReason++;
                             ready = false;
                         } else {
                             CancellationRequestBody.Item item = new CancellationRequestBody.Item();
@@ -138,6 +140,8 @@ public class OrderCancellationFragment extends BaseFragment implements OrderCanc
                     cancellationRequestBody.setItems(cancelingItems);
                     if (ready) {
                         presenter.submitCancellationRequest(NetworkConnectivity.isConnected(getContext()), cancellationRequestBody);
+                    } else {
+                        showWarningErrorMessage(getResources().getQuantityString(R.plurals.order_cancellation_please_select_cancellation_reason, itemsWithoutReason));
                     }
                 }
             }

@@ -551,7 +551,7 @@
     <string name="order_cancellation_cancel_item_btn">لغو کالا</string>
     <string name="submit_cancellation_request_title">ثبت درخواست لغو</string>
     <string name="submit_cancellation_request_button_label">ثبت درخواست</string>
-    <string name="order_cancellation_subtitle_label">آیتم‌هایی که قصد لغو آنها را دارید انتخاب کنید</string>
+    <string name="order_cancellation_subtitle_label">کالاهایی که قصد لغو آنها را دارید انتخاب کنید</string>
     <string name="order_cancellation_explanation_label">توضیحات</string>
     <string name="order_cancellation_item_quantity_label">تعداد:</string>
     <string name="prompt_choose_cancellation_reason">علت لغو کالا را مشخص کنید</string>
@@ -559,5 +559,8 @@
     <string name="order_cancellation_you_should_select_one_item">لطفا حداقل یک مورد را انتخاب نمایید</string>
     <string name="order_cancellation_success_notice">درخواست لغو سفارش شما با موفقیت ثبت شد.</string>
     <string name="order_cancellation_status_will_update">وضعیت سفارش شما بزودی بروزرسانی خواهد شد.</string>
-
+    <plurals name="order_cancellation_please_select_cancellation_reason">
+        <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>
+        <item quantity="other">لطفا دلیل لغو کالاها را انتخاب کنید</item>
+    </plurals>
 </resources>
