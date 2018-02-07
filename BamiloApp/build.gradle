@@ -46,7 +46,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         applicationId "com.bamilo.android"
-        versionName "2.8.1"
+        versionName "2.9.0"
         versionCode getAppVersionCode(154)
         resConfigs "fa"
     }
