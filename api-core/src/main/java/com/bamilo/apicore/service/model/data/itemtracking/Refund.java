@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Refund {
+    public static final String STATUS_PENDING = "pending", STATUS_SUCCESS = "success";
     @SerializedName("status")
     @Expose
     private String status;

@@ -14,6 +14,7 @@ public enum FragmentType {
     LOGIN,
     ABOUT_US,
     REGISTER,
+    MOBILE_VERIFICATION,
     FORGOT_PASSWORD,
     POPULARITY,
     MAIN_ONE_SLIDE_TEASER,

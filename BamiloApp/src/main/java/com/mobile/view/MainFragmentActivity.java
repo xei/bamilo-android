@@ -50,6 +50,7 @@ import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.FrontPageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.ItemTrackingFragment;
+import com.mobile.view.fragments.MobileVerificationFragment;
 import com.mobile.view.fragments.MyAccountAboutFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
@@ -521,6 +522,9 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 break;
             case REGISTER:
                 fragment = newFragmentInstance(SessionRegisterFragment.class, bundle);
+                break;
+            case MOBILE_VERIFICATION:
+                fragment = newFragmentInstance(MobileVerificationFragment.class, bundle);
                 break;
             case FORGOT_PASSWORD:
                 fragment = newFragmentInstance(SessionForgotPasswordFragment.class, bundle);

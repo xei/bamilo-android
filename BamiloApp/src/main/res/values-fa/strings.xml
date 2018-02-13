@@ -312,7 +312,7 @@
     <string name="continue_without_log_in">ادامه بدون ورود به حساب کاربری</string>
     <string name="placeholder_discount">-‎%s‎</string>
     <string name="edit_user_success">ویرایش اطلاعات کاربر موفقیت‌آمیز بود.</string>
-    <string name="password">رمز عبور</string>
+    <string name="password">کلمه عبور</string>
     <string name="more">بیشتر</string>
     <string name="app_version">نسخه برنامه</string>
     <string name="update_now">بروزرسانی</string>\
@@ -593,6 +593,20 @@
     <string name="order_cancellation_you_should_select_one_item">لطفا حداقل یک مورد را انتخاب نمایید</string>
     <string name="order_cancellation_success_notice">درخواست لغو سفارش شما با موفقیت ثبت شد.</string>
     <string name="order_cancellation_status_will_update">وضعیت سفارش شما بزودی بروزرسانی خواهد شد.</string>
+    <string name="mobile_number">شماره موبایل</string>
+    <string name="error_invalid_value">مقدار وارد شده معتبر نیست</string>
+    <string name="verification_code_sent_to_you">کد تایید به شماره شما ارسال شد</string>
+    <string name="verification_token_receive_notice">کد تایید را دریافت نکردید؟</string>
+    <string name="send_token_btn_label">ثبت</string>
+    <string name="verification_resend_token">ارسال مجدد</string>
+    <string name="verification_resend_token_after">ارسال مجدد کد تا</string>
+    <string name="item_tracking_cancellation_reason">علت لغو سفارش، %1$s</string>
+    <string name="item_tracking_refund_message">مبلغ کالا به %1$s به صورت خودکار%2$s %3$s</string>
+    <string name="item_tracking_refund_used_card_number">کارتی که با آن پرداخت نمودید،</string>
+    <string name="item_tracking_refund_date">&#160;در تاریخ %1$s&#160;</string>
+    <string name="item_tracking_refund_will_be_returned">بازگشت داده خواهد شد.</string>
+    <string name="item_tracking_refund_is_returned">بازگشت داده شده است.</string>
+
     <plurals name="order_cancellation_please_select_cancellation_reason">
         <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>
         <item quantity="other">لطفا دلیل لغو کالاها را انتخاب کنید</item>

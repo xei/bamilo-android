@@ -3,15 +3,17 @@ package com.mobile.view.newfragments;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.EditText;
 
 import com.crashlytics.android.Crashlytics;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.classes.models.EmarsysEventModel;
-import com.mobile.components.customfontviews.EditText;
+import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -53,7 +55,7 @@ import java.util.EnumSet;
 public class LoginFragment extends NewBaseFragment implements IResponseCallback {
     private EditText mEmailView;
     private EditText mPasswordView;
-    private TextView mLoginErrorMessage, mPasswordErrorMessage;
+    private TextInputLayout tilEmail, tilPassword;
     private String mCustomerEmail;
     private String mCustomerPassword;
     private long mGABeginRequestMillis;
@@ -74,7 +76,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
     public LoginFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LOGIN_OUT,
-                R.layout.new_session_login_main_fragment,
+                R.layout.fragment_login_user,
                 IntConstants.ACTION_BAR_NO_TITLE,
                 ADJUST_CONTENT);
 
@@ -120,12 +122,13 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        HoloFontLoader.applyDefaultFont(view);
         mEmailView = (EditText) view.findViewById(R.id.login_email);
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
         mEmailView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         // Get error message
-        mLoginErrorMessage = (TextView) view.findViewById(R.id.login_text_error_message);
-        mPasswordErrorMessage = (TextView) view.findViewById(R.id.password_text_error_message);
+        tilEmail = (TextInputLayout) view.findViewById(R.id.tilEmail);
+        tilPassword = (TextInputLayout) view.findViewById(R.id.tilPassword);
 
         // Get continue button
         view.findViewById(R.id.login_button_continue).setOnClickListener(this);
@@ -156,13 +159,13 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         // Get email
         mCustomerEmail = mEmailView.getText().toString();
         mCustomerPassword = mPasswordView.getText().toString();
-        mLoginErrorMessage.setVisibility(View.GONE);
-        mPasswordErrorMessage.setVisibility(View.GONE);
+        tilEmail.setError(null);
+        tilPassword.setError(null);
         // Trigger to check email
         if (TextUtils.isNotEmpty(mCustomerEmail) && TextUtils.isNotEmpty(mCustomerPassword) && Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
             triggerEmailCheck(mCustomerEmail);
-            mLoginErrorMessage.setVisibility(View.GONE);
-            mPasswordErrorMessage.setVisibility(View.GONE);
+            tilEmail.setError(null);
+            tilPassword.setError(null);
         /*    mEmailView.setError("");
             mPasswordView.setError("");*/
 
@@ -170,17 +173,17 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         } else {
 
             if (!TextUtils.isNotEmpty(mCustomerEmail)) {
-                mLoginErrorMessage.setText(getResources().getString(R.string.error_ismandatory));
-                mLoginErrorMessage.setVisibility(View.VISIBLE);
+                tilEmail.setError(getString(R.string.error_ismandatory));
+                HoloFontLoader.applyDefaultFont(tilEmail);
             } else if (!Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
                 //mEmailView.setError(getString(R.string.error_invalid_email));
-                mLoginErrorMessage.setText(getResources().getString(R.string.error_invalid_email));
-                mLoginErrorMessage.setVisibility(View.VISIBLE);
+                tilEmail.setError(getString(R.string.error_invalid_email));
+                HoloFontLoader.applyDefaultFont(tilEmail);
             }
             if (!TextUtils.isNotEmpty(mCustomerPassword)) {
                 // mPasswordView.setError(getString(R.string.error_ismandatory));
-                mPasswordErrorMessage.setText(getResources().getString(R.string.error_ismandatory));
-                mPasswordErrorMessage.setVisibility(View.VISIBLE);
+                tilPassword.setError(getString(R.string.error_ismandatory));
+                HoloFontLoader.applyDefaultFont(tilPassword);
             }
 
             //mErrorMessage.setText(getString(R.string.error_invalid_email));
@@ -209,7 +212,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
             case EMAIL_CHECK:
                 //DROID-10
 //                TrackerDelegator.trackScreenLoadTiming(R.string.gaLogin, mGABeginRequestMillis, mCustomerEmail);
-                mLoginErrorMessage.setVisibility(View.GONE);
+                tilEmail.setError(null);
                 // Get value
                 boolean exist = ((CustomerEmailCheck) baseResponse.getMetadata().getData()).exist();
                 if (exist) {
@@ -280,7 +283,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 //Emarsys
                 emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
                     @Override
-                    public void EmarsysMobileEngageResponse(boolean success) {}
+                    public void EmarsysMobileEngageResponse(boolean success) {
+                    }
                 };
                 EmarsysMobileEngage.getInstance(getBaseActivity()).sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
                 // End of Emarsys
@@ -339,8 +343,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         switch (eventType) {
             case EMAIL_CHECK:
                 // Show warning
-                mLoginErrorMessage.setText(getResources().getString(R.string.error_invalid_email));
-                mLoginErrorMessage.setVisibility(View.VISIBLE);
+                tilEmail.setError(getString(R.string.error_invalid_email));
+                HoloFontLoader.applyDefaultFont(tilEmail);
                 //showWarningErrorMessage(getString(R.string.error_invalid_email));
                 // Show content
                 showFragmentContentContainer();

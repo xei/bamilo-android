@@ -19,12 +19,11 @@ import com.mobile.utils.deeplink.TargetLink;
 
 /**
  * Example helper
- * 
+ *
  * @author Manuel Silva
- * 
  */
 public class RegisterHelper extends SuperBaseHelper {
-    
+
     @Override
     public EventType getEventType() {
         return EventType.REGISTER_ACCOUNT_EVENT;
@@ -44,10 +43,12 @@ public class RegisterHelper extends SuperBaseHelper {
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
         Print.i("SAVE CUSTOMER CREDENTIALS");
-        mParameters.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
-        BamiloApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
-        // Save customer
-        BamiloApplication.CUSTOMER = ((Customer) baseResponse.getContentData());
+        if (((Customer) baseResponse.getContentData()).getEmail() != null) {
+            mParameters.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
+            BamiloApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
+            // Save customer
+            BamiloApplication.CUSTOMER = ((Customer) baseResponse.getContentData());
+        }
     }
 
     public static Bundle createBundle(String endpoint, ContentValues values) {

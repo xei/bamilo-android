@@ -48,28 +48,35 @@ public class Customer implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            // Entity
-            jsonObject = jsonObject.getJSONObject(RestConstants.CUSTOMER_ENTITY);
-            // Data
-            id = jsonObject.getString(RestConstants.ID);
-            firstName = jsonObject.getString(RestConstants.FIRST_NAME);
-            lastName = jsonObject.getString(RestConstants.LAST_NAME);
-            email = jsonObject.getString(RestConstants.EMAIL);
-            gender = jsonObject.optString(RestConstants.GENDER);
-            birthday = jsonObject.optString(RestConstants.BIRTHDAY);
-            nationalId = jsonObject.optString(RestConstants.NATIONAL_ID);
-            phoneNumber = jsonObject.optString(RestConstants.PHONE);
-            // Get wish list products
-            JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.WISH_LIST_PRODUCTS);
-            if (jsonArray != null && jsonArray.length() > 0) {
-                mWishListCache = new HashSet<>();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject item = jsonArray.optJSONObject(i);
-                    String sku = item.optString(RestConstants.SKU);
-                    if (TextUtils.isNotEmpty(sku)) {
-                        mWishListCache.add(sku);
+            if (jsonObject != null) {
+                if (jsonObject.has(RestConstants.METADATA)) {
+                    jsonObject = jsonObject.getJSONObject(RestConstants.METADATA);
+                }
+                // Entity
+                jsonObject = jsonObject.getJSONObject(RestConstants.CUSTOMER_ENTITY);
+                // Data
+                id = jsonObject.getString(RestConstants.ID);
+                firstName = jsonObject.optString(RestConstants.FIRST_NAME);
+                lastName = jsonObject.optString(RestConstants.LAST_NAME);
+                email = jsonObject.getString(RestConstants.EMAIL);
+                gender = jsonObject.optString(RestConstants.GENDER);
+                birthday = jsonObject.optString(RestConstants.BIRTHDAY);
+                nationalId = jsonObject.optString(RestConstants.NATIONAL_ID);
+                phoneNumber = jsonObject.optString(RestConstants.PHONE);
+                // Get wish list products
+                JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.WISH_LIST_PRODUCTS);
+                if (jsonArray != null && jsonArray.length() > 0) {
+                    mWishListCache = new HashSet<>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject item = jsonArray.optJSONObject(i);
+                        String sku = item.optString(RestConstants.SKU);
+                        if (TextUtils.isNotEmpty(sku)) {
+                            mWishListCache.add(sku);
+                        }
                     }
                 }
+            } else {
+                return false;
             }
         } catch (JSONException e) {
             Print.e(TAG, "ERROR: JSE ON PARSING CUSTOMER", e);
@@ -80,7 +87,7 @@ public class Customer implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.METADATA;
+        return RequiredJson.COMPLETE_JSON;
     }
 
     /**

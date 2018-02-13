@@ -86,6 +86,8 @@ public enum EventType {
 
     TRACK_ORDER_EVENT("http:/customer/trackingorder/"),
 
+    MOBILE_VERIFICATION_EVENT("http:/customer/verifymobile/"),
+
     /**
      * NATIVE CHECKOUT EVENTS
      */
