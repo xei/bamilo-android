@@ -145,6 +145,8 @@
 
     <color name="touch_feedback_color">#40000000</color>
 
+    <color name="item_tracking_cancellation_reason_bg">#fff6f0</color>
+
     <!--Color palette-->
     <color name="dark_green_1">#007473</color>
     <color name="dark_green_2">#07827f</color>

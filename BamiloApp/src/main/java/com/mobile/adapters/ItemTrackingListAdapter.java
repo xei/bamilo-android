@@ -3,6 +3,7 @@ package com.mobile.adapters;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.bamilo.apicore.service.model.data.itemtracking.CompleteOrder;
 import com.bamilo.apicore.service.model.data.itemtracking.Package;
 import com.bamilo.apicore.service.model.data.itemtracking.PackageItem;
+import com.bamilo.apicore.service.model.data.itemtracking.Refund;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
@@ -127,6 +129,38 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             PackageItem item = indexedItems.get(position);
             ItemTrackingProgressBar itemTrackingProgressBar = holder.itemTrackingProgressBar;
             itemTrackingProgressBar.setItemHistories(item.getHistories());
+
+            // Refund and Cancellation Reason
+            if (item.getRefund() != null) {
+                holder.rlCancellationReason.setVisibility(View.VISIBLE);
+                Refund refund = item.getRefund();
+                if (TextUtils.isNotEmpty(refund.getCancellationReason())) {
+                    holder.tvItemCancellationReason.setVisibility(View.VISIBLE);
+                    holder.tvItemCancellationReason.setText(context.getString(R.string.item_tracking_cancellation_reason,
+                            refund.getCancellationReason()));
+                } else {
+                    holder.tvItemCancellationReason.setVisibility(View.GONE);
+                }
+                if (TextUtils.isNotEmpty(refund.getStatus())) {
+                    holder.tvRefundMessage.setVisibility(View.VISIBLE);
+                    holder.imgRefundStatus.setVisibility(View.VISIBLE);
+                    holder.imgRefundStatus.setImageResource(
+                            refund.getStatus().equals(Refund.STATUS_PENDING) ?
+                                    R.drawable.ic_refund_pending :
+                                    R.drawable.ic_refund_success);
+                    String refundMessage = context.getString(R.string.item_tracking_refund_message,
+                            TextUtils.isNotEmpty(refund.getCardNumber()) ? refund.getCardNumber() : context.getString(R.string.item_tracking_refund_used_card_number),
+                            TextUtils.isNotEmpty(refund.getDate()) ? context.getString(R.string.item_tracking_refund_date, refund.getDate()) : "",
+                            context.getString(refund.getStatus().equals(Refund.STATUS_PENDING) ? R.string.item_tracking_refund_will_be_returned : R.string.item_tracking_refund_is_returned));
+                    holder.tvRefundMessage.setText(refundMessage);
+                } else {
+                    holder.imgRefundStatus.setVisibility(View.GONE);
+                    holder.tvRefundMessage.setVisibility(View.GONE);
+                }
+            } else {
+                holder.rlCancellationReason.setVisibility(View.INVISIBLE);
+            }
+
             holder.tvProductName.setText(item.getName());
             holder.tvProductPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.imgProductThumb.setOnClickListener(null);
@@ -309,6 +343,9 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         TextView tvProductDetails, tvItemIsOutOfStock;
         Button btnReviewProduct, btnCancelItem;
         ItemTrackingProgressBar itemTrackingProgressBar;
+        RelativeLayout rlCancellationReason;
+        TextView tvItemCancellationReason, tvRefundMessage;
+        ImageView imgRefundStatus;
 
 
         public ItemTrackingViewHolder(View itemView) {
@@ -333,6 +370,10 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
 
             clPackagedOrderItem = (ConstraintLayout) itemView.findViewById(R.id.clPackagedOrderItem);
             itemTrackingProgressBar = (ItemTrackingProgressBar) itemView.findViewById(R.id.itemTrackingProgressBar);
+            rlCancellationReason = (RelativeLayout) itemView.findViewById(R.id.rlCancellationReason);
+            tvItemCancellationReason = (TextView) itemView.findViewById(R.id.tvItemCancellationReason);
+            tvRefundMessage = (TextView) itemView.findViewById(R.id.tvRefundMessage);
+            imgRefundStatus = (ImageView) itemView.findViewById(R.id.imgRefundStatus);
             imgProductThumb = (ImageView) itemView.findViewById(R.id.imgProductThumb);
             imgArrowSeeMore = (ImageView) itemView.findViewById(R.id.imgArrowSeeMore);
             tvProductName = (TextView) itemView.findViewById(R.id.tvProductName);

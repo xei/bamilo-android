@@ -40,9 +40,6 @@ public class CompleteOrder {
     @SerializedName("total_products_count")
     @Expose
     private Long totalProductsCount;
-    @SerializedName("isOrderCancelable")
-    @Expose
-    private int cancelableStatus;
     @SerializedName("cancellation")
     @Expose
     private OrderCancellation cancellation;
@@ -136,14 +133,6 @@ public class CompleteOrder {
 
     public void setCms(String cms) {
         this.cms = cms;
-    }
-
-    public int getCancelableStatus() {
-        return cancelableStatus;
-    }
-
-    public void setCancelableStatus(int cancelableStatus) {
-        this.cancelableStatus = cancelableStatus;
     }
 
     public OrderCancellation getCancellation() {

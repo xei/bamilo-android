@@ -566,5 +566,11 @@
     <string name="send_token_btn_label">ثبت</string>
     <string name="verification_resend_token">ارسال مجدد</string>
     <string name="verification_resend_token_after">ارسال مجدد کد تا</string>
+    <string name="item_tracking_cancellation_reason">علت لغو سفارش، %1$s</string>
+    <string name="item_tracking_refund_message">مبلغ کالا به %1$s به صورت خودکار%2$s %3$s</string>
+    <string name="item_tracking_refund_used_card_number">کارتی که با آن پرداخت نمودید،</string>
+    <string name="item_tracking_refund_date">&#160;در تاریخ %1$s&#160;</string>
+    <string name="item_tracking_refund_will_be_returned">بازگشت داده خواهد شد.</string>
+    <string name="item_tracking_refund_is_returned">بازگشت داده شده است.</string>
 
 </resources>
