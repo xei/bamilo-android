@@ -1,7 +1,9 @@
 package com.mobile.view.newfragments;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -20,6 +22,7 @@ import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.constants.tracking.CategoryConstants;
 import com.mobile.constants.tracking.EventActionKeys;
 import com.mobile.constants.tracking.EventConstants;
@@ -49,6 +52,7 @@ import java.util.regex.Pattern;
 
 public class RegisterFragment extends NewBaseFragment implements IResponseCallback {
 
+    private static final String CUSTOMER_REGISTRATION_STEP_1_VALIDATED = "CUSTOMER_REGISTRATION_STEP_1_VALIDATED";
     private TextInputLayout tilEmail, tilPhoneNumber, tilNationalId, tilPassword;
     private EditText etEmail, etPhoneNumber, etNationalId, etPassword;
 
@@ -57,6 +61,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     private FragmentType mNextStepFromParent;
 
     private boolean isInCheckoutProcess;
+    private boolean phoneVerificationOnGoing;
 
     public RegisterFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
@@ -90,13 +95,28 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 "",
                 getLoadTime());
         TrackerManager.trackScreen(getContext(), screenModel, false);
-
-
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (phoneVerificationOnGoing) {
+            SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
+            boolean isPhoneVerified = prefs.getBoolean(ConstantsSharedPrefs.KEY_SIGNUP_PHONE_VERIFIED, false);
+            if (isPhoneVerified) {
+                onClickCreate();
+            }
+        }
     }
 
     @Override
@@ -283,32 +303,46 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
 
             case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
-                // Tracking
-                long customerId = SimpleEventModel.NO_VALUE;
-                String customerEmail = "";
-                if (BamiloApplication.CUSTOMER != null) {
-                    customerId = BamiloApplication.CUSTOMER.getId();
-                    customerEmail = BamiloApplication.CUSTOMER.getEmail();
-                }
-                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
-                        Constants.LOGIN_METHOD_EMAIL, customerId,
-                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, customerEmail != null ? EmailHelper.getHost(customerEmail) : "",
-                                true));
-                TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
+                if (baseResponse.getSuccessMessages() != null &&
+                        baseResponse.getSuccessMessages().containsKey(CUSTOMER_REGISTRATION_STEP_1_VALIDATED)) {
+                    navigateToVerificationFragment();
+                } else {
+                    // Tracking
+                    long customerId = SimpleEventModel.NO_VALUE;
+                    String customerEmail = "";
+                    if (BamiloApplication.CUSTOMER != null) {
+                        customerId = BamiloApplication.CUSTOMER.getId();
+                        customerEmail = BamiloApplication.CUSTOMER.getEmail();
+                    }
+                    EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
+                            Constants.LOGIN_METHOD_EMAIL, customerId,
+                            EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, customerEmail != null ? EmailHelper.getHost(customerEmail) : "",
+                                    true));
+                    TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
 //                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.SignUp, EmarsysEventFactory.signup("email", EmailHelper.getHost(BamiloApplication.CUSTOMER.getEmail()), true));
-                // Notify user
-                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
-                // Finish
-                getActivity().onBackPressed();
-                // Set facebook login
-                CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
-                getBaseActivity().setupDrawerNavigation();
+                    // Notify user
+                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
+                    // Finish
+                    getActivity().onBackPressed();
+                    // Set facebook login
+                    CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
+                    getBaseActivity().setupDrawerNavigation();
+                }
 
                 break;
             default:
                 hideActivityProgress();
                 break;
         }
+    }
+
+    private void navigateToVerificationFragment() {
+        showFragmentLoading();
+        phoneVerificationOnGoing = true;
+        String phoneNumber = etPhoneNumber.getText().toString();
+        Bundle args = new Bundle();
+        args.putString(ConstantsIntentExtra.PHONE_NUMBER, phoneNumber);
+        getBaseActivity().onSwitchFragment(FragmentType.MOBILE_VERIFICATION, args, false);
     }
 
     @Override

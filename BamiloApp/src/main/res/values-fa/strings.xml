@@ -595,5 +595,10 @@
     <string name="order_cancellation_status_will_update">وضعیت سفارش شما بزودی بروزرسانی خواهد شد.</string>
     <string name="mobile_number">شماره موبایل</string>
     <string name="error_invalid_value">مقدار وارد شده معتبر نیست</string>
+    <string name="verification_code_sent_to_you">کد تایید به شماره شما ارسال شد</string>
+    <string name="verification_token_receive_notice">کد تایید را دریافت نکردید؟</string>
+    <string name="send_token_btn_label">ثبت</string>
+    <string name="verification_resend_token">ارسال مجدد</string>
+    <string name="verification_resend_token_after">ارسال مجدد کد تا</string>
 
 </resources>

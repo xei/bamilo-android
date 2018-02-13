@@ -2,6 +2,14 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/gray_1">
     <item>
-        <color android:color="@color/orange_1" />
+        <selector>
+            <item android:state_enabled="true">
+                <color android:color="@color/orange_1" />
+            </item>
+
+            <item android:state_enabled="false">
+                <color android:color="@color/gray_6" />
+            </item>
+        </selector>
     </item>
 </ripple>

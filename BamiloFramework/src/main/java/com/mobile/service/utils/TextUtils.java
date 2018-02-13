@@ -195,4 +195,16 @@ public class TextUtils {
         Matcher matcher = pattern.matcher(color);
         return matcher.matches();
     }
+
+    public static String makeDigitsFarsi(CharSequence text) {
+        if (text != null) {
+            char persianNumbers[] = {'۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'};
+            String result = text.toString();
+            for (int i = 0; i < 10; i++) {
+                result = result.replaceAll(String.valueOf(i), String.valueOf(persianNumbers[i]));
+            }
+            return result;
+        }
+        return null;
+    }
 }

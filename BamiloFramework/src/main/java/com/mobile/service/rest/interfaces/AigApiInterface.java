@@ -363,6 +363,11 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
+    void verifyPhoneNumber(@FieldMap Map<String, String> data, Callback<BaseResponse<BaseResponse<Void>>> callback);
+    String verifyPhoneNumber = "verifyPhoneNumber";
+
+    @FormUrlEncoded
+    @POST("/")
     void forgotPassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String forgotPassword = "forgotPassword";
 
