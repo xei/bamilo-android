@@ -114,8 +114,14 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             int index = headerPositions.indexOf(position);
             Package p = completeOrder.getPackages().get(index);
             holder.tvPackageTitle.setText(p.getTitle());
-            if (TextUtils.isNotEmpty(p.getDeliveryTime())) {
+            if (!(p.getDelay() != null && p.getDelay().hasDelay()) && TextUtils.isNotEmpty(p.getDeliveryTime())) {
                 holder.tvPackageDeliveryTime.setText(p.getDeliveryTime());
+            }
+            if (p.getDelay() != null && TextUtils.isNotEmpty(p.getDelay().getReason())) {
+                holder.tvPackageDeliveryDelayReason.setVisibility(View.VISIBLE);
+                holder.tvPackageDeliveryDelayReason.setText(p.getDelay().getReason());
+            } else {
+                holder.tvPackageDeliveryDelayReason.setVisibility(View.GONE);
             }
         } else if (viewType == ITEM_ORDER_ITEM) {
             PackageItem item = indexedItems.get(position);
@@ -294,7 +300,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
 
 
         // package section header
-        TextView tvPackageTitle, tvPackageDeliveryTime;
+        TextView tvPackageTitle, tvPackageDeliveryTime, tvPackageDeliveryDelayReason;
 
         // order item
         ConstraintLayout clPackagedOrderItem;
@@ -323,6 +329,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
 
             tvPackageTitle = (TextView) itemView.findViewById(R.id.tvPackageTitle);
             tvPackageDeliveryTime = (TextView) itemView.findViewById(R.id.tvPackageDeliveryTime);
+            tvPackageDeliveryDelayReason = (TextView) itemView.findViewById(R.id.tvPackageDeliveryDelayReason);
 
             clPackagedOrderItem = (ConstraintLayout) itemView.findViewById(R.id.clPackagedOrderItem);
             itemTrackingProgressBar = (ItemTrackingProgressBar) itemView.findViewById(R.id.itemTrackingProgressBar);
