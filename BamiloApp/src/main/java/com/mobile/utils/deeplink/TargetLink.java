@@ -7,6 +7,7 @@ import android.support.annotation.StringDef;
 import android.support.annotation.StringRes;
 
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.service.objects.home.TeaserCampaign;
@@ -40,6 +41,7 @@ public class TargetLink {
     public static final String CAMPAIGN = "campaign";
     public static final String STATIC_PAGE = "static_page";
     public static final String SHOP_IN_SHOP = "shop_in_shop";
+    public static final String EXTERNAL_LINK = "external_link";
     public static final String UNKNOWN = "unknown";
     private boolean isSubCategoryFilter = false;
 
@@ -158,6 +160,13 @@ public class TargetLink {
         // ##### Get type and value
         String type = targetLink[TARGET_TYPE_POSITION];
         String id = targetLink[TARGET_ID_POSITION];
+
+        // ##### Handling external links
+        if (type.equals(EXTERNAL_LINK)) {
+            ActivitiesWorkFlow.startExternalWebActivity(mActivity.get(), id, null);
+            return true;
+        }
+
         // ##### Get fragment type
         FragmentType nextFragmentType = getFragmentType(type);
         if (nextFragmentType == FragmentType.UNKNOWN) {
