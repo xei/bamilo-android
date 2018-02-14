@@ -75,6 +75,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     private View rootView;
     private boolean viewInitiated = false;
     private boolean autoLoginFailed = false;
+    private int currentTabPosition = 1;
 
     /**
      * Empty constructor
@@ -208,7 +209,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
         SimplePagerAdapter adapter = new SimplePagerAdapter(getChildFragmentManager(), fragments, titles);
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(currentTabPosition);
         getBaseActivity().setUpExtraTabLayout(viewPager);
         tabLayout = getBaseActivity().getExtraTabLayout();
         tabLayout.setBackgroundColor(Color.WHITE);
@@ -285,6 +286,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     @Override
     public void onPause() {
         super.onPause();
+
+        currentTabPosition = viewPager.getCurrentItem();
+
         Print.i(TAG, "ON PAUSE");
         getBaseActivity().hideKeyboard();
     }
