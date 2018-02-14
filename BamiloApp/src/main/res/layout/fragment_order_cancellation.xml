@@ -66,7 +66,8 @@
                 android:background="@drawable/order_cancellation_refund_msg_bg"
                 android:padding="8dp"
                 android:textColor="@color/gray_2"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/tvNoticeMessage"
@@ -78,7 +79,8 @@
                 android:layout_marginTop="12dp"
                 android:padding="8dp"
                 android:textColor="@color/gray_2"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

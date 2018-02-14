@@ -89,17 +89,15 @@ public class OrderCancellationFragment extends BaseFragment implements OrderCanc
 
         TextView tvRefundMessage, tvNoticeMessage;
         tvRefundMessage = (TextView) view.findViewById(R.id.tvRefundMessage);
-        if (TextUtils.isNotEmpty(completeOrder.getCancellation().getNoticeMessage())) {
+        if (TextUtils.isNotEmpty(completeOrder.getCancellation().getRefundMessage())) {
+            tvRefundMessage.setVisibility(View.VISIBLE);
             tvRefundMessage.setText(completeOrder.getCancellation().getRefundMessage());
-        } else {
-            tvRefundMessage.setVisibility(View.GONE);
         }
 
         tvNoticeMessage = (TextView) view.findViewById(R.id.tvNoticeMessage);
         if (TextUtils.isNotEmpty(completeOrder.getCancellation().getNoticeMessage())) {
+            tvNoticeMessage.setVisibility(View.VISIBLE);
             tvNoticeMessage.setText(completeOrder.getCancellation().getNoticeMessage());
-        } else {
-            tvNoticeMessage.setVisibility(View.GONE);
         }
 
         final EditText etDescription = (EditText) view.findViewById(R.id.etDescription);

@@ -78,7 +78,7 @@ public class OrderCancellationInteractorImpl implements OrderCancellationInterac
     private Map<String, String> createItemsMap(List<CancellationRequestBody.Item> items) {
         Map<String, String> itemMap = new HashMap<>();
         for (int i = 0; i < items.size(); i++) {
-            CancellationRequestBody.Item item = items.get(0);
+            CancellationRequestBody.Item item = items.get(i);
             itemMap.put(String.format(Locale.US, "%s[%d][%s]", FIELD_ITEMS, i, FIELD_SIMPLE_SKU), item.getSimpleSku());
             itemMap.put(String.format(Locale.US, "%s[%d][%s]", FIELD_ITEMS, i, FIELD_QUANTITY), String.valueOf(item.getQuantity()));
             itemMap.put(String.format(Locale.US, "%s[%d][%s]", FIELD_ITEMS, i, FIELD_REASON_ID), item.getReasonId());
