@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.SingleLineTransformationMethod;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.crashlytics.android.Crashlytics;
@@ -133,6 +137,19 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         // Get continue button
         view.findViewById(R.id.login_button_continue).setOnClickListener(this);
         view.findViewById(R.id.login_email_button_password).setOnClickListener(this);
+
+        CheckBox cbShowHiderPassword = (CheckBox) view.findViewById(R.id.cbShowHiderPassword);
+        cbShowHiderPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    mPasswordView.setTransformationMethod(new SingleLineTransformationMethod());
+                } else {
+                    mPasswordView.setTransformationMethod(new PasswordTransformationMethod());
+                }
+                HoloFontLoader.applyDefaultFont(mPasswordView);
+            }
+        });
     }
 
     @Override
