@@ -115,8 +115,11 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
             boolean isPhoneVerified = prefs.getBoolean(ConstantsSharedPrefs.KEY_SIGNUP_PHONE_VERIFIED, false);
             if (isPhoneVerified) {
                 onClickCreate();
+                getBaseActivity().getExtraTabLayout().setVisibility(View.GONE);
+                return;
             }
         }
+        showFragmentContentContainer();
     }
 
     @Override
@@ -135,6 +138,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        showGhostFragmentContentContainer();
         HoloFontLoader.applyDefaultFont(view);
 
         // Text Input Layouts
@@ -343,6 +347,11 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.PHONE_NUMBER, phoneNumber);
         getBaseActivity().onSwitchFragment(FragmentType.MOBILE_VERIFICATION, args, false);
+
+        SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(ConstantsSharedPrefs.KEY_SIGNUP_PHONE_VERIFIED, false);
+        editor.apply();
     }
 
     @Override
@@ -374,6 +383,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 showFragmentContentContainer();
                 // Show validate messages
                 showValidateMessages(baseResponse);
+                getBaseActivity().getExtraTabLayout().setVisibility(View.VISIBLE);
                 break;
 
             default:

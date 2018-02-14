@@ -153,6 +153,7 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
     }
 
     private void triggerMobileVerification(String phoneNumber, String token) {
+        getBaseActivity().hideKeyboard();
         ContentValues values = new ContentValues();
         values.put("phone", phoneNumber);
         if (token != null) {
@@ -164,7 +165,6 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        showFragmentContentContainer();
         if (baseResponse.getSuccessMessages() != null) {
             if (baseResponse.getSuccessMessages().containsKey(MOBILE_VERIFICATION_CODE_SENT_SUCCESSFULLY)) {
                 tokenReceiveTime = System.currentTimeMillis();
@@ -176,8 +176,10 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
                 editor.putBoolean(ConstantsSharedPrefs.KEY_SIGNUP_PHONE_VERIFIED, true);
                 editor.apply();
                 getBaseActivity().onBackPressed();
+                return;
             }
         }
+        showFragmentContentContainer();
     }
 
     @Override
@@ -191,6 +193,7 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         super.handleErrorEvent(baseResponse);
+        showFragmentContentContainer();
         if (!(baseResponse.getErrorMessages() != null &&
                 baseResponse.getErrorMessages().containsKey(MOBILE_VERIFICATION_FAILED))) {
             getBaseActivity().onBackPressed();
