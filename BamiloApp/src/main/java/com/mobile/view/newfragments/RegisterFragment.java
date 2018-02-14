@@ -341,6 +341,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     }
 
     private void navigateToVerificationFragment() {
+        showGhostFragmentContentContainer();
         showFragmentLoading();
         phoneVerificationOnGoing = true;
         String phoneNumber = etPhoneNumber.getText().toString();
