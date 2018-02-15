@@ -64,8 +64,13 @@ public class ProductRegular extends ProductBase {
         }
         // Category
         JSONObject categoryObject = jsonObject.optJSONObject(RestConstants.CATEGORY_ENTITY);
-        mCategoryUrlKey = categoryObject.optString(RestConstants.URL_KEY);
-        mCategoryName = categoryObject.optString(RestConstants.NAME);
+        if (categoryObject != null) {
+            mCategoryUrlKey = categoryObject.optString(RestConstants.URL_KEY);
+            mCategoryName = categoryObject.optString(RestConstants.NAME);
+        } else {
+            mCategoryUrlKey = jsonObject.optString(RestConstants.CATEGORY_URL_KEY);
+            mCategoryName = jsonObject.optString(RestConstants.CATEGORY_NAME);
+        }
         // Free shipping info
         hasFreeShipping = jsonObject.optBoolean(RestConstants.FREE_SHIPPING_POSSIBLE);
         // Optional

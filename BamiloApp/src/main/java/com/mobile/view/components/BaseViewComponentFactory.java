@@ -60,6 +60,8 @@ public class BaseViewComponentFactory {
                 dealItem.countDownTextColor = dealCountDown.getCounterTextColor();
                 dealItem.countDownRemainingSeconds = dealCountDown.getCounterRemainingSeconds();
                 dealItem.countDownStartTimeSeconds = dealCountDown.getInitialTimeSeconds();
+            } else {
+                dealItem.countDownRemainingSeconds = -1;
             }
         }
 
