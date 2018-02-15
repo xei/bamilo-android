@@ -287,7 +287,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     public void onPause() {
         super.onPause();
 
-        currentTabPosition = viewPager.getCurrentItem();
+        if (viewPager != null) {
+            currentTabPosition = viewPager.getCurrentItem();
+        }
 
         Print.i(TAG, "ON PAUSE");
         getBaseActivity().hideKeyboard();
