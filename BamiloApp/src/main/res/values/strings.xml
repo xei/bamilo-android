@@ -572,6 +572,9 @@
     <string name="item_tracking_refund_date">&#160;در تاریخ %1$s&#160;</string>
     <string name="item_tracking_refund_will_be_returned">بازگشت داده خواهد شد.</string>
     <string name="item_tracking_refund_is_returned">بازگشت داده شده است.</string>
+    <string name="profile_user_info">اطلاعات کاربری</string>
+    <string name="profile_user_birthday">تاریخ تولد</string>
+    <string name="profile_user_card_number">شماره کارت بانکی</string>
 
     <plurals name="order_cancellation_please_select_cancellation_reason">
         <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>

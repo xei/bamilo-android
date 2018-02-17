@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="24dp"
+            android:theme="@style/RegistrationFormEditTextTheme">
+
+            <EditText
+                android:id="@+id/etFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:hint="@string/first_name"
+                android:inputType="textPersonName"
+                android:textSize="14sp"
+                android:theme="@style/RegistrationFormEditTextTheme" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:theme="@style/RegistrationFormEditTextTheme">
+
+            <EditText
+                android:id="@+id/etLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:hint="@string/last_name"
+                android:inputType="textPersonName"
+                android:textSize="14sp"
+                android:theme="@style/RegistrationFormEditTextTheme" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:theme="@style/RegistrationFormEditTextTheme">
+
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:hint="@string/email_address"
+                android:inputType="textEmailAddress"
+                android:textSize="14sp"
+                android:theme="@style/RegistrationFormEditTextTheme" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:id="@+id/tvBirthdayTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="16dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/profile_user_birthday"
+                    android:textColor="@color/gray_2"
+                    android:textSize="13sp" />
+
+                <br.com.sapereaude.maskedEditText.MaskedEditText
+                    android:id="@+id/metBirthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toLeftOf="@+id/tvBirthdayTitle"
+                    android:gravity="center"
+                    android:hint="########"
+                    android:inputType="phone"
+                    android:layoutDirection="ltr"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/gray_2"
+                    android:textDirection="ltr"
+                    android:textSize="14sp"
+                    android:theme="@style/RegistrationFormEditTextTheme"
+                    android:typeface="monospace"
+                    app:allowed_chars="1234567890"
+                    app:keep_hint="true"
+                    app:mask="#### / ## / ##" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"></RelativeLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:theme="@style/RegistrationFormEditTextTheme">
+
+            <EditText
+                android:id="@+id/etPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:hint="@string/mobile_number"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:textSize="14sp"
+                android:theme="@style/RegistrationFormEditTextTheme" />
+        </android.support.design.widget.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/tvCardNumberTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/profile_user_card_number"
+                android:textColor="@color/gray_2"
+                android:textSize="12sp" />
+
+            <br.com.sapereaude.maskedEditText.MaskedEditText
+                android:id="@+id/metCardNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvCardNumberTitle"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="right"
+                android:hint="################"
+                android:inputType="number"
+                android:layoutDirection="ltr"
+                android:textColor="@color/gray_2"
+                android:textDirection="ltr"
+                android:textSize="14sp"
+                android:theme="@style/RegistrationFormEditTextTheme"
+                app:allowed_chars="1234567890"
+                app:keep_hint="true"
+                app:mask="#### - #### - #### - ####" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
