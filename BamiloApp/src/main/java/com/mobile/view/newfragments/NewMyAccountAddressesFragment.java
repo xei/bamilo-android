@@ -169,6 +169,7 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
                 }
                 break;
             case GET_DELETE_ADDRESS_FORM_EVENT:
+                fabNewAddress.show();
                 triggerGetAddresses();
                 break;
             case SET_DEFAULT_SHIPPING_ADDRESS:
