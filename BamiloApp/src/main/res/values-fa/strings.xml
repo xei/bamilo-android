@@ -606,6 +606,9 @@
     <string name="item_tracking_refund_date">&#160;در تاریخ %1$s&#160;</string>
     <string name="item_tracking_refund_will_be_returned">بازگشت داده خواهد شد.</string>
     <string name="item_tracking_refund_is_returned">بازگشت داده شده است.</string>
+    <string name="order_cancellation_item_has_cancellation_error">درخواست لغو کالای شما در حال پردازش است.</string>
+    <string name="order_cancellation_item_shipped_error">به دلیل اینکه کالای شما در مرحله ارسال است، امکان لغو وجود ندارد.</string>
+    <string name="order_cancellation_item_is_not_cancelable">درخواست لغو کالای شما در حال پردازش است.</string>
 
     <plurals name="order_cancellation_please_select_cancellation_reason">
         <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>

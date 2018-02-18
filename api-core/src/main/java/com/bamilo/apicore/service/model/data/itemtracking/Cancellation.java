@@ -9,6 +9,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class Cancellation {
 
+    public static final String REASON_TYPE_IS_SHIPPED = "IS_SHIPPED",
+            REASON_TYPE_HAS_CANCELLATION_REQUEST = "HAS_CANCELLATION_REQUEST",
+            REASON_TYPE_IS_CANCELED = "IS_CANCELED";
+
     @SerializedName("isCancelable")
     @Expose
     private boolean cancelable;

@@ -13,14 +13,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bamilo.apicore.service.model.data.itemtracking.Cancellation;
 import com.bamilo.apicore.service.model.data.itemtracking.CompleteOrder;
+import com.bamilo.apicore.service.model.data.itemtracking.History;
 import com.bamilo.apicore.service.model.data.itemtracking.Package;
 import com.bamilo.apicore.service.model.data.itemtracking.PackageItem;
 import com.bamilo.apicore.service.model.data.itemtracking.Refund;
+import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.ImageManager;
+import com.mobile.utils.ui.WarningFactory;
+import com.mobile.view.BaseActivity;
+import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
 import com.mobile.view.widget.ItemTrackingProgressBar;
 
@@ -91,7 +97,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
     public void onBindViewHolder(final ItemTrackingViewHolder holder, int position) {
         int viewType = getItemViewType(position);
         Locale locale = new Locale("fa", "ir");
-        Context context = holder.itemView.getContext();
+        final Context context = holder.itemView.getContext();
         if (viewType == ITEM_LIST_HEADER) {
             holder.tvOrderNumberValue.setText(completeOrder.getOrderNumber());
             holder.tvOrderCostValue.setText(CurrencyFormatter.formatCurrency(completeOrder.getGrandTotal()));
@@ -126,7 +132,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
                 holder.tvPackageDeliveryDelayReason.setVisibility(View.GONE);
             }
         } else if (viewType == ITEM_ORDER_ITEM) {
-            PackageItem item = indexedItems.get(position);
+            final PackageItem item = indexedItems.get(position);
             ItemTrackingProgressBar itemTrackingProgressBar = holder.itemTrackingProgressBar;
             itemTrackingProgressBar.setItemHistories(item.getHistories());
 
@@ -173,6 +179,28 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
                             if (onItemTrackingListClickListener != null) {
                                 PackageItem item = indexedItems.get(holder.getAdapterPosition());
                                 onItemTrackingListClickListener.onCancelItemButtonClicked(view, item);
+                            }
+                        }
+                    });
+                } else if (item.getCancellation().getNotCancelableReasonType() != null &&
+                        !item.getCancellation().getNotCancelableReasonType().equals(Cancellation.REASON_TYPE_IS_CANCELED)
+                        && CollectionUtils.isNotEmpty(item.getHistories()) &&
+                        (item.getHistories().get(item.getHistories().size() - 1).getStatus().equals(History.STATUS_INACTIVE) ||
+                                item.getHistories().get(item.getHistories().size() - 1).getStatus().equals(History.STATUS_ACTIVE))) {
+                    holder.btnCancelItem.setVisibility(View.VISIBLE);
+                    holder.btnCancelItem.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String message = null;
+                            if (item.getCancellation().getNotCancelableReasonType().equals(Cancellation.REASON_TYPE_HAS_CANCELLATION_REQUEST)) {
+                                message = context.getString(R.string.order_cancellation_item_has_cancellation_error);
+                            } else if (item.getCancellation().getNotCancelableReasonType().equals(Cancellation.REASON_TYPE_IS_SHIPPED)) {
+                                message = context.getString(R.string.order_cancellation_item_shipped_error);
+                            } else {
+                                message = context.getString(R.string.order_cancellation_item_is_not_cancelable);
+                            }
+                            if (context instanceof BaseActivity) {
+                                ((BaseActivity) context).showWarningMessage(WarningFactory.ERROR_MESSAGE, message);
                             }
                         }
                     });
