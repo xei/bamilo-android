@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email_address"
                 android:inputType="textEmailAddress"
-                android:text=""
+                android:layout_gravity="right"
                 android:textSize="12sp"
                 android:theme="@style/RegistrationFormEditTextTheme" />
         </android.support.design.widget.TextInputLayout>
