@@ -25,9 +25,9 @@
                 android:id="@+id/login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:hint="@string/email_address"
                 android:inputType="textEmailAddress"
-                android:layout_gravity="right"
                 android:textSize="12sp"
                 android:theme="@style/RegistrationFormEditTextTheme" />
         </android.support.design.widget.TextInputLayout>
@@ -79,7 +79,7 @@
             android:textColor="@color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cbShowHidePassword" />
+            app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_email_button_password"
