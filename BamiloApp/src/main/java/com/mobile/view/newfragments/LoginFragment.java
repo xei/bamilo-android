@@ -18,7 +18,6 @@ import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.tracking.CategoryConstants;
@@ -138,7 +137,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         view.findViewById(R.id.login_button_continue).setOnClickListener(this);
         view.findViewById(R.id.login_email_button_password).setOnClickListener(this);
 
-        CheckBox cbShowHiderPassword = (CheckBox) view.findViewById(R.id.cbShowHiderPassword);
+        CheckBox cbShowHiderPassword = (CheckBox) view.findViewById(R.id.cbShowHidePassword);
         cbShowHiderPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {

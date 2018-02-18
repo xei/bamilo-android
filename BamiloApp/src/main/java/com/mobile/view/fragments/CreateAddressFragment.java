@@ -129,9 +129,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         city = (Spinner) view.findViewById(R.id.address_city);*/
 
         name = (EditText) view.findViewById(R.id.address_name);
-        name.setText(BamiloApplication.CUSTOMER.getFirstName());
+        if (BamiloApplication.CUSTOMER.getFirstName() != null) {
+            name.setText(BamiloApplication.CUSTOMER.getFirstName().trim());
+        }
         family = (EditText) view.findViewById(R.id.address_family);
-        family.setText(BamiloApplication.CUSTOMER.getLastName());
+        if (BamiloApplication.CUSTOMER.getLastName() != null) {
+            family.setText(BamiloApplication.CUSTOMER.getLastName().trim());
+        }
 
         gender_spinner = (Spinner) view.findViewById(R.id.address_gender);
 

@@ -155,7 +155,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         Button btnRegister = (Button) view.findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(this);
 
-        CheckBox cbShowHiderPassword = (CheckBox) view.findViewById(R.id.cbShowHiderPassword);
+        CheckBox cbShowHiderPassword = (CheckBox) view.findViewById(R.id.cbShowHidePassword);
         cbShowHiderPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
