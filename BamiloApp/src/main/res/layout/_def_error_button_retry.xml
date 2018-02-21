@@ -5,16 +5,15 @@
     style="@style/button_fallback_retry"
     android:layout_width="@dimen/inner_container_width"
     android:layout_height="@dimen/margin_48dp"
-    android:layout_marginLeft="@dimen/margin_16dp"
-    android:layout_marginTop="@dimen/margin_28dp"
-    android:layout_marginRight="@dimen/margin_16dp"
     android:layout_gravity="center"
+    android:layout_marginLeft="@dimen/margin_16dp"
+    android:layout_marginRight="@dimen/margin_16dp"
+    android:layout_marginTop="@dimen/dimen_8dp"
     android:clickable="true"
     android:gravity="center"
     android:orientation="horizontal"
     android:visibility="gone"
-    tools:visibility="visible"
-    >
+    tools:visibility="visible">
 
     <ImageView
         android:id="@+id/fragment_root_error_spinning"
@@ -36,7 +35,7 @@
         android:singleLine="true"
         android:text="@string/try_again_retry"
         android:textAllCaps="true"
-        android:textColor="@android:color/black"
+        android:textColor="@color/gray_1"
         android:textSize="@dimen/text_16sp" />
 
 </LinearLayout>

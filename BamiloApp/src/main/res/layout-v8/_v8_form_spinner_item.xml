@@ -9,5 +9,6 @@
     android:maxLines="3"
     android:paddingRight="@dimen/margin_20px"
     android:singleLine="false"
+    android:textColor="@color/black_900"
     tools:targetApi="jelly_bean_mr1"
     tools:text="Item" />

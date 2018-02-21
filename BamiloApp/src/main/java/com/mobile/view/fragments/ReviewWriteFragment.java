@@ -34,6 +34,7 @@ import com.mobile.service.objects.product.pojo.ProductComplete;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
 import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.EventType;
@@ -121,6 +122,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TrackerDelegator.trackPage(TrackingPage.WRITE_REVIEW, getLoadTime(), false);
         Print.i(TAG, "ON CREATE");
         // Validate the saved state
         if (savedInstanceState != null) {

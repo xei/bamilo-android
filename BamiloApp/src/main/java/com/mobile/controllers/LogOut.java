@@ -1,6 +1,7 @@
 package com.mobile.controllers;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.constants.EventConstants;
@@ -10,9 +11,11 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.rest.AigHttpClient;
+import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.cache.WishListCache;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.BaseActivity;
+import com.mobile.view.fragments.BaseFragment;
 
 import java.lang.ref.WeakReference;
 
@@ -35,7 +38,7 @@ public class LogOut {
     /**
      * Performs the Logout
      */
-    public static void perform(@NonNull final WeakReference<BaseActivity> activityRef) {
+    public static void perform(@NonNull final WeakReference<BaseActivity> activityRef, @Nullable final BaseFragment fragmentRef) {
         final BaseActivity baseActivity = activityRef.get();
         if (baseActivity != null) {
             // Show progress
@@ -57,6 +60,11 @@ public class LogOut {
 
                 @Override
                 public void onRequestError(BaseResponse baseResponse) {
+                    baseActivity.dismissProgress();
+                    if (fragmentRef != null) {
+                        baseResponse.setEventTask(EventTask.ACTION_TASK);
+                        fragmentRef.handleErrorEvent(baseResponse);
+                    }
                     TrackerManager.postEvent(baseActivity, EventConstants.Logout, EventFactory.logout(false));
                 }
             });

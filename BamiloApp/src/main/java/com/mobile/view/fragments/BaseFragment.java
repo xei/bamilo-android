@@ -26,7 +26,6 @@ import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -551,6 +550,21 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
+     * Show the retry view from the root layout
+     * @author sergiopereira
+     */
+    protected void showFragmentServerMaintenanceRetry() {
+        showErrorFragment(ErrorLayoutFactory.MAINTENANCE_LAYOUT, this);
+    }
+
+    /**
+     * Show the retry view from the root layout
+     */
+    protected void showFragmentNetworkErrorRetry() {
+        showErrorFragment(ErrorLayoutFactory.NETWORK_ERROR_LAYOUT, this);
+    }
+
+    /**
      * Show the loading view from the root layout
      */
     protected void showFragmentLoading() {
@@ -643,6 +657,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     protected void showNoNetworkWarning() {
         getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getString(R.string.no_internet_access_warning_title));
+        hideActivityProgress();
+        showFragmentContentContainer();
+    }
+
+    protected void showServerMaintenanceWarning() {
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getString(R.string.server_in_maintenance_warning));
+        hideActivityProgress();
+        showFragmentContentContainer();
+    }
+
+
+    protected void showTimeoutErrorWarning() {
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getString(R.string.network_timeout_error));
         hideActivityProgress();
         showFragmentContentContainer();
     }
@@ -897,7 +924,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public boolean handleRequestError(int errorCode, BaseResponse response) {
         switch (errorCode) {
             case ErrorCode.ERROR_PARSING_SERVER_DATA:
-                showFragmentMaintenance();
+                showFragmentServerMaintenanceRetry();
                 return true;
             case ErrorCode.CUSTOMER_NOT_LOGGED_IN:
                 onLoginRequired();
@@ -915,15 +942,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public boolean handleNetworkError(int errorCode, EventTask eventTask) {
         boolean result = true;
         switch (errorCode) {
+            case ErrorCode.HTTP_STATUS:
             case ErrorCode.IO:
             case ErrorCode.CONNECT_ERROR:
+            case ErrorCode.TIME_OUT:
                 if (eventTask == EventTask.ACTION_TASK) {
-                    showUnexpectedErrorWarning();
+                    showTimeoutErrorWarning();
                 } else {
-                    showFragmentErrorRetry();
+                    showFragmentNetworkErrorRetry();
                 }
                 break;
-            case ErrorCode.TIME_OUT:
             case ErrorCode.NO_CONNECTIVITY:
                 // Show no network layout
                 if (eventTask == EventTask.ACTION_TASK) {
@@ -932,22 +960,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     showFragmentNoNetworkRetry();
                 }
                 break;
-            case ErrorCode.HTTP_STATUS:
-                // Case HOME show retry otherwise show continue
-                if (action == NavigationAction.HOME) {
-                    showFragmentErrorRetry();
-                } else {
-                    showContinueShopping();
-                }
-                break;
             case ErrorCode.SSL:
             case ErrorCode.SERVER_IN_MAINTENANCE:
-                showFragmentMaintenance();
-                break;
             case ErrorCode.SERVER_OVERLOAD:
-                if (getBaseActivity() != null) {
-                    ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
-                    showFragmentErrorRetry();
+                if (eventTask == EventTask.ACTION_TASK) {
+                    showServerMaintenanceWarning();
+                } else {
+                    showFragmentServerMaintenanceRetry();
                 }
                 break;
             default:
@@ -1037,7 +1056,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (view.getId() == R.id.fragment_root_error_button) {
             int error = (int) view.getTag(R.id.fragment_root_error_button);
 
-            if (error == ErrorLayoutFactory.NO_NETWORK_LAYOUT || error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT) {
+            if (error == ErrorLayoutFactory.NO_NETWORK_LAYOUT || error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT
+                    || error == ErrorLayoutFactory.NETWORK_ERROR_LAYOUT) {
                 // Case retry button from network
                 // Case retry button from error
                 onClickRetryError(view);
@@ -1065,6 +1085,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Common method for retry buttons
         onClickRetryButton(view);
+        view.setEnabled(false);
     }
 
     /**

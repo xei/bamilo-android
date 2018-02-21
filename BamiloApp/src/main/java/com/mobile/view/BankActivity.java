@@ -2,7 +2,6 @@ package com.mobile.view;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
@@ -16,7 +15,9 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.output.Print;
+import com.mobile.utils.TrackerDelegator;
 
 /**
  * for process bank payment from browser
@@ -76,6 +77,8 @@ public class BankActivity extends Activity {
                     btnReturn.setVisibility(View.VISIBLE);
                 }
                 if (msgFromBrowserUrl.equals("reject")) {
+                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_FAILURE, 0, false);
+
                     btnOrderDetails.setVisibility(View.INVISIBLE);
                     btnReturn.setVisibility(View.VISIBLE);
                     launchInfo.setText(R.string.payment_unsuccessful);
@@ -83,6 +86,8 @@ public class BankActivity extends Activity {
                     launchInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                     checkout_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_reject_checkout));
                 } else {
+                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_FINISH, 0, false);
+
                     launchInfo.setText(R.string.thank_you_order_title);
                     tvOrderInfo.setVisibility(View.VISIBLE);
                     if (mOrderNumber != null) {

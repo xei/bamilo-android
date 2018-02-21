@@ -81,6 +81,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public int DISCOUNT = R.id.discount;
     private TeaserCampaign mTeaserCampaign;
     private Campaign mCampaign;
+    private boolean pageTracked = false;
 
     private HeaderFooterGridView mGridView;
 
@@ -551,6 +552,11 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 showCampaign();
                 //DROID-10
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaCampaignPage, mGABeginRequestMillis, "");
+                if (!pageTracked) {
+                    // Track current catalog page
+                    TrackerDelegator.trackPage(TrackingPage.CAMPAIGN_PAGE, getLoadTime(), false);
+                    pageTracked = true;
+                }
 
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:

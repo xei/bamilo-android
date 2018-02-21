@@ -17,6 +17,7 @@
         android:layout_height="fill_parent">
 
         <com.mobile.components.customfontviews.TextView
+            android:id="@+id/tvDeliveryTimeSectionTitle"
             style="@style/TextBase.Title.Black"
             android:layout_marginBottom="@dimen/margin_padding_xl"
             android:layout_marginLeft="@dimen/margin_padding_xl"
@@ -58,8 +59,11 @@
         </LinearLayout>
 
         <TableRow
+            android:id="@+id/deliveryRow"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/pdv_seller_delivery_info_column"

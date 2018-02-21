@@ -5,17 +5,13 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
-import com.mobile.service.forms.Form;
 import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.rest.errors.ErrorCode;
 import com.mobile.service.tracking.TrackingEvent;
-import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -70,15 +66,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     }
 
     @Override
-    protected void loadCreateAddressForm(Form formShipping) {
-        super.loadCreateAddressForm(formShipping);
-        // Show order summary
-        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
-        // Set the checkout total bar
-        CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
-    }
-
-    @Override
     protected void onClickRetryButton() {
         Bundle bundle = new Bundle();
         if (null != BamiloApplication.CUSTOMER) {
@@ -127,16 +114,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     @Override
     protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
         super.onCreateAddressErrorEvent(baseResponse);
-        // GTM
         TrackerDelegator.trackAddAddress(false);
-        // Error
-        int errorCode = baseResponse.getError().getCode();
-        if (errorCode == ErrorCode.REQUEST_ERROR) {
-            showFormValidateMessages(shippingFormGenerator, baseResponse, EventType.CREATE_ADDRESS_EVENT);
-        } else {
-            Print.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode);
-            super.showUnexpectedErrorWarning();
-        }
         showFragmentContentContainer();
     }
 

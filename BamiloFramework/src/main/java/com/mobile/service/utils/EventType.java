@@ -208,7 +208,9 @@ public enum EventType {
 
     RETURN_REFUND_FORM_EVENT("http:/forms/refundmethod/"),
 
-    RETURN_FINISH_EVENT("http:/return/finishreturn/");
+    RETURN_FINISH_EVENT("http:/return/finishreturn/"),
+
+    GET_EVENT_EVENT("http:/customer/getaddressbyid/");
 
 
     public final String action;

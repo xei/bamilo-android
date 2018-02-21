@@ -10,6 +10,7 @@
     android:orientation="horizontal">
 
     <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tvLoadMore"
         style="@style/text_header_light"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"

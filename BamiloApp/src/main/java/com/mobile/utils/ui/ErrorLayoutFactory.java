@@ -1,6 +1,8 @@
 package com.mobile.utils.ui;
 
 import android.content.Context;
+import android.content.Intent;
+import android.provider.Settings;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
@@ -9,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +51,9 @@ public class ErrorLayoutFactory {
     public static final int SSL_ERROR_LAYOUT = 11;
     public static final int UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT = 12;
     public static final int CAMPAIGN_UNAVAILABLE_LAYOUT = 13;
+    public static final int NETWORK_ERROR_LAYOUT = 14;
+    public static final int MAINTENANCE_LAYOUT = 15;
+    private static final int RES_NO_CONTENT = -1;
 
     @IntDef({
             NO_NETWORK_LAYOUT,
@@ -62,7 +68,9 @@ public class ErrorLayoutFactory {
             NO_ORDERS_LAYOUT,
             SSL_ERROR_LAYOUT,
             UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT,
-            CAMPAIGN_UNAVAILABLE_LAYOUT
+            CAMPAIGN_UNAVAILABLE_LAYOUT,
+            NETWORK_ERROR_LAYOUT,
+            MAINTENANCE_LAYOUT,
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface LayoutErrorType {
@@ -91,7 +99,8 @@ public class ErrorLayoutFactory {
      * @param error - The layout error type
      */
     public void showErrorLayout(@LayoutErrorType int error) {
-        if (actualError != error) {
+        resetLayout();
+//        if (actualError != error) {
             // Save error
             actualError = error;
             // Build layout
@@ -109,9 +118,10 @@ public class ErrorLayoutFactory {
                     break;
                 case NO_NETWORK_LAYOUT:
                     new Builder()
-                    .setContent(R.drawable.img_connect, R.string.error_no_connection, R.string.internet_no_connection_details_label)
-                    .setButton(R.string.try_again_retry, R.color.black,R.drawable._gen_selector_button_grey)
+                    .setContent(R.drawable.img_connect, R.string.there_is_no_access_to_internet_label)
+                    .setButton(R.string.retry_label, R.color.gray_1, R.drawable.network_connection_retry_btn_bg)
                     .showRetryButton()
+                    .showNetworkSettingsButtons()
                     .showButtonSpinning();
                     break;
                 case UNEXPECTED_ERROR_LAYOUT:
@@ -152,14 +162,36 @@ public class ErrorLayoutFactory {
                     new Builder()
                     .setContent(R.drawable.ic_recentlyviewed_empty, R.string.no_recently_viewed_items, R.string.no_recently_viewed_items_subtitle);
                     break;
+                case NETWORK_ERROR_LAYOUT:
+                    // TODO: 12/11/2017 change error icon
+                    new Builder()
+                            .setContent(R.drawable.img_request_failure, R.string.network_timeout_error, R.string.please_wait_for_a_while)
+                            .setButton(R.string.retry_label, R.color.retry_text_color, R.drawable.network_connection_retry_btn_bg)
+                            .showRetryButtonWithDelay(5000)
+                            .showButtonSpinning();
+                    break;
+                case MAINTENANCE_LAYOUT:
+                    // TODO: 12/11/2017 change error icon
+                    new Builder()
+                            .setContent(R.drawable.img_request_failure, R.string.server_in_maintenance_warning, R.string.please_wait_for_a_while)
+                            .setButton(R.string.retry_label, R.color.retry_text_color, R.drawable.network_connection_retry_btn_bg)
+                            .showRetryButtonWithDelay(5000)
+                            .showButtonSpinning();
+                    break;
                 case NO_ORDERS_LAYOUT:
                     new Builder()
                     .setContent(R.drawable.ic_orders_empty, R.string.no_orders, R.string.no_orders_message);
                     break;
             }
-        }
+//        }
         //show
         show();
+    }
+
+    private void resetLayout() {
+        mErrorLayout.findViewById(R.id.fragment_root_error_spinning).clearAnimation();
+        mErrorLayout.findViewById(R.id.fragment_root_error_button).clearAnimation();
+        mErrorLayout.findViewById(R.id.fragment_root_error_button).setEnabled(true);
     }
 
     private void show() {
@@ -177,7 +209,7 @@ public class ErrorLayoutFactory {
     private class Builder {
 
         Builder() {
-            // ...
+            mErrorLayout.findViewById(R.id.llNetworkSettings).setVisibility(View.GONE);
         }
 
         Builder showContactInfo() {
@@ -207,7 +239,11 @@ public class ErrorLayoutFactory {
             hideButtonSpinning();
             hideButton();
             setImage(image);
-            setPrincipalMessage(title);
+            if (title != RES_NO_CONTENT) {
+                setPrincipalMessage(title);
+            } else {
+                hideTitle();
+            }
             setDetailMessage(message);
             hideRecommendation();
             return this;
@@ -251,6 +287,27 @@ public class ErrorLayoutFactory {
             return showButton();
         }
 
+        Builder showRetryButtonWithDelay(int visibilityDelayMillis){
+            mErrorLayout.findViewById(R.id.fragment_root_error_button).setVisibility(View.VISIBLE);
+            AlphaAnimation animation = new AlphaAnimation(0, 1);
+            animation.setStartOffset(visibilityDelayMillis);
+            animation.setDuration(350); // default amount of animation duration
+            animation.setFillBefore(true);
+            mErrorLayout.findViewById(R.id.fragment_root_error_button).startAnimation(animation);
+            return this;
+        }
+
+        Builder showNetworkSettingsButtons(){
+            mErrorLayout.findViewById(R.id.llNetworkSettings).setVisibility(View.VISIBLE);
+            mErrorLayout.findViewById(R.id.btnInternetSettings).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mErrorLayout.getContext().startActivity(new Intent(Settings.ACTION_SETTINGS));
+                }
+            });
+            return this;
+        }
+
         Builder setButton(@StringRes int message, @DrawableRes int background) {
             setButtonMessage(message);
             setButtonBackground(background);
@@ -261,6 +318,7 @@ public class ErrorLayoutFactory {
         Builder setButton(@StringRes int message, @ColorRes int color, @DrawableRes int background) {
             setButtonMessage(message);
             setButtonTextColor(color);
+            setButtonTextSize(14);
             setButtonBackground(background);
             showButton();
             return this;
@@ -309,6 +367,12 @@ public class ErrorLayoutFactory {
             return this;
         }
 
+        private Builder setButtonTextSize(int textSizeSP) {
+            ((TextView) mErrorLayout.findViewById(R.id.fragment_root_error_button_message))
+            .setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSP);
+            return this;
+        }
+
         private Builder setImage(@DrawableRes int image) {
             ImageView imageView = (ImageView) mErrorLayout.findViewById(R.id.fragment_root_error_image);
             imageView.setVisibility(View.VISIBLE);
@@ -339,9 +403,15 @@ public class ErrorLayoutFactory {
             return this;
         }
 
+        private Builder hideTitle() {
+            TextView messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_label);
+            messageView.setVisibility(View.GONE);
+            return this;
+        }
+
         private Builder hideDetailMessage() {
             TextView messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
-            messageView.setVisibility(View.INVISIBLE);
+            messageView.setVisibility(View.GONE);
             return this;
         }
     }

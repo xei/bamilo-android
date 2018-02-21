@@ -2,6 +2,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +13,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Switch;
+import android.widget.ScrollView;
 
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
@@ -28,12 +29,14 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.service.objects.cart.PurchaseCartItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 import com.mobile.view.newfragments.NewBaseFragment;
 
@@ -48,6 +51,8 @@ import java.util.Locale;
 public class CheckoutConfirmationFragment extends NewBaseFragment implements View.OnClickListener, IResponseCallback {
     TextView next, address, telephone, user, order_count_title, order_price,
             ship_price, voucher_price, all_price, ship_time, all_voucher, voucher_error, all_price_title;
+    NestedScrollView svCheckoutConfirmation;
+    TextView tvDeliveryTimeHeader;
     TextView tvDeliveryNotice;
     SwitchCompat voucher_switch;
     TextView tvVoucherValueTitle;
@@ -60,6 +65,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     private List<CardChoutItem> cardList = new ArrayList<>();
     private RecyclerView recyclerView;
     private CardCheckOutAdapter mAdapter;
+    private boolean pageTracked = false;
 
 
     /**
@@ -70,7 +76,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
                 NavigationAction.CHECKOUT,
                 R.layout.checkout_confirmation_fragment,
                 R.string.checkout_confirmation_step,
-                ADJUST_CONTENT,
+                NO_ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_CONFIRMATION);
     }
 
@@ -101,12 +107,20 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Print.i(TAG, "ON VIEW CREATED");
+        super.onViewCreated(view, savedInstanceState);
         super.setCheckoutStep(view, 2);
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getBaseActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         triggerGetMultiStepFinish();
         tvVoucherValueTitle = (TextView) view.findViewById(R.id.checkout_order_voucher_price_title);
         next = (TextView) view.findViewById(R.id.checkout_confirmation_btn);
+        svCheckoutConfirmation = (NestedScrollView) view.findViewById(R.id.checkout_scrollview);
+        svCheckoutConfirmation.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                getBaseActivity().hideKeyboard();
+            }
+        });
         address = (TextView) view.findViewById(R.id.checkout_address);
         telephone = (TextView) view.findViewById(R.id.checkout_telephone);
         user = (TextView) view.findViewById(R.id.checkout_user_reciver);
@@ -123,6 +137,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         voucher_layer = (LinearLayout) view.findViewById(R.id.voucher_layout);
         mVoucherView = (EditText) view.findViewById(R.id.voucher_codename);
         tvDeliveryNotice = (TextView) view.findViewById(R.id.tvDeliveryNotice);
+        tvDeliveryTimeHeader = (TextView) view.findViewById(R.id.textView12);
         couponButton = (Button) view.findViewById(R.id.checkout_button_enter);
         next.setOnClickListener(this);
         couponButton.setOnClickListener(this);
@@ -176,6 +191,10 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
     }
 
+    @Override
+    protected void onClickRetryButton(View view) {
+        getBaseActivity().onBackPressed();
+    }
 
     private void validateCoupon() {
         mVoucherCode = mVoucherView.getText().toString();
@@ -242,7 +261,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
     private void showOrderdetail() {
         all_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
-       // order_count_title.setText(mOrderFinish.getCartCount()+" "+getContext().getString(R.string.checkout_count_title));
+        // order_count_title.setText(mOrderFinish.getCartCount()+" "+getContext().getString(R.string.checkout_count_title));
         all_price_title.setText(String.format(new Locale("fa"), getString(R.string.checkout_confirmation_total_price), mOrderFinish.getCartCount()));
         order_price.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotalUnDiscounted()));
         all_price_title.setTextColor(getResources().getColor(R.color.checkout_order_green));
@@ -369,6 +388,10 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
                 hideActivityProgress();
                 break;
             case GET_MULTI_STEP_FINISH:
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_CONFIRMATION, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
 
                 if (mOrderFinish == null) {
@@ -431,14 +454,22 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+        // Check if the request is a partial request
+        if (baseResponse.getEventType() == EventType.GET_MULTI_STEP_SHIPPING) {
+            tvDeliveryTimeHeader.setVisibility(View.GONE);
+            ship_time.setVisibility(View.GONE);
+            return;
+        }
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+            getBaseActivity().onBackPressed();
             return;
         }
         // Get event type and error

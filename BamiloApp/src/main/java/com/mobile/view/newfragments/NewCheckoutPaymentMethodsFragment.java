@@ -90,6 +90,8 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     private PurchaseEntity mOrderFinish;
 
     private boolean isShowingNoPaymentNecessary;
+    private boolean pageTracked = false;
+    private PaymentMethodAdapter paymentMethodAdapter;
 
     /**
      * Empty constructor
@@ -189,7 +191,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.PAYMENT_SCREEN, getLoadTime(), true);
     }
     
     /*
@@ -244,8 +245,12 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         int id = view.getId();
         // Submit
         if (id == R.id.payment_continue) {
-            setMultistepConfirmation();
-            getBaseActivity().hideKeyboard();
+            if (paymentMethodAdapter.getSelectedId() == -1) {
+                showWarningErrorMessage(getString(R.string.please_select_a_payment_method));
+            } else {
+                setMultistepConfirmation();
+                getBaseActivity().hideKeyboard();
+            }
         } else {
             // Case Unknown
             Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
@@ -259,7 +264,8 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     // Process the click on retry button.
     @Override
     protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
+        getBaseActivity().onBackPressed();
+        /*super.onClickRetryButton(view);
 
         Bundle bundle = new Bundle();
         if (BamiloApplication.CUSTOMER != null) {
@@ -267,12 +273,12 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
+        }*/
     }
 
     /*
-     * Disable the next button case No payment options available
-     */
+         * Disable the next button case No payment options available
+         */
     @SuppressWarnings("ConstantConditions")
     private void validatePaymentIsAvailableOrIsNecessary() {
         try {
@@ -305,6 +311,10 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
         switch (eventType) {
             case GET_MULTI_STEP_PAYMENT:
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_METHOD, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();
                 bindPaymentMethods(responseData);
                 setTotal(responseData.getOrderSummary());
@@ -335,9 +345,14 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             return;
+        }
+        if (baseResponse.getEventType() == EventType.SET_MULTI_STEP_PAYMENT) {
+            paymentMethodAdapter.clearSelection();
+            paymentMethodAdapter.notifyDataSetChanged();
         }
 
     	// Generic error
@@ -356,6 +371,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             break;
 
             case SET_MULTI_STEP_PAYMENT:
+                paymentMethodAdapter.notifyDataSetChanged();
                 TrackerDelegator.trackFailedPayment(paymentName, BamiloApplication.INSTANCE.getCart());
                 showWarningErrorMessage(baseResponse.getValidateMessage());
                 showFragmentContentContainer();
@@ -397,8 +413,8 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
                 methodList.add(method);
             }
 
-            PaymentMethodAdapter adapter = new PaymentMethodAdapter(methodList, -1);
-            adapter.mFragmentBridge = new PaymentMethodAdapter.IPaymentMethodAdapter() {
+            paymentMethodAdapter = new PaymentMethodAdapter(methodList, -1);
+            paymentMethodAdapter.mFragmentBridge = new PaymentMethodAdapter.IPaymentMethodAdapter() {
                 @Override
                 public void paymentMethodSelected(int selectedId) {
                     //int selectedId = ((PaymentMethodAdapter) mScrollView.getAdapter()).getSelectedId();
@@ -407,7 +423,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
                     setMultistepPayment(PaymentAction, values);
                 }
             };
-            mScrollView.setAdapter(adapter);
+            mScrollView.setAdapter(paymentMethodAdapter);
         } catch (Exception ex) {
 
         }

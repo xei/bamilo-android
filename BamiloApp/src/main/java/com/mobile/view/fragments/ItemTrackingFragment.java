@@ -17,11 +17,13 @@ import com.mobile.service.objects.orders.PackageItem;
 import com.mobile.service.objects.orders.PackagedOrder;
 import com.mobile.service.objects.product.pojo.ProductComplete;
 import com.mobile.service.pojo.BaseResponse;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 import com.mobile.view.fragments.order.MyOrdersFragment;
 
@@ -38,6 +40,7 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
     private String orderNumber;
     private PackagedOrder packagedOrder;
     private ItemTrackingListAdapter mAdapter;
+    private boolean pageTracked = false;
 
     /**
      * Constructor as nested fragment, called from {@link MyOrdersFragment#}.
@@ -139,6 +142,11 @@ public class ItemTrackingFragment extends BaseFragment implements IResponseCallb
                     showOrderStatus(packagedOrder);
                 } else {
                     showFragmentErrorRetry();
+                }
+
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.ORDER_DETAIL, getLoadTime(), false);
+                    pageTracked = true;
                 }
                 break;
             case GET_PRODUCT_DETAIL:

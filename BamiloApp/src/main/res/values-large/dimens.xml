@@ -19,5 +19,6 @@
     <dimen name="login_main_container_width">370dp</dimen>
     <dimen name="login_email_container_width">370dp</dimen>
     <dimen name="register_container_width">@dimen/match_parent</dimen>
+    <dimen name="network_settings_layout_width">@dimen/dimen_320dp</dimen>
 
 </resources>

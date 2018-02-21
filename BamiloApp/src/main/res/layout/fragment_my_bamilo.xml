@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/srlRecommendItemsList"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/gray_10">
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/rvRecommendedItemsList"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srlRecommendItemsList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/gray_10"
-        android:clipToPadding="false"
-        android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" />
-</android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvRecommendedItemsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabBackToTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end|right"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_arrow_up_gray"
+        android:visibility="invisible"
+        app:backgroundTint="#eeeeee"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/rvRecommendedItemsList"
+        app:layout_anchorGravity="bottom|right|end"
+        tools:visibility="visible" />
+</android.support.design.widget.CoordinatorLayout>
+

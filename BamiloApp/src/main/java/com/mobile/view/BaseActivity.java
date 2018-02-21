@@ -1560,7 +1560,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                                         @Override
                                         public void onClick(View v) {
                                             if (v.getId() == R.id.button2) {
-                                                LogOut.perform(getWeakBaseActivity());
+                                                LogOut.perform(getWeakBaseActivity(), null);
                                             }
                                             dialogLogout.dismiss();
                                         }

@@ -29,7 +29,6 @@ public class RecommendManager {
 
     private static final String TAG = "RecommendManager";
     private static final int RecommendLimit = 15;
-    private static final int HOME_PAGE_COUNT = 6;
     private static final int HOME_RECOMMENDATION_LIMIT = 300;
     private static final String HOME_LOGIC_PREFIX = "HOME_";
 
@@ -94,11 +93,11 @@ public class RecommendManager {
         return resultMap;
     }
 
-    public void getEmarsysHomes(final RecommendListCompletionHandler callBack, EmarsysErrorCallback errorCallback, Map<String, List<String>> excludeItemLists) {
+    public void getEmarsysHomes(final RecommendListCompletionHandler callBack, EmarsysErrorCallback errorCallback, Map<String, List<String>> excludeItemLists, int homePagesCount) {
         setEmail();
         Transaction transaction = new Transaction();
         transaction.cart(getCartItems());
-        for (int i = 0; i < HOME_PAGE_COUNT; i++) {
+        for (int i = 0; i < homePagesCount; i++) {
             String logic = HOME_LOGIC_PREFIX + i;
             RecommendationRequest recommend = new RecommendationRequest(logic);
             List<String> excludeValues = excludeItemLists.get(logic);

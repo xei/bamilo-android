@@ -3,6 +3,7 @@ package com.mobile.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,7 +17,6 @@ import android.widget.ArrayAdapter;
 
 import com.emarsys.predict.Error;
 import com.emarsys.predict.RecommendedItem;
-import com.mobile.adapters.ErrorItemRecyclerAdapter;
 import com.mobile.adapters.RecommendGridAdapter;
 import com.mobile.adapters.RecommendItemsDiffUtilCallback;
 import com.mobile.components.customfontviews.TextView;
@@ -26,11 +26,12 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.Item;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,17 +41,24 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     private static final int RECOMMEND_LIST_COLUMN_COUNT = 2;
     private static final String TRACKER_SCREEN_NAME = "MyBamilo";
     private static final String TRACKER_LOGIC = "Home";
+    private static final int SMOOTH_SCROLL_LIMIT = 35;
+    private static final int BACK_TO_TOP_FAB_VISIBILITY_LIMIT = 17;
+    private static final int HOME_PAGES_COUNT = 6;
+    FloatingActionButton fabBackToTop;
     private RecyclerView rvRecommendedItemsList;
     private SwipeRefreshLayout srlRecommendItemsList;
     private RecommendGridAdapter recommendGridAdapter;
     private List<Item> recommendListItems;
+    private List<Item> allItemsShuffled;
     private Map<String, List<Item>> recommendItemsMap;
     private String selectedCategory = null;
     private boolean useDiffUtil = true;
     private int recommendListScrollPosition;
     private boolean loadInProgress;
     private int scrolledAmount = 0;
+    private int requestCompletionCount = 0;
     private boolean isFragmentVisibleToUser = false;
+    private Error currentError;
 
     public MyBamiloFragment() {
         super(true, R.layout.fragment_my_bamilo);
@@ -60,6 +68,21 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        fabBackToTop = (FloatingActionButton) view.findViewById(R.id.fabBackToTop);
+        fabBackToTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (rvRecommendedItemsList != null && rvRecommendedItemsList.getAdapter() instanceof RecommendGridAdapter) {
+                    GridLayoutManager glm = (GridLayoutManager) rvRecommendedItemsList.getLayoutManager();
+                    int lastPosition = glm.findLastVisibleItemPosition();
+                    if (lastPosition > SMOOTH_SCROLL_LIMIT) {
+                        rvRecommendedItemsList.scrollToPosition(SMOOTH_SCROLL_LIMIT);
+                    }
+                    rvRecommendedItemsList.smoothScrollToPosition(0);
+                    getBaseActivity().syncSearchBarState(0);
+                }
+            }
+        });
         rvRecommendedItemsList = (RecyclerView) view.findViewById(R.id.rvRecommendedItemsList);
         srlRecommendItemsList = (SwipeRefreshLayout) view.findViewById(R.id.srlRecommendItemsList);
         srlRecommendItemsList.setNestedScrollingEnabled(true);
@@ -78,6 +101,14 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
                 super.onScrolled(recyclerView, dx, dy);
                 if (isFragmentVisibleToUser) {
                     getBaseActivity().onSearchBarScrolled(dy);
+                }
+                if (dy != 0) {
+                    if (dy < 0 && ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition() >
+                            BACK_TO_TOP_FAB_VISIBILITY_LIMIT) {
+                        fabBackToTop.show();
+                    } else {
+                        fabBackToTop.hide();
+                    }
                 }
             }
         });
@@ -180,6 +211,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         super.setUserVisibleHint(isVisibleToUser);
         isFragmentVisibleToUser = isVisibleToUser;
         if (isVisibleToUser) {
+            TrackerDelegator.trackPage(TrackingPage.MY_BAMILO, getLoadTime(), false);
             if (rvRecommendedItemsList != null) {
                 getBaseActivity().syncSearchBarState(scrolledAmount);
             }
@@ -188,7 +220,9 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
 
     private void refreshRecommends() {
         useDiffUtil = false;
+        allItemsShuffled = null;
         recommendListScrollPosition = 0;
+        requestCompletionCount = 0;
         recommendItemsMap = new HashMap<>();
         requestForRecommendLists();
     }
@@ -211,8 +245,16 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
                 } else {
                     rvRecommendedItemsList.getLayoutManager().scrollToPosition(recommendListScrollPosition);
                 }
+                if (recommendListScrollPosition >= BACK_TO_TOP_FAB_VISIBILITY_LIMIT) {
+                    fabBackToTop.setVisibility(View.VISIBLE);
+                } else {
+                    fabBackToTop.setVisibility(View.INVISIBLE);
+                }
             }
         });
+        if (currentError != null) {
+            handleError(currentError);
+        }
     }
 
     private void requestForRecommendLists() {
@@ -221,26 +263,48 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         new RecommendManager().getEmarsysHomes(this, new RecommendManager.EmarsysErrorCallback() {
             @Override
             public void onEmarsysRecommendError(Error error) {
-                loadInProgress = false;
-                srlRecommendItemsList.setRefreshing(loadInProgress);
-                srlRecommendItemsList.setEnabled(false);
-                rvRecommendedItemsList.setAdapter(new ErrorItemRecyclerAdapter(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        srlRecommendItemsList.setEnabled(true);
-                        recommendListItems.clear();
-                        recommendGridAdapter.notifyDataSetChanged();
-                        rvRecommendedItemsList.setAdapter(recommendGridAdapter);
-                        refreshRecommends();
-                    }
-                }, ErrorLayoutFactory.NO_NETWORK_LAYOUT));
+                currentError = error;
+                handleError(error);
             }
-        }, RecommendManager.createHomeExcludeItemListsMap(null));
+        }, RecommendManager.createHomeExcludeItemListsMap(null), HOME_PAGES_COUNT);
+    }
+
+    private void handleError(Error error) {
+        loadInProgress = false;
+        fabBackToTop.hide();
+        getBaseActivity().syncSearchBarState(0);
+        Throwable cause = error.getCause();
+        while (true) {
+            if (cause == null || cause instanceof java.net.SocketTimeoutException) {
+                break;
+            } else {
+                cause = cause.getCause();
+            }
+        }
+        if (cause != null && cause instanceof java.net.SocketTimeoutException) {
+            showFragmentNetworkErrorRetry();
+        } else {
+            showFragmentNoNetworkRetry();
+        }
+    }
+
+
+    @Override
+    protected void onClickRetryButton(View view) {
+//        showFragmentContentContainer();
+        srlRecommendItemsList.setEnabled(true);
+        recommendListItems.clear();
+        recommendGridAdapter.notifyDataSetChanged();
+        rvRecommendedItemsList.setAdapter(recommendGridAdapter);
+        refreshRecommends();
     }
 
     @Override
     public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+        currentError = null;
+        showFragmentContentContainer();
         loadInProgress = false;
+        requestCompletionCount++;
         String CATEGORY_DELIMITER = ">";
         String temp[] = category.split(CATEGORY_DELIMITER);
         category = temp[0];
@@ -254,18 +318,25 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         } else {
             recommendItemsMap.get(category).addAll(itemDataList);
         }
-        updateUi();
+        if (requestCompletionCount == HOME_PAGES_COUNT) {
+            updateUi();
+        }
     }
 
     private void updateUi() {
         List<Item> itemsToShow = new ArrayList<>();
         if (selectedCategory == null) {
-            for (String key : recommendItemsMap.keySet()) {
-                List<Item> tempList = recommendItemsMap.get(key);
-                if (tempList != null) {
-                    itemsToShow.addAll(tempList);
+            if (allItemsShuffled == null) {
+                allItemsShuffled = new ArrayList<>();
+                for (String key : recommendItemsMap.keySet()) {
+                    List<Item> tempList = recommendItemsMap.get(key);
+                    if (tempList != null) {
+                        allItemsShuffled.addAll(tempList);
+                    }
                 }
+                Collections.shuffle(allItemsShuffled);
             }
+            itemsToShow.addAll(allItemsShuffled);
         } else {
             itemsToShow = recommendItemsMap.get(selectedCategory);
         }

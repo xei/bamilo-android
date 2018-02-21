@@ -26,6 +26,7 @@ import com.mobile.service.objects.statics.TargetHelper;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.tracking.AnalyticsGoogle;
 import com.mobile.service.tracking.TrackingEvent;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
@@ -33,6 +34,7 @@ import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -109,6 +111,8 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TrackerDelegator.trackPage(TrackingPage.USER_PROFILE, getLoadTime(), false);
+
         Print.i(TAG, "ON CREATE");
         if(savedInstanceState != null){
             targets = savedInstanceState.getParcelableArrayList(TARGETS_TAG);

@@ -184,7 +184,7 @@
     <string name="search_label">جستجو</string>
     <string name="section_title_account">تنظیمات حساب کاربری</string>
     <string name="section_title_notification">با ما در ارتباط باشید</string>
-    <string name="server_error">بازیابی اطلاعات دچار مشکل شده است.</string>
+    <string name="server_error">خطا در برقراری ارتباط, مجدد تلاش کنید</string>
     <string name="server_error_title">مشکلی ایجاد شده است.</string>
     <string name="share_checkout_this_product">این کالاهایی که یافته ام را نیز مشاهده کنید:</string>
     <string name="share_subject">اشتراک گذاری %s</string>
@@ -565,4 +565,22 @@
     <string name="showcase_drawer_item_tracking">از این پس میتونید از وضعیت کالاهای سفارش خود مطلع شوید</string>
     <string name="bank_return_page_order_status">جزئیات سفارش</string>
     <string name="bank_activity_order_number_title">شماره سفارش:</string>
+
+    <string name="address_city_placeholder">شهر</string>
+    <string name="address_province_placeholder">استان</string>
+    <string name="address_district_placeholder">محله</string>
+    <string name="address_national_id_length_error">تعداد ارقام باید ۱۰ رقم باشد</string>
+    <string name="address_phone_number_invalidity_error">شماره موبایل معتبر نیست</string>
+    <string name="address_postal_code_hint">کد پستی (اختیاری)</string>
+
+    <string name="address_at_least_two_chars_needed">حداقل ۲ کاراکتر باید وارد شود</string>
+    <string name="internet_settings">تنظیمات اینترنت</string>
+    <string name="there_is_no_access_to_internet_label">دسترسی به اینترنت امکان‌پذیر نمی‌باشد</string>
+    <string name="retry_label">تلاش مجدد</string>
+    <string name="network_timeout_error">خطا در برقراری ارتباط</string>
+    <string name="server_in_maintenance_warning">خطایی از سمت سرور رخ داده</string>
+    <string name="please_wait_for_a_while">لطفا کمی صبر کنید</string>
+    <string name="loading_more_orders">بارگذاری سفارشات بیشتر ...</string>
+    <string name="please_select_a_payment_method">لطفا یکی از روش‌های پرداخت را انتخاب کنید!</string>
+
 </resources>

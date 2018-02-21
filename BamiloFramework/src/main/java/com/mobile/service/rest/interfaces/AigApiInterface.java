@@ -3,6 +3,7 @@ package com.mobile.service.rest.interfaces;
 import com.mobile.service.forms.AddressForms;
 import com.mobile.service.forms.Form;
 import com.mobile.service.forms.ReturnReasonForm;
+import com.mobile.service.objects.addresses.Address;
 import com.mobile.service.objects.addresses.AddressCities;
 import com.mobile.service.objects.addresses.AddressPostalCodes;
 import com.mobile.service.objects.addresses.AddressRegions;
@@ -238,6 +239,10 @@ public interface AigApiInterface {
     @GET("/")
     void getAddressesList(Callback<BaseResponse<Addresses>> callback);
     String getAddressesList = "getAddressesList";
+
+    @GET("/{path}")
+    void getAddress(@Path(value="path", encode=false) String path, Callback<BaseResponse<Address>> callback);
+    String getAddress = "getAddress";
 
     @GET("/")
     void getRegions(Callback<BaseResponse<AddressRegions>> callback);

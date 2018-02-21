@@ -18,10 +18,12 @@ import com.mobile.helpers.checkout.SetStepAddressesHelper;
 import com.mobile.service.objects.checkout.MultiStepAddresses;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CheckoutAddressesFragment;
 
@@ -39,6 +41,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     private FloatingActionButton fabNewAddress;
     private int mSelectedAddress;
     private FragmentType checkoutPaymentFragment;
+    private boolean pageTracked = false;
 
     public NewCheckoutAddressesFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
@@ -96,13 +99,12 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                }
 
         super.setCheckoutStep(view, 1);
-
-
-
-
-
     }
 
+    @Override
+    protected void onClickRetryButton(View view) {
+        triggerGetForm();
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -122,7 +124,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Get addresses
-            triggerGetForm();
+        triggerGetForm();
     }
 
     @Override
@@ -180,7 +182,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
     @Override
     protected void triggerGetAddresses() {
-        triggerContentEventProgress(new GetStepAddressesHelper(), null, this);
+        triggerContentEvent(new GetStepAddressesHelper(), null, this);
     }
 
     /*
@@ -206,6 +208,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_MULTI_STEP_ADDRESSES:
+                fabNewAddress.show();
                 // Get form and show order
                 MultiStepAddresses multiStepAddresses = (MultiStepAddresses) baseResponse.getContentData();
                 //CheckoutStepManager.setTotalBar(mCheckoutTotalBar, multiStepAddresses.getOrderSummary());
@@ -217,6 +220,11 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 }
                 super.showAddresses(multiStepAddresses.getAddresses(), mSelectedAddress);
                 hideActivityProgress();
+
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_ADDRESSES, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 break;
             case SET_MULTI_STEP_ADDRESSES:
                 int selectedId = ((AddressAdapter) mAddressView.getAdapter()).getSelectedId();
@@ -237,6 +245,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        hideActivityProgress();
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
@@ -246,7 +255,6 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
         }
-        hideActivityProgress();
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);

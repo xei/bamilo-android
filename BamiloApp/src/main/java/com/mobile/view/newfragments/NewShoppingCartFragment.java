@@ -106,6 +106,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 
     View mClickedFavourite;
     private AppBarLayout.LayoutParams  startParams;
+    private boolean pageTracked = false;
     //RecommendManager recommendManager;
 
     /**
@@ -237,8 +238,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         if (!TextUtils.isEmpty(mItemsToCartDeepLink)) addItemsToCart(mItemsToCartDeepLink);
         // Case normal
         else triggerGetShoppingCart();
-        // Track page
-        TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
         /*Toolbar toolbar = (Toolbar) getBaseActivity().findViewById(R.id.toolbar);  // or however you need to do it for your code
         startParams = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         AppBarLayout.LayoutParams params = startParams;
@@ -341,7 +340,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             }
         });
         getBaseActivity().hideKeyboard();
-        TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, getLoadTime(), false);
     }
 
 
@@ -546,9 +544,12 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 TrackerDelegator.trackScreenLoadTiming(R.string.gaShoppingCart, mGABeginRequestMillis, TextUtils.joinCartItemSKUes(purchaseEntity));
                 params.clear();
                 params.putParcelable(AdjustTracker.CART, purchaseEntity);
-                TrackerDelegator.trackPage(TrackingPage.CART_LOADED, getLoadTime(), false);
                 TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
                 displayShoppingCart(purchaseEntity);
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 break;
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
                 onAddItemsToShoppingCartRequestSuccess(baseResponse);

@@ -71,18 +71,6 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Print.i(TAG, "ON RESUME");
-        // Get addresses
-        if(mAddresses == null) {
-            triggerGetForm();
-        } else {
-            //showFragmentContentContainer();
-        }
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");

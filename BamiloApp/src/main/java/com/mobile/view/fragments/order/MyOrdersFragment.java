@@ -20,7 +20,9 @@ import com.mobile.service.objects.orders.Order;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.pojo.RestConstants;
+import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -55,6 +57,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     private int mMaxPages;
     private boolean isErrorOnLoadingMore;
     private int mScrollPosition;
+    private boolean pageTracked = false;
 
     /**
      * Empty constructor
@@ -244,7 +247,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
             isErrorOnLoadingMore = false;
         }
         // Bottom reached
-        boolean isBottomReached = totalItemCount != 0 && (firstVisibleItem + visibleItemCount + 1) == totalItemCount;
+        boolean isBottomReached = totalItemCount != 0 && (firstVisibleItem + visibleItemCount) == totalItemCount;
         // Validate
         if (isBottomReached && !isLoadingMore && mPageIndex < mMaxPages) {
             Log.i(TAG, "LOADING MORE DATA");
@@ -322,9 +325,11 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
                 } else
                     showOrders(orderList);
 
-                //DROID-10
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaMyOrders, mGABeginRequestMillis,
-                        BamiloApplication.CUSTOMER == null ? "" : "" + BamiloApplication.CUSTOMER.getId());
+
+                if (!pageTracked) {
+                    TrackerDelegator.trackPage(TrackingPage.ORDER_LIST, getLoadTime(), false);
+                    pageTracked = true;
+                }
                 break;
             default:
                 break;
@@ -339,18 +344,26 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
         }
 
-        if (super.handleErrorEvent(baseResponse)) {
-            return;
-        }
-
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_MY_ORDERS_LIST_EVENT:
                 Print.w("ORDER", "ERROR Visible");
                 isErrorOnLoadingMore = true;
-                showFragmentErrorRetry();
+                if (isLoadingMore) {
+                    // to stop scrolling
+                    mOrdersListView.smoothScrollBy(0, 0);
+                    mOrdersListView.smoothScrollBy(-getResources().getDimensionPixelSize(R.dimen.catalog_footer_height), 0);
+                    isLoadingMore = false;
+                    baseResponse.setEventTask(EventTask.ACTION_TASK);
+                }
+                if (!super.handleErrorEvent(baseResponse)) {
+                    showFragmentNetworkErrorRetry();
+                }
                 break;
             default:
+                if (!super.handleErrorEvent(baseResponse)) {
+                    showFragmentNetworkErrorRetry();
+                }
                 break;
         }
     }

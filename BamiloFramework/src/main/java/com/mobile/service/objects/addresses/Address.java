@@ -31,6 +31,7 @@ public class Address implements IJSONSerializable, Parcelable {
     private String region;
     private boolean isValid;
     private boolean isDefault;
+
     /**
      * Constructor
      */
@@ -58,14 +59,18 @@ public class Address implements IJSONSerializable, Parcelable {
         lastName = dataObject.optString(RestConstants.LAST_NAME);
         address1 = dataObject.optString(RestConstants.ADDRESS_1);
         // Optional
-        address2 = dataObject.optString(RestConstants.ADDRESS_2);
-        postcode = dataObject.optString(RestConstants.POSTCODE);
+        if (!dataObject.isNull(RestConstants.ADDRESS_2)) {
+            address2 = dataObject.optString(RestConstants.ADDRESS_2);
+        }
+        if (!dataObject.isNull(RestConstants.POSTCODE)) {
+            postcode = dataObject.optString(RestConstants.POSTCODE);
+        }
         phone = dataObject.optString(RestConstants.PHONE);
         region = dataObject.optString(RestConstants.REGION);
         city = dataObject.optString(RestConstants.CITY);
         additionalPhone = dataObject.optString(RestConstants.ADDITIONAL_PHONE);
 
-        isValid = dataObject.optBoolean(RestConstants.IS_VALID,true);
+        isValid = dataObject.optBoolean(RestConstants.IS_VALID, true);
         isDefault = false;
         return true;
     }
@@ -81,7 +86,7 @@ public class Address implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.NONE;
+        return RequiredJson.METADATA;
     }
 
     public int getId() {
@@ -98,6 +103,10 @@ public class Address implements IJSONSerializable, Parcelable {
 
     public String getAddress() {
         return address1;
+    }
+
+    public String getAddress2() {
+        return address2;
     }
 
     public String getCity() {
@@ -127,7 +136,9 @@ public class Address implements IJSONSerializable, Parcelable {
         return isDefault;
     }
 
-    public void setDefault(boolean value){isDefault = value;}
+    public void setDefault(boolean value) {
+        isDefault = value;
+    }
 
     public String getAddressString() {
         String result = "";

@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import com.mobile.app.BamiloApplication;
@@ -16,42 +14,30 @@ import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
-import com.mobile.constants.FormConstants;
-import com.mobile.factories.FormFactory;
 import com.mobile.helpers.address.CreateAddressHelper;
 import com.mobile.helpers.address.GetCitiesHelper;
-import com.mobile.helpers.address.GetFormAddAddressHelper;
 import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
-import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.service.forms.AddressForms;
-import com.mobile.service.forms.Form;
-import com.mobile.service.forms.FormField;
-import com.mobile.service.forms.FormInputType;
 import com.mobile.service.objects.addresses.AddressCity;
 import com.mobile.service.objects.addresses.AddressPostalCode;
 import com.mobile.service.objects.addresses.AddressRegion;
 import com.mobile.service.objects.addresses.AddressRegions;
-import com.mobile.service.objects.addresses.FormListItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.pojo.RestConstants;
 import com.mobile.service.tracking.TrackingPage;
+import com.mobile.service.utils.ApiConstants;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
-import com.mobile.pojo.DynamicForm;
-import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,37 +51,33 @@ import java.util.regex.Pattern;
  * @version 1.0
  * @date 2015/02/24
  */
-public abstract class CreateAddressFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemSelectedListener , View.OnClickListener{
+public abstract class CreateAddressFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private static final String TAG = CreateAddressFragment.class.getSimpleName();
     private static final String SHIPPING_SAVED_STATE = "shippingSavedStateBundle";
     private static final String REGION_CITIES_POSITIONS = "regionsCitiesBundle";
-    protected ViewGroup mShippingFormContainer;
-    protected DynamicForm shippingFormGenerator;
-    protected Form mFormShipping;
+    private static final String GENDER_MALE = "male", GENDER_FEMALE = "female";
+    private static final int UNKNOWN_POSTAL_CODE = -1;
     protected ArrayList<AddressRegion> regions;
     protected String selectedRegionOnShipping = "";
     protected String selectedCityOnShipping = "";
-    protected TextView mShippingTitle;
-    protected boolean isCityIdAnEditText = false;
-    protected ScrollView mScrollViewContainer;
     protected PurchaseEntity orderSummary;
-    private Bundle mShippingFormSavedState;
-    private Bundle mSavedRegionCitiesPositions;
-    Spinner address_spinner ,city_spinner,postal_spinner,gender_spinner;
-    TextView name_error , family_error , national_error,cellphone_error,address_error ,address_region_error,address_city_error,gender_error, address_postal_code_error;
+    Spinner address_spinner, city_spinner, postal_spinner, gender_spinner;
+    TextView name_error, family_error, cellphone_error, address_error, address_region_error, address_postal_region_error,
+            address_city_error, gender_error, address_postal_code_error;
     EditText name;
     EditText family;
     EditText address;
-    EditText national_id;
     EditText postal_code;
     String gender_lable = "";
     EditText cellphone;
     private Button add;
-    String cityApi="" , postalApi="", regionApi="";
-    String action;
-    int region_Id , city_Id , post_id;
-    private String gender;
+    String getCityApi = ApiConstants.GET_CITIES_API_PATH,
+            getPostalApi = ApiConstants.GET_ADDRESS_POST_CODES_API_PATH,
+            getRegionApi = ApiConstants.GET_REGIONS_API_PATH;
+    String createAddressUrl = ApiConstants.CREATE_ADDRESS_API_PATH;
+    int region_Id, city_Id, post_id;
+    private EventType errorType;
     /*
      * Constructors
      */
@@ -125,15 +107,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        // Validate the saved values
-        if (savedInstanceState != null) {
-            // Get the ship content values
-            mShippingFormSavedState = savedInstanceState.getParcelable(SHIPPING_SAVED_STATE);
-            // Get region and Cities positions
-            mSavedRegionCitiesPositions = savedInstanceState.getBundle(REGION_CITIES_POSITIONS);
-        } else {
-            Print.i(TAG, "SAVED CONTENT VALUES IS NULL");
-        }
     }
 
     /*
@@ -144,17 +117,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        triggerCreateAddressForm();
-/*        region = (Spinner) view.findViewById(R.id.address_region);
+        triggerGetRegions(getRegionApi);
+        /* region = (Spinner) view.findViewById(R.id.address_region);
         city = (Spinner) view.findViewById(R.id.address_city);*/
 
         name = (EditText) view.findViewById(R.id.address_name);
         name.setText(BamiloApplication.CUSTOMER.getFirstName());
         family = (EditText) view.findViewById(R.id.address_family);
         family.setText(BamiloApplication.CUSTOMER.getLastName());
-        national_id = (EditText) view.findViewById(R.id.address_national_id);
+
         gender_spinner = (Spinner) view.findViewById(R.id.address_gender);
+
         cellphone = (EditText) view.findViewById(R.id.address_cell);
+        cellphone.setText(BamiloApplication.CUSTOMER.getPhoneNumber());
+
         address = (EditText) view.findViewById(R.id.address_direction);
         address_spinner = (Spinner) view.findViewById(R.id.address_state);
         city_spinner = (Spinner) view.findViewById(R.id.address_city);
@@ -164,28 +140,24 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
         name_error = (TextView) view.findViewById(R.id.address_name_error);
         family_error = (TextView) view.findViewById(R.id.address_last_name_error);
-        national_error = (TextView) view.findViewById(R.id.address_national_id_error);
         cellphone_error = (TextView) view.findViewById(R.id.address_cellphone_error);
         address_region_error = (TextView) view.findViewById(R.id.address_region_error);
+        address_postal_region_error = (TextView) view.findViewById(R.id.address_postal_region_error);
         address_city_error = (TextView) view.findViewById(R.id.address_city_error);
         address_error = (TextView) view.findViewById(R.id.address_text_error);
-        gender_error= (TextView) view.findViewById(R.id.address_gender_error);
-        address_postal_code_error= (TextView) view.findViewById(R.id.address_postal_code_error);
+        gender_error = (TextView) view.findViewById(R.id.address_gender_error);
+        address_postal_code_error = (TextView) view.findViewById(R.id.address_postal_code_error);
         // Spinner Drop down elements
-        ArrayList<AddressCity> city = new ArrayList<AddressCity>();
-        city.add(new AddressCity(0,"شهر"));
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item,city);
+        /*ArrayList<AddressCity> city = new ArrayList<AddressCity>();
+        city.add(new AddressCity(0, getString(R.string.address_city_placeholder)));
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, city);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        city_spinner.setAdapter(adapter);
+        city_spinner.setAdapter(adapter);*/
+        city_spinner.setVisibility(View.GONE);
 
 
         postal_spinner.setVisibility(View.GONE);
-        //if (BamiloApplication.CUSTOMER.getGender().isEmpty())
-        {
-
-            setgender();
-            gender_spinner.setVisibility(View.VISIBLE);
-        }
+        setGender();
         add.setOnClickListener(this);
     }
 
@@ -207,6 +179,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     @Override
     public void onResume() {
         super.onResume();
+        // Get order summary
+        orderSummary = BamiloApplication.INSTANCE.getCart();
         Print.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.NEW_ADDRESS, getLoadTime(), true);
     }
@@ -222,7 +196,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         try {
             // Validate check
             Bundle shippingSavedStateBundle = new Bundle();
-            shippingFormGenerator.saveFormState(shippingSavedStateBundle);
             outState.putParcelable(SHIPPING_SAVED_STATE, shippingSavedStateBundle);
             Bundle listPositions = new Bundle();
             saveRegionsCitiesPositions(listPositions, shippingSavedStateBundle);
@@ -253,12 +226,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        // Case goes to back stack save the state
-        if (shippingFormGenerator != null) {
-            Bundle shippingSavedStateBundle = new Bundle();
-            shippingFormGenerator.saveFormState(shippingSavedStateBundle);
-            mShippingFormSavedState = shippingSavedStateBundle;
-        }
     }
 
     /*
@@ -291,14 +258,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
         regions = null;
-        mFormShipping = null;
     }
 
 
     /**
      * Load the dynamic form
      */
-    protected void loadCreateAddressForm(Form mFormShipping) {
+    /*protected void loadCreateAddressForm(Form mFormShipping) {
         Print.i(TAG, "LOAD CREATE ADDRESS FORM");
         // Shipping form
         if (shippingFormGenerator == null) {
@@ -326,10 +292,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else {
             setRegions(shippingFormGenerator, regions);
         }
-    }
-
-    protected String setgender()
-    {
+    }*/
+    protected String setGender() {
 
         ArrayList<String> gender = new ArrayList<>();
         gender.add(getString(R.string.gender_male));
@@ -342,14 +306,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         gender_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 1){
-                    gender_lable ="male";
-                }
-                else if(position == 2) {
-                    gender_lable ="female";
-                }
-                else
-                {
+                gender_error.setVisibility(View.GONE);
+                if (position == 1) {
+                    gender_lable = GENDER_MALE;
+                } else if (position == 2) {
+                    gender_lable = GENDER_FEMALE;
+                } else {
                     gender_lable = "";
                 }
             }
@@ -358,89 +320,43 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        return gender_lable;
-    }
-
-    /**
-     * Method used to set the regions on the respective form
-     */
-    protected void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions) {
-        // Get region item
-        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.REGION);
-        // Create adapter
-        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
-        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-        promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
-        address_spinner.setAdapter(promptAdapter);
-        // Add listener
-        address_spinner.setOnItemSelectedListener(this);
-        // Case default value
-        if (CollectionUtils.isNotEmpty(mShippingFormSavedState)) {
-            processSpinners(address_spinner, RestConstants.REGION);
-        }
-        // Case saved state
-        else if(TextUtils.isNotEmpty(v.getEntry().getValue())) {
-            address_spinner.setSelection(getDefaultPosition(v, regions));
-        }
-        // Show form (Zero is the prompt)
-        if(address_spinner.getSelectedItemPosition() != IntConstants.DEFAULT_POSITION &&
-                mFormShipping.getFieldKeyMap().get(RestConstants.CITY) != null) {
-            showGhostFragmentContentContainer();
+        String selectedGender = BamiloApplication.CUSTOMER.getGender();
+        if (TextUtils.isNotEmpty(selectedGender)) {
+            if (selectedGender.equals(GENDER_MALE)) {
+                gender_spinner.setSelection(1);
+                gender_lable = GENDER_MALE;
+                gender_spinner.setVisibility(View.GONE);
+            } else if (selectedGender.equals(GENDER_FEMALE)) {
+                gender_spinner.setSelection(2);
+                gender_lable = GENDER_FEMALE;
+                gender_spinner.setVisibility(View.GONE);
+            }
         } else {
-            showFragmentContentContainer();
+            gender_spinner.setVisibility(View.VISIBLE);
         }
-    }
-
-    /**
-     * Allows to update the spinners (regions/cities/postcodes) correctly with previous values when app goes to background or rotates
-     */
-    private boolean processSpinners(Spinner spinner, String restConstantsKey) {
-        if (mShippingFormSavedState != null && mShippingFormSavedState.getInt(restConstantsKey) < spinner.getCount()) {
-            spinner.setSelection(mShippingFormSavedState.getInt(restConstantsKey));
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Get the position of the regions
-     * @return int the position
-     */
-    private int getDefaultPosition(DynamicFormItem formItem, ArrayList<? extends FormListItem> regions) {
-        try {
-            int regionValue = Integer.valueOf(formItem.getEntry().getValue());
-            for (int i = 0; i < regions.size(); i++)
-                if (regionValue == regions.get(i).getValue()) {
-                    // Zero position is the prompt
-                    return i + 1;
-                }
-        } catch (NullPointerException | NumberFormatException e) {
-            Print.e(TAG, e.getMessage());
-        }
-        return 0;
+        return gender_lable;
     }
 
     /**
      * Validate the current region selection and update the cities
      */
     protected void setCitiesOnSelectedRegion(String requestedRegionAndFields, final ArrayList<AddressCity> cities) {
-
+        city_spinner.setVisibility(View.VISIBLE);
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-        promptAdapter.setPrompt("شهر");
+        promptAdapter.setPrompt(getString(R.string.address_city_placeholder));
         city_spinner.setAdapter(promptAdapter);
         city_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0){
+                address_city_error.setVisibility(View.GONE);
+                if (position == 0) {
                     city_Id = cities.get(position).getValue();
-                    triggerGetPostalCodes(postalApi,city_Id, String.valueOf(city_Id));
-                }
-                else {
-                    city_Id = cities.get(position-1).getValue();
-                    triggerGetPostalCodes(postalApi,city_Id, String.valueOf(city_Id));
+                    triggerGetPostalCodes(getPostalApi, city_Id, String.valueOf(city_Id));
+                } else {
+                    city_Id = cities.get(position - 1).getValue();
+                    triggerGetPostalCodes(getPostalApi, city_Id, String.valueOf(city_Id));
                 }
             }
 
@@ -453,26 +369,23 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         showFragmentContentContainer();
 
 
-
-
-
-
     }
 
     /**
      * Validate the current city selection and update the postal codes
      */
     protected void setPostalCodesOnSelectedCity(String requestedCityAndFields, final ArrayList<AddressPostalCode> postalCodes) {
-        if (postalCodes.size()>1) {
+        if (postalCodes.size() > 1) {
             postal_spinner.setVisibility(View.VISIBLE);
             ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-            promptAdapter.setPrompt("محله");
+            promptAdapter.setPrompt(getString(R.string.address_district_placeholder));
             postal_spinner.setAdapter(promptAdapter);
             postal_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    address_postal_region_error.setVisibility(View.GONE);
                     post_id = postalCodes.get(position).getValue();
                 }
 
@@ -482,94 +395,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             });
             hideActivityProgress();
             showFragmentContentContainer();
-        }
-        else
-        {
-            post_id = postalCodes.get(0).getValue();
+        } else {
+            if (!CollectionUtils.isEmpty(postalCodes)) {
+                post_id = postalCodes.get(0).getValue();
+            } else {
+                post_id = UNKNOWN_POSTAL_CODE;
+            }
             postal_spinner.setVisibility(View.GONE);
-        }
-
-    }
-
-    /**
-     * Method used to set the cities on the respective form
-     */
-    private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities) {
-        // Get city item
-        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.CITY);
-        // Create adapter
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
-        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-        promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
-        city_spinner.setAdapter(promptAdapter);
-
-        setSavedSelectedCityPos(city_spinner);
-
-        if (mShippingFormSavedState == null) {
-            city_spinner.setSelection(getDefaultPosition(v, cities));
-        } else {
-            processSpinners(city_spinner, RestConstants.CITY);
-        }
-        // Add listener
-        city_spinner.setOnItemSelectedListener(this);
-        // Show form (Zero is the prompt)
-        if(city_spinner.getSelectedItemPosition() != IntConstants.DEFAULT_POSITION &&
-                mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE) != null) {
-            showGhostFragmentContentContainer();
-        } else {
-            showFragmentContentContainer();
-        }
-    }
-
-    /**
-     * Method used to set the postal Codes on the respective form
-     */
-    private void setPostalCodes(DynamicForm dynamicForm, ArrayList<AddressPostalCode> postalCodes) {
-        // Get city item
-        DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.POSTCODE);
-        // Create adapter
-        ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
-        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-        promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
-        postal_spinner.setAdapter(promptAdapter);
-
-        setSavedSelectedPostalCodePos(postal_spinner);
-        if (mShippingFormSavedState == null) {
-            postal_spinner.setSelection(getDefaultPosition(v, postalCodes));
-        } else {
-            processSpinners(postal_spinner, RestConstants.POSTCODE);
-        }
-        // Add listener
-        postal_spinner.setOnItemSelectedListener(this);
-    }
-
-    /**
-     * Load and set the saved city position one time
-     */
-    private void setSavedSelectedCityPos(Spinner spinner) {
-        int position = IntConstants.INVALID_POSITION;
-        if (mSavedRegionCitiesPositions != null) {
-            position = mSavedRegionCitiesPositions.getInt(RestConstants.CITY);
-        }
-
-        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position < spinner.getCount()) {
-            spinner.setSelection(position);
-        }
-    }
-
-    /**
-     * Load and set the postal code position one time
-     */
-    private void setSavedSelectedPostalCodePos(Spinner spinner) {
-        int position = IntConstants.INVALID_POSITION;
-        if (mSavedRegionCitiesPositions != null) {
-            position = mSavedRegionCitiesPositions.getInt(RestConstants.POSTCODE);
-        }
-
-        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position < spinner.getCount()) {
-            spinner.setSelection(position);
+            address_postal_region_error.setVisibility(View.GONE);
         }
 
     }
@@ -604,7 +437,49 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        onClickRetryButton();
+        switch (errorType) {
+            case GET_REGIONS_EVENT:
+                triggerGetRegions(getRegionApi);
+                break;
+            case GET_CITIES_EVENT: {
+                Object object = address_spinner.getItemAtPosition(address_spinner.getSelectedItemPosition());
+                if (object != null && object instanceof AddressRegion
+                        && ((AddressRegion) object).getValue() != 0) {
+                    // Request the cities for this region id
+                    int regionId = ((AddressRegion) object).getValue();
+                    // Save the selected region on the respective variable
+                    selectedRegionOnShipping = "" + regionId;
+                    triggerGetCities(getCityApi, regionId, selectedRegionOnShipping);
+                } else {
+                    city_spinner.setSelection(0);
+                    errorType = EventType.GET_REGIONS_EVENT;
+                    onClickRetryButton(view);
+                }
+                break;
+            }
+            case GET_POSTAL_CODE_EVENT: {
+                Object object = city_spinner.getItemAtPosition(city_spinner.getSelectedItemPosition());
+                if (object != null && object instanceof AddressCity
+                        && ((AddressCity) object).getValue() != 0) {
+                    // Request the cities for this region id
+                    int cityId = ((AddressCity) object).getValue();
+                    // Save the selected region on the respective variable
+                    selectedCityOnShipping = "" + cityId;
+                    triggerGetPostalCodes(getPostalApi, cityId, selectedCityOnShipping);
+                } else {
+                    postal_spinner.setSelection(0);
+                    errorType = EventType.GET_CITIES_EVENT;
+                    onClickRetryButton(view);
+                }
+                break;
+            }
+            case CREATE_ADDRESS_SIGNUP_EVENT:
+                onClickRetryButton();
+                break;
+            case CREATE_ADDRESS_EVENT:
+                onClickCreateAddressButton();
+                break;
+        }
     }
 
     /**
@@ -622,34 +497,33 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     private void onClickCreateAddressButton() {
         Print.i(TAG, "ON CLICK: CREATE");
         // Validate
-        if (formValidated()==false) {
+        if (!formValidated()) {
             Print.i(TAG, "SAME FORM: INVALID");
-
-            return;
-        }
-        else {
+        } else {
 
             ContentValues values = new ContentValues();
             values.put("address_form[id]", "");
-            values.put("address_form[national_id]", national_id.getText().toString());
             values.put("address_form[first_name]", name.getText().toString());
             values.put("address_form[last_name]", family.getText().toString());
             values.put("address_form[address1]", address.getText().toString());
             values.put("address_form[address2]", postal_code.getText().toString());
             values.put("address_form[region]", region_Id);
-            values.put("address_form[city]",   city_Id);
-            values.put("address_form[postcode]", post_id);
+            values.put("address_form[city]", city_Id);
+            if (post_id != UNKNOWN_POSTAL_CODE) {
+                values.put("address_form[postcode]", post_id);
+            } else {
+                values.put("address_form[postcode]", "");
+            }
             values.put("address_form[phone]", cellphone.getText().toString());
             values.put("address_form[is_default_shipping]", 1);
             values.put("address_form[is_default_billing]", 1);
 
-            values.put("address_form[gender]",  gender_lable);
+            values.put("address_form[gender]", gender_lable);
 
 
-            triggerCreateAddress(action, values);
+            triggerCreateAddress(createAddressUrl, values);
         }
     }
-
 
 
     /*
@@ -660,38 +534,24 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
+            address_region_error.setVisibility(View.GONE);
             if (((AddressRegion) object).getValue() != 0) {   //if not the place holder option, load cities of selected region
-                // Get city field
-                FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.CITY);
-                // Case list
-                if (FormInputType.list == field.getInputType()) {
-                    // Request the cities for this region id
-                    int regionId = ((AddressRegion) object).getValue();
-                    // Save the selected region on the respective variable
-                    selectedRegionOnShipping = "" + regionId;
-                    triggerGetCities(field.getApiCall(), regionId, selectedRegionOnShipping);
-                }
-                // Case text or other
-                else {
-                    showFragmentContentContainer();
-                }
-
+                // Request the cities for this region id
+                int regionId = ((AddressRegion) object).getValue();
+                // Save the selected region on the respective variable
+                selectedRegionOnShipping = "" + regionId;
+                triggerGetCities(getCityApi, regionId, selectedRegionOnShipping);
             } else {
                 showFragmentContentContainer();
             }
         } else if (object instanceof AddressCity) {
-
+            address_city_error.setVisibility(View.GONE);
             if (((AddressCity) object).getValue() != 0) {
-                // Get city field
-                FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
-                // Case list
-                if (field != null && FormInputType.list == field.getInputType()) {
-                    // Request the postal codes for this city id
-                    int cityId = ((AddressCity) object).getValue();
-                    // Save the selected city on the respective variable
-                    selectedCityOnShipping = "" + cityId;
-                    triggerGetPostalCodes(field.getApiCall(), cityId, selectedCityOnShipping);
-                }
+                // Request the postal codes for this city id
+                int cityId = ((AddressCity) object).getValue();
+                // Save the selected city on the respective variable
+                selectedCityOnShipping = "" + cityId;
+                triggerGetPostalCodes(getPostalApi, cityId, selectedCityOnShipping);
             }
         }
     }
@@ -705,7 +565,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
 
     private boolean formValidated() {
-        boolean flag =true;
+        boolean flag = true;
         name_error.setVisibility(View.GONE);
         family_error.setVisibility(View.GONE);
         address_region_error.setVisibility(View.GONE);
@@ -713,91 +573,73 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         address_error.setVisibility(View.GONE);
         gender_error.setVisibility(View.GONE);
         cellphone_error.setVisibility(View.GONE);
-        national_error.setVisibility(View.GONE);
         address_postal_code_error.setVisibility(View.GONE);
-        if (address_spinner.getSelectedItem()==null || address_spinner.getSelectedItem().equals("استان")){
+        if (address_spinner.getSelectedItem() == null || address_spinner.getSelectedItem().equals(getString(R.string.address_province_placeholder))) {
             address_region_error.setVisibility(View.VISIBLE);
-            address_region_error.setText("تکمیل این گزینه الزامی می باشد");
-
+            address_region_error.setText(R.string.error_isrequired);
+            flag = false;
         }
-        if (city_spinner.getSelectedItem()==null || city_spinner.getSelectedItem().equals("شهر")){
+        if (city_spinner.getVisibility() == View.VISIBLE && (city_spinner.getSelectedItem() == null || city_spinner.getSelectedItem().equals(getString(R.string.address_city_placeholder)))) {
             address_city_error.setVisibility(View.VISIBLE);
-            address_city_error.setText("تکمیل این گزینه الزامی می باشد");
+            address_city_error.setText(R.string.error_isrequired);
+            flag = false;
         }
-        if(BamiloApplication.CUSTOMER.getGender().isEmpty()) {
-            if (gender_spinner.getSelectedItem() == null || gender_spinner.getSelectedItem().equals("جنسیت")) {
+        if (postal_spinner.getVisibility() == View.VISIBLE && (postal_spinner.getSelectedItem() == null || postal_spinner.getSelectedItem().equals(getString(R.string.delivery_neighbourhood)))) {
+            address_postal_region_error.setVisibility(View.VISIBLE);
+            address_postal_region_error.setText(R.string.error_isrequired);
+            flag = false;
+        }
+        if (BamiloApplication.CUSTOMER.getGender().isEmpty()) {
+            if (gender_spinner.getSelectedItem() == null || gender_spinner.getSelectedItem().equals(getString(R.string.gender))) {
                 gender_error.setVisibility(View.VISIBLE);
-                gender_error.setText("تکمیل این گزینه الزامی می باشد");
+                gender_error.setText(R.string.error_isrequired);
+                flag = false;
             }
         }
-        if (name.getText().length()>=0) {
+        if (name.getText().length() >= 0) {
           /*  */
-            if (name.getText().length()<2)
-            {
+            if (name.getText().length() < 2) {
                 name_error.setVisibility(View.VISIBLE);
-                name_error.setText("تکمیل این گزینه الزامی می باشد");
+                name_error.setText(R.string.error_isrequired);
                 flag = false;
             }
 
         }
-        if (family.getText().length()>=0) {
+        if (family.getText().length() >= 0) {
           /*  */
-            if (family.getText().length()<2)
-            {
+            if (family.getText().length() < 2) {
                 family_error.setVisibility(View.VISIBLE);
-                family_error.setText("تکمیل این گزینه الزامی می باشد");
+                family_error.setText(R.string.error_isrequired);
                 flag = false;
             }
 
         }
-        if (address.getText().length()>=0) {
+        if (address.getText().length() >= 0) {
           /*  */
-            if (address.getText().length()<2)
-            {
+            if (address.getText().length() < 2) {
                 address_error.setVisibility(View.VISIBLE);
-                address_error.setText("تکمیل این گزینه الزامی می باشد");
+                address_error.setText(R.string.error_isrequired);
                 flag = false;
             }
 
         }
+        Pattern pattern = Pattern.compile(getString(R.string.cellphone_regex), Pattern.CASE_INSENSITIVE);
 
-        if (national_id.getText().length()>=0) {
-          /*  */
-            if (national_id.getText().length() != 10 && national_id.getText().length()!=0 ){
-                national_error.setVisibility(View.VISIBLE);
-                national_error.setText("تعداد ارقام باید ۱۰ رقم باشد");
-                flag = false;
-            }
-            if (national_id.getText().length()==0)
-            {
-                national_error.setVisibility(View.VISIBLE);
-                national_error.setText("تکمیل این گزینه الزامی می باشد");
-                flag = false;
-            }
-
+        Matcher matcher = pattern.matcher(cellphone.getText());
+        boolean result = matcher.matches();
+        if (!result) {
+            cellphone.setVisibility(View.VISIBLE);
+            cellphone_error.setVisibility(View.VISIBLE);
+            cellphone_error.setText(R.string.address_phone_number_invalidity_error);
+            flag = false;
+        }
+        if (cellphone.getText().length() == 0) {
+            cellphone.setVisibility(View.VISIBLE);
+            cellphone_error.setVisibility(View.VISIBLE);
+            cellphone_error.setText(R.string.error_isrequired);
+            flag = false;
         }
 
-        if (cellphone.getText().length()>=0) {
-          /*  */
-            Pattern pattern = Pattern.compile(getString(R.string.cellphone_regex), Pattern.CASE_INSENSITIVE);
-
-            Matcher matcher = pattern.matcher(cellphone.getText());
-            boolean result = matcher.matches();
-            if (!result ){
-                cellphone.setVisibility(View.VISIBLE);
-                cellphone_error.setVisibility(View.VISIBLE);
-                cellphone_error.setText("شماره موبایل معتبر نیست");
-                flag = false;
-            }
-            if (cellphone.getText().length()==0)
-            {
-                cellphone.setVisibility(View.VISIBLE);
-                cellphone_error.setVisibility(View.VISIBLE);
-                cellphone_error.setText("تکمیل این گزینه الزامی می باشد");
-                flag = false;
-            }
-
-        }
 
         if (postal_code.getText().length() != 0 && postal_code.getText().length() != 10) {
             address_postal_code_error.setVisibility(View.VISIBLE);
@@ -808,15 +650,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             gender_error.setVisibility(View.VISIBLE);
             flag = false;
         }
-
-
-      ;
-        if (flag==false){
-            return false;
-        }
-        else {
-            return true;
-        }
+        return flag;
     }
 
     protected void triggerCreateAddress(String action, ContentValues values) {
@@ -827,19 +661,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     /**
-     * Trigger to get the address form
-     */
-    protected void triggerCreateAddressForm() {
-        Print.i(TAG, "TRIGGER: CREATE ADDRESS FORM");
-        triggerContentEvent(new GetFormAddAddressHelper(), null, this);
-    }
-
-    /**
      * Trigger to get regions
      */
     protected void triggerGetRegions(String url) {
         Print.i(TAG, "TRIGGER: GET REGIONS: " + url);
-        triggerContentEventNoLoading(new GetRegionsHelper(), GetRegionsHelper.createBundle(url), this);
+        triggerContentEvent(new GetRegionsHelper(), GetRegionsHelper.createBundle(url), this);
     }
 
     /**
@@ -847,7 +673,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     protected void triggerGetCities(String url, int region, String tag) {
         Print.i(TAG, "TRIGGER: GET CITIES: " + url + " " + tag);
-        triggerContentEventNoLoading(new GetCitiesHelper(), GetCitiesHelper.createBundle(url, region, tag), this);
+        triggerContentEvent(new GetCitiesHelper(), GetCitiesHelper.createBundle(url, region, tag), this);
     }
 
     /**
@@ -856,10 +682,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected void triggerGetPostalCodes(String action, int city, String tag) {
         Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + city + " " + tag);
         triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(action, city, tag), this);
-    }
-
-    protected void triggerDefaultAddressForm(int mAddressId){
-        triggerContentEventProgress(new SetDefaultShippingAddressHelper(), SetDefaultShippingAddressHelper.createBundle(mAddressId), this);
     }
 
 
@@ -872,6 +694,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
+        showFragmentContentContainer();
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         if (isOnStoppingProcess || eventType == null) {
@@ -879,9 +702,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             return;
         }
         switch (eventType) {
-            case GET_CREATE_ADDRESS_FORM_EVENT:
-                onGetCreateAddressFormSuccessEvent(baseResponse);
-                break;
             case GET_REGIONS_EVENT:
                 onGetRegionsSuccessEvent(baseResponse);
                 hideActivityProgress();
@@ -901,52 +721,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
     }
 
-    protected void onGetCreateAddressFormSuccessEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
-        // Get order summary
-        orderSummary = BamiloApplication.INSTANCE.getCart();
-
-
-        ///////////////////////////////
-        action = ((AddressForms) baseResponse.getContentData()).getBillingForm().getAction();
-        List<FormField> fields = ((AddressForms) baseResponse.getContentData()).getShippingForm() .getFields();
-
-
-        int i =0;
-        for ( FormField field :fields)
-        {
-            i++;
-            if (i == 7) {
-                cityApi=field.getApiCall();
-            }
-            if(i==6){
-
-                regionApi = field.getApiCall();
-                continue;
-            }
-            if (i == 8) {
-                postalApi=field.getApiCall();
-            }
-            continue;
-        }
-
-
-
-
-
-        /////////////////////////////////
-
-        triggerGetRegions(regionApi);
-
-        // mFormShipping = form.getShippingForm();
-        // Load form
-        //loadCreateAddressForm(mFormShipping);
-    }
-
     protected void onGetRegionsSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_REGIONS_EVENT");
         regions = (AddressRegions) baseResponse.getContentData();
-
 
 
         // Creating adapter for spinner
@@ -954,15 +731,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-        promptAdapter.setPrompt("استان");
+        promptAdapter.setPrompt(getString(R.string.address_province_placeholder));
         address_spinner.setAdapter(promptAdapter);
         address_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position!=0) {
-                    region_Id = regions.get(position-1).getValue();
-                    triggerGetCities(cityApi, region_Id, String.valueOf(region_Id));
-                    }
+                address_region_error.setVisibility(View.GONE);
+                if (position != 0) {
+                    region_Id = regions.get(position - 1).getValue();
+                    triggerGetCities(getCityApi, region_Id, String.valueOf(region_Id));
+                }
             }
 
             @Override
@@ -988,7 +766,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         GetCitiesHelper.AddressCitiesStruct cities = (GetCitiesHelper.AddressCitiesStruct) citiesArray;
         String requestedRegionAndField = cities.getCustomTag();
         Print.d(TAG, "REQUESTED REGION FROM FIELD: " + requestedRegionAndField);
-        formValidated();
+//        formValidated();
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
     }
 
@@ -998,13 +776,15 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "REQUESTED CITY FROM FIELD: " + postalCodesStruct.getCustomTag());
         String requestedRegionAndField = postalCodesStruct.getCustomTag();
         setPostalCodesOnSelectedCity(requestedRegionAndField, postalCodesStruct);
-        formValidated();
+//        formValidated();
         showFragmentContentContainer();
     }
 
     protected void onCreateAddressSuccessEvent(BaseResponse baseResponse) {
-
         Print.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
+        if (TextUtils.isEmpty(BamiloApplication.CUSTOMER.getGender())) {
+            BamiloApplication.CUSTOMER.setGender(gender_lable);
+        }
     }
 
     /**
@@ -1012,9 +792,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        EventType eventType = baseResponse.getEventType();
+        errorType = baseResponse.getEventType();
         // Validate
-        if (isOnStoppingProcess || eventType == null) {
+        if (isOnStoppingProcess || errorType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
@@ -1024,7 +804,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             return;
         }
         // Validate type
-        switch (eventType) {
+        switch (errorType) {
             case GET_CREATE_ADDRESS_FORM_EVENT:
                 onGetCreateAddressFormErrorEvent(baseResponse);
                 break;

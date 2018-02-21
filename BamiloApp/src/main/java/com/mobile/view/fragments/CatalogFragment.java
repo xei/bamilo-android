@@ -143,6 +143,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private boolean showNoResult;
     private boolean sortChanged = false;
     private FragmentType mTargetType;
+    private boolean pageTracked = false;
 
     /**
      * Empty constructor
@@ -299,8 +300,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onResume();
 
         Print.i(TAG, "ON RESUME");
-        // Track current catalog page
-        TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
         // Verify if is comming from login after trying to add/remove item from cart.
         retryWishListActionLoggedIn();
 
@@ -1049,6 +1048,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Process the catalog success response.
      */
     private void onRequestCatalogSuccess(BaseResponse baseResponse) {
+        if (!pageTracked) {
+            // Track current catalog page
+            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
+            pageTracked = true;
+        }
         // Get the catalog
         CatalogPage catalogPage = ((Catalog) baseResponse.getMetadata().getData()).getCatalogPage();
         sendRecommend(catalogPage);
@@ -1217,22 +1221,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFeaturedBoxNoResult(featuredBox);
             showNoResult = true;
         }
-        // Case network errors except No network
-        else if (ErrorCode.isNetworkError(errorCode)
-                && errorCode != ErrorCode.NO_CONNECTIVITY
-                && errorCode != ErrorCode.HTTP_STATUS
-                && errorCode != ErrorCode.SERVER_OVERLOAD
-                && errorCode != ErrorCode.SERVER_IN_MAINTENANCE
-                && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
-            showFilterUnexpectedError();
-        }
         // Case No Network
         else if (super.handleErrorEvent(baseResponse)) {
             Print.i(TAG, "HANDLE BASE FRAGMENT");
         }
         // Case unexpected error
         else {
-            showContinueShopping();
+            showFragmentNetworkErrorRetry();
         }
     }
 
