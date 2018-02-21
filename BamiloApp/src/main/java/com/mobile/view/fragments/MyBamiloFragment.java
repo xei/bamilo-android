@@ -217,12 +217,12 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         super.setUserVisibleHint(isVisibleToUser);
         isFragmentVisibleToUser = isVisibleToUser;
         if (isVisibleToUser) {
-            if (!screenTracked) {
-                BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_BAMILO.getName()), getString(R.string.gaScreen), "", getLoadTime());
-                TrackerManager.trackScreen(getContext(), screenModel, false);
-                screenTracked = true;
-            }
             if (rvRecommendedItemsList != null) {
+                if (!screenTracked) {
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_BAMILO.getName()), getString(R.string.gaScreen), "", getLoadTime());
+                    TrackerManager.trackScreen(getContext(), screenModel, false);
+                    screenTracked = true;
+                }
                 getBaseActivity().syncSearchBarState(scrolledAmount);
             }
         }
@@ -311,7 +311,8 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
 
     @Override
     public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
-        if (!timingTracked) {
+        /*I check the view to know if the fragment is attached to the activity*/
+        if (!timingTracked && rvRecommendedItemsList != null) {
             BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_BAMILO.getName()), getString(R.string.gaScreen), "", getLoadTime());
             TrackerManager.trackScreenTiming(getContext(), screenModel);
             timingTracked = true;
