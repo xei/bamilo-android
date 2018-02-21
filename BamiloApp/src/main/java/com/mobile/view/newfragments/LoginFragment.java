@@ -3,21 +3,29 @@ package com.mobile.view.newfragments;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.SingleLineTransformationMethod;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 
 import com.crashlytics.android.Crashlytics;
 import com.mobile.app.BamiloApplication;
-import com.mobile.components.customfontviews.EditText;
-import com.mobile.components.customfontviews.TextView;
+import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EventFactory;
 import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
@@ -32,7 +40,7 @@ import com.mobile.service.objects.customer.CustomerEmailCheck;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.tracking.TrackingPage;
-import com.mobile.service.tracking.gtm.GTMValues;
+import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.CustomerUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
@@ -43,7 +51,6 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
-import com.mobile.view.fragments.ProductDetailsFragment;
 import com.pushwoosh.PushManager;
 
 import java.util.EnumSet;
@@ -51,7 +58,7 @@ import java.util.EnumSet;
 public class LoginFragment extends NewBaseFragment implements IResponseCallback {
     private EditText mEmailView;
     private EditText mPasswordView;
-    private TextView mLoginErrorMessage, mPasswordErrorMessage;
+    private TextInputLayout tilEmail, tilPassword;
     private String mCustomerEmail;
     private String mCustomerPassword;
     private long mGABeginRequestMillis;
@@ -72,7 +79,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
     public LoginFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LOGIN_OUT,
-                R.layout.new_session_login_main_fragment,
+                R.layout.fragment_login_user,
                 IntConstants.ACTION_BAR_NO_TITLE,
                 ADJUST_CONTENT);
 
@@ -82,7 +89,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackPage(TrackingPage.USER_LOGIN, getLoadTime(), false);
+//        TrackerDelegator.trackPage(TrackingPage.USER_LOGIN, getLoadTime(), false);
 
         Print.i(TAG, "ON CREATE");
         // Get arguments
@@ -98,6 +105,12 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
             checkoutStep = ConstantsCheckout.CHECKOUT_ABOUT_YOU;
         }
 
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.USER_LOGIN.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
+
 
     }
 
@@ -112,16 +125,30 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        HoloFontLoader.applyDefaultFont(view);
         mEmailView = (EditText) view.findViewById(R.id.login_email);
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
         mEmailView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         // Get error message
-        mLoginErrorMessage = (TextView) view.findViewById(R.id.login_text_error_message);
-        mPasswordErrorMessage = (TextView) view.findViewById(R.id.password_text_error_message);
+        tilEmail = (TextInputLayout) view.findViewById(R.id.tilEmail);
+        tilPassword = (TextInputLayout) view.findViewById(R.id.tilPassword);
 
         // Get continue button
         view.findViewById(R.id.login_button_continue).setOnClickListener(this);
         view.findViewById(R.id.login_email_button_password).setOnClickListener(this);
+
+        CheckBox cbShowHiderPassword = (CheckBox) view.findViewById(R.id.cbShowHidePassword);
+        cbShowHiderPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    mPasswordView.setTransformationMethod(new SingleLineTransformationMethod());
+                } else {
+                    mPasswordView.setTransformationMethod(new PasswordTransformationMethod());
+                }
+                HoloFontLoader.applyDefaultFont(mPasswordView);
+            }
+        });
     }
 
     @Override
@@ -148,13 +175,13 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         // Get email
         mCustomerEmail = mEmailView.getText().toString();
         mCustomerPassword = mPasswordView.getText().toString();
-        mLoginErrorMessage.setVisibility(View.GONE);
-        mPasswordErrorMessage.setVisibility(View.GONE);
+        tilEmail.setError(null);
+        tilPassword.setError(null);
         // Trigger to check email
         if (TextUtils.isNotEmpty(mCustomerEmail) && TextUtils.isNotEmpty(mCustomerPassword) && Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
             triggerEmailCheck(mCustomerEmail);
-            mLoginErrorMessage.setVisibility(View.GONE);
-            mPasswordErrorMessage.setVisibility(View.GONE);
+            tilEmail.setError(null);
+            tilPassword.setError(null);
         /*    mEmailView.setError("");
             mPasswordView.setError("");*/
 
@@ -162,17 +189,17 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         } else {
 
             if (!TextUtils.isNotEmpty(mCustomerEmail)) {
-                mLoginErrorMessage.setText(getResources().getString(R.string.error_ismandatory));
-                mLoginErrorMessage.setVisibility(View.VISIBLE);
+                tilEmail.setError(getString(R.string.error_ismandatory));
+                HoloFontLoader.applyDefaultFont(tilEmail);
             } else if (!Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
                 //mEmailView.setError(getString(R.string.error_invalid_email));
-                mLoginErrorMessage.setText(getResources().getString(R.string.error_invalid_email));
-                mLoginErrorMessage.setVisibility(View.VISIBLE);
+                tilEmail.setError(getString(R.string.error_invalid_email));
+                HoloFontLoader.applyDefaultFont(tilEmail);
             }
             if (!TextUtils.isNotEmpty(mCustomerPassword)) {
                 // mPasswordView.setError(getString(R.string.error_ismandatory));
-                mPasswordErrorMessage.setText(getResources().getString(R.string.error_ismandatory));
-                mPasswordErrorMessage.setVisibility(View.VISIBLE);
+                tilPassword.setError(getString(R.string.error_ismandatory));
+                HoloFontLoader.applyDefaultFont(tilPassword);
             }
 
             //mErrorMessage.setText(getString(R.string.error_invalid_email));
@@ -200,8 +227,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         switch (eventType) {
             case EMAIL_CHECK:
                 //DROID-10
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaLogin, mGABeginRequestMillis, mCustomerEmail);
-                mLoginErrorMessage.setVisibility(View.GONE);
+//                TrackerDelegator.trackScreenLoadTiming(R.string.gaLogin, mGABeginRequestMillis, mCustomerEmail);
+                tilEmail.setError(null);
                 // Get value
                 boolean exist = ((CustomerEmailCheck) baseResponse.getMetadata().getData()).exist();
                 if (exist) {
@@ -236,19 +263,15 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 if (nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                     // Tracking
-                    if (eventType == EventType.GUEST_LOGIN_EVENT) {
-                        TrackerDelegator.storeFirstCustomer(customer);
-                        TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
+                    TrackerDelegator.trackLoginSuccessful(customer, true, false);
 
-                        // Set hide change password
-                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(), true);
-                    } else if (eventType == EventType.AUTO_LOGIN_EVENT) {
-                        TrackerDelegator.trackLoginSuccessful(customer, true, false);
-                    } else {
-                        TrackerDelegator.trackLoginSuccessful(customer, false, true);
-                        // Set hide change password
-                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(), true);
-                    }
+                    // Global Tracker
+                    EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                            Constants.LOGIN_METHOD_EMAIL, customer.getId(),
+                            EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                                    true));
+                    TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
+
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
                 }
@@ -276,7 +299,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 //Emarsys
                 emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
                     @Override
-                    public void EmarsysMobileEngageResponse(boolean success) {}
+                    public void EmarsysMobileEngageResponse(boolean success) {
+                    }
                 };
                 EmarsysMobileEngage.getInstance(getBaseActivity()).sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
                 // End of Emarsys
@@ -286,7 +310,12 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 PushManager.getInstance(getBaseActivity()).setUserId(getBaseActivity(), BamiloApplication.CUSTOMER.getEmail() + "");
                 Crashlytics.setUserEmail(BamiloApplication.CUSTOMER.getEmail());
 
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.Login, EventFactory.login("email", EmailHelper.getHost(customer.getEmail()), true));
+                // Global Tracker
+                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                        Constants.LOGIN_METHOD_EMAIL, customer.getId(),
+                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                                true));
+                TrackerManager.trackEvent(getBaseActivity(), EventConstants.Login, authEventModel);
 
                 if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
@@ -330,8 +359,8 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         switch (eventType) {
             case EMAIL_CHECK:
                 // Show warning
-                mLoginErrorMessage.setText(getResources().getString(R.string.error_invalid_email));
-                mLoginErrorMessage.setVisibility(View.VISIBLE);
+                tilEmail.setError(getString(R.string.error_invalid_email));
+                HoloFontLoader.applyDefaultFont(tilEmail);
                 //showWarningErrorMessage(getString(R.string.error_invalid_email));
                 // Show content
                 showFragmentContentContainer();
@@ -351,7 +380,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
             case LOGIN_EVENT:
                 hideActivityProgress();
                 getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.email_password_invalid));
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.Login, EventFactory.login("email", EventConstants.UNKNOWN_EVENT_VALUE, false));
+//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.Login, EmarsysEventFactory.login("email", EmarsysEventConstants.UNKNOWN_EVENT_VALUE, false));
                 break;
             default:
                 break;

@@ -10,7 +10,11 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.crashlytics.android.Crashlytics;
 import com.emarsys.predict.Session;
+import com.mobile.di.components.DaggerMainComponent;
+import com.mobile.di.components.MainComponent;
+import com.mobile.di.modules.AndroidModule;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.extlibraries.emarsys.predict.AndroidStorage;
@@ -38,15 +42,18 @@ import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
+import com.pushwoosh.PushManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.fabric.sdk.android.Fabric;
+
 public class BamiloApplication extends Application {
+    private static MainComponent component;
 
     private static final String TAG = BamiloApplication.class.getSimpleName();
     // Components
@@ -73,12 +80,23 @@ public class BamiloApplication extends Application {
     // Search
     public String mSavedSearchTerm;
 
+    public static MainComponent getComponent() {
+        return component;
+    }
+
     /**
      * Create application
      */
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // init dagger component
+        component = createComponent();
+
+        // init crashlytics
+        Fabric.with(this, new Crashlytics());
+        Crashlytics.setUserIdentifier(PushManager.getPushwooshHWID(this.getApplicationContext()));
 
         // ON APPLICATION CREATE
         Print.i(TAG, "ON APPLICATION CREATE");
@@ -120,6 +138,13 @@ public class BamiloApplication extends Application {
             Darwin.initialize(getApplicationContext(), SHOP_ID);
             getCustomerUtils();
         }
+    }
+
+    private MainComponent createComponent() {
+        return DaggerMainComponent
+                .builder()
+                .androidModule(new AndroidModule(this))
+                .build();
     }
 
     public synchronized void init(Handler initializationHandler) {
@@ -265,20 +290,7 @@ public class BamiloApplication extends Application {
      * add a sku to a list of sku products that were added from a banner flow
      */
     public void setBannerFlowSkus(String sku,TeaserGroupType groupType) {
-        if(bannerSkus == null){
-            bannerSkus = new HashMap<>();
-        }
-        String category = getString(TrackerDelegator.getCategoryFromTeaserGroupType(groupType)) +"_"+groupType.getTrackingPosition();
-
-        if(!TextUtils.isEmpty(sku)){
-            if(bannerSkus.size() == 0){
-                bannerSkus.put(sku, category);
-            } else {
-                if(!bannerSkus.containsKey(sku)){
-                    bannerSkus.put(sku, category);
-                }
-            }
-        }
+        bannerSkus = new HashMap<>();
     }
 
     /**

@@ -16,14 +16,19 @@ import android.widget.Toast;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.SimpleEventModel;
+import com.mobile.classes.models.SimpleEventModelFactory;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
-import com.mobile.factories.EventFactory;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.helpers.search.SearchHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
@@ -63,9 +68,6 @@ import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -145,6 +147,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private FragmentType mTargetType;
     private boolean pageTracked = false;
 
+    private EmarsysEventModel addToWishListEventModel;
+    private SimpleEventModel removeFromWishListEventModel;
+
     /**
      * Empty constructor
      */
@@ -222,6 +227,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mCatalogGridPosition = savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, IntConstants.INVALID_POSITION);
             mTargetType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
         }
+
+        // Track screen without timing
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CATALOG.getName()), getString(R.string.gaScreen), mTitle, getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -618,9 +627,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)) {
                 ProductRegular mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
                 if (mClicked != null) {
-                    triggerAddToWishList(mClicked.getSku());
+                    triggerAddToWishList(mClicked.getSku(), mClicked.getCategoryKey());
                     TrackerDelegator.trackAddToFavorites(mClicked);
-                    TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToFavorites, EventFactory.addToFavorites(mClicked.getCategoryKey(), true));
+//                    TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToFavorites, EmarsysEventFactory.addToFavorites(mClicked.getCategoryKey(), true));
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             }
@@ -658,7 +667,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get item
         ProductRegular product = ((CatalogGridAdapter) adapter).getItem(position);
-        // Call Product Details        
+        // Call Product Details
         if (product != null) {
             // Show product
             Bundle bundle = new Bundle();
@@ -683,9 +692,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 triggerRemoveFromWishList(mWishListItemClicked.getSku());
                 TrackerDelegator.trackRemoveFromFavorites(mWishListItemClicked);
             } else {
-                triggerAddToWishList(mWishListItemClicked.getSku());
+                triggerAddToWishList(mWishListItemClicked.getSku(), mMainCategory);
                 TrackerDelegator.trackAddToFavorites(mWishListItemClicked);
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToFavorites, EventFactory.addToFavorites(mMainCategory, true));
+//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.AddToFavorites, EmarsysEventFactory.addToFavorites(mMainCategory, true));
             }
         } else {
             // Save values to end action after login
@@ -781,7 +790,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Flag to reload or not an initial catalog in case generic error
         mSortOrFilterApplied = true;
         // Track catalog filtered
-        TrackerDelegator.trackCatalogFilter(mCurrentFilterValues);
+        SimpleEventModel sem = SimpleEventModelFactory.createModelForCatalogFilter(mCurrentFilterValues);
+        TrackerManager.trackEvent(getContext(), EventConstants.SearchFiltered, sem);
     }
 
     /**
@@ -808,7 +818,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             manager.requestLayout();
             ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(mLevel);
             // Track catalog
-            TrackerDelegator.trackCatalogSwitchLayout(trackView());
+            SimpleEventModel sem =
+                    new SimpleEventModel(CategoryConstants.CATALOG, EventActionKeys.CATALOG_VIEW_CHANGED,
+                            trackView(), SimpleEventModel.NO_VALUE);
+            TrackerManager.trackEvent(getContext(), EventConstants.CatalogViewChanged, sem);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON SWITCH CATALOG COLUMNS", e);
         }
@@ -880,7 +893,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get new data
         triggerGetInitialCatalogPage();
         // Track catalog sorted
-        TrackerDelegator.trackCatalogSorter(mSelectedSort);
+        SimpleEventModel sem =
+                new SimpleEventModel(CategoryConstants.CATALOG, EventActionKeys.CATALOG_SORT, mSelectedSort.toString(), SimpleEventModel.NO_VALUE);
+        TrackerManager.trackEvent(getContext(), EventConstants.CatalogSortChanged, sem);
     }
 
     @Override
@@ -954,7 +969,17 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Trigger to add item from wish list.
      */
-    private void triggerAddToWishList(String sku) {
+    private void triggerAddToWishList(String sku, String categoryKey) {
+        addToWishListEventModel = new EmarsysEventModel(getString(TrackingPage.CATALOG.getName()), EventActionKeys.ADD_TO_WISHLIST, sku,
+                SimpleEventModel.NO_VALUE, EmarsysEventModel.createAddToWishListEventModelAttributes(sku, categoryKey, true));
+        if (mCatalogPage != null && mCatalogPage.getProducts() != null) {
+            for (ProductRegular item : mCatalogPage.getProducts()) {
+                if (item.getSku().equals(sku)) {
+                    addToWishListEventModel.value = (long) item.getPrice();
+                    break;
+                }
+            }
+        }
         triggerContentEventProgress(new AddToWishListHelper(), AddToWishListHelper.createBundle(sku), this);
     }
 
@@ -962,6 +987,19 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Trigger to remove item from wish list.
      */
     private void triggerRemoveFromWishList(String sku) {
+        removeFromWishListEventModel = new SimpleEventModel();
+        removeFromWishListEventModel.category = getString(TrackingPage.CART.getName());
+        removeFromWishListEventModel.action = EventActionKeys.REMOVE_FROM_WISHLIST;
+        removeFromWishListEventModel.label = sku;
+        removeFromWishListEventModel.value = SimpleEventModel.NO_VALUE;
+        if (mCatalogPage != null && mCatalogPage.getProducts() != null) {
+            for (ProductRegular item : mCatalogPage.getProducts()) {
+                if (item.getSku().equals(sku)) {
+                    removeFromWishListEventModel.value = (long) item.getPrice();
+                    break;
+                }
+            }
+        }
         triggerContentEventProgress(new RemoveFromWishListHelper(), RemoveFromWishListHelper.createBundle(sku), this);
     }
 
@@ -1030,16 +1068,21 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Validate event type
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
+                if (removeFromWishListEventModel != null) {
+                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, removeFromWishListEventModel);
+                }
+                updateWishListProduct();
+                break;
             case ADD_PRODUCT_TO_WISH_LIST:
+                if (addToWishListEventModel != null) {
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, addToWishListEventModel);
+                }
                 updateWishListProduct();
                 break;
 
             case GET_CATALOG_EVENT:
             default:
                 onRequestCatalogSuccess(baseResponse);
-
-                //DROID-10
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaCatalog, mGABeginRequestMillis, mTitle);
                 break;
         }
     }
@@ -1049,8 +1092,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void onRequestCatalogSuccess(BaseResponse baseResponse) {
         if (!pageTracked) {
-            // Track current catalog page
-            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
+            BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CATALOG.getName()), getString(R.string.gaScreen), "", getLoadTime());
+            TrackerManager.trackScreenTiming(getContext(), screenModel);
+
+
             pageTracked = true;
         }
         // Get the catalog
@@ -1070,7 +1115,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             onUpdateCatalogContainer(catalogPage);
             if (catalogPage.getPage() == 1) {
                 TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.Search, EventFactory.search(mMainCategory, SearchHelper.getSearchTermsCommaSeparated(catalogPage.getSearchTerm())));
+
+                // Global tracking
+                EmarsysEventModel searchEventModel = new EmarsysEventModel(CategoryConstants.CATALOG, EventActionKeys.SEARCH,
+                        catalogPage.getSearchTerm(), catalogPage.getTotal(),
+                        EmarsysEventModel.createSearchEventModelAttributes(mMainCategory,
+                                SearchHelper.getSearchTermsCommaSeparated(catalogPage.getSearchTerm())));
+                TrackerManager.trackEvent(getContext(), EventConstants.Search, searchEventModel);
 
                 int actionBarHeight = 180;
                 TypedValue tv = new TypedValue();

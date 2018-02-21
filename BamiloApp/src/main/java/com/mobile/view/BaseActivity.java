@@ -42,20 +42,26 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalSpaceItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
@@ -64,6 +70,7 @@ import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
+import com.mobile.managers.TrackerManager;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.service.database.SearchRecentQueriesTableHelper;
 import com.mobile.service.objects.cart.PurchaseEntity;
@@ -73,7 +80,6 @@ import com.mobile.service.objects.home.type.TeaserGroupType;
 import com.mobile.service.objects.search.Suggestion;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
-import com.mobile.service.tracking.TrackingEvent;
 import com.mobile.service.tracking.gtm.GTMValues;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.CustomerUtils;
@@ -99,7 +105,6 @@ import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.DrawerFragment;
-import com.mobile.view.fragments.DrawerFragmentAdapter;
 import com.mobile.view.fragments.ProductDetailsFragment;
 
 import junit.framework.Assert;
@@ -110,11 +115,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import me.toptas.fancyshowcase.FancyShowCaseView;
-import me.toptas.fancyshowcase.OnViewInflateListener;
-
-import static android.widget.RelativeLayout.ALIGN_PARENT_END;
-import static android.widget.RelativeLayout.CENTER_IN_PARENT;
-import static android.widget.RelativeLayout.CENTER_VERTICAL;
 
 /**
  * All activities extend this activity, in order to access methods that are shared and used in all activities.
@@ -390,7 +390,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
                 mSearchView.setText(text.get(0));
-                TrackerDelegator.trackVoiceSearch(text.get(0));
+
+                SimpleEventModel sem = new SimpleEventModel();
+                sem.category = CategoryConstants.SEARCH_RESULTS;
+                sem.action = EventActionKeys.VOICE_SEARCH;
+                sem.label = text.get(0);
+                sem.value = SimpleEventModel.NO_VALUE;
+                TrackerManager.trackEvent(this, EventConstants.SearchBarSearched, sem);
+
                 fireSearch(text.get(0));
             }
             voiceTyping = false;
@@ -1051,7 +1058,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         getSuggestions();
                         return false;
                     }
-                    TrackerDelegator.trackSearch(searchTerm);
+
+                    SimpleEventModel sem = new SimpleEventModel();
+                    sem.category = CategoryConstants.SEARCH_RESULTS;
+                    sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
+                    sem.label = searchTerm;
+                    sem.value = SimpleEventModel.NO_VALUE;
+                    TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchBarSearched, sem);
+
                     fireSearch(searchTerm);
                     return true;
                 }
@@ -1179,7 +1193,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void showSearchCategory(final Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST " + suggestion.getResult());
         // Tracking
-        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+        SimpleEventModel sem = new SimpleEventModel();
+        sem.category = CategoryConstants.SEARCH_RESULTS;
+        sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
+        sem.label = suggestion.getResult();
+        sem.value = SimpleEventModel.NO_VALUE;
+        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
+
+
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
@@ -1201,7 +1222,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void showSearchOther(final Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO CATALOG " + suggestion.getResult());
         // Tracking
-        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+        SimpleEventModel sem = new SimpleEventModel();
+        sem.category = CategoryConstants.SEARCH_RESULTS;
+        sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
+        sem.label = suggestion.getResult();
+        sem.value = SimpleEventModel.NO_VALUE;
+        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
+
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DATA, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
@@ -1215,7 +1242,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     public void showSearchProduct(Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW " + suggestion.getResult());
-        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+        SimpleEventModel sem = new SimpleEventModel();
+        sem.category = CategoryConstants.SEARCH_RESULTS;
+        sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
+        sem.label = suggestion.getResult();
+        sem.value = SimpleEventModel.NO_VALUE;
+        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
+
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
@@ -1234,7 +1267,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     public void showSearchShopsInShop(final Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP " + suggestion.getResult());
-        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+        SimpleEventModel sem = new SimpleEventModel();
+        sem.category = CategoryConstants.SEARCH_RESULTS;
+        sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
+        sem.label = suggestion.getResult();
+        sem.value = SimpleEventModel.NO_VALUE;
+        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
+
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
@@ -1396,13 +1435,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             Print.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
             return;
         }
-        // Show suggestions
-        Print.i(TAG, "SEARCH: SHOW DATA FOR QUERY " + requestQuery);
-        Bundle params = new Bundle();
-        params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
-        params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
-        //DROID-10 TrackerDelegator.trackLoadTiming(params);
-        TrackerDelegator.trackScreenLoadTiming(R.string.gaSearchSuggestions, mGABeginInMillis, requestQuery);
+        BaseScreenModel screenModel = new BaseScreenModel(getString(R.string.gaSearchSuggestions), getString(R.string.gaScreen), requestQuery, mGABeginInMillis);
+        TrackerManager.trackScreenTiming(this, screenModel);
         SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
         searchSuggestionsAdapter.setOnViewHolderClickListener(this);
         mSearchListView.setAdapter(searchSuggestionsAdapter);
@@ -1542,7 +1576,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         }
                         break;
                     case NavigationAction.HOME:
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_HOME);
+//                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_HOME);
                         onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.CATEGORIES:
@@ -1567,13 +1601,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                                     });
                             dialogLogout.show(getSupportFragmentManager(), null);
                         } else {
-                            TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
+//                            TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
                             onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         }
                         break;
                     case NavigationAction.SAVED:
                         // FAVOURITES
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
+//                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
                         // Validate customer is logged in
                         if (!BamiloApplication.isCustomerLoggedIn()) {
                             // Goto Login and next WishList
@@ -1586,22 +1620,22 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         break;
                     case NavigationAction.RECENT_SEARCHES:
                         // RECENT SEARCHES
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENT_SEARCHES);
+//                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENT_SEARCHES);
                         onSwitchFragment(FragmentType.RECENT_SEARCHES_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.RECENTLY_VIEWED:
                         // RECENTLY VIEWED
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENTLY_VIEW);
+//                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENTLY_VIEW);
                         onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.MY_ACCOUNT:
                         // MY ACCOUNT
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
+//                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
                         onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.MY_ORDERS:
                         // TRACK ORDER
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
+//                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
                         onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.COUNTRY:
@@ -1623,7 +1657,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         break;
                     case NavigationAction.ABOUT:
                         // MY ABOUT
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
+//                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
                         onSwitchFragment(FragmentType.ABOUT_US, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     default:
@@ -1714,6 +1748,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         ProductDetailsFragment.clearSelectedRegionCityId();
         SearchRecentQueriesTableHelper.deleteAllRecentQueries();
         mSearchListView.setAdapter(null);
+
+        // Global Tracker
+        EmarsysEventModel authEventModel =
+                new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGOUT, null, SimpleEventModel.NO_VALUE,
+                        EmarsysEventModel.createAuthEventModelAttributes(null, null, true));
+        TrackerManager.trackEvent(this, EventConstants.Logout, authEventModel);
 
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
@@ -1947,7 +1987,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             triggerAutoLogin();
         } else {
             // Track auto login failed if hasn't saved credentials
-            TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
+            EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+                    EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+            TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
         }
         // Validate the user credentials
         if (BamiloApplication.SHOP_ID != null && BamiloApplication.INSTANCE.getCart() == null) {
@@ -2003,6 +2046,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 Customer customer = ((CheckoutStepLogin) ((NextStepStruct) baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
                 // Get origin
                 ContentValues credentialValues = BamiloApplication.INSTANCE.getCustomerUtils().getCredentials();
+
+                // Global Tracker
+                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                        Constants.LOGIN_METHOD_EMAIL, customer.getId(),
+                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                                true));
+                TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
+
                 // Track
                 Bundle params = new Bundle();
                 params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
@@ -2098,7 +2149,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get suggestion
         Suggestion selectedSuggestion = ((SearchDropDownAdapter) adapter).getItem(position);
-        TrackerDelegator.trackSearchSuggestion(selectedSuggestion.getResult(), selectedSuggestion.getQuery());
         // Get text suggestion
         String text = selectedSuggestion.getResult();
         //Save searched text

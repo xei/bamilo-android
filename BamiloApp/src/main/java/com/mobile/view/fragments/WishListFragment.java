@@ -9,13 +9,16 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.WishListGridAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EventFactory;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.wishlist.GetWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
@@ -23,6 +26,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.campaign.CampaignItem;
+import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.product.WishList;
 import com.mobile.service.objects.product.pojo.ProductMultiple;
 import com.mobile.service.objects.product.pojo.ProductSimple;
@@ -74,6 +78,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
 
     private View mClickedBuyButton;
     private boolean pageTracked = false;
+    private EmarsysEventModel addToCartEventModel;
 
     /**
      * Empty constructor
@@ -100,6 +105,12 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             mWishList = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
             sForceReloadWishListFromNetwork = savedInstanceState.getBoolean(ConstantsIntentExtra.FLAG_1);
         }
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.WISH_LIST.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -428,6 +439,15 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             // Get item
             WishListGridAdapter adapter = (WishListGridAdapter) mListView.getAdapter();
             TrackerDelegator.trackRemoveFromFavorites(adapter.getItem(mSelectedPositionToDelete));
+
+            // Global Tracker
+            SimpleEventModel removeFromWishListEventModel = new SimpleEventModel();
+            removeFromWishListEventModel.category = getString(TrackingPage.WISH_LIST.getName());
+            removeFromWishListEventModel.action = EventActionKeys.REMOVE_FROM_WISHLIST;
+            removeFromWishListEventModel.label = sku;
+            removeFromWishListEventModel.value = SimpleEventModel.NO_VALUE;
+            TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, removeFromWishListEventModel);
+
             // Trigger to remove
             triggerRemoveFromWishList(sku);
         } catch (NullPointerException | IndexOutOfBoundsException e) {
@@ -450,11 +470,9 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         if (simple != null) {
             triggerAddProductToCart(simple.getSku());
             TrackerDelegator.trackFavouriteAddedToCart(product, simple.getSku(), mGroupType);
-            try {
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), (long)BamiloApplication.INSTANCE.getCart().getTotal(), true));
-            } catch (Exception e) {
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(simple.getSku(), 0, true));
-            }
+
+            addToCartEventModel = new EmarsysEventModel(getString(TrackingPage.WISH_LIST.getName()),
+                    EventActionKeys.ADD_TO_CART, product.getSku(), (long) product.getPrice(), null);
         }
         // Case select a simple variation
         else if (product.hasMultiSimpleVariations()) {
@@ -519,13 +537,33 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         super.handleSuccessEvent(baseResponse);
         // Validate event type
         switch (eventType) {
+            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+                // Tracking add to cart
+                if (addToCartEventModel != null) {
+                    PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+                    if (cart != null) {
+                        addToCartEventModel.emarsysAttributes =
+                                EmarsysEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label, (long) cart.getTotal(), true);
+                    } else {
+                        addToCartEventModel.emarsysAttributes =
+                                EmarsysEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label, 0, true);
+                    }
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
+                }
+                break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 // Remove selected position
                 removeSelectedPosition();
                 break;
             case GET_WISH_LIST:
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.WISH_LIST, getLoadTime(), false);
+//                    TrackerDelegator.trackPage(TrackingPage.WISH_LIST, getLoadTime(), false);
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.WISH_LIST.getName()), getString(R.string.gaScreen),
+                            "",
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
                 // Hide loading more

@@ -108,7 +108,7 @@ public abstract class AigTestCase extends TestCase implements AigResponseCallbac
      * ############# COMMON METHODS #############
      */
 
-//     public void analyzeOnErrorEvent(final BaseResponse response) {
+//     public void analyzeOnErrorEvent(final ServerResponse response) {
 //        //final JumiaError jumiaError = response.getError();
 //        ErrorCode errorCode = response.getError().getErrorCode();
 //        Map<String, List<String>> errorMessages = response.getErrorMessages();

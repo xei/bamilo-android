@@ -1,4 +1,3 @@
-/*
 package com.mobile.helpers;
 
 import com.mobile.service.requests.BaseRequest;
@@ -6,10 +5,9 @@ import com.mobile.service.requests.RequestBundle;
 import com.mobile.service.rest.interfaces.AigApiInterface;
 import com.mobile.service.utils.EventType;
 
-*/
 /**
  * Class used to get External Links section  from API
- *//*
+ */
 
 public class GetExternalLinksHelper extends SuperBaseHelper {
     
@@ -29,4 +27,3 @@ public class GetExternalLinksHelper extends SuperBaseHelper {
     }
     
 }
-*/

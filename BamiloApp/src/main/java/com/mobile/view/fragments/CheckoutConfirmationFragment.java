@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
@@ -26,6 +27,7 @@ import com.mobile.helpers.checkout.GetStepShippingHelper;
 import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.cart.PurchaseCartItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.pojo.BaseResponse;
@@ -36,7 +38,6 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 import com.mobile.view.newfragments.NewBaseFragment;
 
@@ -84,8 +85,12 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        // Tracking checkout step
-        // TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ADDRESSES);
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_CONFIRMATION.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     @Override
@@ -388,11 +393,16 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
                 hideActivityProgress();
                 break;
             case GET_MULTI_STEP_FINISH:
+                mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_CONFIRMATION, getLoadTime(), false);
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_CONFIRMATION.getName()), getString(R.string.gaScreen),
+                            "" ,
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
-                mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
 
                 if (mOrderFinish == null) {
                     showFragmentErrorRetry();

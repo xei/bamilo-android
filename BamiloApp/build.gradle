@@ -46,8 +46,8 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         applicationId "com.bamilo.android"
-        versionName "2.8.1"
-        versionCode getAppVersionCode(142)
+        versionName "2.9.0"
+        versionCode getAppVersionCode(162)
         resConfigs "fa"
     }
 
@@ -109,6 +109,10 @@ android {
         disable 'ExtraTranslation', 'MissingTranslation'
     }
 
+    aaptOptions {
+        cruncherEnabled = false
+    }
+
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile
@@ -139,9 +143,14 @@ dependencies {
     debugCompile 'com.facebook.stetho:stetho:1.5.0'
     debugCompile 'com.facebook.stetho:stetho-okhttp:1.5.0'
     // #LEAK :: https://github.com/square/leakcanary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     // #SCAPEL :: https://github.com/JakeWharton/scalpel
     debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
+    /** Dagger 2 **/
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+
+    compile project(':api-core')
 }
 
 /**

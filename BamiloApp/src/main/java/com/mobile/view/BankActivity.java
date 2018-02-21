@@ -11,13 +11,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
+import com.mobile.service.objects.cart.PurchaseCartItem;
+import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.output.Print;
-import com.mobile.utils.TrackerDelegator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * for process bank payment from browser
@@ -76,8 +87,29 @@ public class BankActivity extends Activity {
                     btnOrderDetails.setVisibility(View.INVISIBLE);
                     btnReturn.setVisibility(View.VISIBLE);
                 }
+                PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+                if (cart == null) {
+                    cart = new PurchaseEntity();
+                }
+                ArrayList<PurchaseCartItem> cartItems=  cart.getCartItems();
+                StringBuilder categories = new StringBuilder();
+                if (cartItems != null) {
+                    for (PurchaseCartItem cat : cartItems) {
+                        categories.append(cat.getCategories());
+                    }
+                }
                 if (msgFromBrowserUrl.equals("reject")) {
-                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_FAILURE, 0, false);
+
+                    // Track screen
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_PAYMENT_FAILURE.getName()), getString(R.string.gaScreen),
+                            "",
+                            0);
+                    TrackerManager.trackScreen(this, screenModel, false);
+
+                    // Track Purchase
+                    EmarsysEventModel purchaseEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                            EmarsysEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), true));
+                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
 
                     btnOrderDetails.setVisibility(View.INVISIBLE);
                     btnReturn.setVisibility(View.VISIBLE);
@@ -86,7 +118,27 @@ public class BankActivity extends Activity {
                     launchInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                     checkout_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_reject_checkout));
                 } else {
-                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_FINISH, 0, false);
+
+                    // Track Purchase
+                    EmarsysEventModel purchaseEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                            EmarsysEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), false));
+                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
+
+                    // Track Checkout Finish
+                    SimpleEventModel sem = new SimpleEventModel();
+                    sem.category = CategoryConstants.CHECKOUT;
+                    sem.action = EventActionKeys.CHECKOUT_FINISH;
+                    sem.label = null;
+                    sem.value = SimpleEventModel.NO_VALUE;
+                    if (cartItems != null) {
+                        List<String> skus = new ArrayList<>();
+                        for (PurchaseCartItem item : cartItems) {
+                            skus.add(item.getSku());
+                        }
+                        sem.label = android.text.TextUtils.join(",", skus);
+                        sem.value = (long) cart.getTotal();
+                    }
+                    TrackerManager.trackEvent(this, EventConstants.CheckoutFinished, sem);
 
                     launchInfo.setText(R.string.thank_you_order_title);
                     tvOrderInfo.setVisibility(View.VISIBLE);

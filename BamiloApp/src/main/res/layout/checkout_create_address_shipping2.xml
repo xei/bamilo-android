@@ -119,7 +119,8 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/address_postal_code_hint"
-                    android:inputType="textPersonName"
+                    android:inputType="number"
+                    android:maxLength="10"
                     android:minEms="10"
                     android:text=""
                     android:textColor="?attr/colorPrimary" />

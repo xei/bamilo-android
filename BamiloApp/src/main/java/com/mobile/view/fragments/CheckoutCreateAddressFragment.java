@@ -11,12 +11,9 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.tracking.TrackingEvent;
 import com.mobile.service.utils.output.Print;
-import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -44,7 +41,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_CREATE_ADDRESS);
         hideActivityProgress();
     }
 
@@ -79,8 +75,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     @Override
     protected void onCreateAddressSuccessEvent(BaseResponse baseResponse) {
         super.onCreateAddressSuccessEvent(baseResponse);
-        //GTM
-        TrackerDelegator.trackAddAddress(true);
         // Get next step
         FragmentType nextFragment = ((NextStepStruct) baseResponse.getMetadata().getData()).getFragmentType();
         if (nextFragment == null || nextFragment == FragmentType.UNKNOWN) {
@@ -114,7 +108,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     @Override
     protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
         super.onCreateAddressErrorEvent(baseResponse);
-        TrackerDelegator.trackAddAddress(false);
         showFragmentContentContainer();
     }
 

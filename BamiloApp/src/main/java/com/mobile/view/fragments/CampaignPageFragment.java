@@ -20,21 +20,24 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EventFactory;
 import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.campaign.Campaign;
 import com.mobile.service.objects.campaign.CampaignItem;
+import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.catalog.Banner;
 import com.mobile.service.objects.home.TeaserCampaign;
 import com.mobile.service.objects.product.pojo.ProductSimple;
@@ -81,7 +84,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public int DISCOUNT = R.id.discount;
     private TeaserCampaign mTeaserCampaign;
     private Campaign mCampaign;
-    private boolean pageTracked = false;
 
     private HeaderFooterGridView mGridView;
 
@@ -97,6 +99,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public static final int DEFAULT = 0;
     public static final int VISIBLE = 1;
     public static final int HIDDEN = 2;
+    private EmarsysEventModel addToCartEventModel;
+
     @IntDef({DEFAULT, VISIBLE, HIDDEN})
     @Retention(RetentionPolicy.SOURCE)
     public @interface BannerVisibility{}
@@ -155,8 +159,10 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 //noinspection ResourceType
                 bannerState = savedInstanceState.getInt(BANNER_STATE);
         }
-        // Tracking
-        TrackerDelegator.trackCampaignView(mTeaserCampaign);
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CAMPAIGN_PAGE.getName()), getString(R.string.gaScreen), "", getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -196,8 +202,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        // Track page
-        TrackerDelegator.trackPage(TrackingPage.CAMPAIGNS, getLoadTime(), false);
     }
 
     /*
@@ -467,11 +471,10 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             TrackerDelegator.trackProductAddedToCart(bundle);
-            try {
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, (long)BamiloApplication.INSTANCE.getCart().getTotal(), true));
-            } catch (Exception e) {
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, 0, true));
-            }
+
+            addToCartEventModel = new EmarsysEventModel(getString(TrackingPage.CAMPAIGN_PAGE.getName()),
+                    EventActionKeys.ADD_TO_CART, sku, (long) price, null);
+
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -551,18 +554,28 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 mStartTimeInMilliseconds = SystemClock.elapsedRealtime();
                 showCampaign();
                 //DROID-10
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaCampaignPage, mGABeginRequestMillis, "");
-                if (!pageTracked) {
-                    // Track current catalog page
-                    TrackerDelegator.trackPage(TrackingPage.CAMPAIGN_PAGE, getLoadTime(), false);
-                    pageTracked = true;
-                }
+//                TrackerDelegator.trackScreenLoadTiming(R.string.gaCampaignPage, mGABeginRequestMillis, "");
+
+                // Track screen Timing
+                BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CAMPAIGN.getName()), getString(R.string.gaScreen), mCampaign.getName(), getLoadTime());
+                TrackerManager.trackScreenTiming(getContext(), screenModel);
 
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
                 isAddingProductToCart = false;
                 hideActivityProgress();
+                if (addToCartEventModel != null) {
+                    PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+                    if (cart != null && cart.getTotal() > 0) {
+                        addToCartEventModel.emarsysAttributes = EmarsysEventModel
+                                .createAddToCartEventModelAttributes(addToCartEventModel.label, (long) cart.getTotal(), true);
+                    } else {
+                        addToCartEventModel.emarsysAttributes = EmarsysEventModel
+                                .createAddToCartEventModelAttributes(addToCartEventModel.label, 0, true);
+                    }
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
+                }
                 break;
             default:
                 break;

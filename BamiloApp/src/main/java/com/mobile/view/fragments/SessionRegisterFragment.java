@@ -7,31 +7,37 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
+import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
+import com.mobile.pojo.DynamicForm;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.service.forms.Form;
 import com.mobile.service.forms.FormInputType;
 import com.mobile.service.objects.configs.AuthInfo;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
-import com.mobile.service.tracking.TrackingPage;
-import com.mobile.service.tracking.gtm.GTMValues;
+import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.CustomerUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
-import com.mobile.pojo.DynamicForm;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.LoginHeaderComponent;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -138,7 +144,6 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.REGISTRATION, getLoadTime(), false);
     }
 
     @Override
@@ -279,7 +284,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         // Case invalid
         else {
             // Tracking
-            TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
+            EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
+                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+                    EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+            TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
         }
     }
 
@@ -318,21 +326,29 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         Print.d(TAG, "ON SUCCESS: " + eventType);
         switch (eventType) {
             case REGISTER_ACCOUNT_EVENT:
-                // Tracking
-                if(isSubscribingNewsletter) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
-                TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 // Finish
                 getActivity().onBackPressed();
+
+                // Tracking
+                long customerId = SimpleEventModel.NO_VALUE;
+                String customerEmail = "";
+                if (BamiloApplication.CUSTOMER != null) {
+                    customerId = BamiloApplication.CUSTOMER.getId();
+                    customerEmail = BamiloApplication.CUSTOMER.getEmail();
+                }
+                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
+                        Constants.LOGIN_METHOD_EMAIL, customerId,
+                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, customerEmail != null ? EmailHelper.getHost(customerEmail) : "",
+                                true));
+                TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
+
                 // Set facebook login
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 break;
             case GET_REGISTRATION_FORM_EVENT:
                 mForm = (Form) baseResponse.getContentData();
-                loadForm(mForm);
-                //DROID-10
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaRegister, mGABeginRequestMillis, "");
                 break;
             default:
                 break;
@@ -357,7 +373,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 break;
             case REGISTER_ACCOUNT_EVENT:
                 // Tracking
-                TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
+                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+                        Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+                TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
                 // Validate and show errors
                 showFragmentContentContainer();
                 // Show validate messages

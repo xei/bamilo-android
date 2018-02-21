@@ -11,16 +11,16 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator;
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.PreviewViewPager;
-import com.mobile.service.objects.home.model.BaseComponent;
-import com.mobile.service.objects.home.model.SliderComponent;
-import com.mobile.utils.TrackerDelegator;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
+import com.mobile.managers.TrackerManager;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -48,9 +48,11 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
             @Override
             public void onSlideClicked(View v, int position, Item item) {
                 if (mPage != null) {
-                    TrackerDelegator.trackComponentViewTap(mPage,
-                            String.format(Locale.US, "%s_%d", BaseComponent.ComponentType.Slider.toString(), mInstanceIndex),
-                            item.targetLink);
+                    String category = String.format(Locale.US, "%s+%s_%d", mPage, BaseViewComponent.ComponentType.Slider.toString(), mInstanceIndex);
+                    String action = EventActionKeys.TEASER_TAPPED;
+                    String label = item.targetLink;
+                    SimpleEventModel sem = new SimpleEventModel(category, action, label, SimpleEventModel.NO_VALUE);
+                    TrackerManager.trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
                 }
                 if (onSlideClickListener != null) {
                     onSlideClickListener.onSlideClicked(v, position, item);
@@ -92,22 +94,6 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
     @Override
     public void setContent(List<Item> content) {
         this.items = content;
-    }
-
-    @Override
-    public void setComponent(BaseComponent component) {
-        if (!(component instanceof SliderComponent)) {
-            return;
-        }
-        List<Item> sliderItems = new ArrayList<>();
-        SliderComponent sliderComponent = (SliderComponent) component;
-
-        for (SliderComponent.Slide slide : sliderComponent.getSlides()) {
-            Item tempItem = new Item(slide.getPortraitImage(), slide.getTarget());
-            sliderItems.add(tempItem);
-        }
-
-        setContent(sliderItems);
     }
 
     public OnSlideClickListener getOnSlideClickListener() {

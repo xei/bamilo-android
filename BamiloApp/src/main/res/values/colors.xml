@@ -70,16 +70,15 @@
     <color name="green_1">#a3cf62</color>
     <color name="yellow_1">#ffdc2d</color>
     <color name="yellow_2">#fff8d6</color>
-    <color name="teal">#16918c</color>
     <color name="teal_bright">#01c2ad</color>
     <color name="teal_brighter">#3fd2c0</color>
 
     <!-- ANDROID 5.0: MATERIAL STYLE -->
-    <color name="appBar">@color/blue_app_primary</color>
-    <color name="tabBar">@color/blue_app_primary</color>
-    <color name="statusBar">@color/blue_app_primary</color>
+    <color name="appBar">@color/blue_1</color>
+    <color name="tabBar">@color/blue_1</color>
+    <color name="statusBar">@color/blue_1</color>
     <color name="black">@android:color/black</color>
-    <color name="color_accent">@color/blue_app_primary</color>
+    <color name="color_accent">@color/blue_1</color>
     <color name="search_hint_color">@color/white</color>
     <color name="search_edit_color">@color/white</color>
     <color name="splash_background_color">@color/black_300</color>
@@ -88,6 +87,7 @@
     <color name="checkout_bar_background_color">?attr/colorPrimary</color>
     <color name="form_text">@color/grey_middle</color>
     <color name="form_text_hint">@color/grey_middlelight</color>
+    <color name="order_cancellation_button_bg_tint">#fdfdfd</color>
 
 
     <color name="black_47">#474747</color>
@@ -135,7 +135,7 @@
     <color name="fefefe">#fefefe</color>
 
     <color name="button_primary_color">@color/orange_1</color>
-    <color name="button_secondary_color">@color/teal</color>
+    <color name="button_secondary_color">@color/dark_green_3</color>
     <color name="link_color">@color/orange_1</color>
     <color name="filter_clear_button_text">@color/teal_bright</color>
     <color name="filter_sort_title_text">@color/teal_bright</color>
@@ -145,11 +145,27 @@
 
     <color name="touch_feedback_color">#40000000</color>
 
+    <color name="item_tracking_cancellation_reason_bg">#fff6f0</color>
+
     <!--Color palette-->
-    <color name="pink_10">#fbe8ec</color>
+    <color name="dark_green_1">#007473</color>
+    <color name="dark_green_2">#07827f</color>
+    <color name="dark_green_3">#16918c</color>
+    <color name="dark_green_4">#369f9b</color>
+
+    <color name="pink_1">#d80056</color>
+    <color name="pink_2">#e01c68</color>
     <color name="pink_3">#e74775</color>
+    <color name="pink_4">#ec6284</color>
+    <color name="pink_5">#f07b95</color>
+    <color name="pink_6">#f592a6</color>
+    <color name="pink_7">#f9a9b6</color>
+    <color name="pink_8">#f8bfc8</color>
+    <color name="pink_9">#f7d4da</color>
+    <color name="pink_10">#fbe8ec</color>
 
     <color name="orange_1">#fe6b0c</color>
+    <color name="orange_2">#fe7c30</color>
 
     <color name="gray_1">#53585b</color>
     <color name="gray_2">#656668</color>
@@ -163,6 +179,7 @@
     <color name="gray_10">#ededed</color>
 
     <color name="blue_1">#1a365e</color>
+    <color name="blue_2">#33466e</color>
     <!--End of Color Palette-->
 
     <!--Item tracking progressbar colors-->

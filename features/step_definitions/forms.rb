@@ -20,11 +20,11 @@ Then /^I enter a random email into "([^\"]*)"$/ do |name|
   enter_text("android.widget.EditText marked:'"+name+"'", @email.to_s)
 end
 
-Then /^I enter a random address into "([^\"]*)"$/ do |name|
-  wait_for_elements_exist(["* marked:'"+@address.to_s+"'"],:timeout => 30)
+Then /^I enter a random billingAddress into "([^\"]*)"$/ do |name|
+  wait_for_elements_exist(["* marked:'"+@billingAddress.to_s+"'"],:timeout => 30)
   @unique_random_address= rand(89) + 10
-  @address='Tester Street ' + @unique_random_address.to_s 
-  enter_text("android.widget.EditText marked:'"+name+"'", @address.to_s)
+  @billingAddress='Tester Street ' + @unique_random_address.to_s
+  enter_text("android.widget.EditText marked:'"+name+"'", @billingAddress.to_s)
 end
 
 Then /^I enter a wrong username$/ do 
@@ -174,7 +174,7 @@ Then /^I enter a valid search on the text field$/ do
   enter_text("android.widget.EditText marked:'abs__search_src_text'", @search_p)
 end
 
-Then /^I fill the new address form$/ do
+Then /^I fill the new billingAddress form$/ do
   wait_for_elements_exist(["* marked:'first_name'"],:timeout => 30)
   enter_text("android.widget.EditText marked:'first_name'", 'test')
   step "I swipe down moving with 2 steps"

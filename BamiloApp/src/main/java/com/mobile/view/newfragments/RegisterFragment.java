@@ -1,25 +1,32 @@
 package com.mobile.view.newfragments;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.InputType;
+import android.support.design.widget.TextInputLayout;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.SingleLineTransformationMethod;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.components.absspinner.PromptSpinnerAdapter;
-import com.mobile.components.customfontviews.EditText;
-import com.mobile.components.customfontviews.TextView;
+import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.SimpleEventModel;
+import com.mobile.components.customfontviews.Button;
+import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.ConstantsSharedPrefs;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EventFactory;
 import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -27,66 +34,47 @@ import com.mobile.managers.TrackerManager;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.tracking.TrackingPage;
-import com.mobile.service.tracking.gtm.GTMValues;
 import com.mobile.service.utils.ApiConstants;
 import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.CustomerUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
-import com.mobile.view.fragments.ProductDetailsFragment;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.EnumSet;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterFragment extends NewBaseFragment implements IResponseCallback {
 
-    private EditText mNationalIdView;
-    private EditText mFirstNameView;
-    private EditText mLastNameView;
-    private EditText mEmailRView;
-    private EditText mPasswordRView;
-    private EditText mPhoneView;
-    private Spinner mGenderSpinner;
+    private static final String CUSTOMER_REGISTRATION_STEP_1_VALIDATED = "CUSTOMER_REGISTRATION_STEP_1_VALIDATED";
+    private TextInputLayout tilEmail, tilPhoneNumber, tilNationalId, tilPassword;
+    private EditText etEmail, etPhoneNumber, etNationalId, etPassword;
 
     private FragmentType mParentFragmentType;
 
     private FragmentType mNextStepFromParent;
 
     private boolean isInCheckoutProcess;
-    private TextView national_id_error_message, first_name_error_message, last_name_error_message,
-            email_error_message, password_error_message, phone_error_message, gender_error_message;
-    private String userGender;
+    private boolean phoneVerificationOnGoing;
 
     public RegisterFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LOGIN_OUT,
-                R.layout.new_session_register_main_fragment,
+                R.layout.fragment_register_user,
                 IntConstants.ACTION_BAR_NO_TITLE,
                 ADJUST_CONTENT);
 
     }
 
-
-   /* @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_session_register_main_fragment, container, false);
-        return view;
-    }*/
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackPage(TrackingPage.USER_SIGNUP, getLoadTime(), false);
 
         Print.i(TAG, "ON CREATE");
         // Get arguments
@@ -102,27 +90,43 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
             checkoutStep = ConstantsCheckout.CHECKOUT_ABOUT_YOU;
         }
 
-
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.USER_SIGNUP.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
 
-        outState.putString("mNationalIdView", mNationalIdView.getText().toString());
-        outState.putString("mFirstNameView", mFirstNameView.getText().toString());
-        outState.putString("mLastNameView", mLastNameView.getText().toString());
-        outState.putString("mEmailRView", mEmailRView.getText().toString());
-        outState.putString("mPasswordRView", mPasswordRView.getText().toString());
-        outState.putString("mPhoneView", mPhoneView.getText().toString());
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (phoneVerificationOnGoing) {
+            SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
+            boolean isPhoneVerified = prefs.getBoolean(ConstantsSharedPrefs.KEY_SIGNUP_PHONE_VERIFIED, false);
+            if (isPhoneVerified) {
+                onClickCreate();
+                getBaseActivity().getExtraTabLayout().setVisibility(View.GONE);
+                return;
+            }
+        }
+        showFragmentContentContainer();
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         // Case forgot password
-        if (id == R.id.register_button_create) {
+        if (id == R.id.btnRegister) {
             onClickCreate();
         }
         // Case super
@@ -134,107 +138,62 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mNationalIdView = (EditText) view.findViewById(R.id.national_id);
-        mFirstNameView = (EditText) view.findViewById(R.id.first_name);
-        mLastNameView = (EditText) view.findViewById(R.id.last_name);
-        mEmailRView = (EditText) view.findViewById(R.id.email);
-        mPasswordRView = (EditText) view.findViewById(R.id.password);
-        mPhoneView = (EditText) view.findViewById(R.id.phone);
-        mGenderSpinner = (Spinner) view.findViewById(R.id.gender);
-        gender_error_message = (TextView) view.findViewById(R.id.gender_error_message);
-        fillGenderDropDown();
-        phone_error_message = (TextView) view.findViewById(R.id.phone_error_message);
-        national_id_error_message = (TextView) view.findViewById(R.id.national_id_error_message);
-        first_name_error_message = (TextView) view.findViewById(R.id.first_name_error_message);
-        last_name_error_message = (TextView) view.findViewById(R.id.last_name_error_message);
-        email_error_message = (TextView) view.findViewById(R.id.email_error_message);
-        password_error_message = (TextView) view.findViewById(R.id.password_error_message);
-        view.findViewById(R.id.register_button_create).setOnClickListener(this);
-        mEmailRView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        showGhostFragmentContentContainer();
+        HoloFontLoader.applyDefaultFont(view);
 
-        if (savedInstanceState != null) {
-            mNationalIdView.setText(savedInstanceState.getString("mNationalIdView"));
-            mFirstNameView.setText(savedInstanceState.getString("mFirstNameView"));
-            mLastNameView.setText(savedInstanceState.getString("mLastNameView"));
-            mEmailRView.setText(savedInstanceState.getString("mEmailRView"));
-            mPasswordRView.setText(savedInstanceState.getString("mPasswordRView"));
-            mPhoneView.setText(savedInstanceState.getString("mPhoneView"));
-        }
-    }
+        // Text Input Layouts
+        tilEmail = (TextInputLayout) view.findViewById(R.id.tilEmail);
+        tilPhoneNumber = (TextInputLayout) view.findViewById(R.id.tilPhoneNumber);
+        tilNationalId = (TextInputLayout) view.findViewById(R.id.tilNationalId);
+        tilPassword = (TextInputLayout) view.findViewById(R.id.tilPassword);
 
-    private void fillGenderDropDown() {
-        ArrayList<String> gender = new ArrayList<>();
-        gender.add(getString(R.string.gender_male));
-        gender.add(getString(R.string.gender_female));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, gender);
-        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
-        promptAdapter.setPrompt(getString(R.string.gender));
-        mGenderSpinner.setAdapter(promptAdapter);
-        mGenderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        etEmail = (EditText) view.findViewById(R.id.etEmail);
+        etPhoneNumber = (EditText) view.findViewById(R.id.etPhoneNumber);
+        etNationalId = (EditText) view.findViewById(R.id.etNationalId);
+        etPassword = (EditText) view.findViewById(R.id.etPassword);
+
+        Button btnRegister = (Button) view.findViewById(R.id.btnRegister);
+        btnRegister.setOnClickListener(this);
+
+        CheckBox cbShowHiderPassword = (CheckBox) view.findViewById(R.id.cbShowHidePassword);
+        cbShowHiderPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1) {
-                    userGender = "male";
-                } else if (position == 2) {
-                    userGender = "female";
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    etPassword.setTransformationMethod(new SingleLineTransformationMethod());
+                } else {
+                    etPassword.setTransformationMethod(new PasswordTransformationMethod());
                 }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                HoloFontLoader.applyDefaultFont(etPassword);
             }
         });
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            mNationalIdView.setText(savedInstanceState.getString("mNationalIdView"));
-            mFirstNameView.setText(savedInstanceState.getString("mFirstNameView"));
-            mLastNameView.setText(savedInstanceState.getString("mLastNameView"));
-            mEmailRView.setText(savedInstanceState.getString("mEmailRView"));
-            mPasswordRView.setText(savedInstanceState.getString("mPasswordRView"));
-            mPhoneView.setText(savedInstanceState.getString("mPhoneView"));
-        }
-    }
-
     private void showValidateMessages(BaseResponse baseResponse) {
         Map map = baseResponse.getValidateMessages();
-        national_id_error_message.setVisibility(View.GONE);
-        first_name_error_message.setVisibility(View.GONE);
-        last_name_error_message.setVisibility(View.GONE);
-        email_error_message.setVisibility(View.GONE);
-        password_error_message.setVisibility(View.GONE);
-        phone_error_message.setVisibility(View.GONE);
+        tilEmail.setError(null);
+        tilPhoneNumber.setError(null);
+        tilNationalId.setError(null);
+        tilPassword.setError(null);
 
         if (CollectionUtils.isNotEmpty(map)) {
             for (Object key : map.keySet()) {
                 switch (key.toString()) {
                     case "national_id":
-                        national_id_error_message.setVisibility(View.VISIBLE);
-                        national_id_error_message.setText(map.get(key).toString());
-                        break;
-                    case "first_name":
-                        first_name_error_message.setVisibility(View.VISIBLE);
-                        first_name_error_message.setText(map.get(key).toString());
-                        break;
-                    case "last_name":
-                        last_name_error_message.setVisibility(View.VISIBLE);
-                        last_name_error_message.setText(map.get(key).toString());
+                        tilNationalId.setError(map.get(key).toString());
+                        HoloFontLoader.applyDefaultFont(tilNationalId);
                         break;
                     case "email":
-                        email_error_message.setVisibility(View.VISIBLE);
-                        email_error_message.setText(map.get(key).toString());
+                        tilEmail.setError(map.get(key).toString());
+                        HoloFontLoader.applyDefaultFont(tilEmail);
                         break;
                     case "password":
-                        password_error_message.setVisibility(View.VISIBLE);
-                        password_error_message.setText(map.get(key).toString());
+                        tilPassword.setError(map.get(key).toString());
+                        HoloFontLoader.applyDefaultFont(tilPassword);
                         break;
                     case "phone":
-                        phone_error_message.setVisibility(View.VISIBLE);
-                        phone_error_message.setText(map.get(key).toString());
+                        tilPhoneNumber.setError(map.get(key).toString());
+                        HoloFontLoader.applyDefaultFont(tilPhoneNumber);
                         break;
                 }
             }
@@ -244,38 +203,61 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     private boolean checkValidation() {
         Context context = getBaseActivity();
 
-        boolean result = validateStringToPattern(context, R.string.national_id, mNationalIdView, mNationalIdView.getText().toString(), true, 10, 10, R.string.normal_string_regex, "", R.id.national_id_error_message);
-        result = validateStringToPattern(context, R.string.first_name, mFirstNameView, mFirstNameView.getText().toString(), true, 2, 50, R.string.normal_string_regex, "", R.id.first_name_error_message) && result;
-        result = validateStringToPattern(context, R.string.last_name, mLastNameView, mLastNameView.getText().toString(), true, 2, 50, R.string.normal_string_regex, "", R.id.last_name_error_message) && result;
-        result = validateStringToPattern(context, R.string.email, mEmailRView, mEmailRView.getText().toString(), true, 0, 40, R.string.email_regex, getResources().getString(R.string.error_invalid_email), R.id.email_error_message) && result;
-        result = validateStringToPattern(context, R.string.new_password, mPasswordRView, mPasswordRView.getText().toString(), true, 6, 50, R.string.normal_string_regex, "", R.id.password_error_message) && result;
-        result = validateStringToPattern(context, R.string.phone, mPhoneView, mPhoneView.getText().toString(), true, 0, 40, R.string.normal_string_regex, "", R.id.phone_error_message) && result;
-        result &= validateUserGender();
+        boolean result = validateField(context, getString(R.string.national_id), tilNationalId, etNationalId.getText().toString(), true, 10, 10, getString(R.string.normal_string_regex), "");
+        result = validateField(context, getString(R.string.email_address), tilEmail, etEmail.getText().toString(), true, 0, 0, getString(R.string.email_regex), getResources().getString(R.string.error_invalid_email)) && result;
+        result = validateField(context, getString(R.string.password), tilPassword, etPassword.getText().toString(), true, 6, 0, null, "") && result;
+        result = validateField(context, getString(R.string.mobile_number), tilPhoneNumber, etPhoneNumber.getText().toString(), true, 0, 0, getString(R.string.cellphone_regex), "") && result;
         return result;
     }
 
-    private boolean validateUserGender() {
-        if (userGender == null) {
-            gender_error_message.setVisibility(View.VISIBLE);
-            gender_error_message.setText(R.string.error_isrequired);
-            return false;
+    private boolean validateField(Context context, String label, TextInputLayout til, String text, boolean isRequired, int min, int max, String regex, String errorMessage) {
+        boolean result = true;
+        til.setError(null);
+        // Case empty
+        if (isRequired && android.text.TextUtils.isEmpty(text)) {
+            errorMessage = context.getString(R.string.error_isrequired);
+            til.setError(errorMessage);
+            HoloFontLoader.applyDefaultFont(til);
+            result = false;
         }
-        gender_error_message.setVisibility(View.GONE);
-        return true;
+        // Case too short
+        else if (min > 0 && text.length() < min) {
+            til.setError(label + " " + String.format(context.getResources().getString(R.string.form_textminlen), min));
+            HoloFontLoader.applyDefaultFont(til);
+            result = false;
+        }
+        // Case too long
+        else if (max > 0 && text.length() > max) {
+            til.setError(label + " " + String.format(context.getResources().getString(R.string.form_textmaxlen), max));
+            HoloFontLoader.applyDefaultFont(til);
+            result = false;
+        }
+        // Case no match regex
+        else if (regex != null) {
+
+            Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+            if (com.mobile.service.utils.TextUtils.isEmpty(errorMessage)) {
+                errorMessage = context.getString(R.string.error_invalid_value);
+            }
+
+            Matcher matcher = pattern.matcher(text);
+            result = matcher.matches();
+            if (!result) {
+                til.setError(errorMessage);
+                HoloFontLoader.applyDefaultFont(til);
+            }
+        }
+        return result;
     }
 
 
     void requestRegister() {
         // Get values
         ContentValues values = new ContentValues();
-        values.put("customer[national_id]", mNationalIdView.getText().toString());
-        values.put("customer[first_name]", mFirstNameView.getText().toString());
-        values.put("customer[last_name]", mLastNameView.getText().toString());
-        values.put("customer[email]", mEmailRView.getText().toString());
-        values.put("customer[password]", mPasswordRView.getText().toString());
-        values.put("customer[phone]", mPhoneView.getText().toString());
-        values.put("customer[phone_prefix]", "100");
-        values.put("customer[gender]", userGender);
+        values.put("customer[national_id]", etNationalId.getText().toString());
+        values.put("customer[email]", etEmail.getText().toString());
+        values.put("customer[password]", etPassword.getText().toString());
+        values.put("customer[phone]", etPhoneNumber.getText().toString());
 
         // Register user
         triggerRegister(ApiConstants.USER_REGISTRATION_API_PATH, values);
@@ -291,7 +273,10 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         // Case invalid
         else {
             // Tracking
-            TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
+            EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
+                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+                    EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+            TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
         }
     }
 
@@ -322,22 +307,52 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
 
             case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
-                // Tracking
-                TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.SignUp, EventFactory.signup("email", EmailHelper.getHost(BamiloApplication.CUSTOMER.getEmail()), true));
-                // Notify user
-                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
-                // Finish
-                getActivity().onBackPressed();
-                // Set facebook login
-                CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
-                getBaseActivity().setupDrawerNavigation();
+                if (baseResponse.getSuccessMessages() != null &&
+                        baseResponse.getSuccessMessages().containsKey(CUSTOMER_REGISTRATION_STEP_1_VALIDATED)) {
+                    navigateToVerificationFragment();
+                } else {
+                    // Tracking
+                    long customerId = SimpleEventModel.NO_VALUE;
+                    String customerEmail = "";
+                    if (BamiloApplication.CUSTOMER != null) {
+                        customerId = BamiloApplication.CUSTOMER.getId();
+                        customerEmail = BamiloApplication.CUSTOMER.getEmail();
+                    }
+                    EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
+                            Constants.LOGIN_METHOD_EMAIL, customerId,
+                            EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, customerEmail != null ? EmailHelper.getHost(customerEmail) : "",
+                                    true));
+                    TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
+//                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.SignUp, EmarsysEventFactory.signup("email", EmailHelper.getHost(BamiloApplication.CUSTOMER.getEmail()), true));
+                    // Notify user
+                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
+                    // Finish
+                    getActivity().onBackPressed();
+                    // Set facebook login
+                    CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
+                    getBaseActivity().setupDrawerNavigation();
+                }
 
                 break;
             default:
                 hideActivityProgress();
                 break;
         }
+    }
+
+    private void navigateToVerificationFragment() {
+        showGhostFragmentContentContainer();
+        showFragmentLoading();
+        phoneVerificationOnGoing = true;
+        String phoneNumber = etPhoneNumber.getText().toString();
+        Bundle args = new Bundle();
+        args.putString(ConstantsIntentExtra.PHONE_NUMBER, phoneNumber);
+        getBaseActivity().onSwitchFragment(FragmentType.MOBILE_VERIFICATION, args, false);
+
+        SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(ConstantsSharedPrefs.KEY_SIGNUP_PHONE_VERIFIED, false);
+        editor.apply();
     }
 
     @Override
@@ -360,13 +375,16 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
             case REGISTER_ACCOUNT_EVENT:
                 hideActivityProgress();
                 // Tracking
-                TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-                TrackerManager.postEvent(getBaseActivity(), EventConstants.SignUp, EventFactory.signup("email", EventConstants.UNKNOWN_EVENT_VALUE, false));
+                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
+                        Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+                TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
 
                 // Validate and show errors
                 showFragmentContentContainer();
                 // Show validate messages
                 showValidateMessages(baseResponse);
+                getBaseActivity().getExtraTabLayout().setVisibility(View.VISIBLE);
                 break;
 
             default:

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -20,6 +21,7 @@ import com.mobile.helpers.checkout.GetStepFinishHelper;
 import com.mobile.helpers.checkout.SetStepFinishHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.forms.PaymentMethodForm;
 import com.mobile.service.objects.addresses.Address;
 import com.mobile.service.objects.cart.PurchaseCartItem;
@@ -28,7 +30,6 @@ import com.mobile.service.objects.checkout.CheckoutFinish;
 import com.mobile.service.objects.product.RichRelevance;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
-import com.mobile.service.tracking.TrackingEvent;
 import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.EventType;
@@ -38,7 +39,6 @@ import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.cart.UICartUtils;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.ImageManager;
@@ -145,8 +145,12 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             mOrderFinish = arguments.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
             mCheckoutFinish = arguments.getParcelable(ConstantsIntentExtra.DATA);
         }
-        // Track
-        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ORDER);
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_FINISH.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -223,7 +227,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.ORDER_CONFIRM, getLoadTime(), true);
     }
 
     /*
@@ -388,7 +391,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Name
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_name)).setText(item.getName());
             // Quantity
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.qty_placeholder, item.getQuantity()));
+            ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.qty_placeholder, String.valueOf(item.getQuantity())));
             // Price
             UIProductUtils.setPriceRules(item, (TextView) prodInflateView.findViewById(R.id.my_order_item_price));
             // Variation
@@ -628,13 +631,17 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                     showFragmentErrorRetry();
                 } else {
                     showMyOrder();
-                    TrackerDelegator.trackScreenLoadTiming(R.string.gaCheckoutConfirmation, mGABeginRequestMillis, "");
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_FINISH.getName()), getString(R.string.gaScreen),
+                            "" ,
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                 }
                 break;
             case SET_MULTI_STEP_FINISH:
                 mCheckoutFinish = (CheckoutFinish) baseResponse.getContentData();
-                // Tracking purchase
-                TrackerDelegator.trackPurchase(mCheckoutFinish, BamiloApplication.INSTANCE.getCart());
+
                 // Next step
                 switchToSubmittedPayment();
                 // Update cart info

@@ -6,14 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.mobile.service.objects.home.model.BaseComponent;
-import com.mobile.service.objects.home.model.TileComponent;
+import com.mobile.classes.models.SimpleEventModel;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
+import com.mobile.managers.TrackerManager;
 import com.mobile.utils.ColorSequenceHolder;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -66,9 +66,11 @@ public class TileViewComponent extends BaseViewComponent<List<TileViewComponent.
                     onTileClickListener.onTileClicked(v, item);
                 }
                 if (mPage != null) {
-                    TrackerDelegator.trackComponentViewTap(mPage,
-                            String.format(Locale.US, "%s_%d", BaseComponent.ComponentType.Tile.toString(), mInstanceIndex),
-                            item.targetLink);
+                    String category = String.format(Locale.US, "%s+%s_%d", mPage, BaseViewComponent.ComponentType.Tile.toString(), mInstanceIndex);
+                    String action = EventActionKeys.TEASER_TAPPED;
+                    String label = item.targetLink;
+                    SimpleEventModel sem = new SimpleEventModel(category, action, label, SimpleEventModel.NO_VALUE);
+                    TrackerManager.trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
                 }
             }
         });
@@ -84,22 +86,6 @@ public class TileViewComponent extends BaseViewComponent<List<TileViewComponent.
     @Override
     public void setContent(List<TileItem> content) {
         this.tileItems = content;
-    }
-
-    @Override
-    public void setComponent(BaseComponent component) {
-        if (!(component instanceof TileComponent)) {
-            return;
-        }
-        TileComponent tileComponent = (TileComponent) component;
-        List<TileItem> tileItems = new ArrayList<>();
-
-        for (TileComponent.Tile tile : tileComponent.getTiles()) {
-            TileItem tempTile = new TileItem(tile.getPortraitImage(), tile.getTarget());
-            tileItems.add(tempTile);
-        }
-
-        setContent(tileItems);
     }
 
     public OnTileClickListener getOnTileClickListener() {

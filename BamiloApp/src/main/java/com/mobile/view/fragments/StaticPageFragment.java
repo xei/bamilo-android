@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.statics.StaticPage;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
@@ -16,7 +18,6 @@ import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -74,6 +75,10 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
             mTitle = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mContentId = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_ID);
         }
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.STATIC_PAGE.getName()), getString(R.string.gaScreen), "", getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
     
     /*
@@ -178,11 +183,12 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         }
         showFragmentContentContainer();
         textView.setText(((StaticPage)baseResponse.getMetadata().getData()).getHtml());
-        //DROID-10
-        TrackerDelegator.trackScreenLoadTiming(R.string.gaStaticPage, mGABeginRequestMillis, "");
         if (!pageTracked) {
-            // Track current catalog page
-            TrackerDelegator.trackPage(TrackingPage.STATIC_PAGE, getLoadTime(), false);
+            // Track screen timing
+            BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.STATIC_PAGE.getName()), getString(R.string.gaScreen),
+                    "" /*The API isn't sending the name of the static page*/,
+                    getLoadTime());
+            TrackerManager.trackScreenTiming(getContext(), screenModel);
             pageTracked = true;
         }
     }

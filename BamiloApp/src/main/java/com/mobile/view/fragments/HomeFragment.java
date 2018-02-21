@@ -8,24 +8,27 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.bamilo.apicore.di.modules.HomeModule;
+import com.bamilo.apicore.presentation.HomePresenter;
+import com.bamilo.apicore.service.model.EventType;
+import com.bamilo.apicore.service.model.ServerResponse;
+import com.bamilo.apicore.service.model.data.home.BaseComponent;
+import com.bamilo.apicore.view.HomeView;
+import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.teasers.GetHomeHelper;
-import com.mobile.interfaces.IResponseCallback;
-import com.mobile.service.objects.home.HomePageComponents;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.home.TeaserCampaign;
-import com.mobile.service.objects.home.model.BaseComponent;
 import com.mobile.service.objects.home.type.TeaserGroupType;
-import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.tracking.TrackingPage;
-import com.mobile.service.utils.EventType;
-import com.mobile.service.utils.output.Print;
+import com.mobile.service.utils.NetworkConnectivity;
 import com.mobile.utils.ColorSequenceHolder;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.R;
 import com.mobile.view.components.BaseViewComponent;
+import com.mobile.view.components.BaseViewComponentFactory;
 import com.mobile.view.components.CategoriesCarouselViewComponent;
 import com.mobile.view.components.DailyDealViewComponent;
 import com.mobile.view.components.SliderViewComponent;
@@ -34,13 +37,20 @@ import com.mobile.view.components.TileViewComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends BaseFragment implements SliderViewComponent.OnSlideClickListener, TargetLink.OnCampaignListener, TileViewComponent.OnTileClickListener, DailyDealViewComponent.OnCountDownDealItemClickListener, CategoriesCarouselViewComponent.OnCarouselItemClickListener, IResponseCallback {
+import javax.inject.Inject;
+
+public class HomeFragment extends BaseFragment implements SliderViewComponent.OnSlideClickListener, TargetLink.OnCampaignListener,
+        TileViewComponent.OnTileClickListener, DailyDealViewComponent.OnCountDownDealItemClickListener,
+        CategoriesCarouselViewComponent.OnCarouselItemClickListener, HomeView {
+
+    @Inject
+    HomePresenter homePresenter;
 
     private NestedScrollView mRootScrollView;
     private LinearLayout mContainerLinearLayout;
     private SwipeRefreshLayout srlHomeRoot;
     private ColorSequenceHolder colorSequenceHolder;
-    private HomePageComponents mHomePageComponents;
+    private List<BaseComponent> mComponents;
     private List<DailyDealViewComponent> dailyDealViewComponents;
     private boolean isFragmentVisibleToUser = false;
 
@@ -49,8 +59,17 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Track only the screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.HOME.getName()), getString(R.string.gaScreen), "", getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        injectDependencies();
         mRootScrollView = (NestedScrollView) view.findViewById(R.id.nsvHomeContainer);
         mRootScrollView.setClipToPadding(false);
         mRootScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -83,18 +102,31 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
 
         initColorSeqHolder();
-        if (mHomePageComponents == null ||
-                mHomePageComponents.getComponents() == null) {
+        if (mComponents == null ||
+                mComponents.isEmpty()) {
             loadHomePage();
         } else {
-            showComponents(mHomePageComponents);
+            showComponents(mComponents);
         }
+    }
+
+    private void injectDependencies() {
+        BamiloApplication
+                .getComponent()
+                .plus(new HomeModule(this))
+                .inject(this);
     }
 
     @Override
     public void onPause() {
         stopDealComponentsTimer();
         super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        homePresenter.destroy();
+        super.onDestroyView();
     }
 
     private void stopDealComponentsTimer() {
@@ -107,8 +139,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
 
     private void loadHomePage() {
         stopDealComponentsTimer();
-        srlHomeRoot.setRefreshing(true);
-        triggerContentEventNoLoading(new GetHomeHelper(), null, this);
+        homePresenter.loadHome(NetworkConnectivity.isConnected(getContext()));
     }
 
     private void initColorSeqHolder() {
@@ -182,8 +213,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    public void showComponents(HomePageComponents homePageComponents) {
-        List<BaseComponent> components = homePageComponents.getComponents();
+    public void showComponents(List<BaseComponent> components) {
         if (dailyDealViewComponents == null) {
             dailyDealViewComponents = new ArrayList<>();
         }
@@ -197,7 +227,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
         if (components != null) {
             mContainerLinearLayout.removeAllViews();
             for (BaseComponent component : components) {
-                BaseViewComponent viewComponent = BaseViewComponent.createFromBaseComponent(component);
+                BaseViewComponent viewComponent = BaseViewComponentFactory.createBaseViewComponent(component);
                 if (viewComponent != null) {
                     if (viewComponent instanceof TileViewComponent) {
                         ((TileViewComponent) viewComponent).setColorSequenceHolder(colorSequenceHolder);
@@ -240,45 +270,39 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
     }
 
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        srlHomeRoot.setRefreshing(false);
-        showFragmentContentContainer();
-        Print.i(TAG, "ON SUCCESS");
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-        EventType eventType = baseResponse.getEventType();
-        switch (eventType) {
-            case GET_HOME_EVENT: {
-                TrackerDelegator.trackPage(TrackingPage.HOME_PAGE, getLoadTime(), false);
-                HomePageComponents homePageComponents = (HomePageComponents) baseResponse.getContentData();
-                this.mHomePageComponents = homePageComponents;
-                showComponents(homePageComponents);
-                break;
-            }
-        }
+    public void showMessage(EventType eventType, String message) {
+        showWarningErrorMessage(message);
     }
 
     @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        srlHomeRoot.setRefreshing(false);
-        Print.i(TAG, "ON ERROR RESPONSE");
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-        // Check base errors
-        if (super.handleErrorEvent(baseResponse)) return;
-        // Check home types
-        EventType eventType = baseResponse.getEventType();
-        switch (eventType) {
-            case GET_HOME_EVENT:
-                Print.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
-                showFragmentFallBack();
-                break;
-        }
+    public void showOfflineMessage(EventType eventType) {
+        showFragmentNoNetworkRetry();
+    }
+
+    @Override
+    public void showConnectionError(EventType eventType) {
+        showFragmentNetworkErrorRetry();
+    }
+
+    @Override
+    public void showServerError(EventType eventType, ServerResponse response) {
+        // it isn't gonna happen
+    }
+
+    @Override
+    public void toggleProgress(EventType eventType, boolean show) {
+        srlHomeRoot.setRefreshing(show);
+    }
+
+    @Override
+    public void showRetry(EventType eventType) {
+        showConnectionError(eventType);
+    }
+
+    @Override
+    public void performHomeComponents(List<BaseComponent> components) {
+        showFragmentContentContainer();
+        mComponents = components;
+        showComponents(mComponents);
     }
 }

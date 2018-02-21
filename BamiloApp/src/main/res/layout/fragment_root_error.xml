@@ -42,7 +42,7 @@
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp"
                 android:text="@string/internet_settings"
-                android:textColor="@color/teal" />
+                android:textColor="@color/dark_green_3" />
 
         </RelativeLayout>
 

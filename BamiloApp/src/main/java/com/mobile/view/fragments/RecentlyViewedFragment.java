@@ -8,14 +8,17 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.EventConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.RecentlyViewedAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.EventFactory;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetRecentlyViewedHelper;
 import com.mobile.helpers.products.ValidateProductHelper;
@@ -24,6 +27,7 @@ import com.mobile.managers.TrackerManager;
 import com.mobile.service.database.LastViewedTableHelper;
 import com.mobile.service.objects.campaign.CampaignItem;
 import com.mobile.service.objects.cart.AddedItemStructure;
+import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.product.ValidProductList;
 import com.mobile.service.objects.product.pojo.ProductMultiple;
 import com.mobile.service.objects.product.pojo.ProductSimple;
@@ -69,6 +73,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
     private ArrayList<String> list;
     private boolean pageTracked = false;
+    private EmarsysEventModel addToCartEventModel;
 
     /**
      * Empty constructor
@@ -90,6 +95,12 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.RECENTLY_VIEWED.getName()), getString(R.string.gaScreen),
+                "" ,
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -407,7 +418,11 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, addableToCart.getCategories());
             TrackerDelegator.trackProductAddedToCart(bundle);
-            TrackerManager.postEvent(getBaseActivity(), EventConstants.AddToCart, EventFactory.addToCart(sku, (long) BamiloApplication.INSTANCE.getCart().getTotal(), true));
+
+            // Global Tracker
+            addToCartEventModel = new EmarsysEventModel(getString(TrackingPage.RECENTLY_VIEWED.getName()),
+                    EventActionKeys.ADD_TO_CART, sku, (long) addableToCart.getPrice(), null);
+
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -438,7 +453,12 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         switch (eventType) {
             case GET_RECENTLY_VIEWED_LIST:
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.RECENTLY_VIEWED_PAGE, getLoadTime(), false);
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.RECENTLY_VIEWED.getName()), getString(R.string.gaScreen),
+                            "" ,
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
+
                     pageTracked = true;
                 }
                 Print.i(TAG, "ON RESPONSE COMPLETE: GET_RECENTLY_VIEWED_LIST");
@@ -453,6 +473,20 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT");
                 int position = ((AddedItemStructure) baseResponse.getMetadata().getData()).getCurrentPos();
                 updateLayoutAfterAction(position);
+
+                // Tracking add to cart
+                if (addToCartEventModel != null) {
+                    PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
+                    if (cart != null) {
+                        addToCartEventModel.emarsysAttributes = EmarsysEventModel
+                                .createAddToCartEventModelAttributes(addToCartEventModel.label, (long) cart.getTotal(), true);
+                    } else {
+                        addToCartEventModel.emarsysAttributes = EmarsysEventModel
+                                .createAddToCartEventModelAttributes(addToCartEventModel.label, 0, true);
+
+                    }
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
+                }
                 break;
             case VALIDATE_PRODUCTS:
                 mProducts = (ValidProductList) baseResponse.getContentData();

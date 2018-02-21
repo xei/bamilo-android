@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.support.design.widget.TextInputLayout;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class HoloFontLoader {
-    
+
     public static FontCollector sFontCollector;
     public static Font sFontBold;
     //public static Font sFontBoldItalic;
@@ -90,8 +91,8 @@ public class HoloFontLoader {
             //sFontCollector.register(sFontBoldItalic);
         }
     }
-    
-    
+
+
     private static final Map<String, Integer> sFontStyleMapping;
     private static Font sDefaultFont;
     private static List<String> sFontStyleKeys;
@@ -118,6 +119,9 @@ public class HoloFontLoader {
     private static void applyInternal(View view, Font font) {
         // TODO Validate if this is necessary
         if (view instanceof ViewGroup) {
+            if (view instanceof TextInputLayout) {
+                ((TextInputLayout) view).setTypeface(font.getTypeface(font.mFontFamily, font.mFontStyle));
+            }
             final ViewGroup vg = (ViewGroup) view;
             final int childCount = vg.getChildCount();
             for (int i = 0; i < childCount; i++) {
@@ -139,15 +143,15 @@ public class HoloFontLoader {
                 MaterialEditText materialEditText = (MaterialEditText) view;
                 materialEditText.setAccentTypeface(font.getTypeface(fontFamily, fontStyle));
                 materialEditText.setFloatingLabelTextSize((int) (materialEditText.getTextSize() -
-                                        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 2,
-                                                materialEditText.getResources().getDisplayMetrics())));
+                        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 2,
+                                materialEditText.getResources().getDisplayMetrics())));
             }
             view.setTag(R.id.fontLoaderFont, font);
             view.setTag(R.id.fontLoaderFontStyle, fontStyle);
             view.setTag(R.id.fontLoaderFontFamily, fontFamily);
         }
         // Case TextView
-        else  if (view instanceof TextView) {
+        else if (view instanceof TextView) {
             ((TextView) view).setTypeface(font.getTypeface(font.mFontFamily, font.mFontStyle));
         }
     }

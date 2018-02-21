@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.adapters.PaymentMethodAdapter;
-import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -24,6 +24,8 @@ import com.mobile.helpers.checkout.GetStepPaymentHelper;
 import com.mobile.helpers.checkout.SetStepFinishHelper;
 import com.mobile.helpers.checkout.SetStepPaymentHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
+import com.mobile.pojo.DynamicForm;
 import com.mobile.service.forms.FormInputType;
 import com.mobile.service.forms.PaymentInfo;
 import com.mobile.service.forms.PaymentMethodForm;
@@ -33,16 +35,13 @@ import com.mobile.service.objects.checkout.MultiStepPayment;
 import com.mobile.service.objects.product.RichRelevance;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
-import com.mobile.service.tracking.TrackingEvent;
 import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.CurrencyFormatter;
-import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -130,7 +129,12 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             mSavedState = savedInstanceState;
             mVoucherCode = savedInstanceState.getString(ConstantsIntentExtra.ARG_1);
         }
-        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_PAYMENT);
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_PAYMENT_METHOD.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -312,7 +316,13 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         switch (eventType) {
             case GET_MULTI_STEP_PAYMENT:
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_METHOD, getLoadTime(), false);
+//                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_METHOD, getLoadTime(), false);
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_PAYMENT_METHOD.getName()), getString(R.string.gaScreen),
+                            "" ,
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
                 MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();
@@ -333,7 +343,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
             case SET_MULTI_STEP_FINISH:
                 mCheckoutFinish = (CheckoutFinish) baseResponse.getContentData();
-                TrackerDelegator.trackPurchase(mCheckoutFinish, BamiloApplication.INSTANCE.getCart());
+//                TrackerDelegator.trackPurchase(mCheckoutFinish, BamiloApplication.INSTANCE.getCart());
                 switchToSubmittedPayment();
                 getBaseActivity().updateCartInfo();
             break;
@@ -372,7 +382,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
             case SET_MULTI_STEP_PAYMENT:
                 paymentMethodAdapter.notifyDataSetChanged();
-                TrackerDelegator.trackFailedPayment(paymentName, BamiloApplication.INSTANCE.getCart());
+//                TrackerDelegator.trackFailedPayment(paymentName, BamiloApplication.INSTANCE.getCart());
                 showWarningErrorMessage(baseResponse.getValidateMessage());
                 showFragmentContentContainer();
             break;

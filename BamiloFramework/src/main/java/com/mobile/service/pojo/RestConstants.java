@@ -332,6 +332,7 @@ public class RestConstants {
     public static final String BRAND_URL_KEY = "brand_url_key";
     public static final String CATEGORY_URL_KEY = "category_url_key";
     public static final String CATEGORY_NAME = "category_name";
+    public static final String CATEGORY_ENTITY = "category_entity";
     public static final String ORDERS_COUNT = "orders_count";
     public static final String FREE_SHIPPING_POSSIBLE = "free_shipping_possible";
     public static final String ALL_OFFERS = "all_offers";

@@ -8,14 +8,19 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.bamilo.apicore.di.modules.OrdersListModule;
+import com.bamilo.apicore.presentation.OrdersListPresenter;
+import com.bamilo.apicore.service.model.OrdersListResponse;
+import com.bamilo.apicore.service.model.ServerResponse;
+import com.bamilo.apicore.service.model.data.orders.OrderListItem;
+import com.bamilo.apicore.view.OrdersListView;
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OrdersAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.account.GetMyOrdersListHelper;
-import com.mobile.interfaces.IResponseCallback;
-import com.mobile.service.objects.orders.MyOrder;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.orders.Order;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
@@ -24,10 +29,10 @@ import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.EventType;
+import com.mobile.service.utils.NetworkConnectivity;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
@@ -36,17 +41,25 @@ import com.mobile.view.fragments.ItemTrackingFragment;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author Paulo Carvalho
  */
-public class MyOrdersFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnScrollListener {
+public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItemClickListener, OnScrollListener, OrdersListView {
 
     private static final String TAG = MyOrdersFragment.class.getSimpleName();
 
-    //DROID-10
-    private long mGABeginRequestMillis;
+    @Named("apiPaginatedItemsCount")
+    @Inject
+    int itemsPerPage;
+
+    @Inject
+    OrdersListPresenter presenter;
+
     private ArrayList<Order> mOrdersList;
     private ListView mOrdersListView;
     private SwipeRefreshLayout srlOrderList;
@@ -58,6 +71,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     private boolean isErrorOnLoadingMore;
     private int mScrollPosition;
     private boolean pageTracked = false;
+    private boolean showDefaultProgress;
 
     /**
      * Empty constructor
@@ -78,13 +92,27 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        injectDependencies();
         Print.i(TAG, "ON CREATE");
-        mGABeginRequestMillis = System.currentTimeMillis();
+        showDefaultProgress = true;
         if (savedInstanceState != null) {
             mOrdersList = savedInstanceState.getParcelableArrayList(RestConstants.ORDERS);
             mPageIndex = savedInstanceState.getInt(RestConstants.PAGE);
             mMaxPages = savedInstanceState.getInt(RestConstants.TOTAL_PAGES);
         }
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.ORDER_LIST.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
+    }
+
+    private void injectDependencies() {
+        BamiloApplication
+                .getComponent()
+                .plus(new OrdersListModule(this))
+                .inject(this);
     }
 
     /*
@@ -105,7 +133,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
             @Override
             public void onRefresh() {
                 mPageIndex = IntConstants.FIRST_PAGE;
-                triggerGetOrderList(mPageIndex, false);
+                showDefaultProgress = false;
+                triggerGetOrderList(mPageIndex);
             }
         });
         // Get container order status
@@ -182,7 +211,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         }
         // Case first time
         else if (CollectionUtils.isEmpty(mOrdersList)) {
-            triggerGetOrderList(mPageIndex, true);
+            showDefaultProgress = true;
+            triggerGetOrderList(mPageIndex);
         }
         // Case recover saved state
         else {
@@ -252,7 +282,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         if (isBottomReached && !isLoadingMore && mPageIndex < mMaxPages) {
             Log.i(TAG, "LOADING MORE DATA");
             isLoadingMore = true;
-            triggerGetOrderList(mPageIndex + 1, true);
+            showDefaultProgress = false;
+            triggerGetOrderList(mPageIndex + 1);
         }
     }
 
@@ -279,64 +310,10 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
      * ######### TRIGGERS #########
      */
 
-    private void triggerGetOrderList(int page, boolean showDefaultProgress) {
-        if (page == IntConstants.FIRST_PAGE) {
-            if (!showDefaultProgress) {
-                triggerContentEventNoLoading(new GetMyOrdersListHelper(), GetMyOrdersListHelper.createBundle(page), this);
-                srlOrderList.setRefreshing(true);
-            } else {
-                triggerContentEvent(new GetMyOrdersListHelper(), GetMyOrdersListHelper.createBundle(page), this);
-            }
-        } else {
-            triggerContentEventNoLoading(new GetMyOrdersListHelper(), GetMyOrdersListHelper.createBundle(page), this);
-        }
+    private void triggerGetOrderList(int page) {
+        presenter.loadOrdersList(itemsPerPage, page, NetworkConnectivity.isConnected(getContext()));
     }
 
-    /*
-     * ######### RESPONSES #########
-     */
-
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "ON SUCCESS EVENT");
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-        // Hide dialog progress
-        hideActivityProgress();
-        srlOrderList.setRefreshing(false);
-        // Validate event
-        EventType eventType = baseResponse.getEventType();
-        switch (eventType) {
-            case GET_MY_ORDERS_LIST_EVENT:
-                MyOrder orders = (MyOrder) baseResponse.getContentData();
-                ArrayList<Order> orderList = orders.getOrders();
-                // Get max pages
-                mPageIndex = orders.getCurrentPage();
-                mMaxPages = orders.getTotalPages();
-                // Validate
-                if (CollectionUtils.isEmpty(orderList) && mPageIndex == 1) {
-                    showErrorFragment(ErrorLayoutFactory.NO_ORDERS_LAYOUT, this);
-                } else if (mPageIndex > 1) {
-                    appendToList(orderList);
-                    isLoadingMore = false;
-                } else
-                    showOrders(orderList);
-
-
-                if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.ORDER_LIST, getLoadTime(), false);
-                    pageTracked = true;
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.d(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
@@ -378,4 +355,99 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
+    @Override
+    public void showMessage(com.bamilo.apicore.service.model.EventType eventType, String message) {
+        showWarningErrorMessage(message);
+    }
+
+    @Override
+    public void showOfflineMessage(com.bamilo.apicore.service.model.EventType eventType) {
+        if (isLoadingMore) {
+            isErrorOnLoadingMore = true;
+            // to stop scrolling
+            mOrdersListView.smoothScrollBy(0, 0);
+            mOrdersListView.smoothScrollBy(-getResources().getDimensionPixelSize(R.dimen.catalog_footer_height), 0);
+            isLoadingMore = false;
+            showNoNetworkWarning();
+        } else {
+            showFragmentNoNetworkRetry();
+        }
+    }
+
+    @Override
+    public void showConnectionError(com.bamilo.apicore.service.model.EventType eventType) {
+        if (isLoadingMore) {
+            isErrorOnLoadingMore = true;
+            // to stop scrolling
+            mOrdersListView.smoothScrollBy(0, 0);
+            mOrdersListView.smoothScrollBy(-getResources().getDimensionPixelSize(R.dimen.catalog_footer_height), 0);
+            isLoadingMore = false;
+            showUnexpectedErrorWarning();
+        } else {
+            showFragmentNetworkErrorRetry();
+        }
+    }
+
+    @Override
+    public void showServerError(com.bamilo.apicore.service.model.EventType eventType, ServerResponse response) {
+
+    }
+
+    @Override
+    public void toggleProgress(com.bamilo.apicore.service.model.EventType eventType, boolean show) {
+        if (showDefaultProgress) {
+            if (show) {
+                showFragmentLoading();
+            } else {
+                showFragmentContentContainer();
+                showDefaultProgress = false;
+            }
+        } else {
+            srlOrderList.setRefreshing(show);
+        }
+    }
+
+    @Override
+    public void showRetry(com.bamilo.apicore.service.model.EventType eventType) {
+        if (isLoadingMore) {
+            isErrorOnLoadingMore = true;
+            // to stop scrolling
+            mOrdersListView.smoothScrollBy(0, 0);
+            mOrdersListView.smoothScrollBy(-getResources().getDimensionPixelSize(R.dimen.catalog_footer_height), 0);
+            isLoadingMore = false;
+            showUnexpectedErrorWarning();
+        } else {
+            showConnectionError(eventType);
+        }
+    }
+
+    @Override
+    public void performOrdersList(OrdersListResponse ordersListResponse) {
+        if (ordersListResponse != null && ordersListResponse.isSuccess()) {
+            showFragmentContentContainer();
+            ArrayList<Order> orderList = new ArrayList<>();
+
+            for (OrderListItem item : ordersListResponse.getOrderListItems()) {
+                Order order = new Order();
+                order.setNumber(Integer.valueOf(item.getOrderNumber()));
+                order.setDate(item.getOrderDate());
+                order.setTotal(Double.valueOf(item.getTotalPrice()));
+                orderList.add(order);
+            }
+
+            mPageIndex = ordersListResponse.getPagination().getCurrentPage();
+            mMaxPages = ordersListResponse.getPagination().getTotalPages();
+
+            if (CollectionUtils.isEmpty(orderList) && mPageIndex == 1) {
+                showErrorFragment(ErrorLayoutFactory.NO_ORDERS_LAYOUT, this);
+            } else if (mPageIndex > 1) {
+                appendToList(orderList);
+                isLoadingMore = false;
+            } else {
+                showOrders(orderList);
+            }
+        } else {
+            onLoginRequired();
+        }
+    }
 }

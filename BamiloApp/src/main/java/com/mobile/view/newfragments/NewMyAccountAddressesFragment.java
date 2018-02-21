@@ -6,10 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.address.GetMyAddressesHelper;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.addresses.Addresses;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.rest.errors.ErrorCode;
@@ -18,7 +20,6 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -41,7 +42,7 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
                 NavigationAction.MY_ACCOUNT_MY_ADDRESSES,
                 R.layout.new_my_account_addresses,
                 R.string.my_addresses,
-                ConstantsCheckout.NO_CHECKOUT,false);
+                ConstantsCheckout.NO_CHECKOUT, false);
     }
 
     /*
@@ -51,8 +52,13 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-    }
 
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_ADDRESSES.getName()), getString(R.string.gaScreen),
+                getString(R.string.gaMyProfileLabel),
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
+    }
 
 
     @Override
@@ -72,7 +78,6 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
         mSelectedAddress = -1;
 
     }
-
 
 
     @Override
@@ -144,7 +149,7 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }*/
-           hideActivityProgress();
+        hideActivityProgress();
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
@@ -152,11 +157,19 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
                 super.showAddresses((Addresses) baseResponse.getContentData(), -1);
                 fabNewAddress.show();
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.MY_ADDRESSES, getLoadTime(), false);
+                    /*TrackerDelegator.trackPage(TrackingPage.MY_ADDRESSES, getLoadTime(), false);*/
+
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_ADDRESSES.getName()), getString(R.string.gaScreen),
+                            getString(R.string.gaMyProfileLabel),
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
                 break;
             case GET_DELETE_ADDRESS_FORM_EVENT:
+                fabNewAddress.show();
                 triggerGetAddresses();
                 break;
             case SET_DEFAULT_SHIPPING_ADDRESS:

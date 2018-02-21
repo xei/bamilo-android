@@ -85,6 +85,9 @@ public class ConstantsIntentExtra {
 
     // ########### MY ORDER ##############
     public static final String ORDER_FINISH = mPackage + "OrderFinish";
+    public static final String COMPLETE_ORDER = mPackage + "CompleteOrder";
+    public static final String ORDER_CANCELLATION_REQUEST_BODY = mPackage + "CancellationRequestBody";
+    public static final String CANCELING_ORDER_ITEM_ID = mPackage + "CancelingOrderItemId";
 
     // ############ BANNER TRACKING ###############
     public static final String TRACKING_ORIGIN_TYPE = "bannerGroupType";
@@ -98,15 +101,19 @@ public class ConstantsIntentExtra {
     public static final String ARG_1 = mPackage + "arg1";
     public static final String ARG_2 = mPackage + "arg2";
     public static final String ARG_3 = mPackage + "arg3";
-    @Deprecated public static final String CONTENT_ID = mPackage + "ContentId";
-    @Deprecated public static final String CONTENT_TITLE = mPackage + "ContentTitle";
+    @Deprecated
+    public static final String CONTENT_ID = mPackage + "ContentId";
+    @Deprecated
+    public static final String CONTENT_TITLE = mPackage + "ContentTitle";
 
     // ########## RICH RELEVANCE ############
     public static final String RICH_RELEVANCE_HASH = mPackage + "RichRelevanceHash";
 
-    public static final String SUB_CATEGORY_FILTER="SubCategoryFilter";
+    public static final String SUB_CATEGORY_FILTER = "SubCategoryFilter";
 
     public static final String CATEGORY_URL = "category_url";
     public static final String ORDER_NUMBER = "order_number";
     public static final String ADDRESS = "address";
+    public static final String REDIRECT_TO_REVIEWS = "redirect_to_reviews";
+    public static final String PHONE_NUMBER = "phone_number";
 }

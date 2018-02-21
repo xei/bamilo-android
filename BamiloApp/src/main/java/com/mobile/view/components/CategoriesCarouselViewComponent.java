@@ -10,15 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mobile.service.objects.home.model.BaseComponent;
-import com.mobile.service.objects.home.model.CarouselComponent;
-import com.mobile.service.pojo.RestConstants;
-import com.mobile.utils.TrackerDelegator;
+import com.mobile.classes.models.SimpleEventModel;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
+import com.mobile.managers.TrackerManager;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
 import com.mobile.view.widget.LimitedCountLinearLayoutManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,20 +44,6 @@ public class CategoriesCarouselViewComponent extends BaseViewComponent<List<Cate
     @Override
     public void setContent(List<CategoryItem> content) {
         this.categoryItems = content;
-    }
-
-    @Override
-    public void setComponent(BaseComponent component) {
-        if (!(component instanceof CarouselComponent)) {
-            return;
-        }
-        List<CategoryItem> categoryItems = new ArrayList<>();
-        CarouselComponent carouselComponent = (CarouselComponent) component;
-        for (CarouselComponent.CarouselItem carouselItem : carouselComponent.getCarouselItems()) {
-            CategoryItem tempItem = new CategoryItem(carouselItem.getTitle(), carouselItem.getPortraitImage(), carouselItem.getTarget());
-            categoryItems.add(tempItem);
-        }
-        setContent(categoryItems);
     }
 
     public void setOnCarouselItemClickListener(OnCarouselItemClickListener onCarouselItemClickListener) {
@@ -135,11 +120,11 @@ public class CategoriesCarouselViewComponent extends BaseViewComponent<List<Cate
                         item = categoryItems.get(holder.getAdapterPosition() - 1);
                     }
                     if (mPage != null) {
-                        TrackerDelegator.trackComponentViewTap(mPage,
-                                String.format(Locale.US, "%s_%d",
-                                        BaseComponent.ComponentType.Carousel.toString(),
-                                        mInstanceIndex),
-                                item.targetLink);
+                        String category = String.format(Locale.US, "%s+%s_%d", mPage, ComponentType.Carousel.toString(), mInstanceIndex);
+                        String action = EventActionKeys.TEASER_TAPPED;
+                        String label = item.targetLink;
+                        SimpleEventModel sem = new SimpleEventModel(category, action, label, SimpleEventModel.NO_VALUE);
+                        TrackerManager.trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
                     }
                     if (onCarouselItemClickListener != null) {
                         onCarouselItemClickListener.onCarouselClicked(v, holder.getAdapterPosition(), item);

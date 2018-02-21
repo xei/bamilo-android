@@ -23,22 +23,19 @@ import com.mobile.helpers.checkout.SetStepPaymentHelper;
 import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.pojo.DynamicForm;
 import com.mobile.service.forms.Form;
 import com.mobile.service.forms.FormInputType;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.checkout.MultiStepPayment;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
-import com.mobile.service.tracking.TrackingEvent;
-import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
-import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
@@ -116,7 +113,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             mSavedState = savedInstanceState;
             mVoucherCode = savedInstanceState.getString(ConstantsIntentExtra.ARG_1);
         }
-        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_PAYMENT);
+//        TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_PAYMENT);
     }
     
     /*
@@ -161,7 +158,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.PAYMENT_SCREEN, getLoadTime(), true);
+//        TrackerDelegator.trackPage(TrackingPage.PAYMENT_SCREEN, getLoadTime(), true);
     }
     
     /*
@@ -415,7 +412,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Tracking
             String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "";
             String email = BamiloApplication.INSTANCE.getCustomerUtils().getEmail();
-            TrackerDelegator.trackPaymentMethod(userId, email, paymentName);
+//            TrackerDelegator.trackPaymentMethod(userId, email, paymentName);
             // Switch to FINISH
             getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
@@ -460,7 +457,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             break;
         case SET_MULTI_STEP_PAYMENT:
             Print.i(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
-            TrackerDelegator.trackFailedPayment(paymentName, BamiloApplication.INSTANCE.getCart());
+//            TrackerDelegator.trackFailedPayment(paymentName, BamiloApplication.INSTANCE.getCart());
             showWarningErrorMessage(baseResponse.getValidateMessage());
             showFragmentContentContainer();
             break;

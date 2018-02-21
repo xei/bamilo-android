@@ -19,15 +19,20 @@ import com.emarsys.predict.Error;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.adapters.RecommendGridAdapter;
 import com.mobile.adapters.RecommendItemsDiffUtilCallback;
+import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.tracking.CategoryConstants;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.extlibraries.emarsys.predict.recommended.Item;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.tracking.TrackingPage;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -59,6 +64,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     private int requestCompletionCount = 0;
     private boolean isFragmentVisibleToUser = false;
     private Error currentError;
+    private boolean screenTracked = false, timingTracked = false;
 
     public MyBamiloFragment() {
         super(true, R.layout.fragment_my_bamilo);
@@ -211,7 +217,11 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         super.setUserVisibleHint(isVisibleToUser);
         isFragmentVisibleToUser = isVisibleToUser;
         if (isVisibleToUser) {
-            TrackerDelegator.trackPage(TrackingPage.MY_BAMILO, getLoadTime(), false);
+            if (!screenTracked) {
+                BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_BAMILO.getName()), getString(R.string.gaScreen), "", getLoadTime());
+                TrackerManager.trackScreen(getContext(), screenModel, false);
+                screenTracked = true;
+            }
             if (rvRecommendedItemsList != null) {
                 getBaseActivity().syncSearchBarState(scrolledAmount);
             }
@@ -301,6 +311,11 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
 
     @Override
     public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+        if (!timingTracked) {
+            BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_BAMILO.getName()), getString(R.string.gaScreen), "", getLoadTime());
+            TrackerManager.trackScreenTiming(getContext(), screenModel);
+            timingTracked = true;
+        }
         currentError = null;
         showFragmentContentContainer();
         loadInProgress = false;
@@ -358,7 +373,13 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
 
     @Override
     public void onRecommendItemClicked(View v, Item item, int position) {
-        TrackerDelegator.trackEmarsysRecommendation(TRACKER_SCREEN_NAME, TRACKER_LOGIC);
+        SimpleEventModel sem = new SimpleEventModel();
+        sem.category = CategoryConstants.EMARSYS;
+        sem.action = EventActionKeys.CLICK;
+        sem.label = String.format("%s-%s", TRACKER_SCREEN_NAME, TRACKER_LOGIC);
+        sem.value = SimpleEventModel.NO_VALUE;
+        TrackerManager.trackEvent(getContext(), EventConstants.RecommendationTapped, sem);
+
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, item.getItemID());
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, String.format("%s %s", item.getBrand(), item.getTitle()));

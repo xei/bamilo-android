@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.mobile.adapters.AddressAdapter;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -15,6 +16,7 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.helpers.checkout.GetStepAddressesHelper;
 import com.mobile.helpers.checkout.SetStepAddressesHelper;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.checkout.MultiStepAddresses;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.rest.errors.ErrorCode;
@@ -23,9 +25,7 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
-import com.mobile.view.fragments.CheckoutAddressesFragment;
 
 import java.util.EnumSet;
 
@@ -35,7 +35,7 @@ import java.util.EnumSet;
 
 public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
-    private static final String TAG = CheckoutAddressesFragment.class.getSimpleName();
+    private static final String TAG = NewCheckoutAddressesFragment.class.getSimpleName();
 
     private View mCheckoutTotalBar;
     private FloatingActionButton fabNewAddress;
@@ -48,7 +48,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 NavigationAction.CHECKOUT,
                 R.layout.new_checkout_my_addresses,
                 R.string.checkout_choose_address_step,
-                ConstantsCheckout.CHECKOUT_BILLING,true);
+                ConstantsCheckout.CHECKOUT_BILLING, true);
 
         //getBaseActivity().mAppBarLayout.setExpanded(true, true);
     }
@@ -63,6 +63,13 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         /*Toolbar toolbar = (Toolbar) getBaseActivity().findViewById(R.id.toolbar);  // or however you need to do it for your code
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         params.setScrollFlags(0);*/
+
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_ADDRESSES.getName()), getString(R.string.gaScreen),
+                getString(R.string.gaCheckoutLabel),
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     @Override
@@ -94,9 +101,9 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         mSelectedAddress = -1;
 
         if ((savedInstanceState != null)
-                     && (savedInstanceState.getInt("mSelectedAddress", -1) != -1)) {
+                && (savedInstanceState.getInt("mSelectedAddress", -1) != -1)) {
             mSelectedAddress = savedInstanceState.getInt("mSelectedAddress", -1);
-               }
+        }
 
         super.setCheckoutStep(view, 1);
     }
@@ -194,7 +201,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         triggerContentEventProgress(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
     }
 
-    private void triggerSetDefaultAddress(int selectedAddress){
+    private void triggerSetDefaultAddress(int selectedAddress) {
         triggerContentEventNoLoading(new SetDefaultShippingAddressHelper(), SetDefaultShippingAddressHelper.createBundle(selectedAddress), this);
     }
 
@@ -222,7 +229,13 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 hideActivityProgress();
 
                 if (!pageTracked) {
-                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_ADDRESSES, getLoadTime(), false);
+                    /*TrackerDelegator.trackPage(TrackingPage.CHECKOUT_ADDRESSES, getLoadTime(), false);*/
+
+                    // Track screen timing
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_ADDRESSES.getName()), getString(R.string.gaScreen),
+                            getString(R.string.gaCheckoutLabel),
+                            getLoadTime());
+                    TrackerManager.trackScreenTiming(getContext(), screenModel);
                     pageTracked = true;
                 }
                 break;

@@ -30,7 +30,6 @@ import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
 import com.mobile.view.R;
@@ -394,8 +393,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         }
         // Get static page
         StaticPage mShopPage = (StaticPage) baseResponse.getContentData();
-        //DROID-10
-        TrackerDelegator.trackScreenLoadTiming(R.string.gaStaticPage, mGABeginRequestMillis, "");
         //  Case valid success response
         if (mShopPage != null) {
             onLoadShopData(mShopPage);

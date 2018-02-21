@@ -14,6 +14,7 @@ import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountryAdapter;
 import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.service.Darwin;
 import com.mobile.service.database.BrandsTableHelper;
 import com.mobile.service.database.CountriesConfigsTableHelper;
@@ -29,10 +30,8 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.service.utils.shop.ShopSelector;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -322,7 +321,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             if (isChangeCountry) {
                 LastViewedTableHelper.deleteAllLastViewed();
                 BrandsTableHelper.clearBrands();
-                TrackerDelegator.trackShopChanged();
+//                TrackerDelegator.trackShopChanged();
             }
 
             getBaseActivity().restartAppFlow();

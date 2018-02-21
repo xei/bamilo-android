@@ -12,17 +12,15 @@ import com.mobile.factories.FormFactory;
 import com.mobile.helpers.SubmitFormHelper;
 import com.mobile.helpers.account.GetNewslettersFormHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.pojo.DynamicForm;
+import com.mobile.pojo.DynamicFormItem;
 import com.mobile.service.forms.Form;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
-import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
-import com.mobile.pojo.DynamicForm;
-import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -109,8 +107,6 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
     public void onResume() {
         super.onResume();
         Print.i("ON RESUME");
-        // Tracking page
-        TrackerDelegator.trackPage(TrackingPage.NEWSLETTER_SUBS, getLoadTime(), false);
     }
 
     /*

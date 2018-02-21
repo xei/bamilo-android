@@ -8,7 +8,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.OverLoadErrorActivity;
 import com.mobile.view.R;
 import com.mobile.view.RedirectInfoActivity;
@@ -99,7 +98,7 @@ public class ActivitiesWorkFlow {
      * Open an External Link
      */
     public static void startExternalWebActivity(@NonNull Activity activity, @NonNull String link, @NonNull String label) throws ActivityNotFoundException {
-        TrackerDelegator.trackClickOnExternalLink(label);
+//        TrackerDelegator.trackClickOnExternalLink(label);
         startExternalWebActivity(activity, Uri.parse(link));
     }
 

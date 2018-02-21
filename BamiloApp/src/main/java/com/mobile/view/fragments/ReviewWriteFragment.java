@@ -27,6 +27,7 @@ import com.mobile.helpers.configs.GetReviewFormHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.products.RatingReviewProductHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.pojo.DynamicForm;
 import com.mobile.service.Darwin;
 import com.mobile.service.forms.Form;
 import com.mobile.service.objects.customer.Customer;
@@ -34,12 +35,10 @@ import com.mobile.service.objects.product.pojo.ProductComplete;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
 import com.mobile.service.rest.errors.ErrorCode;
-import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
-import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -122,7 +121,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TrackerDelegator.trackPage(TrackingPage.WRITE_REVIEW, getLoadTime(), false);
+//        TrackerDelegator.trackPage(TrackingPage.WRITE_REVIEW, getLoadTime(), false);
         Print.i(TAG, "ON CREATE");
         // Validate the saved state
         if (savedInstanceState != null) {

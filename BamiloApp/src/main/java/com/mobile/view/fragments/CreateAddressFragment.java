@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.mobile.app.BamiloApplication;
+import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.absspinner.PromptSpinnerAdapter;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
@@ -19,6 +20,7 @@ import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.addresses.AddressCity;
 import com.mobile.service.objects.addresses.AddressPostalCode;
 import com.mobile.service.objects.addresses.AddressRegion;
@@ -34,7 +36,6 @@ import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -107,6 +108,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.ADD_ADDRESS.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     /*
@@ -122,9 +129,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         city = (Spinner) view.findViewById(R.id.address_city);*/
 
         name = (EditText) view.findViewById(R.id.address_name);
-        name.setText(BamiloApplication.CUSTOMER.getFirstName());
+        if (BamiloApplication.CUSTOMER.getFirstName() != null) {
+            name.setText(BamiloApplication.CUSTOMER.getFirstName().trim());
+        }
         family = (EditText) view.findViewById(R.id.address_family);
-        family.setText(BamiloApplication.CUSTOMER.getLastName());
+        if (BamiloApplication.CUSTOMER.getLastName() != null) {
+            family.setText(BamiloApplication.CUSTOMER.getLastName().trim());
+        }
 
         gender_spinner = (Spinner) view.findViewById(R.id.address_gender);
 
@@ -182,7 +193,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Get order summary
         orderSummary = BamiloApplication.INSTANCE.getCart();
         Print.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.NEW_ADDRESS, getLoadTime(), true);
     }
 
     /*

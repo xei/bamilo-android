@@ -26,4 +26,16 @@
         android:textSize="12sp"
         tools:text="چهارشنبه ۲۵ اردیبهشت" />
 
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tvPackageDeliveryDelayReason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPackageTitle"
+        android:layout_marginTop="16dp"
+        android:gravity="right"
+        android:textColor="@color/pink_3"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:text="چهارشنبه ۲۵ اردیبهشت" />
+
 </RelativeLayout>

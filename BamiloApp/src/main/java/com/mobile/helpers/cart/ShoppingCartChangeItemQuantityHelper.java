@@ -15,7 +15,6 @@ import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
-import com.mobile.utils.TrackerDelegator;
 
 /**
  * Get Shopping Cart Items helper
@@ -49,8 +48,6 @@ public class ShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
         BamiloApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
-        // Track the new cart value
-        TrackerDelegator.trackAddToCart(cart);
     }
 
     public static Bundle createBundle(String sku, int quantity) {

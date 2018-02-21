@@ -46,7 +46,7 @@ Scenario: Create Address with success
 * I wait for 5 seconds
 * I press Add New Address
 * I wait for 2 seconds
-* I fill the new address form
+* I fill the new billingAddress form
 * I wait for 2 seconds
 * I press Save
 * I wait for 5 seconds

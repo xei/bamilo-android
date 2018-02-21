@@ -13,14 +13,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mobile.adapters.DailyDealProductListAdapter;
-import com.mobile.service.objects.home.model.BaseComponent;
-import com.mobile.service.objects.home.model.DailyDealComponent;
+import com.mobile.classes.models.SimpleEventModel;
+import com.mobile.constants.tracking.EventActionKeys;
+import com.mobile.constants.tracking.EventConstants;
+import com.mobile.managers.TrackerManager;
 import com.mobile.service.utils.TextUtils;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 import com.mobile.view.widget.LimitedCountLinearLayoutManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -106,9 +106,11 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
                             onCountDownDealItemClickListener.onMoreButtonClicked(v, mDealItem.moreOptionsTargetLink);
                         }
                         if (mPage != null) {
-                            TrackerDelegator.trackComponentViewTap(mPage,
-                                    String.format(Locale.US, "%s_%d", BaseComponent.ComponentType.DailyDeal.toString(), mInstanceIndex),
-                                    mDealItem.moreOptionsTargetLink);
+                            String category = String.format(Locale.US, "%s+%s_%d", mPage, ComponentType.DailyDeal.toString(), mInstanceIndex);
+                            String action = EventActionKeys.TEASER_TAPPED;
+                            String label = mDealItem.moreOptionsTargetLink;
+                            SimpleEventModel sem = new SimpleEventModel(category, action, label, SimpleEventModel.NO_VALUE);
+                            TrackerManager.trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
                         }
                     }
                 });
@@ -122,9 +124,14 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
                     if (onCountDownDealItemClickListener != null) {
                         onCountDownDealItemClickListener.onProductItemClicked(v, product);
                     }
-                    TrackerDelegator.trackComponentViewTap(mPage,
-                            String.format(Locale.US, "%s_%d", BaseComponent.ComponentType.DailyDeal.toString(), mInstanceIndex),
-                            product.sku);
+
+                    if (mPage != null) {
+                        String category = String.format(Locale.US, "%s+%s_%d", mPage, ComponentType.DailyDeal.toString(), mInstanceIndex);
+                        String action = EventActionKeys.TEASER_TAPPED;
+                        String label = product.sku;
+                        SimpleEventModel sem = new SimpleEventModel(category, action, label, SimpleEventModel.NO_VALUE);
+                        TrackerManager.trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
+                    }
                 }
             });
             RecyclerView rvDealProducts = (RecyclerView) rootView.findViewById(R.id.rvDealProducts);
@@ -175,51 +182,6 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
     @Override
     public void setContent(DealItem content) {
         this.mDealItem = content;
-    }
-
-    @Override
-    public void setComponent(BaseComponent component) {
-        if (!(component instanceof DailyDealComponent)) {
-            return;
-        }
-        DailyDealComponent dailyDealComponent = (DailyDealComponent) component;
-        DealItem dealItem = new DealItem();
-
-        dealItem.componentBackgroundColor = dailyDealComponent.getBackgroundColor();
-
-        dealItem.dealTitle = dailyDealComponent.getTitle();
-        dealItem.dealTitleColor = dailyDealComponent.getTitleTextColor();
-
-        dealItem.moreOptionsTitle = dailyDealComponent.getMoreOptionsTitle();
-        dealItem.moreOptionsTargetLink = dailyDealComponent.getMoreOptionsTarget();
-        dealItem.moreOptionsTitleColor = dailyDealComponent.getMoreOptionsTitleColor();
-
-        dealItem.countDownTextColor = dailyDealComponent.getCounterTextColor();
-        dealItem.countDownRemainingSeconds = dailyDealComponent.getRemainingSeconds();
-        dealItem.countDownStartTimeSeconds = dailyDealComponent.getInitialTimeSeconds();
-
-        List<Product> dealProducts = new ArrayList<>();
-        if (dailyDealComponent.getProducts() != null) {
-            for (DailyDealComponent.Product product : dailyDealComponent.getProducts()) {
-                Product tempProduct = new Product();
-                tempProduct.sku = product.getSku();
-                tempProduct.name = product.getName();
-                tempProduct.brand = product.getBrand();
-                tempProduct.thumb = product.getImage();
-                tempProduct.maxSavingPercentage = product.getMaxSavingPercentage();
-                if (product.getSpecialPrice() == 0) {
-                    tempProduct.price = product.getPrice();
-                } else {
-                    tempProduct.price = product.getSpecialPrice();
-                    tempProduct.oldPrice = product.getPrice();
-                }
-                tempProduct.hasStock = product.isHasStock();
-                dealProducts.add(tempProduct);
-            }
-        }
-        dealItem.dealProducts = dealProducts;
-
-        setContent(dealItem);
     }
 
     public void pause() {

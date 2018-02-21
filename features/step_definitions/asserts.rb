@@ -4,9 +4,9 @@
 # performAction('assert_text', 'foo', true) is now assert_text('foo')
 # performAction('assert_text', 'foo', false) is now assert_text('foo', false)
  
-Then /^I should see the generated address$/ do 
-  wait_for_elements_exist(["* {text CONTAINS '"+@address.to_s+"'}"],:timeout => 20)
-  assert_text(@address.to_s, true)
+Then /^I should see the generated billingAddress$/ do
+  wait_for_elements_exist(["* {text CONTAINS '"+@billingAddress.to_s+"'}"],:timeout => 20)
+  assert_text(@billingAddress.to_s, true)
 end
  
 Then /^I should see my first name$/ do

@@ -18,12 +18,10 @@ import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.service.database.SearchRecentQueriesTableHelper;
 import com.mobile.service.objects.search.Suggestion;
 import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
@@ -86,8 +84,6 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        // Tracking page
-        TrackerDelegator.trackPage(TrackingPage.RECENT_SEARCHES, getLoadTime(), false);
     }
 
     /**

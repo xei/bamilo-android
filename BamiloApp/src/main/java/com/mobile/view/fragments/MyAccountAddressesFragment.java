@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -16,7 +15,6 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
@@ -158,9 +156,6 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
         switch (eventType) {
             case GET_CUSTOMER_ADDRESSES_EVENT:
                 super.showAddresses((Addresses) baseResponse.getContentData());
-                //DROID-10
-                TrackerDelegator.trackScreenLoadTiming(R.string.gaAddress, mGABeginRequestMillis,
-                        BamiloApplication.CUSTOMER==null?"":""+BamiloApplication.CUSTOMER.getId());
                 break;
             default:
                 break;
