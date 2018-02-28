@@ -55,6 +55,9 @@ public abstract class ServerResponse {
         @Expose
         @SerializedName("message")
         private String message;
+        @Expose
+        @SerializedName("code")
+        private int errorCode;
 
         public String getReason() {
             return reason;
@@ -70,6 +73,14 @@ public abstract class ServerResponse {
 
         public void setMessage(String message) {
             this.message = message;
+        }
+
+        public int getErrorCode() {
+            return errorCode;
+        }
+
+        public void setErrorCode(int errorCode) {
+            this.errorCode = errorCode;
         }
     }
 

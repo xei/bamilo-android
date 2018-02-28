@@ -50,4 +50,9 @@ public interface BamiloApiService {
     @POST("customer/cancelitems")
     Observable<JsonObject> submitOrderCancellation(@FieldMap(encoded = true) Map<String, String> fields);
 
+    @GET("customer/getdetails")
+    Observable<JsonObject> loadUserProfile();
+
+    @POST("customer/edit")
+    Observable<JsonObject> submitUserProfile();
 }

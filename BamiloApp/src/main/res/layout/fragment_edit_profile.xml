@@ -69,40 +69,94 @@
                 android:theme="@style/RegistrationFormEditTextTheme" />
         </android.support.design.widget.TextInputLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp">
 
             <TextView
                 android:id="@+id/tvBirthdayTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="16dp"
                 android:paddingRight="4dp"
                 android:text="@string/profile_user_birthday"
                 android:textColor="@color/gray_5"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvYearTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:paddingRight="4dp"
+                android:text="@string/profile_bd_year"
+                android:textColor="@color/gray_5"
+                android:textSize="10sp"
+                app:layout_constraintLeft_toLeftOf="@+id/spinnerYear"
+                app:layout_constraintRight_toRightOf="@+id/spinnerYear"
+                app:layout_constraintTop_toBottomOf="@+id/tvBirthdayTitle" />
 
             <Spinner
                 android:id="@+id/spinnerYear"
                 style="@style/FormButtonSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvBirthdayTitle"
+                android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_toLeftOf="@+id/spinnerMonth" />
+                android:minWidth="72dp"
+                app:layout_constraintRight_toLeftOf="@+id/spinnerMonth"
+                app:layout_constraintTop_toBottomOf="@+id/tvYearTitle" />
+
+
+            <TextView
+                android:id="@+id/tvMonthTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:paddingRight="4dp"
+                android:text="@string/profile_bd_month"
+                android:textColor="@color/gray_5"
+                android:textSize="10sp"
+                app:layout_constraintLeft_toLeftOf="@+id/spinnerMonth"
+                app:layout_constraintRight_toRightOf="@+id/spinnerMonth"
+                app:layout_constraintTop_toBottomOf="@+id/tvBirthdayTitle" />
 
             <Spinner
                 android:id="@+id/spinnerMonth"
                 style="@style/FormButtonSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvBirthdayTitle"
+                android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_toLeftOf="@+id/spinnerDay" />
+                android:minWidth="48dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvMonthTitle" />
+
+
+            <TextView
+                android:id="@+id/tvDayTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:paddingRight="4dp"
+                android:text="@string/profile_bd_day"
+                android:textColor="@color/gray_5"
+                android:textSize="10sp"
+                app:layout_constraintLeft_toLeftOf="@+id/spinnerDay"
+                app:layout_constraintRight_toRightOf="@+id/spinnerDay"
+                app:layout_constraintTop_toBottomOf="@+id/tvBirthdayTitle" />
 
             <Spinner
                 android:id="@+id/spinnerDay"
@@ -110,9 +164,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/tvBirthdayTitle"
-                android:layout_marginRight="16dp" />
-        </RelativeLayout>
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:minWidth="48dp"
+                app:layout_constraintLeft_toRightOf="@+id/spinnerMonth"
+                app:layout_constraintTop_toBottomOf="@+id/tvDayTitle" />
+        </android.support.constraint.ConstraintLayout>
 
 
         <android.support.design.widget.TextInputLayout

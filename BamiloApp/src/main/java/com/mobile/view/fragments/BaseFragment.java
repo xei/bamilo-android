@@ -22,6 +22,8 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.bamilo.apicore.service.model.ServerResponse;
+import com.bamilo.apicore.view.BaseView;
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -37,6 +39,7 @@ import com.mobile.service.objects.home.type.TeaserGroupType;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.rest.errors.ErrorCode;
+import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.EventType;
@@ -65,7 +68,8 @@ import java.util.Set;
 /**
  * @author sergiopereira
  */
-public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction, OnClickListener, ViewStub.OnInflateListener {
+public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction, OnClickListener,
+        ViewStub.OnInflateListener, BaseView {
 
     protected static final String TAG = BaseFragment.class.getSimpleName();
 
@@ -1150,4 +1154,42 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return isAdded() && !isDetached() && !isRemoving();
     }
 
+    @Override
+    public void showMessage(com.bamilo.apicore.service.model.EventType eventType, String message) {
+        showWarningErrorMessage(message);
+    }
+
+    @Override
+    public void showOfflineMessage(com.bamilo.apicore.service.model.EventType eventType) {
+        showFragmentNoNetworkRetry();
+    }
+
+    @Override
+    public void showConnectionError(com.bamilo.apicore.service.model.EventType eventType) {
+        showFragmentNetworkErrorRetry();
+    }
+
+    @Override
+    public void showServerError(com.bamilo.apicore.service.model.EventType eventType, ServerResponse response) {
+        if (response != null && response.getMessages() != null &&
+                CollectionUtils.isNotEmpty(response.getMessages().getErrors())) {
+            if (response.getMessages().getErrors().get(0).getErrorCode() == ErrorCode.CUSTOMER_NOT_LOGGED_IN) {
+                onLoginRequired();
+            }
+        }
+    }
+
+    @Override
+    public void toggleProgress(com.bamilo.apicore.service.model.EventType eventType, boolean show) {
+        if (show) {
+            showFragmentLoading();
+        } else {
+            showFragmentContentContainer();
+        }
+    }
+
+    @Override
+    public void showRetry(com.bamilo.apicore.service.model.EventType eventType) {
+        showFragmentErrorRetry();
+    }
 }
