@@ -1,9 +1,17 @@
 package com.bamilo.apicore.service;
 
+import com.bamilo.apicore.service.model.OrderCancellationResponse;
 import com.google.gson.JsonObject;
 
+import java.util.List;
+import java.util.Map;
+
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import rx.Observable;
 
@@ -33,5 +41,13 @@ public interface BamiloApiService {
     @GET("customer/orderlist/per_page/{items-per-page}/page/{page}")
     @Headers("Content-Type: application/json")
     Observable<JsonObject> loadOrdersList(@Path("items-per-page") int itemsPerPage, @Path("page") int page);
+
+    @GET("customer/trackingorder/ordernr/{order-number}")
+    @Headers("Content-Type: application/json")
+    Observable<JsonObject> loadOrderDetails(@Path("order-number") String orderNumber);
+
+    @FormUrlEncoded
+    @POST("customer/cancelitems")
+    Observable<JsonObject> submitOrderCancellation(@FieldMap(encoded = true) Map<String, String> fields);
 
 }

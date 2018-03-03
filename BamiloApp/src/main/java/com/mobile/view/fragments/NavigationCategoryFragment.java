@@ -114,7 +114,9 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         mPartialErrorView = view.findViewById(R.id.partial_error_button);
         // Validation to show content
         if (mCategories != null && mCategories.size() > 0) {
-            showCategoryList(mCategories, mExternalLinksSection);
+            showRootCategories(mCategories);
+            // Show content
+            showFragmentContentContainer();
         } else
             // Case empty
             if (!TextUtils.isEmpty(ShopSelector.getShopId())) {

@@ -83,6 +83,8 @@ public enum EventType {
 
     TRACK_ORDER_EVENT,
 
+    SUBMIT_ORDER_CANCELLATION,
+
     /**
      * NATIVE CHECKOUT EVENTS
      */

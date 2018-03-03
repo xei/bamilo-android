@@ -114,6 +114,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public static int sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
     private static String categoryTree = "";
     boolean isFromBuyButton;
+    private boolean mRedirectToReviewsFragment;
     private ProductComplete mProduct;
     private String mCompleteProductSku;
     private RatingBar mProductRating;
@@ -188,6 +189,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mNavSource = getString(arguments.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
             mNavPath = arguments.getString(ConstantsIntentExtra.NAVIGATION_PATH);
             mProduct = arguments.getParcelable(ConstantsIntentExtra.DATA);
+
+            mRedirectToReviewsFragment = arguments.getBoolean(ConstantsIntentExtra.REDIRECT_TO_REVIEWS, false);
 
             // Track Screen
             BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.PRODUCT_DETAIL.getName()), getString(R.string.gaScreen), "", getLoadTime());
@@ -1351,6 +1354,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     sSharedSelectedPosition = !ShopSelector.isRtl() ? IntConstants.DEFAULT_POSITION : mProduct.getImageList().size() - 1;
                 } else {
                     sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
+                }
+
+                // Check out redirect to reviews status
+                if (mRedirectToReviewsFragment) {
+                    onClickShowDescription(R.string.rat_rev);
                 }
 
                 // Show product or update partial

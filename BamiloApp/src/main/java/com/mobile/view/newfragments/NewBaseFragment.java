@@ -47,6 +47,7 @@ public abstract class NewBaseFragment extends BaseFragment {
     /**
      * Show the summary order if the view is present
      * On rotate, tries use the old fragment from ChildFragmentManager.
+     *
      * @author sergiopereira
      */
     /*public void showOrderSummaryIfPresent(int checkoutStep, PurchaseEntity orderSummary) {
@@ -84,9 +85,7 @@ public abstract class NewBaseFragment extends BaseFragment {
      */
 
 
-
-    protected void setCheckoutStep(View view, int step)
-    {
+    protected void setCheckoutStep(View view, int step) {
         TextView tvStep1 = (TextView) view.findViewById(R.id.step1);
         TextView tvStep2 = (TextView) view.findViewById(R.id.step2);
         TextView tvStep3 = (TextView) view.findViewById(R.id.step3);
@@ -96,8 +95,7 @@ public abstract class NewBaseFragment extends BaseFragment {
         tvStep1.setText("1");
         tvStep2.setText("2");
         tvStep3.setText("3");
-        switch (step)
-        {
+        switch (step) {
             case 1:
                 tvStep1_title.setVisibility(View.VISIBLE);
                 tvStep2_title.setVisibility(View.GONE);
@@ -130,13 +128,13 @@ public abstract class NewBaseFragment extends BaseFragment {
 
     public boolean validateStringToPattern(Context context, int label, EditText editText, String text, boolean isRequired, int min, int max, int regex, String errorMessage, int textViewId) {
 
-            return validateStringToPattern(context, context.getResources().getString(label), editText, text, isRequired, min, max, context.getResources().getString(regex), errorMessage, textViewId);
-        }
+        return validateStringToPattern(context, context.getResources().getString(label), editText, text, isRequired, min, max, context.getResources().getString(regex), errorMessage, textViewId);
+    }
 
-        public boolean validateStringToPattern(Context context, String label, EditText editText, String text, boolean isRequired, int min, int max, String regex, String errorMessage, int textViewId) {
+    public boolean validateStringToPattern(Context context, String label, EditText editText, String text, boolean isRequired, int min, int max, String regex, String errorMessage, int textViewId) {
         boolean result = true;
-        TextView textView = (TextView) ((Activity)context).findViewById(textViewId);
-            textView.setVisibility(View.GONE);
+        TextView textView = (TextView) ((Activity) context).findViewById(textViewId);
+        textView.setVisibility(View.GONE);
         String space = " ";
         // Case empty
         if (isRequired && android.text.TextUtils.isEmpty(text)) {
@@ -145,7 +143,7 @@ public abstract class NewBaseFragment extends BaseFragment {
             textView.setVisibility(View.VISIBLE);
             //editText.setError(errorMessage + space);
             //setErrorText(errorMessage + space);
-            result=false;
+            result = false;
         }
         // Case too short
         else if (min > 0 && text.length() < min) {
@@ -168,14 +166,13 @@ public abstract class NewBaseFragment extends BaseFragment {
              * This is a fallback in case API don't return the error message
              * for the Regex. Will be fixed in https://jira.africainternetgroup.com/browse/NAFAMZ-16927
              */
-            if(com.mobile.service.utils.TextUtils.isEmpty(errorMessage)){
+            if (com.mobile.service.utils.TextUtils.isEmpty(errorMessage)) {
                 errorMessage = context.getString(R.string.error_ismandatory) + " " + label;
             }
 
             Matcher matcher = pattern.matcher(text);
             result = matcher.find();
-            if (!result)
-            {
+            if (!result) {
                 textView.setText(errorMessage + space);
                 textView.setVisibility(View.VISIBLE);
             }
@@ -183,12 +180,11 @@ public abstract class NewBaseFragment extends BaseFragment {
         return result;
     }
 
-    public void onCheckoutCircleClick(int currentstep, int nextstep)
-    {
-        for(int s=0;s<currentstep-nextstep;s++) {
+    public void onCheckoutCircleClick(int currentstep, int nextstep) {
+        for (int s = 0; s < currentstep - nextstep; s++) {
             getBaseActivity().onBackPressed();
         }
-        
+
 
     }
 }

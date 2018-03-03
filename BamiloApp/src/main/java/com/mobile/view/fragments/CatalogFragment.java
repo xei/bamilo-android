@@ -667,7 +667,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get item
         ProductRegular product = ((CatalogGridAdapter) adapter).getItem(position);
-        // Call Product Details        
+        // Call Product Details
         if (product != null) {
             // Show product
             Bundle bundle = new Bundle();

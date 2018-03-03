@@ -356,12 +356,12 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
     }
 
     @Override
-    public void showMessage(String message) {
+    public void showMessage(com.bamilo.apicore.service.model.EventType eventType, String message) {
         showWarningErrorMessage(message);
     }
 
     @Override
-    public void showOfflineMessage() {
+    public void showOfflineMessage(com.bamilo.apicore.service.model.EventType eventType) {
         if (isLoadingMore) {
             isErrorOnLoadingMore = true;
             // to stop scrolling
@@ -375,7 +375,7 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
     }
 
     @Override
-    public void showConnectionError() {
+    public void showConnectionError(com.bamilo.apicore.service.model.EventType eventType) {
         if (isLoadingMore) {
             isErrorOnLoadingMore = true;
             // to stop scrolling
@@ -389,12 +389,12 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
     }
 
     @Override
-    public void showServerError(ServerResponse response) {
+    public void showServerError(com.bamilo.apicore.service.model.EventType eventType, ServerResponse response) {
 
     }
 
     @Override
-    public void toggleProgress(boolean show) {
+    public void toggleProgress(com.bamilo.apicore.service.model.EventType eventType, boolean show) {
         if (showDefaultProgress) {
             if (show) {
                 showFragmentLoading();
@@ -408,7 +408,7 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
     }
 
     @Override
-    public void showRetry() {
+    public void showRetry(com.bamilo.apicore.service.model.EventType eventType) {
         if (isLoadingMore) {
             isErrorOnLoadingMore = true;
             // to stop scrolling
@@ -417,7 +417,7 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
             isLoadingMore = false;
             showUnexpectedErrorWarning();
         } else {
-            showConnectionError();
+            showConnectionError(eventType);
         }
     }
 

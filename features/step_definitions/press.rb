@@ -486,7 +486,7 @@ Then /^I press grid item number (\d+)$/ do |number|
   touch("* marked:'item_brand' index:#{number.to_i-1}")
 end
 
-Then /^I press Add new address$/ do
+Then /^I press Add new billingAddress$/ do
   wait_for_elements_exist(["* {text CONTAINS '"+@add_new_address.to_s+"'}"],:timeout => 40)
   touch("* {text CONTAINS '"+@add_new_address.to_s+"'}")
 end

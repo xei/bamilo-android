@@ -1,6 +1,7 @@
 package com.bamilo.apicore.presentation;
 
 import com.bamilo.apicore.interaction.OrdersListInteractor;
+import com.bamilo.apicore.service.model.EventType;
 import com.bamilo.apicore.service.model.OrdersListResponse;
 import com.bamilo.apicore.view.OrdersListView;
 
@@ -35,7 +36,7 @@ public class OrdersListPresenterImpl implements OrdersListPresenter {
     @Override
     public void loadOrdersList(int itemsPerPage, int page, final boolean isConnected) {
         if (view != null) {
-            view.toggleProgress(true);
+            view.toggleProgress(EventType.GET_MY_ORDERS_LIST_EVENT, true);
         }
 
         subscription = ordersListInteractor.loadOrdersList(itemsPerPage, page)
@@ -43,7 +44,7 @@ public class OrdersListPresenterImpl implements OrdersListPresenter {
                     @Override
                     public void call(OrdersListResponse ordersListResponse) {
                         if (view != null) {
-                            view.toggleProgress(false);
+                            view.toggleProgress(EventType.GET_MY_ORDERS_LIST_EVENT, false);
                             view.performOrdersList(ordersListResponse);
                         }
                     }
@@ -51,17 +52,17 @@ public class OrdersListPresenterImpl implements OrdersListPresenter {
                     @Override
                     public void call(Throwable throwable) {
                         if (view != null) {
-                            view.toggleProgress(false);
+                            view.toggleProgress(EventType.GET_MY_ORDERS_LIST_EVENT, false);
                         }
 
                         if (!isConnected) {
                             if (view != null) {
-                                view.showOfflineMessage();
+                                view.showOfflineMessage(EventType.GET_MY_ORDERS_LIST_EVENT);
                             }
                         } else if (throwable instanceof HttpException) {
-                            view.showConnectionError();
+                            view.showConnectionError(EventType.GET_MY_ORDERS_LIST_EVENT);
                         } else {
-                            view.showRetry();
+                            view.showRetry(EventType.GET_MY_ORDERS_LIST_EVENT);
                         }
                     }
                 });

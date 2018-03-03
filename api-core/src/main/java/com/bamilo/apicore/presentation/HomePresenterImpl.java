@@ -1,6 +1,7 @@
 package com.bamilo.apicore.presentation;
 
 import com.bamilo.apicore.interaction.HomeInteractor;
+import com.bamilo.apicore.service.model.EventType;
 import com.bamilo.apicore.service.model.HomeResponse;
 import com.bamilo.apicore.view.HomeView;
 
@@ -49,14 +50,14 @@ public class HomePresenterImpl implements HomePresenter {
     @Override
     public void loadHome(final boolean isConnected) {
         if (view != null) {
-            view.toggleProgress(true);
+            view.toggleProgress(EventType.GET_HOME_EVENT, true);
         }
 
         subscription = homeInteractor.loadHome().subscribe(new Action1<HomeResponse>() {
             @Override
             public void call(HomeResponse homeResponse) {
                 if (view != null) {
-                    view.toggleProgress(false);
+                    view.toggleProgress(EventType.GET_HOME_EVENT, false);
                     view.performHomeComponents(homeResponse.getComponents());
                 }
             }
@@ -64,17 +65,17 @@ public class HomePresenterImpl implements HomePresenter {
             @Override
             public void call(Throwable throwable) {
                 if (view != null) {
-                    view.toggleProgress(false);
+                    view.toggleProgress(EventType.GET_HOME_EVENT, false);
                 }
 
                 if (!isConnected) {
                     if (view != null) {
-                        view.showOfflineMessage();
+                        view.showOfflineMessage(EventType.GET_HOME_EVENT);
                     }
                 } else if (throwable instanceof HttpException) {
-                    view.showConnectionError();
+                    view.showConnectionError(EventType.GET_HOME_EVENT);
                 } else {
-                    view.showRetry();
+                    view.showRetry(EventType.GET_HOME_EVENT);
                 }
             }
         });

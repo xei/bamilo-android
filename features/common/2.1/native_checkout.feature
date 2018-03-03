@@ -7,7 +7,7 @@ Given I call the variables
 Scenario: Choose Country
 Given I select the country
 
-Scenario: In UG create an address, with city manualy
+Scenario: In UG create an billingAddress, with city manualy
 #Login
 * I wait to see the home
 * I click on the overflow button
@@ -39,7 +39,7 @@ Scenario: In UG create an address, with city manualy
 * I wait for 5 seconds
 * I press Proceed to Checkout
 * I wait for 5 seconds
-* I press Add new address
-* I fill the new address form
+* I press Add new billingAddress
+* I fill the new billingAddress form
 * I press Next
 

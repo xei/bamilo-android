@@ -335,4 +335,15 @@
     <style name="ShowCaseButton" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:background">@drawable/showcase_dismiss_button_bg</item>
     </style>
+
+    <style name="OrderCancellationCheckBoxTheme" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/gray_8</item>
+        <item name="colorControlActivated">#244a80</item>
+    </style>
+
+    <style name="RegistrationFormEditTextTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/gray_5</item>
+        <item name="colorControlActivated">@color/blue_1</item>
+        <item name="colorControlHighlight">@color/blue_1</item>
+    </style>
 </resources>

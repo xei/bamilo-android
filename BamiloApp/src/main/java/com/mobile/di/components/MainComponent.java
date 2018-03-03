@@ -1,12 +1,15 @@
 package com.mobile.di.components;
 
 import com.bamilo.apicore.di.modules.CatalogModule;
+import com.bamilo.apicore.di.modules.ItemTrackingModule;
+import com.bamilo.apicore.di.modules.OrderCancellationModule;
 import com.bamilo.apicore.di.modules.OrdersListModule;
 import com.bamilo.apicore.di.modules.RetrofitModule;
 import com.bamilo.apicore.di.modules.HomeModule;
 import com.mobile.di.modules.AndroidModule;
 import com.mobile.di.modules.ApiModule;
 import com.mobile.di.modules.SchedulerModule;
+import com.mobile.view.fragments.OrderCancellationSuccessFragment;
 
 import javax.inject.Singleton;
 
@@ -28,4 +31,10 @@ public interface MainComponent {
     CatalogComponent plus(CatalogModule catalogModule);
 
     OrdersListComponent plus(OrdersListModule ordersListModule);
+
+    ItemTrackingComponent plus(ItemTrackingModule itemTrackingModule);
+
+    OrderCancellationComponent plus(OrderCancellationModule orderCancellationModule);
+
+    void inject(OrderCancellationSuccessFragment fragment);
 }

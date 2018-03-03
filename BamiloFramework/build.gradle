@@ -26,14 +26,15 @@ sourceSets {
     }
 }
 
+def supportLibrariesVersion = "25.4.0"
 dependencies {
     // https://wiki.jira.rocket-internet.de/pages/viewpage.action?title=Android+app+SDKs+and+libraries&spaceKey=NAFAMZ
     /** REMOTE MAVEN LIBS **/
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'com.android.support:support-annotations:25.3.1'
+    compile "com.android.support:design:${supportLibrariesVersion}"
+    compile "com.android.support:appcompat-v7:${supportLibrariesVersion}"
+    compile "com.android.support:recyclerview-v7:${supportLibrariesVersion}"
+    compile "com.android.support:cardview-v7:${supportLibrariesVersion}"
+    compile "com.android.support:support-annotations:${supportLibrariesVersion}"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     /** FRAMEWORK **/
     compile 'com.squareup.retrofit:retrofit:1.9.0'
@@ -54,7 +55,7 @@ dependencies {
     compile 'com.scarabresearch:predictsdk:1.0.6'
     /** GLIDE **/
     compile 'com.github.bumptech.glide:glide:3.8.0'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile "com.android.support:support-v4:${supportLibrariesVersion}"
     /** LOCAL **/
     compile fileTree(include: ['*.jar'], exclude: ['json.jar'], dir: 'libs')
     compile 'pl.openrnd.android:multi-level-listview:1.0.1'

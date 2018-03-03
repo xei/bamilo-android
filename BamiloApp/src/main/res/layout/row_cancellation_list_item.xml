@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clPackagedOrderItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cancellation_item_selector"
+    android:clickable="true"
+    android:focusable="true">
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:theme="@style/OrderCancellationCheckBoxTheme"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProductThumb"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgProductThumb" />
+
+    <ImageView
+        android:id="@+id/imgProductThumb"
+        android:layout_width="82dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/no_image_large"
+        app:layout_constraintRight_toLeftOf="@+id/checkbox"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@color/gray_2" />
+
+    <Space
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/imgProductThumb" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tvProductName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="right"
+        android:maxLines="3"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/imgProductThumb"
+        app:layout_constraintTop_toTopOf="@+id/imgProductThumb"
+        tools:text="مداد طراحی منظره" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tvProductQuantityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="right"
+        android:text="@string/order_cancellation_item_quantity_label"
+        android:textColor="@color/cart_brand"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProductThumb"
+        app:layout_constraintRight_toLeftOf="@+id/imgProductThumb" />
+
+    <!--Number Picker for Items Quantity-->
+    <ImageView
+        android:id="@+id/imgNumberPickerPlus"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="16dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="11dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/plus_btn_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/tvProductQuantityLabel"
+        app:layout_constraintRight_toLeftOf="@+id/tvProductQuantityLabel" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tvProductQuantity"
+        android:layout_width="36dp"
+        android:layout_height="30dp"
+        android:background="@drawable/cancellation_quantity_bordered_bg"
+        android:gravity="center"
+        android:textColor="@color/gray_2"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvProductQuantityLabel"
+        app:layout_constraintRight_toLeftOf="@+id/imgNumberPickerPlus" />
+
+    <ImageView
+        android:id="@+id/imgNumberPickerMinus"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="11dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/minus_btn_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/tvProductQuantityLabel"
+        app:layout_constraintRight_toLeftOf="@+id/tvProductQuantity" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/cancellation_quantity_bordered_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/tvProductQuantity"
+        app:layout_constraintLeft_toLeftOf="@+id/imgNumberPickerMinus"
+        app:layout_constraintRight_toRightOf="@+id/imgNumberPickerPlus"
+        app:layout_constraintTop_toTopOf="@+id/tvProductQuantity" />
+    <!--End of Number Picker-->
+
+    <Spinner
+        android:id="@+id/spinnerCancellationReason"
+        style="@style/Widget.Custom.Spinner.Style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16sp"
+        android:minHeight="@dimen/dimen_50dp"
+        android:prompt="@string/delivery_state"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@+id/tvProductName"
+        app:layout_constraintRight_toRightOf="@+id/imgProductThumb"
+        app:layout_constraintTop_toBottomOf="@+id/imgProductThumb" />
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCancellationReason"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tvCancellationReasonError"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="4dp"
+        android:gravity="right"
+        android:maxLines="3"
+        android:text="@string/choosing_cancellation_reason_is_required"
+        android:textColor="@color/red_error"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/spinnerCancellationReason"
+        app:layout_constraintRight_toRightOf="@+id/spinnerCancellationReason"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCancellationReason" />
+
+    <View
+        android:id="@+id/viewHorizontalLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/gray_9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <View
+        android:id="@+id/viewNotCancelable"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.5"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tvNotCancelableReason"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="4dp"
+        android:gravity="right"
+        android:maxLines="3"
+        android:text="@string/choosing_cancellation_reason_is_required"
+        android:textColor="@color/dark_green_4"
+        android:textSize="12sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/tvProductName"
+        app:layout_constraintRight_toRightOf="@+id/imgProductThumb"
+        app:layout_constraintTop_toBottomOf="@+id/imgProductThumb" />
+
+</android.support.constraint.ConstraintLayout>

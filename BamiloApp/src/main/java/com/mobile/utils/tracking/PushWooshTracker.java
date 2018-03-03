@@ -18,7 +18,8 @@ public final class PushWooshTracker extends EmarsysTracker {
 
     private Activity activity;
 
-    protected PushWooshTracker() {}
+    protected PushWooshTracker() {
+    }
 
     @Override
     public void trackEventAppOpened(Context context, BaseEventModel eventModel) {
@@ -35,11 +36,11 @@ public final class PushWooshTracker extends EmarsysTracker {
         PushWooshCounter.increasePurchseCount();
         HashMap<String, Object> purchaseCount = new HashMap<>();
         purchaseCount.put("PurchaseCount", PushWooshCounter.getPurchaseCount());
-        PushManager.sendTags(context,purchaseCount,null);
+        PushManager.sendTags(context, purchaseCount, null);
     }
 
     public static EmarsysTracker getInstance(Activity activity) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new PushWooshTracker();
             instance.activity = activity;
         }
@@ -56,5 +57,12 @@ public final class PushWooshTracker extends EmarsysTracker {
         Map<String, Object> pushWooshAttrs = getBasicAttributes();
         pushWooshAttrs.putAll(attributes);
         InAppFacade.postEvent(activity, event, pushWooshAttrs);
+    }
+
+    public static void destroyTracker() {
+        if (instance != null) {
+            instance.activity = null;
+            instance = null;
+        }
     }
 }

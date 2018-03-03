@@ -50,6 +50,7 @@ import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.FrontPageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.ItemTrackingFragment;
+import com.mobile.view.fragments.MobileVerificationFragment;
 import com.mobile.view.fragments.MyAccountAboutFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
@@ -57,6 +58,8 @@ import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.NavigationCategoryFragment;
+import com.mobile.view.fragments.OrderCancellationFragment;
+import com.mobile.view.fragments.OrderCancellationSuccessFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -356,6 +359,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        PushWooshTracker.destroyTracker();
         Print.i(TAG, "ON DESTROY");
     }
 
@@ -495,6 +499,12 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             case ORDER_STATUS:
                 fragment = newFragmentInstance(ItemTrackingFragment.class, bundle);
                 break;
+            case ORDER_CANCELLATION:
+                fragment = newFragmentInstance(OrderCancellationFragment.class, bundle);
+                break;
+            case ORDER_CANCELLATION_SUCCESS:
+                fragment = newFragmentInstance(OrderCancellationSuccessFragment.class, bundle);
+                break;
             case ORDER_RETURN_CONDITIONS:
                 fragment = newFragmentInstance(OrderReturnConditionsFragment.class, bundle);
                 break;
@@ -512,6 +522,9 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 break;
             case REGISTER:
                 fragment = newFragmentInstance(SessionRegisterFragment.class, bundle);
+                break;
+            case MOBILE_VERIFICATION:
+                fragment = newFragmentInstance(MobileVerificationFragment.class, bundle);
                 break;
             case FORGOT_PASSWORD:
                 fragment = newFragmentInstance(SessionForgotPasswordFragment.class, bundle);
