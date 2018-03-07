@@ -8,11 +8,11 @@
 
     <TextView
         android:id="@+id/tvDayTitle"
-        android:layout_width="0dp"
+        android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/birthday_dialog_titles_bg"
+        android:background="@drawable/date_picker_dialog_titles_bg"
         android:gravity="center"
         android:paddingBottom="4dp"
         android:paddingLeft="12dp"
@@ -26,11 +26,11 @@
 
     <TextView
         android:id="@+id/tvMonthTitle"
-        android:layout_width="0dp"
+        android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/birthday_dialog_titles_bg"
+        android:background="@drawable/date_picker_dialog_titles_bg"
         android:gravity="center"
         android:paddingBottom="4dp"
         android:paddingLeft="12dp"
@@ -45,11 +45,11 @@
 
     <TextView
         android:id="@+id/tvYearTitle"
-        android:layout_width="0dp"
+        android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/birthday_dialog_titles_bg"
+        android:background="@drawable/date_picker_dialog_titles_bg"
         android:gravity="center"
         android:paddingBottom="4dp"
         android:paddingLeft="12dp"
@@ -76,7 +76,7 @@
 
     <com.mobile.view.components.CustomFontNumberPicker
         android:id="@+id/nbMonth"
-        android:layout_width="wrap_content"
+        android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants"
         android:paddingLeft="4dp"
