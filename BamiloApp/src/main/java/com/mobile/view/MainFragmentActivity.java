@@ -37,6 +37,7 @@ import com.mobile.utils.tracking.ga.GATracker;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
+import com.mobile.view.fragments.ChangePhoneNumberFragment;
 import com.mobile.view.fragments.CheckoutConfirmationFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
@@ -526,6 +527,9 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 break;
             case MOBILE_VERIFICATION:
                 fragment = newFragmentInstance(MobileVerificationFragment.class, bundle);
+                break;
+            case CHANGE_PHONE_NUMBER_FRAGMENT:
+                fragment = newFragmentInstance(ChangePhoneNumberFragment.class, bundle);
                 break;
             case FORGOT_PASSWORD:
                 fragment = newFragmentInstance(SessionForgotPasswordFragment.class, bundle);

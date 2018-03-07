@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="48dp"
+        android:gravity="center"
+        android:text="@string/enter_phone_number"
+        android:textColor="@color/gray_2" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="64dp"
+        android:theme="@style/RegistrationFormEditTextTheme">
+
+        <EditText
+            android:id="@+id/etPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:textColor="@color/gray_2"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:theme="@style/RegistrationFormEditTextTheme" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <com.mobile.components.customfontviews.Button
+        android:id="@+id/btnNextToVerification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="36dp"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        android:text="@string/continue_label"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/dark_green_2" />
+
+</LinearLayout>

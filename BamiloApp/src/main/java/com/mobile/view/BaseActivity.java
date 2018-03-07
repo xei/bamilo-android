@@ -182,6 +182,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private ActionBar mSupportActionBar;
     private Toolbar toolbar;
     private boolean isBackButtonEnabled = false;
+    private boolean isCloseButtonEnabled = false;
     private TabLayout mExtraTabLayout;
     private float mExtraTabLayoutHeight = -1;
     private AppBarLayout mAppBarLayout;
@@ -272,7 +273,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             actionView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isBackButtonEnabled) {
+                    if (isBackButtonEnabled || isCloseButtonEnabled) {
                         onBackPressed();
                     } else {
                         mDrawerLayout.openDrawer(GravityCompat.START);
@@ -738,11 +739,15 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         int showActionBar = View.VISIBLE;
         // Flag to show home or back button
         isBackButtonEnabled = false;
+        isCloseButtonEnabled = false;
         // Setting Menu Options
         for (MyMenuItem item : menuItems) {
             switch (item) {
                 case HIDE_AB:
                     showActionBar = View.GONE;
+                    break;
+                case CLOSE_BUTTON:
+                    isCloseButtonEnabled = true;
                     break;
                 case UP_BUTTON_BACK:
                     isBackButtonEnabled = true;
@@ -854,9 +859,15 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * @author sergiopereira
      */
     private void setActionBarUpButton() {
-        if (isBackButtonEnabled) {
+        if (isCloseButtonEnabled) {
+            Print.i(TAG, "SHOW CLOSE BUTTON");
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+            mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_action_close_white);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        } else if (isBackButtonEnabled) {
             Print.i(TAG, "SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(false);
+            mDrawerToggle.setHomeAsUpIndicator(R.drawable.back_action_selector);
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         } else {
             Print.i(TAG, "NO SHOW UP BUTTON");

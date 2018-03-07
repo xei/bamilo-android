@@ -1,5 +1,6 @@
 package com.bamilo.apicore.presentation;
 
+import com.bamilo.apicore.service.model.data.profile.UserProfile;
 import com.bamilo.apicore.view.ProfileView;
 
 /**
@@ -8,4 +9,6 @@ import com.bamilo.apicore.view.ProfileView;
 
 public interface ProfilePresenter extends BasePresenter<ProfileView> {
     void loadUserProfile(boolean isConnected);
+
+    void submitProfile(boolean isConnected, UserProfile userProfile);
 }

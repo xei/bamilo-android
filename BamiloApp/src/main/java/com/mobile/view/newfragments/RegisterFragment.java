@@ -112,7 +112,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         super.onStart();
         if (phoneVerificationOnGoing) {
             SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
-            boolean isPhoneVerified = prefs.getBoolean(ConstantsSharedPrefs.KEY_SIGNUP_PHONE_VERIFIED, false);
+            boolean isPhoneVerified = prefs.getBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, false);
             if (isPhoneVerified) {
                 onClickCreate();
                 getBaseActivity().getExtraTabLayout().setVisibility(View.GONE);
@@ -351,7 +351,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
 
         SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(ConstantsSharedPrefs.KEY_SIGNUP_PHONE_VERIFIED, false);
+        editor.putBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, false);
         editor.apply();
     }
 

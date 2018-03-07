@@ -19,7 +19,6 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.utils.Constants;
-import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -48,7 +47,7 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
 
 
     public MobileVerificationFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.LOGIN_OUT,
                 R.layout.fragment_mobile_verification,
                 IntConstants.ACTION_BAR_NO_TITLE,
@@ -173,7 +172,7 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
             } else if (baseResponse.getSuccessMessages().containsKey(MOBILE_VERIFICATION_DONE)) {
                 SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean(ConstantsSharedPrefs.KEY_SIGNUP_PHONE_VERIFIED, true);
+                editor.putBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, true);
                 editor.apply();
                 getBaseActivity().onBackPressed();
                 return;

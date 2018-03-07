@@ -23,6 +23,8 @@ public class ConstantsSharedPrefs {
     
     public static final String KEY_CATALOG_VIEW = "catalog_layout_columns";
 
-    public static final String KEY_SIGNUP_PHONE_VERIFIED = "signup_phone_verified";
+    public static final String KEY_IS_PHONE_VERIFIED = "is_phone_verified";
+
+    public static final String KEY_PHONE_NUMBER = "phone_nubmer";
 
 }

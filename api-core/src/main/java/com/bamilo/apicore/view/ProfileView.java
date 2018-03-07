@@ -1,6 +1,7 @@
 package com.bamilo.apicore.view;
 
 import com.bamilo.apicore.service.model.ServerResponse;
+import com.bamilo.apicore.service.model.UserProfileResponse;
 import com.bamilo.apicore.service.model.data.profile.UserProfile;
 
 /**
@@ -8,7 +9,7 @@ import com.bamilo.apicore.service.model.data.profile.UserProfile;
  */
 
 public interface ProfileView extends BaseView {
-    void performUserProfile(UserProfile userProfile);
+    void performUserProfile(UserProfileResponse userProfileResponse);
 
     void onProfileSubmitted(ServerResponse response);
 }

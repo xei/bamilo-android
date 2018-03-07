@@ -1190,6 +1190,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     @Override
     public void showRetry(com.bamilo.apicore.service.model.EventType eventType) {
-        showFragmentErrorRetry();
+        showFragmentNetworkErrorRetry();
     }
 }

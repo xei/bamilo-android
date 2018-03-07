@@ -53,6 +53,7 @@ public interface BamiloApiService {
     @GET("customer/getdetails")
     Observable<JsonObject> loadUserProfile();
 
+    @FormUrlEncoded
     @POST("customer/edit")
-    Observable<JsonObject> submitUserProfile();
+    Observable<JsonObject> submitUserProfile(@FieldMap(encoded = true) Map<String, String> fields);
 }

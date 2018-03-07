@@ -612,6 +612,15 @@
     <string name="profile_bd_year">سال</string>
     <string name="profile_bd_month">ماه</string>
     <string name="profile_bd_day">روز</string>
+    <string name="please_add_your_birthday">لطفا تاریخ تولد خود را انتخاب کنید</string>
+    <string name="enter_phone_number">شماره موبایل خود را وارد کنید</string>
+    <string name="enter_correct_phone_number">لطفا شماره تلفن خود را به صورت صحیح وارد کنید</string>
+    <string name="please_enter_phone_number">لطفا شماره موبایل خود را وارد کنید</string>
+    <string name="submit_profile">ثبت</string>
+    <string name="edit_profile_submitted_successfully">اطلاعات شما با موفقیت ذخیره شد</string>
+    <string name="card_number_isnt_valid">شماره کارت وارد شده معتبر نیست</string>
+    <string name="phone_number_is_required">وارد کردن شماره موبایل الزامی‌است</string>
+    <string name="choose_prompt">انتخاب کنید</string>
 
     <plurals name="order_cancellation_please_select_cancellation_reason">
         <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>

@@ -55,6 +55,13 @@ public class UserProfileResponse extends ServerResponse {
         return userProfileMetaData.getUserProfile();
     }
 
+    public String getWarningMessage() {
+        if (userProfileMetaData == null) {
+            return null;
+        }
+        return userProfileMetaData.getWarningMessage();
+    }
+
     public void setUserProfileMetaData(UserProfileMetaData userProfileMetaData) {
         this.userProfileMetaData = userProfileMetaData;
     }
@@ -63,6 +70,9 @@ public class UserProfileResponse extends ServerResponse {
         @Expose
         @SerializedName("customer_entity")
         private UserProfile userProfile;
+        @Expose
+        @SerializedName("warning_message")
+        private String warningMessage;
 
         public UserProfile getUserProfile() {
             return userProfile;
@@ -70,6 +80,14 @@ public class UserProfileResponse extends ServerResponse {
 
         public void setUserProfile(UserProfile userProfile) {
             this.userProfile = userProfile;
+        }
+
+        public String getWarningMessage() {
+            return warningMessage;
+        }
+
+        public void setWarningMessage(String warningMessage) {
+            this.warningMessage = warningMessage;
         }
     }
 }

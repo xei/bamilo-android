@@ -70,4 +70,20 @@
         <item quantity="other">@string/reviews_plural</item>
     </plurals>
 
+    <!-- Jalali Month Names -->
+    <string-array name="jalali_month_names">
+        <item>فروردین</item>
+        <item>اردیبهشت</item>
+        <item>خرداد</item>
+        <item>تیر</item>
+        <item>مرداد</item>
+        <item>شهریور</item>
+        <item>مهر</item>
+        <item>آبان</item>
+        <item>آذر</item>
+        <item>دی</item>
+        <item>بهمن</item>
+        <item>اسفند</item>
+    </string-array>
+
 </resources>

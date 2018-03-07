@@ -2,7 +2,9 @@ package com.bamilo.apicore.presentation;
 
 import com.bamilo.apicore.interaction.ProfileInteractor;
 import com.bamilo.apicore.service.model.EventType;
+import com.bamilo.apicore.service.model.ServerResponse;
 import com.bamilo.apicore.service.model.UserProfileResponse;
+import com.bamilo.apicore.service.model.data.profile.UserProfile;
 import com.bamilo.apicore.view.ProfileView;
 
 import javax.inject.Inject;
@@ -54,11 +56,10 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                         if (view != null) {
                             view.toggleProgress(EventType.GET_CUSTOMER, false);
                             if (userProfileResponse != null) {
-                                if (userProfileResponse.getMessages() != null &&
-                                        userProfileResponse.getMessages().getErrors() != null) {
+                                if (!userProfileResponse.isSuccess()) {
                                     view.showServerError(EventType.GET_CUSTOMER, userProfileResponse);
                                 } else {
-                                    view.performUserProfile(userProfileResponse.getUserProfile());
+                                    view.performUserProfile(userProfileResponse);
                                 }
                             } else {
                                 view.showRetry(EventType.GET_CUSTOMER);
@@ -72,14 +73,56 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                             view.toggleProgress(EventType.GET_CUSTOMER, false);
                         }
 
-                        if (!isConnected) {
-                            if (view != null) {
+                        if (view != null) {
+                            if (!isConnected) {
                                 view.showOfflineMessage(EventType.GET_CUSTOMER);
+                            } else if (throwable instanceof HttpException) {
+                                view.showConnectionError(EventType.GET_CUSTOMER);
+                            } else {
+                                view.showRetry(EventType.GET_CUSTOMER);
                             }
-                        } else if (throwable instanceof HttpException) {
-                            view.showConnectionError(EventType.GET_CUSTOMER);
-                        } else {
-                            view.showRetry(EventType.GET_CUSTOMER);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void submitProfile(final boolean isConnected, UserProfile userProfile) {
+        if (view != null) {
+            view.toggleProgress(EventType.EDIT_USER_DATA_EVENT, true);
+        }
+        subscription = profileInteractor.submitProfile(userProfile)
+                .subscribe(new Action1<ServerResponse>() {
+                    @Override
+                    public void call(ServerResponse response) {
+                        if (view != null) {
+                            view.toggleProgress(EventType.EDIT_USER_DATA_EVENT, false);
+                            if (response == null) {
+                                view.showRetry(EventType.EDIT_USER_DATA_EVENT);
+                            } else {
+                                if (!response.isSuccess()) {
+                                    view.showServerError(EventType.EDIT_USER_DATA_EVENT, response);
+                                } else {
+                                    view.onProfileSubmitted(response);
+                                }
+                            }
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        if (view != null) {
+                            view.toggleProgress(EventType.EDIT_USER_DATA_EVENT, false);
+                        }
+
+                        if (view != null) {
+                            if (!isConnected) {
+                                view.showOfflineMessage(EventType.EDIT_USER_DATA_EVENT);
+                            } else if (throwable instanceof HttpException) {
+                                view.showConnectionError(EventType.EDIT_USER_DATA_EVENT);
+                            } else {
+                                view.showRetry(EventType.EDIT_USER_DATA_EVENT);
+                            }
                         }
                     }
                 });

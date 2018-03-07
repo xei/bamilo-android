@@ -1,6 +1,8 @@
 package com.bamilo.apicore.interaction;
 
+import com.bamilo.apicore.service.model.ServerResponse;
 import com.bamilo.apicore.service.model.UserProfileResponse;
+import com.bamilo.apicore.service.model.data.profile.UserProfile;
 
 import rx.Observable;
 
@@ -10,4 +12,6 @@ import rx.Observable;
 
 public interface ProfileInteractor extends BaseInteractor {
     Observable<UserProfileResponse> loadUserProfile();
+
+    Observable<UserProfileResponse> submitProfile(UserProfile userProfile);
 }
