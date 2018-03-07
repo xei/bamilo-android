@@ -47,7 +47,7 @@
         android:layout_marginTop="36dp"
         android:paddingBottom="16dp"
         android:paddingTop="16dp"
-        android:text="@string/continue_label"
+        android:text="@string/save_phone_number_button_label"
         android:textColor="@color/white"
         app:backgroundTint="@color/dark_green_2" />
 

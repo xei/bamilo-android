@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -52,6 +54,9 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
 
     private static final String KEY_CREDENTIALS_PASSWORD = "login[password]";
     private static final String GENDER_MALE = "male", GENDER_FEMALE = "female";
+    private static final String BIRTHDAY_DELIMITER = "-";
+    private static final String PERSIAN_DATE_PATTERN = "%02d/%02d/%02d";
+    private static final String SERVER_DATE_PATTERN = "%d-%d-%d";
 
     @Inject
     ProfilePresenter presenter;
@@ -85,6 +90,22 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
         // inject dependencies by dagger2
         BamiloApplication.getComponent().plus(new ProfileModule(this)).inject(this);
 
+        TextWatcher digitsToFarsiConverter = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                TextUtils.makeDigitsFarsi(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
         etFirstName = (EditText) view.findViewById(R.id.etFirstName);
         etLastName = (EditText) view.findViewById(R.id.etLastName);
         etEmail = (EditText) view.findViewById(R.id.etEmail);
@@ -92,8 +113,11 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
         tvPhoneNumber = (TextView) view.findViewById(R.id.tvPhoneNumber);
         tvPhoneNumberError = (TextView) view.findViewById(R.id.tvPhoneNumberError);
         metCardNumber = (MaskedEditText) view.findViewById(R.id.metCardNumber);
+        metCardNumber.addTextChangedListener(digitsToFarsiConverter);
+
         tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
         etNationalId = (EditText) view.findViewById(R.id.etNationalId);
+        etNationalId.addTextChangedListener(digitsToFarsiConverter);
         tilNationalId = (TextInputLayout) view.findViewById(R.id.tilNationalId);
 
         spinnerGender = (Spinner) view.findViewById(R.id.spinnerGender);
@@ -112,17 +136,32 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                 if (persianDatePicker == null) {
                     Calendar now = Calendar.getInstance(Locale.US);
                     now.add(Calendar.YEAR, BIRTHDAY_UPPER_BOUND_DIFF);
-                    JalaliCalendar.YearMonthDate selectedDate =
+                    JalaliCalendar.YearMonthDate defaultDate =
                             JalaliCalendar.gregorianToJalali(new JalaliCalendar
                                     .YearMonthDate(now.get(Calendar.YEAR),
                                     now.get(Calendar.MONTH),
                                     now.get(Calendar.DAY_OF_MONTH)));
                     persianDatePicker = PersianDatePickerDialogHelper
                             .newInstance(getContext(),
-                                    selectedDate,
-                                    selectedDate.getYear(),
-                                    selectedDate.getYear() + BIRTHDAY_LOWER_BOUND_DIFF);
+                                    defaultDate,
+                                    defaultDate.getYear(),
+                                    defaultDate.getYear() + BIRTHDAY_LOWER_BOUND_DIFF);
                     persianDatePicker.setOnDateSelectedListener(EditProfileFragment.this);
+                }
+
+                JalaliCalendar.YearMonthDate selectedDate = null;
+                String birthday = userProfileResponse.getUserProfile().getBirthday();
+                String[] birthdayParts = birthday.split(BIRTHDAY_DELIMITER);
+                if (birthdayParts.length == 3) {
+                    /* Prevent app crash if the server is sending an inconsistent data */
+                    try {
+                        selectedDate = new JalaliCalendar.YearMonthDate(Integer.valueOf(birthdayParts[0]),
+                                Integer.valueOf(birthdayParts[1]) - 1,
+                                Integer.valueOf(birthdayParts[2]));
+                    } catch (Exception ignore) {}
+                }
+                if (selectedDate != null) {
+                    persianDatePicker.setSelectedDate(selectedDate);
                 }
                 persianDatePicker.showDialog();
             }
@@ -135,26 +174,34 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
         });
         if (userProfileResponse == null) {
             presenter.loadUserProfile(NetworkConnectivity.isConnected(getContext()));
-        } else if (phoneVerificationOnGoing) {
-            SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
-            boolean verified = prefs.getBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, false);
-            if (verified) {
-                String phoneNumber = prefs.getString(ConstantsSharedPrefs.KEY_PHONE_NUMBER, "");
-                if (TextUtils.isNotEmpty(phoneNumber)) {
-                    tvPhoneNumber.setText(phoneNumber);
-                    tvPhoneNumber.setTextColor(ContextCompat.getColor(getContext(), R.color.gray_2));
-                    prefs.edit().putString(ConstantsSharedPrefs.KEY_PHONE_NUMBER, null).apply();
+        } else {
+            if (phoneVerificationOnGoing) {
+                SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
+                boolean verified = prefs.getBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, false);
+                if (verified) {
+                    String phoneNumber = prefs.getString(ConstantsSharedPrefs.KEY_PHONE_NUMBER, "");
+                    prefs
+                            .edit()
+                            .putString(ConstantsSharedPrefs.KEY_PHONE_NUMBER, "")
+                            .apply();
+                    if (TextUtils.isNotEmpty(phoneNumber)) {
+                        userProfileResponse.getUserProfile().setPhone(phoneNumber);
+                        tvWarningMessage.setVisibility(View.GONE);
+                    }
                 }
             }
+            performUserProfile(userProfileResponse);
         }
 
         view.findViewById(R.id.btnSubmitProfile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String cardNumber = metCardNumber.getRawText();
-                boolean validated = validateNationalId(etNationalId.getText().toString()) &&
+                String cardNumber = TextUtils.makeDigitsEnglish(metCardNumber.getRawText());
+                String phoneNumber = TextUtils.makeDigitsEnglish(tvPhoneNumber.getText().toString());
+                String nationalId = TextUtils.makeDigitsEnglish(etNationalId.getText().toString());
+                boolean validated = validateNationalId(nationalId) &&
                         validateCardNumber(cardNumber) &&
-                        validatePhoneNumber(tvPhoneNumber.getText().toString());
+                        validatePhoneNumber(phoneNumber);
                 if (validated) {
                     UserProfile userProfile = userProfileResponse.getUserProfile();
                     ContentValues userCredentials = BamiloApplication.INSTANCE
@@ -162,13 +209,13 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
 
                     String password = (String) userCredentials.get(KEY_CREDENTIALS_PASSWORD);
                     userProfile.setPassword(password);
-                    userProfile.setNationalId(etNationalId.getText().toString());
+                    userProfile.setNationalId(nationalId);
                     if (requestBirthday != null) {
                         userProfile.setBirthday(requestBirthday);
                     }
                     userProfile.setFirstName(etFirstName.getText().toString());
                     userProfile.setLastName(etLastName.getText().toString());
-                    userProfile.setPhone(tvPhoneNumber.getText().toString());
+                    userProfile.setPhone(phoneNumber);
 
                     String genderItem = (String) spinnerGender.getSelectedItem();
                     int indexOfGender = gendersList.indexOf(genderItem);
@@ -182,7 +229,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                         userProfile.setGender(gender);
                     }
 
-                    userProfile.setCardNumber(metCardNumber.getRawText());
+                    userProfile.setCardNumber(cardNumber);
 
                     presenter.submitProfile(NetworkConnectivity.isConnected(getContext()), userProfile);
                 }
@@ -243,7 +290,6 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
     }
 
 
-
     @Override
     public void performUserProfile(UserProfileResponse userProfileResponse) {
         if (userProfileResponse != null) {
@@ -253,13 +299,24 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
             etLastName.setText(userProfile.getLastName() != null ? userProfile.getLastName().trim() : "");
             etEmail.setText(userProfile.getEmail());
             if (TextUtils.isNotEmpty(userProfile.getPhone())) {
-                tvPhoneNumber.setText(userProfile.getPhone());
-                tvPhoneNumber.setTextColor(ContextCompat.getColor(getContext(), R.color.gray_2));
+                tvPhoneNumber.setText(TextUtils.makeDigitsFarsi(userProfile.getPhone()));
+                tvPhoneNumber.setTextColor(ContextCompat.getColor(getContext(), R.color.gray_1));
             }
             metCardNumber.setText(userProfile.getCardNumber());
             if (TextUtils.isNotEmpty(userProfile.getBirthday())) {
-                tvBirthday.setText(userProfile.getBirthday());
-                tvBirthday.setTextColor(ContextCompat.getColor(getContext(), R.color.gray_1));
+                String birthday = userProfile.getBirthday();
+                String[] birthdayParts = birthday.split(BIRTHDAY_DELIMITER);
+                if (birthdayParts.length == 3) {
+                    /* Prevent app crash if the server is sending an inconsistent data */
+                    try {
+                        birthday = String.format(new Locale("fa"), PERSIAN_DATE_PATTERN,
+                                Integer.valueOf(birthdayParts[0]),
+                                Integer.valueOf(birthdayParts[1]),
+                                Integer.valueOf(birthdayParts[2]));
+                        tvBirthday.setText(birthday);
+                        tvBirthday.setTextColor(ContextCompat.getColor(getContext(), R.color.gray_1));
+                    } catch (Exception ignore) {}
+                }
             }
             if (TextUtils.isNotEmpty(userProfileResponse.getWarningMessage())) {
                 tvWarningMessage.setVisibility(View.VISIBLE);
@@ -273,7 +330,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                 }
                 spinnerGender.setSelection(position);
             }
-            etNationalId.setText(userProfile.getNationalId());
+            etNationalId.setText(TextUtils.makeDigitsFarsi(userProfile.getNationalId()));
         } else {
             showFragmentErrorRetry();
         }
@@ -287,8 +344,9 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
 
     @Override
     public void onDateSelected(int year, int month, int day) {
-        requestBirthday = String.format(Locale.US, "%d-%d-%d", year, month, day);
-        tvBirthday.setText(String.format(new Locale("fa"), "%d/%d/%d", year, month, day));
+        requestBirthday = String.format(Locale.US, SERVER_DATE_PATTERN, year, month, day);
+        userProfileResponse.getUserProfile().setBirthday(requestBirthday);
+        tvBirthday.setText(String.format(new Locale("fa"), PERSIAN_DATE_PATTERN, year, month, day));
         tvBirthday.setTextColor(ContextCompat.getColor(getContext(), R.color.gray_1));
     }
 }

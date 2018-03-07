@@ -587,6 +587,7 @@
     <string name="card_number_isnt_valid">شماره کارت وارد شده معتبر نیست</string>
     <string name="phone_number_is_required">وارد کردن شماره موبایل الزامی‌است</string>
     <string name="choose_prompt">انتخاب کنید</string>
+    <string name="save_phone_number_button_label">ثبت شماره</string>
 
     <plurals name="order_cancellation_please_select_cancellation_reason">
         <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>

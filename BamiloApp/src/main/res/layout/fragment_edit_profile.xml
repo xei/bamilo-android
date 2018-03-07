@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="24dp">
+            android:paddingTop="8dp">
 
             <TextView
                 android:id="@+id/tvWarningMessage"
@@ -47,7 +47,7 @@
                     android:layout_marginLeft="8dp"
                     android:paddingRight="4dp"
                     android:text="@string/mobile_number"
-                    android:textColor="@color/gray_2"
+                    android:textColor="@color/gray_5"
                     android:textSize="12sp" />
 
                 <View
@@ -71,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvPhoneNumberTitle"
                     android:padding="4dp"
+                    android:gravity="right"
                     android:text="@string/please_enter_phone_number"
                     android:textColor="@color/gray_5"
                     android:textSize="14sp" />
@@ -145,7 +146,7 @@
                     android:layout_marginLeft="8dp"
                     android:paddingRight="4dp"
                     android:text="@string/gender"
-                    android:textColor="@color/gray_2"
+                    android:textColor="@color/gray_5"
                     android:textSize="12sp" />
 
                 <Spinner
@@ -172,6 +173,7 @@
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:editable="false"
                     android:gravity="right"
                     android:hint="@string/email_address"
                     android:inputType="none"
@@ -198,7 +200,7 @@
                     android:layout_marginLeft="8dp"
                     android:paddingRight="4dp"
                     android:text="@string/profile_user_birthday"
-                    android:textColor="@color/gray_2"
+                    android:textColor="@color/gray_5"
                     android:textSize="12sp" />
 
                 <View

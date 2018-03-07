@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
@@ -13,6 +15,7 @@ import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.utils.Constants;
+import com.mobile.service.utils.TextUtils;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
@@ -38,11 +41,6 @@ public class ChangePhoneNumberFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
-        boolean verified = prefs.getBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, false);
-        if (verified) {
-            getBaseActivity().onBackPressed();
-        }
     }
 
     @Override
@@ -51,11 +49,27 @@ public class ChangePhoneNumberFragment extends BaseFragment {
         HoloFontLoader.applyDefaultFont(view);
 
         final EditText etPhoneNumber = (EditText) view.findViewById(R.id.etPhoneNumber);
+        etPhoneNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                TextUtils.makeDigitsFarsi(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         final TextInputLayout tilPhoneNumber = (TextInputLayout) view.findViewById(R.id.tilPhoneNumber);
         view.findViewById(R.id.btnNextToVerification).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumber = etPhoneNumber.getText().toString();
+                String phoneNumber = TextUtils.makeDigitsEnglish(etPhoneNumber.getText().toString());
                 if (validatePhoneNumber(phoneNumber)) {
                     SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
@@ -64,6 +78,7 @@ public class ChangePhoneNumberFragment extends BaseFragment {
 
                     Bundle args = new Bundle();
                     args.putString(ConstantsIntentExtra.PHONE_NUMBER, phoneNumber);
+                    args.putString(ConstantsIntentExtra.TAG_BACK_FRAGMENT, FragmentType.CHANGE_PHONE_NUMBER_FRAGMENT.toString());
                     getBaseActivity().onSwitchFragment(FragmentType.MOBILE_VERIFICATION, args, false);
                 } else {
                     tilPhoneNumber.setError(getString(R.string.enter_correct_phone_number));

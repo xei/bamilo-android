@@ -45,6 +45,8 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
     private TextView tvResendToken;
     private TextView tvResendTokenNotice;
 
+    private String fragmentTagToPopFromBackStack;
+
 
     public MobileVerificationFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
@@ -63,6 +65,7 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
         if (phoneNumber == null) {
             getBaseActivity().onBackPressed();
         }
+        fragmentTagToPopFromBackStack = args.getString(ConstantsIntentExtra.TAG_BACK_FRAGMENT, null);
         mTokenCountDownHandler = new Handler();
         mTokenCountDownRunnable = new Runnable() {
             @Override
@@ -175,6 +178,9 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
                 editor.putBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, true);
                 editor.putString(ConstantsSharedPrefs.KEY_PHONE_NUMBER, phoneNumber);
                 editor.apply();
+                if (fragmentTagToPopFromBackStack != null) {
+                    getBaseActivity().popBackStackUntilTag(fragmentTagToPopFromBackStack);
+                }
                 getBaseActivity().onBackPressed();
                 return;
             }
