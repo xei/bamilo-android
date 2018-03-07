@@ -173,6 +173,7 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
                 SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, true);
+                editor.putString(ConstantsSharedPrefs.KEY_PHONE_NUMBER, phoneNumber);
                 editor.apply();
                 getBaseActivity().onBackPressed();
                 return;

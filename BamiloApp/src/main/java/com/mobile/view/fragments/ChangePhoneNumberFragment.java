@@ -38,6 +38,11 @@ public class ChangePhoneNumberFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
+        SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
+        boolean verified = prefs.getBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, false);
+        if (verified) {
+            getBaseActivity().onBackPressed();
+        }
     }
 
     @Override
@@ -55,7 +60,6 @@ public class ChangePhoneNumberFragment extends BaseFragment {
                     SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, false);
-                    editor.putString(ConstantsSharedPrefs.KEY_PHONE_NUMBER, phoneNumber);
                     editor.apply();
 
                     Bundle args = new Bundle();

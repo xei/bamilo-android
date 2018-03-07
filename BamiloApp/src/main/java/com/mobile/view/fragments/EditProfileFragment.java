@@ -143,6 +143,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                 if (TextUtils.isNotEmpty(phoneNumber)) {
                     tvPhoneNumber.setText(phoneNumber);
                     tvPhoneNumber.setTextColor(ContextCompat.getColor(getContext(), R.color.gray_2));
+                    prefs.edit().putString(ConstantsSharedPrefs.KEY_PHONE_NUMBER, null).apply();
                 }
             }
         }
@@ -195,7 +196,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, false);
         editor.apply();
-        getBaseActivity().onSwitchFragment(FragmentType.CHANGE_PHONE_NUMBER_FRAGMENT, null, false);
+        getBaseActivity().onSwitchFragment(FragmentType.CHANGE_PHONE_NUMBER_FRAGMENT, null, true);
     }
 
     private boolean validateCardNumber(String cardNumber) {
