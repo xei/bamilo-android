@@ -151,14 +151,15 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
 
                 JalaliCalendar.YearMonthDate selectedDate = null;
                 String birthday = userProfileResponse.getUserProfile().getBirthday();
-                String[] birthdayParts = birthday.split(BIRTHDAY_DELIMITER);
-                if (birthdayParts.length == 3) {
                     /* Prevent app crash if the server is sending an inconsistent data */
-                    try {
+                try {
+                    String[] birthdayParts = birthday.split(BIRTHDAY_DELIMITER);
+                    if (birthdayParts.length == 3) {
                         selectedDate = new JalaliCalendar.YearMonthDate(Integer.valueOf(birthdayParts[0]),
                                 Integer.valueOf(birthdayParts[1]) - 1,
                                 Integer.valueOf(birthdayParts[2]));
-                    } catch (Exception ignore) {}
+                    }
+                } catch (Exception ignore) {
                 }
                 if (selectedDate != null) {
                     persianDatePicker.setSelectedDate(selectedDate);
@@ -315,7 +316,8 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                                 Integer.valueOf(birthdayParts[2]));
                         tvBirthday.setText(birthday);
                         tvBirthday.setTextColor(ContextCompat.getColor(getContext(), R.color.gray_1));
-                    } catch (Exception ignore) {}
+                    } catch (Exception ignore) {
+                    }
                 }
             }
             if (TextUtils.isNotEmpty(userProfileResponse.getWarningMessage())) {
