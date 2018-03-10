@@ -62,6 +62,10 @@ public class UserProfileResponse extends ServerResponse {
         return userProfileMetaData.getWarningMessage();
     }
 
+    public UserProfileMetaData getUserProfileMetaData() {
+        return userProfileMetaData;
+    }
+
     public void setUserProfileMetaData(UserProfileMetaData userProfileMetaData) {
         this.userProfileMetaData = userProfileMetaData;
     }

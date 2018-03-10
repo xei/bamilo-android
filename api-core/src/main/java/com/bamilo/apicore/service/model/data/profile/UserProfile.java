@@ -42,8 +42,6 @@ public class UserProfile {
     @Expose
     private String phone;
 
-    private String password;
-
     public String getEmail() {
         return email;
     }
@@ -138,13 +136,5 @@ public class UserProfile {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

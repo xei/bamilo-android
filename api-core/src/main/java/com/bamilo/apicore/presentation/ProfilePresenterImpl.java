@@ -92,9 +92,9 @@ public class ProfilePresenterImpl implements ProfilePresenter {
             view.toggleProgress(EventType.EDIT_USER_DATA_EVENT, true);
         }
         subscription = profileInteractor.submitProfile(userProfile)
-                .subscribe(new Action1<ServerResponse>() {
+                .subscribe(new Action1<UserProfileResponse>() {
                     @Override
-                    public void call(ServerResponse response) {
+                    public void call(UserProfileResponse response) {
                         if (view != null) {
                             view.toggleProgress(EventType.EDIT_USER_DATA_EVENT, false);
                             if (response == null) {

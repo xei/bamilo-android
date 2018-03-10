@@ -34,7 +34,7 @@ public class ChangePhoneNumberFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.CLOSE_BUTTON),
                 NavigationAction.MY_ACCOUNT_USER_DATA,
                 R.layout.fragment_change_phone_number,
-                IntConstants.ACTION_BAR_NO_TITLE,
+                R.string.fragment_change_phone_title,
                 ADJUST_CONTENT);
     }
 

@@ -52,7 +52,7 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.LOGIN_OUT,
                 R.layout.fragment_mobile_verification,
-                IntConstants.ACTION_BAR_NO_TITLE,
+                R.string.fragment_phone_verification_title,
                 ADJUST_CONTENT);
     }
 

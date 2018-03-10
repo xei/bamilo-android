@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,7 @@ import com.mobile.components.absspinner.PromptSpinnerAdapter;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.service.objects.customer.Customer;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.NetworkConnectivity;
 import com.mobile.service.utils.TextUtils;
@@ -52,7 +54,6 @@ import br.com.sapereaude.maskedEditText.MaskedEditText;
 
 public class EditProfileFragment extends BaseFragment implements ProfileView, PersianDatePickerDialogHelper.OnDateSelectedListener {
 
-    private static final String KEY_CREDENTIALS_PASSWORD = "login[password]";
     private static final String GENDER_MALE = "male", GENDER_FEMALE = "female";
     private static final String BIRTHDAY_DELIMITER = "-";
     private static final String PERSIAN_DATE_PATTERN = "%02d/%02d/%02d";
@@ -73,6 +74,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
     private int BIRTHDAY_UPPER_BOUND_DIFF = -10, BIRTHDAY_LOWER_BOUND_DIFF = -70;
     private ArrayList<String> gendersList;
     private String requestBirthday;
+    private TextWatcher digitsToFarsiConverter;
 
     public EditProfileFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
@@ -90,7 +92,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
         // inject dependencies by dagger2
         BamiloApplication.getComponent().plus(new ProfileModule(this)).inject(this);
 
-        TextWatcher digitsToFarsiConverter = new TextWatcher() {
+        digitsToFarsiConverter = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -98,12 +100,11 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                TextUtils.makeDigitsFarsi(charSequence);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                TextUtils.makeDigitsFarsi(editable);
             }
         };
         etFirstName = (EditText) view.findViewById(R.id.etFirstName);
@@ -113,7 +114,10 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
         tvPhoneNumber = (TextView) view.findViewById(R.id.tvPhoneNumber);
         tvPhoneNumberError = (TextView) view.findViewById(R.id.tvPhoneNumberError);
         metCardNumber = (MaskedEditText) view.findViewById(R.id.metCardNumber);
-        metCardNumber.addTextChangedListener(digitsToFarsiConverter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            metCardNumber.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            metCardNumber.setTextDirection(View.TEXT_DIRECTION_LTR);
+        }
 
         tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
         etNationalId = (EditText) view.findViewById(R.id.etNationalId);
@@ -187,7 +191,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                             .apply();
                     if (TextUtils.isNotEmpty(phoneNumber)) {
                         userProfileResponse.getUserProfile().setPhone(phoneNumber);
-                        tvWarningMessage.setVisibility(View.GONE);
+                        userProfileResponse.getUserProfileMetaData().setWarningMessage(null);
                     }
                 }
             }
@@ -205,11 +209,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                         validatePhoneNumber(phoneNumber);
                 if (validated) {
                     UserProfile userProfile = userProfileResponse.getUserProfile();
-                    ContentValues userCredentials = BamiloApplication.INSTANCE
-                            .getCustomerUtils().getCredentials();
 
-                    String password = (String) userCredentials.get(KEY_CREDENTIALS_PASSWORD);
-                    userProfile.setPassword(password);
                     userProfile.setNationalId(nationalId);
                     if (requestBirthday != null) {
                         userProfile.setBirthday(requestBirthday);
@@ -231,7 +231,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                     }
 
                     userProfile.setCardNumber(cardNumber);
-
+                    getBaseActivity().hideKeyboard();
                     presenter.submitProfile(NetworkConnectivity.isConnected(getContext()), userProfile);
                 }
             }
@@ -333,14 +333,30 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                 spinnerGender.setSelection(position);
             }
             etNationalId.setText(TextUtils.makeDigitsFarsi(userProfile.getNationalId()));
+            storeCustomerDate(userProfile);
         } else {
             showFragmentErrorRetry();
         }
     }
 
+    private void storeCustomerDate(UserProfile userProfile) {
+        Customer customer = BamiloApplication.CUSTOMER;
+        if (customer == null) {
+            customer = new Customer();
+            BamiloApplication.CUSTOMER = customer;
+        }
+        customer.setEmail(userProfile.getEmail());
+        customer.setGender(userProfile.getGender());
+        customer.setNationalId(userProfile.getNationalId());
+        customer.setPhoneNumber(userProfile.getPhone());
+
+    }
+
     @Override
-    public void onProfileSubmitted(ServerResponse response) {
+    public void onProfileSubmitted(UserProfileResponse response) {
+        storeCustomerDate(response.getUserProfile());
         showWarningSuccessMessage(getString(R.string.edit_profile_submitted_successfully));
+        getBaseActivity().setupDrawerNavigation();
         getBaseActivity().onBackPressed();
     }
 

@@ -106,7 +106,6 @@ public class ProfileInteractorImpl implements ProfileInteractor {
         String fieldsPattern = "%s[%s]";
 
         itemMap.put(String.format(fieldsPattern, FIELD_CUSTOMER, FIELD_PHONE_PREFIX), String.valueOf(100)); /*I don't know why :))*/
-        itemMap.put(String.format(fieldsPattern, FIELD_CUSTOMER, FIELD_PASSWORD), userProfile.getPassword());
 
         String nationalId = userProfile.getNationalId();
         itemMap.put(String.format(fieldsPattern, FIELD_CUSTOMER, FIELD_NATIONAL_ID), nationalId == null ? "" : nationalId);
