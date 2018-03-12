@@ -120,7 +120,9 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
         mDrawerItems = new ArrayList<>();
         if (BamiloApplication.isCustomerLoggedIn()) {
             String gender = BamiloApplication.CUSTOMER.getGender();
-            mDrawerItems.add(new DrawerItem(getString(R.string.user_greeting, BamiloApplication.CUSTOMER.getFirstName()), BamiloApplication.CUSTOMER.getEmail(), gender, null));
+            String firstName = BamiloApplication.CUSTOMER.getFirstName();
+            String email = BamiloApplication.CUSTOMER.getEmail();
+            mDrawerItems.add(new DrawerItem(getString(R.string.user_greeting, firstName != null ? firstName : ""), email != null ? email : "", gender, null));
 
         } else {
             mDrawerItems.add(new DrawerItem(getString(R.string.welcome_label), getString(R.string.register_login_title), "male", new View.OnClickListener() {

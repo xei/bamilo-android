@@ -20,7 +20,7 @@ public class HomePresenterImpl implements HomePresenter {
 
     private HomeInteractor homeInteractor;
 
-    Subscription subscription;
+    private Subscription subscription;
 
     private HomeView view;
 

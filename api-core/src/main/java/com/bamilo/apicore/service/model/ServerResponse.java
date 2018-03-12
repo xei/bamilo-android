@@ -55,6 +55,9 @@ public abstract class ServerResponse {
         @Expose
         @SerializedName("message")
         private String message;
+        @Expose
+        @SerializedName("code")
+        private int errorCode;
 
         public String getReason() {
             return reason;
@@ -71,6 +74,39 @@ public abstract class ServerResponse {
         public void setMessage(String message) {
             this.message = message;
         }
+
+        public int getErrorCode() {
+            return errorCode;
+        }
+
+        public void setErrorCode(int errorCode) {
+            this.errorCode = errorCode;
+        }
+    }
+
+    public static class ServerValidateError {
+        @Expose
+        @SerializedName("field")
+        private String field;
+        @Expose
+        @SerializedName("message")
+        private String message;
+
+        public String getField() {
+            return field;
+        }
+
+        public void setField(String field) {
+            this.field = field;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
     }
 
     public static class ServerMessages {
@@ -78,12 +114,24 @@ public abstract class ServerResponse {
         @SerializedName(JsonConstants.RestConstants.ERROR)
         private List<ServerError> errors;
 
+        @Expose
+        @SerializedName(JsonConstants.RestConstants.VALIDATE)
+        private List<ServerValidateError> validateErrors;
+
         public List<ServerError> getErrors() {
             return errors;
         }
 
         public void setErrors(List<ServerError> errors) {
             this.errors = errors;
+        }
+
+        public List<ServerValidateError> getValidateErrors() {
+            return validateErrors;
+        }
+
+        public void setValidateErrors(List<ServerValidateError> validateErrors) {
+            this.validateErrors = validateErrors;
         }
     }
 }
