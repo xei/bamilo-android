@@ -227,7 +227,7 @@ public class DealComponent extends BaseComponent {
         private String image;
         @Expose
         @SerializedName(JsonConstants.RestConstants.HAS_STOCK)
-        private boolean hasStock;
+        private Boolean hasStock;
 
         public String getSku() {
             return sku;
@@ -285,11 +285,11 @@ public class DealComponent extends BaseComponent {
             this.image = image;
         }
 
-        public boolean isHasStock() {
+        public Boolean hasStock() {
             return hasStock;
         }
 
-        public void setHasStock(boolean hasStock) {
+        public void setHasStock(Boolean hasStock) {
             this.hasStock = hasStock;
         }
     }

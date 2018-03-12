@@ -638,13 +638,15 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mDrawerToggle.setHomeAsUpIndicator(R.drawable.back_action_selector);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        mDrawerFragment.CreateDrawer();
-
-
+        if (mDrawerFragment != null) {
+            mDrawerFragment.CreateDrawer();
+        }
     }
 
     public void updateCartDrawerItem() {
-        mDrawerFragment.CreateDrawer();
+        if (mDrawerFragment != null) {
+            mDrawerFragment.CreateDrawer();
+        }
         /*DrawerFragment navigationCategoryFragment = new DrawerFragment();
         NavigationCategoryFragment.getInstance(bundle);
         fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);

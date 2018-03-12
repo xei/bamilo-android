@@ -81,7 +81,7 @@ public class BaseViewComponentFactory {
                         tempProduct.price = product.getSpecialPrice();
                         tempProduct.oldPrice = product.getPrice();
                     }
-                    tempProduct.hasStock = product.isHasStock();
+                    tempProduct.hasStock = product.hasStock() == null ? true : product.hasStock();
                     dealProducts.add(tempProduct);
                 }
             }

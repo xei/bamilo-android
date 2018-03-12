@@ -592,6 +592,9 @@
     <string name="fragment_change_phone_title">ثبت شماره</string>
     <string name="card_number_hint">################</string>
     <string name="card_number_mask">#### - #### - #### - ####</string>
+    <string name="order_cancellation_item_has_cancellation_error">درخواست لغو کالای شما در حال پردازش است.</string>
+    <string name="order_cancellation_item_shipped_error">به دلیل اینکه کالای شما در مرحله ارسال است، امکان لغو وجود ندارد.</string>
+    <string name="order_cancellation_item_is_not_cancelable">درخواست لغو کالای شما در حال پردازش است.</string>
 
     <plurals name="order_cancellation_please_select_cancellation_reason">
         <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>
