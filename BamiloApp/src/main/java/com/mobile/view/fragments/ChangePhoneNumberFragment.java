@@ -49,22 +49,6 @@ public class ChangePhoneNumberFragment extends BaseFragment {
         HoloFontLoader.applyDefaultFont(view);
 
         final EditText etPhoneNumber = (EditText) view.findViewById(R.id.etPhoneNumber);
-        etPhoneNumber.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                TextUtils.makeDigitsFarsi(charSequence);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
         final TextInputLayout tilPhoneNumber = (TextInputLayout) view.findViewById(R.id.tilPhoneNumber);
         view.findViewById(R.id.btnNextToVerification).setOnClickListener(new View.OnClickListener() {
             @Override

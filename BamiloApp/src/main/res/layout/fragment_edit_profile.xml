@@ -5,6 +5,7 @@
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/nsvEditProfileForm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/btnSubmitProfile">
@@ -70,8 +71,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvPhoneNumberTitle"
-                    android:padding="4dp"
                     android:gravity="right"
+                    android:padding="4dp"
                     android:text="@string/please_enter_phone_number"
                     android:textColor="@color/gray_5"
                     android:textSize="14sp" />
@@ -86,7 +87,7 @@
                     android:paddingRight="4dp"
                     android:text="@string/phone_number_is_required"
                     android:textColor="@color/red_error"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:visibility="gone" />
 
             </RelativeLayout>
@@ -174,8 +175,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
-                    android:gravity="right"
                     android:enabled="false"
+                    android:gravity="right"
                     android:hint="@string/email_address"
                     android:inputType="none"
                     android:textSize="14sp"
@@ -238,6 +239,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
+                app:errorTextAppearance="@style/TextInputLayoutErrorTextAppearance"
                 android:layout_marginTop="16dp"
                 android:theme="@style/RegistrationFormEditTextTheme">
 
@@ -256,6 +258,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp">
 
                 <TextView
@@ -278,21 +281,32 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:gravity="right"
-                    android:hint="################"
+                    android:hint="@string/card_number_hint"
                     android:inputType="number"
-                    android:layoutDirection="ltr"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingTop="0dp"
                     android:textColor="@color/gray_2"
-                    android:textDirection="ltr"
                     android:textSize="14sp"
                     android:theme="@style/RegistrationFormEditTextTheme"
                     app:allowed_chars="1234567890"
                     app:keep_hint="true"
-                    app:mask="#### - #### - #### - ####" />
-            </RelativeLayout>
+                    app:mask="@string/card_number_mask" />
 
+                <TextView
+                    android:id="@+id/tvCardNumberError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/metCardNumber"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="16dp"
+                    android:paddingRight="4dp"
+                    android:text="@string/phone_number_is_required"
+                    android:textColor="@color/red_error"
+                    android:textSize="11sp"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
         </LinearLayout>
 

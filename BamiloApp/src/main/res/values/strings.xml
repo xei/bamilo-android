@@ -563,7 +563,7 @@
     <string name="error_invalid_value">مقدار وارد شده معتبر نیست</string>
     <string name="verification_code_sent_to_you">کد تایید به شماره شما ارسال شد</string>
     <string name="verification_token_receive_notice">کد تایید را دریافت نکردید؟</string>
-    <string name="send_token_btn_label">ثبت</string>
+    <string name="send_token_btn_label">تایید</string>
     <string name="verification_resend_token">ارسال مجدد</string>
     <string name="verification_resend_token_after">ارسال مجدد کد تا</string>
     <string name="item_tracking_cancellation_reason">علت لغو سفارش، %1$s</string>
@@ -580,16 +580,18 @@
     <string name="profile_bd_day">روز</string>
     <string name="please_add_your_birthday">لطفا تاریخ تولد خود را انتخاب کنید</string>
     <string name="enter_phone_number">شماره موبایل خود را وارد کنید</string>
-    <string name="enter_correct_phone_number">لطفا شماره تلفن خود را به صورت صحیح وارد کنید</string>
+    <string name="enter_correct_phone_number">لطفا شماره موبایل خود را به صورت صحیح وارد کنید</string>
     <string name="please_enter_phone_number">لطفا شماره موبایل خود را وارد کنید</string>
     <string name="submit_profile">ثبت</string>
     <string name="edit_profile_submitted_successfully">اطلاعات شما با موفقیت ذخیره شد</string>
     <string name="card_number_isnt_valid">شماره کارت وارد شده معتبر نیست</string>
     <string name="phone_number_is_required">وارد کردن شماره موبایل الزامی‌است</string>
     <string name="choose_prompt">انتخاب کنید</string>
-    <string name="save_phone_number_button_label">ثبت</string>
+    <string name="save_phone_number_button_label">تایید</string>
     <string name="fragment_phone_verification_title">تایید شماره</string>
     <string name="fragment_change_phone_title">ثبت شماره</string>
+    <string name="card_number_hint">################</string>
+    <string name="card_number_mask">#### - #### - #### - ####</string>
 
     <plurals name="order_cancellation_please_select_cancellation_reason">
         <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>

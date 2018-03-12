@@ -352,4 +352,9 @@
         <item name="colorControlActivated">@color/gray_5</item>
         <item name="colorControlHighlight">@color/gray_5</item>
     </style>
+
+    <style name="TextInputLayoutErrorTextAppearance" parent="@style/TextAppearance.Design.Error">
+        <item name="android:textColor">@color/red_error</item>
+        <item name="android:textSize">11sp</item>
+    </style>
 </resources>

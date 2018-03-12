@@ -8,7 +8,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 
 import com.bamilo.apicore.di.modules.ProfileModule;
 import com.bamilo.apicore.presentation.ProfilePresenter;
+import com.bamilo.apicore.service.model.EventType;
 import com.bamilo.apicore.service.model.ServerResponse;
 import com.bamilo.apicore.service.model.UserProfileResponse;
 import com.bamilo.apicore.service.model.data.profile.UserProfile;
@@ -28,6 +32,7 @@ import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.service.objects.customer.Customer;
+import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.NetworkConnectivity;
 import com.mobile.service.utils.TextUtils;
@@ -40,6 +45,7 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,6 +53,7 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 import br.com.sapereaude.maskedEditText.MaskedEditText;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Created by mohsen on 2/17/18.
@@ -58,15 +65,18 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
     private static final String BIRTHDAY_DELIMITER = "-";
     private static final String PERSIAN_DATE_PATTERN = "%02d/%02d/%02d";
     private static final String SERVER_DATE_PATTERN = "%d-%d-%d";
+    private static final String FIELD_NATIONAL_ID = "national_id",
+            FIELD_FIRST_NAME = "first_name", FIELD_LAST_NAME = "last_name", FIELD_CARD_NUMBER = "card_number";
 
     @Inject
     ProfilePresenter presenter;
 
     private EditText etFirstName, etLastName, etEmail, etNationalId;
     private MaskedEditText metCardNumber;
-    private TextView tvBirthday, tvPhoneNumber, tvWarningMessage, tvPhoneNumberError;
-    private TextInputLayout tilNationalId;
+    private TextView tvBirthday, tvPhoneNumber, tvWarningMessage, tvPhoneNumberError, tvCardNumberError;
+    private TextInputLayout tilNationalId, tilFirstName, tilLastName;
     private Spinner spinnerGender;
+    NestedScrollView nsvEditProfileForm;
 
     PersianDatePickerDialogHelper persianDatePicker;
     private boolean phoneVerificationOnGoing;
@@ -74,7 +84,6 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
     private int BIRTHDAY_UPPER_BOUND_DIFF = -10, BIRTHDAY_LOWER_BOUND_DIFF = -70;
     private ArrayList<String> gendersList;
     private String requestBirthday;
-    private TextWatcher digitsToFarsiConverter;
 
     public EditProfileFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
@@ -87,33 +96,20 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        HoloFontLoader.applyDefaultFont(view);
 
         // inject dependencies by dagger2
         BamiloApplication.getComponent().plus(new ProfileModule(this)).inject(this);
 
-        digitsToFarsiConverter = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                TextUtils.makeDigitsFarsi(editable);
-            }
-        };
         etFirstName = (EditText) view.findViewById(R.id.etFirstName);
+        tilFirstName = (TextInputLayout) view.findViewById(R.id.tilFirstName);
         etLastName = (EditText) view.findViewById(R.id.etLastName);
+        tilLastName = (TextInputLayout) view.findViewById(R.id.tilLastName);
         etEmail = (EditText) view.findViewById(R.id.etEmail);
         tvWarningMessage = (TextView) view.findViewById(R.id.tvWarningMessage);
         tvPhoneNumber = (TextView) view.findViewById(R.id.tvPhoneNumber);
         tvPhoneNumberError = (TextView) view.findViewById(R.id.tvPhoneNumberError);
         metCardNumber = (MaskedEditText) view.findViewById(R.id.metCardNumber);
+        tvCardNumberError = (TextView) view.findViewById(R.id.tvCardNumberError);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             metCardNumber.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
             metCardNumber.setTextDirection(View.TEXT_DIRECTION_LTR);
@@ -121,7 +117,6 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
 
         tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
         etNationalId = (EditText) view.findViewById(R.id.etNationalId);
-        etNationalId.addTextChangedListener(digitsToFarsiConverter);
         tilNationalId = (TextInputLayout) view.findViewById(R.id.tilNationalId);
 
         spinnerGender = (Spinner) view.findViewById(R.id.spinnerGender);
@@ -133,6 +128,8 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
         PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
         promptAdapter.setPrompt(getString(R.string.choose_prompt));
         spinnerGender.setAdapter(promptAdapter);
+
+        nsvEditProfileForm = (NestedScrollView) view.findViewById(R.id.nsvEditProfileForm);
 
         view.findViewById(R.id.rlBirthday).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,9 +198,10 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
         view.findViewById(R.id.btnSubmitProfile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String cardNumber = TextUtils.makeDigitsEnglish(metCardNumber.getRawText());
-                String phoneNumber = TextUtils.makeDigitsEnglish(tvPhoneNumber.getText().toString());
-                String nationalId = TextUtils.makeDigitsEnglish(etNationalId.getText().toString());
+                hideErrors();
+                String cardNumber = metCardNumber.getRawText();
+                String phoneNumber = tvPhoneNumber.getText().toString();
+                String nationalId = etNationalId.getText().toString();
                 boolean validated = validateNationalId(nationalId) &&
                         validateCardNumber(cardNumber) &&
                         validatePhoneNumber(phoneNumber);
@@ -232,10 +230,24 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
 
                     userProfile.setCardNumber(cardNumber);
                     getBaseActivity().hideKeyboard();
+                    hideErrors();
                     presenter.submitProfile(NetworkConnectivity.isConnected(getContext()), userProfile);
                 }
             }
         });
+        HoloFontLoader.applyDefaultFont(view);
+    }
+
+    @Override
+    public void onPause() {
+        hideErrors();
+        super.onPause();
+    }
+
+    private void hideErrors() {
+        tvPhoneNumberError.setVisibility(View.GONE);
+        tvCardNumberError.setVisibility(View.GONE);
+        tilNationalId.setError(null);
     }
 
     private void navigateToPhoneVerificationProcess() {
@@ -249,7 +261,8 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
 
     private boolean validateCardNumber(String cardNumber) {
         if (TextUtils.isNotEmpty(cardNumber) && cardNumber.length() != 16) {
-            metCardNumber.setError(getString(R.string.card_number_isnt_valid));
+            tvCardNumberError.setText(getString(R.string.card_number_isnt_valid));
+            tvCardNumberError.setVisibility(View.VISIBLE);
             return false;
         }
         return true;
@@ -275,6 +288,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
             return true;
         }
         tilNationalId.setError(getString(R.string.address_national_id_length_error));
+        HoloFontLoader.applyDefaultFont(tilNationalId);
         return false;
     }
 
@@ -300,7 +314,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
             etLastName.setText(userProfile.getLastName() != null ? userProfile.getLastName().trim() : "");
             etEmail.setText(userProfile.getEmail());
             if (TextUtils.isNotEmpty(userProfile.getPhone())) {
-                tvPhoneNumber.setText(TextUtils.makeDigitsFarsi(userProfile.getPhone()));
+                tvPhoneNumber.setText(userProfile.getPhone());
                 tvPhoneNumber.setTextColor(ContextCompat.getColor(getContext(), R.color.gray_1));
             }
             metCardNumber.setText(userProfile.getCardNumber());
@@ -310,7 +324,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                 if (birthdayParts.length == 3) {
                     /* Prevent app crash if the server is sending an inconsistent data */
                     try {
-                        birthday = String.format(new Locale("fa"), PERSIAN_DATE_PATTERN,
+                        birthday = String.format(Locale.US, PERSIAN_DATE_PATTERN,
                                 Integer.valueOf(birthdayParts[0]),
                                 Integer.valueOf(birthdayParts[1]),
                                 Integer.valueOf(birthdayParts[2]));
@@ -332,7 +346,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                 }
                 spinnerGender.setSelection(position);
             }
-            etNationalId.setText(TextUtils.makeDigitsFarsi(userProfile.getNationalId()));
+            etNationalId.setText(userProfile.getNationalId());
             storeCustomerDate(userProfile);
         } else {
             showFragmentErrorRetry();
@@ -349,7 +363,8 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
         customer.setGender(userProfile.getGender());
         customer.setNationalId(userProfile.getNationalId());
         customer.setPhoneNumber(userProfile.getPhone());
-
+        customer.setFirstName(userProfile.getFirstName());
+        customer.setLastName(userProfile.getLastName());
     }
 
     @Override
@@ -361,10 +376,37 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
     }
 
     @Override
+    public void showServerError(EventType eventType, ServerResponse response) {
+        super.showServerError(eventType, response);
+        if (eventType == EventType.EDIT_USER_DATA_EVENT) {
+            if (response != null && response.getMessages() != null &&
+                    CollectionUtils.isNotEmpty(response.getMessages().getValidateErrors())) {
+                List<ServerResponse.ServerValidateError> validateErrors = response.getMessages().getValidateErrors();
+                for (ServerResponse.ServerValidateError error : validateErrors) {
+                    String field = error.getField();
+                    if (field.equals(FIELD_NATIONAL_ID)) {
+                        tilNationalId.setError(error.getMessage());
+                        HoloFontLoader.applyDefaultFont(tilNationalId);
+                    } else if (field.equals(FIELD_FIRST_NAME)) {
+                        tilFirstName.setError(error.getMessage());
+                        HoloFontLoader.applyDefaultFont(tilFirstName);
+                    } else if (field.equals(FIELD_LAST_NAME)) {
+                        tilLastName.setError(error.getMessage());
+                        HoloFontLoader.applyDefaultFont(tilLastName);
+                    } else if (field.equals(FIELD_CARD_NUMBER)) {
+                        tvCardNumberError.setText(error.getMessage());
+                        tvCardNumberError.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public void onDateSelected(int year, int month, int day) {
         requestBirthday = String.format(Locale.US, SERVER_DATE_PATTERN, year, month, day);
         userProfileResponse.getUserProfile().setBirthday(requestBirthday);
-        tvBirthday.setText(String.format(new Locale("fa"), PERSIAN_DATE_PATTERN, year, month, day));
+        tvBirthday.setText(String.format(Locale.US, PERSIAN_DATE_PATTERN, year, month, day));
         tvBirthday.setTextColor(ContextCompat.getColor(getContext(), R.color.gray_1));
     }
 }

@@ -18,6 +18,7 @@ import com.mobile.helpers.session.MobileVerificationHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.utils.MyMenuItem;
@@ -198,7 +199,11 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        super.handleErrorEvent(baseResponse);
+        if (TextUtils.isNotEmpty(baseResponse.getValidateMessage())) {
+            showWarningErrorMessage(baseResponse.getValidateMessage());
+        } else {
+            super.handleErrorEvent(baseResponse);
+        }
         showFragmentContentContainer();
         if (!(baseResponse.getErrorMessages() != null &&
                 baseResponse.getErrorMessages().containsKey(MOBILE_VERIFICATION_FAILED))) {
