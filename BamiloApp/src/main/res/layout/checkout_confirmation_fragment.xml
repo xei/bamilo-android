@@ -281,37 +281,6 @@
 
             </RelativeLayout>
 
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/textView12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/black_400"
-                android:gravity="right"
-                android:paddingBottom="@dimen/dimen_10dp"
-                android:paddingLeft="@dimen/dimen_16dp"
-                android:paddingRight="@dimen/dimen_16dp"
-                android:paddingTop="@dimen/dimen_10dp"
-                android:text="@string/checkout_time_delivery"
-                android:textColor="@color/black"
-                android:textSize="13sp" />
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/checkout_order_ship_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:paddingBottom="@dimen/dimen_10dp"
-                android:paddingLeft="@dimen/dimen_16dp"
-                android:paddingRight="@dimen/dimen_16dp"
-                android:paddingTop="@dimen/dimen_10dp"
-                android:text="@string/getting_data_from_server"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:textStyle="normal|bold" />
-
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/textView18"
                 android:layout_width="match_parent"

@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.mobile.adapters.CheckoutPackagesListAdapter;
 import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
@@ -30,6 +31,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.cart.PurchaseCartItem;
 import com.mobile.service.objects.cart.PurchaseEntity;
+import com.mobile.service.objects.checkout.PackagePurchaseEntity;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.tracking.TrackingPage;
 import com.mobile.service.utils.EventType;
@@ -51,9 +53,8 @@ import java.util.Locale;
  */
 public class CheckoutConfirmationFragment extends NewBaseFragment implements View.OnClickListener, IResponseCallback {
     TextView next, address, telephone, user, order_count_title, order_price,
-            ship_price, voucher_price, all_price, ship_time, all_voucher, voucher_error, all_price_title;
+            ship_price, voucher_price, all_price, all_voucher, voucher_error, all_price_title;
     NestedScrollView svCheckoutConfirmation;
-    TextView tvDeliveryTimeHeader;
     TextView tvDeliveryNotice;
     SwitchCompat voucher_switch;
     TextView tvVoucherValueTitle;
@@ -62,10 +63,9 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     private Button couponButton;
     private String mVoucherCode;
     private static final String TAG = CheckoutConfirmationFragment.class.getSimpleName();
-    private PurchaseEntity mOrderFinish;
-    private List<CardChoutItem> cardList = new ArrayList<>();
+    private PackagePurchaseEntity mOrderFinish;
     private RecyclerView recyclerView;
-    private CardCheckOutAdapter mAdapter;
+    private CheckoutPackagesListAdapter mAdapter;
     private boolean pageTracked = false;
 
 
@@ -106,6 +106,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     }
 
     private void triggerGetMultiStepFinish() {
+        showGhostFragmentContentContainer();
         triggerContentEventProgress(new GetStepFinishHelper(), null, this);
     }
 
@@ -134,7 +135,6 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         ship_price = (TextView) view.findViewById(R.id.checkout_order_ship_price);
         voucher_price = (TextView) view.findViewById(R.id.checkout_order_voucher_price);
         all_price = (TextView) view.findViewById(R.id.checkout_order_all_price);
-        ship_time = (TextView) view.findViewById(R.id.checkout_order_ship_time);
         all_price_title = (TextView) view.findViewById(R.id.all_price_total_title);
         all_voucher = (TextView) view.findViewById(R.id.checkout_order_all_discount);
         voucher_error = (TextView) view.findViewById(R.id.error_message_mandatory);
@@ -142,7 +142,6 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         voucher_layer = (LinearLayout) view.findViewById(R.id.voucher_layout);
         mVoucherView = (EditText) view.findViewById(R.id.voucher_codename);
         tvDeliveryNotice = (TextView) view.findViewById(R.id.tvDeliveryNotice);
-        tvDeliveryTimeHeader = (TextView) view.findViewById(R.id.textView12);
         couponButton = (Button) view.findViewById(R.id.checkout_button_enter);
         next.setOnClickListener(this);
         couponButton.setOnClickListener(this);
@@ -163,12 +162,10 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
             }
         });
-        mAdapter = new CardCheckOutAdapter(cardList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setAdapter(mAdapter);
         //prepareCardData();
         voucher_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -251,6 +248,8 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     }
 
     private void showMyOrder() {
+        showFragmentContentContainer();
+
         // Show Product data
         showOrderdetail();
         // Get cart
@@ -262,6 +261,10 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
         // Show container
         showFragmentContentContainer();
+
+        if (TextUtils.isNotEmpty(mOrderFinish.getDeliveryNotice())) {
+            showDeliveryNotice(mOrderFinish.getDeliveryNotice());
+        }
     }
 
     private void showOrderdetail() {
@@ -283,20 +286,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     }
 
     private void showProducts() {
-        cardList = new ArrayList<CardChoutItem>();
-        for (PurchaseCartItem item : mOrderFinish.getCartItems()) {
-            CardChoutItem card;
-            if (item.hasDiscount()) {
-                card = new CardChoutItem(item.getBrandName(), item.getName(), String.valueOf(item.getSpecialPrice()), String.valueOf(item.getQuantity()), item.getImageUrl());
-
-            } else {
-                card = new CardChoutItem(item.getBrandName(), item.getName(), String.valueOf(item.getPrice()), String.valueOf(item.getQuantity()), item.getImageUrl());
-
-            }
-            cardList.add(card);
-        }
-        mAdapter = new CardCheckOutAdapter(cardList);
-
+        mAdapter = new CheckoutPackagesListAdapter(mOrderFinish.getPackages());
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -322,11 +312,6 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
             ship_price.setTextColor(getResources().getColor(R.color.black));
         }
 
-    }
-
-    private void triggerGetShippingMethods() {
-        Print.i(TAG, "TRIGGER: GET SHIPPING METHODS");
-        triggerContentEventProgress(new GetStepShippingHelper(), null, this);
     }
 
     private void setOrderInfo(PurchaseEntity purchaseEntity) {
@@ -388,12 +373,8 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
                 setOrderInfo((PurchaseEntity) baseResponse.getContentData());
                 triggerGetMultiStepFinish();
                 break;
-            case GET_MULTI_STEP_SHIPPING:
-                onSuccessGetShippingMethods(baseResponse);
-                hideActivityProgress();
-                break;
             case GET_MULTI_STEP_FINISH:
-                mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
+                mOrderFinish = (PackagePurchaseEntity) baseResponse.getContentData();
                 if (!pageTracked) {
 
                     // Track screen timing
@@ -406,10 +387,10 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
                 if (mOrderFinish == null) {
                     showFragmentErrorRetry();
+                    break;
                 } else {
                     showMyOrder();
 
-                    triggerGetShippingMethods();
                     hideActivityProgress();
                 }
 
@@ -433,7 +414,7 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     }
 
 
-    public void onSuccessGetShippingMethods(BaseResponse baseResponse) {
+    /*public void onSuccessGetShippingMethods(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
         //
         GetStepShippingHelper.ShippingMethodFormStruct shippingMethodsForm = (GetStepShippingHelper.ShippingMethodFormStruct) baseResponse.getContentData();
@@ -445,22 +426,12 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         if (shippingMethodsForm.getDeliveryNotice() != null) {
             showDeliveryNotice(shippingMethodsForm.getDeliveryNotice());
         }
-    }
+    }*/
 
     private void showDeliveryNotice(String deliveryNotice) {
         tvDeliveryNotice.setVisibility(View.VISIBLE);
         tvDeliveryNotice.setText(deliveryNotice);
     }
-
-    private void showDeliveryTime(String time) {
-        ship_time.setText(time);//
-    }
-
-    // TODO: 8/14/2017 REMOVE ASAP
-    /*private String loadForm(ShippingMethodFormBuilder form) {
-        ShippingMethodForm field = new ShippingMethodForm(form.shippingMethodFormBuilderHolder.fields.get(0));
-       return field.optionsShippingMethod.get("UniversalShippingMatrix").deliveryTime;
-    }*/
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
@@ -468,12 +439,6 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-        // Check if the request is a partial request
-        if (baseResponse.getEventType() == EventType.GET_MULTI_STEP_SHIPPING) {
-            tvDeliveryTimeHeader.setVisibility(View.GONE);
-            ship_time.setVisibility(View.GONE);
             return;
         }
         // Generic error
