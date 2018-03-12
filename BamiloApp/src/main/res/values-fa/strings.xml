@@ -627,6 +627,7 @@
     <string name="order_cancellation_item_has_cancellation_error">درخواست لغو کالای شما در حال پردازش است.</string>
     <string name="order_cancellation_item_shipped_error">به دلیل اینکه کالای شما در مرحله ارسال است، امکان لغو وجود ندارد.</string>
     <string name="order_cancellation_item_is_not_cancelable">درخواست لغو کالای شما در حال پردازش است.</string>
+    <string name="error_at_least_two_chars_needed">حداقل ۲ کاراکتر وارد نمایید</string>
 
     <plurals name="order_cancellation_please_select_cancellation_reason">
         <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>

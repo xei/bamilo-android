@@ -99,7 +99,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
-                android:theme="@style/RegistrationFormEditTextTheme">
+                android:theme="@style/RegistrationFormEditTextTheme"
+                app:errorTextAppearance="@style/TextInputLayoutErrorTextAppearance">
 
                 <EditText
                     android:id="@+id/etFirstName"
@@ -119,7 +120,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
-                android:theme="@style/RegistrationFormEditTextTheme">
+                android:theme="@style/RegistrationFormEditTextTheme"
+                app:errorTextAppearance="@style/TextInputLayoutErrorTextAppearance">
 
                 <EditText
                     android:id="@+id/etLastName"
@@ -239,9 +241,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                app:errorTextAppearance="@style/TextInputLayoutErrorTextAppearance"
                 android:layout_marginTop="16dp"
-                android:theme="@style/RegistrationFormEditTextTheme">
+                android:theme="@style/RegistrationFormEditTextTheme"
+                app:errorTextAppearance="@style/TextInputLayoutErrorTextAppearance">
 
                 <EditText
                     android:id="@+id/etNationalId"

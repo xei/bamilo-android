@@ -67,6 +67,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
     private static final String SERVER_DATE_PATTERN = "%d-%d-%d";
     private static final String FIELD_NATIONAL_ID = "national_id",
             FIELD_FIRST_NAME = "first_name", FIELD_LAST_NAME = "last_name", FIELD_CARD_NUMBER = "card_number";
+    private static final int NAME_MIN_LENGTH = 2;
 
     @Inject
     ProfilePresenter presenter;
@@ -199,12 +200,16 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
             @Override
             public void onClick(View view) {
                 hideErrors();
+                String firstName = etFirstName.getText().toString();
+                String lastName = etLastName.getText().toString();
                 String cardNumber = metCardNumber.getRawText();
                 String phoneNumber = tvPhoneNumber.getText().toString();
                 String nationalId = etNationalId.getText().toString();
-                boolean validated = validateNationalId(nationalId) &&
-                        validateCardNumber(cardNumber) &&
-                        validatePhoneNumber(phoneNumber);
+                boolean validated = validateNationalId(nationalId) &
+                        validateCardNumber(cardNumber) &
+                        validatePhoneNumber(phoneNumber) &
+                        validateNameFields(firstName, tilFirstName) &
+                        validateNameFields(lastName, tilLastName);
                 if (validated) {
                     UserProfile userProfile = userProfileResponse.getUserProfile();
 
@@ -257,6 +262,17 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
         editor.putBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, false);
         editor.apply();
         getBaseActivity().onSwitchFragment(FragmentType.CHANGE_PHONE_NUMBER_FRAGMENT, null, true);
+    }
+
+    private boolean validateNameFields(String text, TextInputLayout errorContainer) {
+        if (TextUtils.isNotEmpty(text)) {
+            if (text.length() < NAME_MIN_LENGTH) {
+                errorContainer.setError(getString(R.string.error_at_least_two_chars_needed));
+                HoloFontLoader.applyDefaultFont(errorContainer);
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean validateCardNumber(String cardNumber) {
