@@ -11,6 +11,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.crashlytics.android.Crashlytics;
+import com.emarsys.mobileengage.MobileEngage;
+import com.emarsys.mobileengage.config.MobileEngageConfig;
 import com.emarsys.predict.Session;
 import com.mobile.di.components.DaggerMainComponent;
 import com.mobile.di.components.MainComponent;
@@ -93,6 +95,18 @@ public class BamiloApplication extends Application {
 
         // init dagger component
         component = createComponent();
+
+        // Setup Emarsys Mobile Engage
+        MobileEngageConfig config = new MobileEngageConfig.Builder()
+                .application(this)
+                .credentials(getString(R.string.Emarsys_ApplicationCode), getString(R.string.Emarsys_ApplicationPassword))
+                //either enable or disable the SDK provided Oreo default channel
+                //one must be chosen
+                //.enableDefaultChannel("default name", "description for the default channel")
+                //.disableDefaultChannel()
+                .build();
+        MobileEngage.setup(config);
+
 
         // init crashlytics
         Fabric.with(this, new Crashlytics());
