@@ -218,14 +218,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get data from saved instance
         if (savedInstanceState != null) {
             Print.i(TAG, "ON SAVED STATE: " + savedInstanceState);
-            mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mQueryValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES);
-            mCatalogPage = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_PAGE);
-            mCurrentFilterValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES);
-            mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
-            mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
-            mCatalogGridPosition = savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, IntConstants.INVALID_POSITION);
-            mTargetType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
         }
 
         // Track screen without timing
@@ -326,15 +318,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (mGridView != null) {
             mCatalogGridPosition = ((GridLayoutManager) mGridView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
         }
-        // Save the current content
-        outState.putInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, mCatalogGridPosition);
-        outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
-        outState.putParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES, mQueryValues);
-        outState.putParcelable(ConstantsIntentExtra.CATALOG_PAGE, mCatalogPage);
-        outState.putParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES, mCurrentFilterValues);
-        outState.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
-        outState.putBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED, mSortOrFilterApplied);
-        outState.putSerializable(ConstantsIntentExtra.TARGET_TYPE, mTargetType);
     }
 
     /*
