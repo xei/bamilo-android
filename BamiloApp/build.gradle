@@ -46,8 +46,8 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         applicationId "com.bamilo.android"
-        versionName "2.9.1"
-        versionCode getAppVersionCode(163)
+        versionName "2.10.0"
+        versionCode getAppVersionCode(164)
         resConfigs "fa"
     }
 
@@ -128,9 +128,6 @@ android {
 
 dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
-        transitive = true;
-    }
-    compile('com.crashlytics.sdk.android:crashlytics-ndk:1.1.6@aar') {
         transitive = true;
     }
     /** ############### LOCAL LIBS ############### **/
