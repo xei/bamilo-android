@@ -150,7 +150,7 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
-    compile project(':api-core')
+    compile project(':BamiloCore')
 }
 
 /**
