@@ -101,9 +101,8 @@ public class BankActivity extends Activity {
                 if (msgFromBrowserUrl.equals("reject")) {
 
                     // Track screen
-                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_PAYMENT_FAILURE.getName()), getString(R.string.gaScreen),
-                            "",
-                            0);
+                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_PAYMENT_FAILURE.getName()),
+                            getString(R.string.gaScreen), "", 0);
                     TrackerManager.trackScreen(this, screenModel, false);
 
                     // Track Purchase
