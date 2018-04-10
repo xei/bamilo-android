@@ -34,21 +34,17 @@
                 tools:visibility="visible" />
 
             <com.mobile.components.customfontviews.TextView
+                android:id="@+id/textView11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black_400"
-                android:paddingBottom="@dimen/dimen_15dp"
+                android:background="@color/gray_9"
+                android:paddingBottom="@dimen/dimen_10dp"
                 android:paddingLeft="@dimen/dimen_16dp"
                 android:paddingRight="@dimen/dimen_16dp"
-                android:paddingTop="@dimen/dimen_15dp"
+                android:paddingTop="@dimen/dimen_10dp"
                 android:text="@string/checkout_sum_header"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
-
-            <View
-                style="@style/Divider"
-                android:layout_marginTop="@dimen/dimen_3dp" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -281,6 +277,19 @@
 
             </RelativeLayout>
             <!--   <include layout="@layout/_def_checkout_confirmation_product"></include>-->
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray_9"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:paddingLeft="@dimen/dimen_16dp"
+                android:paddingRight="@dimen/dimen_16dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:text="@string/order_summary_label"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/cheackout_recycler_view"
                 android:layout_width="match_parent"

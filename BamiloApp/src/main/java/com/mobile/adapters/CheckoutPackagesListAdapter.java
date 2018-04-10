@@ -1,5 +1,6 @@
 package com.mobile.adapters;
 
+import android.app.Application;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
@@ -55,13 +56,14 @@ public class CheckoutPackagesListAdapter extends RecyclerView.Adapter<CheckoutPa
     @Override
     public void onBindViewHolder(CheckoutPackagesListViewHolder holder, int position) {
         int viewType = getItemViewType(position);
+        Locale locale = new Locale("fa", "ir");
 
         if (viewType == ITEM_SECTION_HEADER) {
             int index = headerPositions.indexOf(position);
             CartPackage p = cartPackages.get(index);
             holder.tvPackageTitle.setText(p.getTitle());
             if (TextUtils.isNotEmpty(p.getDeliveryTime())) {
-                holder.tvPackageDeliveryTime.setText(p.getDeliveryTime());
+                holder.tvPackageDeliveryTime.setText(String.format(locale, "زمان تحویل: %s", p.getDeliveryTime()));
             }
         } else if (viewType == ITEM_ORDER_ITEM) {
             Context context = holder.itemView.getContext();
