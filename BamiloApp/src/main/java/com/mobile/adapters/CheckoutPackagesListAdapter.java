@@ -69,7 +69,7 @@ public class CheckoutPackagesListAdapter extends RecyclerView.Adapter<CheckoutPa
             Context context = holder.itemView.getContext();
             PurchaseCartItem cartItem = indexedItems.get(position);
             holder.brand.setText(cartItem.getBrand() != null ? cartItem.getBrand().getName() : "");
-            holder.price.setText(CurrencyFormatter.formatCurrency(cartItem.getPrice()));
+            holder.price.setText(CurrencyFormatter.formatCurrency(cartItem.getSpecialPrice()));
             holder.count.setText(String.format(mLocale, "%s: %d", context.getString(R.string.quantity_label), cartItem.getQuantity()));
             holder.product.setText(cartItem.getName());
             //RocketImageLoader.instance.loadImage(carditem.getImageUrl().replace("-cart.jpg","-catalog_grid_3.jpg"), holder.img, null, R.drawable.no_image_small);
