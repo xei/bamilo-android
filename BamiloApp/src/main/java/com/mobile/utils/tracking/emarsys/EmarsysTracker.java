@@ -7,8 +7,6 @@ import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseEventModel;
 import com.mobile.classes.models.EmarsysEventModel;
 import com.mobile.constants.tracking.EmarsysEventConstants;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.managers.AppManager;
 import com.mobile.utils.DateUtils;
 import com.mobile.utils.tracking.BaseEventTracker;
@@ -17,7 +15,6 @@ import com.mobile.utils.ui.UIUtils;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 public class EmarsysTracker extends BaseEventTracker {
 

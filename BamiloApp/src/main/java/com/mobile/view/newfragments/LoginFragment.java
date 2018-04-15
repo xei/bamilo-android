@@ -26,8 +26,6 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.checkout.CheckoutStepLogin;
 import com.mobile.service.objects.customer.Customer;
@@ -231,15 +229,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
 
-                //Emarsys
-                EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
-                    @Override
-                    public void EmarsysMobileEngageResponse(boolean success) {
-                    }
-                };
-                EmarsysMobileEngage.getInstance(getBaseActivity()).sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
-                // End of Emarsys
-
                 // Case valid next step
                 if (nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
@@ -277,13 +266,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
 
                /* RecommendManager recommendManager = new RecommendManager();
                 recommendManager.setEmail(BamiloApplication.CUSTOMER.getEmail(), ""+BamiloApplication.CUSTOMER.getId());*/
-                //Emarsys
-                emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
-                    @Override
-                    public void EmarsysMobileEngageResponse(boolean success) {}
-                };
-                EmarsysMobileEngage.getInstance(getBaseActivity()).sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
-                // End of Emarsys
+
                 // Finish
                 getActivity().onBackPressed();
 

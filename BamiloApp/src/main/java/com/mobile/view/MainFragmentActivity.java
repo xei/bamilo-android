@@ -21,8 +21,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.pojo.IntConstants;
@@ -244,15 +242,6 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         pushManager.registerForPushNotifications();
         checkMessage(getIntent());
  //PushwooshEnd in onCreate
-
-        //Emarsys
-        EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
-            @Override
-            public void EmarsysMobileEngageResponse(boolean success) {
-            }
-        };
-        EmarsysMobileEngage.getInstance(this).sendLogin(PushManager.getPushToken(this), emarsysMobileEngageResponse);
-        // End of Emarsys
 
         // ON ORIENTATION CHANGE
         if (savedInstanceState == null) {
