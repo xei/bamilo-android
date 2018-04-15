@@ -47,7 +47,7 @@ android {
         targetSdkVersion 27
         applicationId "com.bamilo.android"
         versionName "2.8.1"
-        versionCode getAppVersionCode(152)
+        versionCode getAppVersionCode(167)
         resConfigs "fa"
     }
 
@@ -154,7 +154,7 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
-    compile project(':api-core')
+    compile project(':BamiloCore')
 }
 
 /**

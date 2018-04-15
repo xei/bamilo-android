@@ -1,1 +1,1 @@
-include ':BamiloApp', ':BamiloFramework', ':api-core'
+include ':BamiloApp', ':BamiloFramework', ':BamiloCore'

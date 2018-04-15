@@ -9,9 +9,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.emarsys.mobileengage.MobileEngage;
+import com.emarsys.mobileengage.MobileEngageStatusListener;
 import com.emarsys.mobileengage.config.MobileEngageConfig;
 import com.emarsys.predict.Session;
 import com.mobile.di.components.DaggerMainComponent;
@@ -100,10 +102,11 @@ public class BamiloApplication extends Application {
         MobileEngageConfig config = new MobileEngageConfig.Builder()
                 .application(this)
                 .credentials(getString(R.string.Emarsys_ApplicationCode), getString(R.string.Emarsys_ApplicationPassword))
+                .statusListener(getStatusListener())
                 //either enable or disable the SDK provided Oreo default channel
                 //one must be chosen
                 //.enableDefaultChannel("default name", "description for the default channel")
-                //.disableDefaultChannel()
+                .disableDefaultChannel()
                 .build();
         MobileEngage.setup(config);
 
@@ -152,6 +155,20 @@ public class BamiloApplication extends Application {
             Darwin.initialize(getApplicationContext(), SHOP_ID);
             getCustomerUtils();
         }
+    }
+
+    private MobileEngageStatusListener getStatusListener() {
+        return new MobileEngageStatusListener() {
+            @Override
+            public void onError(String id, Exception error) {
+                Log.e(TAG, error.getMessage(), error);
+            }
+
+            @Override
+            public void onStatusLog(String id, String message) {
+                Log.i(TAG, message);
+            }
+        };
     }
 
     private MainComponent createComponent() {
