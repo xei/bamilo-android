@@ -22,10 +22,13 @@ public final class EmarsysEventConstants extends EventConstants {
     public static String SKU = "SKU";
     public static String Categories = "Categories";
 
+    public static String ContactFieldID = "contactFieldID";
+    public static String ContactFieldValue = "contactFieldValue";
+
     //Events
     public static String Login = "Login";
     public static String SignUp = "SignUp";
-    public static String OpenApp = "OpenApp";
+    public static String AppOpened = "AppOpened";
     public static String AddToCart = "AddToCart";
     public static String RemoveFromCart = "RemoveFromCart";
     public static String AddToFavorites = "AddToFavorites";

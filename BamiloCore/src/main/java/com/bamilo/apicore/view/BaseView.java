@@ -1,6 +1,5 @@
 package com.bamilo.apicore.view;
 
-import com.bamilo.apicore.service.model.EventType;
 import com.bamilo.apicore.service.model.ServerResponse;
 
 /**
@@ -9,15 +8,15 @@ import com.bamilo.apicore.service.model.ServerResponse;
  */
 
 public interface BaseView {
-    void showMessage(EventType eventType, String message);
+    void showMessage(String message);
 
-    void showOfflineMessage(EventType eventType);
+    void showOfflineMessage();
 
-    void showConnectionError(EventType eventType);
+    void showConnectionError();
 
-    void showServerError(EventType eventType, ServerResponse response);
+    void showServerError(ServerResponse response);
 
-    void toggleProgress(EventType eventType, boolean show);
+    void toggleProgress(boolean show);
 
-    void showRetry(EventType eventType);
+    void showRetry();
 }

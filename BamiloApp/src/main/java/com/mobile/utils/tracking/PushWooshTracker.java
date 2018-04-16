@@ -53,7 +53,7 @@ public final class PushWooshTracker extends EmarsysTracker {
     }
 
     @Override
-    protected void sendEventToEmarsys(Context context, String event, Map<String, Object> attributes) {
+    protected void sendEventToEmarsys(Context context, String event, Map<String, String> attributes) {
         Map<String, Object> pushWooshAttrs = getBasicAttributes();
         pushWooshAttrs.putAll(attributes);
         InAppFacade.postEvent(activity, event, pushWooshAttrs);
