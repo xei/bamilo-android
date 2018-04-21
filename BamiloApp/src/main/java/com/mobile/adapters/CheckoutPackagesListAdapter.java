@@ -69,10 +69,13 @@ public class CheckoutPackagesListAdapter extends RecyclerView.Adapter<CheckoutPa
             Context context = holder.itemView.getContext();
             PurchaseCartItem cartItem = indexedItems.get(position);
             holder.brand.setText(cartItem.getBrand() != null ? cartItem.getBrand().getName() : "");
-            holder.price.setText(CurrencyFormatter.formatCurrency(cartItem.getSpecialPrice()));
+            if(Double.isNaN(cartItem.getSpecialPrice())) {
+                holder.price.setText(CurrencyFormatter.formatCurrency(cartItem.getPrice()));
+            } else {
+                holder.price.setText(CurrencyFormatter.formatCurrency(cartItem.getSpecialPrice()));
+            }
             holder.count.setText(String.format(mLocale, "%s: %d", context.getString(R.string.quantity_label), cartItem.getQuantity()));
             holder.product.setText(cartItem.getName());
-            //RocketImageLoader.instance.loadImage(carditem.getImageUrl().replace("-cart.jpg","-catalog_grid_3.jpg"), holder.img, null, R.drawable.no_image_small);
             ImageManager.getInstance().loadImage(cartItem.getImageUrl().replace("-cart.jpg","-catalog_grid_3.jpg"), holder.img, null, R.drawable.no_image_large, false);
         }
     }
