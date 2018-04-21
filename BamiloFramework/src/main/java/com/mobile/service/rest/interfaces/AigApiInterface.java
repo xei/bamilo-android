@@ -21,6 +21,7 @@ import com.mobile.service.objects.checkout.CheckoutStepObject;
 import com.mobile.service.objects.checkout.MultiStepAddresses;
 import com.mobile.service.objects.checkout.MultiStepPayment;
 import com.mobile.service.objects.checkout.MultiStepShipping;
+import com.mobile.service.objects.checkout.PackagePurchaseEntity;
 import com.mobile.service.objects.configs.ApiInformation;
 import com.mobile.service.objects.configs.AvailableCountries;
 import com.mobile.service.objects.configs.CountryConfigs;
@@ -278,7 +279,7 @@ public interface AigApiInterface {
     String getMultiStepPayment = "getMultiStepPayment";
 
     @GET("/")
-    void getMultiStepFinish(Callback<BaseResponse<PurchaseEntity>> callback);
+    void getMultiStepFinish(Callback<BaseResponse<PackagePurchaseEntity>> callback);
     String getMultiStepFinish = "getMultiStepFinish";
 
     @GET("/")

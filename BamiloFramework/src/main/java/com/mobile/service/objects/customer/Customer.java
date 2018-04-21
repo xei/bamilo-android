@@ -118,6 +118,10 @@ public class Customer implements IJSONSerializable, Parcelable {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     /**
      * gets the customer last name
      *
@@ -125,6 +129,10 @@ public class Customer implements IJSONSerializable, Parcelable {
      */
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     /**

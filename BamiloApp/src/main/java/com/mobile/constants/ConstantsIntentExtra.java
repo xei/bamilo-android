@@ -116,4 +116,5 @@ public class ConstantsIntentExtra {
     public static final String ADDRESS = "address";
     public static final String REDIRECT_TO_REVIEWS = "redirect_to_reviews";
     public static final String PHONE_NUMBER = "phone_number";
+    public static final String TAG_BACK_FRAGMENT = "pop_fragment_until_tag";
 }

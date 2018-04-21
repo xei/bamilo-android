@@ -4,6 +4,7 @@ import com.bamilo.apicore.di.modules.CatalogModule;
 import com.bamilo.apicore.di.modules.ItemTrackingModule;
 import com.bamilo.apicore.di.modules.OrderCancellationModule;
 import com.bamilo.apicore.di.modules.OrdersListModule;
+import com.bamilo.apicore.di.modules.ProfileModule;
 import com.bamilo.apicore.di.modules.RetrofitModule;
 import com.bamilo.apicore.di.modules.HomeModule;
 import com.mobile.di.modules.AndroidModule;
@@ -35,6 +36,8 @@ public interface MainComponent {
     ItemTrackingComponent plus(ItemTrackingModule itemTrackingModule);
 
     OrderCancellationComponent plus(OrderCancellationModule orderCancellationModule);
+
+    ProfileComponent plus(ProfileModule profileModule);
 
     void inject(OrderCancellationSuccessFragment fragment);
 }

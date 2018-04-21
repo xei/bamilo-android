@@ -3,8 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/item_tracking_package_section_bg"
-    android:padding="16dp">
+    android:background="@color/gray_10"
+    android:paddingBottom="@dimen/dimen_10dp"
+    android:paddingLeft="@dimen/dimen_16dp"
+    android:paddingRight="@dimen/dimen_16dp"
+    android:paddingTop="@dimen/dimen_10dp">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tvPackageTitle"

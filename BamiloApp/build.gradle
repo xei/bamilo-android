@@ -46,8 +46,8 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         applicationId "com.bamilo.android"
-        versionName "2.9.1"
-        versionCode getAppVersionCode(163)
+        versionName "2.10.0"
+        versionCode getAppVersionCode(169)
         resConfigs "fa"
     }
 
@@ -127,10 +127,7 @@ android {
 }
 
 dependencies {
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
-        transitive = true;
-    }
-    compile('com.crashlytics.sdk.android:crashlytics-ndk:1.1.6@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true;
     }
     /** ############### LOCAL LIBS ############### **/
@@ -143,14 +140,14 @@ dependencies {
     debugCompile 'com.facebook.stetho:stetho:1.5.0'
     debugCompile 'com.facebook.stetho:stetho-okhttp:1.5.0'
     // #LEAK :: https://github.com/square/leakcanary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    //debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     // #SCAPEL :: https://github.com/JakeWharton/scalpel
     debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
     /** Dagger 2 **/
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
-    compile project(':api-core')
+    compile project(':BamiloCore')
 }
 
 /**

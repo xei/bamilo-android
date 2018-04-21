@@ -13,8 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dimen_16dp"
-        android:text="@string/cart_total_quantity"/>
+        android:layout_marginRight="@dimen/dimen_16dp"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/total_value"
@@ -23,7 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/dimen_32dp"
-        android:text="1000"/>
+        android:layout_marginLeft="@dimen/dimen_32dp"/>
 
 </RelativeLayout>

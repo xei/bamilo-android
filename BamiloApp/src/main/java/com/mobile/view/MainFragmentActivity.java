@@ -37,6 +37,7 @@ import com.mobile.utils.tracking.ga.GATracker;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
+import com.mobile.view.fragments.ChangePhoneNumberFragment;
 import com.mobile.view.fragments.CheckoutConfirmationFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
@@ -46,6 +47,7 @@ import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.ComboFragment;
+import com.mobile.view.fragments.EditProfileFragment;
 import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.FrontPageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
@@ -491,7 +493,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 fragment = newFragmentInstance(MyAccountFragment.class, bundle);
                 break;
             case MY_USER_DATA:
-                fragment = newFragmentInstance(MyAccountUserDataFragment.class, bundle);
+                fragment = newFragmentInstance(EditProfileFragment.class, bundle);
                 break;
             case MY_ORDERS:
                 fragment = newFragmentInstance(MyOrdersFragment.class, bundle);
@@ -525,6 +527,9 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 break;
             case MOBILE_VERIFICATION:
                 fragment = newFragmentInstance(MobileVerificationFragment.class, bundle);
+                break;
+            case CHANGE_PHONE_NUMBER_FRAGMENT:
+                fragment = newFragmentInstance(ChangePhoneNumberFragment.class, bundle);
                 break;
             case FORGOT_PASSWORD:
                 fragment = newFragmentInstance(SessionForgotPasswordFragment.class, bundle);

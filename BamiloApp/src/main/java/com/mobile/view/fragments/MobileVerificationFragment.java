@@ -18,8 +18,8 @@ import com.mobile.helpers.session.MobileVerificationHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.IntConstants;
+import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.Constants;
-import com.mobile.service.utils.EventTask;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -46,12 +46,14 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
     private TextView tvResendToken;
     private TextView tvResendTokenNotice;
 
+    private String fragmentTagToPopFromBackStack;
+
 
     public MobileVerificationFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.LOGIN_OUT,
                 R.layout.fragment_mobile_verification,
-                IntConstants.ACTION_BAR_NO_TITLE,
+                R.string.fragment_phone_verification_title,
                 ADJUST_CONTENT);
     }
 
@@ -64,6 +66,7 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
         if (phoneNumber == null) {
             getBaseActivity().onBackPressed();
         }
+        fragmentTagToPopFromBackStack = args.getString(ConstantsIntentExtra.TAG_BACK_FRAGMENT, null);
         mTokenCountDownHandler = new Handler();
         mTokenCountDownRunnable = new Runnable() {
             @Override
@@ -173,8 +176,12 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
             } else if (baseResponse.getSuccessMessages().containsKey(MOBILE_VERIFICATION_DONE)) {
                 SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean(ConstantsSharedPrefs.KEY_SIGNUP_PHONE_VERIFIED, true);
+                editor.putBoolean(ConstantsSharedPrefs.KEY_IS_PHONE_VERIFIED, true);
+                editor.putString(ConstantsSharedPrefs.KEY_PHONE_NUMBER, phoneNumber);
                 editor.apply();
+                if (fragmentTagToPopFromBackStack != null) {
+                    getBaseActivity().popBackStackUntilTag(fragmentTagToPopFromBackStack);
+                }
                 getBaseActivity().onBackPressed();
                 return;
             }
@@ -192,7 +199,11 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        super.handleErrorEvent(baseResponse);
+        if (TextUtils.isNotEmpty(baseResponse.getValidateMessage())) {
+            showWarningErrorMessage(baseResponse.getValidateMessage());
+        } else {
+            super.handleErrorEvent(baseResponse);
+        }
         showFragmentContentContainer();
         if (!(baseResponse.getErrorMessages() != null &&
                 baseResponse.getErrorMessages().containsKey(MOBILE_VERIFICATION_FAILED))) {
