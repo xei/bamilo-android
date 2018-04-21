@@ -123,7 +123,8 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             Package p = completeOrder.getPackages().get(index);
             holder.tvPackageTitle.setText(p.getTitle());
             if (!(p.getDelay() != null && p.getDelay().hasDelay()) && TextUtils.isNotEmpty(p.getDeliveryTime())) {
-                holder.tvPackageDeliveryTime.setText(p.getDeliveryTime());
+                holder.tvPackageDeliveryTime.setText(
+                        String.format(locale, "%s %s", context.getString(R.string.pdv_delivery_time), p.getDeliveryTime()));
             }
             if (p.getDelay() != null && TextUtils.isNotEmpty(p.getDelay().getReason())) {
                 holder.tvPackageDeliveryDelayReason.setVisibility(View.VISIBLE);

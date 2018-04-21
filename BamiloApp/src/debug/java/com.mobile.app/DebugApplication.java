@@ -8,14 +8,11 @@ import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.mobile.service.rest.AigHttpClient;
 import com.mobile.service.rest.AigRestAdapter;
 import com.mobile.service.utils.output.Print;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
+//import com.squareup.leakcanary.LeakCanary;
 
 import com.mobile.service.utils.DeviceInfoHelper;
 
 public class DebugApplication extends BamiloApplication {
-
-    public static RefWatcher sRefWatcher;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -33,7 +30,12 @@ public class DebugApplication extends BamiloApplication {
             Print.initializeAndroidMode(this);
 
             //Leakcanary
-            sRefWatcher = LeakCanary.install(this);
+            /*if (LeakCanary.isInAnalyzerProcess(this)) {
+                // This process is dedicated to LeakCanary for heap analysis.
+                // You should not init your app in this process.
+                return;
+            }
+            LeakCanary.install(this);*/
 
             //AIG Rest Adapter
             AigRestAdapter.enableDebug();

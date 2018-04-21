@@ -34,21 +34,17 @@
                 tools:visibility="visible" />
 
             <com.mobile.components.customfontviews.TextView
+                android:id="@+id/textView11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black_400"
-                android:paddingBottom="@dimen/dimen_15dp"
+                android:background="@color/gray_9"
+                android:paddingBottom="@dimen/dimen_10dp"
                 android:paddingLeft="@dimen/dimen_16dp"
                 android:paddingRight="@dimen/dimen_16dp"
-                android:paddingTop="@dimen/dimen_15dp"
+                android:paddingTop="@dimen/dimen_10dp"
                 android:text="@string/checkout_sum_header"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
-
-            <View
-                style="@style/Divider"
-                android:layout_marginTop="@dimen/dimen_3dp" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -280,54 +276,20 @@
                     tools:text="45000 Rials" />
 
             </RelativeLayout>
-
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/textView12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/black_400"
-                android:gravity="right"
-                android:paddingBottom="@dimen/dimen_10dp"
-                android:paddingLeft="@dimen/dimen_16dp"
-                android:paddingRight="@dimen/dimen_16dp"
-                android:paddingTop="@dimen/dimen_10dp"
-                android:text="@string/checkout_time_delivery"
-                android:textColor="@color/black"
-                android:textSize="13sp" />
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/checkout_order_ship_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:paddingBottom="@dimen/dimen_10dp"
-                android:paddingLeft="@dimen/dimen_16dp"
-                android:paddingRight="@dimen/dimen_16dp"
-                android:paddingTop="@dimen/dimen_10dp"
-                android:text="@string/getting_data_from_server"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:textStyle="normal|bold" />
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/textView18"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/black_400"
-                android:gravity="right"
-                android:paddingBottom="@dimen/dimen_10dp"
-                android:paddingLeft="@dimen/dimen_16dp"
-                android:paddingRight="@dimen/dimen_16dp"
-                android:paddingTop="@dimen/dimen_10dp"
-                android:text="@string/checkout_card_summery"
-                android:textColor="@color/black"
-                android:textSize="13sp" />
-
             <!--   <include layout="@layout/_def_checkout_confirmation_product"></include>-->
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray_9"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:paddingLeft="@dimen/dimen_16dp"
+                android:paddingRight="@dimen/dimen_16dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:text="@string/order_summary_label"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/cheackout_recycler_view"
                 android:layout_width="match_parent"
@@ -338,7 +300,6 @@
                 android:id="@+id/textView16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:background="@color/black_400"
                 android:gravity="right"
                 android:paddingBottom="@dimen/dimen_10dp"

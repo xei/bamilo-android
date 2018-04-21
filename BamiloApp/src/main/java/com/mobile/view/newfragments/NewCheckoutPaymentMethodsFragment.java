@@ -32,6 +32,7 @@ import com.mobile.service.forms.PaymentMethodForm;
 import com.mobile.service.objects.cart.PurchaseEntity;
 import com.mobile.service.objects.checkout.CheckoutFinish;
 import com.mobile.service.objects.checkout.MultiStepPayment;
+import com.mobile.service.objects.checkout.PackagePurchaseEntity;
 import com.mobile.service.objects.product.RichRelevance;
 import com.mobile.service.pojo.BaseResponse;
 import com.mobile.service.pojo.RestConstants;
@@ -86,7 +87,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     private String PaymentAction;
     private String PaymentFieldName;
     private CheckoutFinish mCheckoutFinish;
-    private PurchaseEntity mOrderFinish;
+    private PackagePurchaseEntity mOrderFinish;
 
     private boolean isShowingNoPaymentNecessary;
     private boolean pageTracked = false;
@@ -315,6 +316,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
         switch (eventType) {
             case GET_MULTI_STEP_PAYMENT:
+                showFragmentContentContainer();
                 if (!pageTracked) {
 //                    TrackerDelegator.trackPage(TrackingPage.CHECKOUT_PAYMENT_METHOD, getLoadTime(), false);
 
@@ -327,7 +329,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
                 }
                 MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();
                 bindPaymentMethods(responseData);
-                setTotal(responseData.getOrderSummary());
+                setTotal(responseData.getOrderSummary().getTotal());
                 hideActivityProgress();
             break;
 
@@ -336,8 +338,8 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             break;
 
             case GET_MULTI_STEP_FINISH:
-                mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
-                setTotal(mOrderFinish);
+                mOrderFinish = (PackagePurchaseEntity) baseResponse.getContentData();
+                setTotal(mOrderFinish.getTotal());
                 hideActivityProgress();
             break;
 
@@ -376,10 +378,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Validate event type
         switch (eventType) {
-            case GET_MULTI_STEP_PAYMENT:
-                mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
-            break;
-
             case SET_MULTI_STEP_PAYMENT:
                 paymentMethodAdapter.notifyDataSetChanged();
 //                TrackerDelegator.trackFailedPayment(paymentName, BamiloApplication.INSTANCE.getCart());
@@ -396,6 +394,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
      * ############# REQUESTS #############
      */
     private void getMultistepPayment(){
+        showGhostFragmentContentContainer();
         triggerContentEventProgress(new GetStepPaymentHelper(), null, this);
     }
 
@@ -462,7 +461,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             bundle.putString(RestConstants.TRANSACTION_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
             bundle.putString(RestConstants.TRANSACTION_TAX, String.valueOf(mOrderFinish.getVatValue()));
             bundle.putString(RestConstants.PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
-            bundle.putDouble(RestConstants.ORDER_GRAND_TOTAL, mOrderFinish.getPriceForTracking());
+            bundle.putDouble(RestConstants.ORDER_GRAND_TOTAL, mOrderFinish.getTotalConverted());
 
             if(mCheckoutFinish.getRichRelevance() == null && CollectionUtils.isNotEmpty(mCheckoutFinish.getRelatedProducts())) {
                 final RichRelevance richRelevance = new RichRelevance();
@@ -495,12 +494,12 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         startActivity(browserIntent);
     }
 
-    private void setTotal(@NonNull PurchaseEntity cart) {
+    private void setTotal(double total) {
         // Get views
         TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
         TextView quantityValue = (TextView) mTotalContainer.findViewById(R.id.total_quantity);
         // Set views
-        totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
+        totalValue.setText(CurrencyFormatter.formatCurrency(total));
         quantityValue.setText(R.string.cart_total_amount);
 
         mTotalContainer.setVisibility(View.VISIBLE);

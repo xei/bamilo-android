@@ -215,6 +215,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_MULTI_STEP_ADDRESSES:
+                fabNewAddress.show();
                 // Get form and show order
                 MultiStepAddresses multiStepAddresses = (MultiStepAddresses) baseResponse.getContentData();
                 //CheckoutStepManager.setTotalBar(mCheckoutTotalBar, multiStepAddresses.getOrderSummary());
