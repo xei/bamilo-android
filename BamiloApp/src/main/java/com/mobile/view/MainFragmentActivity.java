@@ -171,7 +171,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                         EmarsysEventModel.createAppOpenedEventModelAttributes(
                                 EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION.toString(),
                                 getApplicationContext().getResources().getString(R.string.Emarsys_ContactFieldID),
-                                BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : null));
+                                BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null));
                 TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened, appOpenedEventModel);
                 mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION;
             } else if (intent.hasExtra(PushManager.REGISTER_EVENT)) {
@@ -266,7 +266,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                         EmarsysEventModel.createAppOpenedEventModelAttributes(
                                 EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK.toString(),
                                 getApplicationContext().getResources().getString(R.string.Emarsys_ContactFieldID),
-                                BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : null));
+                                BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null));
                 TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened, appOpenedEventModel);
                 mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
             }
@@ -314,12 +314,13 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         //Clear application badge number
         PushManager.getInstance(BamiloApplication.INSTANCE).setBadgeNumber(0);
 
-        if(mAppOpenSource != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION && mAppOpenSource != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
+        if(mAppOpenSource != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION
+                && mAppOpenSource != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
             EmarsysEventModel appOpenedEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
                     EmarsysEventModel.createAppOpenedEventModelAttributes(
                             EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT.toString(),
                             getApplicationContext().getResources().getString(R.string.Emarsys_ContactFieldID),
-                            BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : null));
+                            BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null));
             TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened, appOpenedEventModel);
         }
         mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_NONE;

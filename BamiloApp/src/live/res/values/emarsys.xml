@@ -3,5 +3,6 @@
     <string name="Emarsys_ApplicationID">82449-6B792</string>
     <string name="Emarsys_ApplicationCode">82449-6B792</string>
     <string name="Emarsys_ApplicationPassword">oKjusj5sk9ebqCYgi38XdM/PtPCPqLTl</string>
-    <string name="Emarsys_ContactFieldID">4819</string>
+    <!-- <string name="Emarsys_ContactFieldID">4819</string> -->
+    <string name="Emarsys_ContactFieldID">3</string>
 </resources>

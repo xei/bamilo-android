@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         applicationId "com.bamilo.android"
         versionName "2.10.1"
         versionCode getAppVersionCode(171)

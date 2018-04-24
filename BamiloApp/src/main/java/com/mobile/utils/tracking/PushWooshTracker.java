@@ -23,7 +23,6 @@ public final class PushWooshTracker extends EmarsysTracker {
 
     @Override
     public void trackEventAppOpened(Context context, BaseEventModel eventModel) {
-        super.trackEventAppOpened(context, eventModel);
         PushWooshCounter.increaseAppOpenCount();
         HashMap<String, Object> openCount = new HashMap<>();
         openCount.put("AppOpenCount", PushWooshCounter.getAppOpenCount());
@@ -32,7 +31,6 @@ public final class PushWooshTracker extends EmarsysTracker {
 
     @Override
     public void trackEventPurchase(Context context, BaseEventModel eventModel) {
-        super.trackEventPurchase(context, eventModel);
         PushWooshCounter.increasePurchseCount();
         HashMap<String, Object> purchaseCount = new HashMap<>();
         purchaseCount.put("PurchaseCount", PushWooshCounter.getPurchaseCount());

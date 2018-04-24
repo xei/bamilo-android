@@ -182,20 +182,15 @@ public class EmarsysTracker extends BaseEventTracker {
     }
 
     protected void sendEventToEmarsys(Context context, String event, Map<String, String> attributes) {
-        MobileEngage.trackCustomEvent(event, attributes);
-    }
-
-    /*
-    protected void sendEventToEmarsys(Context context, String event, Map<String, String> attributes) {
-        EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
+        /*EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
             @Override
             public void EmarsysMobileEngageResponse(boolean success) {}
-        };
+        };*/
         Map<String, Object> emarsysAttrs = getBasicAttributes();
         emarsysAttrs.putAll(attributes);
-        EmarsysMobileEngage.getInstance(context).sendCustomEvent(event, emarsysAttrs, emarsysMobileEngageResponse);
+        //EmarsysMobileEngage.getInstance(context).sendCustomEvent(event, emarsysAttrs, emarsysMobileEngageResponse);
+        MobileEngage.trackCustomEvent(event, attributes);
     }
-    */
 
     protected HashMap<String, Object> getBasicAttributes() {
         HashMap<String, Object> attributes = new HashMap<>();

@@ -46,7 +46,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         // Global Tracker
         EmarsysEventModel appOpenedEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
                 EmarsysEventModel.createAppOpenedEventModelAttributes(sid, context.getResources().getString(R.string.Emarsys_ContactFieldID),
-                        BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : null));
+                        BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null));
         TrackerManager.trackEvent(context, EventConstants.AppOpened, appOpenedEventModel);
 
         //Get default launcher intent for clarity
