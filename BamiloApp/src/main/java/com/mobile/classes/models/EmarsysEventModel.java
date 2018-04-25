@@ -25,11 +25,9 @@ public final class EmarsysEventModel extends SimpleEventModel {
         return attributes;
     }
 
-    public static Map<String, String> createAppOpenedEventModelAttributes(String source, String contactFieldID, String contactFieldValue) {
+    public static Map<String, String> createAppOpenEventModelAttributes(String source) {
         HashMap<String, String> attributes= new HashMap<>();
-        attributes.put(EmarsysEventConstants.Source, source);
-        attributes.put(EmarsysEventConstants.ContactFieldID, contactFieldID);
-        attributes.put(EmarsysEventConstants.ContactFieldValue, contactFieldValue);
+        attributes.put(EmarsysEventConstants.Source, source != null ? source : "");
         return attributes;
     }
 

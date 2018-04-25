@@ -67,12 +67,7 @@ public class EmarsysTracker extends BaseEventTracker {
     public void trackEventAppOpened(Context context, BaseEventModel eventModel) {
         if (eventModel instanceof EmarsysEventModel) {
             EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            String contactFieldValue = aem.emarsysAttributes.get(EmarsysEventConstants.ContactFieldValue);
-            if(contactFieldValue == null) {
-                MobileEngage.appLogin();
-            } else {
-                MobileEngage.appLogin(Integer.parseInt(aem.emarsysAttributes.get(EmarsysEventConstants.ContactFieldID)), contactFieldValue);
-            }
+            sendEventToEmarsys(context, EmarsysEventConstants.AppOpened, aem.emarsysAttributes);
         }
     }
 
@@ -106,7 +101,10 @@ public class EmarsysTracker extends BaseEventTracker {
 
     @Override
     public void trackEventLogout(Context context, BaseEventModel eventModel) {
-        MobileEngage.appLogout();
+        if (eventModel instanceof EmarsysEventModel) {
+            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
+            sendEventToEmarsys(context, EmarsysEventConstants.Logout, aem.emarsysAttributes);
+        }
     }
 
     @Override
@@ -179,6 +177,18 @@ public class EmarsysTracker extends BaseEventTracker {
             EmarsysEventModel aem = (EmarsysEventModel) eventModel;
             sendEventToEmarsys(context, EmarsysEventConstants.ViewProduct, aem.emarsysAttributes);
         }
+    }
+
+    public void trackEventAppLogin(int contactFieldID, String contactFieldValue) {
+        if(contactFieldID > 0 && contactFieldValue != null) {
+            MobileEngage.appLogin(contactFieldID, contactFieldValue);
+        } else {
+            MobileEngage.appLogin();
+        }
+    }
+
+    public void trackEventAppLogout() {
+        MobileEngage.appLogout();
     }
 
     protected void sendEventToEmarsys(Context context, String event, Map<String, String> attributes) {

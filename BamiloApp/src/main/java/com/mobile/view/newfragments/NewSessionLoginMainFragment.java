@@ -37,6 +37,7 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.tracking.emarsys.EmarsysTracker;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 import com.pushwoosh.PushManager;
@@ -438,6 +439,8 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                             EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                     true));
                     TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
+
+                    EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
 
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());

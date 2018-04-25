@@ -47,6 +47,7 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.tracking.emarsys.EmarsysTracker;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 import com.pushwoosh.PushManager;
@@ -261,6 +262,10 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                                     true));
                     TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
 
+                    EmarsysTracker.getInstance().trackEventAppLogin(
+                            Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),
+                                    BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
+
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
                 }
@@ -298,6 +303,9 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                         EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                 true));
                 TrackerManager.trackEvent(getBaseActivity(), EventConstants.Login, authEventModel);
+
+                EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),
+                        BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
 
                 if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);
