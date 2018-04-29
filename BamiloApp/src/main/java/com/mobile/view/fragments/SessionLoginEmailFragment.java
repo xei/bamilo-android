@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -293,9 +293,9 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         }
         // Case invalid
         else {
-            EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+            MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
                 Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-                EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+                MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
             TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
 
             EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
@@ -353,9 +353,9 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 // Set hide change password
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 // Tracking
-                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
                         Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                        MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                 true));
                 TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
 
@@ -394,9 +394,9 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         // Case login event
         else if (eventType == EventType.LOGIN_EVENT) {
             // Tracking
-            EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+            MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
                     Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-                    EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+                    MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
             TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
 
             EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);

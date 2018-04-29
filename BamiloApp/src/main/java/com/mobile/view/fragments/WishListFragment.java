@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -78,7 +78,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
 
     private View mClickedBuyButton;
     private boolean pageTracked = false;
-    private EmarsysEventModel addToCartEventModel;
+    private MainEventModel addToCartEventModel;
 
     /**
      * Empty constructor
@@ -471,7 +471,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             triggerAddProductToCart(simple.getSku());
             TrackerDelegator.trackFavouriteAddedToCart(product, simple.getSku(), mGroupType);
 
-            addToCartEventModel = new EmarsysEventModel(getString(TrackingPage.WISH_LIST.getName()),
+            addToCartEventModel = new MainEventModel(getString(TrackingPage.WISH_LIST.getName()),
                     EventActionKeys.ADD_TO_CART, product.getSku(), (long) product.getPrice(), null);
         }
         // Case select a simple variation
@@ -542,11 +542,11 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 if (addToCartEventModel != null) {
                     PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
                     if (cart != null) {
-                        addToCartEventModel.emarsysAttributes =
-                                EmarsysEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label, (long) cart.getTotal(), true);
+                        addToCartEventModel.customAttributes =
+                                MainEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label, (long) cart.getTotal(), true);
                     } else {
-                        addToCartEventModel.emarsysAttributes =
-                                EmarsysEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label, 0, true);
+                        addToCartEventModel.customAttributes =
+                                MainEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label, 0, true);
                     }
                     TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
                 }

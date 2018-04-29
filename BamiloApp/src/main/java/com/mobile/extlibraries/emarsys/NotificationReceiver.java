@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.mobile.app.BamiloApplication;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.tracking.EventConstants;
 import com.mobile.managers.TrackerManager;
-import com.mobile.view.R;
 import com.pushwoosh.PushManager;
 import com.pushwoosh.internal.PushManagerImpl;
 
@@ -44,8 +42,8 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
 
         // Global Tracker
-        EmarsysEventModel appOpenedEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
-                EmarsysEventModel.createAppOpenEventModelAttributes(sid));
+        MainEventModel appOpenedEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                MainEventModel.createAppOpenEventModelAttributes(sid));
         TrackerManager.trackEvent(context, EventConstants.AppOpened, appOpenedEventModel);
 
         //Get default launcher intent for clarity

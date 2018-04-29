@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.tracking.CategoryConstants;
@@ -106,8 +106,8 @@ public class BankActivity extends Activity {
                     TrackerManager.trackScreen(this, screenModel, false);
 
                     // Track Purchase
-                    EmarsysEventModel purchaseEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
-                            EmarsysEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), true));
+                    MainEventModel purchaseEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                            MainEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), true));
                     TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
 
                     btnOrderDetails.setVisibility(View.INVISIBLE);
@@ -119,8 +119,8 @@ public class BankActivity extends Activity {
                 } else {
 
                     // Track Purchase
-                    EmarsysEventModel purchaseEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
-                            EmarsysEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), false));
+                    MainEventModel purchaseEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                            MainEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), false));
                     TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
 
                     // Track Checkout Finish

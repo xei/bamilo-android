@@ -15,7 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.tracking.EventConstants;
@@ -56,7 +56,6 @@ import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
 import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountNewslettersFragment;
-import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.NavigationCategoryFragment;
 import com.mobile.view.fragments.OrderCancellationFragment;
 import com.mobile.view.fragments.OrderCancellationSuccessFragment;
@@ -167,8 +166,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         if (null != intent) {
             if (intent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
                 showMessage("push message is " + intent.getExtras().getString(PushManager.PUSH_RECEIVE_EVENT));
-                EmarsysEventModel appOpenedEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
-                        EmarsysEventModel.createAppOpenEventModelAttributes(
+                MainEventModel appOpenedEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                        MainEventModel.createAppOpenEventModelAttributes(
                                 EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION.toString()));
                 TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened, appOpenedEventModel);
                 mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION;
@@ -260,8 +259,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                     onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 }
             } else {
-                EmarsysEventModel appOpenedEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
-                        EmarsysEventModel.createAppOpenEventModelAttributes(
+                MainEventModel appOpenedEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                        MainEventModel.createAppOpenEventModelAttributes(
                                 EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK.toString()));
                 TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened, appOpenedEventModel);
                 mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
@@ -304,6 +303,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
     @Override
     public void onResume() {
         super.onResume();
+
         Print.d(TAG, "ON RESUME");
         registerReceivers();
 
@@ -312,12 +312,16 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
 
         if(mAppOpenSource != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION
                 && mAppOpenSource != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
-            EmarsysEventModel appOpenedEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
-                    EmarsysEventModel.createAppOpenEventModelAttributes(
+            MainEventModel appOpenedEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                    MainEventModel.createAppOpenEventModelAttributes(
                             EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT.toString()));
             TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened, appOpenedEventModel);
         }
         mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_NONE;
+
+        EmarsysTracker.getInstance().trackEventAppLogin(
+                Integer.parseInt(getApplicationContext().getResources().getString(R.string.Emarsys_ContactFieldID)),
+                BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
     }
 
     /*

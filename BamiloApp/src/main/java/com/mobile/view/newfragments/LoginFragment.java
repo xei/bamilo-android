@@ -16,7 +16,7 @@ import android.widget.EditText;
 import com.crashlytics.android.Crashlytics;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -256,9 +256,9 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                     TrackerDelegator.trackLoginSuccessful(customer, true, false);
 
                     // Global Tracker
-                    EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                    MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
                             Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                            EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                            MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                     true));
                     TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
 
@@ -298,9 +298,9 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 Crashlytics.setUserEmail(BamiloApplication.CUSTOMER.getEmail());
 
                 // Global Tracker
-                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
                         Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                        MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                 true));
                 TrackerManager.trackEvent(getBaseActivity(), EventConstants.Login, authEventModel);
 

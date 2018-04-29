@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import com.mobile.adapters.CartItemAdapter;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.classes.models.SimpleEventModelFactory;
 import com.mobile.components.customfontviews.TextView;
@@ -113,8 +113,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     //RecommendManager recommendManager;
 
     private SimpleEventModel removeFromWishListEventModel;
-    private EmarsysEventModel removeFromCartEventModel;
-    private EmarsysEventModel addToWishListEventModel;
+    private MainEventModel removeFromCartEventModel;
+    private MainEventModel addToWishListEventModel;
 
     /**
      * Empty constructor
@@ -418,9 +418,9 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      */
     private void triggerRemoveItem(PurchaseCartItem item) {
 
-        removeFromCartEventModel = new EmarsysEventModel(getString(TrackingPage.CART.getName()), EventActionKeys.REMOVE_FROM_CART,
+        removeFromCartEventModel = new MainEventModel(getString(TrackingPage.CART.getName()), EventActionKeys.REMOVE_FROM_CART,
                 item.getSku(), (long) item.getPrice(),
-                EmarsysEventModel.createRemoveFromCartEventModelAttributes(item.getSku()));
+                MainEventModel.createRemoveFromCartEventModelAttributes(item.getSku()));
 
         mItemRemovedSku = item.getConfigSimpleSKU();
         mItemRemovedPriceTracking = item.getPriceForTracking();
@@ -924,14 +924,14 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     };
 
     private void triggerAddToWishList(String sku) {
-        addToWishListEventModel = new EmarsysEventModel(getString(TrackingPage.CART.getName()), EventActionKeys.ADD_TO_WISHLIST,
+        addToWishListEventModel = new MainEventModel(getString(TrackingPage.CART.getName()), EventActionKeys.ADD_TO_WISHLIST,
                 sku, SimpleEventModel.NO_VALUE,
-                EmarsysEventModel.createAddToWishListEventModelAttributes(null, null, false));
+                MainEventModel.createAddToWishListEventModelAttributes(null, null, false));
         if (items != null) {
             for (PurchaseCartItem item : items) {
                 if (item.getSku().equals(sku)) {
                     addToWishListEventModel.value = (long) item.getPrice();
-                    addToWishListEventModel.emarsysAttributes = EmarsysEventModel.createAddToWishListEventModelAttributes(item.getSku(), item.getCategoryKey(), true);
+                    addToWishListEventModel.customAttributes = MainEventModel.createAddToWishListEventModelAttributes(item.getSku(), item.getCategoryKey(), true);
                     break;
                 }
             }

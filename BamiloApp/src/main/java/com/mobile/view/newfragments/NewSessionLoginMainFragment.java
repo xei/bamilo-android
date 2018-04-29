@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import com.mobile.adapters.SimplePagerAdapter;
 import com.mobile.app.BamiloApplication;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -40,7 +40,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.tracking.emarsys.EmarsysTracker;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
-import com.pushwoosh.PushManager;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -434,9 +433,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                     TrackerDelegator.trackLoginSuccessful(customer, true, false);
 
                     // Global Tracker
-                    EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                    MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
                             Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                            EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                            MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                     true));
                     TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
 

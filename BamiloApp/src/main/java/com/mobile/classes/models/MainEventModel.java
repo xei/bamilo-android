@@ -9,12 +9,12 @@ import java.util.Map;
  * Created by narbeh on 12/5/17.
  */
 
-public final class EmarsysEventModel extends SimpleEventModel {
-    public Map<String, String> emarsysAttributes;
+public final class MainEventModel extends SimpleEventModel {
+    public Map<String, String> customAttributes;
 
-    public EmarsysEventModel(String category, String action, String label, long value, Map<String, String> emarsysAttributes) {
+    public MainEventModel(String category, String action, String label, long value, Map<String, String> customAttributes) {
         super(category, action, label, value);
-        this.emarsysAttributes = emarsysAttributes;
+        this.customAttributes = customAttributes;
     }
 
     public static Map<String, String> createAuthEventModelAttributes(String loginMethod, String emailDomain, boolean success) {
