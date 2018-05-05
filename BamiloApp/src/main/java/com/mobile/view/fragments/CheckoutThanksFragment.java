@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
@@ -207,8 +207,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         }
 
         // Track Purchase
-        EmarsysEventModel purchaseEventModel = new EmarsysEventModel(null, null, null, SimpleEventModel.NO_VALUE,
-                EmarsysEventModel.createPurchaseEventModelAttributes(categories, (long) cart.getTotal(), true));
+        MainEventModel purchaseEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                MainEventModel.createPurchaseEventModelAttributes(categories, (long) cart.getTotal(), true));
         TrackerManager.trackEvent(getContext(), EventConstants.Purchase, purchaseEventModel);
 
         // Related Products

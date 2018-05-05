@@ -27,4 +27,5 @@ public final class EventActionKeys {
     public static final String CHECKOUT_FINISH = "CheckoutFinish";
     public static final String PURCHASE = "Purchase";
     public static final String TAPPED = "Tapped";
+    public static final String APP_OPENED = "OpenApp";
 }

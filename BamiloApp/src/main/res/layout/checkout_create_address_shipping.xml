@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView4"
         android:visibility="gone"
-        android:textColor="@color/design_textinput_error_color_light" />
+        android:textColor="@color/red_error" />
 
     <EditText
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView6"
         android:visibility="gone"
-        android:textColor="@color/design_textinput_error_color_light" />
+        android:textColor="@color/red_error" />
 
     <EditText
         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView8"
         android:visibility="gone"
-        android:textColor="@color/design_textinput_error_color_light" />
+        android:textColor="@color/red_error" />
 
     <EditText
         android:layout_width="match_parent"
@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView9"
         android:visibility="gone"
-        android:textColor="@color/design_textinput_error_color_light" />
+        android:textColor="@color/red_error" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -139,7 +139,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView5"
         android:visibility="gone"
-        android:textColor="@color/design_textinput_error_color_light" />
+        android:textColor="@color/red_error" />
 
     <Button
         android:text="Button"

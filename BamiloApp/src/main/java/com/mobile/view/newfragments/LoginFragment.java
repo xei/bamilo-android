@@ -16,7 +16,7 @@ import android.widget.EditText;
 import com.crashlytics.android.Crashlytics;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -31,8 +31,6 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.objects.checkout.CheckoutStepLogin;
 import com.mobile.service.objects.customer.Customer;
@@ -49,6 +47,7 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.tracking.emarsys.EmarsysTracker;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 import com.pushwoosh.PushManager;
@@ -250,15 +249,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
 
-                //Emarsys
-                EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
-                    @Override
-                    public void EmarsysMobileEngageResponse(boolean success) {
-                    }
-                };
-                EmarsysMobileEngage.getInstance(getBaseActivity()).sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
-                // End of Emarsys
-
                 // Case valid next step
                 if (nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
@@ -266,11 +256,15 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                     TrackerDelegator.trackLoginSuccessful(customer, true, false);
 
                     // Global Tracker
-                    EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                    MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
                             Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                            EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                            MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                     true));
                     TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
+
+                    EmarsysTracker.getInstance().trackEventAppLogin(
+                            Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),
+                                    BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
 
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
@@ -296,14 +290,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
 
                /* RecommendManager recommendManager = new RecommendManager();
                 recommendManager.setEmail(BamiloApplication.CUSTOMER.getEmail(), ""+BamiloApplication.CUSTOMER.getId());*/
-                //Emarsys
-                emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
-                    @Override
-                    public void EmarsysMobileEngageResponse(boolean success) {
-                    }
-                };
-                EmarsysMobileEngage.getInstance(getBaseActivity()).sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
-                // End of Emarsys
+
                 // Finish
                 getActivity().onBackPressed();
 
@@ -311,11 +298,14 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 Crashlytics.setUserEmail(BamiloApplication.CUSTOMER.getEmail());
 
                 // Global Tracker
-                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
                         Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                        MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                 true));
                 TrackerManager.trackEvent(getBaseActivity(), EventConstants.Login, authEventModel);
+
+                EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),
+                        BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
 
                 if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);

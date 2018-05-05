@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.classes.models.SimpleEventModelFactory;
 import com.mobile.components.customfontviews.TextView;
@@ -147,7 +147,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private FragmentType mTargetType;
     private boolean pageTracked = false;
 
-    private EmarsysEventModel addToWishListEventModel;
+    private MainEventModel addToWishListEventModel;
     private SimpleEventModel removeFromWishListEventModel;
 
     /**
@@ -953,8 +953,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * Trigger to add item from wish list.
      */
     private void triggerAddToWishList(String sku, String categoryKey) {
-        addToWishListEventModel = new EmarsysEventModel(getString(TrackingPage.CATALOG.getName()), EventActionKeys.ADD_TO_WISHLIST, sku,
-                SimpleEventModel.NO_VALUE, EmarsysEventModel.createAddToWishListEventModelAttributes(sku, categoryKey, true));
+        addToWishListEventModel = new MainEventModel(getString(TrackingPage.CATALOG.getName()), EventActionKeys.ADD_TO_WISHLIST, sku,
+                SimpleEventModel.NO_VALUE, MainEventModel.createAddToWishListEventModelAttributes(sku, categoryKey, true));
         if (mCatalogPage != null && mCatalogPage.getProducts() != null) {
             for (ProductRegular item : mCatalogPage.getProducts()) {
                 if (item.getSku().equals(sku)) {
@@ -1100,9 +1100,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
 
                 // Global tracking
-                EmarsysEventModel searchEventModel = new EmarsysEventModel(CategoryConstants.CATALOG, EventActionKeys.SEARCH,
+                MainEventModel searchEventModel = new MainEventModel(CategoryConstants.CATALOG, EventActionKeys.SEARCH,
                         catalogPage.getSearchTerm(), catalogPage.getTotal(),
-                        EmarsysEventModel.createSearchEventModelAttributes(mMainCategory,
+                        MainEventModel.createSearchEventModelAttributes(mMainCategory,
                                 SearchHelper.getSearchTermsCommaSeparated(catalogPage.getSearchTerm())));
                 TrackerManager.trackEvent(getContext(), EventConstants.Search, searchEventModel);
 

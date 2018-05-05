@@ -2,12 +2,11 @@ package com.mobile.utils.tracking.emarsys;
 
 import android.content.Context;
 
+import com.emarsys.mobileengage.MobileEngage;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseEventModel;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.constants.tracking.EmarsysEventConstants;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.managers.AppManager;
 import com.mobile.utils.DateUtils;
 import com.mobile.utils.tracking.BaseEventTracker;
@@ -42,156 +41,104 @@ public class EmarsysTracker extends BaseEventTracker {
 
     @Override
     public void trackEventAddToCart(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof EmarsysEventModel) {
-            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            sendEventToEmarsys(context, EmarsysEventConstants.AddToCart, aem.emarsysAttributes);
+        if (eventModel instanceof MainEventModel) {
+            MainEventModel aem = (MainEventModel) eventModel;
+            sendEventToEmarsys(EmarsysEventConstants.AddToCart, aem.customAttributes);
         }
     }
 
     @Override
     public void trackEventRemoveFromCart(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof EmarsysEventModel) {
-            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            sendEventToEmarsys(context, EmarsysEventConstants.RemoveFromCart, aem.emarsysAttributes);
+        if (eventModel instanceof MainEventModel) {
+            MainEventModel aem = (MainEventModel) eventModel;
+            sendEventToEmarsys(EmarsysEventConstants.RemoveFromCart, aem.customAttributes);
         }
     }
 
     @Override
     public void trackEventAddToWishList(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof EmarsysEventModel) {
-            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            sendEventToEmarsys(context, EmarsysEventConstants.AddToFavorites, aem.emarsysAttributes);
+        if (eventModel instanceof MainEventModel) {
+            MainEventModel aem = (MainEventModel) eventModel;
+            sendEventToEmarsys(EmarsysEventConstants.AddToFavorites, aem.customAttributes);
         }
     }
 
     @Override
     public void trackEventAppOpened(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof EmarsysEventModel) {
-            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            sendEventToEmarsys(context, EmarsysEventConstants.OpenApp, aem.emarsysAttributes);
+        if (eventModel instanceof MainEventModel) {
+            MainEventModel aem = (MainEventModel) eventModel;
+            sendEventToEmarsys(EmarsysEventConstants.AppOpened, aem.customAttributes);
         }
     }
 
     @Override
-    public void trackEventCatalogSortChanged(Context context, BaseEventModel eventModel) {
-
-    }
-
-    @Override
-    public void trackEventCatalogViewChanged(Context context, BaseEventModel eventModel) {
-
-    }
-
-    @Override
-    public void trackEventCheckoutFinished(Context context, BaseEventModel eventModel) {
-
-    }
-
-    @Override
-    public void trackEventCheckoutStart(Context context, BaseEventModel eventModel) {
-
-    }
-
-    @Override
     public void trackEventLogin(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof EmarsysEventModel) {
-            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            sendEventToEmarsys(context, EmarsysEventConstants.Login, aem.emarsysAttributes);
+        if (eventModel instanceof MainEventModel) {
+            MainEventModel aem = (MainEventModel) eventModel;
+            sendEventToEmarsys(EmarsysEventConstants.Login, aem.customAttributes);
         }
     }
 
     @Override
     public void trackEventLogout(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof EmarsysEventModel) {
-            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            sendEventToEmarsys(context, EmarsysEventConstants.Logout, aem.emarsysAttributes);
+        if (eventModel instanceof MainEventModel) {
+            MainEventModel aem = (MainEventModel) eventModel;
+            sendEventToEmarsys(EmarsysEventConstants.Logout, aem.customAttributes);
         }
-    }
-
-    @Override
-    public void trackEventPurchased(Context context, BaseEventModel eventModel) {
-
     }
 
     @Override
     public void trackEventPurchase(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof EmarsysEventModel) {
-            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            sendEventToEmarsys(context, EmarsysEventConstants.Purchase, aem.emarsysAttributes);
+        if (eventModel instanceof MainEventModel) {
+            MainEventModel aem = (MainEventModel) eventModel;
+            sendEventToEmarsys(EmarsysEventConstants.Purchase, aem.customAttributes);
         }
-    }
-
-    @Override
-    public void trackEventRecommendationTapped(Context context, BaseEventModel eventModel) {
-
-    }
-
-    @Override
-    public void trackEventRemoveFromWishList(Context context, BaseEventModel eventModel) {
-
     }
 
     @Override
     public void trackEventSearch(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof EmarsysEventModel) {
-            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            sendEventToEmarsys(context, EmarsysEventConstants.Search, aem.emarsysAttributes);
+        if (eventModel instanceof MainEventModel) {
+            MainEventModel aem = (MainEventModel) eventModel;
+            sendEventToEmarsys(EmarsysEventConstants.Search, aem.customAttributes);
         }
-    }
-
-    @Override
-    public void trackEventSearchSuggestions(Context context, BaseEventModel eventModel) {
-
-    }
-
-    @Override
-    public void trackEventSearchBarSearched(Context context, BaseEventModel eventModel) {
-
-    }
-
-    @Override
-    public void trackEventSearchFiltered(Context context, BaseEventModel eventModel) {
-
     }
 
     @Override
     public void trackEventSignup(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof EmarsysEventModel) {
-            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            sendEventToEmarsys(context, EmarsysEventConstants.SignUp, aem.emarsysAttributes);
+        if (eventModel instanceof MainEventModel) {
+            MainEventModel aem = (MainEventModel) eventModel;
+            sendEventToEmarsys(EmarsysEventConstants.SignUp, aem.customAttributes);
         }
-    }
-
-    @Override
-    public void trackEventTeaserPurchased(Context context, BaseEventModel eventModel) {
-
-    }
-
-    @Override
-    public void trackEventTeaserTapped(Context context, BaseEventModel eventModel) {
-
     }
 
     @Override
     public void trackEventViewProduct(Context context, BaseEventModel eventModel) {
-        if (eventModel instanceof EmarsysEventModel) {
-            EmarsysEventModel aem = (EmarsysEventModel) eventModel;
-            sendEventToEmarsys(context, EmarsysEventConstants.ViewProduct, aem.emarsysAttributes);
+        if (eventModel instanceof MainEventModel) {
+            MainEventModel aem = (MainEventModel) eventModel;
+            sendEventToEmarsys(EmarsysEventConstants.ViewProduct, aem.customAttributes);
         }
     }
 
-    protected void sendEventToEmarsys(Context context, String event, Map<String, Object> attributes) {
-        EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
-            @Override
-            public void EmarsysMobileEngageResponse(boolean success) {}
-        };
-        Map<String, Object> emarsysAttrs = getBasicAttributes();
-        emarsysAttrs.putAll(attributes);
-        EmarsysMobileEngage.getInstance(context).sendCustomEvent(event, emarsysAttrs, emarsysMobileEngageResponse);
+    public void trackEventAppLogin(int contactFieldID, String contactFieldValue) {
+        if(contactFieldID > 0 && contactFieldValue != null) {
+            MobileEngage.appLogin(contactFieldID, contactFieldValue);
+        } else {
+            MobileEngage.appLogin();
+        }
     }
 
-    protected HashMap<String, Object> getBasicAttributes() {
-        HashMap<String, Object> attributes = new HashMap<>();
+    public void trackEventAppLogout() {
+        MobileEngage.appLogout();
+    }
+
+    protected void sendEventToEmarsys(String event, Map<String, String> attributes) {
+        Map<String, String> emarsysAttrs = getBasicAttributes();
+        emarsysAttrs.putAll(attributes);
+        MobileEngage.trackCustomEvent(event, attributes);
+    }
+
+    protected HashMap<String, String> getBasicAttributes() {
+        HashMap<String, String> attributes = new HashMap<>();
 
         attributes.put(EmarsysEventConstants.AppVersion, AppManager.getAppFullFormattedVersion());
         attributes.put(EmarsysEventConstants.Platform, "android");

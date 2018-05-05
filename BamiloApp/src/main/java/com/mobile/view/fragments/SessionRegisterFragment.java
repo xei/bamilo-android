@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -284,9 +284,9 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         // Case invalid
         else {
             // Tracking
-            EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
+            MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
                     Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-                    EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+                    MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
             TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
         }
     }
@@ -338,9 +338,9 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                     customerId = BamiloApplication.CUSTOMER.getId();
                     customerEmail = BamiloApplication.CUSTOMER.getEmail();
                 }
-                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
+                MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
                         Constants.LOGIN_METHOD_EMAIL, customerId,
-                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, customerEmail != null ? EmailHelper.getHost(customerEmail) : "",
+                        MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, customerEmail != null ? EmailHelper.getHost(customerEmail) : "",
                                 true));
                 TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
 
@@ -373,9 +373,9 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 break;
             case REGISTER_ACCOUNT_EVENT:
                 // Tracking
-                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+                MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
                         Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+                        MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
                 TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
                 // Validate and show errors
                 showFragmentContentContainer();
