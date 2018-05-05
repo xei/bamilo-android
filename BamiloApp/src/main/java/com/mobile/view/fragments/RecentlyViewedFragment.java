@@ -9,8 +9,7 @@ import android.view.View;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
-import com.mobile.classes.models.EmarsysEventModel;
-import com.mobile.classes.models.SimpleEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -73,7 +72,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
     private ArrayList<String> list;
     private boolean pageTracked = false;
-    private EmarsysEventModel addToCartEventModel;
+    private MainEventModel addToCartEventModel;
 
     /**
      * Empty constructor
@@ -420,7 +419,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             TrackerDelegator.trackProductAddedToCart(bundle);
 
             // Global Tracker
-            addToCartEventModel = new EmarsysEventModel(getString(TrackingPage.RECENTLY_VIEWED.getName()),
+            addToCartEventModel = new MainEventModel(getString(TrackingPage.RECENTLY_VIEWED.getName()),
                     EventActionKeys.ADD_TO_CART, sku, (long) addableToCart.getPrice(), null);
 
         } catch (NullPointerException e) {
@@ -478,10 +477,10 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 if (addToCartEventModel != null) {
                     PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
                     if (cart != null) {
-                        addToCartEventModel.emarsysAttributes = EmarsysEventModel
+                        addToCartEventModel.customAttributes = MainEventModel
                                 .createAddToCartEventModelAttributes(addToCartEventModel.label, (long) cart.getTotal(), true);
                     } else {
-                        addToCartEventModel.emarsysAttributes = EmarsysEventModel
+                        addToCartEventModel.customAttributes = MainEventModel
                                 .createAddToCartEventModelAttributes(addToCartEventModel.label, 0, true);
 
                     }

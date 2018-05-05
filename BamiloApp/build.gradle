@@ -37,17 +37,17 @@ def getAppVersionCode(int releaseVersionCode) {
  */
 android {
 
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         applicationId "com.bamilo.android"
-        versionName "2.10.0"
-        versionCode getAppVersionCode(169)
+        versionName "2.10.1"
+        versionCode getAppVersionCode(173)
         resConfigs "fa"
     }
 
@@ -91,15 +91,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-market.txt'
         }
     }
+
+    flavorDimensions "default"
     productFlavors {
         live {
             //### Fabric.io
             manifestPlaceholders = [crashlyticsApiKey: '93ef3db21e524147cf9702fd4dc34e7169e372d1']
+            dimension "default"
         }
         staging {
             //### Fabric.io
             manifestPlaceholders = [crashlyticsApiKey: 'ddde4ad6ad210575fdac10a908040d1a93e74833']
             applicationId 'com.bamilo.android.staging'
+            dimension "default"
         }
     }
 

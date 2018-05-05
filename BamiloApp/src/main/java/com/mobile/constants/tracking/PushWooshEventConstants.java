@@ -1,10 +1,10 @@
 package com.mobile.constants.tracking;
 
 /**
- * Created by Narbeh M. on 4/26/17.
+ * Created by narbeh on 4/29/18.
  */
 
-public final class EmarsysEventConstants extends EventConstants {
+public final class PushWooshEventConstants extends EventConstants {
     //Keys
     public static String AppVersion = "AppVersion";
     public static String Platform = "Platform" ;
@@ -22,9 +22,6 @@ public final class EmarsysEventConstants extends EventConstants {
     public static String SKU = "SKU";
     public static String Categories = "Categories";
 
-    public static String ContactFieldID = "contactFieldID";
-    public static String ContactFieldValue = "contactFieldValue";
-
     //Events
     public static String Login = "Login";
     public static String SignUp = "SignUp";
@@ -36,6 +33,4 @@ public final class EmarsysEventConstants extends EventConstants {
     public static String Search = "Search";
     public static String ViewProduct = "ViewProduct";
     public static String Logout = "Logout";
-
-    public static String UNKNOWN_EVENT_VALUE = "";
 }

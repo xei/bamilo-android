@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import com.mobile.adapters.SimplePagerAdapter;
 import com.mobile.app.BamiloApplication;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -21,8 +21,6 @@ import com.mobile.constants.tracking.EventActionKeys;
 import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngage;
-import com.mobile.extlibraries.emarsys.EmarsysMobileEngageResponse;
 import com.mobile.helpers.EmailHelper;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.LoginAutoHelper;
@@ -39,9 +37,9 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.tracking.emarsys.EmarsysTracker;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
-import com.pushwoosh.PushManager;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -425,12 +423,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
                 break;*/
             case AUTO_LOGIN_EVENT://Emarsys
-                EmarsysMobileEngageResponse emarsysMobileEngageResponse = new EmarsysMobileEngageResponse() {
-                    @Override
-                    public void EmarsysMobileEngageResponse(boolean success) {
-                    }
-                };
-                EmarsysMobileEngage.getInstance(getBaseActivity()).sendLogin(PushManager.getPushToken(getBaseActivity()), emarsysMobileEngageResponse);
                 // Get Customer
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
@@ -441,11 +433,13 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                     TrackerDelegator.trackLoginSuccessful(customer, true, false);
 
                     // Global Tracker
-                    EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                    MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
                             Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                            EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                            MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                     true));
                     TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
+
+                    EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
 
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());

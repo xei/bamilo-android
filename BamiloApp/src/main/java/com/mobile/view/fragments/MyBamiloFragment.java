@@ -267,6 +267,11 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
     private void requestForRecommendLists() {
         loadInProgress = true;
         srlRecommendItemsList.setRefreshing(loadInProgress);
@@ -280,6 +285,9 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
     }
 
     private void handleError(Error error) {
+        if(!this.isAdded())
+            return;
+
         loadInProgress = false;
         fabBackToTop.hide();
         getBaseActivity().syncSearchBarState(0);

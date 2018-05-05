@@ -218,7 +218,11 @@
 
         <service
             android:name="com.pushwoosh.GCMRegistrationService"
-            android:exported="false"></service>
+            android:exported="false">
+        </service>
+
+        <activity android:name="com.pushwoosh.inapp.WebActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service android:name="com.pushwoosh.inapp.InAppRetrieverService" />
 
         <!-- Register AnalyticsReceiver and AnalyticsService to support background
             dispatching on non-Google Play devices -->
@@ -263,6 +267,19 @@
         <receiver
             android:name="com.mobile.extlibraries.emarsys.NotificationReceiver"
             android:enabled="true"></receiver>
+
+        <!-- Emarsys Engage -->
+        <service android:name="com.emarsys.mobileengage.service.MobileEngageMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name="com.emarsys.mobileengage.service.MobileEngageInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

@@ -46,7 +46,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.classes.models.EmarsysEventModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
@@ -99,6 +99,7 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
+import com.mobile.utils.tracking.emarsys.EmarsysTracker;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.FixedDrawerDrawable;
 import com.mobile.utils.ui.UITabLayoutUtils;
@@ -1763,10 +1764,15 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mSearchListView.setAdapter(null);
 
         // Global Tracker
-        EmarsysEventModel authEventModel =
-                new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGOUT, null, SimpleEventModel.NO_VALUE,
-                        EmarsysEventModel.createAuthEventModelAttributes(null, null, true));
+        MainEventModel authEventModel =
+                new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGOUT, null, SimpleEventModel.NO_VALUE,
+                        MainEventModel.createAuthEventModelAttributes(null, null, true));
         TrackerManager.trackEvent(this, EventConstants.Logout, authEventModel);
+
+        //Mobile Engage API
+        //https://help.emarsys.com/hc/en-us/articles/115002410625
+        //App Logout
+        EmarsysTracker.getInstance().trackEventAppLogout();
 
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
@@ -1998,11 +2004,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Validate the user credentials
         if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials() && !BamiloApplication.isCustomerLoggedIn()) {
             triggerAutoLogin();
-        } else {
+        }  else {
             // Track auto login failed if hasn't saved credentials
-            EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+            MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
                     Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-                    EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+                    MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
             TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
         }
         // Validate the user credentials
@@ -2061,11 +2067,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 ContentValues credentialValues = BamiloApplication.INSTANCE.getCustomerUtils().getCredentials();
 
                 // Global Tracker
-                EmarsysEventModel authEventModel = new EmarsysEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
                         Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                        EmarsysEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
+                        MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                 true));
                 TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
+
+                EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(BaseActivity.this.getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
 
                 // Track
                 Bundle params = new Bundle();
