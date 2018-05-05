@@ -1,12 +1,11 @@
-Jumia Android
+Bamilo Android
 ======
-**JUMIA** is Africa’s biggest online shopping mall with the widest selection of electronics, fashion, home appliances, kids' items, and more at the best prices. Choose from hundreds of brands and thousands of products! 
+**Bamilo** is Iran’s biggest online shopping mall with the widest selection of electronics, fashion, home appliances, kids' items, and more at the best prices. Choose from hundreds of brands and thousands of products! 
 
-![Logo Google Play](https://blog.jumia.com.ng/wp-content/uploads/2014/09/Jumia-App-banner.jpg "screenshot Android")
+![Logo Google Play](http://img.bamilo.com/ui/logo/bamilo-logo.png "Logo")
 
 #### App stores
-<!-- edit this image location -->
-[![Get it on Google Play](https://raw.github.com/repat/README-template/master/googleplay.png)](https://play.google.com/store/apps/details?id=com.jumia.android)
+[![Get it on Google Play](https://raw.github.com/repat/README-template/master/googleplay.png)](https://play.google.com/store/apps/details?id=com.bamilo.android)
 
 #### Dev platform
 
@@ -31,4 +30,4 @@ Jumia Android
 * [Webtranslateit](https://webtranslateit.com/en/projects/11029-Jumia-Mobile-Apps/files)
 
 #### Contributors
-* [GitHub](https://github.com/SILVEROAKLDA/JUMIAAND/graphs/contributors)
+* [GitHub](https://github.com/Bamilo/android/graphs/contributors)
