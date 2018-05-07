@@ -43,6 +43,17 @@
                 android:text="@string/order_success"
                 android:textColor="@color/black_800" />
 
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/order_number_text"
+                style="@style/TextBase.Body"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin_60px"
+                android:layout_marginRight="@dimen/margin_60px"
+                android:layout_marginBottom="@dimen/margin_10px"
+                android:gravity="center_horizontal"
+                android:singleLine="false"
+                android:text="@string/order_number"
+                android:textColor="@color/black_800" />
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/order_status_text"
