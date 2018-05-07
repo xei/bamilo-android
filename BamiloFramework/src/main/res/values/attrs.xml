@@ -49,7 +49,6 @@
         <attr name="android:dropDownVerticalOffset" />
         <attr name="android:dropDownHorizontalOffset" />
         <attr name="android:dropDownWidth" />
-        <attr name="android:popupPromptView" />
         <attr name="android:gravity" />
     </declare-styleable>
     

@@ -1,12 +1,15 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.mobile.components.customfontviews.HoloFontLoader;
@@ -48,8 +51,17 @@ public class ChangePhoneNumberFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         HoloFontLoader.applyDefaultFont(view);
 
-        final EditText etPhoneNumber = (EditText) view.findViewById(R.id.etPhoneNumber);
-        final TextInputLayout tilPhoneNumber = (TextInputLayout) view.findViewById(R.id.tilPhoneNumber);
+        if(getActivity() != null) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        }
+
+        final EditText etPhoneNumber = view.findViewById(R.id.etPhoneNumber);
+        etPhoneNumber.requestFocus();
+
+        InputMethodManager mgr =      (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        mgr.showSoftInput(etPhoneNumber, InputMethodManager.SHOW_IMPLICIT);
+
+        final TextInputLayout tilPhoneNumber = view.findViewById(R.id.tilPhoneNumber);
         view.findViewById(R.id.btnNextToVerification).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
