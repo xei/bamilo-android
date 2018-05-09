@@ -94,10 +94,6 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
         super.onViewCreated(view, savedInstanceState);
         HoloFontLoader.applyDefaultFont(view);
 
-        if (getActivity() != null) {
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        }
-
         TextView tvPhoneNumber = view.findViewById(R.id.tvPhoneNumber);
         tvPhoneNumber.setText(TextUtils.makeDigitsFarsi(phoneNumber));
 
@@ -155,9 +151,6 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
         });
 
         triggerRequestForToken(phoneNumber);
-
-        etPin.focus();
-        etPin.performClick();
     }
 
     private void triggerRequestForToken(String phoneNumber) {
