@@ -1,9 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.RelativeLayout;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.controllers.LogOut;
@@ -28,15 +25,6 @@ import com.mobile.view.R;
 import com.mobile.view.ShowcasePerformer;
 
 import java.util.ArrayList;
-
-import me.toptas.fancyshowcase.OnViewInflateListener;
-
-import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
-import static android.widget.RelativeLayout.ALIGN_PARENT_END;
-import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
-import static android.widget.RelativeLayout.CENTER_HORIZONTAL;
-import static android.widget.RelativeLayout.CENTER_IN_PARENT;
-import static android.widget.RelativeLayout.CENTER_VERTICAL;
 
 /**
  * Class used to show the cart info and a navigation container, menu or categories
@@ -72,7 +60,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
     @Override
@@ -83,7 +71,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -102,7 +90,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
 
-        mDrawerRecycler = (RecyclerView) view.findViewById(R.id.drawer_recycler);
+        mDrawerRecycler = view.findViewById(R.id.drawer_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseActivity());
         mDrawerRecycler.setLayoutManager(layoutManager);
 
@@ -122,8 +110,20 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
             String gender = BamiloApplication.CUSTOMER.getGender();
             String firstName = BamiloApplication.CUSTOMER.getFirstName();
             String email = BamiloApplication.CUSTOMER.getEmail();
-            mDrawerItems.add(new DrawerItem(getString(R.string.user_greeting, firstName != null ? firstName : ""), email != null ? email : "", gender, null));
-
+            mDrawerItems.add(new DrawerItem(getString(R.string.user_greeting,
+                    firstName != null ? firstName : ""),
+                    email != null ? email : "",
+                    gender,
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (v.getId() == R.id.material_drawer_account_header_email ||
+                                    v.getId() == R.id.material_drawer_account_header_current) {
+                                getBaseActivity().closeNavigationDrawer();
+                                getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT, null, true);
+                            }
+                        }
+                    }));
         } else {
             mDrawerItems.add(new DrawerItem(getString(R.string.welcome_label), getString(R.string.register_login_title), "male", new View.OnClickListener() {
                 @Override
@@ -134,8 +134,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
                     }
                 }
             }));
-
-
         }
 
         int cartItems = 0;
@@ -308,7 +306,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onResume()
      */
     @Override
@@ -329,7 +327,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onPause()
      */
     @Override
@@ -340,7 +338,7 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStop()
      */
     @Override

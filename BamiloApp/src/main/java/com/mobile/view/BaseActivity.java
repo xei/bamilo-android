@@ -46,8 +46,8 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.mobile.app.BamiloApplication;
-import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.BaseScreenModel;
+import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.SimpleEventModel;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -129,8 +129,8 @@ import me.toptas.fancyshowcase.FancyShowCaseView;
  *
  * @author Paulo Carvalho
  * @version 2.0
- *          <p/>
- *          2012/06/19
+ * <p/>
+ * 2012/06/19
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
@@ -235,10 +235,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     /*
-         * (non-Javadoc)
-         *
-         * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
-         */
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -603,7 +603,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             // ...
         }
     }
-    
+
     /*
      * ############## INITIAL COUNTRY SELECTION ##############
      */
@@ -666,7 +666,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             FancyShowCaseView.hideCurrent(this);
         }
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
-            mDrawerLayout.closeDrawer(mDrawerNavigation);
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    mDrawerLayout.closeDrawer(mDrawerNavigation);
+                }
+            });
         }
     }
 
@@ -814,7 +819,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-     /*
+    /*
      * ########### TAB LAYOUT LISTENER ###########
      */
 
@@ -885,8 +890,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void onTabReselected(TabLayout.Tab tab) {
         // ...
     }
-    
-    
+
+
     /*
      * ############### SEARCH COMPONENT #################
      */
@@ -2004,7 +2009,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Validate the user credentials
         if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials() && !BamiloApplication.isCustomerLoggedIn()) {
             triggerAutoLogin();
-        }  else {
+        } else {
             // Track auto login failed if hasn't saved credentials
             MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
                     Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
@@ -2073,7 +2078,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                                 true));
                 TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
 
-                EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(BaseActivity.this.getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
+                EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(BaseActivity.this.getResources().getString(R.string.Emarsys_ContactFieldID)), BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
 
                 // Track
                 Bundle params = new Bundle();
