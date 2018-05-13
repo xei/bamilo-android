@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ShareCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -31,6 +32,7 @@ import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.shop.ShopSelector;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.view.BuildConfig;
 import com.mobile.view.R;
 
 /**
@@ -313,7 +315,7 @@ public class UIUtils {
         final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 
 
-        String appVersion = android.os.Build.VERSION.RELEASE; // e.g. myVersion := "1.6"
+        String appVersion = BuildConfig.VERSION_NAME;
         String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
         String deviceName = android.os.Build.MODEL;
         String deviceBrand = Build.BRAND;
@@ -325,8 +327,8 @@ public class UIUtils {
         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "گزارش مشکل در برنامه");
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "\n\n\n\n\n\n\n "
                 + description + "\n"
-                + "android version : " + appVersion + "\n"
-                + "application version : " + sdkVersion + "\n"
+                + "android version : " + sdkVersion + "\n"
+                + "application version : " + appVersion + "\n"
                 + "device name : " + deviceBrand + "-" + deviceName
 
         );
@@ -356,7 +358,7 @@ public class UIUtils {
 
     public static void emailToCS(@NonNull Activity activity) {
 
-        String appVersion = android.os.Build.VERSION.RELEASE; // e.g. myVersion := "1.6"
+        String appVersion = BuildConfig.VERSION_NAME;
         String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
         String deviceName = android.os.Build.MODEL;
         String deviceBrand = Build.BRAND;
@@ -364,17 +366,16 @@ public class UIUtils {
 
         String body = "\n\n\n\n\n\n\n "
                 + description + "\n"
-                + "android version : " + appVersion + "\n"
-                + "application version : " + sdkVersion + "\n"
+                + "android version : " + sdkVersion + "\n"
+                + "application version : " + appVersion + "\n"
                 + "device name : " + deviceBrand + "-" + deviceName;
 
         sendEmail(activity, new String[]{"support@bamilo.com"}, "", body);
-
     }
 
     public static void emailBugs(@NonNull Activity activity) {
 
-        String appVersion = android.os.Build.VERSION.RELEASE; // e.g. myVersion := "1.6"
+        String appVersion = BuildConfig.VERSION_NAME; // e.g. myVersion := "1.6"
         String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
         String deviceName = android.os.Build.MODEL;
         String deviceBrand = Build.BRAND;
@@ -382,37 +383,17 @@ public class UIUtils {
 
         String body = "\n\n\n\n\n\n\n "
                 + description + "\n"
-                + "android version : " + appVersion + "\n"
-                + "application version : " + sdkVersion + "\n"
+                + "android version : " + sdkVersion + "\n"
+                + "application version : " + appVersion + "\n"
                 + "device name : " + deviceBrand + "-" + deviceName;
 
         sendEmail(activity, new String[]{"application@bamilo.com"}, "ارسال ایده\u200Cها و مشکلات برنامه", body);
-
     }
 
-    /*public static void emailIdeas(@NonNull Activity activity) {
-
-        String appVersion = android.os.Build.VERSION.RELEASE; // e.g. myVersion := "1.6"
-        String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
-        String deviceName = android.os.Build.MODEL;
-        String deviceBrand = Build.BRAND;
-        String description = "لطفا برای پیگیری بهتر، اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
-
-        String body = "\n\n\n\n\n\n\n "
-                + description + "\n"
-                + "android version : " + appVersion + "\n"
-                + "application version : " + sdkVersion + "\n"
-                + "device name : " + deviceBrand + "-" + deviceName;
-
-        sendEmail(activity, new String[]{"application@bamilo.com"}, "اشتراک گذاری ایده های نو", body);
-
-    }*/
-
     private static void sendEmail(@NonNull Activity activity, String[] address, String subject, String body) {
-
-
-        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-        emailIntent.setType("plain/text");
+        final Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto: " + address[0]));
+//        emailIntent.setType("plain/text");
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, address);
         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
