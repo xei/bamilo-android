@@ -280,6 +280,15 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.mobile.utils.imageloader.SimpleGlideModule"
+            android:value="GlideModule" />
+
+        <meta-data
+            android:name="com.mobile.utils.imageloader.UnsafeOkHttpGlideModule"
+            android:value="GlideModule" />
+
     </application>
 
 </manifest>
