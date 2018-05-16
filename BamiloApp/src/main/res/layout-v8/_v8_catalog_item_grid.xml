@@ -25,14 +25,14 @@
 
         <ImageView
             android:id="@+id/image_is_favourite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_40dp"
+            android:layout_height="@dimen/dimen_40dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="false"
-            android:padding="@dimen/margin_padding_xl"
+            android:padding="@dimen/dimen_8dp"
             android:src="@drawable/selector_favorite"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
 
         <com.mobile.components.customfontviews.TextView

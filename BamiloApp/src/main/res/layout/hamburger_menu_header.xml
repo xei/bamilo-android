@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/blue_app_primary"
     android:clickable="true">
 
@@ -42,12 +43,12 @@
                 android:textColor="#ffffff"
                 android:textSize="14sp" />
 
-            <com.mobile.components.customfontviews.TextView
+            <TextView
                 android:id="@+id/material_drawer_account_header_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="sans-serif"
+                app:fontFamily="sans-serif"
                 android:gravity="right"
                 android:lines="1"
                 android:maxLines="1"
@@ -55,7 +56,5 @@
                 android:textSize="14sp" />
 
         </LinearLayout>
-
-
     </RelativeLayout>
 </FrameLayout>

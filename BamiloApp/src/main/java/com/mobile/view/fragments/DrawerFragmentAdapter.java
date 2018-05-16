@@ -12,10 +12,10 @@ import android.widget.LinearLayout;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.extlibraries.emarsys.predict.RecommendationWidgetType;
 import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.TextUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author sergiopereira
@@ -51,12 +51,12 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
          */
         public ViewHolder(View view) {
             super(view);
-            mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
+            mImage = view.findViewById(R.id.home_teaser_item_image);
             mProgress = view.findViewById(R.id.home_teaser_item_progress);
-            mBrand = (TextView) view.findViewById(R.id.brand);
-            mName = (TextView) view.findViewById(R.id.name);
-            mPrice = (TextView) view.findViewById(R.id.price);
-            mOldPrice = (TextView) view.findViewById(R.id.old_price);
+            mBrand = view.findViewById(R.id.brand);
+            mName = view.findViewById(R.id.name);
+            mPrice = view.findViewById(R.id.price);
+            mOldPrice = view.findViewById(R.id.old_price);
         }
     }
 
@@ -123,15 +123,17 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder vh = (HeaderViewHolder) holder;
             vh.material_drawer_account_header_name.setText(item.getUserName());
-            vh.material_drawer_account_header_email.setText(item.getEmail());
+            vh.material_drawer_account_header_email.setText(TextUtils.makeDigitsEnglish(item.getEmail()));
             if (item.getGender().equals("female")) {
                 vh.material_drawer_account_header_current.setImageResource(R.drawable.drawer_profile_woman);
             } else {
                 vh.material_drawer_account_header_current.setImageResource(R.drawable.drawer_profile_man);
 
             }
-            if (item.getLoginListener() != null)
+            if (item.getLoginListener() != null) {
+                vh.material_drawer_account_header_current.setOnClickListener(item.getLoginListener());
                 vh.material_drawer_account_header_email.setOnClickListener(item.getLoginListener());
+            }
         }
     }
 
@@ -168,11 +170,11 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private DrawerItemViewHolder(View view) {
             super(view);
             this.view = view;
-            this.material_drawer_icon = (ImageView) view.findViewById(R.id.material_drawer_icon);
-            this.material_drawer_name = (TextView) view.findViewById(R.id.material_drawer_name);
+            this.material_drawer_icon = view.findViewById(R.id.material_drawer_icon);
+            this.material_drawer_name = view.findViewById(R.id.material_drawer_name);
             //this.material_drawer_description = (TextView) view.findViewById(R.id.material_drawer_description);
-            this.material_drawer_badge_container = (LinearLayout) view.findViewById(R.id.material_drawer_badge_container);
-            this.material_drawer_badge = (TextView) view.findViewById(R.id.material_drawer_badge);
+            this.material_drawer_badge_container = view.findViewById(R.id.material_drawer_badge_container);
+            this.material_drawer_badge = view.findViewById(R.id.material_drawer_badge);
 
         }
     }
@@ -182,16 +184,15 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         public ImageView material_drawer_account_header_current;
         public TextView material_drawer_account_header_name;
-        public TextView material_drawer_account_header_email;
+        public android.widget.TextView material_drawer_account_header_email;
 
 
         private HeaderViewHolder(View view) {
             super(view);
             this.view = view;
-            this.material_drawer_account_header_current = (ImageView) view.findViewById(R.id.material_drawer_account_header_current);
-            this.material_drawer_account_header_name = (TextView) view.findViewById(R.id.material_drawer_account_header_name);
-            this.material_drawer_account_header_email = (TextView) view.findViewById(R.id.material_drawer_account_header_email);
-
+            this.material_drawer_account_header_current = view.findViewById(R.id.material_drawer_account_header_current);
+            this.material_drawer_account_header_name = view.findViewById(R.id.material_drawer_account_header_name);
+            this.material_drawer_account_header_email =  view.findViewById(R.id.material_drawer_account_header_email);
         }
     }
 
