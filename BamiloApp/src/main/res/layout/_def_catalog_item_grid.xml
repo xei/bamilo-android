@@ -25,14 +25,14 @@
 
         <ImageView
             android:id="@+id/image_is_favourite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_40dp"
+            android:layout_height="@dimen/dimen_40dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="false"
-            android:padding="@dimen/margin_padding_xl"
+            android:padding="@dimen/dimen_8dp"
             android:src="@drawable/selector_favorite"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
 
         <com.mobile.components.customfontviews.TextView
@@ -81,8 +81,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="2dp"
-                android:maxHeight="@dimen/ratingbar_height"
                 android:isIndicator="true"
+                android:maxHeight="@dimen/ratingbar_height"
                 android:progressDrawable="@drawable/custom_rating_bar"
                 android:stepSize="0.1"
                 tools:rating="3.5" />
@@ -103,8 +103,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rating_container"
             android:layout_alignRight="@id/item_brand"
+            android:layout_below="@+id/rating_container"
             android:layout_marginTop="4dp"
             android:orientation="vertical">
 
@@ -136,8 +136,8 @@
                         style="@style/TextBase.Body.Black_800"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_padding_xl"
                         android:layout_alignParentRight="true"
+                        android:layout_marginLeft="@dimen/margin_padding_xl"
                         android:textColor="@color/lightgrey"
                         android:textSize="9sp"
                         tools:text="Price" />
@@ -146,9 +146,9 @@
                         android:id="@+id/discount_percentage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/item_regprice"
                         android:layout_toLeftOf="@+id/item_regprice"
                         android:gravity="center"
-                        android:layout_alignBaseline="@+id/item_regprice"
                         android:textColor="@color/lightgrey"
                         android:textSize="9sp"
                         tools:text="54 %" />

@@ -2,12 +2,16 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -17,8 +21,6 @@ import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.helpers.session.MobileVerificationHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.service.pojo.BaseResponse;
-import com.mobile.service.pojo.IntConstants;
-import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.Constants;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.utils.MyMenuItem;
@@ -92,19 +94,19 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
         super.onViewCreated(view, savedInstanceState);
         HoloFontLoader.applyDefaultFont(view);
 
-        TextView tvPhoneNumber = (TextView) view.findViewById(R.id.tvPhoneNumber);
+        TextView tvPhoneNumber = view.findViewById(R.id.tvPhoneNumber);
         tvPhoneNumber.setText(TextUtils.makeDigitsFarsi(phoneNumber));
 
-        final Button btnSubmitToken = (Button) view.findViewById(R.id.btnSubmitToken);
+        final Button btnSubmitToken = view.findViewById(R.id.btnSubmitToken);
 
-        final PinEntryInput etPin = (PinEntryInput) view.findViewById(R.id.etPin);
+        final PinEntryInput etPin = view.findViewById(R.id.etPin);
 
         final int tokenMaxLength = etPin.getMaxLength();
 
-        tvResendTokenNotice = (TextView) view.findViewById(R.id.tvResendTokenNotice);
+        tvResendTokenNotice = view.findViewById(R.id.tvResendTokenNotice);
         tvResendTokenNotice.setText(null);
 
-        tvResendToken = (TextView) view.findViewById(R.id.tvResendToken);
+        tvResendToken = view.findViewById(R.id.tvResendToken);
         tvResendToken.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,7 +158,6 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
     }
 
     private void triggerMobileVerification(String phoneNumber, String token) {
-        getBaseActivity().hideKeyboard();
         ContentValues values = new ContentValues();
         values.put("phone", phoneNumber);
         if (token != null) {
