@@ -130,8 +130,10 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 vh.material_drawer_account_header_current.setImageResource(R.drawable.drawer_profile_man);
 
             }
-            if (item.getLoginListener() != null)
+            if (item.getLoginListener() != null) {
+                vh.material_drawer_account_header_current.setOnClickListener(item.getLoginListener());
                 vh.material_drawer_account_header_email.setOnClickListener(item.getLoginListener());
+            }
         }
     }
 
