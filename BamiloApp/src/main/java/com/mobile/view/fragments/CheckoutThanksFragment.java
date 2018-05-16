@@ -2,6 +2,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,32 +52,31 @@ import java.util.List;
 
 /**
  * @author sergiopereira
- *
  */
-public class CheckoutThanksFragment extends BaseFragment implements IResponseCallback, TargetLink.OnAppendDataListener {
+public class CheckoutThanksFragment extends BaseFragment implements TargetLink.OnAppendDataListener, IResponseCallback {
 
     private static final String TAG = CheckoutThanksFragment.class.getSimpleName();
 
-    private String mOrderShipping;
+    private String orderShipping;
 
-    private String mOrderTax;
+    private String orderTax;
 
-    private String mPaymentMethod;
+    private String paymentMethod;
 
-    private double mGrandTotalValue;
+    private double grandTotalValue;
 
-    private String mOrderNumber;
+    private String orderNumber;
 
-    private RichRelevance mRichRelevance;
+    private RichRelevance richRelevance;
 
-    private ViewGroup mRelatedProductsView;
+    private ViewGroup relatedProductsView;
 
-    private String mRelatedRichRelevanceHash;
+    private String relatedRichRelevanceHash;
 
     private static final int ITEMS_MARGIN = 6;
+
     RecommendManager recommendManager;
     RecommendationsCartHolder recommendationsHolder;
-    private String itemsId="";
 
     private PurchaseEntity oldCart = null;
     private Button btnContinueShopping;
@@ -104,25 +104,18 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         super.onCreate(savedInstanceState);
         ProductDetailsFragment.clearSelectedRegionCityId();
         Print.i(TAG, "ON CREATE");
+
         // Get values
-        Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
-        if(arguments != null){
-            mOrderNumber = getArguments().getString(RestConstants.ORDER_NUMBER);
-            mOrderShipping = getArguments().getString(RestConstants.TRANSACTION_SHIPPING);
-            mOrderTax = getArguments().getString(RestConstants.TRANSACTION_TAX);
-            mPaymentMethod = getArguments().getString(RestConstants.PAYMENT_METHOD);
-            mGrandTotalValue = getArguments().getDouble(RestConstants.ORDER_GRAND_TOTAL);
-            if(getArguments().containsKey(RestConstants.RECOMMENDED_PRODUCTS)) {
-                mRichRelevance = getArguments().getParcelable(RestConstants.RECOMMENDED_PRODUCTS);
-            }
-        }
+        getBundleValues(savedInstanceState);
+
         recommendManager = new RecommendManager();
 
-        SimpleEventModel sem = new SimpleEventModel();
-        sem.category = CategoryConstants.CHECKOUT;
-        sem.action = EventActionKeys.CHECKOUT_FINISH;
-        sem.label = null;
-        sem.value = SimpleEventModel.NO_VALUE;
+        TrackEvent();
+    }
+
+    private void TrackEvent() {
+        SimpleEventModel sem = getSimpleEventModel();
+
         PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
         if (cart != null && cart.getCartItems() != null) {
             ArrayList<PurchaseCartItem> cartItems = cart.getCartItems();
@@ -134,6 +127,29 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             sem.value = (long) cart.getTotal();
         }
         TrackerManager.trackEvent(getContext(), EventConstants.CheckoutFinished, sem);
+    }
+
+    private SimpleEventModel getSimpleEventModel() {
+        SimpleEventModel sem = new SimpleEventModel();
+        sem.category = CategoryConstants.CHECKOUT;
+        sem.action = EventActionKeys.CHECKOUT_FINISH;
+        sem.label = null;
+        sem.value = SimpleEventModel.NO_VALUE;
+        return sem;
+    }
+
+    private void getBundleValues(Bundle savedInstanceState) {
+        Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
+        if (arguments != null) {
+            orderNumber = arguments.getString(RestConstants.ORDER_NUMBER);
+            orderShipping = arguments.getString(RestConstants.TRANSACTION_SHIPPING);
+            orderTax = arguments.getString(RestConstants.TRANSACTION_TAX);
+            paymentMethod = arguments.getString(RestConstants.PAYMENT_METHOD);
+            grandTotalValue = arguments.getDouble(RestConstants.ORDER_GRAND_TOTAL);
+            if (arguments.containsKey(RestConstants.RECOMMENDED_PRODUCTS)) {
+                richRelevance = arguments.getParcelable(RestConstants.RECOMMENDED_PRODUCTS);
+            }
+        }
     }
 
     @Override
@@ -156,13 +172,13 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(RestConstants.ORDER_NUMBER, mOrderNumber);
-        outState.putString(RestConstants.TRANSACTION_SHIPPING, mOrderShipping);
-        outState.putString(RestConstants.TRANSACTION_TAX, mOrderTax);
-        outState.putString(RestConstants.PAYMENT_METHOD, mPaymentMethod);
-        outState.putDouble(RestConstants.ORDER_GRAND_TOTAL, mGrandTotalValue);
+        outState.putString(RestConstants.ORDER_NUMBER, orderNumber);
+        outState.putString(RestConstants.TRANSACTION_SHIPPING, orderShipping);
+        outState.putString(RestConstants.TRANSACTION_TAX, orderTax);
+        outState.putString(RestConstants.PAYMENT_METHOD, paymentMethod);
+        outState.putDouble(RestConstants.ORDER_GRAND_TOTAL, grandTotalValue);
     }
 
     @Override
@@ -188,6 +204,53 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     private void prepareLayout(View view) {
         // Track purchase
+        PurchaseEntity cart = getCart();
+
+        TrackerDelegator.trackPurchaseInCheckoutThanks(cart, orderNumber, grandTotalValue, orderShipping, orderTax, paymentMethod);
+
+        ArrayList<PurchaseCartItem> carts = cart.getCartItems();
+        StringBuilder categories = new StringBuilder();
+        if (carts != null) {
+            for (PurchaseCartItem cat : carts) {
+                categories.append(cat.getCategories());
+            }
+        }
+
+        // Track Purchase
+        MainEventModel purchaseEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                MainEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), true));
+        TrackerManager.trackEvent(getContext(), EventConstants.Purchase, purchaseEventModel);
+
+        // Related Products
+        relatedProductsView = view.findViewById(R.id.related_container);
+
+        // Show
+        sendRecommend(cart);
+        oldCart = cart;
+
+        // Clean cart
+        triggerClearCart();
+
+        recommendManager.sendPurchaseRecommend();
+        BamiloApplication.INSTANCE.setCart(null);
+
+        //Show Order Number
+        showOrderNumber(view);
+
+
+        // Update cart info
+        getBaseActivity().updateCartInfo();
+
+        // Continue button
+        btnContinueShopping = view.findViewById(R.id.btn_checkout_continue);
+        btnContinueShopping.setOnClickListener(this);
+
+        // Add a link to order status
+        setOrderStatusLink(view, orderNumber);
+    }
+
+    private PurchaseEntity getCart() {
+
         PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
         if (cart == null) {
             if (oldCart == null) {
@@ -196,47 +259,25 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 cart = oldCart;
             }
         }
-        TrackerDelegator.trackPurchaseInCheckoutThanks(cart, mOrderNumber, mGrandTotalValue, mOrderShipping, mOrderTax, mPaymentMethod);
-        ArrayList<PurchaseCartItem> carts=  cart.getCartItems();
-        String categories = "";
-        if (carts != null) {
-            for (PurchaseCartItem cat : carts) {
-                categories += cat.getCategories();
-                itemsId += cat.getSku() + ",";
+        return cart;
+    }
+
+    private void showOrderNumber(View view) {
+        TextView tvOrderNumber = view.findViewById(R.id.order_number_text);
+        if (TextUtils.isEmpty(orderNumber)) {
+            tvOrderNumber.setVisibility(View.GONE);
+        } else {
+            if (getContext() != null) {
+                tvOrderNumber.setText(getContext().getResources().getString(R.string.order_number, orderNumber));
             }
         }
-
-        // Track Purchase
-        MainEventModel purchaseEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
-                MainEventModel.createPurchaseEventModelAttributes(categories, (long) cart.getTotal(), true));
-        TrackerManager.trackEvent(getContext(), EventConstants.Purchase, purchaseEventModel);
-
-        // Related Products
-        mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
-        // Show
-        //setRelatedItems();
-        sendRecommend(cart);
-        oldCart = cart;
-        // Clean cart
-        triggerClearCart();
-
-        recommendManager.sendPurchaseRecommend();
-        BamiloApplication.INSTANCE.setCart(null);
-
-        // Update cart info
-        getBaseActivity().updateCartInfo();
-        // Continue button
-        btnContinueShopping = (Button) view.findViewById(R.id.btn_checkout_continue);
-        btnContinueShopping.setOnClickListener(this);
-        // Add a link to order status
-        setOrderStatusLink(view, mOrderNumber);
     }
 
     /**
      * Hide related items.
      */
     private void hideRelatedItems() {
-        /*UIUtils.setVisibility(mRelatedProductsView, false);
+        /*UIUtils.setVisibility(relatedProductsView, false);
         UIUtils.setVisibility(btnContinueShopping, true);*/
     }
 
@@ -245,28 +286,32 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     private void setRelatedItems() {
         // Verify if there's Rich Relevance request to make
-        if(mRichRelevance != null && !mRichRelevance.isHasData()){
-            triggerRichRelevance(mRichRelevance.getTarget());
+        if (richRelevance != null && !richRelevance.isHasData()) {
+            triggerRichRelevance(richRelevance.getTarget());
             hideRelatedItems();
             return;
         }
 
-        if (mRichRelevance != null && CollectionUtils.isNotEmpty(mRichRelevance.getRichRelevanceProducts())) {
-            if(mRichRelevance != null && TextUtils.isNotEmpty(mRichRelevance.getTitle())){
-                ((TextView) mRelatedProductsView.findViewById(R.id.pdv_related_title)).setText(mRichRelevance.getTitle());
+        if (richRelevance != null && CollectionUtils.isNotEmpty(richRelevance.getRichRelevanceProducts())) {
+            if (richRelevance != null && TextUtils.isNotEmpty(richRelevance.getTitle())) {
+                ((TextView) relatedProductsView.findViewById(R.id.pdv_related_title)).setText(richRelevance.getTitle());
             }
-            HorizontalListView relatedGridView = (HorizontalListView) mRelatedProductsView.findViewById(R.id.rich_relevance_listview);
+            HorizontalListView relatedGridView = relatedProductsView.findViewById(R.id.rich_relevance_listview);
             relatedGridView.enableRtlSupport(ShopSelector.isRtl());
             relatedGridView.addItemDecoration(new VerticalSpaceItemDecoration(ITEMS_MARGIN));
-            relatedGridView.setAdapter(new RichRelevanceAdapter(mRichRelevance.getRichRelevanceProducts(), this, false));
-            mRelatedProductsView.setVisibility(View.VISIBLE);
+            relatedGridView.setAdapter(new RichRelevanceAdapter(richRelevance.getRichRelevanceProducts(),
+                    this,
+                    false));
+            relatedProductsView.setVisibility(View.VISIBLE);
         } else {
             hideRelatedItems();
         }
     }
 
     private void triggerRichRelevance(String target) {
-        triggerContentEvent(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(TargetLink.getIdFromTargetLink(target)), this);
+        triggerContentEvent(new GetRichRelevanceHelper(),
+                GetRichRelevanceHelper.createBundle(TargetLink.getIdFromTargetLink(target)),
+                this);
     }
 
     /**
@@ -274,11 +319,11 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      *
      * @author sergiopereira
      * @see <href=http://www.chrisumbel.com/article/android_textview_rich_text_spannablestring>
-     *      SpannableString</href>
+     * SpannableString</href>
      */
     private void setOrderStatusLink(View view, String orderNumber) {
         // Set text for order status
-        Button button = (Button) view.findViewById(R.id.order_status_text);
+        Button button = view.findViewById(R.id.order_status_text);
         button.setTag(orderNumber);
         // Make ClickableSpans and URLSpans work
         button.setOnClickListener(this);
@@ -290,13 +335,12 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     }
 
 
-
-    private void goToProduct(final View view){
+    private void goToProduct(final View view) {
         // Remove all checkout process entries
         getBaseActivity().removeAllNativeCheckoutFromBackStack();
-//        getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
+        // getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
         @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
-        mRelatedRichRelevanceHash = (String) view.getTag(R.id.target_rr_hash);
+        relatedRichRelevanceHash = (String) view.getTag(R.id.target_rr_hash);
         new TargetLink(getWeakBaseActivity(), target)
                 .addAppendListener(this)
                 .run();
@@ -304,8 +348,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     @Override
     public void onAppendData(FragmentType next, String title, String id, Bundle data) {
-        if(com.mobile.service.utils.TextUtils.isNotEmpty(mRelatedRichRelevanceHash))
-            data.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRelatedRichRelevanceHash );
+        if (com.mobile.service.utils.TextUtils.isNotEmpty(relatedRichRelevanceHash))
+            data.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, relatedRichRelevanceHash);
     }
 
     /**
@@ -333,18 +377,18 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     public void onClick(View view) {
         super.onClick(view);
         Print.d(TAG, "VIEW ID: " + view.getId());
-        // CASE continue
-        if (view.getId() == R.id.btn_checkout_continue) onClickContinue();
-        // CASE order status
-        else if (view.getId() == R.id.order_status_text) {
-            Print.d(TAG, "ON CLICK SPAN: " + view.getId());
-            onClickSpannableString(view);
-        }
-        // CASE default
-        else {
-            goToProduct(view);
-        }
 
+        switch (view.getId()) {
+            case R.id.btn_checkout_continue:
+                onClickContinue();
+                break;
+            case R.id.order_status_text:
+                onClickSpannableString(view);
+                break;
+            default:
+                goToProduct(view);
+                break;
+        }
     }
 
     /*
@@ -359,6 +403,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     /**
      * Process the click on retry button.
+     *
      * @author paulo
      */
     private void onClickRetryButton() {
@@ -367,14 +412,14 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     /**
      * Process the click on continue
+     *
      * @author sergiopereira
      */
-    private void onClickContinue(){
-        // Get user id
-        String userId = "";
-        if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) userId = BamiloApplication.CUSTOMER.getIdAsString();
+    private void onClickContinue() {
         // Goto home
-        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) {
+            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /*
@@ -382,6 +427,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      *
      * @see com.mobile.view.fragments.BaseFragment#allowBackPressed()
      */
+
     @Override
     public boolean allowBackPressed() {
         getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -391,6 +437,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     /**
      * Process the success event
      */
+
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
@@ -404,9 +451,9 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Validate event
         super.handleSuccessEvent(baseResponse);
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        switch (eventType){
+        switch (eventType) {
             case GET_RICH_RELEVANCE_EVENT:
-                mRichRelevance = (RichRelevance) baseResponse.getContentData();
+                richRelevance = (RichRelevance) baseResponse.getContentData();
                 sendRecommend(BamiloApplication.INSTANCE.getCart());
                 //setRelatedItems();
                 showFragmentContentContainer();
@@ -420,6 +467,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     /**
      * Process the error event
      */
+
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
@@ -427,6 +475,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
@@ -437,7 +486,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             default:
                 break;
         }
-
     }
 
     private void sendRecommend(PurchaseEntity cart) {
@@ -445,43 +493,41 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
+                if (!isAdded())
+                    return;
 
                 if (data == null || data.size() == 0) {
-                    //mRelatedProductsView.removeView(recommendationsHolder.itemView);
+                    //relatedProductsView.removeView(recommendationsHolder.itemView);
                     // recommendations.setVisibility(View.GONE);
-                    mRelatedProductsView.setVisibility(View.GONE);
+                    relatedProductsView.setVisibility(View.GONE);
                     btnContinueShopping.setVisibility(View.VISIBLE);
                     return;
                 }
                 btnContinueShopping.setVisibility(View.GONE);
-                mRelatedProductsView.setVisibility(View.VISIBLE);
+                relatedProductsView.setVisibility(View.VISIBLE);
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
 
                 if (recommendationsHolder == null) {
-                    recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);
+                    recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(),
+                            inflater.inflate(R.layout.recommendation_cart,
+                                    relatedProductsView,
+                                    false),
+                            null);
                 }
-                if (recommendationsHolder != null) {
-                    try {
+                try {
+                    // Set view
+                    relatedProductsView.removeView(recommendationsHolder.itemView);
+                    recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, relatedProductsView, false), null);
 
+                    recommendationsHolder.onBind(data);
+                    // Add to container
 
-                        // Set view
-                        mRelatedProductsView.removeView(recommendationsHolder.itemView);
-                        recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, mRelatedProductsView, false), null);
-
-                        recommendationsHolder.onBind(data);
-                        // Add to container
-
-                        mRelatedProductsView.addView(recommendationsHolder.itemView, mRelatedProductsView.getChildCount() - 1);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-
-
+                    relatedProductsView.addView(recommendationsHolder.itemView, relatedProductsView.getChildCount() - 1);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
-
-
         };
 
         if (cart == null) return;
@@ -491,8 +537,5 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         } else {
             recommendManager.sendPersonalRecommend(handler);
         }
-
-
     }
-
 }
