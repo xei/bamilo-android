@@ -63,8 +63,8 @@ public class RedirectInfoActivity extends AppCompatActivity {
     WebViewClient webViewClient = new WebViewClient() {
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            super.onReceivedSslError(view, handler, error);
-//            handler.proceed();
+            //super.onReceivedSslError(view, handler, error);
+            handler.proceed();
         }
     };
 }
