@@ -27,20 +27,20 @@ public class RestUrlUtils {
             Log.w(TAG, "Url " + uri + " should include authority, authority and base path added");
         }
         //
-        if (AigRestContract.USE_ONLY_HTTPS) {
-            if (Darwin.logDebugEnabled) {
-                Log.d(TAG, "Request type changed to https.");
-            }
+//        if (AigRestContract.USE_ONLY_HTTPS) {
+//            if (Darwin.logDebugEnabled) {
+//                Log.d(TAG, "Request type changed to https.");
+//            }
             builder.scheme("https");
-        }
+//        }
         /**
          * Temporary: Force http for Bamilo.
          * TODO: Remove me if Bamilo supports https.
          */
-        if (AigRestContract.USE_ONLY_HTTP) {
-            Log.i(TAG, "BAMILO REQUEST: force http.");
-            builder.scheme("http");
-        }
+//        if (AigRestContract.USE_ONLY_HTTP) {
+//            Log.i(TAG, "BAMILO REQUEST: force http.");
+//            builder.scheme("http");
+//        }
         //
         uri = builder.build();
         if (Darwin.logDebugEnabled) {
