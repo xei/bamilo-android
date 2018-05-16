@@ -3,10 +3,15 @@ package com.mobile.view.fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.GeolocationPermissions;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ScrollView;
@@ -40,6 +45,7 @@ import java.util.EnumSet;
 
 /**
  * Shop in shop Fragment.
+ *
  * @author sergiopereira
  */
 public class InnerShopFragment extends BaseFragment implements IResponseCallback {
@@ -99,15 +105,19 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         Print.i(TAG, "ON VIEW CREATED");
         ShopSelector.setLocaleOnOrientationChanged(BamiloApplication.INSTANCE);
         // Get scroll
-        mScrollView = (ScrollView) view.findViewById(R.id.shop_scroll);
+        mScrollView = view.findViewById(R.id.shop_scroll);
         // Get main container
-        mMainContainer = (ViewGroup) view.findViewById(R.id.shop_main_container);
+        mMainContainer = view.findViewById(R.id.shop_main_container);
         // Get web view
-        mWebView = (SuperWebView) view.findViewById(R.id.shop_web_view);
+        mWebView = view.findViewById(R.id.shop_web_view);
         // Set the client
-        mWebView.setWebViewClient(mInnerShopWebClient);
+//        mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         // Enable java script
         mWebView.enableJavaScript();
+        mWebView.getSettings().setDomStorageEnabled(true);
+        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        mWebView.setWebViewClient(mInnerShopWebClient);
+        mWebView.clearCache(false);
         // Validate the data (load/request/continue)
         onValidateDataState();
     }
@@ -245,7 +255,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             for (StaticFeaturedBox featuredBox : staticPage.getFeaturedBoxes()) {
                 View inflated = inflater.inflate(R.layout._def_shop_fragment_featured_box, mMainContainer, false);
                 ((TextView) inflated.findViewById(R.id.shop_featured_box_title)).setText(featuredBox.getTitle());
-                HorizontalListView horizontalListView = (HorizontalListView) inflated.findViewById(R.id.shop_featured_box_horizontal_list);        // Validate orientation
+                HorizontalListView horizontalListView = inflated.findViewById(R.id.shop_featured_box_horizontal_list);        // Validate orientation
                 horizontalListView.setHasFixedSize(true);
                 horizontalListView.enableRtlSupport(ShopSelector.isRtl());
                 horizontalListView.setAdapter(new HomeTopSellersTeaserAdapter(featuredBox.getItems(), this));
@@ -342,6 +352,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             // Return link processed
             return true;
         }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed();
+        }
     };
 
     /**
@@ -425,5 +440,4 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             showContinueShopping();
         }
     }
-
 }

@@ -1,8 +1,12 @@
 package com.mobile.view;
 
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.mobile.app.BamiloApplication;
 import com.mobile.components.webview.SuperWebView;
@@ -29,9 +33,13 @@ public class RedirectInfoActivity extends AppCompatActivity {
             redirect = getIntent().getExtras().getParcelable(ConstantsIntentExtra.DATA);
         }
         // Set html info
-        webView = (SuperWebView) findViewById(R.id.redirect_info_web);
+        webView = findViewById(R.id.redirect_info_web);
         // Enable java script
         webView.enableJavaScript();
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webView.clearCache(false);
+        webView.setWebViewClient(webViewClient);
         // Load html
         webView.loadData(redirect.getHtml());
         // Set button link
@@ -51,4 +59,12 @@ public class RedirectInfoActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
+
+    WebViewClient webViewClient = new WebViewClient() {
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            super.onReceivedSslError(view, handler, error);
+//            handler.proceed();
+        }
+    };
 }
