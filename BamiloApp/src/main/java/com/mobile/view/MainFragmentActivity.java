@@ -614,6 +614,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             case CATEGORIES:
                 fragment = newFragmentInstance(NavigationCategoryFragment.class, bundle);
                 break;
+            case MORE_RELATED_PRODUCTS:
+                break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
                 return;

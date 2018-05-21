@@ -9,10 +9,12 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
 }
 
 apply plugin: 'pmd'
@@ -152,6 +154,7 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
     compile project(':BamiloCore')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 /**

@@ -21,7 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.BaseScreenModel;
@@ -35,6 +34,9 @@ import com.mobile.constants.tracking.EventConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.datamanagement.DataManager;
+import com.mobile.extlibraries.emarsys.predict.recommended.Item;
+import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
+import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
@@ -45,9 +47,6 @@ import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.extlibraries.emarsys.predict.recommended.Item;
-import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
-import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.database.BrandsTableHelper;
 import com.mobile.service.database.LastViewedTableHelper;
@@ -91,22 +90,22 @@ import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
+import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-
+import de.akquinet.android.androlog.Log;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * This class displays the product detail screen.
  *
  * @author spereira
  */
-public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnDialogListListener, TargetLink.OnAppendDataListener {
+public class ProductDetailsFragment extends BaseFragment implements IResponseCallback,
+        AdapterView.OnItemClickListener, OnDialogListListener, TargetLink.OnAppendDataListener {
 
     private final static String TAG = ProductDetailsFragment.class.getSimpleName();
 
@@ -183,16 +182,21 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Get sku
             mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
             // Categories
-            categoryTree = arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME) ? arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV" : "";
+            categoryTree = arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME) ?
+                    arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV" : "";
             // Get source and path
-            mNavSource = getString(arguments.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
+            mNavSource = getString(
+                    arguments.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
             mNavPath = arguments.getString(ConstantsIntentExtra.NAVIGATION_PATH);
             mProduct = arguments.getParcelable(ConstantsIntentExtra.DATA);
 
-            mRedirectToReviewsFragment = arguments.getBoolean(ConstantsIntentExtra.REDIRECT_TO_REVIEWS, false);
+            mRedirectToReviewsFragment = arguments
+                    .getBoolean(ConstantsIntentExtra.REDIRECT_TO_REVIEWS, false);
 
             // Track Screen
-            BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.PRODUCT_DETAIL.getName()), getString(R.string.gaScreen), "", getLoadTime());
+            BaseScreenModel screenModel = new BaseScreenModel(
+                    getString(TrackingPage.PRODUCT_DETAIL.getName()), getString(R.string.gaScreen),
+                    "", getLoadTime());
             TrackerManager.trackScreen(getContext(), screenModel, false);
         }
     }
@@ -287,14 +291,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     TrackerDelegator.trackAddToFavorites(mClicked);
 
                     // Global Tracker
-                    addToWishListEventModel = new MainEventModel(getString(TrackingPage.PRODUCT_DETAIL.getName()),
-                            EventActionKeys.ADD_TO_WISHLIST, mClicked.getSku(), (long) mClicked.getPrice(), null);
+                    addToWishListEventModel = new MainEventModel(
+                            getString(TrackingPage.PRODUCT_DETAIL.getName()),
+                            EventActionKeys.ADD_TO_WISHLIST, mClicked.getSku(),
+                            (long) mClicked.getPrice(), null);
 
                     triggerAddToWishList(mClicked.getSku());
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             } else if (args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)) {
-                ProductComplete mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+                ProductComplete mClicked = args
+                        .getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
                 if (BamiloApplication.isCustomerLoggedIn() && mClicked != null) {
                     TrackerDelegator.trackRemoveFromFavorites(mClicked);
 
@@ -453,10 +460,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * Method used to validate the current data state.<br>
-     * Case has product object<br>
-     * Case has product sku to get object<br>
-     * Case product not retrieved<br>
+     * Method used to validate the current data state.<br> Case has product object<br> Case has
+     * product sku to get object<br> Case product not retrieved<br>
      */
     private void onValidateDataState() {
         Print.d(TAG, "INIT");
@@ -477,7 +482,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
         // Case error
         else {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE,
+                    getString(R.string.product_could_not_retrieved));
             getBaseActivity().onBackPressed();
         }
     }
@@ -499,7 +505,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Validate
         if (sku != null) {
             Print.i(TAG, "DEEP LINK GET PDV: " + sku + " " + deepLinkSimpleSize);
-            mNavSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
+            mNavSource = getString(
+                    bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
             mNavPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
             triggerLoadProduct(sku, mRichRelevanceHash);
             triggerGetRegions(ApiConstants.GET_REGIONS_API_PATH);
@@ -539,9 +546,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Show container
         showFragmentContentContainer();
         // Tracking
-        MainEventModel viewProductEventModel = new MainEventModel(mNavSource, EventActionKeys.VIEW_PRODUCT, mProduct.getSku(),
-                (long) mProduct.getPrice(), MainEventModel.createViewProductEventModelAttributes(mProduct.getCategoryKey(),
-                (long) mProduct.getPrice()));
+        MainEventModel viewProductEventModel = new MainEventModel(mNavSource,
+                EventActionKeys.VIEW_PRODUCT, mProduct.getSku(),
+                (long) mProduct.getPrice(),
+                MainEventModel.createViewProductEventModelAttributes(mProduct.getCategoryKey(),
+                        (long) mProduct.getPrice()));
         TrackerManager.trackEvent(getContext(), EventConstants.ViewProduct, viewProductEventModel);
     }
 
@@ -561,8 +570,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void setOtherSellersOffers() {
         //show button offers with separator if has offers
         if (mProduct.hasOffers()) {
-            TextView txOffers = (TextView) mOtherSellersContainer.findViewById(R.id.tx_single_line_text);
-            txOffers.setText(String.format(getString(R.string.other_sellers_starting), CurrencyFormatter.formatCurrency(mProduct.getMinPriceOffer())));
+            TextView txOffers = (TextView) mOtherSellersContainer
+                    .findViewById(R.id.tx_single_line_text);
+            txOffers.setText(String.format(getString(R.string.other_sellers_starting),
+                    CurrencyFormatter.formatCurrency(mProduct.getMinPriceOffer())));
             mOtherSellersContainer.setOnClickListener(this);
         } else {
             mOtherSellersContainer.setVisibility(View.GONE);
@@ -593,12 +604,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Integer reviewsCount = mProduct.getTotalReviews();
         // Validation
         if (ratingCount == 0 && reviewsCount == 0) {
-            mProductRatingCount.setText(getResources().getString(R.string.be_first_rate));    //be the first to rate if hasn't
+            mProductRatingCount.setText(getResources()
+                    .getString(R.string.be_first_rate));    //be the first to rate if hasn't
         } else {
             UIUtils.setProgressForRTLPreJellyMr2(mProductRating);
             mProductRating.setRating((float) mProduct.getAvgRating());
             mProductRating.setVisibility(View.VISIBLE);
-            String rating = getResources().getQuantityString(R.plurals.numberOfRatings, ratingCount, ratingCount);
+            String rating = getResources()
+                    .getQuantityString(R.plurals.numberOfRatings, ratingCount, ratingCount);
             mProductRatingCount.setText(rating);
         }
     }
@@ -622,7 +635,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
             if (TextUtils.isNotEmpty(brand.getImageUrl())) {
                 //RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_tiny);
-                ImageManager.getInstance().loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_large, false);
+                ImageManager.getInstance()
+                        .loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_large,
+                                false);
             } else {
                 brandImage.setVisibility(View.GONE);
             }
@@ -638,7 +653,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Set seller view
             mSellerContainer.setVisibility(View.VISIBLE);
             // Name
-            final TextView sellerName = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_name);
+            final TextView sellerName = (TextView) mSellerContainer
+                    .findViewById(R.id.pdv_seller_name);
             // Set name
             sellerName.setText(mProduct.getSeller().getName());
             // Set shop first except B project
@@ -656,7 +672,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mGlobalButton.bringToFront();
                 mGlobalButton.setOnClickListener(this);
                 // Delivery Info
-                mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_container).setVisibility(View.VISIBLE);
+                mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_container)
+                        .setVisibility(View.VISIBLE);
                 /*((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_title)).setText(mProduct.getSeller().getDeliveryTime());
                 if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
                     TextView info = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_cms);
@@ -665,14 +682,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }*/
                 // Shipping Info
                 if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryShippingInfo())) {
-                    TextView info2 = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_info);
+                    TextView info2 = (TextView) mSellerContainer
+                            .findViewById(R.id.pdv_seller_overseas_delivery_text_info);
                     info2.setText(mProduct.getSeller().getDeliveryShippingInfo());
                     info2.setVisibility(View.VISIBLE);
                 }
                 // Button link
                 if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryMoreDetailsText())) {
-                    mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_divider).setVisibility(View.VISIBLE);
-                    TextView link = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_link);
+                    mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_divider)
+                            .setVisibility(View.VISIBLE);
+                    TextView link = (TextView) mSellerContainer
+                            .findViewById(R.id.pdv_seller_overseas_delivery_link);
                     link.setText(mProduct.getSeller().getDeliveryMoreDetailsText());
                     link.setOnClickListener(this);
                     link.setVisibility(View.VISIBLE);
@@ -687,9 +707,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }*/
             // Seller warranty
             if (TextUtils.isNotEmpty(mProduct.getSeller().getWarranty())) {
-                mSellerContainer.findViewById(R.id.pdv_seller_warranty_column).setVisibility(View.VISIBLE);
-                mSellerContainer.findViewById(R.id.pdv_seller_warranty_container).setVisibility(View.VISIBLE);
-                TextView textView = ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_warranty));
+                mSellerContainer.findViewById(R.id.pdv_seller_warranty_column)
+                        .setVisibility(View.VISIBLE);
+                mSellerContainer.findViewById(R.id.pdv_seller_warranty_container)
+                        .setVisibility(View.VISIBLE);
+                TextView textView = ((TextView) mSellerContainer
+                        .findViewById(R.id.pdv_seller_warranty));
 //                String warranty = String.format(getResources().getString(R.string.warranty), mProduct.getSeller().getWarranty());
                 textView.setText(mProduct.getSeller().getWarranty());
                 textView.setVisibility(View.VISIBLE);
@@ -706,8 +729,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setTitle() {
         // Set title
-        ((TextView) mTitleContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrandName());
-        ((TextView) mTitleContainer.findViewById(R.id.pdv_product_subtitle)).setText(mProduct.getName());
+        ((TextView) mTitleContainer.findViewById(R.id.pdv_product_title))
+                .setText(mProduct.getBrandName());
+        ((TextView) mTitleContainer.findViewById(R.id.pdv_product_subtitle))
+                .setText(mProduct.getName());
     }
 
     /**
@@ -721,7 +746,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             return;
         }
         // Title
-        ((TextView) mDescriptionView.findViewById(R.id.pdv_specs_title)).setText(getString(R.string.description));
+        ((TextView) mDescriptionView.findViewById(R.id.pdv_specs_title))
+                .setText(getString(R.string.description));
         // Multi line
         ((TextView) mDescriptionView.findViewById(R.id.pdv_specs_multi_line)).setText(description);
         // Button
@@ -754,7 +780,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             return;
         }
         // Title
-        ((TextView) mSpecificationsView.findViewById(R.id.pdv_specs_title)).setText(getString(R.string.specifications));
+        ((TextView) mSpecificationsView.findViewById(R.id.pdv_specs_title))
+                .setText(getString(R.string.specifications));
         // Multi line
         ((TextView) mSpecificationsView.findViewById(R.id.pdv_specs_multi_line)).setText(features);
         // Button
@@ -768,7 +795,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setCombos() {
         if (mProduct.hasBundle()) {
-            if (mProduct.getProductBundle() == null || CollectionUtils.isEmpty(mProduct.getProductBundle().getProducts())) {
+            if (mProduct.getProductBundle() == null || CollectionUtils
+                    .isEmpty(mProduct.getProductBundle().getProducts())) {
                 triggerGetProductBundle(mProduct.getSku());
             } else {
                 buildComboSection(mProduct.getProductBundle());
@@ -785,8 +813,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Print.i(TAG, "ON DISPLAY VARIATIONS");
         if (mProduct.hasVariations()) {
             // Title
-            String title = getResources().getString(mProduct.isFashion() ? R.string.see_other_colors : R.string.see_other_variations);
-            ((TextView) mOtherVariationsLayout.findViewById(R.id.tx_single_line_text)).setText(title);
+            String title = getResources().getString(mProduct.isFashion() ? R.string.see_other_colors
+                    : R.string.see_other_variations);
+            ((TextView) mOtherVariationsLayout.findViewById(R.id.tx_single_line_text))
+                    .setText(title);
             // Listener
             mOtherVariationsLayout.setOnClickListener(this);
         } else {
@@ -824,7 +854,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void setSlideShow() {
         Print.i(TAG, "ON DISPLAY SLIDE SHOW");
         // Validate the ProductImageGalleryFragment
-        BaseFragment fragment = (BaseFragment) getChildFragmentManager().findFragmentByTag(ProductImageGalleryFragment.TAG);
+        BaseFragment fragment = (BaseFragment) getChildFragmentManager()
+                .findFragmentByTag(ProductImageGalleryFragment.TAG);
         // CASE CREATE
         if (fragment == null) {
             Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
@@ -843,8 +874,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             args.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, false);
             args.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, verifyOutOfStock());
             // Create fragment
-            fragment = BaseFragment.newInstance(getBaseActivity(), ProductImageGalleryFragment.class, args);
-            FragmentController.getInstance().addChildFragment(this, R.id.pdv_slide_show_container, fragment, ProductImageGalleryFragment.TAG);
+            fragment = BaseFragment
+                    .newInstance(getBaseActivity(), ProductImageGalleryFragment.class, args);
+            FragmentController.getInstance()
+                    .addChildFragment(this, R.id.pdv_slide_show_container, fragment,
+                            ProductImageGalleryFragment.TAG);
         }
         // CASE UPDATE
         else {
@@ -914,7 +948,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, INTERNATIONAL_PRODUCT_POLICY_PAGE);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, getString(R.string.policy));
-        getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -924,7 +959,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickGlobalSellerButton() {
         Log.i(TAG, "ON CLICK GLOBAL SELLER");
         try {
-            ScrollView scrollView = (ScrollView) getView().findViewById(R.id.product_detail_scrollview);
+            ScrollView scrollView = (ScrollView) getView()
+                    .findViewById(R.id.product_detail_scrollview);
             scrollView.smoothScrollTo(0, mSellerContainer.getTop());
         } catch (NullPointerException e) {
             Log.i(TAG, "WARNING: NPE ON TRY SCROLL TO SELLER VIEW");
@@ -935,7 +971,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * checks/ uncheck a bundle item from combo and updates the combo's total price
      */
-    private void onClickComboItem(View bundleItemView, TextView txTotalPrice, BundleList bundleList, int position) {
+    private void onClickComboItem(View bundleItemView, TextView txTotalPrice, BundleList bundleList,
+            int position) {
         // Update combo price
         bundleList.updateTotalPriceWhenChecking(position);
         //get the bundle to update checkbox state
@@ -949,7 +986,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 checkBox.setChecked(productBundle.isChecked());
             }
         });
-
 
         //get updated total price
         txTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
@@ -965,7 +1001,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Bundle bundle = new Bundle();
         bundle.putParcelable(RestConstants.BUNDLE_PRODUCTS, mProduct.getProductBundle());
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, mProduct.getSku());
-        getBaseActivity().onSwitchFragment(FragmentType.COMBO_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.COMBO_PAGE, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -977,7 +1014,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
         bundle.putInt(ConstantsIntentExtra.PRODUCT_INFO_POS, position);
         bundle.putString(ConstantsIntentExtra.FLAG_1, mProduct.getBrandName());
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -987,7 +1025,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Log.i(TAG, "ON CLICK TO SHOW OTHER VARIATIONS");
         Bundle bundle = new Bundle();
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
-        getBaseActivity().onSwitchFragment(FragmentType.VARIATIONS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.VARIATIONS, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -999,7 +1038,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, mProduct.getSku());
         bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
         bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrandName());
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -1020,7 +1060,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             TrackerDelegator.trackProductAddedToCart(mProduct, mGroupType);
 
             // Global Tracker Event Model
-            addToCartEventModel = new MainEventModel(getString(TrackingPage.PDV.getName()), EventActionKeys.ADD_TO_CART,
+            addToCartEventModel = new MainEventModel(getString(TrackingPage.PDV.getName()),
+                    EventActionKeys.ADD_TO_CART,
                     mProduct.getSku(), (long) mProduct.getPrice(), null);
         }
         // Case select a simple variation
@@ -1048,16 +1089,20 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     TrackerDelegator.trackRemoveFromFavorites(mProduct);
 
                     // Global Tracker
-                    SimpleEventModel sem = new SimpleEventModel(getString(TrackingPage.PDV.getName()),
-                            EventActionKeys.REMOVE_FROM_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice());
+                    SimpleEventModel sem = new SimpleEventModel(
+                            getString(TrackingPage.PDV.getName()),
+                            EventActionKeys.REMOVE_FROM_WISHLIST, mProduct.getSku(),
+                            (long) mProduct.getPrice());
                     TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, sem);
                 } else {
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
 
                     // Global Tracker
-                    addToWishListEventModel = new MainEventModel(getString(TrackingPage.PDV.getName()),
-                            EventActionKeys.ADD_TO_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice(), null);
+                    addToWishListEventModel = new MainEventModel(
+                            getString(TrackingPage.PDV.getName()),
+                            EventActionKeys.ADD_TO_WISHLIST, mProduct.getSku(),
+                            (long) mProduct.getPrice(), null);
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO WISH LIST", e);
@@ -1074,7 +1119,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
 
             // Goto login
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -1091,16 +1137,20 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     TrackerDelegator.trackRemoveFromFavorites(mProduct);
 
                     // Global Tracker
-                    SimpleEventModel sem = new SimpleEventModel(getString(TrackingPage.PDV.getName()),
-                            EventActionKeys.REMOVE_FROM_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice());
+                    SimpleEventModel sem = new SimpleEventModel(
+                            getString(TrackingPage.PDV.getName()),
+                            EventActionKeys.REMOVE_FROM_WISHLIST, mProduct.getSku(),
+                            (long) mProduct.getPrice());
                     TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, sem);
                 } else {
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
 
                     // Global Tracker
-                    addToWishListEventModel = new MainEventModel(getString(TrackingPage.PDV.getName()),
-                            EventActionKeys.ADD_TO_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice(), null);
+                    addToWishListEventModel = new MainEventModel(
+                            getString(TrackingPage.PDV.getName()),
+                            EventActionKeys.ADD_TO_WISHLIST, mProduct.getSku(),
+                            (long) mProduct.getPrice(), null);
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "NPE ON ADD ITEM TO SAVED", e);
@@ -1116,7 +1166,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
             }
             // Goto login
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -1126,8 +1177,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickShare(ProductComplete completeProduct) {
         Log.i(TAG, "ON CLICK TO SHARE ITEM");
         try {
-            String extraSubject = getString(R.string.share_subject, getString(R.string.app_name_placeholder));
-            String extraMsg = getString(R.string.share_checkout_this_product) + "\n" + mProduct.getShareUrl();
+            String extraSubject = getString(R.string.share_subject,
+                    getString(R.string.app_name_placeholder));
+            String extraMsg =
+                    getString(R.string.share_checkout_this_product) + "\n" + mProduct.getShareUrl();
             Intent shareIntent = getBaseActivity().createShareIntent(extraSubject, extraMsg);
             shareIntent.putExtra(RestConstants.SKU, mProduct.getSku());
             startActivity(shareIntent);
@@ -1150,7 +1203,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             if (!TextUtils.isEmpty(url)) {
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.SIZE_GUIDE_URL, url);
-                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_SIZE_GUIDE, bundle, FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_SIZE_GUIDE, bundle,
+                        FragmentController.ADD_TO_BACK_STACK);
             }
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON CLICK SIZE GUIDE");
@@ -1164,7 +1218,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position < mProduct.getRelatedProducts().size()) { // To avoid click on Placebo
             @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
-            mRelatedRichRelevanceHash = mProduct.getRelatedProducts().get(position).getRichRelevanceClickHash();
+            mRelatedRichRelevanceHash = mProduct.getRelatedProducts().get(position)
+                    .getRichRelevanceClickHash();
             new TargetLink(getWeakBaseActivity(), target)
                     .addAppendListener(this)
                     .retainBackStackEntries()
@@ -1175,8 +1230,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     @Override
     public void onAppendData(FragmentType next, String title, String id, Bundle data) {
-        if (TextUtils.isNotEmpty(mRelatedRichRelevanceHash))
+        if (TextUtils.isNotEmpty(mRelatedRichRelevanceHash)) {
             data.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRelatedRichRelevanceHash);
+        }
     }
 
     /**
@@ -1242,43 +1298,52 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private void triggerLoadProduct(String sku, String richRelevanceHash) {
         mBeginRequestMillis = System.currentTimeMillis();
-        if (TextUtils.isNotEmpty(richRelevanceHash))
+        if (TextUtils.isNotEmpty(richRelevanceHash)) {
             richRelevanceHash = TargetLink.getIdFromTargetLink(richRelevanceHash);
+        }
 
-        triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(sku, richRelevanceHash), this);
+        triggerContentEvent(new GetProductHelper(),
+                GetProductHelper.createBundle(sku, richRelevanceHash), this);
         //recommendManager = new RecommendManager();
         //sendRecommend();
     }
 
     private void triggerGetRegions(String apiCall) {
-        DataManager.getInstance().loadData(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
+        DataManager.getInstance()
+                .loadData(new GetRegionsHelper(), GetRegionsHelper.createBundle(apiCall), this);
     }
 
     private void triggerGetDeliveryTime(Integer cityId) {
         if (mProduct != null && mRegions != null) {
-            triggerContentEventNoLoading(new GetDeliveryTimeHelper(), GetDeliveryTimeHelper.createBundle(mProduct.getSimples().get(0).getSku()
-                    , cityId), this);
+            triggerContentEventNoLoading(new GetDeliveryTimeHelper(),
+                    GetDeliveryTimeHelper.createBundle(mProduct.getSimples().get(0).getSku()
+                            , cityId), this);
         }
     }
 
     private void triggerGetCities(String apiCall, int region) {
-        DataManager.getInstance().loadData(new GetCitiesHelper(), GetCitiesHelper.createBundle(apiCall, region, null), this);
+        DataManager.getInstance().loadData(new GetCitiesHelper(),
+                GetCitiesHelper.createBundle(apiCall, region, null), this);
     }
 
     private void triggerAddItemToCart(String sku) {
-        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(),
+                ShoppingCartAddItemHelper.createBundle(sku), this);
     }
 
     private void triggerAddToWishList(String sku) {
-        triggerContentEventProgress(new AddToWishListHelper(), AddToWishListHelper.createBundle(sku), this);
+        triggerContentEventProgress(new AddToWishListHelper(),
+                AddToWishListHelper.createBundle(sku), this);
     }
 
     private void triggerRemoveFromWishList(String sku) {
-        triggerContentEventProgress(new RemoveFromWishListHelper(), RemoveFromWishListHelper.createBundle(sku), this);
+        triggerContentEventProgress(new RemoveFromWishListHelper(),
+                RemoveFromWishListHelper.createBundle(sku), this);
     }
 
     private void triggerRichRelevance(String target) {
-        triggerContentEvent(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(TargetLink.getIdFromTargetLink(target)), this);
+        triggerContentEvent(new GetRichRelevanceHelper(),
+                GetRichRelevanceHelper.createBundle(TargetLink.getIdFromTargetLink(target)), this);
     }
     /*
      * ############## RESPONSE ##############
@@ -1306,13 +1371,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 if (addToCartEventModel != null) {
                     PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
                     if (cart != null) {
-                        addToCartEventModel.customAttributes = MainEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label,
-                                (long) cart.getTotal(), true);
+                        addToCartEventModel.customAttributes = MainEventModel
+                                .createAddToCartEventModelAttributes(addToCartEventModel.label,
+                                        (long) cart.getTotal(), true);
                     } else {
-                        addToCartEventModel.customAttributes = MainEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label,
-                                0, true);
+                        addToCartEventModel.customAttributes = MainEventModel
+                                .createAddToCartEventModelAttributes(addToCartEventModel.label,
+                                        0, true);
                     }
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart,
+                            addToCartEventModel);
                 }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
@@ -1330,9 +1398,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Tracking add to wish list
                 if (addToWishListEventModel != null) {
                     if (mProduct != null) {
-                        addToWishListEventModel.customAttributes = MainEventModel.createAddToWishListEventModelAttributes(mProduct.getSku(), mProduct.getCategoryKey(), true);
+                        addToWishListEventModel.customAttributes = MainEventModel
+                                .createAddToWishListEventModelAttributes(mProduct.getSku(),
+                                        mProduct.getCategoryKey(), true);
                     }
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, addToWishListEventModel);
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList,
+                            addToWishListEventModel);
                 }
                 break;
             case GET_PRODUCT_DETAIL:
@@ -1346,11 +1417,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Save product
                 mProduct = product;
                 // Verify if there's Rich Relevance request to make
-                if (product.getRichRelevance() != null && !product.getRichRelevance().isHasData())
+                if (product.getRichRelevance() != null && !product.getRichRelevance().isHasData()) {
                     triggerRichRelevance(mProduct.getRichRelevance().getTarget());
+                }
 
                 if (CollectionUtils.isNotEmpty(mProduct.getImageList())) {
-                    sSharedSelectedPosition = !ShopSelector.isRtl() ? IntConstants.DEFAULT_POSITION : mProduct.getImageList().size() - 1;
+                    sSharedSelectedPosition = !ShopSelector.isRtl() ? IntConstants.DEFAULT_POSITION
+                            : mProduct.getImageList().size() - 1;
                 } else {
                     sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
                 }
@@ -1364,7 +1437,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 displayProduct(mProduct);
 
                 // Track Screen Timing
-                BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.PDV.getName()), getString(R.string.gaScreen), mProduct.getSku(), getLoadTime());
+                BaseScreenModel screenModel = new BaseScreenModel(
+                        getString(TrackingPage.PDV.getName()), getString(R.string.gaScreen),
+                        mProduct.getSku(), getLoadTime());
                 TrackerManager.trackScreenTiming(getContext(), screenModel);
 
                 // Tracking
@@ -1406,13 +1481,18 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 break;
             case GET_DELIVERY_TIME:
                 Print.d(TAG, "RECEIVED DELIVERY_TIME");
-                DeliveryTimeCollection deliveryTimeCollection = (DeliveryTimeCollection) baseResponse.getContentData();
+                DeliveryTimeCollection deliveryTimeCollection = (DeliveryTimeCollection) baseResponse
+                        .getContentData();
                 DeliveryTime deliveryTime = deliveryTimeCollection.getDeliveryTimes().get(0);
                 String strDeliveryTime;
                 if (deliveryTime.getTehranDeliveryTime().isEmpty()) {
                     strDeliveryTime = deliveryTime.getDeliveryMessage();
                 } else {
-                    strDeliveryTime = String.format(new Locale("fa"), "%s %s\n%s %s", getString(R.string.tehran_delivery_time), deliveryTime.getTehranDeliveryTime(), getString(R.string.other_cities_delivery_time), deliveryTime.getOtherCitiesDeliveryTime());
+                    strDeliveryTime = String.format(new Locale("fa"), "%s %s\n%s %s",
+                            getString(R.string.tehran_delivery_time),
+                            deliveryTime.getTehranDeliveryTime(),
+                            getString(R.string.other_cities_delivery_time),
+                            deliveryTime.getOtherCitiesDeliveryTime());
                 }
                 rootView.findViewById(R.id.deliveryRow).setVisibility(View.VISIBLE);
                 mDeliveryTimeTextView.setText(strDeliveryTime);
@@ -1474,8 +1554,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * Build combo section if has bundles
-     * TODO: Improve this component using RecyclerView
+     * Build combo section if has bundles TODO: Improve this component using RecyclerView
      **/
     private void buildComboSection(final BundleList bundleList) {
         // Validate content
@@ -1490,7 +1569,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         TextView price = (TextView) mComboProductsLayout.findViewById(R.id.pdv_combo_price);
         price.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
         // Get container
-        ViewGroup comboGroup = (ViewGroup) mComboProductsLayout.findViewById(R.id.pdv_combo_container);
+        ViewGroup comboGroup = (ViewGroup) mComboProductsLayout
+                .findViewById(R.id.pdv_combo_container);
         comboGroup.removeAllViews();
         // Revert elements if RTL (the original is used for ComboFragment)
         ArrayList<ProductBundle> bundleProducts = new ArrayList<>(bundleList.getProducts());
@@ -1498,14 +1578,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             Collections.reverse(bundleProducts);
         }
 
-        LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getBaseActivity()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int count = 0;
         for (int i = 0; i < bundleProducts.size(); i++) {
             ProductBundle item = bundleProducts.get(i);
-            ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_combo_group_item, comboGroup, false);
+            ViewGroup comboProductItem = (ViewGroup) inflater
+                    .inflate(R.layout.pdv_fragment_combo_group_item, comboGroup, false);
             fillProductBundleInfo(comboProductItem, item);
             if (!item.getSku().equals(mProduct.getSku())) {
-                comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem, price, bundleList, i));
+                comboProductItem.setOnClickListener(
+                        new ComboItemClickListener(comboProductItem, price, bundleList, i));
             } else {
                 final CheckBox checkBox = (CheckBox) comboProductItem.findViewById(R.id.item_check);
                 checkBox.post(new Runnable() {
@@ -1518,13 +1601,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             comboGroup.addView(comboProductItem);
             // Add plus separator
             if (count < bundleProducts.size() - 1) {
-                comboGroup.addView(inflater.inflate(R.layout.pdv_fragment_combo_divider, comboGroup, false));
+                comboGroup.addView(
+                        inflater.inflate(R.layout.pdv_fragment_combo_divider, comboGroup, false));
             }
             count++;
         }
         // Slide the horizontal scroll view to the end to show the first element
         if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
-            final HorizontalScrollView scroll = (HorizontalScrollView) mComboProductsLayout.findViewById(R.id.pdv_combo_scroll);
+            final HorizontalScrollView scroll = (HorizontalScrollView) mComboProductsLayout
+                    .findViewById(R.id.pdv_combo_scroll);
             scroll.postDelayed(new Runnable() {
                 public void run() {
                     scroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
@@ -1539,7 +1624,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * Fill a product bundle info
      *
-     * @param view              - combo item view
+     * @param view - combo item view
      * @param productBundleItem - product bundle
      */
     private void fillProductBundleInfo(View view, final ProductBundle productBundleItem) {
@@ -1555,7 +1640,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         });
 
         //RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
-        ImageManager.getInstance().loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large, false);
+        ImageManager.getInstance().loadImage(productBundleItem.getImageUrl(), mImage, mProgress,
+                R.drawable.no_image_large, false);
 
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());
@@ -1573,11 +1659,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * functions that verifies if product simple is out of stock
      */
     private boolean verifyOutOfStock() {
-        return (mProduct.getSelectedSimple() != null && mProduct.getSelectedSimple().isOutOfStock());
+        return (mProduct.getSelectedSimple() != null && mProduct.getSelectedSimple()
+                .isOutOfStock());
     }
 
     /**
-     * function that dependent of the the stock and if its saved, sets the correct string for the button
+     * function that dependent of the the stock and if its saved, sets the correct string for the
+     * button
      */
     private void setOutOfStockButton() {
         if (verifyOutOfStock()) {
@@ -1597,7 +1685,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     private void triggerGetProductBundle(String sku) {
-        triggerContentEvent(new GetProductBundleHelper(), GetProductBundleHelper.createBundle(sku), this);
+        triggerContentEvent(new GetProductBundleHelper(), GetProductBundleHelper.createBundle(sku),
+                this);
 
     }
 
@@ -1618,7 +1707,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Case list
                 int city = ((AddressCity) object).getValue();
                 if (city != -1) {
-                    selectedRegionId = ((AddressRegion) mRegionSpinner.getSelectedItem()).getValue();
+                    selectedRegionId = ((AddressRegion) mRegionSpinner.getSelectedItem())
+                            .getValue();
                     mDeliveryTimeTextView.setText(R.string.getting_data_from_server);
                     selectedCityId = city;
                     triggerGetDeliveryTime(city);
@@ -1645,7 +1735,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         List<AddressRegion> regionsWithEmptyItem = new ArrayList<>();
         regionsWithEmptyItem.add(new AddressRegion(-1, getString(R.string.select_region)));
         regionsWithEmptyItem.addAll(regions);
-        RegionCitySpinnerAdapter adapter = new RegionCitySpinnerAdapter(getBaseActivity(), R.layout.form_spinner_item, regionsWithEmptyItem);
+        RegionCitySpinnerAdapter adapter = new RegionCitySpinnerAdapter(getBaseActivity(),
+                R.layout.form_spinner_item, regionsWithEmptyItem);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         mRegionSpinner.setAdapter(adapter);
         mRegionSpinner.setOnItemSelectedListener(onAddressItemSelected);
@@ -1677,7 +1768,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         List<AddressCity> citiesWithEmptyItem = new ArrayList<>();
         citiesWithEmptyItem.add(new AddressCity(-1, getString(R.string.select_city)));
         citiesWithEmptyItem.addAll(cities);
-        RegionCitySpinnerAdapter adapter = new RegionCitySpinnerAdapter(getBaseActivity(), R.layout.form_spinner_item, citiesWithEmptyItem);
+        RegionCitySpinnerAdapter adapter = new RegionCitySpinnerAdapter(getBaseActivity(),
+                R.layout.form_spinner_item, citiesWithEmptyItem);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         mCitySpinner.setAdapter(adapter);
         selectDefaultCity(cities);
@@ -1707,58 +1799,63 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         BundleList bundleList;
         int selectedPosition;
 
-
-        public ComboItemClickListener(ViewGroup bundleItemView, TextView txTotalComboPrice, BundleList bundleList, int selectedPosition) {
+        public ComboItemClickListener(ViewGroup bundleItemView, TextView txTotalComboPrice,
+                BundleList bundleList, int selectedPosition) {
             this.bundleItemView = bundleItemView;
             this.txTotalComboPrice = txTotalComboPrice;
             this.bundleList = bundleList;
             this.selectedPosition = selectedPosition;
         }
 
-
         public void onClick(View v) {
             onClickComboItem(bundleItemView, txTotalComboPrice, bundleList, selectedPosition);
         }
-
     }
 
     private void sendRecommend() {
-
         RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
                 if (recommendationsGridTeaserHolder == null) {
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
+                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(
+                            getBaseActivity(),
+                            inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView,
+                                    false), null);
                 }
                 if (recommendationsGridTeaserHolder != null) {
                     try {
-
-
                         // Set view
                         mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
-                        recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
-
+                        recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(
+                                getBaseActivity(),
+                                inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView,
+                                        false), null);
                         recommendationsGridTeaserHolder.onBind(data);
+                        recommendationsGridTeaserHolder.setOnMoreClickListener(
+                                new OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        gotoRecommendationFragment();
+                                    }
+                                });
                         // Add to container
 
-                        mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount() - 1);
+                        mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView,
+                                mRelatedProductsView.getChildCount() - 1);
                     } catch (Exception ex) {
 
                     }
                     // Save
                     //mViewHolders.add(holder);
                     recommendationsTeaserHolderAdded = true;
-
                 }
             }
-
-
         };
 
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseActivity());
+        SharedPreferences sharedPref = PreferenceManager
+                .getDefaultSharedPreferences(getBaseActivity());
         String logic = sharedPref.getString("", "RELATED");
         RecommendManager recommendManager = new RecommendManager();
         Item item = recommendManager.getCartItem(mProduct);
@@ -1767,34 +1864,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 item.getItemID(),
                 null,
                 handler);
+    }
 
-
-
-        /*recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
-            @Override
-            public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
-                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
-
-                if (recommendationsGridTeaserHolder == null ) {
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
-                }
-                if (recommendationsGridTeaserHolder != null ) {
-                    mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
-
-                    // Set view
-                    recommendationsGridTeaserHolder.onBind(data);
-                    // Add to container
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
-                        mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount()-1);
-
-                    // Save
-                    //mViewHolders.add(holder);
-                    recommendationsTeaserHolderAdded = true;
-
-                }
-
-            }
-        });*/
+    private void gotoRecommendationFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, mProduct.getSku());
+        ((BaseActivity) getContext()).onSwitchFragment(FragmentType.MORE_RELATED_PRODUCTS, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
     public static void clearSelectedRegionCityId() {
@@ -1803,7 +1879,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     private class RegionCitySpinnerAdapter extends ArrayAdapter {
-        public RegionCitySpinnerAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List objects) {
+
+        public RegionCitySpinnerAdapter(@NonNull Context context, @LayoutRes int resource,
+                @NonNull List objects) {
             super(context, resource, objects);
         }
 
@@ -1815,7 +1893,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             if (item instanceof AddressRegion) {
                 AddressRegion region = (AddressRegion) item;
                 value = region.getValue();
-            } else if (item instanceof AddressCity){
+            } else if (item instanceof AddressCity) {
                 AddressCity city = (AddressCity) item;
                 value = city.getValue();
             }
@@ -1823,16 +1901,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 convertView = super.getView(position, convertView, parent);
                 TextView tv = (TextView) convertView.findViewById(android.R.id.text1);
                 // change first item's color to gray
-                tv.setTextColor(ContextCompat.getColor(tv.getContext(), value == -1 ? R.color.black_700 : R.color.black_47));
+                tv.setTextColor(ContextCompat.getColor(tv.getContext(),
+                        value == -1 ? R.color.black_700 : R.color.black_47));
             }
             return super.getView(position, convertView, parent);
         }
 
         @Override
-        public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        public View getDropDownView(int position, @Nullable View convertView,
+                @NonNull ViewGroup parent) {
             convertView = super.getDropDownView(position, convertView, parent);
             TextView tv = (TextView) convertView;
-            tv.setTextColor(ContextCompat.getColor(tv.getContext(), isEnabled(position) ? R.color.black_47 : R.color.black_700));
+            tv.setTextColor(ContextCompat.getColor(tv.getContext(),
+                    isEnabled(position) ? R.color.black_47 : R.color.black_700));
             return super.getDropDownView(position, convertView, parent);
         }
 
@@ -1843,7 +1924,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             if (item instanceof AddressRegion) {
                 AddressRegion region = (AddressRegion) item;
                 value = region.getValue();
-            } else if (item instanceof AddressCity){
+            } else if (item instanceof AddressCity) {
                 AddressCity city = (AddressCity) item;
                 value = city.getValue();
             }

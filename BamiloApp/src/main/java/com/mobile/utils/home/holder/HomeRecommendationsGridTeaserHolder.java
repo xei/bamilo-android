@@ -6,7 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
+import android.view.View.OnClickListener;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -17,10 +17,8 @@ import com.mobile.extlibraries.emarsys.predict.recommended.RecommendationsAdapte
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-
-import java.util.List;
-
 import de.akquinet.android.androlog.Log;
+import java.util.List;
 
 /**
  * Class used to represent a top seller teaser.
@@ -32,30 +30,32 @@ public class HomeRecommendationsGridTeaserHolder /*extends BaseTeaserViewHolder 
 
     private static final int ITEMS_MARGIN = 6;
     private final Context mContext;
-    private  View.OnClickListener mParentClickListener;
+    private View.OnClickListener mParentClickListener;
 
     public RecyclerView recyclerView;
     private final TextView sectionTitle;
+    private OnClickListener mOnMoreClickListener;
 
 
     /**
      * Constructor
      */
-    public HomeRecommendationsGridTeaserHolder(Context context, View view, View.OnClickListener listener) {
-       // super(context, view, listener);
+    public HomeRecommendationsGridTeaserHolder(Context context, View view,
+            View.OnClickListener listener) {
+        // super(context, view, listener);
         // Get section title
         itemView = view;
         mParentClickListener = listener;
         mContext = context;
 
-        sectionTitle = (TextView) view.findViewById(R.id.home_teaser_recommendation_section_title);
+        sectionTitle = view.findViewById(R.id.home_teaser_recommendation_section_title);
         // Get horizontal container
-        recyclerView = (RecyclerView) view.findViewById(R.id.recommendedListView);
+        recyclerView = view.findViewById(R.id.recommendedListView);
         //recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(ITEMS_MARGIN));
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2,
+                LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setNestedScrollingEnabled(false);
-        // Validate orientation
     }
 
     //@Override
@@ -65,9 +65,10 @@ public class HomeRecommendationsGridTeaserHolder /*extends BaseTeaserViewHolder 
             // Use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
             recyclerView.setHasFixedSize(true);
             // Case top sellers
-            if (items != null && items.size()>0) {
+            if (items != null && items.size() > 0) {
                 //if (TextUtils.isNotEmpty(group.getTitle())) sectionTitle.setText(group.getTitle());
-                recyclerView.setAdapter(new RecommendationsAdapter(items, onClickListener, RecommendationWidgetType.Grid));
+                recyclerView.setAdapter(new RecommendationsAdapter(items, onClickListener,
+                        RecommendationWidgetType.Grid));
             }
             /*// Case rich relevance
             else if (CollectionUtils.isNotEmpty(group.getData())) {
@@ -76,18 +77,31 @@ public class HomeRecommendationsGridTeaserHolder /*extends BaseTeaserViewHolder 
         } else {
             Log.i(TAG, "BRAND_TEASERS: ADAPTER IS NOT NULL");
         }
+
+        itemView.findViewById(R.id.home_teaser_recommendation_section_more).setOnClickListener(
+                new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mOnMoreClickListener.onClick(itemView);
+                    }
+                });
+    }
+
+    public void setOnMoreClickListener(OnClickListener onMoreClickListener) {
+        mOnMoreClickListener = onMoreClickListener;
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            String sku = (String)view.getTag(R.id.sku);
+            String sku = (String) view.getTag(R.id.sku);
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
             //bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrandName() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
             // Goto PDV
-            ((BaseActivity)mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     };
 

@@ -5,11 +5,30 @@
     android:orientation="vertical"
     android:background="#f0f0f0">
 
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/home_teaser_recommendation_section_title"
-        style="@style/HeaderTeaserStyle"
-        android:paddingTop="5dp"
-        android:text="@string/recommendations" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_recommendation_section_title"
+            style="@style/HeaderTeaserStyle"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/recommendations"/>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_recommendation_section_more"
+            style="@style/HeaderTeaserStyle"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/more"/>
+
+    </RelativeLayout>
 
     <com.mobile.components.recycler.HorizontalListView
         android:id="@+id/recommendedListView"
