@@ -289,6 +289,10 @@
             android:name="com.mobile.utils.imageloader.UnsafeOkHttpGlideModule"
             android:value="GlideModule" />
 
+
+        <!-- Components in Modern Bamilo Module -->
+        <activity android:name="com.bamilo.modernbamilo.userreview.UserReviewActivity" />
+
     </application>
 
 </manifest>

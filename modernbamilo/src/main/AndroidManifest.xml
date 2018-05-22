@@ -1,2 +1,14 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bamilo.modernbamilo" />
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bamilo.modernbamilo" >
+
+    <application>
+
+        <activity android:name=".TempActivity" />
+        <activity android:name=".userreview.UserReviewActivity" />
+
+    </application>
+
+</manifest>
