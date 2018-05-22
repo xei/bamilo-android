@@ -6,7 +6,6 @@
 
     <application>
 
-        <activity android:name=".TempActivity" />
         <activity android:name=".userreview.UserReviewActivity" />
 
     </application>
