@@ -6,7 +6,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface BamiloWebApi {
+interface UserReviewWebApi {
 
     /**
      * Get a list of surveys which is available for a specific user.
@@ -19,4 +19,5 @@ interface BamiloWebApi {
      */
     @GET("survey/alias/{surveyAlias}")
     fun getSurvey(@Path("surveyAlias") alias: String): Call<getSurveyResponse>
+
 }
