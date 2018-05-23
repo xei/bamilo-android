@@ -2,6 +2,7 @@ package com.bamilo.modernbamilo.util.retrofit
 
 import okhttp3.Headers
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -14,6 +15,9 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Created by Hamidreza Hosseinkhani on May 22, 2018 at Bamilo.
  */
 object RetrofitHelper {
+
+    private val sLogLevel = HttpLoggingInterceptor.Level.HEADERS
+
     private const val URL_BASE = "http://bamilo.com/mobapi/v2.9/"
     private val defaultHeaders = hashMapOf(
 //            "app-version" to BuildConfig.VERSION_CODE.toString(),
@@ -49,13 +53,14 @@ object RetrofitHelper {
      */
     private fun buildOkHttpClient(): OkHttpClient {
         return OkHttpClient().newBuilder()
-                .addInterceptor { chain ->
-                    val modifiedRequest = chain.request().newBuilder()
-                            .headers(Headers.of(defaultHeaders))
-                            .build()
-
-                    chain.proceed(modifiedRequest)
-                }
+                .addInterceptor(getInterceptor())
+//                .addInterceptor { chain ->
+//                    val modifiedRequest = chain.request().newBuilder()
+//                            .headers(Headers.of(defaultHeaders))
+//                            .build()
+//
+//                    chain.proceed(modifiedRequest)
+//                }
                 .build()
     }
 
@@ -64,5 +69,12 @@ object RetrofitHelper {
      * to/from a serialization.
      */
     private fun buildConverterFactory() : Converter.Factory = GsonConverterFactory.create()
+
+    /**
+     * This method sets the log level of Logging Interceptor of OkHttp
+     */
+    private fun getInterceptor() = HttpLoggingInterceptor().apply {
+        this.level = sLogLevel
+    }
 
 }

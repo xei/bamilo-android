@@ -30,6 +30,7 @@ android {
 ext {
     support_library_version = '27.1.1'
     retrofit_version = '2.4.0'
+    okhttp_version = '3.9.1'
     fresco_version = '1.9.0'
 }
 
@@ -44,6 +45,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     implementation "com.facebook.fresco:fresco:$fresco_version"
 }
 
