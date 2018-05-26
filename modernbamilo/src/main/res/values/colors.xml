@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+    <!-- User Review Screen -->
+    <color name="userReview_button_next">#FF6B0C</color>
+    <color name="userReview_buttonText_next">#FFF</color>
+
+</resources>
