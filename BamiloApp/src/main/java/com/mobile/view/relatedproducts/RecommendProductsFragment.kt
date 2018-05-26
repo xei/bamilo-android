@@ -54,6 +54,12 @@ class RecommendProductsFragment : BaseFragment(EnumSet.of(MyMenuItem.UP_BUTTON_B
         fetchDataFromArguments(argument)
     }
 
+    /**
+     * get passed data from bundle and fill necessary properties
+     * and fill @property logic, @property itemId
+     *
+     * @param argument, it can be savedInstanceState or fragment arguments
+     * */
     private fun fetchDataFromArguments(argument: Bundle?) {
         if (arguments == null) {
             itemId = ""
@@ -87,6 +93,11 @@ class RecommendProductsFragment : BaseFragment(EnumSet.of(MyMenuItem.UP_BUTTON_B
         rootView.relatedProducts_recyclerView_relatedProducts.layoutManager = GridLayoutManager(context, 2)
     }
 
+    /**
+     * get related products from emarsys sdk based on
+     * @property logic and
+     * @property itemId if logic is "related"
+     * */
     private fun getRelatedProducts() {
         if (mRecommendProductViewModel == null) {
             mRecommendProductViewModel = ViewModelProviders.of(this).get(RecommendProductViewModel::class.java)
@@ -98,6 +109,10 @@ class RecommendProductsFragment : BaseFragment(EnumSet.of(MyMenuItem.UP_BUTTON_B
                         })
     }
 
+    /**
+     * fill recyclerview and ghost adapter to
+     * show recommended items to user
+     * */
     private fun updateUi(data: List<RecommendedItem>?) {
         data?.forEach { recommendedItem: RecommendedItem ->
             val relatedProductsItem = RelatedProductsItem(recommendedItem)

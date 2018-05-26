@@ -15,10 +15,26 @@ import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager
 class RecommendProductViewModel : ViewModel() {
     private var mProductList: MutableLiveData<List<RecommendedItem>>? = null
 
+    /**
+     * set and publish product list
+     *
+     * @param productList
+     * */
     public fun setProductList(productList: List<RecommendedItem>) {
         mProductList?.postValue(productList)
     }
 
+    /**
+     * return product list if exist
+     * if not get from recommend manager
+     *
+     * @param itemId the product id to get products related to it
+     * @param logic the logic of recommendation can be popular, personal, related
+     * @see  ConstantsIntentExtra.POPULAR
+     *
+     * @return recommend products
+     *
+     * */
     public fun getProductList(itemId: String, logic: String): LiveData<List<RecommendedItem>> {
         if (mProductList == null) {
             mProductList = MutableLiveData()
@@ -27,6 +43,13 @@ class RecommendProductViewModel : ViewModel() {
         return mProductList as MutableLiveData<List<RecommendedItem>>
     }
 
+
+    /**
+     * get recommend products base on
+     * @param logic
+     * and
+     * @param itemId
+     * */
     private fun getRecommendProducts(itemId: String, logic: String) {
         when (logic) {
             ConstantsIntentExtra.RELATED -> getRelatedProducts(itemId)
@@ -35,6 +58,11 @@ class RecommendProductViewModel : ViewModel() {
         }
     }
 
+    /**
+     * get related products
+     * return them by calling
+     * @see setProductList
+     * */
     private fun getRelatedProducts(itemId: String) {
         val recommendManager = RecommendManager()
         recommendManager.sendRelatedRecommend(null,
@@ -43,11 +71,21 @@ class RecommendProductViewModel : ViewModel() {
                 null, 100) { _, data -> setProductList(data) }
     }
 
+    /**
+     * get popular products
+     * return them by calling
+     * @see setProductList
+     * */
     private fun getPopularProducts(itemId: String) {
         val recommendManager = RecommendManager()
         recommendManager.sendPopularRecommend(100) { _, data -> setProductList(data) }
     }
 
+    /**
+     * get personal products
+     * return them by calling
+     * @see setProductList
+     * */
     private fun getPersonalProducts(itemId: String) {
         val recommendManager = RecommendManager()
         recommendManager.sendPersonalRecommend(100) { _, data -> setProductList(data) }

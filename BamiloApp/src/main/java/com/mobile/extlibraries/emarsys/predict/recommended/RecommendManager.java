@@ -155,6 +155,12 @@ public class RecommendManager {
         sendRecommend(null, "ALSO_BOUGHT", null, null, itemId, recommendSize, null, callBack);
     }
 
+    @Deprecated
+    /**
+     * popular logic return nothing so use personal instead of.
+     * personal logic can return popular items if there was't any personal data
+     *
+     * */
     public void sendPopularRecommend(int recommendSize,
             final RecommendListCompletionHandler callBack) {
         // for some unknown reason popular logic doesn't return anything so we have to use personal
