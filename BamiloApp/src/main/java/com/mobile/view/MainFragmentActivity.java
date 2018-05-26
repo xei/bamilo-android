@@ -1,5 +1,7 @@
 package com.mobile.view;
 
+import static com.mobile.view.fragments.CatalogFragment.FILTER_TAG;
+
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -13,7 +15,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.MainEventModel;
 import com.mobile.classes.models.SimpleEventModel;
@@ -86,19 +87,16 @@ import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
 import com.mobile.view.newfragments.NewSessionLoginMainFragment;
 import com.mobile.view.newfragments.NewShoppingCartFragment;
 import com.mobile.view.newfragments.SubCategoryFilterFragment;
+import com.mobile.view.relatedproducts.RecommendProductsFragment;
 import com.pushwoosh.BasePushMessageReceiver;
 import com.pushwoosh.BaseRegistrationReceiver;
 import com.pushwoosh.PushManager;
 import com.pushwoosh.fragment.PushEventListener;
 import com.pushwoosh.fragment.PushFragment;
-
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-
 import me.toptas.fancyshowcase.FancyShowCaseView;
-
-import static com.mobile.view.fragments.CatalogFragment.FILTER_TAG;
 
 /**
  * @author sergiopereira
@@ -120,7 +118,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
      * Constructor
      */
     public MainFragmentActivity() {
-        super(NavigationAction.UNKNOWN, EnumSet.noneOf(MyMenuItem.class), IntConstants.ACTION_BAR_NO_TITLE);
+        super(NavigationAction.UNKNOWN, EnumSet.noneOf(MyMenuItem.class),
+                IntConstants.ACTION_BAR_NO_TITLE);
     }
 
     //Registration receiver
@@ -135,7 +134,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
     private BroadcastReceiver mReceiver = new BasePushMessageReceiver() {
         @Override
         protected void onMessageReceive(Intent intent) {
-        //JSON_DATA_KEY contains JSON payload of push notification.
+            //JSON_DATA_KEY contains JSON payload of push notification.
             checkMessage(intent);
             showMessage("push message is " + intent.getExtras().getString(JSON_DATA_KEY));
         }
@@ -143,9 +142,12 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
 
     //Registration of the receivers
     public void registerReceivers() {
-        IntentFilter intentFilter = new IntentFilter(getPackageName() + ".action.PUSH_MESSAGE_RECEIVE");
-        registerReceiver(mReceiver, intentFilter, getPackageName() + ".permission.C2D_MESSAGE", null);
-        registerReceiver(mBroadcastReceiver, new IntentFilter(getPackageName() + "." + PushManager.REGISTER_BROAD_CAST_ACTION));
+        IntentFilter intentFilter = new IntentFilter(
+                getPackageName() + ".action.PUSH_MESSAGE_RECEIVE");
+        registerReceiver(mReceiver, intentFilter, getPackageName() + ".permission.C2D_MESSAGE",
+                null);
+        registerReceiver(mBroadcastReceiver,
+                new IntentFilter(getPackageName() + "." + PushManager.REGISTER_BROAD_CAST_ACTION));
     }
 
     public void unregisterReceivers() {
@@ -165,11 +167,15 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
     private void checkMessage(Intent intent) {
         if (null != intent) {
             if (intent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
-                showMessage("push message is " + intent.getExtras().getString(PushManager.PUSH_RECEIVE_EVENT));
-                MainEventModel appOpenedEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                showMessage("push message is " + intent.getExtras()
+                        .getString(PushManager.PUSH_RECEIVE_EVENT));
+                MainEventModel appOpenedEventModel = new MainEventModel(null, null, null,
+                        SimpleEventModel.NO_VALUE,
                         MainEventModel.createAppOpenEventModelAttributes(
-                                EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION.toString()));
-                TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened, appOpenedEventModel);
+                                EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION
+                                        .toString()));
+                TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened,
+                        appOpenedEventModel);
                 mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION;
             } else if (intent.hasExtra(PushManager.REGISTER_EVENT)) {
                 showMessage("register");
@@ -179,8 +185,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 showMessage("register error");
             } else if (intent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
                 showMessage("unregister error");
-            }
-            else if(intent.hasExtra(PushManager.REGISTER_BROAD_CAST_ACTION)) {
+            } else if (intent.hasExtra(PushManager.REGISTER_BROAD_CAST_ACTION)) {
                 showMessage("REGISTER_BROAD_CAST_ACTION");
             }
             resetIntentValues();
@@ -216,14 +221,6 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         checkMessage(intent);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.utils.MyActivity#onCreate(android.os.Bundle)
-     */
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -234,7 +231,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         //Pushwoosh Begin Register receivers for push notifications
         registerReceivers();
 //Create and start push manager
-        PushManager pushManager = PushManager.getInstance(this);//Start push manager, this will count app open for Pushwoosh stats as well
+        PushManager pushManager = PushManager.getInstance(
+                this);//Start push manager, this will count app open for Pushwoosh stats as well
         try {
             pushManager.onStartup(this);
         } catch (Exception e) {
@@ -243,7 +241,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
 //Register for push!
         pushManager.registerForPushNotifications();
         checkMessage(getIntent());
- //PushwooshEnd in onCreate
+        //PushwooshEnd in onCreate
 
         // ON ORIENTATION CHANGE
         if (savedInstanceState == null) {
@@ -256,27 +254,35 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 if (args != null && args.containsKey(ConstantsIntentExtra.ORDER_NUMBER)) {
                     onSwitchFragment(FragmentType.ORDER_STATUS, args, true);
                 } else {
-                    onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+                            FragmentController.ADD_TO_BACK_STACK);
                 }
             } else {
-                MainEventModel appOpenedEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+                MainEventModel appOpenedEventModel = new MainEventModel(null, null, null,
+                        SimpleEventModel.NO_VALUE,
                         MainEventModel.createAppOpenEventModelAttributes(
-                                EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK.toString()));
-                TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened, appOpenedEventModel);
+                                EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK
+                                        .toString()));
+                TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened,
+                        appOpenedEventModel);
                 mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
             }
         } else {
-            mCurrentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
+            mCurrentFragmentType = (FragmentType) savedInstanceState
+                    .getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
             Print.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType);
-            fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragmentType.toString());
+            fragment = (BaseFragment) getSupportFragmentManager()
+                    .findFragmentByTag(mCurrentFragmentType.toString());
             if (null != fragment) {
                 fragment.setActivity(this);
             }
             // Get FC back stack from saved state and get fragments from FM
-            ArrayList<String> backStackTypes = savedInstanceState.getStringArrayList(ConstantsIntentExtra.BACK_STACK);
+            ArrayList<String> backStackTypes = savedInstanceState
+                    .getStringArrayList(ConstantsIntentExtra.BACK_STACK);
             List<Fragment> originalFragments = this.getSupportFragmentManager().getFragments();
             if (!CollectionUtils.isEmpty(backStackTypes)) {
-                FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments);
+                FragmentController.getInstance()
+                        .validateCurrentState(this, backStackTypes, originalFragments);
             } else {
                 Print.d(TAG, "COULDN'T RECOVER BACK STACK");
             }
@@ -291,7 +297,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
          */
         Intent splashScreenParams = getIntent();
         if (splashScreenParams != null && splashScreenParams.getExtras() != null) {
-            isInMaintenance = splashScreenParams.getExtras().getBoolean(ConstantsIntentExtra.IN_MAINTANCE, false);
+            isInMaintenance = splashScreenParams.getExtras()
+                    .getBoolean(ConstantsIntentExtra.IN_MAINTANCE, false);
         }
     }
 
@@ -310,17 +317,23 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         //Clear application badge number
         PushManager.getInstance(BamiloApplication.INSTANCE).setBadgeNumber(0);
 
-        if(mAppOpenSource != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION
-                && mAppOpenSource != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
-            MainEventModel appOpenedEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
+        if (mAppOpenSource
+                != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION
+                && mAppOpenSource
+                != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
+            MainEventModel appOpenedEventModel = new MainEventModel(null, null, null,
+                    SimpleEventModel.NO_VALUE,
                     MainEventModel.createAppOpenEventModelAttributes(
-                            EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT.toString()));
-            TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened, appOpenedEventModel);
+                            EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT
+                                    .toString()));
+            TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened,
+                    appOpenedEventModel);
         }
         mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_NONE;
 
         EmarsysTracker.getInstance().trackEventAppLogin(
-                Integer.parseInt(getApplicationContext().getResources().getString(R.string.Emarsys_ContactFieldID)),
+                Integer.parseInt(getApplicationContext().getResources()
+                        .getString(R.string.Emarsys_ContactFieldID)),
                 BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
     }
 
@@ -373,7 +386,9 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         Print.d(TAG, "ON SAVED INSTANCE STATE: " + mCurrentFragmentType);
         ArrayList<String> frags = new ArrayList<>();
         try {
-            String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+            String tag = getSupportFragmentManager()
+                    .getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1)
+                    .getName();
             mCurrentFragmentType = FragmentType.getValue(tag);
             // Save the current back stack
             for (String entry : FragmentController.getInstance().returnAllEntries()) {
@@ -423,8 +438,10 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 // Default
                 removeEntries = false;
                 // Get indications to remove old entries or not
-                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES)) {
-                    removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
+                if (CollectionUtils
+                        .containsKey(bundle, ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES)) {
+                    removeEntries = bundle
+                            .getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 }
 
@@ -442,8 +459,10 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             case CATALOG_FILTER:
                 removeEntries = false;
                 // Get indications to remove old entries or not
-                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES)) {
-                    removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
+                if (CollectionUtils
+                        .containsKey(bundle, ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES)) {
+                    removeEntries = bundle
+                            .getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 }
                 bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
@@ -615,14 +634,16 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 fragment = newFragmentInstance(NavigationCategoryFragment.class, bundle);
                 break;
             case MORE_RELATED_PRODUCTS:
+                fragment = newFragmentInstance(RecommendProductsFragment.class, bundle);
                 break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
                 return;
         }
         // Clear search term
-        if (type != FragmentType.CATALOG && type != FragmentType.FILTERS)
+        if (type != FragmentType.CATALOG && type != FragmentType.FILTERS) {
             BamiloApplication.INSTANCE.setSearchedTerm("");
+        }
 
         // Validate menu flag and pop entries until home
         if (removeEntries) {
@@ -640,13 +661,14 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
     /**
      * Create new fragment
      */
-    private BaseFragment newFragmentInstance(@NonNull Class<? extends BaseFragment> fragmentClass, @Nullable Bundle arguments) {
+    private BaseFragment newFragmentInstance(@NonNull Class<? extends BaseFragment> fragmentClass,
+            @Nullable Bundle arguments) {
         return BaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
     }
 
     /**
-     * Fragment communication.<br>
-     * The FragmentManager has some issues to get fragment with the same tag.<br>
+     * Fragment communication.<br> The FragmentManager has some issues to get fragment with the same
+     * tag.<br>
      *
      * @author spereira
      */
@@ -694,11 +716,14 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             fragment = (BaseFragment) frag;
 
             // Clear search term
-            if (fragment.getTag().equals(FragmentType.CATALOG.toString()))
+            if (fragment.getTag().equals(FragmentType.CATALOG.toString())) {
                 BamiloApplication.INSTANCE.setSearchedTerm("");
+            }
 
             // Case navigation opened
-            if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+            if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(
+                    mDrawerLayout.getDrawerLockMode(mDrawerNavigation)
+                            == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
                 Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
                 mDrawerLayout.closeDrawer(mDrawerNavigation);
             }
@@ -728,7 +753,9 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             Print.i("BACKSTACK", "getBackStackEntryCount is 0");
             return null;
         }
-        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        String tag = getSupportFragmentManager()
+                .getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1)
+                .getName();
         Print.i("BACKSTACK", "getActiveFragment:" + tag);
         return (Fragment) getSupportFragmentManager().findFragmentByTag(tag);
     }

@@ -1,3 +1,4 @@
+
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
@@ -10,6 +11,8 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
 repositories {
@@ -136,6 +139,13 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true
     }
+
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    kapt "android.arch.lifecycle:compiler:1.1.1"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.core:core-ktx:0.1'
+
     /** ############### LOCAL LIBS ############### **/
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':BamiloFramework')
@@ -150,8 +160,8 @@ dependencies {
     // #SCAPEL :: https://github.com/JakeWharton/scalpel
     debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
     /** Dagger 2 **/
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    kapt 'com.google.dagger:dagger-android-processor:2.11'
+    kapt 'com.google.dagger:dagger-compiler:2.11'
 
     compile project(':BamiloCore')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

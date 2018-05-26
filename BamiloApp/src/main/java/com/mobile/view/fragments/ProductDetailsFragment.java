@@ -1863,12 +1863,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 null,
                 item.getItemID(),
                 null,
+                6,
                 handler);
     }
 
     private void gotoRecommendationFragment() {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, mProduct.getSku());
+        bundle.putString(ConstantsIntentExtra.LOGIC, ConstantsIntentExtra.RELATED);
         ((BaseActivity) getContext()).onSwitchFragment(FragmentType.MORE_RELATED_PRODUCTS, bundle,
                 FragmentController.ADD_TO_BACK_STACK);
     }

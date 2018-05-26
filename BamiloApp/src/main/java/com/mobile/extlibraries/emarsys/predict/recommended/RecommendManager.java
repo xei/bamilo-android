@@ -2,7 +2,6 @@ package com.mobile.extlibraries.emarsys.predict.recommended;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.emarsys.predict.CartItem;
 import com.emarsys.predict.CompletionHandler;
 import com.emarsys.predict.Error;
@@ -13,11 +12,8 @@ import com.emarsys.predict.RecommendedItem;
 import com.emarsys.predict.Session;
 import com.emarsys.predict.Transaction;
 import com.mobile.app.BamiloApplication;
-
-
 import com.mobile.service.objects.cart.PurchaseCartItem;
 import com.mobile.service.objects.product.pojo.ProductComplete;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +25,7 @@ public class RecommendManager {
 
     private static final String TAG = "RecommendManager";
     private static final int RecommendLimit = 15;
+    private static final int RecommendMax = 100;
     private static final int HOME_RECOMMENDATION_LIMIT = 300;
     private static final String HOME_LOGIC_PREFIX = "HOME_";
 
@@ -37,7 +34,6 @@ public class RecommendManager {
         List<CartItem> cartItems = getCartItems();
 
         String uuid = UUID.randomUUID().toString();
-
 
         transaction.purchase(uuid, cartItems);
 
@@ -78,11 +74,12 @@ public class RecommendManager {
             }
         });
 
-
         sendTransaction(transaction);
     }
 
-    public static Map<String, List<String>> createHomeExcludeItemListsMap(List<String>... itemLists) {
+    @SafeVarargs
+    public static Map<String, List<String>> createHomeExcludeItemListsMap(
+            List<String>... itemLists) {
         Map<String, List<String>> resultMap = new HashMap<>();
         if (itemLists != null && itemLists.length > 0) {
             for (int i = 0; i < itemLists.length; i++) {
@@ -93,7 +90,9 @@ public class RecommendManager {
         return resultMap;
     }
 
-    public void getEmarsysHomes(final RecommendListCompletionHandler callBack, EmarsysErrorCallback errorCallback, Map<String, List<String>> excludeItemLists, int homePagesCount) {
+    public void getEmarsysHomes(final RecommendListCompletionHandler callBack,
+            EmarsysErrorCallback errorCallback, Map<String, List<String>> excludeItemLists,
+            int homePagesCount) {
         setEmail();
         Transaction transaction = new Transaction();
         transaction.cart(getCartItems());
@@ -122,49 +121,62 @@ public class RecommendManager {
         sendTransactionWithErrorCallback(transaction, errorCallback);
     }
 
-    public void sendCartRecommend(final RecommendListCompletionHandler callBack) {
-        sendRecommend(null, "CART", null, null, null, null, callBack);
+    public void sendCartRecommend(int recommendSize,
+            final RecommendListCompletionHandler callBack) {
+        sendRecommend(null, "CART", null, null, null, recommendSize, null, callBack);
     }
 
-    public void sendPersonalRecommend(final RecommendListCompletionHandler callBack) {
-        sendRecommend(null, "PERSONAL", null, null, null, null, callBack);
+    public void sendPersonalRecommend(int recommendSize,
+            final RecommendListCompletionHandler callBack) {
+        sendRecommend(null, "PERSONAL", null, null, null, recommendSize, null, callBack);
     }
 
     public void sendCategoryRecommend(String searchTerm,
-                                      String category,
-                                      final RecommendListCompletionHandler callBack) {
-        sendRecommend(null, "", category, searchTerm, null, null, callBack);
+            String category,
+            int recommendSize,
+            final RecommendListCompletionHandler callBack) {
+        sendRecommend(null, "", category, searchTerm, null, recommendSize, null, callBack);
     }
 
     public void sendRelatedRecommend(RecommendedItem item,
-                                     String searchTerm,
-                                     String itemId,
-                                     List<String> excludeItems,
-                                     final RecommendListCompletionHandler callBack) {
-        sendRecommend(item, "RELATED", null, searchTerm, itemId, excludeItems, callBack);
+            String searchTerm,
+            String itemId,
+            List<String> excludeItems,
+            int recommendSize,
+            final RecommendListCompletionHandler callBack) {
+        sendRecommend(item, "RELATED", null, searchTerm, itemId, recommendSize, excludeItems,
+                callBack);
     }
 
     public void sendAlsoBoughtRecommend(RecommendedItem recommendedItem,
-                                        String itemId,
-                                        final RecommendListCompletionHandler callBack) {
-        sendRecommend(null, "ALSO_BOUGHT", null, null, itemId, null, callBack);
+            String itemId,
+            int recommendSize,
+            final RecommendListCompletionHandler callBack) {
+        sendRecommend(null, "ALSO_BOUGHT", null, null, itemId, recommendSize, null, callBack);
     }
 
-    public void sendPopularRecommend(final RecommendListCompletionHandler callBack) {
-        sendRecommend(null, "POPULAR", null, null, null, null, callBack);
+    public void sendPopularRecommend(int recommendSize,
+            final RecommendListCompletionHandler callBack) {
+        // for some unknown reason popular logic doesn't return anything so we have to use personal
+        // sendRecommend(null, "POPULAR", null, null, null, recommendSize, null, callBack);
+
+        sendRecommend(null, "PERSONAL", null, null, null, recommendSize, null, callBack);
     }
 
     public void sendNoResultRecommend(String searchTerm,
-                                      final RecommendListCompletionHandler callBack) {
-        sendRecommend(null, "PERSONAL", null, searchTerm, null, null, callBack);
+            int recommendSize,
+            final RecommendListCompletionHandler callBack) {
+        sendRecommend(null, "PERSONAL", null, searchTerm, null, recommendSize, null, callBack);
     }
 
     private void sendRecommend(RecommendedItem recommendedItem,
-                               String logic, String category,
-                               String searchTerm,
-                               String itemId,
-                               List<String> excludeItems,
-                               final RecommendListCompletionHandler callBack) {
+            String logic,
+            String category,
+            String searchTerm,
+            String itemId,
+            int recommendSize,
+            List<String> excludeItems,
+            final RecommendListCompletionHandler callBack) {
         final List<Item> data = new ArrayList<>();
         setEmail();
         Transaction transaction = recommendedItem == null ?
@@ -186,9 +198,11 @@ public class RecommendManager {
 
         if (!logic.isEmpty()) {
             RecommendationRequest recommend = new RecommendationRequest(logic);
-            int recommendCount = RecommendLimit;
+            int recommendCount = recommendSize;
             if (logic.compareTo("RELATED") == 0) {
-                recommendCount = 4;
+                if (recommendSize == 0) {
+                    recommendCount = 6;
+                }
             }
             recommend.setLimit(recommendCount);
             if (excludeItems != null) {
@@ -224,7 +238,8 @@ public class RecommendManager {
         });
     }
 
-    private void sendTransactionWithErrorCallback(Transaction transaction, final EmarsysErrorCallback callback) {
+    private void sendTransactionWithErrorCallback(Transaction transaction,
+            final EmarsysErrorCallback callback) {
         // Firing the EmarsysPredictSDKQueue. Should be the last call on the page,
         // called only once.
         Session.getInstance().sendTransaction(transaction, new ErrorHandler() {
@@ -239,11 +254,16 @@ public class RecommendManager {
 
     private List<CartItem> getCartItems() {
         List<CartItem> result = new ArrayList<>();
-        if (BamiloApplication.INSTANCE.getCart() == null) return result;
+        if (BamiloApplication.INSTANCE.getCart() == null) {
+            return result;
+        }
         List<PurchaseCartItem> cartItems = BamiloApplication.INSTANCE.getCart().getCartItems();
-        if (cartItems == null) return result;
+        if (cartItems == null) {
+            return result;
+        }
         for (PurchaseCartItem purchaseCartItem : cartItems) {
-            CartItem item = new CartItem(purchaseCartItem.getSku(), (float) purchaseCartItem.getPrice(), purchaseCartItem.getQuantity());
+            CartItem item = new CartItem(purchaseCartItem.getSku(),
+                    (float) purchaseCartItem.getPrice(), purchaseCartItem.getQuantity());
             result.add(item);
         }
 
@@ -270,6 +290,7 @@ public class RecommendManager {
     }
 
     public interface EmarsysErrorCallback {
+
         void onEmarsysRecommendError(Error error);
     }
 

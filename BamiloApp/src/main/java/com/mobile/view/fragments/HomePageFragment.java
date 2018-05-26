@@ -9,15 +9,14 @@ import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.teasers.GetHomeHelper;
-import com.mobile.interfaces.IResponseCallback;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager;
+import com.mobile.helpers.teasers.GetHomeHelper;
+import com.mobile.interfaces.IResponseCallback;
 import com.mobile.service.Darwin;
 import com.mobile.service.database.CategoriesTableHelper;
 import com.mobile.service.objects.home.HomePageObject;
@@ -39,7 +38,6 @@ import com.mobile.utils.home.holder.HomeMainTeaserHolder;
 import com.mobile.utils.home.holder.HomeNewsletterTeaserHolder;
 import com.mobile.utils.home.holder.RecommendationsHolder;
 import com.mobile.view.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +46,8 @@ import java.util.List;
  *
  * @author sergiopereira
  */
-public class HomePageFragment extends BaseFragment implements IResponseCallback, TargetLink.OnAppendDataListener, TargetLink.OnCampaignListener {
+public class HomePageFragment extends BaseFragment implements IResponseCallback,
+        TargetLink.OnAppendDataListener, TargetLink.OnCampaignListener {
 
     private static final String TAG = HomePageFragment.class.getSimpleName();
 
@@ -75,6 +74,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     //DROID-10
     private long mGABeginRequestMillis;
     private RecommendManager recommendManager;
+
     /**
      * Empty constructor
      */
@@ -91,7 +91,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
     @Override
@@ -103,7 +103,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -114,8 +114,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         if (savedInstanceState != null) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
             HomeMainTeaserHolder.sViewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY);
-            HomeNewsletterTeaserHolder.sInitialValue = savedInstanceState.getString(NEWSLETTER_EMAIL_KEY);
-            HomeNewsletterTeaserHolder.sInitialGender = savedInstanceState.getInt(NEWSLETTER_GENDER_KEY);
+            HomeNewsletterTeaserHolder.sInitialValue = savedInstanceState
+                    .getString(NEWSLETTER_EMAIL_KEY);
+            HomeNewsletterTeaserHolder.sInitialGender = savedInstanceState
+                    .getInt(NEWSLETTER_GENDER_KEY);
         } else {
             HomeNewsletterTeaserHolder.sInitialValue = null;
             HomeNewsletterTeaserHolder.sInitialGender = IntConstants.INVALID_POSITION;
@@ -134,7 +136,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onViewCreated(android.view.View,
      * android.os.Bundle)
      */
@@ -149,7 +151,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         // Get recycler view
         mContainer = (ViewGroup) view.findViewById(R.id.home_page_container);
         // Validate shared prefs
-        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = getBaseActivity()
+                .getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
         // Case app has shop id and not in maintenance
         if (!TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry()) {
@@ -164,7 +167,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onStart()
      */
     @Override
@@ -175,7 +178,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onResume()
      */
     @Override
@@ -195,7 +198,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public void onResumeExecution() {
         Print.i(TAG, "ON RESUME EXECUTION");
         // Validate current state
-        if(mHomePage != null && mHomePage.hasTeasers()) {
+        if (mHomePage != null && mHomePage.hasTeasers()) {
             validateDataState();
 
         } else {
@@ -206,7 +209,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
      */
@@ -219,13 +222,17 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             outState.putIntArray(SCROLL_STATE_KEY, mScrollSavedPosition);
         }
 
-        if(!CollectionUtils.isEmpty(mViewHolders)) {
+        if (!CollectionUtils.isEmpty(mViewHolders)) {
             for (BaseTeaserViewHolder baseTeaserViewHolder : mViewHolders) {
                 if (baseTeaserViewHolder instanceof HomeMainTeaserHolder) {
-                    outState.putInt(POSITION_STATE_KEY, ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
-                } else if(baseTeaserViewHolder instanceof HomeNewsletterTeaserHolder){
-                    outState.putString(NEWSLETTER_EMAIL_KEY, ((HomeNewsletterTeaserHolder) baseTeaserViewHolder).getEditedText());
-                    outState.putInt(NEWSLETTER_GENDER_KEY, ((HomeNewsletterTeaserHolder) baseTeaserViewHolder).getSelectedGender());
+                    outState.putInt(POSITION_STATE_KEY,
+                            ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
+                } else if (baseTeaserViewHolder instanceof HomeNewsletterTeaserHolder) {
+                    outState.putString(NEWSLETTER_EMAIL_KEY,
+                            ((HomeNewsletterTeaserHolder) baseTeaserViewHolder).getEditedText());
+                    outState.putInt(NEWSLETTER_GENDER_KEY,
+                            ((HomeNewsletterTeaserHolder) baseTeaserViewHolder)
+                                    .getSelectedGender());
                 }
             }
         }
@@ -233,7 +240,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onPause()
      */
     @Override
@@ -246,7 +253,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStop()
      */
     @Override
@@ -257,7 +264,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onDestroyView()
      */
     @Override
@@ -270,7 +277,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onDestroy()
      */
     @Override
@@ -290,21 +297,16 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Validate the current data
      */
     private void validateDataState() {
-        /*if (JumiaApplication.CUSTOMER != null) {
-            RecommendManager recommendManager = new RecommendManager();
-            recommendManager.setEmail(JumiaApplication.CUSTOMER.getEmail(), "" + JumiaApplication.CUSTOMER.getId());
-        }*/
-        if(CollectionUtils.isNotEmpty(mViewHolders)) {
+        if (CollectionUtils.isNotEmpty(mViewHolders)) {
             rebuildHomePage(mViewHolders);
         } else {
             buildHomePage(mHomePage);
         }
-
     }
 
     /**
-     * Rebuild the home updating all views.<br>
-     * Warning: To perform this method is necessary detached view from parent.
+     * Rebuild the home updating all views.<br> Warning: To perform this method is necessary
+     * detached view from parent.
      */
     private void rebuildHomePage(ArrayList<BaseTeaserViewHolder> mViewHolders) {
         Print.i(TAG, "REBUILD HOME PAGE");
@@ -315,9 +317,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             // Add view
             mContainer.addView(viewHolder.itemView);
         }
-        // Restore the scroll state
-        //restoreScrollState();
-        // Show mContainer
+
         recommendManager = new RecommendManager();
         sendRecommend();
 
@@ -335,7 +335,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers().values()) {
             // Create view
-            BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
+            BaseTeaserViewHolder viewHolder = TeaserViewFactory
+                    .onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
             if (viewHolder != null) {
                 // Set view
                 viewHolder.onBind(baseTeaserType);
@@ -354,6 +355,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     /**
      * Method to save the current scroll state
+     *
      * @return int[]
      */
     private boolean saveScrollState() {
@@ -370,15 +372,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * ########### LISTENERS ###########
      */
 
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
     @Override
     public void onClick(View view) {
         super.onClick(view);
 
-        if(view.getId() == R.id.send_newsletter){
+        if (view.getId() == R.id.send_newsletter) {
             getBaseActivity().showProgress();
         } else {
             /**
@@ -409,10 +407,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         TeaserGroupType origin = TeaserGroupType.values()[id];
         if (view.getTag(R.id.target_list_position) != null) {
             origin.setTrackingPosition((int) view.getTag(R.id.target_list_position));
-//            TrackerDelegator.trackBannerClicked(origin, TargetLink.getIdFromTargetLink(link), (int) view.getTag(R.id.target_list_position));
         }
 
-        if(origin == TeaserGroupType.TOP_SELLERS){
+        if (origin == TeaserGroupType.TOP_SELLERS) {
             // Get Rich Relevance hash
             mRichRelevanceHash = (String) view.getTag(R.id.target_rr_hash);
         } else {
@@ -434,13 +431,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      */
     @Override
     public void onAppendData(FragmentType next, String title, String id, Bundle bundle) {
-        if(next == FragmentType.PRODUCT_DETAILS) {
+        if (next == FragmentType.PRODUCT_DETAILS) {
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-            if(TextUtils.isNotEmpty(mRichRelevanceHash)){
-                bundle.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRichRelevanceHash );
+            if (TextUtils.isNotEmpty(mRichRelevanceHash)) {
+                bundle.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRichRelevanceHash);
             }
-        }
-        else if(next == FragmentType.CATALOG) {
+        } else if (next == FragmentType.CATALOG) {
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
             CategoriesTableHelper.updateCategoryCounter(id, title);
         }
@@ -454,7 +450,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public Bundle onTargetCampaign(String title, String id, TeaserGroupType origin) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, origin);
-        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, createCampaignsData(title, id, origin));
+        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG,
+                createCampaignsData(title, id, origin));
         return bundle;
     }
 
@@ -462,7 +459,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Create a list with campaigns.
      */
     @NonNull
-    private ArrayList<TeaserCampaign> createCampaignsData(@NonNull String title, @NonNull String id, TeaserGroupType group) {
+    private ArrayList<TeaserCampaign> createCampaignsData(@NonNull String title, @NonNull String id,
+            TeaserGroupType group) {
         Print.i(TAG, "GOTO CAMPAIGN PAGE: " + title + " " + id);
         // Object
         ArrayList<TeaserCampaign> campaigns;
@@ -538,7 +536,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                     Print.i(TAG, "SHOW FALL BAK");
                     showFragmentFallBack();
                 }
-//                TrackerDelegator.trackScreenLoadTiming(R.string.gaHome, mGABeginRequestMillis, "");
 
                 break;
             case SUBMIT_FORM:// Newsletter Form Response
@@ -551,12 +548,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
-     */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR RESPONSE");
@@ -566,7 +557,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             return;
         }
         // Check base errors
-        if (super.handleErrorEvent(baseResponse)) return;
+        if (super.handleErrorEvent(baseResponse)) {
+            return;
+        }
         // Check home types
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
@@ -577,7 +570,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             case SUBMIT_FORM:
                 getBaseActivity().dismissProgress();
                 // Newsletter Form
-                if(CollectionUtils.isEmpty(baseResponse.getValidateMessages())){
+                if (CollectionUtils.isEmpty(baseResponse.getValidateMessages())) {
                     showWarningErrorMessage(baseResponse.getErrorMessage());
                 }
                 break;
@@ -585,18 +578,15 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 break;
         }
     }
-    
+
     /*
-     * ########### TRACKING ###########  
+     * ########### TRACKING ###########
      */
 
     /**
      * Track Page for Home
      */
     private void trackPage(boolean justGTM) {
-        // Generic track page
-//        TrackerDelegator.trackPage(TrackingPage.HOME, mLoadTime, justGTM);
-        // Adjust track page
         trackPageAdjust();
     }
 
@@ -613,7 +603,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 if (BamiloApplication.CUSTOMER != null) {
                     bundle.putParcelable(AdjustTracker.CUSTOMER, BamiloApplication.CUSTOMER);
                 }
-//                TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
             }
         } catch (IllegalStateException e) {
             Print.w(TAG, "WARNING: ISE ON TRACK PAGE ADJUST");
@@ -621,47 +610,36 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     }
 
     private void sendRecommend() {
-        /*recommendedListAdapter.clear();
-        recommendedListAdapter.notifyDataSetChanged();
-        recommendedListView.invalidate();*/
-
         recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
             @Override
-            public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
+            public void onRecommendedRequestComplete(final String category,
+                    final List<RecommendedItem> data) {
                 if (data == null || data.size() == 0) {
-                    //mRelatedProductsView.removeView(recommendationsHolder.itemView);
-                    // recommendations.setVisibility(View.GONE);
                     return;
                 }
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
-                if (recommendationsTeaserHolder == null ) {
-                    recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation, mContainer, false), null);
+                if (recommendationsTeaserHolder == null) {
+                    recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(),
+                            inflater.inflate(R.layout.recommendation, mContainer, false), null);
                 }
-                if (recommendationsTeaserHolder != null ) {
+                if (recommendationsTeaserHolder != null) {
                     try {
-                    // Set view
+                        // Set view
                         mContainer.removeView(recommendationsTeaserHolder.itemView);
-                        recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation, mContainer, false), null);
-
+                        recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(),
+                                inflater.inflate(R.layout.recommendation, mContainer, false), null);
                         recommendationsTeaserHolder.onBind(data);
-                    // Add to container
-
                         //recommendationsTeaserHolder.itemView.
-                        mContainer.addView(recommendationsTeaserHolder.itemView, mContainer.getChildCount()-1);
-
-                    }
-                    catch (Exception ex) {
-                        int tmp=1;
-
+                        mContainer.addView(recommendationsTeaserHolder.itemView,
+                                mContainer.getChildCount() - 1);
+                    } catch (Exception ex) {
+                        int tmp = 1;
                     }
 
                     recommendationsTeaserHolderAdded = true;
-
                 }
-
             }
         });
     }
-
 }

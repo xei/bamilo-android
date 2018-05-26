@@ -507,7 +507,6 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
                 relatedProductsView.setVisibility(View.VISIBLE);
                 LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
-
                 if (recommendationsHolder == null) {
                     recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(),
                             inflater.inflate(R.layout.recommendation_cart,
@@ -533,9 +532,9 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
         if (cart == null) return;
 
         if (cart.getCartCount() == 1) {
-            recommendManager.sendAlsoBoughtRecommend(null, cart.getCartItems().get(0).getSku(), handler);
+            recommendManager.sendAlsoBoughtRecommend(null, cart.getCartItems().get(0).getSku(), 6, handler);
         } else {
-            recommendManager.sendPersonalRecommend(handler);
+            recommendManager.sendPersonalRecommend(6, handler);
         }
     }
 }
