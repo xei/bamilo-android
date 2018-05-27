@@ -8,5 +8,5 @@ data class Question(
     @SerializedName("required") val required: Boolean, //true
     @SerializedName("hidden") val hidden: Boolean, //true
     @SerializedName("options") val options: List<Option>,
-    @SerializedName("showRules") val showRules: List<ShowRule>
+    @SerializedName("showRules") val showRules: List<ShowRule>?
 )
