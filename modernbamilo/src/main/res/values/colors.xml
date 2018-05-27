@@ -2,6 +2,7 @@
 <resources>
 
     <!-- User Review Screen -->
+    <color name="userReview_title">#33466E</color>
     <color name="userReview_stepper_empty">#F1F1F1</color>
     <color name="userReview_stepper_full">#FF9900</color>
     <color name="userReview_button_next">#FF6B0C</color>
