@@ -1,4 +1,4 @@
-package cab.snapp.carpool.passenger.util.typography
+package com.bamilo.modernbamilo.util.typography
 
 import android.graphics.Paint
 import android.graphics.Typeface
