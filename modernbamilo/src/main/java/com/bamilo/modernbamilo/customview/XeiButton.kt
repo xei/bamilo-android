@@ -15,16 +15,16 @@ class XeiButton : AppCompatButton {
 
     companion object {
 
-        private val LOCALE_AUTO = 0
-        private val LOCALE_EN_US = 1
-        private val LOCALE_FA_IR = 2
-        private val LOCALE_HYBRID = 3
+        private const val LOCALE_AUTO = 0
+        private const val LOCALE_EN_US = 1
+        private const val LOCALE_FA_IR = 2
+        private const val LOCALE_HYBRID = 3
 
-        private val STYLE_NORMAL = 0
-        private val STYLE_BOLD = 1
+        private const val STYLE_NORMAL = 0
+        private const val STYLE_BOLD = 1
 
-        private val LANGUAGE_ENGLISH = "en"
-        private val LANGUAGE_PERSIAN = "fa"
+        private const val LANGUAGE_ENGLISH = "en"
+        private const val LANGUAGE_PERSIAN = "fa"
     }
 
 
