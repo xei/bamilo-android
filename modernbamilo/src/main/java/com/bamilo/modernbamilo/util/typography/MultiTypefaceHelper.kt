@@ -1,4 +1,4 @@
-package cab.snapp.carpool.passenger.util.typography
+package com.bamilo.modernbamilo.util.typography
 
 import android.content.Context
 import android.graphics.Typeface
@@ -21,18 +21,21 @@ import android.widget.TextView
  */
 class MultiTypefaceHelper(context: Context, englishFontPath: String, arabicFontPath: String) {
 
-    private val mEnglishTypeface: Typeface?
-    private val mArabicTypeface: Typeface?
+    private val mEnglishTypeface: Typeface? = TypefaceUtils.load(context.assets, englishFontPath)
+    private val mArabicTypeface: Typeface? = TypefaceUtils.load(context.assets, arabicFontPath)
 
-    init {
-        this.mEnglishTypeface = TypefaceUtils.load(context.assets, englishFontPath)
-        this.mArabicTypeface = TypefaceUtils.load(context.assets, arabicFontPath)
-    }
-
+    /**
+     * This method set the typefaces to the text on the TextView.
+     * This may take a few mili-seconds
+     * This traverse a string and use an Automata to build a formatted word.
+     *
+     * @param tv is the TextView
+     * @param text is the formated text
+     */
     @JvmOverloads
     fun performTypeface(tv: TextView?, text: String?, forceRtl: Boolean = true) {
         var text = text
-        if (tv == null || text == null || text.length == 0) {
+        if (tv == null || text == null || text.isEmpty()) {
             return
         }
         if (forceRtl) {
@@ -73,19 +76,11 @@ class MultiTypefaceHelper(context: Context, englishFontPath: String, arabicFontP
      * @return determined syntax of that character
      */
     private fun getSyntax(unicode: Int): Int {
-        return if (unicode >= 0x0600 && unicode <= 0x06ff) SYNTAX_ARABIC else SYNTAX_ENGLISH
+        return if (unicode in 0x0600..0x06ff) SYNTAX_ARABIC else SYNTAX_ENGLISH
     }
 
     companion object {
-        private val SYNTAX_ENGLISH = 0
-        private val SYNTAX_ARABIC = 1
+        private const val SYNTAX_ENGLISH = 0
+        private const val SYNTAX_ARABIC = 1
     }
 }
-/**
- * This method set the typefaces to the text on the TextView.
- * This may take a few mili-seconds
- * This traverse a string and use an Automata to build a formatted word.
- *
- * @param tv is the TextView
- * @param text is the formated text
- */
