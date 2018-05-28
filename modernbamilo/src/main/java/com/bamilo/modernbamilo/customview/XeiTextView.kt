@@ -11,7 +11,6 @@ import java.util.*
  * This is a custom TextView that render fonts based on locale set in the layout XML file.
  *
  * Created by hamidreza on 2/14/16.
- * Copyright 2016 - Digikala
  */
 class XeiTextView : AppCompatTextView {
 
