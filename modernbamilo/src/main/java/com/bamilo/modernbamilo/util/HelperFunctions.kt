@@ -135,3 +135,30 @@ fun persianizeDigitsInString(str: String): String {
     return persianizedStr
 }
 
+fun quantize() {
+
+}
+
+/**
+ * This helper function interpolate from a color to another one and create n relevant color.
+ *
+ */
+fun getInterpolatedColors(n: Int) : IntArray{
+    val t = 0.2
+    var firstColor = Color.RED
+    val secondColor = Color.GREEN
+
+    val colors = IntArray(n + 2)
+    colors[0] = firstColor
+    for (i in 1..n) {
+        val newColor = Color.argb(
+                (Color.alpha(firstColor) + (Color.alpha(secondColor) - Color.alpha(firstColor)) * t).toInt(),
+                (Color.red(firstColor) + (Color.red(secondColor) - Color.red(firstColor)) * t).toInt(),
+                (Color.green(firstColor) + (Color.green(secondColor) - Color.green(firstColor)) * t).toInt(),
+                (Color.blue(firstColor) + (Color.blue(secondColor) - Color.blue(firstColor)) * t).toInt())
+        colors[i] = newColor
+        firstColor = newColor
+    }
+
+    return colors
+}
