@@ -10,10 +10,17 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
+import com.bamilo.modernbamilo.util.getInterpolatedColors
 
 class OptionButton : RelativeLayout {
 
     private lateinit var mTextTextView: TextView
+
+    companion object {
+        fun getRainbow(n: Int): IntArray {
+            return getInterpolatedColors(Color.RED, Color.GREEN, n)
+        }
+    }
 
     constructor(context: Context) : super(context) {
         init()
