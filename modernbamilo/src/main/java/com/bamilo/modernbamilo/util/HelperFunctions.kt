@@ -143,21 +143,17 @@ fun quantize() {
  * This helper function interpolate from a color to another one and create n relevant color.
  *
  */
-fun getInterpolatedColors(n: Int) : IntArray{
+fun getInterpolatedColors(startColor: Int, endColor: Int, n: Int) : IntArray{
     val t = 0.2
-    var firstColor = Color.RED
-    val secondColor = Color.GREEN
 
     val colors = IntArray(n + 2)
-    colors[0] = firstColor
+    colors[0] = startColor
     for (i in 1..n) {
-        val newColor = Color.argb(
-                (Color.alpha(firstColor) + (Color.alpha(secondColor) - Color.alpha(firstColor)) * t).toInt(),
-                (Color.red(firstColor) + (Color.red(secondColor) - Color.red(firstColor)) * t).toInt(),
-                (Color.green(firstColor) + (Color.green(secondColor) - Color.green(firstColor)) * t).toInt(),
-                (Color.blue(firstColor) + (Color.blue(secondColor) - Color.blue(firstColor)) * t).toInt())
-        colors[i] = newColor
-        firstColor = newColor
+        colors[i] = Color.argb(
+                (Color.alpha(colors[i - 1]) + (Color.alpha(endColor) - Color.alpha(colors[i - 1])) * t).toInt(),
+                (Color.red(colors[i - 1]) + (Color.red(endColor) - Color.red(colors[i - 1])) * t).toInt(),
+                (Color.green(colors[i - 1]) + (Color.green(endColor) - Color.green(colors[i - 1])) * t).toInt(),
+                (Color.blue(colors[i - 1]) + (Color.blue(endColor) - Color.blue(colors[i - 1])) * t).toInt())
     }
 
     return colors
