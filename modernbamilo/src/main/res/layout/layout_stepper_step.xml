@@ -4,7 +4,7 @@
     android:layout_width="0dp"
     android:layout_weight="1"
     android:maxWidth="48dp"
-    android:layout_height="12dp"
+    android:layout_height="10dp"
     android:background="@drawable/background_stepper_empty"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp" />
