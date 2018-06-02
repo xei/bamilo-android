@@ -11,7 +11,7 @@
     <!-- User Review Screen -->
     <color name="userReview_title">#FFF</color>
     <color name="userReview_stepper_empty">#F1F1F1</color>
-    <color name="userReview_stepper_full">#FF9900</color>
+    <color name="userReview_stepper_full">#FF6B0C</color>
     <color name="userReview_button_next">#FF6B0C</color>
     <color name="userReview_buttonText_next">#FFF</color>
     <color name="userReview_typeRadio_optionButton_textColor">#53585B</color>
