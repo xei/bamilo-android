@@ -59,7 +59,6 @@ class StepperView : LinearLayout {
     fun setPagesCount(pagesCount: Int) {
         weightSum = pagesCount.toFloat()
         val firstStepView = LayoutInflater.from(context).inflate(R.layout.layout_stepper_step, this, false)
-        firstStepView.setBackgroundResource(R.drawable.background_stepper_empty)
         mStepViewsList.add(firstStepView)
         addView(firstStepView)
         for (i in 2..pagesCount) {
@@ -74,7 +73,7 @@ class StepperView : LinearLayout {
      */
     fun setCurrentPage(currentPage: Int) {
         for (i in 0 until mStepViewsList.size) {
-            mStepViewsList[i].setBackgroundResource(if (i <= currentPage) R.drawable.background_stepper_full else R.drawable.background_stepper_empty)
+            mStepViewsList[i].setBackgroundResource(if (i <= currentPage) R.drawable.background_step_full else R.drawable.background_step_empty)
         }
     }
 
