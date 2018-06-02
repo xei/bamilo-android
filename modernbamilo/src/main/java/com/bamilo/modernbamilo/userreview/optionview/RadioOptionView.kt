@@ -1,4 +1,4 @@
-package com.bamilo.modernbamilo.userreview.optionbtn
+package com.bamilo.modernbamilo.userreview.optionview
 
 import android.content.Context
 import android.graphics.Color
@@ -12,7 +12,7 @@ import android.widget.TextView
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.util.getInterpolatedColors
 
-class OptionButton : RelativeLayout {
+class RadioOptionView : RelativeLayout {
 
     private lateinit var mTextTextView: TextView
 
