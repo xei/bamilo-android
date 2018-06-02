@@ -14,10 +14,12 @@
     <color name="userReview_stepper_full">#FF6B0C</color>
     <color name="userReview_button_next">#FF6B0C</color>
     <color name="userReview_buttonText_next">#FFF</color>
+    <color name="userReview_typeRadio_title_textColor">#53585B</color>
     <color name="userReview_typeRadio_optionButton_textColor">#53585B</color>
     <color name="userReview_typeRadio_optionButton_layerColor">#fff</color>
     <color name="userReview_typeRadio_optionButtons_startColor">@color/material_green_500</color>
     <color name="userReview_typeRadio_optionButtons_endColor">@color/material_pink_500</color>
+    <color name="userReview_typeCheckbox_title_textColor">#53585B</color>
     <color name="userReview_typeCheckbox_optionButton_buttonTintColor">#FF6B0C</color>
     <color name="userReview_typeCheckbox_optionButton_textColor">#53585B</color>
     <color name="userReview_typeCheckbox_optionButton_dividerColor">#eeeff1</color>
