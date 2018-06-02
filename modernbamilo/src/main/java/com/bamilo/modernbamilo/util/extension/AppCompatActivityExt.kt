@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity
 fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment, @IdRes frameId: Int) {
     supportFragmentManager.transact {
         replace(frameId, fragment)
+        addToBackStack(null)
     }
 }
 
