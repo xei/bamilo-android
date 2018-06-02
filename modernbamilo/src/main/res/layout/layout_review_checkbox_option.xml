@@ -10,4 +10,5 @@
     android:paddingRight="16dp"
     android:textSize="18sp"
     android:textColor="@color/userReview_typeCheckbox_optionButton_textColor"
+    android:buttonTint="@color/userReview_typeCheckbox_optionButton_buttonTintColor"
     app:locale="auto" />
