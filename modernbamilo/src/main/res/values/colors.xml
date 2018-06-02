@@ -19,6 +19,6 @@
     <color name="userReview_typeRadio_optionButtons_startColor">@color/material_green_500</color>
     <color name="userReview_typeRadio_optionButtons_endColor">@color/material_pink_500</color>
     <color name="userReview_typeCheckbox_optionButton_textColor">#53585B</color>
-    <color name="userReview_typeCheckbox_optionButton_dividerColor">#53585B</color>
+    <color name="userReview_typeCheckbox_optionButton_dividerColor">#eeeff1</color>
 
 </resources>
