@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.bamilo.modernbamilo.customview.XeiTextView
+<com.bamilo.modernbamilo.customview.XeiButton
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutReviewRadioOption_xeiTextView_buttonCenter"
@@ -13,6 +13,7 @@
     android:layout_marginStart="2dp"
     android:layout_marginTop="2dp"
     android:background="@color/userReview_typeRadio_optionButton_layerColor"
+    android:foreground="?android:attr/selectableItemBackground"
     android:alpha="1"
     android:gravity="center"
     android:textSize="18sp"
