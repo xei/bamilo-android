@@ -4,5 +4,6 @@ enum class ReviewPageType(str: String) {
     RADIO("RADIO"),
     CHECKBOX("CHECKBOX"),
     ESSAY("ESSAY"),
-    HIDDEN("HIDDEN")
+    HIDDEN("HIDDEN"),
+    THANKS("THANKS")
 }
