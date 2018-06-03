@@ -27,5 +27,7 @@
     <color name="userReview_typeEssay_editText_textColor">#44484b</color>
     <color name="userReview_typeEssay_editText_borderColor">#53585B</color>
     <color name="userReview_typeEssay_editText_backgroundColor">#d1d6d9</color>
+    <color name="userReview_typeThanks_doneIcon_tintColor">#FF6B0C</color>
+    <color name="userReview_typeThanks_description_textColor">#53585B</color>
 
 </resources>
