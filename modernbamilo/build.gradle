@@ -57,9 +57,11 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
     implementation "com.facebook.fresco:fresco:$fresco_version"
+
     // TODO: Remove this dependency asap. It added because of using class "AigPersistentHttpCookie" in RetrofitHelper
     compile project(path: ':BamiloFramework')
 }
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
