@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
 
     <!-- Material Design Colors -->
@@ -7,6 +8,7 @@
     
     <!-- CI -->
     <color name="colorPrimary">#1A365E</color>
+    <color name="colorAccent">#FF6B0C</color>
 
     <!-- User Review Screen -->
     <color name="userReview_title">#FFF</color>
@@ -25,9 +27,10 @@
     <color name="userReview_typeCheckbox_optionButton_dividerColor">#eeeff1</color>
     <color name="userReview_typeEssay_title_textColor">#53585B</color>
     <color name="userReview_typeEssay_editText_textColor">#44484b</color>
-    <color name="userReview_typeEssay_editText_borderColor">#53585B</color>
-    <color name="userReview_typeEssay_editText_backgroundColor">#d1d6d9</color>
+    <color name="userReview_typeEssay_editText_borderColor">#909193</color>
+    <color name="userReview_typeEssay_editText_backgroundColor">#edeff1</color>
     <color name="userReview_typeThanks_doneIcon_tintColor">#FF6B0C</color>
     <color name="userReview_typeThanks_description_textColor">#53585B</color>
+    <color name="userReview_typeImageSelect_title_textColor">#53585B</color>
 
 </resources>
