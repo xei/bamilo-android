@@ -4,5 +4,5 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 
 fun ImageView.loadImageFromNetwork(url: String) {
-    Glide.with(this).load(url).into(this)
+    Glide.with(context).load(url).into(this)
 }
