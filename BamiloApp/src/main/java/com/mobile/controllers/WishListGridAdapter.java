@@ -1,7 +1,6 @@
 package com.mobile.controllers;
 
-import android.content.Context;
-import android.media.Image;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,26 +50,27 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         public WishListProductViewHolder(View view){
             super(view);
             container = itemView.findViewById(R.id.addabletocart_item_container);
-            newArrivalBadge = (TextView) itemView.findViewById(R.id.new_arrival_badge);
-            image = (ImageView) itemView.findViewById(R.id.item_image);
-            name = (TextView) itemView.findViewById(R.id.item_name);
-            brand = (TextView) itemView.findViewById(R.id.item_brand);
-            price = (TextView) itemView.findViewById(R.id.item_regprice);
-            discount = (TextView) itemView.findViewById(R.id.item_discount);
-            percentage = (TextView) itemView.findViewById(R.id.item_percentage);
-            varianceButton = (TextView) itemView.findViewById(R.id.button_variant);
+            newArrivalBadge = itemView.findViewById(R.id.new_arrival_badge);
+            image = itemView.findViewById(R.id.item_image);
+            name = itemView.findViewById(R.id.item_name);
+            brand = itemView.findViewById(R.id.item_brand);
+            price = itemView.findViewById(R.id.item_regprice);
+            discount = itemView.findViewById(R.id.item_discount);
+            percentage = itemView.findViewById(R.id.item_percentage);
+            varianceButton = itemView.findViewById(R.id.button_variant);
             addToCartButton = itemView.findViewById(R.id.button_shop);
             deleteButton = itemView.findViewById(R.id.button_delete);
         }
     }
 
+    @NonNull
     @Override
-    public WishListProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public WishListProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new WishListProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.addable_to_cart_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(WishListProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WishListProductViewHolder holder, int position) {
         ProductMultiple item = products.get(position);
         // Set image
         setImage(holder, item);
@@ -107,7 +107,6 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         // Set is new image
         prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
         // Set image
-        //RocketImageLoader.instance.loadImage(addableToCart.getImageUrl(), prodItem.image, null, R.drawable.no_image_small);
         ImageManager.getInstance().loadImage(addableToCart.getImageUrl(), prodItem.image, null, R.drawable.no_image_large, false);
     }
 
@@ -160,5 +159,4 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
             else if(id == R.id.addabletocart_item_container) listener.onItemClick(view);
         }
     }
-
 }

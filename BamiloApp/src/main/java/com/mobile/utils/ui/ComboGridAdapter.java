@@ -113,7 +113,6 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         // Set brand
         holder.brand.setText(item.getBrandName());
         // Set image
-        //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         ImageManager.getInstance().loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_large, false);
         // Set prices
         UIProductUtils.setPriceRules(item, holder.price, holder.discount);

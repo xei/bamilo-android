@@ -2,9 +2,11 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +18,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.mobile.app.BamiloApplication;
@@ -90,8 +93,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     private boolean isAddingProductToCart;
 
     private long mStartTimeInMilliseconds;
-    //DROID-10
-    private long mGABeginRequestMillis;
 
     @BannerVisibility
     private int bannerState;
@@ -133,7 +134,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
-        mGABeginRequestMillis = System.currentTimeMillis();
+        long GABeginRequestMillis = System.currentTimeMillis();
     }
 
     /*
@@ -174,7 +175,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get grid view
-        mGridView = (HeaderFooterGridView) view.findViewById(R.id.campaign_grid);
+        mGridView = view.findViewById(R.id.campaign_grid);
         mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.campaign_num_columns));
         mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
         mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
@@ -278,7 +279,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
      * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
      */
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE STATE: CAMPAIGN");
         outState.putParcelable(TAG, mCampaign);
@@ -973,15 +974,16 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             }
         }
 
+        @NonNull
         @Override
-        public CampaignItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CampaignItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             int layout = R.layout.campaign_fragment_list_item;
             if(viewType == ITEM_VIEW_TYPE_HEADER) layout = R.layout._def_campaign_fragment_header;
             return new CampaignItemHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(final CampaignItemHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull final CampaignItemHolder holder, final int position) {
             // Case header
             if(isHeader(position)){
                 setHeader(holder);
@@ -1052,33 +1054,12 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 // just in order to have a position tag in order to not crash on the onCLick
                 holder.itemView.setTag(R.id.position, -1);
                 holder.mBannerImageView.setVisibility(View.VISIBLE);
-                // Set image
-                /*RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
-                    @Override
-                    public void onLoadedSuccess(String url, Bitmap bitmap) {
-                        // Show content
-                        holder.mBannerImageView.setImageBitmap(bitmap);
-                        holder.mBannerImageView.setVisibility(View.VISIBLE);
-                        bannerState = VISIBLE;
-                    }
 
+                ImageManager.getInstance().loadImage(mBannerImage, holder.mBannerImageView, null, -1, false, new RequestListener<Drawable>() {
                     @Override
-                    public void onLoadedError() {
-                        holder.mBannerImageView.setVisibility(View.GONE);
-                        mGridView.hideHeaderView();
-                        bannerState = HIDDEN;
-                    }
-
-                    @Override
-                    public void onLoadedCancel() {
-                        holder.mBannerImageView.setVisibility(View.GONE);
-                        mGridView.hideHeaderView();
-                        bannerState = HIDDEN;
-                    }
-                });*/
-                ImageManager.getInstance().loadImage(mBannerImage, holder.mBannerImageView, null, -1, false, new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String s, Target<GlideDrawable> target, boolean b) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                            Target<Drawable> target,
+                            boolean isFirstResource) {
                         holder.mBannerImageView.setVisibility(View.GONE);
                         mGridView.hideHeaderView();
                         bannerState = HIDDEN;
@@ -1086,8 +1067,9 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                     }
 
                     @Override
-                    public boolean onResourceReady(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b, boolean b1) {
-                        //holder.mBannerImageView.setImageBitmap(bitmap);
+                    public boolean onResourceReady(Drawable resource, Object model,
+                            Target<Drawable> target,
+                            DataSource dataSource, boolean isFirstResource) {
                         holder.mBannerImageView.setVisibility(View.VISIBLE);
                         bannerState = VISIBLE;
                         return false;
@@ -1125,45 +1107,45 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         public CampaignItemHolder(final View itemView) {
             super(itemView);
             // Get stock off
-            mStockOff = (TextView) itemView.findViewById(R.id.campaign_item_stock_off);
+            mStockOff = itemView.findViewById(R.id.campaign_item_stock_off);
             // Get brand
-            mBrand = (TextView) itemView.findViewById(R.id.campaign_item_brand);
+            mBrand = itemView.findViewById(R.id.campaign_item_brand);
             // Get name
-            mName = (TextView) itemView.findViewById(R.id.campaign_item_name);
+            mName = itemView.findViewById(R.id.campaign_item_name);
             // Get image container
             mImageContainer = itemView.findViewById(R.id.image_container);
             // Get image
-            mImage = (ImageView) itemView.findViewById(R.id.image_view);
+            mImage = itemView.findViewById(R.id.image_view);
             // Get Progress
             progress = itemView.findViewById(R.id.campaign_loading_progress);
             // Get size container
             mSizeContainer = itemView.findViewById(R.id.campaign_item_size_container);
             // Get size spinner
-            mSizesValue = (TextView) itemView.findViewById(R.id.campaign_item_size_label);
+            mSizesValue = itemView.findViewById(R.id.campaign_item_size_label);
             // Get price
-            mPrice = (TextView) itemView.findViewById(R.id.campaign_item_price);
+            mPrice = itemView.findViewById(R.id.campaign_item_price);
             // Get discount
-            mDiscount = (TextView) itemView.findViewById(R.id.campaign_item_discount);
+            mDiscount = itemView.findViewById(R.id.campaign_item_discount);
             // Get save
-            mSave = (TextView) itemView.findViewById(R.id.campaign_item_save_label);
+            mSave = itemView.findViewById(R.id.campaign_item_save_label);
             // Get save value
-            mSaveValue = (TextView) itemView.findViewById(R.id.campaign_item_save_value);
+            mSaveValue = itemView.findViewById(R.id.campaign_item_save_value);
             // Get stock bar
-            mStockBar = (ProgressBar) itemView.findViewById(R.id.campaign_item_stock_bar);
+            mStockBar = itemView.findViewById(R.id.campaign_item_stock_bar);
             // Get stock %
-            mStockPercentage = (TextView) itemView.findViewById(R.id.campaign_item_stock_value);
+            mStockPercentage = itemView.findViewById(R.id.campaign_item_stock_value);
             // Get button
             mButtonBuy = itemView.findViewById(R.id.campaign_item_button_buy);
             // Get Offer Ender image
-            mOfferEnded = (TextView) itemView.findViewById(R.id.campaign_item_offer_ended);
+            mOfferEnded = itemView.findViewById(R.id.campaign_item_offer_ended);
             // Get timer container
             mTimerContainer = itemView.findViewById(R.id.campaign_item_stock_timer_container);
             // Get timer
-            mTimer = (TextView) itemView.findViewById(R.id.campaign_item_stock_timer);
+            mTimer = itemView.findViewById(R.id.campaign_item_stock_timer);
             // Get banner
-            mBannerImageView = (ImageView) itemView.findViewById(R.id.campaign_header_image);
+            mBannerImageView = itemView.findViewById(R.id.campaign_header_image);
             // Get campaign title
-            mCampaignTitle = (TextView) itemView.findViewById(R.id.tvCampaignTitle);
+            mCampaignTitle = itemView.findViewById(R.id.tvCampaignTitle);
         }
     }
 

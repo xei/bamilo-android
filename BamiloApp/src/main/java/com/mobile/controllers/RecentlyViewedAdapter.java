@@ -1,6 +1,9 @@
 package com.mobile.controllers;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.mobile.components.customfontviews.TextView;
@@ -32,8 +36,6 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
 
     public final static String TAG = RecentlyViewedAdapter.class.getSimpleName();
 
-    private final LayoutInflater mInflater;
-
     private final OnClickListener mOnClickParentListener;
 
     private Class<? extends ProductMultiple> itemsClass;
@@ -49,7 +51,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
      */
     public RecentlyViewedAdapter(Context context, ArrayList<ProductMultiple> items, OnClickListener parentListener) {
         this.items = items;
-        mInflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
         mOnClickParentListener = parentListener;
 
         if (!items.isEmpty()) {
@@ -76,15 +78,18 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
      * @author sergiopereira
      */
     private void setImage(final RecentlyViewedHolder prodItem, ProductMultiple addableToCart){
-        ImageManager.getInstance().loadImage(addableToCart.getImageUrl(), prodItem.image, prodItem.prgLoadingImage, R.drawable.no_image_large, false, new RequestListener<String, GlideDrawable>() {
+        ImageManager.getInstance().loadImage(addableToCart.getImageUrl(), prodItem.image, prodItem.prgLoadingImage, R.drawable.no_image_large, false, new RequestListener<Drawable>() {
             @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+            public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                    Target<Drawable> target,
+                    boolean isFirstResource) {
                 prodItem.prgLoadingImage.setVisibility(View.GONE);
                 return false;
             }
 
             @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
+                    DataSource dataSource, boolean isFirstResource) {
                 prodItem.prgLoadingImage.setVisibility(View.GONE);
                 return false;
             }
@@ -119,13 +124,14 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
         }
     }
 
+    @NonNull
     @Override
-    public RecentlyViewedHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecentlyViewedHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new RecentlyViewedHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.addable_to_cart_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecentlyViewedHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecentlyViewedHolder holder, int position) {
         // Get addableToCart
         ProductMultiple addableToCart = this.items.get(position);
         // Set Image
@@ -160,19 +166,17 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
 
         public RecentlyViewedHolder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.item_image);
-            prgLoadingImage = (ProgressBar) itemView.findViewById(R.id.prgLoadingImage);
-            name = (TextView) itemView.findViewById(R.id.item_name);
-            discount = (TextView) itemView.findViewById(R.id.item_discount);
-            price = (TextView) itemView.findViewById(R.id.item_regprice);
-            percentage = (TextView) itemView.findViewById(R.id.item_percentage);
-            brand = (TextView) itemView.findViewById(R.id.item_brand);
-            //newArrivalBadge = (TextView) itemView.findViewById(R.id.new_arrival_badge);
-            varianceButton = (TextView) itemView.findViewById(R.id.button_variant);
+            image = itemView.findViewById(R.id.item_image);
+            prgLoadingImage = itemView.findViewById(R.id.prgLoadingImage);
+            name = itemView.findViewById(R.id.item_name);
+            discount = itemView.findViewById(R.id.item_discount);
+            price = itemView.findViewById(R.id.item_regprice);
+            percentage = itemView.findViewById(R.id.item_percentage);
+            brand = itemView.findViewById(R.id.item_brand);
+            varianceButton = itemView.findViewById(R.id.button_variant);
             addToCartButton = itemView.findViewById(R.id.button_shop);
             deleteButton = itemView.findViewById(R.id.button_delete);
             container = itemView.findViewById(R.id.addabletocart_item_container);
         }
     }
-
 }

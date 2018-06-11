@@ -9,10 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.mobile.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import com.mobile.service.objects.product.ImageUrls;
 import com.mobile.service.utils.output.Print;

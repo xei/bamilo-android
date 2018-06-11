@@ -90,7 +90,6 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
         // Set title
         holder.mSubTitle.setText(item.getSubTitle());
         // Set image
-        //RocketImageLoader.instance.loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         ImageManager.getInstance().loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large, false);
         // Set listener and tags
         TeaserViewFactory.setClickableView(holder.itemView, item, mOnClickListener, position);

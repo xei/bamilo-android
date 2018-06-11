@@ -1,7 +1,6 @@
 package com.mobile.utils.home.holder;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +76,6 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
     private void setImageToLoad(String imageUrl, View imageTeaserView) {
         View progressBar = imageTeaserView.findViewById(R.id.home_teaser_item_progress);
         final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.home_teaser_item_image);
-        //RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
         ImageManager.getInstance().loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_slider, false);
     }
 
