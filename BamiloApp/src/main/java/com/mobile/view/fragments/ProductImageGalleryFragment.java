@@ -63,22 +63,12 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         super(IS_NESTED_FRAGMENT, R.layout.product_gallery_fragment);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
-     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,42 +82,28 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
-     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get pager
-        mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.pdv_view_pager);
+        mViewPager = view.findViewById(R.id.pdv_view_pager);
         // Get Overlay
-        mOutOfStockOverlay = (RelativeLayout) view.findViewById(R.id.pdv_image_oos_overlay);
+        mOutOfStockOverlay = view.findViewById(R.id.pdv_image_oos_overlay);
         // HorizontalScrollView
-        mHorizontalScrollView = (HorizontalScrollView) view.findViewById(R.id.pdv_thumbnail_indicator_scroll);
+        mHorizontalScrollView = view.findViewById(R.id.pdv_thumbnail_indicator_scroll);
         // Get thumbnail indicator
-        mThumbnailContainer = (ViewGroup) view.findViewById(R.id.pdv_thumbnail_indicator_container);
+        mThumbnailContainer = view.findViewById(R.id.pdv_thumbnail_indicator_container);
         // Set view pager
         createGallery();
     }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onStart()
-     */
+
     @Override
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onResume()
-     */
     @Override
     public void onResume() {
         super.onResume();
@@ -137,11 +113,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         mViewPager.setCurrentItem(ProductDetailsFragment.sSharedSelectedPosition, true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onSaveInstanceState()
-     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -151,11 +122,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         outState.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, mIsOutOfStock);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onPause()
-     */
     @Override
     public void onPause() {
         super.onPause();
@@ -163,11 +129,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         ProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onStop()
-     */
     @Override
     public void onStop() {
         super.onStop();
@@ -190,9 +151,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         Print.i(TAG, "ON DESTROY");
     }
 
-    /*
-     * ############## LAYOUT ##############
-     */
 
     /**
      * Set product image gallery
@@ -295,14 +253,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         getBaseActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-    /*
-     * ######## LISTENER ########
-     */
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClick(android.view.View)
-     */
     @Override
     public void onClick(View view) {
         // Get id
@@ -344,11 +294,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         }
     }
 
-
-    /*
-     * ########### THUMBNAIL INDICATOR ###########
-     */
-
     private void setThumbnailIndicatorForViewPager(int size) {
         Print.i(TAG, "ON SHOW THUMBNAIL INDICATOR");
         // Validate the current size
@@ -357,9 +302,10 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
             for (int i = 0; i < mImageList.size(); i++) {
                 View holder = inflater.inflate(R.layout.pdv_fragment_gallery_item, mThumbnailContainer, false);
                 View loading = holder.findViewById(R.id.loading_progress);
-                ImageView image = (ImageView) holder.findViewById(R.id.image);
-                //RocketImageLoader.instance.loadImage(mImageList.get(i).getUrl(), image, loading, R.drawable.no_image_small);
+                ImageView image = holder.findViewById(R.id.image);
+
                 ImageManager.getInstance().loadImage(mImageList.get(i).getUrl(), image, loading, R.drawable.no_image_large, true);
+
                 holder.setTag(R.id.target_position, i);
                 holder.setOnClickListener(this);
                 mThumbnailContainer.addView(holder);
@@ -374,7 +320,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        // ...
     }
 
     @Override
@@ -386,7 +331,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        // ...
     }
 
     private void onUpdateThumbnailIndicator(int position) {
@@ -419,5 +363,4 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
             previous = position;
         }
     }
-
 }

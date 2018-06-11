@@ -71,7 +71,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private long mBeginRequestMillis;
     // DROID-10
     private long mGABeginRequestMillis;
-    private PurchaseCartItem mQuantityChangedItem;
     private List<PurchaseCartItem> items;
     private ViewGroup mCartItemsContainer;
     private View mTotalContainer;
@@ -82,12 +81,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private TextView mCouponButton;
     private EditText mVoucherView;
     private String mVoucherCode;
-    private String mItemRemovedSku;
     private String mPhone2Call = "";
-    private double mItemRemovedPriceTracking = 0d;
-    private long mItemRemovedQuantity;
-    private double mItemRemovedRating;
-    private String mItemRemovedCartValue;
     private String mItemsToCartDeepLink;
     private int selectedPosition;
     private int crrQuantity;
@@ -165,7 +159,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         // Save the voucher code
@@ -213,11 +207,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         mCallToOrderButton = view.findViewById(R.id.checkout_call_to_order);
         mTotalContainer = view.findViewById(R.id.total_container);
         // Set nested scroll and voucher view
-        mVoucherView = (EditText) view.findViewById(R.id.voucher_name);
-        NestedScrollView mNestedScroll = (NestedScrollView) view.findViewById(R.id.shoppingcart_nested_scroll);
+        mVoucherView = view.findViewById(R.id.voucher_name);
+        NestedScrollView mNestedScroll = view.findViewById(R.id.shoppingcart_nested_scroll);
         UIUtils.scrollToViewByClick(mNestedScroll, mVoucherView);
         // Set voucher button
-        mCouponButton = (TextView) view.findViewById(R.id.voucher_btn);
+        mCouponButton = view.findViewById(R.id.voucher_btn);
         mCouponButton.setOnClickListener(this);
         // Get free shipping
         mFreeShippingView = view.findViewById(R.id.cart_total_text_shipping);
@@ -252,7 +246,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private void setTotal(@NonNull PurchaseEntity cart) {
         Print.d(TAG, "SET THE TOTAL VALUE");
         // Get views
-        TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
+        TextView totalValue = mTotalContainer.findViewById(R.id.total_value);
         // Set views
         totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
         mTotalContainer.setVisibility(View.VISIBLE);
@@ -368,10 +362,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
     }
 
-    /*
-     * ####### TRIGGERS #######
-     */
-
     /**
      * Trigger to get cart items validating FavouritesFragment state is completed
      */
@@ -383,15 +373,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Trigger to remove item from cart
      */
     private void triggerRemoveItem(PurchaseCartItem item) {
-        mItemRemovedSku = item.getConfigSimpleSKU();
-        mItemRemovedPriceTracking = item.getPriceForTracking();
-        mItemRemovedQuantity = item.getQuantity();
-        mItemRemovedRating = -1d;
+        String itemRemovedSku = item.getConfigSimpleSKU();
+        double itemRemovedPriceTracking = item.getPriceForTracking();
+        long itemRemovedQuantity = item.getQuantity();
+        double itemRemovedRating = -1d;
         if (TextUtils.isEmpty(cartValue)) {
-            TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
-            mItemRemovedCartValue = totalValue.toString();
-        } else {
-            mItemRemovedCartValue = cartValue;
+            TextView totalValue = mTotalContainer.findViewById(R.id.total_value);
         }
         triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU()), this);
     }
@@ -425,14 +412,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         item.setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();
-        mQuantityChangedItem = item;
-        //
         triggerContentEventProgress(new ShoppingCartChangeItemQuantityHelper(), ShoppingCartChangeItemQuantityHelper.createBundle(item.getConfigSimpleSKU(), quantity), this);
     }
 
-    /**
-     *
-     */
     private void releaseVars() {
         mCartItemsContainer = null;
         mCheckoutButton = null;
@@ -461,13 +443,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
     }
 
-    /*
-     * ####### RESPONSES #######
-     */
-
-    /**
-     *
-     */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility
@@ -519,10 +494,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
     }
 
-
-    /**
-     *
-     */
     private void onAddItemsToShoppingCartRequestSuccess(BaseResponse baseResponse){
         hideActivityProgress();
         ShoppingCartAddMultipleItemsHelper.AddMultipleStruct addMultipleStruct = (ShoppingCartAddMultipleItemsHelper.AddMultipleStruct) baseResponse.getContentData();
@@ -540,10 +511,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
     }
 
-
-    /**
-     *
-     */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
 
@@ -594,8 +561,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             return;
         }
 
-
-
         // Case invalid view
         if (getView() == null) {
             showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
@@ -604,16 +569,16 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Case valid state
         items = cart.getCartItems();
         // Get views
-        TextView subTotal = (TextView) getView().findViewById(R.id.price_total);
-        TextView subTotalUnreduced = (TextView) getView().findViewById(R.id.price_unreduced);
-        TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
-        TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
-        TextView vatIncludedLabel = (TextView) getView().findViewById(R.id.vat_included_label);
-        TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
+        TextView subTotal = getView().findViewById(R.id.price_total);
+        TextView subTotalUnreduced = getView().findViewById(R.id.price_unreduced);
+        TextView articlesCount = getView().findViewById(R.id.articles_count);
+        TextView extraCostsValue = getView().findViewById(R.id.extra_costs_value);
+        TextView vatIncludedLabel = getView().findViewById(R.id.vat_included_label);
+        TextView vatValue = getView().findViewById(R.id.vat_value);
         View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
         View shippingContainer = getView().findViewById(R.id.shipping_container);
-        TextView shippingValue = (TextView) getView().findViewById(R.id.shipping_value);
-        TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
+        TextView shippingValue = getView().findViewById(R.id.shipping_value);
+        TextView voucherValue = getView().findViewById(R.id.text_voucher);
         final View voucherContainer = getView().findViewById(R.id.voucher_info_container);
         // Get and set the cart value
         setTotal(cart);
@@ -638,7 +603,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Set number of items
         articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfItems, cart.getCartCount(), cart.getCartCount()));
         // Add all items
-        mCartItemsContainer = (ViewGroup) getView().findViewById(R.id.shoppingcart_list);
+        mCartItemsContainer = getView().findViewById(R.id.shoppingcart_list);
         mCartItemsContainer.removeAllViewsInLayout();
         for (int i = 0; i < items.size(); i++) {
             PurchaseCartItem item = items.get(i);
@@ -647,7 +612,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Set sub total and sub total unreduced
         UICartUtils.setSubTotal(cart, subTotal, subTotalUnreduced);
         // Cart price rules
-        LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
+        LinearLayout priceRulesContainer = getView().findViewById(R.id.price_rules_container);
         CheckoutStepManager.showPriceRules(getActivity(), priceRulesContainer, cart.getPriceRules());
         // Show content
         showFragmentContentContainer();
@@ -661,15 +626,15 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         View view = mInflater.inflate(R.layout.shopping_cart_product_container, parent, false);
         Log.d( TAG, "getView: productName = " + item.getName());
         // Get item
-        ImageView productView = (ImageView) view.findViewById(R.id.image_view);
+        ImageView productView = view.findViewById(R.id.image_view);
         View pBar = view.findViewById(R.id.image_loading_progress);
-        TextView itemName = (TextView) view.findViewById(R.id.cart_item_text_name);
-        TextView priceView = (TextView) view.findViewById(R.id.cart_item_text_price);
-        TextView quantityBtn = (TextView) view.findViewById(R.id.cart_item_button_quantity);
-        ImageView shopFirstImage = (ImageView) view.findViewById(R.id.cart_item_image_shop_first);
-        TextView deleteBtn = (TextView) view.findViewById(R.id.cart_item_button_delete);
-        TextView variationName = (TextView) view.findViewById(R.id.cart_item_text_variation);
-        TextView variationValue = (TextView) view.findViewById(R.id.cart_item_text_variation_value);
+        TextView itemName = view.findViewById(R.id.cart_item_text_name);
+        TextView priceView = view.findViewById(R.id.cart_item_text_price);
+        TextView quantityBtn = view.findViewById(R.id.cart_item_button_quantity);
+        ImageView shopFirstImage = view.findViewById(R.id.cart_item_image_shop_first);
+        TextView deleteBtn = view.findViewById(R.id.cart_item_button_delete);
+        TextView variationName = view.findViewById(R.id.cart_item_text_variation);
+        TextView variationValue = view.findViewById(R.id.cart_item_text_variation_value);
         // Set item
         itemName.setText(item.getName());
         itemName.setSelected(true);
@@ -681,7 +646,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Show shop first overlay message
         UIProductUtils.showShopFirstOverlayMessage(this, item, shopFirstImage);
         // Image
-        //RocketImageLoader.instance.loadImage(imageUrl, productView, pBar, R.drawable.no_image_small);
         ImageManager.getInstance().loadImage(imageUrl, productView, pBar, R.drawable.no_image_large, false);
         // Price
         UIProductUtils.setPriceRules(item, priceView);

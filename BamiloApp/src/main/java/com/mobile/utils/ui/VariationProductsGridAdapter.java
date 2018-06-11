@@ -1,6 +1,7 @@
 package com.mobile.utils.ui;
 
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,55 +36,34 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
         mDataSet = data;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup, int)
-     */
+    @NonNull
     @Override
-    public ProductListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProductListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ProductListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gen_product_list, parent, false));
     }
-    
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v7.widget.RecyclerView.Adapter#getItemCount()
-     */
     @Override
     public int getItemCount() {
         // Return the size of your dataset (invoked by the layout manager)
         return mDataSet == null ? 0 : mDataSet.size();
     }
 
-
-    /*
-      * (non-Javadoc)
-      * @see android.support.v7.widget.RecyclerView.Adapter#onViewDetachedFromWindow(android.support.v7.widget.RecyclerView.ViewHolder)
-      */
     @Override
-    public void onViewDetachedFromWindow(ProductListViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull ProductListViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
         // Cancel the animation for detached views
         holder.itemView.clearAnimation();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v7.widget.RecyclerView.Adapter#onBindViewHolder(android.support.v7.widget.RecyclerView.ViewHolder, int)
-     */
     @Override
-    public void onBindViewHolder(ProductListViewHolder holder, int position) {
-        // Set animation
-   //     setAnimation(holder, position);
+    public void onBindViewHolder(@NonNull ProductListViewHolder holder, int position) {
         // Get item
         Variation item = mDataSet.get(position);
         // Set name
         holder.name.setText(item.getName());
         // Set brand
         holder.brand.setText(item.getBrand());
-        // Set is new image
         // Set image
-        //RocketImageLoader.instance.loadImage(item.getImage(), holder.image, holder.progress, R.drawable.no_image_small);
         ImageManager.getInstance().loadImage(item.getImage(), holder.image, holder.progress, R.drawable.no_image_large, false);
         // Set prices
         setProductPrice(holder, item);
@@ -92,7 +72,6 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
         holder.itemView.setOnClickListener(this);
         UIUtils.showOrHideViews(View.GONE, holder.percentage, holder.ratingContainer, holder.favourite, holder.newArrivalBadge);
         UIProductUtils.setShopFirst(item, holder.shopFirst);
-
     }
     
     /**
@@ -113,10 +92,6 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
             holder.price.setText("");
         }
     }
-    
-
-
-
 
     /**
      * Get the product from the current data.
@@ -135,10 +110,6 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
         this.mOnViewHolderClicked = listener;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
     @Override
     public void onClick(View view) {
         // Case other sent to listener

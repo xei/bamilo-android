@@ -68,9 +68,8 @@ public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickL
      */
     public ReturnItemViewHolder bind() {
         // Image
-        ImageView image = (ImageView) mItemView.findViewById(R.id.image_view);
+        ImageView image = mItemView.findViewById(R.id.image_view);
         View progress = mItemView.findViewById(R.id.image_loading_progress);
-        //RocketImageLoader.instance.loadImage(mItem.getImageUrl(), image, progress, R.drawable.no_image_large);
         ImageManager.getInstance().loadImage(mItem.getImageUrl(), image, progress, R.drawable.no_image_large, false);
         // Brand
         ((TextView) mItemView.findViewById(R.id.order_return_item_text_brand)).setText(mItem.getBrandName());
@@ -81,8 +80,8 @@ public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickL
         // Order
         ((TextView) mItemView.findViewById(R.id.order_return_item_text_order)).setText(mContext.getString(R.string.order_number_placeholder, mOrder));
         // Return quantity
-        mReturnQuantityText = (TextView) mItemView.findViewById(R.id.order_return_item_text_return_quantity);
-        mReturnQuantityButton = (TextView) mItemView.findViewById(R.id.order_return_item_button_quantity);
+        mReturnQuantityText = mItemView.findViewById(R.id.order_return_item_text_return_quantity);
+        mReturnQuantityButton = mItemView.findViewById(R.id.order_return_item_button_quantity);
         // Return
         return this;
     }

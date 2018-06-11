@@ -36,6 +36,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportLibsVersion}"
     compile "com.android.support:cardview-v7:${supportLibsVersion}"
     compile "com.android.support:support-annotations:${supportLibsVersion}"
+    compile "com.android.support:support-v4:${supportLibsVersion}"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     /** FRAMEWORK **/
     compile 'com.squareup.retrofit:retrofit:1.9.0'
@@ -55,9 +56,6 @@ dependencies {
     /** EMARSYS **/
     compile 'com.scarabresearch:predictsdk:1.0.6'
     compile 'com.emarsys:mobile-engage-sdk:1.2.0'
-    /** GLIDE **/
-    compile 'com.github.bumptech.glide:glide:3.8.0'
-    compile "com.android.support:support-v4:${supportLibsVersion}"
     /** LOCAL **/
     compile fileTree(include: ['*.jar'], exclude: ['json.jar'], dir: 'libs')
     compile 'pl.openrnd.android:multi-level-listview:1.0.1'

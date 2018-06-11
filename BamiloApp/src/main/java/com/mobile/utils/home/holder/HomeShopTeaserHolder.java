@@ -57,7 +57,6 @@ public class HomeShopTeaserHolder extends BaseTeaserViewHolder {
             }
             ((TextView) parent.findViewById(R.id.home_teaser_shop_title)).setText(object.getTitle());
             ((TextView) parent.findViewById(R.id.home_teaser_shop_sub_title)).setText(object.getSubTitle());
-            //RocketImageLoader.instance.loadImage(object.getImage(), (ImageView) parent.findViewById(R.id.home_teaser_item_image), parent.findViewById(R.id.home_teaser_item_progress), R.drawable.no_image_large);
             ImageManager.getInstance().loadImage(object.getImage(), (ImageView) parent.findViewById(R.id.home_teaser_item_image), parent.findViewById(R.id.home_teaser_item_progress), R.drawable.no_image_large, false);
             TeaserViewFactory.setClickableView(parent, object, mParentClickListener, i);
         }

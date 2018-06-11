@@ -60,7 +60,6 @@ public class CountryAdapter extends ArrayAdapter<String> {
         rowView.showImageStartViewVisible();
         textView.setText(values[position]);
         if (flagsList != null && flagsList.length > 0) {
-            //RocketImageLoader.instance.loadImage(flagsList[position], imageView, null, R.drawable.no_image_small);
             ImageManager.getInstance().loadImage(flagsList[position], imageView, null, R.drawable.no_image_large, false);
         }
         return rowView;

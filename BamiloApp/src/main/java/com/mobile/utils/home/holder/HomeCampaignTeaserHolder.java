@@ -136,7 +136,6 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         // More button
         setMoreButton(campaign);
         // Set Image
-        //RocketImageLoader.instance.loadImage(campaign.getImage(), image, progress, R.drawable.no_image_large);
         ImageManager.getInstance().loadImage(campaign.getImage(), image, progress, R.drawable.no_image_large, false);
         // Set timer
         title.setText(campaign.getTitle());

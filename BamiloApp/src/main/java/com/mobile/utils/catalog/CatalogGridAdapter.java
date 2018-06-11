@@ -2,6 +2,7 @@ package com.mobile.utils.catalog;
 
 import android.content.Context;
 import android.media.Image;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -153,7 +154,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
      * @see android.support.v7.widget.RecyclerView.Adapter#onBindViewHolder(android.support.v7.widget.RecyclerView.ViewHolder, int)
      */
     @Override
-    public void onBindViewHolder(ProductListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductListViewHolder holder, int position) {
         // Set animation
         setAnimation(holder, position);
         // Case header
@@ -319,7 +320,6 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
             // just in order to have a position tag in order to not crash on the onCLick
             holder.itemView.setTag(R.id.position, -1);
             // Set image
-            //RocketImageLoader.instance.loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large);
             ImageManager.getInstance().loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large, false);
         }
     }
