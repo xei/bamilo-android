@@ -57,7 +57,7 @@ class NpsNumberPicker : NumberPicker {
     }
 
     interface OnNpsOptionChangeListener {
-        fun changeImage(imageUrl: String)
+        fun changeImage(imageUrl: String?)
     }
 
 }
