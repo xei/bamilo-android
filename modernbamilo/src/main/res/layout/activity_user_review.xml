@@ -1,9 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".userreview.UserReviewActivity">
 
-</android.support.constraint.ConstraintLayout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.bamilo.modernbamilo.userreview.UserReviewViewModel" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".userreview.UserReviewActivity" >
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/activityUserReview_toolbar_toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:contentInsetRight="0dp"
+            android:contentInsetEnd="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetEnd="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/activityUserReview_xeiButton_next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/imageButton"
+                app:layout_constraintTop_toBottomOf="@+id/imageButton">
+
+                <ImageButton
+                    android:id="@+id/activityUserReview_imageButton_closeBtn"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@null"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:contentDescription="Close Button"
+                    app:srcCompat="@drawable/ic_close_24dp" />
+
+                <com.bamilo.modernbamilo.customview.XeiTextView
+                    android:id="@+id/activityUserReview_textView_surveyTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_toLeftOf="@+id/activityUserReview_imageButton_closeBtn"
+                    android:gravity="start|center_vertical"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
+                    android:textColor="@color/userReview_title"
+                    android:textSize="18sp"
+                    app:locale="auto"
+                    app:style="bold"
+                    tools:text="ما را در بهبود فرآیند خرید یاری کنید" />
+
+                <View
+                    android:id="@+id/activityUserReview_view_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="#48ffffff"
+                    android:layout_below="@+id/activityUserReview_imageButton_closeBtn"
+                    />
+
+                <com.bamilo.modernbamilo.userreview.stepperview.StepperView
+                    android:id="@+id/activityUserReview_stepperView_stepper"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/activityUserReview_view_divider"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+        <FrameLayout
+            android:id="@+id/activityUserReview_frameLayout_reviewPage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/activityUserReview_xeiButton_next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activityUserReview_toolbar_toolbar"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.bamilo.modernbamilo.customview.XeiButton
+            android:id="@+id/activityUserReview_xeiButton_next"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:background="@color/userReview_button_next"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:textColor="@color/userReview_buttonText_next"
+            android:text="بعدی"
+            android:textSize="18sp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:locale="auto"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
