@@ -22,9 +22,10 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
                     'proguard-rules-glide.pro'
+                    'proguard-rules-logs.pro'
                     'proguard-rules-retrofit.pro'
         }
     }
