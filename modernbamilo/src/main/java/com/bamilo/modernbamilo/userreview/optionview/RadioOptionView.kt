@@ -16,6 +16,8 @@ class RadioOptionView : RelativeLayout {
 
     private lateinit var mTextTextView: TextView
 
+    private var mIsOptionSelected = false
+
     companion object {
         fun getRainbow(n: Int): IntArray {
             return getInterpolatedColors(Color.RED, Color.GREEN, n)
@@ -56,11 +58,15 @@ class RadioOptionView : RelativeLayout {
         mTextTextView.text = text
     }
 
+    fun isOptionSelected() = mIsOptionSelected
+
     fun select() {
+        mIsOptionSelected = true
         mTextTextView.alpha = 0.8f
     }
 
     fun deselect() {
+        mIsOptionSelected = false
         mTextTextView.alpha = 1f
     }
 

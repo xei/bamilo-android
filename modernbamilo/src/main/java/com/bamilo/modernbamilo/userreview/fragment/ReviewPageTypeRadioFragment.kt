@@ -84,10 +84,14 @@ class ReviewPageTypeRadioFragment : ReviewPageBaseFragment() {
         for (i in 0 until mViewModel.options.size) {
             val optionButton = RadioOptionView(context!!, 300, 56, 16, 16, 16, 16, rainbow[i])
             optionButton.setText(mViewModel.options[i].title)
-            if (true || i % 2 == 0) {
-                optionButton.select()
-            } else {
-                optionButton.deselect()
+            optionButton.setOnClickListener {
+                if (optionButton.isOptionSelected()) {
+                    optionButton.deselect()
+                    // TODO update model
+                } else {
+                    optionButton.select()
+                    // TODO update model
+                }
             }
             mOptionsContainerLinearLayout.addView(optionButton)
         }
