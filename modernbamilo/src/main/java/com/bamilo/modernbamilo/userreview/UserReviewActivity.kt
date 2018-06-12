@@ -83,8 +83,20 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
         when(clickedView?.id) {
             R.id.activityUserReview_imageButton_closeBtn -> finish()
             R.id.activityUserReview_xeiButton_next -> {
-                mStepperView.setCurrentPage(++mPageNo)
-                replaceFragmentInActivityWithAnim(mPagesFragmentList[mPageNo], R.id.activityUserReview_frameLayout_reviewPage)
+
+                when (mPageNo) {
+                    mPagesFragmentList.size - 1 -> TODO("submit request")
+                    mPagesFragmentList.size - 2 -> {
+                        mStepperView.setCurrentPage(++mPageNo)
+                        replaceFragmentInActivityWithAnim(mPagesFragmentList[mPageNo], R.id.activityUserReview_frameLayout_reviewPage)
+                        mNextButton.text = "بستن"
+                    }
+                    else -> {
+                        mStepperView.setCurrentPage(++mPageNo)
+                        replaceFragmentInActivityWithAnim(mPagesFragmentList[mPageNo], R.id.activityUserReview_frameLayout_reviewPage)
+                    }
+                }
+
             }
         }
     }
@@ -92,8 +104,16 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
     override fun onBackPressed() {
         super.onBackPressed()
 
-        if (mPageNo > 0) {
-            mStepperView.setCurrentPage(--mPageNo)
+        when (mPageNo) {
+            mPagesFragmentList.size - 1 -> {
+                mNextButton.text = "بعدی"
+                mStepperView.setCurrentPage(--mPageNo)
+            }
+            else -> {
+                if (mPageNo > 0) {
+                    mStepperView.setCurrentPage(--mPageNo)
+                }
+            }
         }
 
     }
