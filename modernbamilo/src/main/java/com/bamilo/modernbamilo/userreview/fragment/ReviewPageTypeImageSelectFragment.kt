@@ -35,6 +35,7 @@ class ReviewPageTypeImageSelectFragment : ReviewPageBaseFragment() {
 
     private lateinit var mViewModel: Question
 
+    private var mFragmentIndex = -1
     private var mProductImageUrl: String? = null
 
     companion object {
@@ -46,9 +47,10 @@ class ReviewPageTypeImageSelectFragment : ReviewPageBaseFragment() {
          * @return A new instance of fragment ReviewPageTypeRadioFragment.
          */
         @JvmStatic
-        fun newInstance(productImageUrl: String?) =
+        fun newInstance(fragmentIndex: Int, productImageUrl: String?) =
                 ReviewPageTypeImageSelectFragment().apply {
                     arguments = Bundle().apply {
+                        putInt(ARG_PARAM_FRAGMENT_INDEX, fragmentIndex)
                         putString(ARG_PARAM_PRODUCT_IMAGE_URL, productImageUrl)
                     }
                 }
@@ -58,6 +60,7 @@ class ReviewPageTypeImageSelectFragment : ReviewPageBaseFragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
+            mFragmentIndex = it.getInt(ARG_PARAM_FRAGMENT_INDEX)
             mProductImageUrl = it.getString(ARG_PARAM_PRODUCT_IMAGE_URL)
         }
 

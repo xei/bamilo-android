@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment
 import com.bamilo.modernbamilo.userreview.ReviewPageType
 
 
+const val ARG_PARAM_FRAGMENT_INDEX = "ARG_PARAM_FRAGMENT_INDEX"
 const val ARG_PARAM_PRODUCT_IMAGE_URL = "ARG_PARAM_PRODUCT_IMAGE_URL"
-private const val ARG_PARAM = "param"
 
 open class ReviewPageBaseFragment : Fragment() {
 
@@ -20,18 +20,18 @@ open class ReviewPageBaseFragment : Fragment() {
          * @return A new instance of fragment BlankFragment.
          */
         @JvmStatic
-        fun newInstance(pageType: ReviewPageType, productImageUrl: String?) =
+        fun newInstance(pageType: ReviewPageType,fragmentIndex: Int, productImageUrl: String?) =
 
                 when (pageType) {
 
-                    ReviewPageType.RADIO -> ReviewPageTypeRadioFragment.newInstance(productImageUrl)
+                    ReviewPageType.RADIO -> ReviewPageTypeRadioFragment.newInstance(fragmentIndex, productImageUrl)
 
-                    ReviewPageType.CHECKBOX -> ReviewPageTypeCheckboxFragment.newInstance(productImageUrl)
+                    ReviewPageType.CHECKBOX -> ReviewPageTypeCheckboxFragment.newInstance(fragmentIndex, productImageUrl)
 
-                    ReviewPageType.TEXTBOX, ReviewPageType.ESSAY  -> ReviewPageTypeEssayFragment.newInstance(productImageUrl)
+                    ReviewPageType.TEXTBOX, ReviewPageType.ESSAY  -> ReviewPageTypeEssayFragment.newInstance(fragmentIndex, productImageUrl)
 
-                    ReviewPageType.IMAGE_SELECT -> ReviewPageTypeImageSelectFragment.newInstance(productImageUrl)
-                    ReviewPageType.NPS -> ReviewPageTypeNpsFragment.newInstance(productImageUrl)
+                    ReviewPageType.IMAGE_SELECT -> ReviewPageTypeImageSelectFragment.newInstance(fragmentIndex, productImageUrl)
+                    ReviewPageType.NPS -> ReviewPageTypeNpsFragment.newInstance(fragmentIndex, productImageUrl)
 
                     ReviewPageType.THANKS -> ReviewPageTypeThanksFragment.newInstance()
 

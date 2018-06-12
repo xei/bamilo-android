@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
+import com.bamilo.modernbamilo.userreview.UserReviewActivity
 import com.bamilo.modernbamilo.userreview.optionview.CheckboxOptionView
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Question
 import com.bamilo.modernbamilo.util.extension.loadImageFromNetwork
@@ -30,6 +31,7 @@ class ReviewPageTypeCheckboxFragment : ReviewPageBaseFragment() {
 
     private lateinit var mViewModel: Question
 
+    private var mFragmentIndex = -1
     private var mProductImageUrl: String? = null
 
     companion object {
@@ -41,9 +43,10 @@ class ReviewPageTypeCheckboxFragment : ReviewPageBaseFragment() {
          * @return A new instance of fragment ReviewPageTypeRadioFragment.
          */
         @JvmStatic
-        fun newInstance(productImageUrl: String?) =
+        fun newInstance(fragmentIndex: Int, productImageUrl: String?) =
                 ReviewPageTypeCheckboxFragment().apply {
                     arguments = Bundle().apply {
+                        putInt(ARG_PARAM_FRAGMENT_INDEX, fragmentIndex)
                         putString(ARG_PARAM_PRODUCT_IMAGE_URL, productImageUrl)
                     }
                 }
@@ -53,10 +56,11 @@ class ReviewPageTypeCheckboxFragment : ReviewPageBaseFragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
+            mFragmentIndex = it.getInt(ARG_PARAM_FRAGMENT_INDEX)
             mProductImageUrl = it.getString(ARG_PARAM_PRODUCT_IMAGE_URL)
         }
 
-        mViewModel = createMockData()
+        mViewModel = (activity as UserReviewActivity).getSurvey().pages[0].questions[mFragmentIndex]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
