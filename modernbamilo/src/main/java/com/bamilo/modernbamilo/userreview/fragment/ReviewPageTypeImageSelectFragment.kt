@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
+import com.bamilo.modernbamilo.userreview.UserReviewActivity
 import com.bamilo.modernbamilo.userreview.optionview.ImageOptionView
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Question
 import com.bamilo.modernbamilo.util.dpToPx
@@ -64,7 +65,8 @@ class ReviewPageTypeImageSelectFragment : ReviewPageBaseFragment() {
             mProductImageUrl = it.getString(ARG_PARAM_PRODUCT_IMAGE_URL)
         }
 
-        mViewModel = createMockData()
+        mViewModel = (activity as UserReviewActivity)
+                .getSurvey().pages[mFragmentIndex].questions[mFragmentIndex]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

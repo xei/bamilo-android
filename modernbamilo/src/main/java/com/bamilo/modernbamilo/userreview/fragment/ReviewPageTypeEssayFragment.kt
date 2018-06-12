@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
+import com.bamilo.modernbamilo.userreview.UserReviewActivity
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Question
 import com.bamilo.modernbamilo.util.extension.loadImageFromNetwork
 import com.google.gson.Gson
@@ -57,7 +58,8 @@ class ReviewPageTypeEssayFragment : ReviewPageBaseFragment() {
             mProductImageUrl = it.getString(ARG_PARAM_PRODUCT_IMAGE_URL)
         }
 
-        mViewModel = createMockData()
+        mViewModel = (activity as UserReviewActivity)
+                .getSurvey().pages[mFragmentIndex].questions[mFragmentIndex]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -76,32 +78,4 @@ class ReviewPageTypeEssayFragment : ReviewPageBaseFragment() {
         return rootView
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private fun createMockData(): Question {
-
-        val str = "{\n" +
-                "\"id\":7,\n" +
-                "\"title\":\"آیا نکته\u200Cای هست که مایل باشید با ما در میان بگذارید؟\",\n" +
-                "\"type\":\"ESSAY\",\n" +
-                "\"required\":false,\n" +
-                "\"hidden\":false,\n" +
-                "\"options\":[{\n" +
-                "}]\n" +
-                "}"
-        return Gson().fromJson(str, object : TypeToken<Question>() {}.type)
-    }
 }

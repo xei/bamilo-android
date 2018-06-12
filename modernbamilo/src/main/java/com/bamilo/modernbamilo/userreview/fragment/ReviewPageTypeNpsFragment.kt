@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
+import com.bamilo.modernbamilo.userreview.UserReviewActivity
 import com.bamilo.modernbamilo.userreview.optionview.NpsNumberPicker
 import com.bamilo.modernbamilo.userreview.optionview.RadioOptionView
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Question
@@ -65,7 +66,8 @@ class ReviewPageTypeNpsFragment : ReviewPageBaseFragment() {
             mProductImageUrl = it.getString(ARG_PARAM_PRODUCT_IMAGE_URL)
         }
 
-        mViewModel = createMockData()
+        mViewModel = (activity as UserReviewActivity)
+                .getSurvey().pages[mFragmentIndex].questions[mFragmentIndex]
 
     }
 
@@ -99,59 +101,4 @@ class ReviewPageTypeNpsFragment : ReviewPageBaseFragment() {
         return rootView
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private fun createMockData(): Question {
-
-        val str = "{\n" +
-                "\"id\":3,\n" +
-                "\"title\":\"چه عاملی باعث شد تا از ما خرید کنید؟\",\n" +
-                "\"type\":\"CHECKBOX\",\n" +
-                "\"required\":false,\n" +
-                "\"hidden\":false,\n" +
-                "\"options\":[\n" +
-                "{\"id\":10011,\n" +
-                "\"title\":\"۱\",\n" +
-                "\"value\":10011,\n" +
-                "\"image\":\"https://www.colourbox.com/preview/4911064-wooden-numeric-1.jpg\",\n" +
-                "\"other\":false\n" +
-                "},\n" +
-                "{\n" +
-                "\"id\":10012,\n" +
-                "\"title\":\"۲\",\n" +
-                "\"value\":10012,\n" +
-                "\"image\":\"https://www.colourbox.com/preview/4911077-wooden-numeric-2.jpg\",\n" +
-                "\"other\":false\n" +
-                "},\n" +
-                "{\n" +
-                "\"id\":10013,\n" +
-                "\"title\":\"۳\",\n" +
-                "\"value\":10013,\n" +
-                "\"image\":\"https://www.colourbox.com/preview/4911081-wooden-numeric-3.jpg\",\n" +
-                "\"other\":false\n" +
-                "},\n" +
-                "{\n" +
-                "\"id\":10014,\n" +
-                "\"title\":\"۴\",\n" +
-                "\"value\":10014,\n" +
-                "\"image\":\"https://www.colourbox.com/preview/4911092-wooden-numeric-4.jpg\",\n" +
-                "\"other\":true\n" +
-                "}\n" +
-                "]\n" +
-                "}"
-        return Gson().fromJson(str, object : TypeToken<Question>() {}.type)
-    }
 }

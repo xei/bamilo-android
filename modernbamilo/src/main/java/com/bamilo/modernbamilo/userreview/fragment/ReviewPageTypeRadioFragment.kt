@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
+import com.bamilo.modernbamilo.userreview.UserReviewActivity
 import com.bamilo.modernbamilo.userreview.optionview.RadioOptionView
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Question
 import com.bamilo.modernbamilo.util.extension.loadImageFromNetwork
@@ -61,7 +62,8 @@ class ReviewPageTypeRadioFragment : ReviewPageBaseFragment() {
             mProductImageUrl = it.getString(ARG_PARAM_PRODUCT_IMAGE_URL)
         }
 
-        mViewModel = createMockData()
+        mViewModel = (activity as UserReviewActivity)
+                .getSurvey().pages[mFragmentIndex].questions[mFragmentIndex]
 
     }
 
@@ -93,67 +95,4 @@ class ReviewPageTypeRadioFragment : ReviewPageBaseFragment() {
         return rootView
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private fun createMockData(): Question {
-
-        val str = "{\n" +
-                "              \"id\": 2,\n" +
-                "              \"title\": \"میزان رضایت شما از تجربه\u200Cی «خرید آنلاین» خود در بامیلو چقدر است؟\",\n" +
-                "              \"type\": \"RADIO\",\n" +
-                "              \"required\": false,\n" +
-                "              \"hidden\": false,\n" +
-                "              \"options\": [\n" +
-                "                {\n" +
-                "                  \"id\": 10001,\n" +
-                "                  \"title\": \"خیلی زیاد\",\n" +
-                "                  \"value\": 10001,\n" +
-                "                  \"image\": null,\n" +
-                "                  \"other\": false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                  \"id\": 10002,\n" +
-                "                  \"title\": \"زیاد\",\n" +
-                "                  \"value\": 10002,\n" +
-                "                  \"image\": null,\n" +
-                "                  \"other\": false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                  \"id\": 10003,\n" +
-                "                  \"title\": \"متوسط\",\n" +
-                "                  \"value\": 10003,\n" +
-                "                  \"image\": null,\n" +
-                "                  \"other\": false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                  \"id\": 10004,\n" +
-                "                  \"title\": \"کم\",\n" +
-                "                  \"value\": 10004,\n" +
-                "                  \"image\": null,\n" +
-                "                  \"other\": false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                  \"id\": 10005,\n" +
-                "                  \"title\": \"اصلاً\",\n" +
-                "                  \"value\": 10005,\n" +
-                "                  \"image\": null,\n" +
-                "                  \"other\": false\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            }"
-        return Gson().fromJson(str, object : TypeToken<Question>() {}.type)
-    }
 }

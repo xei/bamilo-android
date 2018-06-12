@@ -60,7 +60,8 @@ class ReviewPageTypeCheckboxFragment : ReviewPageBaseFragment() {
             mProductImageUrl = it.getString(ARG_PARAM_PRODUCT_IMAGE_URL)
         }
 
-        mViewModel = (activity as UserReviewActivity).getSurvey().pages[0].questions[mFragmentIndex]
+        mViewModel = (activity as UserReviewActivity)
+                .getSurvey().pages[mFragmentIndex].questions[mFragmentIndex]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -88,103 +89,13 @@ class ReviewPageTypeCheckboxFragment : ReviewPageBaseFragment() {
                 optionButton.deselect()
             }
             mOptionsContainer.addView(optionButton)
-
-            val dividerView = LayoutInflater.from(context).inflate(R.layout.layout_divider_horizontal, mOptionsContainer, false)
-            mOptionsContainer.addView(dividerView)
+            mOptionsContainer.addView(
+                    LayoutInflater
+                            .from(context)
+                            .inflate(R.layout.layout_divider_horizontal, mOptionsContainer, false))
         }
 
         return rootView
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private fun createMockData(): Question {
-
-        val str = "{\n" +
-                "\"id\":3,\n" +
-                "\"title\":\"چه عاملی باعث شد تا از ما خرید کنید؟\",\n" +
-                "\"type\":\"CHECKBOX\",\n" +
-                "\"required\":false,\n" +
-                "\"hidden\":false,\n" +
-                "\"options\":[\n" +
-                "{\n" +
-                "\"id\":10006,\n" +
-                "\"title\":\"قیمت\",\n" +
-                "\"value\":10006,\n" +
-                "\"image\":null,\n" +
-                "\"other\":false\n" +
-                "},\n" +
-                "{\n" +
-                "\"id\":10007,\n" +
-                "\"title\":\"ارسال رایگان\",\n" +
-                "\"value\":10007,\n" +
-                "\"image\":null,\n" +
-                "\"other\":false\n" +
-                "},\n" +
-                "{\n" +
-                "\"id\":10008,\n" +
-                "\"title\":\"کد تخفیف\",\n" +
-                "\"value\":10008,\n" +
-                "\"image\":null,\n" +
-                "\"other\":false\n" +
-                "},\n" +
-                "{\n" +
-                "\"id\":10009,\n" +
-                "\"title\":\"بامیلو اولین نتیجه\u200Cی جست\u200Cوجوی من بود\",\n" +
-                "\"value\":10009,\n" +
-                "\"image\":null,\n" +
-                "\"other\":false\n" +
-                "},\n" +
-                "{\n" +
-                "\"id\":10010,\n" +
-                "\"title\":\"پیشنهاد دوستان\",\n" +
-                "\"value\":10010,\n" +
-                "\"image\":null,\n" +
-                "\"other\":false\n" +
-                "},\n" +
-                "{\n" +
-                "\"id\":10011,\n" +
-                "\"title\":\"نظرات کاربران\",\n" +
-                "\"value\":10011,\n" +
-                "\"image\":null,\n" +
-                "\"other\":false\n" +
-                "},\n" +
-                "{\n" +
-                "\"id\":10012,\n" +
-                "\"title\":\"۱۰۰ روز ضمانت بازگشت کالا\",\n" +
-                "\"value\":10012,\n" +
-                "\"image\":null,\n" +
-                "\"other\":false\n" +
-                "},\n" +
-                "{\n" +
-                "\"id\":10013,\n" +
-                "\"title\":\"تنوع محصولات و فروشندگان\",\n" +
-                "\"value\":10013,\n" +
-                "\"image\":null,\n" +
-                "\"other\":false\n" +
-                "},\n" +
-                "{\n" +
-                "\"id\":10014,\n" +
-                "\"title\":\"سایر موارد\",\n" +
-                "\"value\":10014,\n" +
-                "\"image\":null,\n" +
-                "\"other\":true\n" +
-                "}\n" +
-                "]\n" +
-                "}"
-        return Gson().fromJson(str, object : TypeToken<Question>() {}.type)
-    }
 }
