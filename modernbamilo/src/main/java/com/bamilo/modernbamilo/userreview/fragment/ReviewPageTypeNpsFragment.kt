@@ -4,6 +4,7 @@ package com.bamilo.modernbamilo.userreview.fragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.AppCompatImageView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +14,10 @@ import android.widget.TextView
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.userreview.UserReviewActivity
 import com.bamilo.modernbamilo.userreview.optionview.NpsNumberPicker
-import com.bamilo.modernbamilo.userreview.optionview.RadioOptionView
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Question
 import com.bamilo.modernbamilo.util.extension.loadImageFromNetwork
-import com.bumptech.glide.Glide
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+
+private const val TAG_DEBUG = "ReviewPageTypeNps"
 
 
 /**
@@ -90,8 +89,13 @@ class ReviewPageTypeNpsFragment : ReviewPageBaseFragment() {
 //        mViewModel.options = arrayOf("۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۱۰")
 
         mNpsOptionsNumberPicker.setOnNpsOptionChangeListener(object: NpsNumberPicker.OnNpsOptionChangeListener {
-            override fun changeImage(imageUrl: String) {
-                mNpsOptionImageImageView.loadImageFromNetwork(imageUrl)
+            override fun changeImage(imageUrl: String?) {
+                try {
+                    mNpsOptionImageImageView.loadImageFromNetwork(imageUrl!!)
+                } catch (npe: NullPointerException) {
+                    Log.e(TAG_DEBUG, "image url is null")
+                }
+
             }
 
         })

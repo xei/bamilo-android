@@ -87,8 +87,12 @@ class ReviewPageTypeImageSelectFragment : ReviewPageBaseFragment() {
             val param = LinearLayout.LayoutParams(dpToPx(context!!, 48f), dpToPx(context!!, 48f), 1f)
             param.setMargins(8,8,8,8)
             option.layoutParams = param
-            if (!mViewModel.options[i].image.isEmpty()) {
-                option.loadImageFromNetwork(mViewModel.options[i].image)
+            try {
+                if (!mViewModel.options[i].image.isEmpty()) {
+                    option.loadImageFromNetwork(mViewModel.options[i].image)
+                }
+            } catch (npe: NullPointerException) {
+                Log.e(TAG_DEBUG, npe.message)
             }
             mOptionsContainer.addView(option)
         }

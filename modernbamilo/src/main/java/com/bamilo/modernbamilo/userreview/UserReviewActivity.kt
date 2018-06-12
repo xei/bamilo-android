@@ -44,17 +44,18 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
         val surveyTitle = createMockData().metadata.survey.title
         mSurveyTitleTextView.text = surveyTitle
 
-        mSurvey.pages[0].questions.forEachIndexed { i: Int, page: Question ->
+        var i = 0
+        mSurvey.pages[0].questions.forEach {page: Question ->
             if(!page.hidden && page.type != ReviewPageType.HIDDEN.name) {
                 mPagesFragmentList.add(
                         ReviewPageBaseFragment.newInstance(ReviewPageType.valueOf(page.type),
-                                i,
+                                i++,
                                 mSurvey.product?.image))
             }
         }
         mPagesFragmentList.add(
                 ReviewPageBaseFragment.newInstance(ReviewPageType.THANKS,
-                        mPagesFragmentList.size,
+                        i,
                         null))
 
         mStepperView.setPagesCount(mPagesFragmentList.size)
