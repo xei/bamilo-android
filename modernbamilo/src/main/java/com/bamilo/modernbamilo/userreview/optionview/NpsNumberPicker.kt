@@ -29,7 +29,7 @@ class NpsNumberPicker : NumberPicker {
 
     private fun init() {
         typeface = TypeFaceHelper.getInstance(context).getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_BOLD)
-        setOnValueChangedListener { picker, oldVal, newVal ->
+        setOnValueChangedListener { _, _, newVal ->
             mOnNpsOptionChangeListener.changeImage(mOptions[newVal - 1].image)
         }
     }
