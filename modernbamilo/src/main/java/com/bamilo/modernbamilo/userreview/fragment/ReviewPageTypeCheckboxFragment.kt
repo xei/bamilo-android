@@ -61,7 +61,7 @@ class ReviewPageTypeCheckboxFragment : ReviewPageBaseFragment() {
         }
 
         mViewModel = (activity as UserReviewActivity)
-                .getSurvey().pages[mFragmentIndex].questions[mFragmentIndex]
+                .getSurvey().pages[0].questions[mFragmentIndex]
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
