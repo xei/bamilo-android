@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.userreview.fragment.ReviewPageBaseFragment
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.GetSurveyResponse
+import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Question
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Survey
 import com.bamilo.modernbamilo.userreview.stepperview.StepperView
 import com.bamilo.modernbamilo.util.extension.replaceFragmentInActivity
@@ -43,18 +44,23 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
         val surveyTitle = createMockData().metadata.survey.title
         mSurveyTitleTextView.text = surveyTitle
 
-
-        for (page in mSurvey.pages[0].questions) {
+        mSurvey.pages[0].questions.forEachIndexed { i: Int, page: Question ->
             if(!page.hidden && page.type != ReviewPageType.HIDDEN.name) {
-                mPagesFragmentList.add(ReviewPageBaseFragment.newInstance(ReviewPageType.valueOf(page.type), mSurvey.product?.image))
+                mPagesFragmentList.add(
+                        ReviewPageBaseFragment.newInstance(ReviewPageType.valueOf(page.type),
+                                i,
+                                mSurvey.product?.image))
             }
         }
-        mPagesFragmentList.add(ReviewPageBaseFragment.newInstance(ReviewPageType.THANKS, null))
+        mPagesFragmentList.add(
+                ReviewPageBaseFragment.newInstance(ReviewPageType.THANKS,
+                        mPagesFragmentList.size,
+                        null))
+
         mStepperView.setPagesCount(mPagesFragmentList.size)
         mStepperView.setCurrentPage(mPageNo)
 
         replaceFragmentInActivity(mPagesFragmentList[mPageNo], R.id.activityUserReview_frameLayout_reviewPage)
-
 
     }
 
@@ -69,6 +75,8 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
         mCloseBtnImageButton.setOnClickListener(this)
         mNextButton.setOnClickListener(this)
     }
+
+    fun getSurvey() = mSurvey
 
     override fun onClick(clickedView: View?) {
         when(clickedView?.id) {
