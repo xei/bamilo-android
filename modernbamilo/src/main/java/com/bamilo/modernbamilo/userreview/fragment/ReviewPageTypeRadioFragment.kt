@@ -1,6 +1,7 @@
 package com.bamilo.modernbamilo.userreview.fragment
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.AppCompatImageView
@@ -82,7 +83,15 @@ class ReviewPageTypeRadioFragment : ReviewPageBaseFragment() {
         }
         val rainbow = RadioOptionView.getRainbow(mViewModel.options.size)
         for (i in 0 until mViewModel.options.size) {
-            val optionButton = RadioOptionView(context!!, 300, 56, 16, 16, 16, 16, rainbow[i])
+
+            var color: Int? = null
+
+            try {
+                color = Color.parseColor(mViewModel.options[i].color)
+            } catch (e: Exception) {
+
+            }
+            val optionButton = RadioOptionView(context!!, 300, 56, 16, 16, 16, 16, if (color != null) color else rainbow[i])
             optionButton.setText(mViewModel.options[i].title)
             optionButton.setOnClickListener {
                 optionButton.select()
