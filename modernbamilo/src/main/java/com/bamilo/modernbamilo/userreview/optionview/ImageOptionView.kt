@@ -6,8 +6,22 @@ import com.bamilo.modernbamilo.R
 
 class ImageOptionView(context: Context) : ImageView(context) {
 
+    private var isOptionSelected: Boolean? = null
+
     init {
-        setBackgroundResource(R.drawable.background_imageoption_survey)
+        setBackgroundResource(R.drawable.background_imageoption_survey_deselected)
+    }
+
+    fun isOptionSelected() = isOptionSelected
+
+    fun select() {
+        isOptionSelected = true
+        setBackgroundResource(R.drawable.background_imageoption_survey_selected)
+    }
+
+    fun deselect() {
+        isOptionSelected = false
+        setBackgroundResource(R.drawable.background_imageoption_survey_deselected)
     }
 
 }
