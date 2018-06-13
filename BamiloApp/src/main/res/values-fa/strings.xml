@@ -152,7 +152,8 @@
     <string name="product_delivery_days">روز</string>
     <string name="product_delivery_time">تحویل در:</string>
     <string name="product_outof_stock">کالا موجود نیست.</string>
-    <string name="specifications">مشخصات کالا</string>
+    <string name="product_specifications">مشخصات کالا</string>
+    <string name="specifications">مشخصات</string>
     <string name="product_variance_choose">لطفا انتخاب کنید</string>
     <string name="product_variance_choose_error">لطفا یکی از موارد را انتخاب کنید</string>
     <string name="product_variant_placeholder">&#8230;</string>
@@ -246,6 +247,7 @@
     <string name="featured_stores">مجموعه های منتخب</string>
     <string name="top_sellers">پرفروش ترین ها</string>
     <string name="description">توضیحات</string>
+    <string name="product_description">توضیحات کالا</string>
     <string name="kickout_page_title">از پیشنهادات ویژه ما استقبال زیادی شده است!</string>
     <string name="kickout_page_text1">به اندازه ای که ظرفیت فروشگاه تکمیل گردیده و امکان خدمت رسانی به مشتریان جدید در این زمان امکان پذیر نمی باشد.</string>
     <string name="kickout_page_text2">ما می خواهیم تجربه ی خریدی دلپذیر را برای شما فراهم آوریم، و به همین دلیل از شما تقاضا می کنیم که دقایقی دیگر مراجعه نمائید.</string>
@@ -293,7 +295,6 @@
     <string name="policy">قوانین و سیاست ها</string>
     <string name="shipment">روش ارسال ‎%1$d‎ از ‎%2$d‎</string>
     <string name="delivery_time_placeholder">زمان تحویل: ‎%1$d‎ - ‎%2$d‎ روز کاری</string>
-    <string name="product_specifications">مشخصات کالا</string>
     <string name="ssl_error_host_mismatch">نام میزبان با گواهینامه SSL مطابقت ندارد: %s</string>
     <string name="ssl_error_generic">خطای SSL: %s</string>
     <string name="save_for_later">ذخیره در کالاهای مورد علاقه</string>

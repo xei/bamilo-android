@@ -14,7 +14,7 @@ import com.mobile.service.objects.product.ImageUrls;
 import com.mobile.service.utils.CollectionUtils;
 import com.mobile.service.utils.DeviceInfoHelper;
 import com.mobile.service.utils.output.Print;
-import com.mobile.view.fragments.ProductDetailsFragment;
+import com.mobile.view.fragments.OldProductDetailsFragment;
 
 import java.util.ArrayList;
 
@@ -84,7 +84,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     protected void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        if(mViewPager != null) mViewPager.setCurrentItem(ProductDetailsFragment.sSharedSelectedPosition);
+        if(mViewPager != null) mViewPager.setCurrentItem(OldProductDetailsFragment.sSharedSelectedPosition);
     }
 
     /*
@@ -96,7 +96,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     protected void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        ProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
+        OldProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
     }
 
     /*
@@ -183,7 +183,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
      */
     private void onClickCloseButton() {
         Print.i(TAG, "ON CLICK CLOSE BUTTON");
-        ProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
+        OldProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
         finish();
     }
 

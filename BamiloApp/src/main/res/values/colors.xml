@@ -196,4 +196,7 @@
         <item>#ECEBDE</item>
     </array>
 
+    <color name="secondary_text_color">#757575</color>
+    <color name="primary_text_color">#434343</color>
+
 </resources>

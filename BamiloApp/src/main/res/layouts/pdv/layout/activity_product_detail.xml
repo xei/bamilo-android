@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="productDetail_viewModel"
+            type="com.mobile.view.productdetail.ProductDetailViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/blue_app_primary">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/productDetail_appImageView_back"
+                android:layout_width="@dimen/dimen_40dp"
+                android:layout_height="@dimen/dimen_40dp"
+                android:layout_margin="@dimen/dimen_8dp"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/dimen_8dp"
+                android:background="?attr/selectableItemBackground"
+                app:srcCompat="@drawable/ic_arrow_back_white"/>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/productDetail_appImageView_cart"
+                android:layout_width="@dimen/dimen_40dp"
+                android:layout_height="@dimen/dimen_40dp"
+                android:layout_margin="@dimen/dimen_8dp"
+                android:layout_alignParentLeft="true"
+                android:padding="@dimen/dimen_8dp"
+                android:background="?attr/selectableItemBackground"
+                app:srcCompat="@drawable/btn_cart"/>
+
+        </RelativeLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/productDetail_swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/productDetail_recycler_detailList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+</layout>

@@ -106,9 +106,9 @@ import de.akquinet.android.androlog.Log;
  *
  * @author spereira
  */
-public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnDialogListListener, TargetLink.OnAppendDataListener {
+public class OldProductDetailsFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnDialogListListener, TargetLink.OnAppendDataListener {
 
-    private final static String TAG = ProductDetailsFragment.class.getSimpleName();
+    private final static String TAG = OldProductDetailsFragment.class.getSimpleName();
 
     public static int sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
     private static String categoryTree = "";
@@ -156,7 +156,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * Empty constructor
      */
-    public ProductDetailsFragment() {
+    public OldProductDetailsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.PRODUCT,
                 R.layout.pdv_fragment_main,
@@ -753,7 +753,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             return;
         }
         // Title
-        ((TextView) mSpecificationsView.findViewById(R.id.pdv_specs_title)).setText(getString(R.string.specifications));
+        ((TextView) mSpecificationsView.findViewById(R.id.pdv_specs_title)).setText(getString(R.string.product_specifications));
         // Multi line
         ((TextView) mSpecificationsView.findViewById(R.id.pdv_specs_multi_line)).setText(features);
         // Button

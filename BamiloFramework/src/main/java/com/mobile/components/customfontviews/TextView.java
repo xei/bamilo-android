@@ -3,6 +3,7 @@ package com.mobile.components.customfontviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
@@ -10,7 +11,7 @@ import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
 import com.mobile.framework.R;
 import com.mobile.service.utils.convertor.PersinConvertor;
 
-public class TextView extends android.widget.TextView implements FontStyleProvider {
+public class TextView extends AppCompatTextView implements FontStyleProvider {
     private String mFontFamily;
     private int mFontStyle;
 
@@ -27,7 +28,6 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
         TextView.construct(this, context, attrs, defStyle);
     }
 
-    
     public static <T extends android.widget.TextView & FontStyleProvider> void construct(T textView, Context context, AttributeSet attrs, int defStyle) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextView, defStyle, 0);
         final int textAppearance = a.getResourceId(R.styleable.TextView_android_textAppearance, 0);
@@ -83,36 +83,6 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
     }
 
     public static <T extends android.widget.TextView & FontStyleProvider> void setTextAppearance(T textView, TypedArray appearance) {
-//        // android:textColorHighlight
-//        int color = appearance.getColor(R.styleable.TextAppearance_android_textColorHighlight, 0);
-//        if (color != 0) {
-//            textView.setHighlightColor(color);
-//        }
-//        // android:textColor
-//        ColorStateList colors = appearance.getColorStateList(R.styleable.TextAppearance_android_textColor);
-//        if (colors != null) {
-//            textView.setTextColor(colors);
-//        }
-//        // android:textSize
-//        int ts = appearance.getDimensionPixelSize(R.styleable.TextAppearance_android_textSize, 0);
-//        if (ts != 0) {
-//            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, ts);
-//        }
-//        // android:textColorHint
-//        colors = appearance.getColorStateList(R.styleable.TextAppearance_android_textColorHint);
-//        if (colors != null) {
-//            textView.setHintTextColor(colors);
-//        }
-//        // android:textColorLink
-//        colors = appearance.getColorStateList(R.styleable.TextAppearance_android_textColorLink);
-//        if (colors != null) {
-//            textView.setLinkTextColor(colors);
-//        }
-//        // android:textAllCaps
-//        if (appearance.getBoolean(R.styleable.TextAppearance_android_textAllCaps, false)) {
-//            textView.setTransformationMethod(new AllCapsTransformationMethod(textView.getContext()));
-//        }
-
         // android:fontFamily 
         Object[] font = parseFontStyle(appearance);
         textView.setFontStyle((String) font[2], (Integer) font[1] | ((Boolean) font[0] ? 0 : textView.getFontStyle()));
@@ -139,8 +109,6 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
         mFontStyle = fontStyle;
         TextView.setFontStyle(this, fontFamily, fontStyle);
     }
-
-
 
     @Override
     public void setTextAppearance(Context context, int resid) {

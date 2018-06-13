@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.AppCompatImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pdv_appImageView_color"
+    android:layout_width="@dimen/dimen_50dp"
+    android:layout_height="64dp"
+    android:layout_marginLeft="@dimen/dimen_6dp"
+    android:layout_marginRight="@dimen/dimen_6dp">
+
+</android.support.v7.widget.AppCompatImageView>

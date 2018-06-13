@@ -106,7 +106,7 @@ import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.DrawerFragment;
-import com.mobile.view.fragments.ProductDetailsFragment;
+import com.mobile.view.fragments.OldProductDetailsFragment;
 
 import junit.framework.Assert;
 
@@ -1764,7 +1764,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * NOTE: Others sign out methods are performed in {@link LogOut}.
      */
     public void onLogOut() {
-        ProductDetailsFragment.clearSelectedRegionCityId();
+        OldProductDetailsFragment.clearSelectedRegionCityId();
         SearchRecentQueriesTableHelper.deleteAllRecentQueries();
         mSearchListView.setAdapter(null);
 

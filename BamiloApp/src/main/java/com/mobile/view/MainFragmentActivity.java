@@ -59,7 +59,7 @@ import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.NavigationCategoryFragment;
 import com.mobile.view.fragments.OrderCancellationFragment;
 import com.mobile.view.fragments.OrderCancellationSuccessFragment;
-import com.mobile.view.fragments.ProductDetailsFragment;
+import com.mobile.view.fragments.OldProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
 import com.mobile.view.fragments.ProductOffersFragment;
@@ -454,7 +454,7 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 break;
             case PRODUCT_DETAILS:
                 // Create instance
-                fragment = newFragmentInstance(ProductDetailsFragment.class, bundle);
+                fragment = newFragmentInstance(OldProductDetailsFragment.class, bundle);
                 // Put the type with unique identifier
                 type = FragmentType.getUniqueIdentifier(type, fragment);
                 break;

@@ -109,8 +109,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Show default
-        onUpdateThumbnailIndicator(ProductDetailsFragment.sSharedSelectedPosition);
-        mViewPager.setCurrentItem(ProductDetailsFragment.sSharedSelectedPosition, true);
+        onUpdateThumbnailIndicator(OldProductDetailsFragment.sSharedSelectedPosition);
+        mViewPager.setCurrentItem(OldProductDetailsFragment.sSharedSelectedPosition, true);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        ProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
+        OldProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
     }
 
     @Override

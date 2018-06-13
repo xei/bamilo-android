@@ -9,10 +9,13 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
 }
 
 apply plugin: 'pmd'
@@ -49,6 +52,8 @@ android {
         versionName "2.10.1"
         versionCode getAppVersionCode(176)
         resConfigs "fa"
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     dexOptions {
@@ -117,6 +122,10 @@ android {
         cruncherEnabled = false
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile
@@ -128,9 +137,21 @@ android {
             }
         }
     }
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res',
+                           'src/main/res/layouts/pdv',
+                           'src/main/res/darwables',
+                           'src/main/res/drawables/selectors',
+                           'src/main/res/drawables/icon',
+                           'src/main/res/drawables/background',
+                           'src/main/res/drawables/other']
+        }
+    }
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true
     }
@@ -148,15 +169,19 @@ dependencies {
     // #SCAPEL :: https://github.com/JakeWharton/scalpel
     debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
     /** Dagger 2 **/
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    kapt 'com.google.dagger:dagger-android-processor:2.11'
+    kapt 'com.google.dagger:dagger-compiler:2.11'
 
     compile project(':BamiloCore')
 
     /** GLIDE **/
     compile 'com.github.bumptech.glide:glide:4.7.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+    kapt 'com.github.bumptech.glide:compiler:4.7.1'
     compile "com.github.bumptech.glide:okhttp3-integration:4.7.1"
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'com.romandanylyk:pageindicatorview:1.0.1@aar'
 }
 
 /**

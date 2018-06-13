@@ -102,7 +102,7 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ProductDetailsFragment.clearSelectedRegionCityId();
+        OldProductDetailsFragment.clearSelectedRegionCityId();
         Print.i(TAG, "ON CREATE");
 
         // Get values

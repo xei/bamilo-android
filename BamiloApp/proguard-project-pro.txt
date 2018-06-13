@@ -240,3 +240,11 @@
 # Trackers
 -keep interface com.mobile.interfaces.tracking.** { *; }
 -keep class com.mobile.utils.tracking.** { *; }
+
+# ghost adapter
+-keep class com.mobile.components.ghostadapter.BindItem
+-keep @com.mobile.components.ghostadapter.BindItem public class * { *; }
+
+-keepclassmembers class * extends android.support.v7.widget.RecyclerView$ViewHolder {
+*;
+}
