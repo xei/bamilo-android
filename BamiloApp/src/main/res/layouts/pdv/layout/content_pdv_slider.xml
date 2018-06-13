@@ -1,10 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto">-->
+<!--<data>-->
+<!--<variable-->
+<!--name="productDetail_viewModel"-->
+<!--type="com.mobile.view.productdetail.ProductDetailViewModel"/>-->
+<!--</data>-->
+
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:attrs="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="300dp">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/contentProductSlider_viewPager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.rd.PageIndicatorView
+        android:id="@+id/pageIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:paddingTop="@dimen/dimen_4dp"
+        android:paddingBottom="@dimen/dimen_4dp"
+        android:paddingLeft="@dimen/dimen_8dp"
+        android:paddingRight="@dimen/dimen_8dp"
+        android:background="@drawable/slider_indicator_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:piv_animationType="worm"
+        app:piv_dynamicCount="true"
+        app:piv_interactiveAnimation="true"
+        app:piv_selectedColor="#f7931d"
+        app:piv_unselectedColor="#47ffffff"
+        app:piv_viewPager="@+id/contentProductSlider_viewPager"
+        app:piv_radius="3dp"/>
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/appCompatImageView"
@@ -29,40 +70,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_like_gray"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/contentProductSlider_viewPager"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <com.rd.PageIndicatorView
-        android:id="@+id/pageIndicatorView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:paddingTop="@dimen/dimen_4dp"
-        android:paddingBottom="@dimen/dimen_4dp"
-        android:paddingLeft="@dimen/dimen_12dp"
-        android:paddingRight="@dimen/dimen_12dp"
-        android:background="@drawable/slider_indicator_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:piv_animationType="worm"
-        app:piv_dynamicCount="true"
-        app:piv_interactiveAnimation="true"
-        app:piv_selectedColor="#f7931d"
-        app:piv_unselectedColor="@color/white"
-        app:piv_viewPager="@+id/contentProductSlider_viewPager"
-        attrs:piv_padding="8dp"
-        attrs:piv_radius="6dp"/>
-
-
 </android.support.constraint.ConstraintLayout>
+    <!--</layout>-->
