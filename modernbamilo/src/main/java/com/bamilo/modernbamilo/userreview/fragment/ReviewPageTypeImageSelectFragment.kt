@@ -13,11 +13,10 @@ import android.widget.TextView
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.userreview.UserReviewActivity
 import com.bamilo.modernbamilo.userreview.optionview.ImageOptionView
+import com.bamilo.modernbamilo.userreview.optionview.RadioOptionView
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Question
 import com.bamilo.modernbamilo.util.dpToPx
 import com.bamilo.modernbamilo.util.extension.loadImageFromNetwork
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 private const val TAG_DEBUG = "ReviewPageTypeImage"
 
@@ -32,7 +31,7 @@ class ReviewPageTypeImageSelectFragment : ReviewPageBaseFragment() {
 
     private lateinit var mPageTitle: TextView
     private lateinit var mProductImageImageView: ImageView
-    private lateinit var mOptionsContainer: LinearLayout
+    private lateinit var mOptionsContainerLinearLayout: LinearLayout
 
     private lateinit var mViewModel: Question
 
@@ -74,7 +73,7 @@ class ReviewPageTypeImageSelectFragment : ReviewPageBaseFragment() {
         val rootView =  inflater.inflate(R.layout.fragment_review_page_type_imageselect, container, false)
         mPageTitle = rootView.findViewById(R.id.fragmentReviewPageTypeImageselect_xeiTextView_title)
         mProductImageImageView = rootView.findViewById(R.id.fragmentReviewPageTypeImageselect_imageView_productImage)
-        mOptionsContainer = rootView.findViewById(R.id.fragmentReviewPageTypeImageselect_linearLayout_optionsContainer)
+        mOptionsContainerLinearLayout = rootView.findViewById(R.id.fragmentReviewPageTypeImageselect_linearLayout_optionsContainer)
 
         mPageTitle.text = mViewModel.title
         if (mProductImageUrl != null) {
@@ -94,7 +93,18 @@ class ReviewPageTypeImageSelectFragment : ReviewPageBaseFragment() {
             } catch (npe: NullPointerException) {
                 Log.e(TAG_DEBUG, npe.message)
             }
-            mOptionsContainer.addView(option)
+            option.setOnClickListener {
+                option.select()
+                mViewModel.options[i].isSelected = true
+
+                for (j in 0 until mOptionsContainerLinearLayout.childCount) {
+                    if (it != mOptionsContainerLinearLayout.getChildAt(j)) {
+                        (mOptionsContainerLinearLayout.getChildAt(j) as ImageOptionView).deselect()
+                        mViewModel.options[j].isSelected = false
+                    }
+                }
+            }
+            mOptionsContainerLinearLayout.addView(option)
         }
 
 

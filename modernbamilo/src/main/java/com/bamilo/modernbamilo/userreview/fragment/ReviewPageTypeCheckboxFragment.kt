@@ -83,11 +83,19 @@ class ReviewPageTypeCheckboxFragment : ReviewPageBaseFragment() {
         for (i in 0 until mViewModel.options.size) {
             val optionButton = CheckboxOptionView(context!!, 300, 56, 16, 16, 16, 16)
             optionButton.setText(mViewModel.options[i].title)
-            if (i % 2 == 0) {
-                optionButton.select()
-            } else {
-                optionButton.deselect()
+
+            optionButton.setOnClickListener {
+
+                if(!optionButton.isOptionSelected()) {
+                    optionButton.select()
+                    mViewModel.options[i].isSelected = true
+                } else {
+                    optionButton.deselect()
+                    mViewModel.options[i].isSelected = false
+                }
+
             }
+
             mOptionsContainer.addView(optionButton)
             mOptionsContainer.addView(
                     LayoutInflater

@@ -11,4 +11,5 @@
     android:textSize="18sp"
     android:textColor="@color/userReview_typeCheckbox_optionButton_textColor"
     android:buttonTint="@color/userReview_typeCheckbox_optionButton_buttonTintColor"
+    android:clickable="false"
     app:locale="auto" />

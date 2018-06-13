@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
@@ -27,8 +28,9 @@ class ReviewPageTypeEssayFragment : ReviewPageBaseFragment() {
 
     private lateinit var mPageTitle: TextView
     private lateinit var mProductImageImageView: ImageView
-    private lateinit var mViewModel: Question
+    private lateinit var mUserInputTextEditText: EditText
 
+    private lateinit var mViewModel: Question
     private var mFragmentIndex = -1
     private var mProductImageUrl: String? = null
 
@@ -76,6 +78,10 @@ class ReviewPageTypeEssayFragment : ReviewPageBaseFragment() {
         }
 
         return rootView
+    }
+
+    fun storeUserInputText() {
+        mViewModel.userInputText = mUserInputTextEditText.text.toString()
     }
 
 }

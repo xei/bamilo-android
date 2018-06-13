@@ -86,8 +86,6 @@ class ReviewPageTypeNpsFragment : ReviewPageBaseFragment() {
             mProductImageImageView.visibility = View.VISIBLE
         }
 
-//        mViewModel.options = arrayOf("۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۱۰")
-
         mNpsOptionsNumberPicker.setOnNpsOptionChangeListener(object: NpsNumberPicker.OnNpsOptionChangeListener {
             override fun changeImage(imageUrl: String?) {
                 try {

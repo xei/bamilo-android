@@ -95,12 +95,12 @@ class ReviewPageTypeRadioFragment : ReviewPageBaseFragment() {
             optionButton.setText(mViewModel.options[i].title)
             optionButton.setOnClickListener {
                 optionButton.select()
-                // TODO update model
+                mViewModel.options[i].isSelected = true
 
                 for (j in 1 until mOptionsContainerLinearLayout.childCount) {
                     if (it != mOptionsContainerLinearLayout.getChildAt(j)) {
                         (mOptionsContainerLinearLayout.getChildAt(j) as RadioOptionView).deselect()
-                        // TODO update model
+                        mViewModel.options[j - 1].isSelected = false
                     }
                 }
             }

@@ -30,6 +30,14 @@ class NpsNumberPicker : NumberPicker {
     private fun init() {
         typeface = TypeFaceHelper.getInstance(context).getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_BOLD)
         setOnValueChangedListener { _, _, newVal ->
+
+            mOptions[newVal - 1].isSelected = true
+            for (i in 0 until mOptions.size) {
+                if (i != newVal - 1) {
+                    mOptions[i].isSelected = false
+                }
+            }
+
             mOnNpsOptionChangeListener.changeImage(mOptions[newVal - 1].image)
         }
     }

@@ -8,6 +8,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.userreview.fragment.ReviewPageBaseFragment
+import com.bamilo.modernbamilo.userreview.fragment.ReviewPageTypeEssayFragment
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.GetSurveyResponse
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Question
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Survey
@@ -80,6 +81,11 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
     fun getSurvey() = mSurvey
 
     override fun onClick(clickedView: View?) {
+
+        if (mPagesFragmentList[mPageNo] is ReviewPageTypeEssayFragment) {
+            (mPagesFragmentList[mPageNo] as ReviewPageTypeEssayFragment).storeUserInputText()
+        }
+
         when(clickedView?.id) {
             R.id.activityUserReview_imageButton_closeBtn -> finish()
             R.id.activityUserReview_xeiButton_next -> {

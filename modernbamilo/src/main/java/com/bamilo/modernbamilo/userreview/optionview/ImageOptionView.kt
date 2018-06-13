@@ -6,7 +6,7 @@ import com.bamilo.modernbamilo.R
 
 class ImageOptionView(context: Context) : ImageView(context) {
 
-    private var isOptionSelected: Boolean? = null
+    private var isOptionSelected: Boolean = false
 
     init {
         setBackgroundResource(R.drawable.background_imageoption_survey_deselected)

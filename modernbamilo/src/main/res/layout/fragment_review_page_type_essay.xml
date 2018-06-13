@@ -50,6 +50,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/fragmentReviewPageTypeEssay_xeiTextView_title" />
 
             <com.bamilo.modernbamilo.customview.XeiEditText
+                android:id="@+id/fragmentReviewPageTypeEssay_xeiEditText_userInputText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minLines="2"

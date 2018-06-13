@@ -7,5 +7,6 @@ data class Option(
     @SerializedName("color") val color: String, //string
     @SerializedName("value") val value: String, //string
     @SerializedName("image") val image: String, //string
-    @SerializedName("other") val other: Boolean //true
+    @SerializedName("other") val other: Boolean, //true
+    var isSelected: Boolean
 )

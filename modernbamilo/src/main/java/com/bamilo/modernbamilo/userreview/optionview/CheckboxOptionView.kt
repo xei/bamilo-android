@@ -44,6 +44,8 @@ class CheckboxOptionView : RelativeLayout {
         mTextCheckBox.text = text
     }
 
+    fun isOptionSelected() = mTextCheckBox.isChecked
+
     fun select() {
         mTextCheckBox.isChecked = true
     }
