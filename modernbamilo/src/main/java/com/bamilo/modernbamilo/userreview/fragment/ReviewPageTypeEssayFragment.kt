@@ -69,6 +69,7 @@ class ReviewPageTypeEssayFragment : ReviewPageBaseFragment() {
         val rootView =  inflater.inflate(R.layout.fragment_review_page_type_essay, container, false)
         mPageTitle = rootView.findViewById(R.id.fragmentReviewPageTypeEssay_xeiTextView_title)
         mProductImageImageView = rootView.findViewById(R.id.fragmentReviewPageTypeEssay_imageView_productImage)
+        mUserInputTextEditText = rootView.findViewById(R.id.fragmentReviewPageTypeEssay_xeiEditText_userInputText)
 
 
         mPageTitle.text = mViewModel.title
