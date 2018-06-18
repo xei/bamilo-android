@@ -1393,7 +1393,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 //    }*/
 
     /**
-     * Process the search error event
+     * Process the search messageItem event
      *
      * @author sergiopereira
      */
@@ -1425,7 +1425,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     /**
-     * Process success search event
+     * Process successes search event
      *
      * @author sergiopereira
      */
@@ -2056,7 +2056,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, BamiloApplication.INSTANCE.getCustomerUtils().getCredentials());
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
-        BamiloApplication.INSTANCE.sendRequest(new LoginHelper(), bundle, new IResponseCallback() {
+        BamiloApplication.INSTANCE.sendRequest(new LoginHelper(this), bundle, new IResponseCallback() {
             @Override
             public void onRequestError(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");
