@@ -1,5 +1,7 @@
 package com.bamilo.modernbamilo.userreview
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -19,6 +21,9 @@ import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -33,6 +38,13 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
 
     private var webApi = RetrofitHelper.makeWebApi(this, UserReviewWebApi::class.java)
 
+    companion object {
+        @JvmStatic
+        fun start(invokerContext: Context) {
+            invokerContext.startActivity(Intent(invokerContext, UserReviewActivity::class.java))
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_review)
@@ -40,10 +52,32 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
         findViews()
         setOnClickListeners()
 
-        // TODO: get data from parcelable
-        mSurvey = createMockData().metadata.survey
+        val call = webApi.getSurvey()
+        call.enqueue(object: Callback<ResponseWrapper<GetSurveyResponse>> {
+            override fun onResponse(call: Call<ResponseWrapper<GetSurveyResponse>>?, response: Response<ResponseWrapper<GetSurveyResponse>>?) {
+                try {
+                    mSurvey = response?.body()?.metadata?.survey!!
+                    initViewModel()
+                } catch (npe: NullPointerException) {
+
+                }
+
+            }
+
+            override fun onFailure(call: Call<ResponseWrapper<GetSurveyResponse>>?, t: Throwable?) {
+
+            }
+        })
+
+    }
+
+    private fun initViewModel() {
+
+
+//         TODO: get data from parcelable
+//        mSurvey = createMockData().metadata.survey
         val surveyTitle = createMockData().metadata.survey.title
-        mSurveyTitleTextView.text = surveyTitle
+        mSurveyTitleTextView.text = mSurvey.title
 
         var i = 0
         mSurvey.pages[0].questions.forEach {page: Question ->
@@ -63,7 +97,6 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
         mStepperView.setCurrentPage(mPageNo)
 
         replaceFragmentInActivity(mPagesFragmentList[mPageNo], R.id.activityUserReview_frameLayout_reviewPage)
-
     }
 
     private fun findViews() {
@@ -91,20 +124,26 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
             R.id.activityUserReview_xeiButton_next -> {
 
                 when (mPageNo) {
-                    mPagesFragmentList.size - 1 -> TODO("submit request")
+                    mPagesFragmentList.size - 1 -> finish()
                     mPagesFragmentList.size - 2 -> {
                         mStepperView.setCurrentPage(++mPageNo)
+                        // TODO: submit first
                         replaceFragmentInActivityWithAnim(mPagesFragmentList[mPageNo], R.id.activityUserReview_frameLayout_reviewPage)
                         mNextButton.text = "بستن"
                     }
                     else -> {
                         mStepperView.setCurrentPage(++mPageNo)
+                        // TODO: submit first
                         replaceFragmentInActivityWithAnim(mPagesFragmentList[mPageNo], R.id.activityUserReview_frameLayout_reviewPage)
                     }
                 }
 
             }
         }
+    }
+
+    private fun submitReview() {
+//         mSurvey
     }
 
     override fun onBackPressed() {
@@ -344,63 +383,63 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
                 "              \"options\": [\n" +
                 "                {\n" +
                 "                  \"id\": 10019,\n" +
-                "                  \"title\": \"تنوع محصولات\",\n" +
+                "                  \"title\": \"۱\",\n" +
                 "                  \"value\": 10019,\n" +
                 "                  \"image\": null,\n" +
                 "                  \"other\": false\n" +
                 "                },\n" +
                 "                {\n" +
                 "                  \"id\": 10020,\n" +
-                "                  \"title\": \"شرح و توضیحات محصولات\",\n" +
+                "                  \"title\": \"۲\",\n" +
                 "                  \"value\": 10020,\n" +
                 "                  \"image\": null,\n" +
                 "                  \"other\": false\n" +
                 "                },\n" +
                 "                {\n" +
                 "                  \"id\": 10021,\n" +
-                "                  \"title\": \"کیفیت تصاویر\",\n" +
+                "                  \"title\": \"۳\",\n" +
                 "                  \"value\": 10021,\n" +
                 "                  \"image\": null,\n" +
                 "                  \"other\": false\n" +
                 "                },\n" +
                 "                {\n" +
                 "                  \"id\": 10022,\n" +
-                "                  \"title\": \"نتایج جست\u200Cوجو\",\n" +
+                "                  \"title\": \"۴\",\n" +
                 "                  \"value\": 10022,\n" +
                 "                  \"image\": null,\n" +
                 "                  \"other\": false\n" +
                 "                },\n" +
                 "                {\n" +
                 "                  \"id\": 10023,\n" +
-                "                  \"title\": \"دسته\u200Cبندی محصولات در منوی فروشگاه\",\n" +
+                "                  \"title\": \"۵\",\n" +
                 "                  \"value\": 10023,\n" +
-                "                  \"image\": null,\n" +
+                "                  \"image\": \"http://www.free-icons-download.net/images/blue-digit-number-9-icon-24467.png\",\n" +
                 "                  \"other\": false\n" +
                 "                },\n" +
                 "                {\n" +
                 "                  \"id\": 10024,\n" +
-                "                  \"title\": \"پیشنهادها و تخفیف\u200Cهای صفحه\u200Cی نخست\",\n" +
+                "                  \"title\": \"۶\",\n" +
                 "                  \"value\": 10024,\n" +
                 "                  \"image\": null,\n" +
                 "                  \"other\": false\n" +
                 "                },\n" +
                 "                {\n" +
                 "                  \"id\": 10025,\n" +
-                "                  \"title\": \"ظاهر و رابط کاربری فروشگاه\",\n" +
+                "                  \"title\": \"۷\",\n" +
                 "                  \"value\": 10025,\n" +
                 "                  \"image\": null,\n" +
                 "                  \"other\": false\n" +
                 "                },\n" +
                 "                {\n" +
                 "                  \"id\": 10026,\n" +
-                "                  \"title\": \"پیشنهادهای اختصاصی شما\",\n" +
+                "                  \"title\": \"۸\",\n" +
                 "                  \"value\": 10026,\n" +
                 "                  \"image\": null,\n" +
                 "                  \"other\": false\n" +
                 "                },\n" +
                 "                {\n" +
                 "                  \"id\": 10027,\n" +
-                "                  \"title\": \"سایر موارد\",\n" +
+                "                  \"title\": \"۹\",\n" +
                 "                  \"value\": 10027,\n" +
                 "                  \"image\": null,\n" +
                 "                  \"other\": true\n" +
