@@ -14,6 +14,7 @@ import com.bamilo.modernbamilo.userreview.fragment.ReviewPageTypeEssayFragment
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.GetSurveyResponse
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Question
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.Survey
+import com.bamilo.modernbamilo.userreview.pojo.getsurveylist.GetSurveyListResponse
 import com.bamilo.modernbamilo.userreview.stepperview.StepperView
 import com.bamilo.modernbamilo.util.extension.replaceFragmentInActivity
 import com.bamilo.modernbamilo.util.extension.replaceFragmentInActivityWithAnim
@@ -24,6 +25,9 @@ import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+const val KEY_EXTRA_REVIEW_TYPE = "KEY_EXTRA_REVIEW_TYPE"
+const val KEY_EXTRA_USER_ID = "KEY_EXTRA_USER_ID"
 
 class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -44,8 +48,11 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
         @JvmStatic val TYPE_USER_REVIEW_AFTER_PURCHASE = 1
 
         @JvmStatic
-        fun start(invokerContext: Context, reviewType: Int) {
-            invokerContext.startActivity(Intent(invokerContext, UserReviewActivity::class.java))
+        fun start(invokerContext: Context, reviewType: Int, userId: String) {
+            val intent = Intent(invokerContext, UserReviewActivity::class.java)
+            intent.putExtra(KEY_EXTRA_REVIEW_TYPE, reviewType)
+            intent.putExtra(KEY_EXTRA_USER_ID, userId)
+            invokerContext.startActivity(intent)
         }
     }
 
@@ -56,22 +63,44 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
         findViews()
         setOnClickListeners()
 
-        val call = webApi.getSurvey()
-        call.enqueue(object: Callback<ResponseWrapper<GetSurveyResponse>> {
-            override fun onResponse(call: Call<ResponseWrapper<GetSurveyResponse>>?, response: Response<ResponseWrapper<GetSurveyResponse>>?) {
-                try {
-                    mSurvey = response?.body()?.metadata?.survey!!
-                    initViewModel()
-                } catch (npe: NullPointerException) {
+        when (intent.getIntExtra(KEY_EXTRA_REVIEW_TYPE, TYPE_USER_REVIEW_APP_INITIAL)) {
+            TYPE_USER_REVIEW_APP_INITIAL -> {
+                val call = webApi.getSurveysList(intent.getStringExtra(KEY_EXTRA_USER_ID))
+                call.enqueue(object: Callback<ResponseWrapper<GetSurveyListResponse>> {
+                    override fun onResponse(call: Call<ResponseWrapper<GetSurveyListResponse>>?, response: Response<ResponseWrapper<GetSurveyListResponse>>?) {
+                        try {
+                            mSurvey = response?.body()?.metadata?.data?.surveys!![0]
+                            initViewModel()
+                        } catch (npe: NullPointerException) {
 
-                }
+                        }
 
+                    }
+
+                    override fun onFailure(call: Call<ResponseWrapper<GetSurveyListResponse>>?, t: Throwable?) {
+
+                    }
+                })
             }
+            TYPE_USER_REVIEW_AFTER_PURCHASE -> {
+                val call = webApi.getSurvey()
+                call.enqueue(object: Callback<ResponseWrapper<GetSurveyResponse>> {
+                    override fun onResponse(call: Call<ResponseWrapper<GetSurveyResponse>>?, response: Response<ResponseWrapper<GetSurveyResponse>>?) {
+                        try {
+                            mSurvey = response?.body()?.metadata?.survey!!
+                            initViewModel()
+                        } catch (npe: NullPointerException) {
 
-            override fun onFailure(call: Call<ResponseWrapper<GetSurveyResponse>>?, t: Throwable?) {
+                        }
 
+                    }
+
+                    override fun onFailure(call: Call<ResponseWrapper<GetSurveyResponse>>?, t: Throwable?) {
+
+                    }
+                })
             }
-        })
+        }
 
     }
 
