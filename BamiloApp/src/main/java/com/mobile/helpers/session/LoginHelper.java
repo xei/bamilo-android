@@ -83,14 +83,14 @@ public class LoginHelper extends SuperBaseHelper {
 
         // Look for Review Survey:
         UserReviewWebApi webApi = RetrofitHelper.makeWebApi(mContext, UserReviewWebApi.class);
-        String userId = BamiloApplication.CUSTOMER.getIdAsString();
+        final String userId = BamiloApplication.CUSTOMER.getIdAsString();
         Call<ResponseWrapper<GetSurveyListResponse>> call = webApi.getSurveysList(userId);
         call.enqueue(new Callback<ResponseWrapper<GetSurveyListResponse>>() {
             @Override
             public void onResponse(Call<ResponseWrapper<GetSurveyListResponse>> call, Response<ResponseWrapper<GetSurveyListResponse>> response) {
                 try {
                     if (response.body().getSuccess()) {
-                        UserReviewActivity.start(mContext, UserReviewActivity.getTYPE_USER_REVIEW_APP_INITIAL());
+                        UserReviewActivity.start(mContext, UserReviewActivity.getTYPE_USER_REVIEW_APP_INITIAL(), userId);
                     }
                 } catch (NullPointerException npe) {
 
