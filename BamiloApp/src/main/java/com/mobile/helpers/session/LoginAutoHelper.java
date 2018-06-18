@@ -1,5 +1,6 @@
 package com.mobile.helpers.session;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.mobile.app.BamiloApplication;
@@ -12,6 +13,10 @@ import com.mobile.service.utils.EventType;
  * Auto login helper
  */
 public class LoginAutoHelper extends LoginHelper {
+
+    public LoginAutoHelper(Context context) {
+        super(context);
+    }
 
     @Override
     public EventType getEventType() {
