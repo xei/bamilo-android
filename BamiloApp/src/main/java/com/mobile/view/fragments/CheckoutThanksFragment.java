@@ -465,7 +465,7 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
 
 
         if(getContext() != null) {
-            UserReviewActivity.start(getContext());
+            UserReviewActivity.start(getContext(), UserReviewActivity.getTYPE_USER_REVIEW_AFTER_PURCHASE());
         }
 
     }
