@@ -5,25 +5,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:layout_marginLeft="@dimen/dimen_8dp"
-    tools:layout_marginRight="@dimen/dimen_8dp"
+    android:layout_marginStart="@dimen/dimen_8dp"
+    android:layout_marginEnd="@dimen/dimen_8dp"
+    android:layout_marginLeft="@dimen/dimen_8dp"
+    android:layout_marginRight="@dimen/dimen_8dp"
     app:cardCornerRadius="2dp"
-    app:cardElevation="8dp"
+    app:cardElevation="4dp"
     tools:layout_height="177dp">
 
     <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/textView13"
+            android:id="@+id/pdvPrimaryInfo_textView_title"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
             android:text=" پولو شرت کلاسیک اصل مدل
 آخر 2012 فنی سالم"
             android:textColor="#434343"
@@ -33,7 +36,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <RatingBar
-            android:id="@+id/pdv_rating_bar"
+            android:id="@+id/pdvPrimaryInfo_ratingBar"
             style="@style/StarBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +47,7 @@
             android:layout_marginRight="@dimen/dimen_16dp"
             android:rating="4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView13"/>
+            app:layout_constraintTop_toBottomOf="@+id/pdvPrimaryInfo_textView_title"/>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/score_text"
@@ -56,12 +59,12 @@
             android:text="@string/score"
             android:textColor="#757575"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/pdv_rating_bar"
-            app:layout_constraintStart_toEndOf="@+id/pdv_rating_bar"
+            app:layout_constraintBottom_toBottomOf="@+id/pdvPrimaryInfo_ratingBar"
+            app:layout_constraintStart_toEndOf="@+id/pdvPrimaryInfo_ratingBar"
             tools:ignore="SmallSp"/>
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/textView15"
+            android:id="@+id/pdvPrimaryInfo_textView_averageScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -70,26 +73,12 @@
             android:textColor="#1a365e"
             android:textSize="12sp"
             app:fontFamily="@string/bamilo_bold_font"
-            app:layout_constraintBottom_toBottomOf="@+id/pdv_rating_bar"
+            app:layout_constraintBottom_toBottomOf="@+id/pdvPrimaryInfo_ratingBar"
             app:layout_constraintStart_toEndOf="@+id/score_text"
             tools:ignore="SmallSp"/>
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:text="۳.۵"
-            android:textColor="#1a365e"
-            android:textSize="12sp"
-            app:fontFamily="@string/bamilo_bold_font"
-            app:layout_constraintBottom_toBottomOf="@+id/pdv_rating_bar"
-            app:layout_constraintStart_toEndOf="@+id/score_text"
-            tools:ignore="SmallSp"/>
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/textView20"
+            android:id="@+id/pdvPrimaryInfo_textView_scoreCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="۱۶"
@@ -109,7 +98,7 @@
             android:textColor="#d8d8d8"
             app:fontFamily="@string/bamilo_font"
             app:layout_constraintBottom_toBottomOf="@+id/textView19"
-            app:layout_constraintStart_toEndOf="@+id/textView20"
+            app:layout_constraintStart_toEndOf="@+id/pdvPrimaryInfo_textView_scoreCount"
             app:layout_constraintTop_toTopOf="@+id/textView19"/>
 
         <TextView
@@ -121,9 +110,9 @@
             android:text="("
             android:textColor="#d8d8d8"
             app:fontFamily="@string/bamilo_font"
-            app:layout_constraintBottom_toBottomOf="@+id/textView17"
-            app:layout_constraintStart_toEndOf="@+id/textView17"
-            app:layout_constraintTop_toTopOf="@+id/textView17"/>
+            app:layout_constraintBottom_toBottomOf="@+id/pdvPrimaryInfo_textView_averageScore"
+            app:layout_constraintStart_toEndOf="@+id/pdvPrimaryInfo_textView_averageScore"
+            app:layout_constraintTop_toTopOf="@+id/pdvPrimaryInfo_textView_averageScore"/>
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/appCompatImageView2"
@@ -148,23 +137,26 @@
             android:background="#d8d8d8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pdv_rating_bar"/>
+            app:layout_constraintTop_toBottomOf="@+id/pdvPrimaryInfo_ratingBar"/>
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/contentPDV_cost"
+            android:id="@+id/pdvPrimaryInfo_textView_oldPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:layout_marginBottom="@dimen/dimen_16dp"
             android:layout_marginRight="@dimen/dimen_8dp"
             android:text="۱،۷۴۰،۰۰۰ ریال"
             android:textColor="#757575"
             android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contentPDV_discount"
+            app:layout_constraintTop_toBottomOf="@+id/pdvPrimaryInfo_textView_currentPrice"
+            app:layout_goneMarginBottom="@dimen/dimen_16dp"
             tools:ignore="SmallSp"/>
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/contentPDV_discount"
+            android:id="@+id/pdvPrimaryInfo_textView_currentPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -177,20 +169,19 @@
             app:layout_constraintTop_toBottomOf="@+id/view2"/>
 
         <RelativeLayout
-            android:id="@+id/contentPDV_discountPercentage"
+            android:id="@+id/pdvPrimaryInfo_relativeLayout_discountPercentageRoot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:layout_marginLeft="@dimen/dimen_8dp"
             android:background="@drawable/discount_percentage_round_background"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2">
+            app:layout_constraintBaseline_toBaselineOf="@+id/pdvPrimaryInfo_textView_currentPrice"
+            app:layout_constraintLeft_toLeftOf="parent">
 
             <com.mobile.components.customfontviews.TextView
-                android:id="@+id/zxcasdqwer"
+                android:id="@+id/pdvPrimaryInfo_textView_discountPercentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="2dp"
+                android:layout_marginBottom="2dp"
                 android:paddingLeft="@dimen/dimen_4dp"
                 android:paddingRight="@dimen/dimen_4dp"
                 android:fontFamily="@string/bamilo_bold_font"
@@ -203,22 +194,19 @@
         </RelativeLayout>
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/contentPDV_discountBenefit"
+            android:id="@+id/pdvPrimaryInfo_textView_discountBenefit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="16dp"
             android:layout_marginLeft="@dimen/dimen_8dp"
             android:text="سود شما : ۱/۴۳۰ میلیون ریال"
             android:textColor="#757575"
             android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@+id/pdvPrimaryInfo_textView_oldPrice"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contentPDV_discountPercentage"
             tools:ignore="SmallSp"/>
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/contentPDV_currency"
+            android:id="@+id/pdvPrimaryInfo_textView_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -226,8 +214,8 @@
             android:text="@string/rial"
             android:textColor="#434343"
             android:textSize="12sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/contentPDV_discount"
-            app:layout_constraintStart_toEndOf="@+id/contentPDV_discount"/>
+            app:layout_constraintBaseline_toBaselineOf="@+id/pdvPrimaryInfo_textView_currentPrice"
+            app:layout_constraintStart_toEndOf="@+id/pdvPrimaryInfo_textView_currentPrice"/>
 
     </android.support.constraint.ConstraintLayout>
 

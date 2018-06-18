@@ -9,9 +9,9 @@
 
 
     <!-- Share App -->
-    <string name="share_app_link">https://play.google.com/store/apps/details?id=com.bamilo.android&amp;hl=en</string>
+    <string name="share_app_link" translatable="false">https://play.google.com/store/apps/details?id=com.bamilo.android&amp;hl=en</string>
     <!-- Single country (country.xml) -->
-    <string name="global_shopname"/>
-    <string name="global_server"/>
-    <string name="countries_url"/>
+    <string name="global_shopname" translatable="false"/>
+    <string name="global_server" translatable="false"/>
+    <string name="countries_url" translatable="false"/>
 </resources>

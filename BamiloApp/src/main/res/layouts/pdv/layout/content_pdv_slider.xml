@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--xmlns:app="http://schemas.android.com/apk/res-auto">-->
-<!--<data>-->
-<!--<variable-->
-<!--name="productDetail_viewModel"-->
-<!--type="com.mobile.view.productdetail.ProductDetailViewModel"/>-->
-<!--</data>-->
-
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="300dp">
 
     <android.support.v4.view.ViewPager
+        android:background="@color/white"
         android:id="@+id/contentProductSlider_viewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -42,13 +36,13 @@
         app:piv_animationType="worm"
         app:piv_dynamicCount="true"
         app:piv_interactiveAnimation="true"
+        app:piv_radius="3dp"
         app:piv_selectedColor="#f7931d"
         app:piv_unselectedColor="#47ffffff"
-        app:piv_viewPager="@+id/contentProductSlider_viewPager"
-        app:piv_radius="3dp"/>
+        app:piv_viewPager="@+id/contentProductSlider_viewPager"/>
 
     <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/appCompatImageView"
+        android:id="@+id/pdvSlider_appImageView_share"
         android:layout_width="@dimen/dimen_40dp"
         android:layout_height="@dimen/dimen_40dp"
         android:layout_marginTop="8dp"
@@ -60,15 +54,15 @@
         app:srcCompat="@drawable/ic_share_gray"/>
 
     <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/pdvSlider_appImageView_like"
         android:layout_width="@dimen/dimen_40dp"
         android:layout_height="@dimen/dimen_40dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:padding="@dimen/dimen_8dp"
-        app:layout_constraintEnd_toStartOf="@+id/appCompatImageView"
+        app:layout_constraintEnd_toStartOf="@+id/pdvSlider_appImageView_share"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_like_gray"/>
 
 </android.support.constraint.ConstraintLayout>
-    <!--</layout>-->

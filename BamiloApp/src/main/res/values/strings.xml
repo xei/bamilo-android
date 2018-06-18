@@ -407,10 +407,10 @@
     <string name="faq">FAQ</string>
     <string name="about_us_label">About US</string>
 
-    <string name="bamilo_font">bamilo</string>
-    <string name="bamilo_regular_font">Bamilo-Sans</string>
-    <string name="bamilo_bold_font">bamilo_sans_bold</string>
-    <string name="bamilo_light_font">bamilo_sans_light</string>
+    <string name="bamilo_font" translatable="false">bamilo</string>
+    <string name="bamilo_regular_font" translatable="false">Bamilo-Sans</string>
+    <string name="bamilo_bold_font" translatable="false">bamilo_sans_bold</string>
+    <string name="bamilo_light_font" translatable="false">bamilo_sans_light</string>
 
     <!--filter-->
 
@@ -436,8 +436,8 @@
     <string name="default_address_question">Are you sure you want to set this billingAddress to your default billingAddress?</string>
     <string name="default_address_label">Set default billingAddress</string>
 
-    <string name="address_item_key_1"></string>
-    <string name="address_item_key_2"></string>
+    <string name="address_item_key_1" translatable="false"></string>
+    <string name="address_item_key_2" translatable="false"></string>
 
 
     <string name="checkout_address">Address</string>
@@ -486,8 +486,8 @@
     <string name="new_password">New password</string>
     <string name="phone">Phone</string>
     <string name="error_isrequired">Is required</string>
-    <string name="normal_string_regex">[0-9a-zA-Z-]*</string>
-    <string name="email_regex">[a-zA-Z0-9äöüÄÖÜ_+.-]+@[a-zA-Z0-9äöüÄÖÜ][a-zA-Z0-9-äöüÄÖÜ.]+\\.([a-zA-Z]{2,6})</string>
+    <string name="normal_string_regex" translatable="false">[0-9a-zA-Z-]*</string>
+    <string name="email_regex" translatable="false">[a-zA-Z0-9äöüÄÖÜ_+.-]+@[a-zA-Z0-9äöüÄÖÜ][a-zA-Z0-9-äöüÄÖÜ.]+\\.([a-zA-Z]{2,6})</string>
     <string name="email_password_invalid">email/password is not correct</string>
     <string name="address_next_button">Continue</string>
     <string name="payment_next_button">Continue and Payment</string>
@@ -495,9 +495,9 @@
     <string name="sub_categories">SubCategories</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="confirm_filter">Confirm</string>
-    <string name="Emarsys_MerchantId">18146DE34FE0B8C9</string>
+    <string name="Emarsys_MerchantId" translatable="false">18146DE34FE0B8C9</string>
     <string name="recommendations"> پیشنهادهای بامیلو برای شما</string>
     <string name="order_total">Total: %s</string>
     <string name="order_details">جزییات سفارش</string>
@@ -508,7 +508,7 @@
     <string name="order_status_payment_title">روش پرداخت:</string>
     <string name="order_items">جزییات کالا</string>
     <string name="order_status_address_title">آدرس:</string>
-    <string name="cellphone_regex">(\\+98|0)?9\\d{9}</string>
+    <string name="cellphone_regex" translatable="false">(\\+98|0)?9\\d{9}</string>
     <string name="sort_label">مرتب سازی</string>
     <string name="drawer_home">خانه</string>
     <string name="drawer_categories">دسته بندی</string>
@@ -523,14 +523,14 @@
     <string name="drawer_faq">راهنما و سوالات متداول</string>
     <string name="drawer_share">اشتراک برنامه با دوستان</string>
     <string name="drawer_rateus">امتیازدهی به برنامه</string>
-    <string name="call_center_number">tel:02141687000</string>
+    <string name="call_center_number" translatable="false">tel:02141687000</string>
 
-    <string name="share_link">http://bml.re/app</string>
-    <string name="payment_successful">پرداخت شما با موفقیت انجام شد</string>
+    <string name="share_link" translatable="false">http://bml.re/app</string>
+    <string name="payment_successful" translatable="false">پرداخت شما با موفقیت انجام شد</string>
     <string name="payment_unsuccessful">پرداخت شما ناموفق بود</string>
-    <string name="return_to_app">بازگشت به برنامه</string>
-    <string name="birthday_placeholder">----/--/--</string>
-    <string name="order_summary_total_items">مجموع کالاها</string>
+    <string name="return_to_app" translatable="false">بازگشت به برنامه</string>
+    <string name="birthday_placeholder" translatable="false">----/--/--</string>
+    <string name="order_summary_total_items" translatable="false">مجموع کالاها</string>
     <string name="choose_category">انتخاب دسته‌بندی</string>
     <string name="all_categories">همه‌ی دسته‌بندی‌ها</string>
     <string name="tracking_order_number">شماره سفارش:</string>
@@ -544,8 +544,8 @@
     <string name="add_review">ثبت نظر</string>
     <string name="item_is_out_of_stock">موجودی کالا تمام شده است</string>
     <string name="brand_label">برند</string>
-    <string name="seller_label">فروشنده</string>
-    <string name="fee_label">قیمت واحد</string>
+    <string name="seller_label" translatable="false">فروشنده</string>
+    <string name="fee_label" translatable="false">قیمت واحد</string>
     <string name="color_label">رنگ</string>
     <string name="deal_item_out_of_stock_label">تمام شد</string>
     <string name="order_cancellation_cancel_item_btn">لغو کالا</string>
@@ -590,18 +590,71 @@
     <string name="save_phone_number_button_label">تایید</string>
     <string name="fragment_phone_verification_title">تایید شماره</string>
     <string name="fragment_change_phone_title">ثبت شماره</string>
-    <string name="card_number_hint">################</string>
-    <string name="card_number_mask">#### - #### - #### - ####</string>
+    <string name="card_number_hint" translatable="false">################</string>
+    <string name="card_number_mask" translatable="false">#### - #### - #### - ####</string>
     <string name="order_cancellation_item_has_cancellation_error">درخواست لغو کالای شما در حال پردازش است.</string>
     <string name="order_cancellation_item_shipped_error">به دلیل اینکه کالای شما در مرحله ارسال است، امکان لغو وجود ندارد.</string>
     <string name="order_cancellation_item_is_not_cancelable">درخواست لغو کالای شما در حال پردازش است.</string>
     <string name="error_at_least_two_chars_needed">حداقل ۲ کاراکتر وارد نمایید</string>
     <string name="bank_activity_order_number_title">شماره سفارش:</string>
-    <string name="score">امتیاز</string>
-    <string name="rial">ریال</string>
+    <string name="score" translatable="false">امتیاز</string>
+    <string name="rial" translatable="false">ریال</string>
 
     <plurals name="order_cancellation_please_select_cancellation_reason">
         <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>
         <item quantity="other">لطفا دلیل لغو کالاها را انتخاب کنید</item>
     </plurals>
+    <string name="address_at_least_two_chars_needed">Address at least two chars needed</string>
+    <string name="address_city_placeholder">city</string>
+    <string name="address_district_placeholder">District</string>
+    <string name="address_national_id_length_error">"National id length must be 10 chars"</string>
+    <string name="address_phone_number_invalidity_error">Invalid phone number</string>
+    <string name="address_postal_code_hint">Postal code(optional)</string>
+    <string name="address_province_placeholder">Unit</string>
+    <string name="bank_return_page_order_status">Order detail</string>
+    <string name="basket_fragment_title">Basket</string>
+    <string name="calculate_delivery_time">Calculating delivery time</string>
+    <string name="categories_fragment_title">Category</string>
+    <string name="checkout_add_new_address">Add new Address</string>
+    <string name="checkout_choose_address_step">Choose address</string>
+    <string name="checkout_confirmation_phone">phone: %s</string>
+    <string name="checkout_confirmation_step">Confirmation steps</string>
+    <string name="checkout_confirmation_total_price">جمع نهایی(%d کالا)</string>
+    <string name="checkout_edit_address">Edit address</string>
+    <string name="checkout_payment_method_step">Choose paymanet method</string>
+    <string name="daily_deals_item_percentage_placeholder">‎%d%%</string>
+    <string name="drawer_idea_report">Report Ideas</string>
+    <string name="extimated_time_column">Extimated time</string>
+    <string name="filters_last_delimiter">%1$s و %2$s</string>
+    <string name="filters_separator">،</string>
+    <string name="gender">Gender</string>
+    <string name="gender_female">Female</string>
+    <string name="gender_male">Male</string>
+    <string name="getting_data_from_server">Getting data…</string>
+    <string name="home_page_fragment_title">Home</string>
+    <string name="internet_settings">Internet setting</string>
+    <string name="loading_more_orders">Loading more orders</string>
+    <string name="my_bamilo_fragment_title">My bamilo</string>
+    <string name="my_profile_add_new_address">\@string/checkout_add_new_address</string>
+    <string name="network_timeout_error">Network error</string>
+    <string name="order_summary_shipping_fee">Order shipping</string>
+    <string name="order_summary_total_discount">Total discount</string>
+    <string name="other_cities_delivery_time">City</string>
+    <string name="pdv_delivery_time">Delivery time:</string>
+    <string name="please_select_a_payment_method">Please choose a payment method!</string>
+    <string name="please_wait_for_a_while">Please wait</string>
+    <string name="price_free">Free</string>
+    <string name="product_description">Product Specifications</string>
+    <string name="retry_label">Try again</string>
+    <string name="say_what_you_want_to_search">What you want to search</string>
+    <string name="search_hint">Search in bamilo</string>
+    <string name="search_on_brands_categories">Search on brands, categories</string>
+    <string name="select_region">Select region</string>
+    <string name="seller_column">Seller:</string>
+    <string name="server_in_maintenance_warning">Server is under maintenance</string>
+    <string name="there_is_no_access_to_internet_label">No internet connection</string>
+    <string name="showcase_drawer_item_tracking">از اینجا میتونید از وضعیت کالاهای سفارش خود مطلع شوید</string>
+    <string name="showcase_hamburger_icon_item_tracking">می تونید از اینجا سفارشتون رو با جزئیات بیشتری پیگیری کنید</string>
+    <string name="showcase_got_it">Got it</string>
+    <string name="tracking_order_delivery_address">Order delivery address</string>
 </resources>

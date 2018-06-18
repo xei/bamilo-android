@@ -179,9 +179,15 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.7.1'
     compile "com.github.bumptech.glide:okhttp3-integration:4.7.1"
 
+    //kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    //slide indicator
     implementation 'com.romandanylyk:pageindicatorview:1.0.1@aar'
+
+    //view model
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    kapt "android.arch.lifecycle:compiler:1.1.1"
 }
 
 /**

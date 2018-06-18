@@ -7,39 +7,39 @@
     <bool name="ga_reportUncaughtExceptions">true</bool>
 
     <!-- Begin of Adjust Tracking Parameters -->
-    <string name="adjust_token_launch">snajza</string>
-    <string name="adjust_token_log_in">x9d3f2</string>
-    <string name="adjust_token_log_out">rhetel</string>
-    <string name="adjust_token_sign_up">mrnipz</string>
-    <string name="adjust_token_customer">ty8mah</string>
-    <string name="adjust_token_sale">qs0jou</string>
-    <string name="adjust_token_add_to_cart">ue0h5k</string>
-    <string name="adjust_token_remove_from_cart">4n7rn3</string>
-    <string name="adjust_token_add_to_wishlist">33a2a2</string>
-    <string name="adjust_token_remove_from_wishlist">c379du</string>
-    <string name="adjust_token_guest_sale">55cqni</string>
-    <string name="adjust_token_fb_connect">jc5wc6</string>
-    <string name="adjust_token_social_share">vxubp0</string>
-    <string name="adjust_token_call">ese2n9</string>
-    <string name="adjust_token_product_rate">ibsnbg</string>
+    <string name="adjust_token_launch" translatable="false">snajza</string>
+    <string name="adjust_token_log_in" translatable="false">x9d3f2</string>
+    <string name="adjust_token_log_out" translatable="false">rhetel</string>
+    <string name="adjust_token_sign_up" translatable="false">mrnipz</string>
+    <string name="adjust_token_customer" translatable="false">ty8mah</string>
+    <string name="adjust_token_sale" translatable="false">qs0jou</string>
+    <string name="adjust_token_add_to_cart" translatable="false">ue0h5k</string>
+    <string name="adjust_token_remove_from_cart" translatable="false">4n7rn3</string>
+    <string name="adjust_token_add_to_wishlist" translatable="false">33a2a2</string>
+    <string name="adjust_token_remove_from_wishlist" translatable="false">c379du</string>
+    <string name="adjust_token_guest_sale" translatable="false">55cqni</string>
+    <string name="adjust_token_fb_connect" translatable="false">jc5wc6</string>
+    <string name="adjust_token_social_share" translatable="false">vxubp0</string>
+    <string name="adjust_token_call" translatable="false">ese2n9</string>
+    <string name="adjust_token_product_rate" translatable="false">ibsnbg</string>
     <!-- RE TARGET -->
-    <string name="adjust_token_home">2kamv3</string>
-    <string name="adjust_token_view_product">tlm16q</string>
-    <string name="adjust_token_view_listing">szdngw</string>
-    <string name="adjust_token_search">1u9vnr</string>
-    <string name="adjust_token_view_cart">4aa3pj</string>
-    <string name="adjust_token_transaction_confirmation">bts6iz</string>
+    <string name="adjust_token_home" translatable="false">2kamv3</string>
+    <string name="adjust_token_view_product" translatable="false">tlm16q</string>
+    <string name="adjust_token_view_listing" translatable="false">szdngw</string>
+    <string name="adjust_token_search" translatable="false">1u9vnr</string>
+    <string name="adjust_token_view_cart" translatable="false">4aa3pj</string>
+    <string name="adjust_token_transaction_confirmation" translatable="false">bts6iz</string>
     <!-- FB AUDIENCE -->
-    <string name="adjust_token_fb_home">w2x1sf</string>
-    <string name="adjust_token_fb_view_listing">iv63w9</string>
-    <string name="adjust_token_fb_view_product">nk3k2x</string>
-    <string name="adjust_token_fb_search">ezkcbl</string>
-    <string name="adjust_token_fb_view_wishlist">qthb20</string>
-    <string name="adjust_token_fb_view_cart">ekrf6p</string>
-    <string name="adjust_token_fb_add_to_cart"/>
-    <string name="adjust_token_fb_transaction_confirmation">z05nf9</string>
+    <string name="adjust_token_fb_home" translatable="false">w2x1sf</string>
+    <string name="adjust_token_fb_view_listing" translatable="false">iv63w9</string>
+    <string name="adjust_token_fb_view_product" translatable="false">nk3k2x</string>
+    <string name="adjust_token_fb_search" translatable="false">ezkcbl</string>
+    <string name="adjust_token_fb_view_wishlist" translatable="false">qthb20</string>
+    <string name="adjust_token_fb_view_cart" translatable="false">ekrf6p</string>
+    <string name="adjust_token_fb_add_to_cart" translatable="false"/>
+    <string name="adjust_token_fb_transaction_confirmation" translatable="false">z05nf9</string>
     <!-- Cake-Adjust integration -->
-    <string name="adjust_token_cake_integration"/>
+    <string name="adjust_token_cake_integration" translatable="false"/>
 
     <!-- End of Adjust Tracking Parameters -->
     

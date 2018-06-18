@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:app="http://schemas.android.com/apk/res-auto">-->
-    <!--<data>-->
-        <!--<variable-->
-            <!--name="productDetail_viewModel"-->
-            <!--type="com.mobile.view.productdetail.ProductDetailViewModel"/>-->
-    <!--</data>-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="productDetail_viewModel"
+            type="com.mobile.view.productdetail.ProductDetailViewModel"/>
+    </data>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,14 +43,16 @@
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/productDetail_swipeRefresh"
             android:layout_width="match_parent"
+            android:descendantFocusability="blocksDescendants"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/productDetail_recycler_detailList"
                 android:layout_width="match_parent"
+                android:background="#f9f9f9"
                 android:layout_height="match_parent"/>
 
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
-<!--</layout>-->
+</layout>

@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="2dp"
-    app:elevation="@dimen/dimen_8dp"
-    tools:layout_marginLeft="@dimen/dimen_8dp"
-    tools:layout_marginRight="@dimen/dimen_8dp">
+    app:elevation="@dimen/dimen_4dp"
+    android:layout_marginLeft="@dimen/dimen_8dp"
+    android:layout_marginRight="@dimen/dimen_8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:textColor="@color/secondary_text_color"
             android:textSize="11sp"
             tools:ignore="SmallSp"
-            tools:text="انتخاب رنگ"/>
+            android:text="انتخاب رنگ"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/pdvVariations_recyclerView_colors"
@@ -48,7 +48,7 @@
                 android:textColor="@color/secondary_text_color"
                 android:textSize="11sp"
                 tools:ignore="SmallSp"
-                tools:text="انتخاب سایز"/>
+                android:text="انتخاب سایز"/>
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/pdvVariations_textView_sizeHelp"
@@ -57,14 +57,14 @@
                 android:layout_marginRight="@dimen/dimen_8dp"
                 android:textColor="#25a8ed"
                 android:textSize="13sp"
-                tools:text="راهنمای سایز"/>
+                android:text="راهنمای سایز"/>
 
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/pdvVariations_recyclerView_size"
             android:layout_width="match_parent"
-            android:layout_height="24dp"
+            android:layout_height="48dp"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
@@ -86,6 +86,7 @@
             android:orientation="horizontal">
 
             <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdvVariations_textView_descriptions"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -104,6 +105,7 @@
                 android:background="@color/grey_dividerlight"/>
 
             <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdvVariations_textView_specification"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:fontFamily="@string/bamilo_font"

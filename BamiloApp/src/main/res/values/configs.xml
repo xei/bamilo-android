@@ -7,8 +7,8 @@
     <item name="check_version_enabled" type="bool">true</item>
 
 	<!-- SERVER CONFS -->
-    <string name="global_server_restbase_path">@string/global_restbase_path</string>
-    <string name="global_server_api_version">@string/global_api_version</string>
+    <string name="global_server_restbase_path" translatable="false">@string/global_restbase_path</string>
+    <string name="global_server_api_version" translatable="false">@string/global_api_version</string>
 
     <!-- USER PREFERENCES -->
     <item name="default_vibrate" type="bool">false</item>
@@ -20,13 +20,13 @@
 
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool">true</item>
-    <string name="adjust_app_token">5ktqpxh59vp4</string>
+    <string name="adjust_app_token" translatable="false">5ktqpxh59vp4</string>
     <item name="adjust_is_production_env" type="bool">false</item>
 
     <!-- MARKET -->
-    <string name="market_store_uri">market://details?id=%s</string>
-    <string name="market_store_external_uri">https://play.google.com/store/apps/details?id=%s</string>
-    <string name="id_market">com.bamilo.android</string>
+    <string name="market_store_uri" translatable="false">market://details?id=%s</string>
+    <string name="market_store_external_uri" translatable="false">https://play.google.com/store/apps/details?id=%s</string>
+    <string name="id_market" translatable="false">com.bamilo.android</string>
 
     ////////////////////////////////////////////////
 
@@ -45,10 +45,10 @@
     -->
 
     <!-- DEEP LINK -->
-    <string name="dp_package_id">com.bamilo.android.live</string>
-    <string name="dp_app_name_uppercase">BAMILO</string>
-    <string name="dp_app_name_lowercase">bamilo</string>
-    <string name="dp_intent_label">Bamilo Live</string>
+    <string name="dp_package_id" translatable="false">com.bamilo.android.live</string>
+    <string name="dp_app_name_uppercase" translatable="false">BAMILO</string>
+    <string name="dp_app_name_lowercase" translatable="false">bamilo</string>
+    <string name="dp_intent_label" translatable="false">Bamilo Live</string>
 
     <!-- GTM -->
     <item name="gtm_debug" type="bool">false</item>
@@ -57,7 +57,7 @@
     <string name="app_name_placeholder">Bamilo</string>
 
     <!-- DEEP LINK APP INDEXING -->
-    <string name="dp_app_index_prefix">/BAMILO</string>
+    <string name="dp_app_index_prefix" translatable="false">/BAMILO</string>
 
     <!-- MARKET -->
 

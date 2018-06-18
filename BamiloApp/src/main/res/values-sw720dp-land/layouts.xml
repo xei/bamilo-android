@@ -1,6 +1,6 @@
 <resources>
 
     <bool name="isTablet">true</bool>
-    <string name="orientation">unspecified</string>
+    <string name="orientation" translatable="false">unspecified</string>
 
 </resources>

@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="24dp"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_marginLeft="@dimen/dimen_4dp"
+    android:layout_marginRight="@dimen/dimen_4dp"
+    android:layout_height="36dp"
+    android:id="@+id/pdvSize_linearLayout_rootLayout"
     android:background="@drawable/round_size_background_1dp"
     android:gravity="center"
     android:minWidth="@dimen/dimen_40dp">
 
-    <TextView
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdvSize_textView_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        tools:text="XL"
         android:textColor="@color/secondary_text_color"
-        android:textSize="14sp"/>
+        android:textSize="14sp"
+        tools:text="XL"/>
 
 </LinearLayout>

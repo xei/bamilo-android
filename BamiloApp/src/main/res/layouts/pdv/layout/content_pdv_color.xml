@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.AppCompatImageView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/pdv_appImageView_color"
     android:layout_width="@dimen/dimen_50dp"
     android:layout_height="64dp"
     android:layout_marginLeft="@dimen/dimen_6dp"
     android:layout_marginRight="@dimen/dimen_6dp">
 
-</android.support.v7.widget.AppCompatImageView>
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/pdvColor_appImageView_Image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ProgressBar
+        android:id="@+id/pdvColor_progressBar"
+        android:layout_width="@dimen/progress_bar_dim"
+        android:layout_height="@dimen/progress_bar_dim"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

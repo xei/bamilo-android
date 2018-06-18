@@ -5,10 +5,10 @@
     <item type="id" name="origin_type"/>
     <item type="id" name="item_id"/>
     <item name="nav_action" type="id"/>
-    <string name="pref_vibrate">pref_vibrate</string>
-    <string name="pref_notification">pref_notification</string>
-    <string name="pref_led">pref_led</string>
-    <string name="pref_sound">pref_sound</string>
+    <string name="pref_vibrate" translatable="false">pref_vibrate</string>
+    <string name="pref_notification" translatable="false">pref_notification</string>
+    <string name="pref_led" translatable="false">pref_led</string>
+    <string name="pref_sound" translatable="false">pref_sound</string>
 
     <!-- CAMPAIGN -->
     <item type="id" name="product"/>
