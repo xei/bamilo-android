@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bamilo.modernbamilo.userreview.UserReviewActivity;
 import com.emarsys.predict.RecommendedItem;
 import com.mobile.app.BamiloApplication;
 import com.mobile.classes.models.MainEventModel;
@@ -460,6 +461,11 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
                 break;
             default:
                 break;
+        }
+
+
+        if(getContext() != null) {
+            UserReviewActivity.start(getContext());
         }
 
     }
