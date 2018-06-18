@@ -39,8 +39,12 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
     private var webApi = RetrofitHelper.makeWebApi(this, UserReviewWebApi::class.java)
 
     companion object {
+
+        @JvmStatic val TYPE_USER_REVIEW_APP_INITIAL = 0
+        @JvmStatic val TYPE_USER_REVIEW_AFTER_PURCHASE = 1
+
         @JvmStatic
-        fun start(invokerContext: Context) {
+        fun start(invokerContext: Context, reviewType: Int) {
             invokerContext.startActivity(Intent(invokerContext, UserReviewActivity::class.java))
         }
     }
