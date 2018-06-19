@@ -82,6 +82,8 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
     private PurchaseEntity oldCart = null;
     private Button btnContinueShopping;
 
+    private Boolean notOpenYet = true;
+
     /**
      * Empty constructor
      */
@@ -464,8 +466,9 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
         }
 
 
-        if(getContext() != null) {
-            UserReviewActivity.start(getContext(), UserReviewActivity.getTYPE_USER_REVIEW_AFTER_PURCHASE(), "");
+        if(getContext() != null && notOpenYet) {
+            UserReviewActivity.start(getContext(), UserReviewActivity.getTYPE_USER_REVIEW_AFTER_PURCHASE(), null, orderNumber);
+            notOpenYet = false;
         }
 
     }
