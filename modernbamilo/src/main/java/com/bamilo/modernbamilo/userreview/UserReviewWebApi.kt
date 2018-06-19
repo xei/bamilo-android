@@ -23,9 +23,16 @@ interface UserReviewWebApi {
     fun getSurvey(): Call<ResponseWrapper<GetSurveyResponse>>
 
     /**
+     * Partially save a survey response.
+     */
+    @POST("survey/alias/journey_survey?__method=PATCH")
+    fun submitSurveyPage(): Call<ResponseWrapper<SubmitSurveyResponse>>
+
+    /**
      * Completely save a survey response.
      */
-    @POST("survey/alias/{surveyAlias}")
-    fun submitSurvey(@Path("surveyAlias") surveyAlias: Int): Call<ResponseWrapper<SubmitSurveyResponse>>
+    @POST("survey/alias/journey_survey?")
+    fun submitSurvey(): Call<ResponseWrapper<SubmitSurveyResponse>>
+
 
 }
