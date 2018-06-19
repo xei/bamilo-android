@@ -90,7 +90,7 @@ public class LoginHelper extends SuperBaseHelper {
             public void onResponse(Call<ResponseWrapper<GetSurveyListResponse>> call, Response<ResponseWrapper<GetSurveyListResponse>> response) {
                 try {
                     if (response.body().getSuccess()) {
-                        UserReviewActivity.start(mContext, UserReviewActivity.getTYPE_USER_REVIEW_APP_INITIAL(), userId);
+                        UserReviewActivity.start(mContext, UserReviewActivity.getTYPE_USER_REVIEW_APP_INITIAL(), userId, null);
                     }
                 } catch (NullPointerException npe) {
 
