@@ -467,7 +467,8 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
 
 
         if(getContext() != null && notOpenYet) {
-            UserReviewActivity.start(getContext(), UserReviewActivity.getTYPE_USER_REVIEW_AFTER_PURCHASE(), null, orderNumber);
+            final String userId = BamiloApplication.CUSTOMER.getIdAsString();
+            UserReviewActivity.start(getContext(), UserReviewActivity.getTYPE_USER_REVIEW_AFTER_PURCHASE(), userId, orderNumber);
             notOpenYet = false;
         }
 
