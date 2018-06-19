@@ -4,9 +4,7 @@ import com.bamilo.modernbamilo.userreview.pojo.getsurvey.GetSurveyResponse
 import com.bamilo.modernbamilo.userreview.pojo.getsurveylist.GetSurveyListResponse
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface UserReviewWebApi {
 
@@ -31,8 +29,13 @@ interface UserReviewWebApi {
     /**
      * Completely save a survey response.
      */
-    @POST("survey/alias/journey_survey?")
-    fun submitSurvey(): Call<ResponseWrapper<SubmitSurveyResponse>>
+    @POST("survey/alias/journey_survey")
+    @FormUrlEncoded
+    fun submitSurvey(@Field (value="device", encoded = false) device: String,
+                     @Field (value="orderNumber", encoded = false) orderNumber: String?,
+                     @Field (value="userId", encoded = false) userId: String?,
+                     @FieldMap responses: Map<String, String>
+    ): Call<ResponseWrapper<SubmitSurveyResponse>>
 
 
 }
