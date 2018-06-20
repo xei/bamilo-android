@@ -47,6 +47,6 @@ interface UserReviewWebApi {
                      @Field (value="device", encoded = false) device: String = "mobile_app",
                      @Field (value="status", encoded = false) status: String? = "ignore",
                      @Field (value="__method", encoded = false) method: String? = "PATCH"
-    ): Call<ResponseWrapper<CancelSurveyResponse>>
+    ): Call<ResponseWrapper<Any>>
 
 }
