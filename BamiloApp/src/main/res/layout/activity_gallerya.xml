@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.mobile.view.productdetail.gallery.GalleryActivity">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/gallery_zoomableViewPager_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/gallery_appImageView_close"
+        android:layout_width="@dimen/dimen_40dp"
+        android:layout_height="@dimen/dimen_40dp"
+        android:layout_margin="@dimen/dimen_8dp"
+        android:padding="@dimen/dimen_8dp"
+        app:srcCompat="@drawable/ic_close_gray"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/gallery_recyclerView_images"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_64dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="horizontal"/>
+
+</RelativeLayout>

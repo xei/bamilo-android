@@ -1,16 +1,15 @@
-package com.mobile.view.productdetail.slider
+package com.mobile.view.productdetail.gallery
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import com.mobile.view.productdetail.model.ImageList
 
 /**
  * Created by Farshid since 6/13/2018. contact farshidabazari@gmail.com
  */
-class ProductSliderPagerAdapter(fm: FragmentManager, private var images: ArrayList<ImageList>?) : FragmentStatePagerAdapter(fm) {
+class ProductGalleryPagerAdapter(fm: FragmentManager, private var images: ArrayList<String>?) : FragmentStatePagerAdapter(fm) {
     override fun getItem(position: Int): Fragment? {
-        return ProductImageSlidePageFragment().newInstance(images!![position].medium)
+        return ProductGalleryPageFragment().newInstance(images!![position])
     }
 
     override fun getCount(): Int {

@@ -4,6 +4,7 @@ import android.support.v4.view.ViewPager
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.mobile.components.widget.likebutton.SparkButton
 import com.mobile.view.R
 
 /**
@@ -14,5 +15,5 @@ import com.mobile.view.R
 class SliderHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
     var viewPager = itemView!!.findViewById<ViewPager>(R.id.contentProductSlider_viewPager)
     var share = itemView!!.findViewById<AppCompatImageView>(R.id.pdvSlider_appImageView_share)
-    var like = itemView!!.findViewById<AppCompatImageView>(R.id.pdvSlider_appImageView_like)
+    var like = itemView!!.findViewById<SparkButton>(R.id.pdvSlider_appImageView_like)
 }

@@ -1,10 +1,16 @@
 package com.mobile.view.productdetail.viewtypes.variation
 
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.components.ghostadapter.GhostAdapter
+import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
+import com.mobile.view.productdetail.OnItemClickListener
+import com.mobile.view.productdetail.model.Size
+import com.mobile.view.productdetail.model.Variations
 import com.mobile.view.productdetail.viewtypes.variation.colors.VariationsColorItem
 import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
 
@@ -14,22 +20,29 @@ import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_variations, holder = VariationsHolder::class)
-class VariationsItem {
+class VariationsItem(var variations: Variations?) {
     private lateinit var colorsAdapter: GhostAdapter
     private lateinit var sizesAdapter: GhostAdapter
 
     private lateinit var colorsItem: ArrayList<Any>
     private lateinit var sizesItem: ArrayList<Any>
 
+    var selectedSize = Size()
     @Binder
     public fun binder(holder: VariationsHolder) {
         setupColorRecycler(holder)
         setupSizedRecycler(holder)
 
-        addFakeData()
+        addFakeData(holder)
         holder.sizeHelp.setOnClickListener { _ -> }
         holder.specifications.setOnClickListener { _ -> }
         holder.descriptions.setOnClickListener { _ -> }
+
+        if(variations!!.otherVariations == null && variations!!.sizeVariation == null){
+            val layoutParams = holder.parentView.layoutParams as RecyclerView.LayoutParams
+            layoutParams.topMargin = UIUtils.dpToPx(holder.itemView.context, 8)
+            holder.parentView.layoutParams = layoutParams
+        }
     }
 
     private fun setupColorRecycler(holder: VariationsHolder) {
@@ -56,29 +69,38 @@ class VariationsItem {
         sizesItem = ArrayList()
     }
 
-    private fun addFakeData() {
-        colorsItem.add(VariationsColorItem("https://media.bamilo.com/p/navales-4424-3103161-1-cart.jpg"))
-        colorsItem.add(VariationsColorItem("https://media.bamilo.com/p/navales-4422-4103161-1-cart.jpg"))
-        colorsItem.add(VariationsColorItem("https://media.bamilo.com/p/navales-4421-5103161-1-cart.jpg"))
-        colorsItem.add(VariationsColorItem("https://media.bamilo.com/p/navales-4498-0203161-1-cart.jpg"))
-        colorsItem.add(VariationsColorItem("https://media.bamilo.com/p/navales-4495-1203161-1-cart.jpg"))
-        colorsItem.add(VariationsColorItem("https://media.bamilo.com/p/navales-4492-2203161-1-cart.jpg"))
-        colorsItem.add(VariationsColorItem("https://media.bamilo.com/p/navales-4489-3203161-1-cart.jpg"))
-        colorsItem.add(VariationsColorItem("https://media.bamilo.com/p/navales-4492-4203161-1-cart.jpg"))
-        colorsItem.add(VariationsColorItem("https://media.bamilo.com/p/navales-4533-8203161-1-cart.jpg"))
-        colorsItem.add(VariationsColorItem("https://media.bamilo.com/p/navales-4713-3403161-1-cart.jpg"))
-        colorsItem.add(VariationsColorItem("https://media.bamilo.com/p/navales-6514-4919681-1-cart.jpg"))
+    private fun addFakeData(holder: VariationsHolder) {
+        addOtherVariations(holder)
+        addSizeVariation(holder)
+    }
 
-        sizesItem.add(VariationsSizeItem("XXS"))
-        sizesItem.add(VariationsSizeItem("XS"))
-        sizesItem.add(VariationsSizeItem("S"))
-        sizesItem.add(VariationsSizeItem("M"))
-        sizesItem.add(VariationsSizeItem("L"))
-        sizesItem.add(VariationsSizeItem("XL"))
-        sizesItem.add(VariationsSizeItem("XXL"))
-        sizesItem.add(VariationsSizeItem("XXXL"))
+    private fun addSizeVariation(holder: VariationsHolder) {
+        if (variations != null && variations!!.sizeVariation != null) {
+            for (sizeVariation in variations!!.sizeVariation!!) {
+                sizesItem.add(VariationsSizeItem(sizeVariation, object : OnItemClickListener {
+                    override fun onItemClicked(any: Any?) {
+                        for (sizeItem in sizesItem) {
+                            (sizeItem as VariationsSizeItem).disableView()
+                        }
+                        selectedSize = any as Size
+                    }
+                }))
+            }
+            sizesAdapter.setItems(sizesItem)
+        } else {
+            holder.sizeRoot.visibility = View.GONE
+        }
+    }
 
-        colorsAdapter.setItems(colorsItem)
-        sizesAdapter.setItems(sizesItem)
+    private fun addOtherVariations(holder: VariationsHolder) {
+        if (variations != null && variations!!.otherVariations != null) {
+            for (otherVariation in variations!!.otherVariations!!) {
+                val variationsColorItem = VariationsColorItem(otherVariation)
+                colorsItem.add(variationsColorItem)
+            }
+            colorsAdapter.setItems(colorsItem)
+        } else {
+            holder.othersRoot.visibility = View.GONE
+        }
     }
 }

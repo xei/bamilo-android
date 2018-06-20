@@ -657,4 +657,5 @@
     <string name="showcase_hamburger_icon_item_tracking">می تونید از اینجا سفارشتون رو با جزئیات بیشتری پیگیری کنید</string>
     <string name="showcase_got_it">Got it</string>
     <string name="tracking_order_delivery_address">Order delivery address</string>
+    <string name="please_login_first">Please login first</string>
 </resources>

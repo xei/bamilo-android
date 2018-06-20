@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.AppCompatImageView
+    <com.mobile.utils.photoview.PhotoView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pdvSlider_appImageView_Image"
-        android:layout_width="match_parent"
+        android:id="@+id/pdvGallery_photoView_Image"
         android:transitionName="ToGallery"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <ProgressBar
-        android:id="@+id/pdvSlider_progressBar"
+        android:id="@+id/pdvGallery_progressBar"
         android:layout_width="@dimen/progress_bar_dim"
         android:layout_height="@dimen/progress_bar_dim"
         android:layout_centerInParent="true"/>

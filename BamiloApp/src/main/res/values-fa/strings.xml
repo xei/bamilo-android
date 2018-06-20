@@ -631,8 +631,11 @@
     <string name="error_at_least_two_chars_needed">حداقل ۲ کاراکتر وارد نمایید</string>
     <string name="payment_unsuccessful">پرداخت شما ناموفق بود</string>
 
+    <string name="please_login_first">ابتدا وارد حساب کاربری خود شوید</string>
+
     <plurals name="order_cancellation_please_select_cancellation_reason">
         <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>
         <item quantity="other">لطفا دلیل لغو کالاها را انتخاب کنید</item>
     </plurals>
+
 </resources>

@@ -3,86 +3,104 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pdvVariations_cardView_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="2dp"
-    app:elevation="@dimen/dimen_4dp"
     android:layout_marginLeft="@dimen/dimen_8dp"
-    android:layout_marginRight="@dimen/dimen_8dp">
+    android:layout_marginRight="@dimen/dimen_8dp"
+    app:cardCornerRadius="2dp"
+    app:elevation="@dimen/dimen_4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pdvVariations_textView_colorTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="@dimen/dimen_12dp"
-            android:textColor="@color/secondary_text_color"
-            android:textSize="11sp"
-            tools:ignore="SmallSp"
-            android:text="انتخاب رنگ"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/pdvVariations_recyclerView_colors"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_64dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="@dimen/dimen_12dp"
-            android:layout_marginRight="@dimen/dimen_12dp"/>
-
         <LinearLayout
+            android:id="@+id/pdvVariations_linearLayout_othersRoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginRight="12dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <com.mobile.components.customfontviews.TextView
-                android:id="@+id/pdvVariations_textView_sizeTitle"
+                android:id="@+id/pdvVariations_textView_colorTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="@dimen/dimen_12dp"
+                android:text="انتخاب های دیگر"
                 android:textColor="@color/secondary_text_color"
                 android:textSize="11sp"
-                tools:ignore="SmallSp"
-                android:text="انتخاب سایز"/>
+                tools:ignore="SmallSp"/>
 
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/pdvVariations_textView_sizeHelp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dimen_8dp"
-                android:textColor="#25a8ed"
-                android:textSize="13sp"
-                android:text="راهنمای سایز"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pdvVariations_recyclerView_colors"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_82dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/dimen_12dp"
+                android:layout_marginRight="@dimen/dimen_12dp"/>
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/pdvVariations_recyclerView_size"
+        <LinearLayout
+            android:id="@+id/pdvVariations_linearLayout_sizeRoot"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_1dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="@dimen/dimen_8dp"
-            android:layout_marginRight="@dimen/dimen_8dp"
-            android:background="@color/grey_dividerlight"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="12dp"
+                android:orientation="horizontal">
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/pdvVariations_textView_sizeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="انتخاب سایز"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="11sp"
+                    tools:ignore="SmallSp"/>
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/pdvVariations_textView_sizeHelp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dimen_8dp"
+                    android:text="راهنمای سایز"
+                    android:textColor="#25a8ed"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pdvVariations_recyclerView_size"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_1dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="@dimen/dimen_8dp"
+                android:layout_marginRight="@dimen/dimen_8dp"
+                android:background="@color/grey_dividerlight"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_marginBottom="@dimen/dimen_4dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <com.mobile.components.customfontviews.TextView
@@ -90,12 +108,12 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_gravity="center"
-                android:gravity="center"
+                android:layout_marginTop="2dp"
                 android:fontFamily="@string/bamilo_font"
-                android:textSize="14sp"
+                android:gravity="center"
                 android:text="@string/product_description"
-                android:textColor="#25a8ed"/>
+                android:textColor="#25a8ed"
+                android:textSize="14sp"/>
 
             <View
                 android:layout_width="1dp"
@@ -108,13 +126,13 @@
                 android:id="@+id/pdvVariations_textView_specification"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:fontFamily="@string/bamilo_font"
-                android:textSize="14sp"
                 android:layout_weight="1"
-                android:layout_gravity="center"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@string/bamilo_font"
                 android:gravity="center"
                 android:text="@string/specifications"
-                android:textColor="#25a8ed"/>
+                android:textColor="#25a8ed"
+                android:textSize="14sp"/>
 
         </LinearLayout>
 

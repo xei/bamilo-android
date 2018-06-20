@@ -263,3 +263,5 @@ crashlytics {
     androidNdkOut 'src/main/obj'
     androidNdkLibsOut 'src/main/libs'
 }
+
+apply plugin: 'kotlin-android-extensions'

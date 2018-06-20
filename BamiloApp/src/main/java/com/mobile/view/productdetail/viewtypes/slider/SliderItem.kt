@@ -5,8 +5,11 @@ import android.support.v4.view.PagerAdapter
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.view.R
+import com.mobile.view.productdetail.model.ImageSliderModel
 import com.mobile.view.productdetail.slider.DepthPageTransformer
 import com.mobile.view.productdetail.slider.ProductSliderPagerAdapter
+import com.mobile.view.productdetail.slider.SliderPresenter
+
 
 /**
  * Created by Farshid
@@ -14,16 +17,35 @@ import com.mobile.view.productdetail.slider.ProductSliderPagerAdapter
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_slider, holder = SliderHolder::class)
-class SliderItem(var supportFragmentManager: FragmentManager,
-                 var imageList: ArrayList<String>) {
+class SliderItem(private var supportFragmentManager: FragmentManager,
+                 var imageSliderModel: ImageSliderModel) {
+
+    private var holder: SliderHolder? = null
+    private lateinit var sliderPresenter: SliderPresenter
 
     @Binder
     public fun binder(holder: SliderHolder) {
-        val pagerAdapter: PagerAdapter = ProductSliderPagerAdapter(supportFragmentManager, imageList)
+        this.holder = holder
+
+        sliderPresenter = SliderPresenter(holder.itemView.context,
+                imageSliderModel.productSku,
+                imageSliderModel.images)
+
+        setupViewPager(holder)
+        holder.like.setOnClickListener { _ ->
+            sliderPresenter.onLikeButtonClicked(holder.like)
+            holder.like.isChecked = !holder.like.isChecked
+            holder.like.playAnimation()
+        }
+        holder.share.setOnClickListener { _ -> sliderPresenter.shareProduct() }
+    }
+
+    private fun setupViewPager(holder: SliderHolder) {
+        val pagerAdapter: PagerAdapter = ProductSliderPagerAdapter(supportFragmentManager, imageSliderModel.images)
+
         holder.viewPager.setPageTransformer(true, DepthPageTransformer())
         holder.viewPager.adapter = pagerAdapter
 
-        holder.like.setOnClickListener { _ -> {} }
-        holder.share.setOnClickListener { _ -> {} }
+        sliderPresenter.handleOnViewPagerClicked(holder.viewPager)
     }
 }

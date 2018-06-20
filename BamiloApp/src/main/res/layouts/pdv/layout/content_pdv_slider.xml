@@ -2,15 +2,15 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="300dp">
+    android:layout_height="300dp"
+    android:background="@color/white">
 
     <android.support.v4.view.ViewPager
-        android:background="@color/white"
         android:id="@+id/contentProductSlider_viewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,16 +53,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_share_gray"/>
 
-    <android.support.v7.widget.AppCompatImageView
+    <com.mobile.components.widget.likebutton.SparkButton
         android:id="@+id/pdvSlider_appImageView_like"
-        android:layout_width="@dimen/dimen_40dp"
-        android:layout_height="@dimen/dimen_40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:padding="@dimen/dimen_8dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/dimen_8dp"
         app:layout_constraintEnd_toStartOf="@+id/pdvSlider_appImageView_share"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_like_gray"/>
+        app:sparkbutton_activeImage="@drawable/cart_item_like_selected"
+        app:sparkbutton_animationSpeed="1"
+        app:sparkbutton_iconSize="24dp"
+        app:sparkbutton_inActiveImage="@drawable/cart_item_like"
+        app:sparkbutton_primaryColor="@color/spark_primary_color"
+        app:sparkbutton_secondaryColor="@color/spark_secondary_color"/>
 
 </android.support.constraint.ConstraintLayout>
