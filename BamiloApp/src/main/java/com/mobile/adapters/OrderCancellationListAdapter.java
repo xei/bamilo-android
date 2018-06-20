@@ -5,8 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-
+import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import com.bamilo.apicore.service.model.data.itemtracking.CancellationReason;
 import com.bamilo.apicore.service.model.data.itemtracking.CompleteOrder;
 import com.bamilo.apicore.service.model.data.itemtracking.Package;
@@ -16,7 +20,6 @@ import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +29,9 @@ import java.util.Map;
  * Created by mohsen on 1/29/18.
  */
 
-public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCancellationListAdapter.OrderCancellationListViewHolder> {
+public class OrderCancellationListAdapter extends
+        RecyclerView.Adapter<OrderCancellationListAdapter.OrderCancellationListViewHolder> {
+
     private List<PackageItem> items;
     private List<CancellationReason> reasons;
     private Map<String, Integer> selectedItemsCount;
@@ -65,7 +70,8 @@ public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCanc
     }
 
     @Override
-    public void onBindViewHolder(OrderCancellationListViewHolder holder, int position, List<Object> payloads) {
+    public void onBindViewHolder(OrderCancellationListViewHolder holder, int position,
+            List<Object> payloads) {
         if (payloads != null && !payloads.isEmpty()) {
             PackageItem item = items.get(position);
             Object payload = payloads.get(0);
@@ -134,22 +140,25 @@ public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCanc
             spinnerAdapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         }
         holder.spinnerCancellationReasons.setAdapter(spinnerAdapter);
-        holder.spinnerCancellationReasons.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if (position > 0) {
-                    CancellationReason reason = reasons.get(position - 1);
-                    PackageItem item = items.get(holder.getAdapterPosition());
-                    selectedItemsCancellationReason.put(item.getId(), reason.getId());
-                    notifyItemChanged(holder.getAdapterPosition(),
-                            new CancellationReasonChangePayload(CancellationReasonChangePayload.REASON_SELECTED));
-                }
-            }
+        holder.spinnerCancellationReasons
+                .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position,
+                            long l) {
+                        if (position > 0) {
+                            CancellationReason reason = reasons.get(position - 1);
+                            PackageItem item = items.get(holder.getAdapterPosition());
+                            selectedItemsCancellationReason.put(item.getId(), reason.getId());
+                            notifyItemChanged(holder.getAdapterPosition(),
+                                    new CancellationReasonChangePayload(
+                                            CancellationReasonChangePayload.REASON_SELECTED));
+                        }
+                    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
         if (holder.checkBox.isChecked()) {
             holder.spinnerCancellationReasons.setVisibility(View.VISIBLE);
         } else {
@@ -179,7 +188,8 @@ public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCanc
                     count = -Math.abs(count);
                 }
                 selectedItemsCount.put(item.getId(), count);
-                notifyItemChanged(holder.getAdapterPosition(), selectedItemsCount.get(item.getId()));
+                notifyItemChanged(holder.getAdapterPosition(),
+                        selectedItemsCount.get(item.getId()));
             }
         });
         if (Math.abs(selectedCount) < item.getQuantity()) {
@@ -213,8 +223,10 @@ public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCanc
                         --count;
                     }
                 }
-                selectedItemsCount.put(item.getId(), unselected ? -Math.abs(count) : Math.abs(count));
-                notifyItemChanged(holder.getAdapterPosition(), selectedItemsCount.get(item.getId()));
+                selectedItemsCount
+                        .put(item.getId(), unselected ? -Math.abs(count) : Math.abs(count));
+                notifyItemChanged(holder.getAdapterPosition(),
+                        selectedItemsCount.get(item.getId()));
             }
         };
         holder.imgQuantityPlus.setOnClickListener(onQuantityChangeClickListener);
@@ -267,7 +279,8 @@ public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCanc
     }
 
     private void notifyItemToSelectCancellationReason(int position) {
-        notifyItemChanged(position, new CancellationReasonChangePayload(CancellationReasonChangePayload.REASON_NOT_SELECTED));
+        notifyItemChanged(position, new CancellationReasonChangePayload(
+                CancellationReasonChangePayload.REASON_NOT_SELECTED));
     }
 
     public void notifyItemToSelectCancellationReason(String itemId) {
@@ -293,6 +306,7 @@ public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCanc
     }
 
     public static class OrderCancellationListViewHolder extends RecyclerView.ViewHolder {
+
         CheckBox checkBox;
         ImageView imgProductThumb;
         TextView tvProductName, tvProductQuantity,
@@ -307,9 +321,11 @@ public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCanc
             imgProductThumb = (ImageView) itemView.findViewById(R.id.imgProductThumb);
             tvProductName = (TextView) itemView.findViewById(R.id.tvProductName);
             tvProductQuantity = (TextView) itemView.findViewById(R.id.tvProductQuantity);
-            tvCancellationReasonError = (TextView) itemView.findViewById(R.id.tvCancellationReasonError);
+            tvCancellationReasonError = (TextView) itemView
+                    .findViewById(R.id.tvCancellationReasonError);
             tvNotCancelableReason = (TextView) itemView.findViewById(R.id.tvNotCancelableReason);
-            spinnerCancellationReasons = (Spinner) itemView.findViewById(R.id.spinnerCancellationReason);
+            spinnerCancellationReasons = (Spinner) itemView
+                    .findViewById(R.id.spinnerCancellationReason);
             imgQuantityPlus = (ImageView) itemView.findViewById(R.id.imgNumberPickerPlus);
             imgQuantityMinus = (ImageView) itemView.findViewById(R.id.imgNumberPickerMinus);
             viewNotCancelable = itemView.findViewById(R.id.viewNotCancelable);
@@ -317,6 +333,7 @@ public class OrderCancellationListAdapter extends RecyclerView.Adapter<OrderCanc
     }
 
     static class CancellationReasonChangePayload {
+
         public static final int REASON_NOT_SELECTED = 0, REASON_SELECTED = 1;
         private int option;
 

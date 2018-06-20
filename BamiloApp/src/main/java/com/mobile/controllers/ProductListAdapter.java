@@ -7,20 +7,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.mobile.service.objects.product.pojo.ProductRegular;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ProductListViewHolder;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
-
 import java.util.List;
 
 /**
  * Created by rsoares on 10/22/15.
  */
-public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHolder>{
+public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHolder> {
 
     protected List<? extends ProductRegular> mDataSet;
     protected Context mContext;
@@ -32,26 +30,26 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         this.mDataSet = mDataSet;
     }
 
+    @NonNull
     @Override
-    public ProductListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ProductListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gen_product_list, parent, false));
+    public ProductListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ProductListViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.gen_product_list, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ProductListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductListViewHolder holder, int position) {
         // Get item
         ProductRegular item = mDataSet.get(position);
         // Set name
         holder.name.setText(item.getName());
         // Set brand
         holder.brand.setText(item.getBrandName());
-        // Show / Hide New Arrival Badge
-        //holder.newArrivalBadge.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         //Show/Hide Shop First
-        UIProductUtils.setShopFirst(item,holder.shopFirst);
+        UIProductUtils.setShopFirst(item, holder.shopFirst);
         // Set image
-        //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
-        ImageManager.getInstance().loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_large, false);
+        ImageManager.getInstance().loadImage(item.getImageUrl(), holder.image, holder.progress,
+                R.drawable.no_image_large, false);
         // Set is favorite image
         setFavourite(holder, item, position);
         // Set rating and reviews
@@ -61,8 +59,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
     }
 
 
-    public void setResources(Resources resources)
-    {
+    public void setResources(Resources resources) {
         this.resources = resources;
     }
 
@@ -73,6 +70,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
 
     /**
      * Set the favourite view.
+     *
      * @param holder - the view holder
      * @param item - the product
      */
@@ -84,6 +82,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
 
     /**
      * Set the product price.
+     *
      * @param holder - the view holder
      * @param item - the product
      */
@@ -94,19 +93,20 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
 
     /**
      * Validate and set views from list layout.
+     *
      * @param holder - the view holder
      * @param item - the product
      */
     protected void setSpecificViewForListLayout(ProductListViewHolder holder, ProductRegular item) {
         // Validate list views
-        if(holder.rating != null && holder.reviews != null) {
+        if (holder.rating != null && holder.reviews != null) {
             UIUtils.setProgressForRTLPreJellyMr2(holder.rating);
             // Show rating
             if (item.getAvgRating() > 0) {
                 holder.rating.setRating((float) item.getAvgRating());
                 holder.rating.setVisibility(View.VISIBLE);
                 int count = item.getTotalRatings();
-                String string = "("+count+")";
+                String string = "(" + count + ")";
                 holder.reviews.setText(string);
             }
             // Hide rating
@@ -116,5 +116,4 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
             }
         }
     }
-
 }

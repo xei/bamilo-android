@@ -1,11 +1,11 @@
 package com.mobile.utils.home.holder;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.service.objects.home.type.TeaserGroupType;
 import com.mobile.service.objects.product.pojo.ProductRegular;
@@ -14,23 +14,23 @@ import com.mobile.service.utils.shop.CurrencyFormatter;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.ImageManager;
 import com.mobile.view.R;
-
 import java.util.ArrayList;
 
 /**
  * Rich Relevance adapter
- * @author Manuel Silva
  *
+ * @author Manuel Silva
  */
 public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdapter.ViewHolder> {
 
     private final View.OnClickListener mOnClickListener;
 
-    private final ArrayList<ProductRegular>  mDataSet;
+    private final ArrayList<ProductRegular> mDataSet;
 
     private boolean mIsTeaserRR = true;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         public ImageView mImage;
         public View mProgress;
         public TextView mBrand;
@@ -44,11 +44,11 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
          */
         public ViewHolder(View view, boolean isTeaser) {
             super(view);
-            mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
+            mImage = view.findViewById(R.id.home_teaser_item_image);
             mProgress = view.findViewById(R.id.home_teaser_item_progress);
-            mBrand = (TextView) view.findViewById(R.id.brand);
-            mName = (TextView) view.findViewById(R.id.name);
-            mPrice = (TextView) view.findViewById(R.id.price);
+            mBrand = view.findViewById(R.id.brand);
+            mName = view.findViewById(R.id.name);
+            mPrice = view.findViewById(R.id.price);
 
         }
     }
@@ -56,28 +56,24 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
     /**
      * Provide a suitable constructor (depends on the kind of data)
      */
-    public RichRelevanceAdapter( final ArrayList<ProductRegular>  rrProducts, final View.OnClickListener listener, final boolean isTeaserRR) {
+    public RichRelevanceAdapter(final ArrayList<ProductRegular> rrProducts,
+            final View.OnClickListener listener, final boolean isTeaserRR) {
         mDataSet = rrProducts;
         mOnClickListener = listener;
-        mIsTeaserRR =  isTeaserRR;
+        mIsTeaserRR = isTeaserRR;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup, int)
-     */
+    @NonNull
     @Override
-    public RichRelevanceAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RichRelevanceAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+            int viewType) {
         // Create a new view
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_teaser_top_sellers_item, parent, false), mIsTeaserRR);
+        return new ViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.home_teaser_top_sellers_item, parent, false), mIsTeaserRR);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v7.widget.RecyclerView.Adapter#onBindViewHolder(android.support.v7.widget.RecyclerView.ViewHolder, int)
-     */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get item
         ProductRegular item = mDataSet.get(position);
         // Set name
@@ -85,29 +81,24 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
         // Set brand
         holder.mBrand.setText(item.getBrandName());
         // Set image
-        //RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_small);
-        ImageManager.getInstance().loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large, false);
-        // Set prices
+        ImageManager.getInstance().loadImage(item.getImageUrl(), holder.mImage, holder.mProgress,
+                R.drawable.no_image_large, false);
         // Set price
         double price = item.hasDiscount() ? item.getSpecialPrice() : item.getPrice();
         holder.mPrice.setText(CurrencyFormatter.formatCurrency(String.valueOf(price)));
 
-        if(mIsTeaserRR){
+        if (mIsTeaserRR) {
             // Set listener and tags
-            TeaserViewFactory.setRichRelevanceClickableView(holder.itemView, item, mOnClickListener, position, TeaserGroupType.TOP_SELLERS);
+            TeaserViewFactory.setRichRelevanceClickableView(holder.itemView, item, mOnClickListener,
+                    position, TeaserGroupType.TOP_SELLERS);
         } else {
             // Set tag
             holder.itemView.setTag(R.id.target_sku, item.getTarget());
             holder.itemView.setTag(R.id.target_rr_hash, item.getRichRelevanceClickHash());
             holder.itemView.setOnClickListener(mOnClickListener);
         }
-        }
+    }
 
-
-    /*
-     * (non-Javadoc)
-     * @see android.support.v7.widget.RecyclerView.Adapter#getItemCount()
-     */
     @Override
     public int getItemCount() {
         return CollectionUtils.isNotEmpty(mDataSet) ? mDataSet.size() : 0;

@@ -1,15 +1,18 @@
 /**
- * 
+ *
  */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.mobile.components._unused_.dialogs.WizardPreferences;
@@ -32,7 +35,7 @@ import java.util.EnumSet;
 public class ProductSizeGuideFragment extends BaseFragment {
 
     private static final String TAG = ProductSizeGuideFragment.class.getSimpleName();
-    
+
     private String mSizeGuideUrl;
 
     private View mWizard;
@@ -51,22 +54,12 @@ public class ProductSizeGuideFragment extends BaseFragment {
                 NO_ADJUST_CONTENT);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
-     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,12 +70,6 @@ public class ProductSizeGuideFragment extends BaseFragment {
         if(savedInstanceState != null) mSizeGuideUrl = savedInstanceState.getString(ConstantsIntentExtra.SIZE_GUIDE_URL);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
-     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -98,75 +85,44 @@ public class ProductSizeGuideFragment extends BaseFragment {
         // Show empty view
         else showContinueShopping();
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onStart()
-     */
+
     @Override
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onResume()
-     */
     @Override
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON RESUME");
         outState.putString(ConstantsIntentExtra.SIZE_GUIDE_URL, mSizeGuideUrl);
     }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onPause()
-     */
+
     @Override
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onStop()
-     */
     @Override
     public void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onDestroyView()
-     */
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         Print.i(TAG, "ON DESTROY VIEW");
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onDestroy()
-     */
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -174,53 +130,37 @@ public class ProductSizeGuideFragment extends BaseFragment {
         mWizard = null;
         mImageView = null;
     }
-    
-    /*
-     * ############# LAYOUT #############
-     */
-    
+
     /**
-     * 
-     * @param mImageView 
+     *
+     * @param mImageView
      * @param url
      */
     private void showSizeGuide(PhotoView mImageView, String url) {
         Print.i(TAG, "ON SHOW SIZE GUIDE");
-     // Load image        
-        /*RocketImageLoader.getInstance().loadImage(url, mImageView, null, R.drawable.no_image_large, new RocketImageLoaderListener() {
+        ImageManager.getInstance().loadImage(url, mImageView, null, R.drawable.no_image_large, false, new RequestListener<Drawable>() {
             @Override
-            public void onLoadedSuccess(String url, Bitmap bitmap) { 
-                showFragmentContentContainer();
-            }
-            
-            @Override
-            public void onLoadedError() {
-                showRetryLayout();
-            }
-            
-            @Override
-            public void onLoadedCancel() { }
-        });*/
-        ImageManager.getInstance().loadImage(url, mImageView, null, R.drawable.no_image_large, false, new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String s, Target<GlideDrawable> target, boolean b) {
+            public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                    Target<Drawable> target,
+                    boolean isFirstResource) {
                 showFragmentContentContainer();
                 return false;
             }
 
             @Override
-            public boolean onResourceReady(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b, boolean b1) {
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
+                    DataSource dataSource, boolean isFirstResource) {
                 showRetryLayout();
                 return false;
             }
         });
     }
-    
+
     private void showRetryLayout() {
         if(NetworkConnectivity.isConnected(getBaseActivity())) showFragmentErrorRetry();
         else showFragmentNoNetworkRetry();
     }
-    
+
     /**
      * Method used to validate if is necessary show the wizard.
      * @param mWizard
@@ -238,17 +178,9 @@ public class ProductSizeGuideFragment extends BaseFragment {
             getView().findViewById(R.id.wizard_product_size_button).setOnClickListener(this);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
-        }   
+        }
     }
-    
-    /*
-     * ############# CLICK LISTENER #############
-     */
-    
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
+
     @Override
     public void onClick(View view) {
         super.onClick(view);
@@ -269,21 +201,15 @@ public class ProductSizeGuideFragment extends BaseFragment {
             // Set flag
             WizardPreferences.changeState(getBaseActivity(), WizardType.SIZE_GUIDE);
             // Hide wizard
-            mWizard.setVisibility(View.GONE);   
+            mWizard.setVisibility(View.GONE);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON HIDE WIZARD", e);
         }
     }
 
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
-     */
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
         onClickContinueButton();
     }
-
 }

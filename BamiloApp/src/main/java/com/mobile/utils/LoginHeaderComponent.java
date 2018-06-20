@@ -131,25 +131,7 @@ public class LoginHeaderComponent extends FrameLayout {
             final ImageView imageView = (ImageView) view.findViewById(R.id.image_view);
             final ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
             mImagesContainerView.addView(view);
-            /*
-            RocketImageLoader.instance.loadImage(imageUrl, imageView, true, new RocketImageLoader.RocketImageLoaderListener() {
-                @Override
-                public void onLoadedSuccess(String imageUrl, Bitmap bitmap) {
-                    imageView.setImageBitmap(bitmap);
-                    mProgress.setVisibility(GONE);
-                }
-
-                @Override
-                public void onLoadedError() {
-                    view.setVisibility(GONE);
-                }
-
-                @Override
-                public void onLoadedCancel() {
-                    view.setVisibility(GONE);
-                }
-            });*/
-            ImageManager.getInstance().loadImage(imageUrl, imageView, mProgress, -1, false);
+           ImageManager.getInstance().loadImage(imageUrl, imageView, mProgress, -1, false);
         }
     }
 

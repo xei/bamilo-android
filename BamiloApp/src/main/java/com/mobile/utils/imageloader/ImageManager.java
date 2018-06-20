@@ -1,13 +1,14 @@
 package com.mobile.utils.imageloader;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.bumptech.glide.DrawableRequestBuilder;
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
@@ -16,61 +17,69 @@ import com.bumptech.glide.request.target.Target;
  */
 
 public final class ImageManager {
+
     private final Context mContext;
 
+    @SuppressLint("StaticFieldLeak")
     private static ImageManager instance = null;
+
     protected ImageManager(Context context) {
         mContext = context;
     }
 
     public static ImageManager getInstance() {
-        assert instance != null: "Call Initialize() first";
+        assert instance != null : "Call Initialize() first";
         return instance;
     }
 
     public static void initialize(Context context) {
-        assert instance == null: "Initialize already called. Use getInstance()";
+        assert instance == null : "Initialize already called. Use getInstance()";
         instance = new ImageManager(context);
     }
 
-    public void loadImage(final String imageUrl, final ImageView imageView, final View progressView, final int placeHolderImageId, final boolean isThumbnail) {
-        loadImage(imageUrl, imageView, progressView, placeHolderImageId, isThumbnail, new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String s, Target<GlideDrawable> target, boolean b) {
-                if(progressView != null) {
-                    progressView.setVisibility(View.GONE);
-                }
-                return false;
-            }
+    public void loadImage(final String imageUrl, final ImageView imageView, final View progressView,
+            final int placeHolderImageId, final boolean isThumbnail) {
+        loadImage(imageUrl, imageView, progressView, placeHolderImageId, isThumbnail,
+                new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                            Target<Drawable> target,
+                            boolean isFirstResource) {
+                        if (progressView != null) {
+                            progressView.setVisibility(View.GONE);
+                        }
+                        return false;
+                    }
 
-            @Override
-            public boolean onResourceReady(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b, boolean b1) {
-                if(progressView != null) {
-                    progressView.setVisibility(View.GONE);
-                }
-                return false;
-            }
-        });
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model,
+                            Target<Drawable> target,
+                            DataSource dataSource, boolean isFirstResource) {
+                        if (progressView != null) {
+                            progressView.setVisibility(View.GONE);
+                        }
+                        return false;
+                    }
+                });
     }
 
-    public void loadImage(final String imageUrl, final ImageView imageView, final View progressView, final int placeHolderImageId,
-                          final boolean isThumbnail, final RequestListener<String, GlideDrawable> listener) {
-        if(progressView != null) {
+    public void loadImage(final String imageUrl, final ImageView imageView, final View progressView,
+            final int placeHolderImageId,
+            final boolean isThumbnail, final RequestListener<Drawable> listener) {
+        if (progressView != null) {
             progressView.setVisibility(View.VISIBLE);
         }
 
-        DrawableRequestBuilder<?> builder = Glide.with(mContext)
+        GlideRequest glideRequest = GlideApp.with(mContext)
                 .load(imageUrl)
                 .placeholder(placeHolderImageId)
                 .listener(listener)
                 .dontTransform()
-                .animate(android.R.anim.fade_in)
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-        if(isThumbnail) {
-            builder.thumbnail(0.1f);
+        if (isThumbnail) {
+            glideRequest = glideRequest.thumbnail(0.1f);
         }
-
-        builder.into(imageView);
+        glideRequest.into(imageView);
     }
 }
