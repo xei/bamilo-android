@@ -27,7 +27,7 @@ object RetrofitHelper {
 
     private val sLogLevel = HttpLoggingInterceptor.Level.BODY
 
-    private const val URL_BASE = "http://bamilo.com/mobapi/v2.9/"
+    private const val URL_BASE = "http://staging.bamilo.com/mobapi/v2.9/"
 //    private const val URL_BASE = "http://staging.bamilo.com/mobapi/v2.9/"
     private val defaultHeaders = hashMapOf(
 //            "app-version" to BuildConfig.VERSION_CODE.toString(),
@@ -39,6 +39,7 @@ object RetrofitHelper {
     /**
      * This method is responsible for creation of the web APIs via Retrofit.
      */
+    @JvmStatic
     fun<T> makeWebApi(context: Context, service: Class<T>): T = getRetrofitInstance(context).create(service)
 
     /**
