@@ -24,6 +24,17 @@ import android.support.v7.app.AppCompatActivity
 fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment, @IdRes frameId: Int) {
     supportFragmentManager.transact {
         replace(frameId, fragment)
+    }
+}
+
+/**
+ * The `fragment` is added to the container view with id `frameId`. The operation is
+ * performed by the `fragmentManager`.
+ */
+fun AppCompatActivity.replaceFragmentInActivityWithAnim(fragment: Fragment, @IdRes frameId: Int) {
+    supportFragmentManager.transact {
+        setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        replace(frameId, fragment)
         addToBackStack(null)
     }
 }
