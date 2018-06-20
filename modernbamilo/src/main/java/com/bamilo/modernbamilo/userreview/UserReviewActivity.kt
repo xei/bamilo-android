@@ -196,25 +196,20 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun makeResponses(): Map<String, String> {
         val responses = HashMap<String, String>()
-        try {
-            for (i in 0 until mSurvey.pages[0].questions.size) {
-                val question = mSurvey.pages[0].questions[i]
-                for (j in 0 until question.options.size) {
-                    val option = mSurvey.pages[0].questions[i].options[j]
-                    if (option.isSelected) {
-                        responses["[0][${question.id}][${option.id}]"] = option.id.toString()
-                    }
-
-                }
-
-                if (question.userInputText != null && !question.userInputText.isEmpty()) {
-                    responses["[0][${question.id}]"] = question.userInputText
+        for (i in 0 until mSurvey.pages[0].questions.size) {
+            val question = mSurvey.pages[0].questions[i]
+            for (j in 0 until question.options.size) {
+                val option = mSurvey.pages[0].questions[i].options[j]
+                if (option.isSelected) {
+                    responses["[0][${question.id}][${option.id}]"] = option.id.toString()
                 }
 
             }
-        } catch (e: Exception) {
-            var x = 2
-            x++
+
+            if (question.userInputText != null && !question.userInputText.isEmpty()) {
+                responses["[0][${question.id}]"] = question.userInputText
+            }
+
         }
 
         return responses
