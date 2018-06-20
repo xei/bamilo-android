@@ -28,6 +28,7 @@ import retrofit2.Response
 
 const val KEY_EXTRA_REVIEW_TYPE = "KEY_EXTRA_REVIEW_TYPE"
 const val KEY_EXTRA_USER_ID = "KEY_EXTRA_USER_ID"
+const val KEY_EXTRA_ORDER_ID = "KEY_EXTRA_ORDER_ID"
 
 class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -48,10 +49,11 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
         @JvmStatic val TYPE_USER_REVIEW_AFTER_PURCHASE = 1
 
         @JvmStatic
-        fun start(invokerContext: Context, reviewType: Int, userId: String) {
+        fun start(invokerContext: Context, reviewType: Int, userId: String?, orderId: String?) {
             val intent = Intent(invokerContext, UserReviewActivity::class.java)
             intent.putExtra(KEY_EXTRA_REVIEW_TYPE, reviewType)
             intent.putExtra(KEY_EXTRA_USER_ID, userId)
+            intent.putExtra(KEY_EXTRA_ORDER_ID, orderId)
             invokerContext.startActivity(intent)
         }
     }
@@ -157,12 +159,12 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
             R.id.activityUserReview_xeiButton_next -> {
 
                 when (mPageNo) {
-                    mPagesFragmentList.size - 1 -> finish()
+                    mPagesFragmentList.size - 1 -> submitReview()
                     mPagesFragmentList.size - 2 -> {
                         mStepperView.setCurrentPage(++mPageNo)
                         // TODO: submit first
                         replaceFragmentInActivityWithAnim(mPagesFragmentList[mPageNo], R.id.activityUserReview_frameLayout_reviewPage)
-                        mNextButton.text = "بستن"
+                        mNextButton.text = "پایان"
                     }
                     else -> {
                         mStepperView.setCurrentPage(++mPageNo)
@@ -176,7 +178,46 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun submitReview() {
-//         mSurvey
+        val responses = makeResponses()
+        val call = webApi.submitSurvey(device = "mobile_app", orderNumber = intent.getStringExtra(KEY_EXTRA_ORDER_ID), userId = intent.getStringExtra(KEY_EXTRA_USER_ID), responses = responses)
+        call.enqueue(object: Callback<ResponseWrapper<SubmitSurveyResponse>> {
+
+            override fun onResponse(call: Call<ResponseWrapper<SubmitSurveyResponse>>?, response: Response<ResponseWrapper<SubmitSurveyResponse>>?) {
+                if (response?.body()?.success!!) {
+                    finish()
+                }
+
+            }
+            override fun onFailure(call: Call<ResponseWrapper<SubmitSurveyResponse>>?, t: Throwable?) {
+            }
+
+        })
+    }
+
+    private fun makeResponses(): Map<String, String> {
+        val responses = HashMap<String, String>()
+        try {
+            for (i in 0 until mSurvey.pages[0].questions.size) {
+                val question = mSurvey.pages[0].questions[i]
+                for (j in 0 until question.options.size) {
+                    val option = mSurvey.pages[0].questions[i].options[j]
+                    if (option.isSelected) {
+                        responses["[0][${question.id}][${option.id}]"] = option.id.toString()
+                    }
+
+                }
+
+                if (question.userInputText != null && !question.userInputText.isEmpty()) {
+                    responses["[0][${question.id}]"] = question.userInputText
+                }
+
+            }
+        } catch (e: Exception) {
+            var x = 2
+            x++
+        }
+
+        return responses
     }
 
     override fun onBackPressed() {
