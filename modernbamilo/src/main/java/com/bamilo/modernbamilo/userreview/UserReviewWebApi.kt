@@ -1,5 +1,7 @@
 package com.bamilo.modernbamilo.userreview
 
+import com.bamilo.modernbamilo.userreview.pojo.CancelSurveyResponse
+import com.bamilo.modernbamilo.userreview.pojo.SubmitSurveyResponse
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.GetSurveyResponse
 import com.bamilo.modernbamilo.userreview.pojo.getsurveylist.GetSurveyListResponse
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
@@ -37,5 +39,14 @@ interface UserReviewWebApi {
                      @FieldMap responses: Map<String, String>
     ): Call<ResponseWrapper<SubmitSurveyResponse>>
 
+    /**
+     * Ignore the survey
+     */
+    @POST("survey/user/{userId}")
+    fun cancelSurvey(@Path("userId") userId: String,
+                     @Field (value="device", encoded = false) device: String = "mobile_app",
+                     @Field (value="status", encoded = false) status: String? = "ignore",
+                     @Field (value="__method", encoded = false) method: String? = "PATCH"
+    ): Call<ResponseWrapper<CancelSurveyResponse>>
 
 }
