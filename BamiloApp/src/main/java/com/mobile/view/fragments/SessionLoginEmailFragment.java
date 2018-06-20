@@ -323,7 +323,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     }
 
     private void triggerLogin(ContentValues values) {
-        triggerContentEvent(new LoginHelper(), LoginHelper.createLoginBundle(values), this);
+        triggerContentEvent(new LoginHelper(getContext()), LoginHelper.createLoginBundle(values), this);
     }
 
     private void triggerLoginForm() {
@@ -383,7 +383,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         if (super.handleErrorEvent(baseResponse)) {
             return;
         }
-        // Validate error
+        // Validate messageItem
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);

@@ -288,6 +288,8 @@
             </intent-filter>
         </service>
 
+        <activity android:name="com.bamilo.modernbamilo.userreview.UserReviewActivity" />
+
     </application>
 
 </manifest>

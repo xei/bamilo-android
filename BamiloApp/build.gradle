@@ -63,6 +63,10 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     signingConfigs {
         release {
             storeFile file("keystores/bamilo_android.keystore")
@@ -152,6 +156,7 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
     compile project(':BamiloCore')
+    compile project(path: ':modernbamilo')
 
     /** GLIDE **/
     compile 'com.github.bumptech.glide:glide:4.7.1'

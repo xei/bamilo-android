@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- Material Design Colors -->
+    <color name="material_green_500">#4CAF50</color>
+    <color name="material_pink_500">#E91E63</color>
+    
+    <!-- CI -->
+    <color name="colorPrimary">#1A365E</color>
+    <color name="colorAccent">#FF6B0C</color>
+
+    <!-- User Review Screen -->
+    <color name="userReview_title">#FFF</color>
+    <color name="userReview_stepper_empty">#F1F1F1</color>
+    <color name="userReview_stepper_full">#FF6B0C</color>
+    <color name="userReview_button_next">#FF6B0C</color>
+    <color name="userReview_buttonText_next">#FFF</color>
+    <color name="userReview_typeRadio_title_textColor">#53585B</color>
+    <color name="userReview_typeRadio_optionButton_textColor">#53585B</color>
+    <color name="userReview_typeRadio_optionButton_layerColor">#fff</color>
+    <color name="userReview_typeRadio_optionButtons_startColor">@color/material_green_500</color>
+    <color name="userReview_typeRadio_optionButtons_endColor">@color/material_pink_500</color>
+    <color name="userReview_typeCheckbox_title_textColor">#53585B</color>
+    <color name="userReview_typeCheckbox_optionButton_buttonTintColor">#FF6B0C</color>
+    <color name="userReview_typeCheckbox_optionButton_textColor">#53585B</color>
+    <color name="userReview_typeCheckbox_optionButton_dividerColor">#eeeff1</color>
+    <color name="userReview_typeEssay_title_textColor">#53585B</color>
+    <color name="userReview_typeEssay_editText_textColor">#44484b</color>
+    <color name="userReview_typeEssay_editText_borderColor">#909193</color>
+    <color name="userReview_typeEssay_editText_backgroundColor">#edeff1</color>
+    <color name="userReview_typeThanks_doneIcon_tintColor">#FF6B0C</color>
+    <color name="userReview_typeThanks_description_textColor">#53585B</color>
+    <color name="userReview_typeImageSelect_title_textColor">#53585B</color>
+
+</resources>
