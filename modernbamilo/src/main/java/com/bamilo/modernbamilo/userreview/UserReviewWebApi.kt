@@ -1,6 +1,5 @@
 package com.bamilo.modernbamilo.userreview
 
-import com.bamilo.modernbamilo.userreview.pojo.CancelSurveyResponse
 import com.bamilo.modernbamilo.userreview.pojo.SubmitSurveyResponse
 import com.bamilo.modernbamilo.userreview.pojo.getsurvey.GetSurveyResponse
 import com.bamilo.modernbamilo.userreview.pojo.getsurveylist.GetSurveyListResponse
