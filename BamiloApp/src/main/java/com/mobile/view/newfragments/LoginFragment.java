@@ -128,7 +128,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         mEmailView = (EditText) view.findViewById(R.id.login_email);
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
         mEmailView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        // Get error message
+        // Get messageItem message
         tilEmail = (TextInputLayout) view.findViewById(R.id.tilEmail);
         tilPassword = (TextInputLayout) view.findViewById(R.id.tilPassword);
 
@@ -234,7 +234,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                     ContentValues values = new ContentValues();
                     values.put("login[email]", mCustomerEmail);
                     values.put("login[password]", mCustomerPassword);
-                    triggerContentEventProgress(new LoginHelper(), LoginHelper.createLoginBundle(values), this);
+                    triggerContentEventProgress(new LoginHelper(getContext()), LoginHelper.createLoginBundle(values), this);
 
                 } else {
                     hideActivityProgress();
@@ -339,7 +339,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        // Validate error o super
+        // Validate messageItem o super
         if (super.handleErrorEvent(baseResponse)) {
             return;
         }

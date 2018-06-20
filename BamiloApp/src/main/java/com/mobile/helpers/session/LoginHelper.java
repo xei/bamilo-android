@@ -1,8 +1,14 @@
 package com.mobile.helpers.session;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
 
+import com.bamilo.modernbamilo.userreview.UserReviewActivity;
+import com.bamilo.modernbamilo.userreview.UserReviewWebApi;
+import com.bamilo.modernbamilo.userreview.pojo.getsurveylist.GetSurveyListResponse;
+import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper;
+import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper;
 import com.mobile.app.BamiloApplication;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.SuperBaseHelper;
@@ -18,12 +24,22 @@ import com.mobile.service.utils.EventType;
 import com.mobile.service.utils.cache.WishListCache;
 import com.mobile.service.utils.output.Print;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 /**
  * Login helper
  */
 public class LoginHelper extends SuperBaseHelper {
-    
+
     boolean saveCredentials = true;
+
+    private Context mContext;
+
+    public LoginHelper(Context context) {
+        this.mContext = context;
+    }
 
     @Override
     public EventType getEventType() {
@@ -64,6 +80,30 @@ public class LoginHelper extends SuperBaseHelper {
         }
         // Save new wish list
         WishListCache.set(BamiloApplication.CUSTOMER.getWishListCache());
+
+        // Look for Review Survey:
+        UserReviewWebApi webApi = RetrofitHelper.makeWebApi(mContext, UserReviewWebApi.class);
+        final String userId = BamiloApplication.CUSTOMER.getIdAsString();
+        Call<ResponseWrapper<GetSurveyListResponse>> call = webApi.getSurveysList(userId);
+        call.enqueue(new Callback<ResponseWrapper<GetSurveyListResponse>>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper<GetSurveyListResponse>> call, Response<ResponseWrapper<GetSurveyListResponse>> response) {
+                try {
+                    if (response.body().getSuccess()) {
+                        UserReviewActivity.start(mContext, UserReviewActivity.getTYPE_USER_REVIEW_APP_INITIAL(), userId, null);
+                    }
+                } catch (NullPointerException npe) {
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper<GetSurveyListResponse>> call, Throwable t) {
+
+            }
+        });
+
     }
 
     public static Bundle createLoginBundle(ContentValues values) {

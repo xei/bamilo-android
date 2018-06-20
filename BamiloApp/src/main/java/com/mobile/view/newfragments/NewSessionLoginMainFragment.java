@@ -377,7 +377,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
 
     private void triggerAutoLogin() {
         Print.i(TAG, "TRIGGER AUTO LOGIN");
-        triggerContentEvent(new LoginAutoHelper(), LoginAutoHelper.createAutoLoginBundle(), this);
+        triggerContentEvent(new LoginAutoHelper(getContext()), LoginAutoHelper.createAutoLoginBundle(), this);
     }
 
 
@@ -503,7 +503,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        // Validate error o super
+        // Validate messageItem o super
         if (super.handleErrorEvent(baseResponse)) {
             return;
         }
