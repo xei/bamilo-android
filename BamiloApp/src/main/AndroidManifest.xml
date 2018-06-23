@@ -288,7 +288,9 @@
             </intent-filter>
         </service>
 
+        <!-- Components in Modern Bamilo Module -->
         <activity android:name="com.bamilo.modernbamilo.userreview.UserReviewActivity" />
+        <activity android:name="com.bamilo.modernbamilo.product.sellerslist.SellersListActivity" />
 
     </application>
 
