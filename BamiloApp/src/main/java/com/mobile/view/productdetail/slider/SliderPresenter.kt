@@ -112,10 +112,6 @@ class SliderPresenter(var context: Context, var productSku: String, var imageLis
     }
 
     private fun gotoGalleryActivity() {
-        val intent = Intent(Darwin.context, GalleryActivity::class.java)
-        val bundle = Bundle()
-        bundle.putSerializable("imagesBundle", imageList)
-        intent.putExtra("images", bundle)
-        context.startActivity(intent)
+        GalleryActivity.start(context, imageList)
     }
 }

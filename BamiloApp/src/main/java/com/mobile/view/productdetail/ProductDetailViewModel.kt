@@ -1,13 +1,14 @@
 package com.mobile.view.productdetail
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 
 /**
  * Created by Farshid since 6/12/2018. contact farshidabazari@gmail.com
  */
-class ProductDetailViewModel : ViewModel() {
+class ProductDetailViewModel(application: Application) : AndroidViewModel(application) {
     private var mItems: MutableLiveData<ArrayList<Any>>? = null
 
     fun setItems(items: ArrayList<Any>) {

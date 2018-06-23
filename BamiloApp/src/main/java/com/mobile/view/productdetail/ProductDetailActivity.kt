@@ -18,10 +18,7 @@ import com.mobile.service.pojo.BaseResponse
 import com.mobile.utils.ConfigurationWrapper
 import com.mobile.view.R
 import com.mobile.view.databinding.ActivityProductDetailBinding
-import com.mobile.view.productdetail.model.ImageList
-import com.mobile.view.productdetail.model.ImageSliderModel
-import com.mobile.view.productdetail.model.PrimaryInfoModel
-import com.mobile.view.productdetail.model.Variations
+import com.mobile.view.productdetail.model.*
 import com.mobile.view.productdetail.viewtypes.primaryinfo.PrimaryInfoItem
 import com.mobile.view.productdetail.viewtypes.recyclerheader.RecyclerHeaderItem
 import com.mobile.view.productdetail.viewtypes.slider.SliderItem
@@ -97,11 +94,44 @@ class ProductDetailActivity : AppCompatActivity(), IResponseCallback {
 
     private fun addVariations() {
         val variations = Variations()
-        if (variations.sizeVariation != null && variations.otherVariations != null) {
+        variations.sizeVariation.add(createFakeSizeModel("XXS"))
+        variations.sizeVariation.add(createFakeSizeModel("XS"))
+        variations.sizeVariation.add(createFakeSizeModel("S"))
+        variations.sizeVariation.add(createFakeSizeModel("L"))
+        variations.sizeVariation.add(createFakeSizeModel("XL"))
+        variations.sizeVariation.add(createFakeSizeModel("XXL"))
+
+        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4661-1403161-1-cart.jpg"))
+        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4713-5403161-1-cart.jpg"))
+        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4661-8303161-1-cart.jpg"))
+        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4672-6303161-1-cart.jpg"))
+        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4661-1403161-1-cart.jpg"))
+        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4713-5403161-1-cart.jpg"))
+        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4661-8303161-1-cart.jpg"))
+        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4672-6303161-1-cart.jpg"))
+
+        if (variations.sizeVariation.size > 0 || variations.otherVariations.size > 0) {
             addHeader("گزینه ها")
         }
 
         items.add(VariationsItem(variations))
+    }
+
+    private fun createFakeColorModel(imageUrl: String): OtherVariations {
+        val otherVariations = OtherVariations()
+        otherVariations.title = ""
+        otherVariations.image = imageUrl
+        otherVariations.sku = "9873264"
+        return otherVariations
+    }
+
+    private fun createFakeSizeModel(s: String): Size {
+        val size = Size()
+        size.image = ""
+        size.isSelected = false
+        size.sku = "9876321654"
+        size.title = s
+        return size
     }
 
     private fun addHeader(headerTitle: String) {
@@ -110,6 +140,15 @@ class ProductDetailActivity : AppCompatActivity(), IResponseCallback {
 
     private fun addPrimaryInfoItem() {
         val primaryInfoModel = PrimaryInfoModel()
+        primaryInfoModel.title = "آیفون X-256GB"
+        primaryInfoModel.priceModel.cost = "9,999,000"
+        primaryInfoModel.priceModel.currency = "تومان"
+        primaryInfoModel.priceModel.discount = "9,000,000"
+        primaryInfoModel.priceModel.discountBenefit = "سود شما شما 900 هزار تومان"
+        primaryInfoModel.priceModel.discountPercentage = "10%"
+        primaryInfoModel.rating.average = 3.8f
+        primaryInfoModel.rating.maxScore = 5
+        primaryInfoModel.rating.ratingCount = 25
         items.add(PrimaryInfoItem(primaryInfoModel))
     }
 
@@ -118,6 +157,8 @@ class ProductDetailActivity : AppCompatActivity(), IResponseCallback {
         for (i in 1 until 9) {
             val imageList = ImageList()
             imageList.medium = "https://media.bamilo.com/p/honor-1601-6634413-$i-product.jpg"
+            imageList.large = "https://media.bamilo.com/p/honor-1601-6634413-$i-product.jpg"
+            imageList.small = "https://media.bamilo.com/p/honor-1601-6634413-$i-product.jpg"
             images.add(imageList)
         }
 

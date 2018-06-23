@@ -1,5 +1,7 @@
 package com.mobile.view.productdetail.gallery
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -10,19 +12,32 @@ import android.support.v7.widget.RecyclerView
 import com.mobile.components.ghostadapter.GhostAdapter
 import com.mobile.view.R
 import com.mobile.view.productdetail.OnItemClickListener
+import com.mobile.view.productdetail.model.ImageList
 import com.mobile.view.productdetail.viewtypes.gallery.GalleryBottomImageItem
 import java.lang.Exception
+
+const val KEY_EXTRA_IMAGES = "KEY_EXTRA_IMAGES"
 
 @Suppress("UNCHECKED_CAST")
 class GalleryActivity : AppCompatActivity() {
 
-    private var images: ArrayList<String>? = null
+    private var images: ArrayList<ImageList>? = null
 
     private var adapter = GhostAdapter()
     private var items = ArrayList<Any>()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var zoomableViewPager: ViewPager
+
+    companion object {
+
+        @JvmStatic
+        fun start(invokerContext: Context, images: ArrayList<ImageList>) {
+            val intent = Intent(invokerContext, GalleryActivity::class.java)
+            intent.putExtra(KEY_EXTRA_IMAGES, images)
+            invokerContext.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +55,7 @@ class GalleryActivity : AppCompatActivity() {
 
     private fun getImagesListFromBundle() {
         try {
-            images = intent.extras["images"] as ArrayList<String>?
+            images = intent.extras[KEY_EXTRA_IMAGES] as ArrayList<ImageList>?
         } catch (e: Exception) {
         }
     }
@@ -87,7 +102,7 @@ class GalleryActivity : AppCompatActivity() {
 
     private fun addImagesToRecyclerView() {
         for (imageUrl in images!!) {
-            items.add(GalleryBottomImageItem(imageUrl, object : OnItemClickListener {
+            items.add(GalleryBottomImageItem(imageUrl.large, object : OnItemClickListener {
                 override fun onItemClicked(any: Any?) {
                     val position = any as Int
                     recyclerView.scrollToPosition(position)

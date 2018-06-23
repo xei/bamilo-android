@@ -38,7 +38,7 @@ class VariationsItem(var variations: Variations?) {
         holder.specifications.setOnClickListener { _ -> }
         holder.descriptions.setOnClickListener { _ -> }
 
-        if(variations!!.otherVariations == null && variations!!.sizeVariation == null){
+        if(variations!!.otherVariations.size == 0 && variations!!.sizeVariation.size == 0){
             val layoutParams = holder.parentView.layoutParams as RecyclerView.LayoutParams
             layoutParams.topMargin = UIUtils.dpToPx(holder.itemView.context, 8)
             holder.parentView.layoutParams = layoutParams
