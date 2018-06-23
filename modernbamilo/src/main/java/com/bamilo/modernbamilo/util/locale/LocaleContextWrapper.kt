@@ -1,4 +1,4 @@
-package com.bamilo.modernbamilo.util
+package com.bamilo.modernbamilo.util.locale
 
 import android.content.Context
 import android.content.ContextWrapper
