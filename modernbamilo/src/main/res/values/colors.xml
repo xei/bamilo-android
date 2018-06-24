@@ -33,4 +33,10 @@
     <color name="userReview_typeThanks_description_textColor">#53585B</color>
     <color name="userReview_typeImageSelect_title_textColor">#53585B</color>
 
+    <!-- Sellers List Screen -->
+    <color name="sellersList_background">#f9f9f9</color>
+    <color name="sellersList_productTitle">#434343</color>
+    <color name="sellersList_sortingLabel">#757575</color>
+    <color name="sellersList_filterBtn">#1a365e</color>
+
 </resources>
