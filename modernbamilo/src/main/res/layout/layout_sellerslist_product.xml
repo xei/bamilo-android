@@ -18,8 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="h,3:4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/googleg_standard_color_18" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.bamilo.modernbamilo.customview.XeiTextView
         android:id="@+id/layoutSellerslistProduct_xeiTextView_title"
