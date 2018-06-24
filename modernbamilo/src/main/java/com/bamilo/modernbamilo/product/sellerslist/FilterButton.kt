@@ -1,12 +1,10 @@
 package com.bamilo.modernbamilo.product.sellerslist
 
 import android.content.Context
-import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.util.TypedValue
 import com.bamilo.modernbamilo.R
-
 import com.bamilo.modernbamilo.customview.XeiTextView
 
 class FilterButton : XeiTextView {
