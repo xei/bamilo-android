@@ -15,4 +15,8 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="PriceView">
+        <attr name="strike" format="boolean" />
+    </declare-styleable>
+
 </resources>
