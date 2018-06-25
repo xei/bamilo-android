@@ -38,5 +38,15 @@
     <color name="sellersList_productTitle">#434343</color>
     <color name="sellersList_sortingLabel">#757575</color>
     <color name="sellersList_filterBtn">#1a365e</color>
+    <color name="sellersList_row_labels">#434343</color>
+    <color name="sellersList_row_sellerTitle">#434343</color>
+    <color name="sellersList_row_deliveryTime">#434343</color>
+    <color name="sellersList_row_rateBackground">#00a896</color>
+    <color name="sellersList_row_rate">#fff</color>
+    <color name="sellersList_row_payableAmount">#fe6b0c</color>
+    <color name="sellersList_row_baseAmount">#434343</color>
+    <color name="sellersList_row_discountPercent">#f7931d</color>
+    <color name="sellersList_row_addToCartButton">#fe6b0c</color>
+    <color name="sellersList_row_addToCartButtonText">#fff</color>
 
 </resources>
