@@ -39,7 +39,11 @@ class PriceView: XeiTextView {
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) =
-            super.setText(resources.getString(R.string.suffix_currency, format(text!!.trim())), type)
+            if(text == null || text.isEmpty()) {
+                super.setText(text, type)
+            } else {
+                super.setText(resources.getString(R.string.suffix_currency, format(text!!.trim())), type)
+            }
 
 
     private fun format(price: CharSequence): String {
