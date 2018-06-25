@@ -3,15 +3,14 @@ package com.bamilo.modernbamilo.util.extension
 /**
  * This method converts a number string to persian equivalent.
  *
- * @param numberStr The number string that must convert to Persian.
  * @return Persian number string
  * @throws NumberFormatException occurs when the "numberStr" is invalid.
  */
 @Throws(NumberFormatException::class)
-fun String.persianize(numberStr: String): String {
+fun String.persianizeNumberString(): String {
     var persianNumberStr = ""
-    for (i in 0 until numberStr.length) {
-        val numberUnicode = numberStr[i].toInt()
+    for (i in 0 until this.length) {
+        val numberUnicode = this[i].toInt()
         val persianUnicode: Int
         persianUnicode = when (numberUnicode) {
             in 48..57 -> numberUnicode + 1728   // The digit character is Latin
@@ -27,13 +26,12 @@ fun String.persianize(numberStr: String): String {
 /**
  * This method gets a string and converts all digits in it to Persian equivalent.
  *
- * @param str the string that may have some digit characters.
  * @return the processed string that don't have any non-persian digit character.
  */
-fun String.persianizeDigits(str: String): String {
+fun String.persianizeDigitsInString(): String {
     var persianizedStr = ""
-    for (i in 0 until str.length) {
-        val unicode = str[i].toInt()
+    for (i in 0 until this.length) {
+        val unicode = this[i].toInt()
         val persianizedUnicode: Int
         if (unicode in 48..57) {
             // The character is Latin digit
