@@ -8,7 +8,7 @@ package com.bamilo.modernbamilo.util.extension
  * @throws NumberFormatException occurs when the "numberStr" is invalid.
  */
 @Throws(NumberFormatException::class)
-fun persianize(numberStr: String): String {
+fun String.persianize(numberStr: String): String {
     var persianNumberStr = ""
     for (i in 0 until numberStr.length) {
         val numberUnicode = numberStr[i].toInt()
@@ -30,7 +30,7 @@ fun persianize(numberStr: String): String {
  * @param str the string that may have some digit characters.
  * @return the processed string that don't have any non-persian digit character.
  */
-fun persianizeDigits(str: String): String {
+fun String.persianizeDigits(str: String): String {
     var persianizedStr = ""
     for (i in 0 until str.length) {
         val unicode = str[i].toInt()
