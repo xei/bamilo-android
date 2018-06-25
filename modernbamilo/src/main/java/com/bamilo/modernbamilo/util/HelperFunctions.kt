@@ -64,15 +64,6 @@ fun getAppVersionName(context: Context): String? {
 
 }
 
-fun formatPrice(price: String): String {
-    val symbols = DecimalFormatSymbols()
-    symbols.groupingSeparator = ','
-    val df = DecimalFormat()
-    df.decimalFormatSymbols = symbols
-    df.groupingSize = 3
-
-    return df.format(java.lang.Long.parseLong(price))
-}
 
 @SuppressLint("SimpleDateFormat")
 fun getCurrentDateTime(): String {
