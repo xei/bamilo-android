@@ -11,9 +11,6 @@ import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.customview.DateTimeView
 import com.bamilo.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.modernbamilo.util.extension.persianizeNumberString
-import com.ibm.icu.text.DateFormat
-import com.ibm.icu.util.Calendar
-import com.ibm.icu.util.ULocale
 
 class SellersListAdapter(private val mSellersViewModels: List<SellerViewModel>) : RecyclerView.Adapter<SellersListAdapter.SellerViewHolder>() {
 
