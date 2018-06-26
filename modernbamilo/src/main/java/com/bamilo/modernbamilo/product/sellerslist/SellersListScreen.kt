@@ -51,22 +51,25 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sellers_list)
 
-        createViewModel()
         findViews()
-        mPriceFilterButton.selectButton()
+
+        createViewModel()
         bindViewModel()
+
         setOnClickListeners()
         initSellersRecyclerView()
+
+        sortSellersByPayableAmount()
     }
 
     private fun createViewModel() {
 
         val sellers = ArrayList<SellerViewModel>()
-        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", "پنجشنبه ۲۴ اسفند ۹۸", 4.3F, "۲۰۳۴۹۰۰۰", "۱۱۳۴۶۰۰۰", 33))
-        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", "پنجشنبه ۲۴ اسفند ۹۸", 4.3F, "۲۰۳۴۹۰۰۰", "۱۱۳۴۶۰۰۰", 33))
-        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", "پنجشنبه ۲۴ اسفند ۹۸", 4.3F, "۲۰۳۴۹۰۰۰", "۱۱۳۴۶۰۰۰", 33))
-        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", "پنجشنبه ۲۴ اسفند ۹۸", 4.3F, "۲۰۳۴۹۰۰۰", "۱۱۳۴۶۰۰۰", 33))
-        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", "پنجشنبه ۲۴ اسفند ۹۸", 4.3F, "۲۰۳۴۹۰۰۰", "۱۱۳۴۶۰۰۰", 33))
+        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515583533, 4.0F, 30249000, 50249000, 33))
+        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515585674, 4.1F, 30249000, 40249000, 33))
+        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516365568, 4.2F, 30249000, 30249000, 33))
+        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516367243, 4.3F, 30249000, 20249000, 33))
+        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1517367243, 4.4F, 30249000, 10249000, 33))
 
         mViewModel = ViewModel(intent.getStringExtra(KEY_EXTRA_PRODUCT_TITLE),
                 intent.getStringExtra(KEY_EXTRA_PRODUCT_THUMBNAIL_URL),
@@ -110,25 +113,43 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(clickedView: View?) {
         when (clickedView?.id) {
             R.id.layoutToolbar_imageButton_close -> finish()
-            R.id.activitySellersList_filterButton_price -> {
-                mPriceFilterButton.selectButton()
-                mRateFilterButton.deselectButton()
-                mLeadTimeFilterButton.deselectButton()
-            }
-            R.id.activitySellersList_filterButton_rate -> {
-                mPriceFilterButton.deselectButton()
-                mRateFilterButton.selectButton()
-                mLeadTimeFilterButton.deselectButton()
-            }
-            R.id.activitySellersList_filterButton_leadTime -> {
-                mPriceFilterButton.deselectButton()
-                mRateFilterButton.deselectButton()
-                mLeadTimeFilterButton.selectButton()
-            }
+            R.id.activitySellersList_filterButton_price -> sortSellersByPayableAmount()
+            R.id.activitySellersList_filterButton_rate -> sortSellersByRate()
+            R.id.activitySellersList_filterButton_leadTime -> sortSellersByLeadTime()
         }
+    }
+
+    private fun sortSellersByPayableAmount() {
+        mViewModel.sellersViewModel.sortWith(compareBy(SellerViewModel::payableAmount))
+        mSellersRecyclerView.adapter.notifyDataSetChanged()
+        mSellersRecyclerView.smoothScrollToPosition(0)
+
+        mPriceFilterButton.selectButton()
+        mRateFilterButton.deselectButton()
+        mLeadTimeFilterButton.deselectButton()
+    }
+
+    private fun sortSellersByRate() {
+        mViewModel.sellersViewModel.sortWith(compareByDescending(SellerViewModel::rate))
+        mSellersRecyclerView.adapter.notifyDataSetChanged()
+        mSellersRecyclerView.smoothScrollToPosition(0)
+
+        mPriceFilterButton.deselectButton()
+        mRateFilterButton.selectButton()
+        mLeadTimeFilterButton.deselectButton()
+    }
+
+    private fun sortSellersByLeadTime() {
+        mViewModel.sellersViewModel.sortWith(compareBy(SellerViewModel::deliveryTime))
+        mSellersRecyclerView.adapter.notifyDataSetChanged()
+        mSellersRecyclerView.smoothScrollToPosition(0)
+
+        mPriceFilterButton.deselectButton()
+        mRateFilterButton.deselectButton()
+        mLeadTimeFilterButton.selectButton()
     }
 
 }
 
 data class ViewModel(val productTitle: String, val productThumbnailUrl: String, val productVariant: String, val sellersViewModel: ArrayList<SellerViewModel>)
-data class SellerViewModel(val sellerId: String, val title: String, val deliveryTime: String, val rate: Float, val baseAmount: String, val payableAmount: String, val discount: Int)
+data class SellerViewModel(val sellerId: String, val title: String, val deliveryTime: Long, val rate: Float, val baseAmount: Long, val payableAmount: Long, val discount: Int)

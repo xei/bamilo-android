@@ -20,11 +20,11 @@ class SellersListAdapter(private val mSellersViewModels: List<SellerViewModel>) 
 
     override fun onBindViewHolder(holder: SellerViewHolder, position: Int) {
         holder.titleTextView.text = mSellersViewModels[position].title
-        holder.deliveryTimeTextView.text = mSellersViewModels[position].deliveryTime
+        holder.deliveryTimeTextView.text = mSellersViewModels[position].deliveryTime.toString() // TODO use ibm icu
         holder.rateTextView.text = mSellersViewModels[position].rate.toString().persianizeDigitsInString()
-        holder.payableAmountTextView.text = mSellersViewModels[position].payableAmount
+        holder.payableAmountTextView.text = mSellersViewModels[position].payableAmount.toString()
         holder.discountPercentTextView.text = mSellersViewModels[position].discount.toString().persianizeNumberString() + "%"
-        holder.baseAmountTextView.text = mSellersViewModels[position].baseAmount
+        holder.baseAmountTextView.text = mSellersViewModels[position].baseAmount.toString()
         holder.addToCartButton.setOnClickListener {
             Toast.makeText(holder.addToCartButton.context, mSellersViewModels[position].sellerId, Toast.LENGTH_LONG).show()
         }
