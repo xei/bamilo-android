@@ -8,8 +8,12 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.bamilo.modernbamilo.R
+import com.bamilo.modernbamilo.customview.DateTimeView
 import com.bamilo.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.modernbamilo.util.extension.persianizeNumberString
+import com.ibm.icu.text.DateFormat
+import com.ibm.icu.util.Calendar
+import com.ibm.icu.util.ULocale
 
 class SellersListAdapter(private val mSellersViewModels: List<SellerViewModel>) : RecyclerView.Adapter<SellersListAdapter.SellerViewHolder>() {
 
@@ -20,7 +24,7 @@ class SellersListAdapter(private val mSellersViewModels: List<SellerViewModel>) 
 
     override fun onBindViewHolder(holder: SellerViewHolder, position: Int) {
         holder.titleTextView.text = mSellersViewModels[position].title
-        holder.deliveryTimeTextView.text = mSellersViewModels[position].deliveryTime.toString() // TODO use ibm icu
+        holder.deliveryTimeTextView.setTime(mSellersViewModels[position].deliveryTime)
         holder.rateTextView.text = mSellersViewModels[position].rate.toString().persianizeDigitsInString()
         holder.payableAmountTextView.text = mSellersViewModels[position].payableAmount.toString()
         holder.discountPercentTextView.text = mSellersViewModels[position].discount.toString().persianizeNumberString() + "%"
@@ -34,7 +38,7 @@ class SellersListAdapter(private val mSellersViewModels: List<SellerViewModel>) 
 
     inner class SellerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_xeiTextView_sellerTitle) as TextView
-        val deliveryTimeTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_xeiTextView_deliveryTime) as TextView
+        val deliveryTimeTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_dateTimeView_deliveryTime) as DateTimeView
         val rateTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_xeiTextView_sellerRate) as TextView
         val payableAmountTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_priceView_payablePrice) as TextView
         val discountPercentTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_xeiTextView_discountPercent) as TextView

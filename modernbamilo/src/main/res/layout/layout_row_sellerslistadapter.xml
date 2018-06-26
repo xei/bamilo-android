@@ -53,8 +53,8 @@
         app:layout_constraintTop_toBottomOf="@+id/layoutRowSellerslistadapter_xeiTextView_sellerTitle"
         app:locale="auto" />
 
-    <com.bamilo.modernbamilo.customview.XeiTextView
-        android:id="@+id/layoutRowSellerslistadapter_xeiTextView_deliveryTime"
+    <com.bamilo.modernbamilo.customview.DateTimeView
+        android:id="@+id/layoutRowSellerslistadapter_dateTimeView_deliveryTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -62,7 +62,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="24dp"
         android:gravity="start|center_vertical"
-        tools:text="پنج‌شنبه ۲۴ اسفند ۹۸"
         android:textColor="@color/sellersList_row_deliveryTime"
         app:locale="auto"
         app:layout_constraintBaseline_toBaselineOf="@+id/layoutRowSellerslistadapter_xeiTextView_deliveryTimeLabel"

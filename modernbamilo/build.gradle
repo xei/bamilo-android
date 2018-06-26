@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
 
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -56,6 +56,8 @@ dependencies {
     // TODO: use kapt instead of annotationProcessor
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
+
+    implementation "com.ibm.icu:icu4j:51.1"
 
     implementation 'com.shawnlin:number-picker:2.4.6'
 
