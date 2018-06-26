@@ -24,7 +24,7 @@ class SellersListAdapter(private val mSellersViewModels: List<SellerViewModel>) 
         holder.deliveryTimeTextView.setTime(mSellersViewModels[position].deliveryTime)
         holder.rateTextView.text = mSellersViewModels[position].rate.toString().persianizeDigitsInString()
         holder.payableAmountTextView.text = mSellersViewModels[position].payableAmount.toString()
-        holder.discountPercentTextView.text = mSellersViewModels[position].discount.toString().persianizeNumberString() + "%"
+        holder.discountPercentTextView.text = holder.itemView.context.resources.getString(R.string.suffix_percent, mSellersViewModels[position].discount.toString().persianizeNumberString())
         holder.baseAmountTextView.text = mSellersViewModels[position].baseAmount.toString()
         holder.addToCartButton.setOnClickListener {
             Toast.makeText(holder.addToCartButton.context, mSellersViewModels[position].sellerId, Toast.LENGTH_LONG).show()

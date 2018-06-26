@@ -6,5 +6,6 @@
 
 
     <string name="suffix_currency">%s ریال</string>
+    <string name="suffix_percent">%s %%</string>
 
 </resources>
