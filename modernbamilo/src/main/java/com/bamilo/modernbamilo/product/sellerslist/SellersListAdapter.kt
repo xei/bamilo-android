@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.customview.DateTimeView
+import com.bamilo.modernbamilo.product.sellerslist.pojo.SellerViewModel
 import com.bamilo.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.modernbamilo.util.extension.persianizeNumberString
 

@@ -3,18 +3,26 @@ package com.bamilo.modernbamilo.product.sellerslist
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.app.BaseActivity
+import com.bamilo.modernbamilo.product.sellerslist.pojo.SellerViewModel
+import com.bamilo.modernbamilo.product.sellerslist.pojo.SellersListScreenViewModel
 import com.bamilo.modernbamilo.util.extension.loadImageFromNetwork
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
+import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
+import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-
+const val TAG_DEBUG = "SellersListScreen"
 
 const val KEY_EXTRA_PRODUCT_ID = "KEY_EXTRA_PRODUCT_ID"
 const val KEY_EXTRA_PRODUCT_TITLE = "KEY_EXTRA_PRODUCT_TITLE"
@@ -32,7 +40,9 @@ fun startActivity(invokerContext: Context, productId: String, productTitle: Stri
 
 class SellersListActivity : BaseActivity(), View.OnClickListener {
 
-    private lateinit var mViewModel: ViewModel
+    private val mWebApi = RetrofitHelper.makeWebApi(this, SellersListWebApi::class.java)
+
+    private lateinit var mViewModel: SellersListScreenViewModel
 
     private lateinit var mCloseBtnImageButton: ImageButton
     private lateinit var mToolbarTitleTextView: TextView
@@ -52,28 +62,12 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_sellers_list)
 
         findViews()
-
         createViewModel()
         bindViewModel()
-
         setOnClickListeners()
         initSellersRecyclerView()
+        loadSellers()
 
-        sortSellersByPayableAmount()
-    }
-
-    private fun createViewModel() {
-
-        val sellers = ArrayList<SellerViewModel>()
-        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515583533, 4.0F, 30249000, 50249000, 33))
-        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515585674, 4.1F, 30249000, 40249000, 33))
-        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516365568, 4.2F, 30249000, 30249000, 33))
-        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516367243, 4.3F, 30249000, 20249000, 33))
-        sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1517367243, 4.4F, 30249000, 10249000, 33))
-
-        mViewModel = ViewModel(intent.getStringExtra(KEY_EXTRA_PRODUCT_TITLE),
-                intent.getStringExtra(KEY_EXTRA_PRODUCT_THUMBNAIL_URL),
-                intent.getStringExtra(KEY_EXTRA_PRODUCT_VARIANT), sellers)
     }
 
     private fun findViews() {
@@ -86,6 +80,12 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
         mRateFilterButton = findViewById(R.id.activitySellersList_filterButton_rate)
         mLeadTimeFilterButton = findViewById(R.id.activitySellersList_filterButton_leadTime)
         mSellersRecyclerView = findViewById(R.id.activitySellersList_recyclerView_sellers)
+    }
+
+    private fun createViewModel() {
+        mViewModel = SellersListScreenViewModel(intent.getStringExtra(KEY_EXTRA_PRODUCT_TITLE),
+                intent.getStringExtra(KEY_EXTRA_PRODUCT_THUMBNAIL_URL),
+                intent.getStringExtra(KEY_EXTRA_PRODUCT_VARIANT), ArrayList())
     }
 
     private fun bindViewModel() {
@@ -108,6 +108,32 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
         mSellersRecyclerView.itemAnimator = DefaultItemAnimator()
         mSellersRecyclerView.adapter = SellersListAdapter(mViewModel.sellersViewModel)
 
+    }
+
+    private fun loadSellers() {
+        val call = mWebApi.getSellers(intent.getStringExtra(KEY_EXTRA_PRODUCT_ID))
+        call.enqueue(object: Callback<ResponseWrapper<ArrayList<SellerViewModel>>> {
+
+            override fun onResponse(call: Call<ResponseWrapper<ArrayList<SellerViewModel>>>?, response: Response<ResponseWrapper<ArrayList<SellerViewModel>>>?) {
+                // TODO: replace val sellers = response?.body()?.metadata
+                val sellers = ArrayList<SellerViewModel>()
+                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515583533, 4.0F, 30249000, 50249000, 33))
+                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515585674, 4.1F, 30249000, 40249000, 33))
+                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516365568, 4.2F, 30249000, 30249000, 33))
+                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516367243, 4.3F, 30249000, 20249000, 33))
+                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1517367243, 4.4F, 30249000, 10249000, 33))
+
+                mViewModel.sellersViewModel.removeAll(mViewModel.sellersViewModel)
+                mViewModel.sellersViewModel.addAll(sellers)
+
+                sortSellersByPayableAmount()
+            }
+
+            override fun onFailure(call: Call<ResponseWrapper<ArrayList<SellerViewModel>>>?, t: Throwable?) {
+                Log.e(TAG_DEBUG, t?.message)
+            }
+
+        })
     }
 
     override fun onClick(clickedView: View?) {
@@ -150,6 +176,3 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
     }
 
 }
-
-data class ViewModel(val productTitle: String, val productThumbnailUrl: String, val productVariant: String, val sellersViewModel: ArrayList<SellerViewModel>)
-data class SellerViewModel(val sellerId: String, val title: String, val deliveryTime: Long, val rate: Float, val baseAmount: Long, val payableAmount: Long, val discount: Int)
