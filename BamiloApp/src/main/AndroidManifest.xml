@@ -289,8 +289,10 @@
         </service>
 
         <!-- Components in Modern Bamilo Module -->
-        <activity android:name="com.bamilo.modernbamilo.userreview.UserReviewActivity" />
-        <activity android:name="com.bamilo.modernbamilo.product.sellerslist.SellersListActivity" />
+        <activity android:name="com.bamilo.modernbamilo.userreview.UserReviewActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.bamilo.modernbamilo.product.sellerslist.SellersListActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
