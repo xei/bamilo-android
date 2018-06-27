@@ -147,7 +147,7 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
 
     private fun sortSellersByPayableAmount() {
         mViewModel.sellersViewModel.sortWith(compareBy(SellerViewModel::payableAmount))
-        mSellersRecyclerView.adapter.notifyDataSetChanged()
+        mSellersRecyclerView.adapter?.notifyDataSetChanged()
         mSellersRecyclerView.smoothScrollToPosition(0)
 
         mPriceFilterButton.selectButton()
@@ -157,7 +157,7 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
 
     private fun sortSellersByRate() {
         mViewModel.sellersViewModel.sortWith(compareByDescending(SellerViewModel::rate))
-        mSellersRecyclerView.adapter.notifyDataSetChanged()
+        mSellersRecyclerView.adapter?.notifyDataSetChanged()
         mSellersRecyclerView.smoothScrollToPosition(0)
 
         mPriceFilterButton.deselectButton()
@@ -167,7 +167,7 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
 
     private fun sortSellersByLeadTime() {
         mViewModel.sellersViewModel.sortWith(compareBy(SellerViewModel::deliveryTime))
-        mSellersRecyclerView.adapter.notifyDataSetChanged()
+        mSellersRecyclerView.adapter?.notifyDataSetChanged()
         mSellersRecyclerView.smoothScrollToPosition(0)
 
         mPriceFilterButton.deselectButton()

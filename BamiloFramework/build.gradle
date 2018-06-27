@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 
 android {
 
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion '27.0.3'
 
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
     }
 
 }
@@ -26,7 +26,7 @@ sourceSets {
     }
 }
 ext {
-    supportLibsVersion = '27.1.1'
+    supportLibsVersion = '28.0.0-alpha3'
 }
 dependencies {
     // https://wiki.jira.rocket-internet.de/pages/viewpage.action?title=Android+app+SDKs+and+libraries&spaceKey=NAFAMZ
@@ -48,7 +48,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:10.2.4'
     /** TRACKERS **/
     // https://github.com/adjust/android_sdk
-    compile 'com.adjust.sdk:adjust-android:4.1.2'
+    compile 'com.adjust.sdk:adjust-android:4.14.0'
     /** ALGOLIA **/
     compile 'com.algolia:algoliasearch-android:2.6.0@aar'
     /** PUSHWOOSH **/
