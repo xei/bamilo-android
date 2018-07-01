@@ -49,4 +49,9 @@
     <color name="sellersList_row_addToCartButton">#fe6b0c</color>
     <color name="sellersList_row_addToCartButtonText">#fff</color>
 
+    <!-- Description & Specification Screen -->
+    <color name="descSpec_tab_title_selected">#fff</color>
+    <color name="descSpec_tab_title_deselected">#FF8392A8</color>
+    <color name="descSpec_tab_title">@color/tab_title</color>
+
 </resources>

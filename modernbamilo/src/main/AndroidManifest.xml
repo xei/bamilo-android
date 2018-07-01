@@ -6,10 +6,13 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
-        <activity android:name=".userreview.UserReviewActivity"
+        <activity
+            android:name=".userreview.UserReviewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".product.sellerslist.SellersListActivity"
+        <activity
+            android:name=".product.sellerslist.SellersListActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".product.descspec.DescSpecActivity"></activity>
     </application>
 
 </manifest>
