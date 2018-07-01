@@ -1,7 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ff0000">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp" >
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/rowDescription_xeiTextView_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:textColor="#000"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:locale="auto"
+        app:style="bold"
+        tools:text="عنوان"
+        tools:visibility="visible" />
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/rowDescription_xeiTextView_hint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#9393de"
+        android:gravity="start|center_vertical"
+        android:padding="8dp"
+        android:textColor="#4747d6"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rowDescription_xeiTextView_title"
+        app:locale="auto"
+        tools:text="نکته"
+        tools:visibility="visible" />
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/rowDescription_xeiTextView_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="start|top"
+        android:textColor="#000"
+        android:visibility="gone"
+        app:locale="auto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rowDescription_xeiTextView_hint"
+        tools:text="توضیحات"
+        tools:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/rowDescription_imageView_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rowDescription_xeiTextView_description"
+        tools:srcCompat="@drawable/googleg_standard_color_18"
+        tools:visibility="visible" />
 
 </android.support.constraint.ConstraintLayout>
