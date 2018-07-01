@@ -20,8 +20,6 @@
         android:elevation="4dp"
         app:tabGravity="center"
         app:tabMode="fixed"
-        app:tabTextColor="#FF8392A8"
-        app:tabSelectedTextColor="#fff"
         app:tabIndicatorColor="#fff" />
 
     <android.support.v4.view.ViewPager
