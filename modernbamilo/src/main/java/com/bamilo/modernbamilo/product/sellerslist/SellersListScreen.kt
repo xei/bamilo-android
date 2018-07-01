@@ -131,6 +131,22 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
 
             override fun onFailure(call: Call<ResponseWrapper<ArrayList<SellerViewModel>>>?, t: Throwable?) {
                 Log.e(TAG_DEBUG, t?.message)
+
+
+
+
+                // TODO: replace val sellers = response?.body()?.metadata
+                val sellers = ArrayList<SellerViewModel>()
+                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515583533, 4.0F, 30249000, 50249000, 33))
+                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515585674, 4.1F, 30249000, 40249000, 33))
+                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516365568, 4.2F, 30249000, 30249000, 33))
+                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516367243, 4.3F, 30249000, 20249000, 33))
+                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1517367243, 4.4F, 30249000, 10249000, 33))
+
+                mViewModel.sellersViewModel.removeAll(mViewModel.sellersViewModel)
+                mViewModel.sellersViewModel.addAll(sellers)
+
+                sortSellersByPayableAmount()
             }
 
         })
