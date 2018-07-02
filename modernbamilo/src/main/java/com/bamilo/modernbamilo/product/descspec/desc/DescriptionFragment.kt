@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.product.descspec.DescSpecWebApi
 import com.bamilo.modernbamilo.product.descspec.desc.pojo.DescriptionRow
-import com.bamilo.modernbamilo.product.sellerslist.SellersListAdapter
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import retrofit2.Call
