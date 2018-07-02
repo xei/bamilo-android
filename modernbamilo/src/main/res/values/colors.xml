@@ -6,7 +6,7 @@
     <color name="material_green_500">#4CAF50</color>
     <color name="material_pink_500">#E91E63</color>
     
-    <!-- CI -->
+    <!-- CI (Company Identity) -->
     <color name="colorPrimary">#1A365E</color>
     <color name="colorAccent">#FF6B0C</color>
 
@@ -53,6 +53,10 @@
     <color name="descSpec_tab_title_selected">#fff</color>
     <color name="descSpec_tab_title_deselected">#FF8392A8</color>
     <color name="descSpec_tab_title">@color/tab_title</color>
+    <color name="descSpec_desc_title">#000</color>
+    <color name="descSpec_desc_hint_background">#3a4186e9</color>
+    <color name="descSpec_desc_hint_text">@color/colorPrimary</color>
+    <color name="descSpec_desc_description">#000</color>
     <color name="descSpec_spec_header_background">#e7edf7</color>
     <color name="descSpec_spec_header_text">#1a365e</color>
     <color name="descSpec_spec_item_title_color">#FF434343</color>
