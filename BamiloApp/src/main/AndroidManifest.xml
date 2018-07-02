@@ -293,6 +293,7 @@
             android:screenOrientation="portrait" />
         <activity android:name="com.bamilo.modernbamilo.product.sellerslist.SellersListActivity"
             android:screenOrientation="portrait" />
+        <activity android:name="com.bamilo.modernbamilo.product.descspec.DescSpecActivity" />
 
     </application>
 
