@@ -1,6 +1,6 @@
 package com.mobile.view.productdetail.model
 
-class SampleRevies {
+class SampleReviews {
     val userName: String = ""
     val review: String = ""
     val rating: Double = 0.0

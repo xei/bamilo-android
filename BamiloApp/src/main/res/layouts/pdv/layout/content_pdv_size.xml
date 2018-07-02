@@ -7,7 +7,7 @@
     android:layout_marginRight="@dimen/dimen_4dp"
     android:layout_height="36dp"
     android:id="@+id/pdvSize_linearLayout_rootLayout"
-    android:background="@drawable/round_size_background_1dp"
+    android:background="@drawable/round_size_background_2dp"
     android:gravity="center"
     android:minWidth="@dimen/dimen_40dp">
 

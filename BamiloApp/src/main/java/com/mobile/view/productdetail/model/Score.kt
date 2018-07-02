@@ -1,11 +1,11 @@
 package com.mobile.view.productdetail.model
 
 class Score {
-    val overall: Overall? = null
-    val sLAReached: SLAReached? = null
-    val notReturned: NotReturned? = null
-    val fullFillment: FullFillment? = null
+    var overall = Overall()
+    var sLAReached = SLAReached()
+    var notReturned = NotReturned()
+    var fullFillment = FullFillment()
 
-    val maxValue: Int = 0
-    val isEnabled: Boolean = false
+    var maxValue: Int = 0
+    var isEnabled: Boolean = false
 }

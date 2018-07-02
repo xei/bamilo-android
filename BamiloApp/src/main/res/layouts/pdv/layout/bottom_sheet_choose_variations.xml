@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="productDetail_viewModel"
+            type="com.mobile.view.productdetail.ProductDetailViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:id="@+id/chooseVariation_linearLayout_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/chooseVariation_appImageView_productImage"
+                android:layout_width="72dp"
+                android:layout_height="@dimen/dimen_98dp"
+                android:layout_marginTop="15.5dp"
+                android:layout_marginBottom="@dimen/dimen_8dp"
+                android:layout_marginRight="16.5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/chooseVariation_textView_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:layout_marginRight="16.5dp"
+                android:textColor="#434343"
+                android:textSize="12sp"
+                app:layout_constraintRight_toLeftOf="@+id/chooseVariation_appImageView_productImage"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/chooseVariation_textView_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="16.5dp"
+                android:textColor="#fe6b0c"
+                android:textSize="14sp"
+                app:layout_constraintRight_toLeftOf="@+id/chooseVariation_appImageView_productImage"
+                app:layout_constraintTop_toBottomOf="@+id/chooseVariation_textView_title"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/chooseVariation_textView_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dp"
+                android:textColor="#434343"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/chooseVariation_textView_price"
+                app:layout_constraintRight_toLeftOf="@+id/chooseVariation_textView_price"
+                app:layout_constraintTop_toTopOf="@+id/chooseVariation_textView_price"
+                tools:text="toman"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/chooseVariation_textView_oldPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="16.5dp"
+                android:textColor="#757575"
+                android:textSize="11sp"
+                app:layout_constraintRight_toLeftOf="@+id/chooseVariation_appImageView_productImage"
+                app:layout_constraintTop_toBottomOf="@+id/chooseVariation_textView_price"
+                tools:ignore="SmallSp"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginTop="7.5dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="@dimen/dimen_16dp"
+            android:layout_marginRight="@dimen/dimen_16dp"
+            android:background="#FF979797"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_16dp"
+            android:layout_marginRight="@dimen/dimen_16dp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pdvChooseVariation_recyclerView_variations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/pdvChooseVariation_linearLayout_addToCart"
+            layout="@layout/pdv_add_to_cart"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="@dimen/dimen_32dp"/>
+
+    </LinearLayout>
+</layout>

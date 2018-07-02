@@ -5,12 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="@dimen/dimen_8dp"
     android:layout_marginStart="@dimen/dimen_8dp"
     android:layout_marginEnd="@dimen/dimen_8dp"
     android:layout_marginLeft="@dimen/dimen_8dp"
     android:layout_marginRight="@dimen/dimen_8dp"
     app:cardCornerRadius="2dp"
-    app:cardElevation="4dp"
+    app:cardElevation="2dp"
     tools:layout_height="177dp">
 
     <android.support.constraint.ConstraintLayout
@@ -27,8 +29,6 @@
             android:layout_marginEnd="0dp"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="16dp"
-            android:text=" پولو شرت کلاسیک اصل مدل
-آخر 2012 فنی سالم"
             android:textColor="#434343"
             android:textSize="12sp"
             app:fontFamily="@string/bamilo_bold_font"
@@ -69,7 +69,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:text="۳.۵"
             android:textColor="#1a365e"
             android:textSize="12sp"
             app:fontFamily="@string/bamilo_bold_font"
@@ -81,7 +80,6 @@
             android:id="@+id/pdvPrimaryInfo_textView_scoreCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="۱۶"
             android:textColor="#d8d8d8"
             android:textSize="@dimen/dimen_12sp"
             app:fontFamily="@string/bamilo_font"
@@ -146,7 +144,6 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="@dimen/dimen_16dp"
             android:layout_marginRight="@dimen/dimen_8dp"
-            android:text="۱،۷۴۰،۰۰۰ ریال"
             android:textColor="#757575"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -161,7 +158,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginRight="@dimen/dimen_8dp"
-            android:text="۱،۴۰۵،۵۰۰"
             android:textColor="#fe6b0c"
             android:textSize="24sp"
             app:fontFamily="@string/bamilo_bold_font"
@@ -172,10 +168,13 @@
             android:id="@+id/pdvPrimaryInfo_relativeLayout_discountPercentageRoot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="@dimen/dimen_8dp"
             android:background="@drawable/discount_percentage_round_background"
-            app:layout_constraintBaseline_toBaselineOf="@+id/pdvPrimaryInfo_textView_currentPrice"
-            app:layout_constraintLeft_toLeftOf="parent">
+            app:layout_constraintBottom_toBottomOf="@+id/pdvPrimaryInfo_textView_currentPrice"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/pdvPrimaryInfo_textView_currentPrice">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/pdvPrimaryInfo_textView_discountPercentage"
@@ -187,7 +186,6 @@
                 android:fontFamily="@string/bamilo_bold_font"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="%۷۸.۵"
                 android:textColor="#f7931d"
                 android:textSize="14sp"/>
 
@@ -197,12 +195,15 @@
             android:id="@+id/pdvPrimaryInfo_textView_discountBenefit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="@dimen/dimen_8dp"
-            android:text="سود شما : ۱/۴۳۰ میلیون ریال"
+            android:layout_marginRight="48dp"
             android:textColor="#757575"
             android:textSize="11sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/pdvPrimaryInfo_textView_oldPrice"
+            app:layout_constraintBottom_toBottomOf="@+id/pdvPrimaryInfo_textView_oldPrice"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/pdvPrimaryInfo_textView_oldPrice"
             tools:ignore="SmallSp"/>
 
         <com.mobile.components.customfontviews.TextView
@@ -217,6 +218,21 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/pdvPrimaryInfo_textView_currentPrice"
             app:layout_constraintStart_toEndOf="@+id/pdvPrimaryInfo_textView_currentPrice"/>
 
+        <com.mobile.components.customfontviews.TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="@dimen/dimen_8dp"
+            android:fontFamily="@string/bamilo_bold_font"
+            android:text="@string/product_no_exist"
+            android:textColor="@color/primary_text_color"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view2"/>
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

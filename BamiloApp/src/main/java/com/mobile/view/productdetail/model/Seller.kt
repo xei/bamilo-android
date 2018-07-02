@@ -1,14 +1,14 @@
 package com.mobile.view.productdetail.model
 
 class Seller {
-    val score: Score? = null
-    val reviews: Reviews? = null
-    val presenceDuration: PresenceDuration? = null
+    var score = Score()
+    val reviews = Reviews()
+    var presenceDuration = PresenceDuration()
 
     val isGlobal: Boolean = false
-    val isNew: Boolean = false
+    var isNew: Boolean = false
 
-    val name: String = ""
+    var name: String = ""
     val warranty: String = ""
     val deliveryTime: String = ""
     val target: String = ""

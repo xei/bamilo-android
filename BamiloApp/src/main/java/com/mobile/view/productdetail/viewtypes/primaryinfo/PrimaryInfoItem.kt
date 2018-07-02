@@ -27,6 +27,17 @@ class PrimaryInfoItem(private var primaryInfoModel: PrimaryInfoModel) {
     }
 
     private fun setPriceAndDiscount(holder: PrimaryInfoHolder) {
+        if (!primaryInfoModel.isExist) {
+            holder.discountPercentageRoot.visibility = View.GONE
+            holder.discountPercentage.visibility = View.GONE
+            holder.discountBenefit.visibility = View.GONE
+            holder.currentPrice.visibility = View.GONE
+            holder.oldPrice.visibility = View.GONE
+            holder.currency.visibility = View.GONE
+
+            return
+        }
+
         if (primaryInfoModel.priceModel.discount.isEmpty()) {
             holder.currentPrice.text = primaryInfoModel.priceModel.cost
 

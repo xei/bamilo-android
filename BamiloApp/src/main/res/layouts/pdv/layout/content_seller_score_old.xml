@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sellerScore_constraint_rootView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="visible"
+    tools:visibility="visible">
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/sellerScore_textView_successfulSupplyRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:alpha="0.5"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="۴.۷ از ۵"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/sellerScore_textView_successfulSupplyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.5"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/sellerScore_textView_successfulSupplyRate"
+        app:layout_constraintStart_toStartOf="@+id/sellerScore_progressBar_successfulSupply"
+        app:layout_constraintTop_toTopOf="@+id/sellerScore_textView_successfulSupplyRate"
+        tools:text="تامین موفق کالا"/>
+
+    <ProgressBar
+        android:id="@+id/sellerScore_progressBar_successfulSupply"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="16dp"
+        android:max="50"
+        android:progress="20"
+        android:progressDrawable="@drawable/ratings_progress_blue"
+        android:rotation="180"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sellerScore_textView_score"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_textView_successfulSupplyRate"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/sellerScore_textView_salesWithoutReturnRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:alpha="0.5"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_progressBar_successfulSupply"
+        tools:text="۴.۷ از ۵"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/sellerScore_textView_salesWithoutReturnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.5"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_12sp"
+        app:layout_constraintBottom_toTopOf="@+id/sellerScore_progressBar_salesWithoutReturn"
+        app:layout_constraintStart_toStartOf="@+id/sellerScore_progressBar_salesWithoutReturn"
+        app:layout_constraintTop_toTopOf="@+id/sellerScore_textView_salesWithoutReturnRate"
+        tools:text="فروش بدون بازگشت"/>
+
+    <ProgressBar
+        android:id="@+id/sellerScore_progressBar_salesWithoutReturn"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="16dp"
+        android:max="50"
+        android:progress="20"
+        android:progressDrawable="@drawable/ratings_progress_blue"
+        android:rotation="180"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sellerScore_textView_score"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_textView_salesWithoutReturnRate"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/sellerScore_textView_sendOnTimeRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:alpha="0.5"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_progressBar_salesWithoutReturn"
+        tools:text="۴.۷ از ۵"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/sellerScore_textView_sendOnTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.5"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_12sp"
+        app:layout_constraintBottom_toTopOf="@+id/sellerScore_progressBar_sendOnTime"
+        app:layout_constraintStart_toStartOf="@+id/sellerScore_progressBar_sendOnTime"
+        app:layout_constraintTop_toTopOf="@+id/sellerScore_textView_sendOnTimeRate"
+        tools:text="فروش بدون بازگشت"/>
+
+    <ProgressBar
+        android:id="@+id/sellerScore_progressBar_sendOnTime"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="16dp"
+        android:max="50"
+        android:progress="20"
+        android:progressDrawable="@drawable/ratings_progress_blue"
+        android:rotation="180"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sellerScore_textView_score"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_textView_sendOnTimeRate"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/sellerScore_textView_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:paddingLeft="@dimen/dimen_8dp"
+        android:paddingRight="@dimen/dimen_8dp"
+        android:textColor="@color/green_1"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sellerScore_progressBar_successfulSupply"
+        tools:text="۴/۵"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/sellerScore_textView_maxValueOfScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:alpha="0.5"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/sellerScore_textView_score"
+        app:layout_constraintStart_toStartOf="@+id/sellerScore_textView_score"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_textView_score"
+        tools:text="از ۵ امتیاز"/>
+
+</android.support.constraint.ConstraintLayout>

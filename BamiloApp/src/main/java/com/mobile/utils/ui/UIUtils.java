@@ -49,9 +49,9 @@ public class UIUtils {
         return Math.round((float) dp * density);
     }
 
-    public static int dpToPx(Context context, int dp) {
+    public static int dpToPx(Context context, float dp) {
         float density = context.getResources().getDisplayMetrics().scaledDensity;
-        return Math.round((float) dp * density);
+        return Math.round(dp * density);
     }
 
     public static float convertPixelsToDp(float px, Context context) {

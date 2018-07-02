@@ -135,6 +135,7 @@
     <string name="order_summary_total_label">مجموع:</string>
     <string name="order_track_products">کالاها:</string>
     <string name="other_sellers">سایر تامین کنندگان</string>
+    <string name="other_sellers_foroshandegan">سایر فروشندگان</string>
     <string name="password_changed">رمز عبور با موفقیت تغییر یافت.</string>
     <string name="payment">پرداخت</string>
     <string name="personal_data_label">اطلاعات شخصی شما</string>
@@ -637,5 +638,27 @@
         <item quantity="one">لطفا دلیل لغو کالا را انتخاب کنید</item>
         <item quantity="other">لطفا دلیل لغو کالاها را انتخاب کنید</item>
     </plurals>
+
+    <string name="rules_and_terms">قوانین و شرایط</string>
+    <string name="no_score_submited">هنوز امتیازی ثبت نشده است</string>
+    <string name="seller_score">امتیاز فروشنده</string>
+    <string name="of_number">از %1$d</string>
+    <string name="collaboration_period">مدت همکاری</string>
+    <string name="collaboration_period_">مدت همکاری: </string>
+    <string name="estimated_delivery_time">زمان تقریبی تحویل</string>
+    <string name="edit_city">ویرایش شهر</string>
+    <string name="detail">جزییات</string>
+
+    <string name="seller_info_rate_from">%s از %d</string>
+    <string name="seller_info_rate_from_score">از %d امتیاز</string>
+    <string name="Size_guid">راهنمای سایز</string>
+    <string name="show_full_specifications">مشاهده مشخصات کامل</string>
+    <string name="show_full_description">مشاهده توضیحات کامل</string>
+    <string name="choose_size">انتخاب سایز</string>
+    <string name="other_variations">انتخاب های دیگر</string>
+    <string name="product_no_exist">در حال حاضر موجود نیست</string>
+    <string name="notify_me_when_exist">موجود شد اطلاع بده</string>
+    <string name="remain">مانده</string>
+    <string name="remain_">مانده: </string>
 
 </resources>

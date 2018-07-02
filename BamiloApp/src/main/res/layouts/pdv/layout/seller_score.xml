@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="24dp"
+    android:paddingLeft="@dimen/dimen_8dp"
+    android:paddingRight="@dimen/dimen_8dp"
+    android:background="@drawable/round_light_gray_8"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <com.mobile.components.customfontviews.TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/seller_score"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="@dimen/dimen_12sp"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdvSellerScore_textView_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_4dp"
+        android:layout_marginRight="@dimen/dimen_4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        tools:background="@color/green_basic"
+        android:fontFamily="@string/bamilo_bold_font"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        tools:text="۴/۱"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdvSellerScore_textView_maxValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/of_number"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="@dimen/dimen_12sp"
+        tools:text="از ۵"/>
+
+</LinearLayout>

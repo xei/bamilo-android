@@ -3,37 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="@dimen/dimen_4dp"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="36dp"
     android:background="@null">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/recyclerViewHeader_textView_title"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginRight="@dimen/dimen_4dp"
-        android:paddingLeft="@dimen/dimen_4dp"
-        android:paddingRight="@dimen/dimen_4dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="@dimen/dimen_8dp"
+        android:paddingRight="@dimen/dimen_8dp"
         android:gravity="center"
         android:text="گزینه ها"
         android:textColor="@color/primary_text_color"
         android:textSize="@dimen/dimen_12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/recyclerViewHeader_textView_more"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="@dimen/dimen_4dp"
-        android:paddingLeft="@dimen/dimen_4dp"
-        android:paddingRight="@dimen/dimen_4dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="@dimen/dimen_8dp"
+        android:paddingRight="@dimen/dimen_8dp"
         android:gravity="center"
         android:text="@string/more"
         android:textColor="@color/primary_text_color"
@@ -42,7 +38,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         tools:visibility="visible"/>
 
 </android.support.constraint.ConstraintLayout>

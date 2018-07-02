@@ -23,6 +23,15 @@ class ProductDetailViewModel(application: Application) : AndroidViewModel(applic
         return mItems as MutableLiveData<ArrayList<Any>>
     }
 
+    fun loadData(productId: String): LiveData<ArrayList<Any>> {
+        if (mItems == null) {
+            return getItems(productId)
+        }
+
+        getProductInfo(productId)
+        return mItems as MutableLiveData<ArrayList<Any>>
+    }
+
     private fun getProductInfo(productId: String) {
         //get from server
     }

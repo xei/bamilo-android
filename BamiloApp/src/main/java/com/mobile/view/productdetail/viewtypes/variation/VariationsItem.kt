@@ -3,6 +3,7 @@ package com.mobile.view.productdetail.viewtypes.variation
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.mobile.components.customfontviews.TextView
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.components.ghostadapter.GhostAdapter
@@ -21,6 +22,11 @@ import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
  */
 @BindItem(layout = R.layout.content_pdv_variations, holder = VariationsHolder::class)
 class VariationsItem(var variations: Variations?) {
+    companion object {
+        const val specification = "SPECIFICATION"
+        const val description = "DESCRIPTION"
+    }
+
     private lateinit var colorsAdapter: GhostAdapter
     private lateinit var sizesAdapter: GhostAdapter
 
@@ -28,6 +34,13 @@ class VariationsItem(var variations: Variations?) {
     private lateinit var sizesItem: ArrayList<Any>
 
     var selectedSize = Size()
+
+    private lateinit var onItemClickListener: OnItemClickListener
+
+    fun onItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.onItemClickListener = onItemClickListener
+    }
+
     @Binder
     public fun binder(holder: VariationsHolder) {
         setupColorRecycler(holder)
@@ -35,13 +48,18 @@ class VariationsItem(var variations: Variations?) {
 
         addFakeData(holder)
         holder.sizeHelp.setOnClickListener { _ -> }
-        holder.specifications.setOnClickListener { _ -> }
-        holder.descriptions.setOnClickListener { _ -> }
 
-        if(variations!!.otherVariations.size == 0 && variations!!.sizeVariation.size == 0){
+        if (variations!!.otherVariations.size == 0 && variations!!.sizeVariation.size == 0) {
             val layoutParams = holder.parentView.layoutParams as RecyclerView.LayoutParams
-            layoutParams.topMargin = UIUtils.dpToPx(holder.itemView.context, 8)
+            layoutParams.topMargin = UIUtils.dpToPx(holder.itemView.context, 8f)
             holder.parentView.layoutParams = layoutParams
+        }
+
+        holder.itemView.findViewById<TextView>(R.id.pdvVariations_textView_specification).setOnClickListener {
+            onItemClickListener.onItemClicked(specification)
+        }
+        holder.itemView.findViewById<TextView>(R.id.pdvVariations_textView_descriptions).setOnClickListener {
+            onItemClickListener.onItemClicked(description)
         }
     }
 

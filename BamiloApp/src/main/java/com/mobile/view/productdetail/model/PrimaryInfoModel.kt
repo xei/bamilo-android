@@ -9,4 +9,5 @@ class PrimaryInfoModel {
     var priceModel = Price()
     var rating = Rating()
     var title = ""
+    var isExist = true
 }

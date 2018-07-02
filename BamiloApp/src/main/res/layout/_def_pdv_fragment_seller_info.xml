@@ -55,7 +55,7 @@
                 android:prompt="@string/delivery_city"
                 android:spinnerMode="dropdown"
                 android:textSize="20sp"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </LinearLayout>
 
         <TableRow

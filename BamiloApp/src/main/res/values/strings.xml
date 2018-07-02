@@ -129,6 +129,7 @@
     <string name="order_summary_total_label">Total:</string>
     <string name="order_track_products">Products:</string>
     <string name="other_sellers">Other Sellers</string>
+    <string name="other_sellers_foroshandegan">سایر فروشندگان</string>
     <string name="password_changed">Password changed with success</string>
     <string name="payment">Payment</string>
     <string name="personal_data_label">Your Personal Data</string>
@@ -658,4 +659,20 @@
     <string name="showcase_got_it">Got it</string>
     <string name="tracking_order_delivery_address">Order delivery address</string>
     <string name="please_login_first">Please login first</string>
+    <string name="rules_and_terms">Rule and terms</string>
+    <string name="no_score_submited">No score submited</string>
+    <string name="collaboration_period">collaboration period</string>
+    <string name="estimated_delivery_time">زمان تقریبی تحویل</string>
+    <string name="edit_city">ویرایش شهر</string>
+    <string name="detail">جزییات</string>
+    <string name="Size_guid">راهنمای سایز</string>
+    <string name="show_full_specifications">مشاهده مشخصات کامل</string>
+    <string name="show_full_description">مشاهده توضیحات کامل</string>
+    <string name="choose_size">انتخاب سایز</string>
+    <string name="other_variations">انتخاب های دیگر</string>
+    <string name="product_no_exist">در حال حاضر موجود نیست</string>
+    <string name="notify_me_when_exist">موجود شد اطلاع بده</string>
+    <string name="remain">مانده</string>
+    <string name="remain_">مانده: </string>
+
 </resources>

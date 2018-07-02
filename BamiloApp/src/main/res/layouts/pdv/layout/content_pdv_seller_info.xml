@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dimen_8dp"
+    android:layout_marginLeft="@dimen/dimen_8dp"
+    android:layout_marginRight="@dimen/dimen_8dp"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dimen_8dp"
+        android:paddingRight="@dimen/dimen_8dp"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/pdvSellerInfo_constraintLayout_sellerInfoHeader"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdvSellerInfo_textView_name"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:fontFamily="@string/bamilo_bold_font"
+                android:textColor="#25a8ed"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/pdvSellerInfo_linearLayout_showDetail"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="ایران رهجو"/>
+
+            <LinearLayout
+                android:id="@+id/pdvSellerInfo_linearLayout_showDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.mobile.components.customfontviews.TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail"
+                    android:textColor="#25a8ed"
+                    android:textSize="12sp"/>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/pdvSellerInfo_appImageView_showDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_down_blue"/>
+
+            </LinearLayout>
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+            android:id="@+id/pdvSellerInfo_expandableLayout"
+            android:layout_width="match_parent"
+            app:el_duration="250"
+            app:el_expanded="true"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/pdvSellerInfo_relativeLayout_noScore"
+                    layout="@layout/seller_no_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:layout_marginTop="@dimen/dimen_4dp"/>
+
+                <include
+                    android:id="@+id/pdvSellerInfo_relativeLayout_sellerScoreTitleParent"
+                    layout="@layout/seller_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:layout_marginTop="@dimen/dimen_4dp"/>
+
+                <include
+                    android:id="@+id/pdvSellerInfo_constraintLayout_sellerScoreParent"
+                    layout="@layout/content_seller_score_old"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_handshake_gray"/>
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/pdvSellerInfo_textView_collaborationPeriodLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="6dp"
+                        android:text="@string/collaboration_period_"
+                        android:textColor="@color/primary_text_color"
+                        android:textSize="12sp"/>
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/pdvSellerInfo_textView_collaborationPeriod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:textColor="@color/primary_text_color"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_12dp">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_trusted_gray"/>
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/pdvSellerInfo_textView_shortDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_18dp"
+                        android:layout_marginRight="6dp"
+                        android:textColor="@color/primary_text_color"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:visibility="visible"
+                    android:layout_marginTop="@dimen/dimen_16dp"
+                    android:layout_marginLeft="@dimen/dimen_8dp"
+                    android:layout_marginRight="@dimen/dimen_8dp"
+                    android:background="@color/grey_dividerlight"/>
+
+                <com.mobile.components.customfontviews.TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:layout_marginTop="@dimen/dimen_16dp"
+                    android:layout_marginRight="@dimen/dimen_4dp"
+                    android:text="@string/estimated_delivery_time"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="12sp"/>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/pdv_spinner_deliveryRegion"
+                    style="@style/Widget.Custom.Spinner.Style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_4dp"
+                    android:layout_marginLeft="@dimen/margin_padding_xl"
+                    android:layout_marginRight="@dimen/margin_padding_xl"
+                    android:minHeight="@dimen/dimen_50dp"
+                    android:prompt="@string/delivery_state"
+                    android:textSize="18sp" />
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/pdv_spinner_deliveryCity"
+                    style="@style/Widget.Custom.Spinner.Style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_padding_xl"
+                    android:layout_marginRight="@dimen/margin_padding_xl"
+                    android:minHeight="@dimen/dimen_50dp"
+                    android:prompt="@string/delivery_city"
+                    android:spinnerMode="dropdown"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:layout_marginTop="@dimen/dimen_16dp"
+                    android:layout_marginLeft="@dimen/dimen_4dp"
+                    android:layout_marginRight="@dimen/dimen_4dp"
+                    android:orientation="horizontal">
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/pdvSellerInfo_texView_deliverTimeAndCity"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/dimen_8dp"
+                        android:fontFamily="@string/bamilo_bold_font"
+                        android:textColor="@color/primary_text_color"
+                        android:textSize="12sp"
+                        tools:text="تهران، دوشنبه ۷ اردیبهشت"/>
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/pdvSellerInfo_appImageView_editCity"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="2dp"
+                        app:srcCompat="@drawable/ic_edit_blue"/>
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:background="?attr/selectableItemBackground"
+                        android:id="@+id/pdvSellerInfo_textView_editCity"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:text="@string/edit_city"
+                        android:textColor="#25a8ed"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/pdvSellerInfo_view_otherSellersDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/dimen_16dp"
+                    android:layout_marginLeft="@dimen/dimen_8dp"
+                    android:layout_marginRight="@dimen/dimen_8dp"
+                    android:background="@color/grey_dividerlight"/>
+
+                <LinearLayout
+                    android:id="@+id/pdvSellerInfo_linearLayout_otherSellers"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/pdvSellerInfo_textView_otherSellersCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:textSize="@dimen/dimen_12sp"
+                        android:paddingLeft="@dimen/dimen_4dp"
+                        android:paddingRight="@dimen/dimen_4dp"
+                        android:background="#25a8ed"
+                        android:gravity="center"
+                        android:textColor="@color/white"/>
+
+                    <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/pdvSellerInfo_textView_otherSellersText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dimen_8dp"
+                        android:paddingLeft="@dimen/dimen_4dp"
+                        android:paddingRight="@dimen/dimen_4dp"
+                        android:gravity="center"
+                        android:textSize="@dimen/dimen_12sp"
+                        android:text="@string/other_sellers_foroshandegan"
+                        android:textColor="#25a8ed"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

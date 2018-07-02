@@ -30,7 +30,7 @@ class VariationsSizeItem(var size: Size, private var onItemClickListener: OnItem
     private fun enableView() {
         size.isSelected = true
         holder?.title!!.setTextColor(holder!!.itemView.context.resources.getColor(R.color.white))
-        holder?.rootLayout!!.setBackgroundResource(R.drawable.selected_size_round_background)
+        holder?.rootLayout!!.setBackgroundResource(R.drawable.selected_size_round_background_2dp)
     }
 
     private fun onItemClicked() {
@@ -43,7 +43,7 @@ class VariationsSizeItem(var size: Size, private var onItemClickListener: OnItem
     fun disableView() {
         size.isSelected = false
         if (holder != null) {
-            holder?.rootLayout!!.setBackgroundResource(R.drawable.round_size_background_1dp)
+            holder?.rootLayout!!.setBackgroundResource(R.drawable.round_size_background_2dp)
             holder?.title!!.setTextColor(holder!!.itemView.context.resources.getColor(R.color.secondary_text_color))
         }
     }
