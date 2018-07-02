@@ -7,8 +7,25 @@
     <color name="material_pink_500">#E91E63</color>
     
     <!-- CI (Company Identity) -->
-    <color name="colorPrimary">#1A365E</color>
-    <color name="colorAccent">#FF6B0C</color>
+    <color name="pantone1375c">#f7931d</color>
+    <color name="pantone1585c">#fe6b0c</color>
+    <color name="pantone534c">#1a365e</color>
+    <color name="blueGrey">#8392a8</color>
+    <color name="blueGrey2">#e8eaee</color>
+    <color name="grey1">#d8d8d8</color>
+    <color name="grey2">#a5a6a8</color>
+    <color name="grey3">#757575</color>
+    <color name="grey4">#55555a</color>
+    <color name="grey5">#434343</color>
+    <color name="light2">#f7f7f7</color>
+    <color name="pantone109u">#ffc700</color>
+    <color name="pantone2995cp">#00ade6</color>
+    <color name="pantone3275c">#00a896</color>
+    <color name="pantonetubineredc">#d41a5d</color>
+    <color name="white">#ffffff</color>
+
+    <color name="colorPrimary">@color/pantone534c</color>
+    <color name="colorAccent">@color/pantone1585c</color>
 
     <!-- User Review Screen -->
     <color name="userReview_title">#FFF</color>
