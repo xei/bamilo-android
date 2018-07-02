@@ -53,5 +53,10 @@
     <color name="descSpec_tab_title_selected">#fff</color>
     <color name="descSpec_tab_title_deselected">#FF8392A8</color>
     <color name="descSpec_tab_title">@color/tab_title</color>
+    <color name="descSpec_spec_header_background">#e7edf7</color>
+    <color name="descSpec_spec_header_text">#1a365e</color>
+    <color name="descSpec_spec_item_title_color">#FF434343</color>
+    <color name="descSpec_spec_item_value_color">#000</color>
+    <color name="descSpec_spec_item_divider">#efefef</color>
 
 </resources>
