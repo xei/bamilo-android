@@ -7,7 +7,6 @@ import android.widget.BaseAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
-import com.bamilo.modernbamilo.customview.XeiTextView
 import com.bamilo.modernbamilo.product.descspec.spec.pojo.SpecificationRow
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter
 
