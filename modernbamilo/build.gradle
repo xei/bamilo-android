@@ -2,9 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 28
-
-
-
+    
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 28
@@ -36,6 +34,16 @@ android {
                     'proguard-rules-retrofit.pro'
 
             buildConfigField "String", "URL_WEBAPI", URL_WEBAPI_PRODUCTION
+        }
+
+        mock {
+            initWith debug
+
+            buildConfigField "String", "URL_WEBAPI", URL_WEBAPI_MOCKDATA
+        }
+
+        staging {
+            initWith debug
         }
 
     }
@@ -75,8 +83,6 @@ dependencies {
     implementation 'se.emilsjolander:stickylistheaders:2.7.0'
     implementation 'com.shawnlin:number-picker:2.4.6'
 
-    // TODO: Remove this dependency asap. It added because of using class "AigPersistentHttpCookie" in RetrofitHelper
-    implementation project(path: ':BamiloFramework')
 }
 
 apply plugin: 'kotlin-android'
