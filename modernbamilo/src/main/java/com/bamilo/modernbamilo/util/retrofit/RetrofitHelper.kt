@@ -3,6 +3,7 @@ package com.bamilo.modernbamilo.util.retrofit
 import android.content.Context
 import android.text.TextUtils
 import android.util.Base64
+import com.bamilo.modernbamilo.BuildConfig
 import com.bamilo.modernbamilo.util.storage.getCookie
 import com.mobile.service.rest.cookies.AigPersistentHttpCookie
 import okhttp3.*
@@ -27,8 +28,7 @@ object RetrofitHelper {
 
     private val sLogLevel = HttpLoggingInterceptor.Level.BODY
 
-    private const val URL_BASE = "http://staging.bamilo.com/mobapi/v2.9/"
-//    private const val URL_BASE = "http://staging.bamilo.com/mobapi/v2.9/"
+    private const val URL_BASE = BuildConfig.URL_WEBAPI
     private val defaultHeaders = hashMapOf(
 //            "app-version" to BuildConfig.VERSION_CODE.toString(),
             "locale" to "fa-ir"

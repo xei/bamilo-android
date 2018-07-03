@@ -20,14 +20,24 @@ android {
     }
 
     buildTypes {
-        release {
+
+        debug {
             minifyEnabled false
+
+            buildConfigField "String", "URL_WEBAPI", URL_WEBAPI_STAGING
+        }
+
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
                     'proguard-rules-glide.pro'
                     'proguard-rules-logs.pro'
                     'proguard-rules-retrofit.pro'
+
+            buildConfigField "String", "URL_WEBAPI", URL_WEBAPI_PRODUCTION
         }
+
     }
 
 }
