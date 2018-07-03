@@ -3,6 +3,7 @@ package com.bamilo.modernbamilo.product.descspec.spec
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.bamilo.modernbamilo.product.descspec.DescSpecWebApi
 import com.bamilo.modernbamilo.product.descspec.desc.pojo.DescriptionRow
 import com.bamilo.modernbamilo.product.descspec.spec.pojo.SpecificationRow
 import com.bamilo.modernbamilo.product.descspec.spec.pojo.SpecificationTuple
+import com.bamilo.modernbamilo.product.sellerslist.TAG_DEBUG
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import retrofit2.Call
@@ -79,34 +81,21 @@ class SpecificationFragment : Fragment() {
 
     private fun loadSpecification() {
         val call = mWebApi.getSpecification(mProductId!!)
-        call.enqueue(object: Callback<ResponseWrapper<ArrayList<DescriptionRow>>> {
-            override fun onResponse(call: Call<ResponseWrapper<ArrayList<DescriptionRow>>>?, response: Response<ResponseWrapper<ArrayList<DescriptionRow>>>?) {
-                // TODO mock data
-                val tuples = ArrayList<SpecificationTuple>()
-                tuples.add(SpecificationTuple("رنگ", "مشکی، بنفش، طوسی، قهوه ای"))
-                tuples.add(SpecificationTuple("نام کامل", "\tگوشی موبایل سامسونگ مدل Galaxy S9 به همراه کد تخفیف دو میلیون ریالی سفر با اسنپ، پاوربانک ۱۰۲۰۰میلی آمپر ساعتی سامسونگ و کارت حافظه ۱۲۸ گیگابایتی SanDisk"))
-                tuples.add(SpecificationTuple("رنگ", "مشکی، بنفش، طوسی، قهوه ای"))
-                mSpecificationRows.add(SpecificationRow("مشخصات کلی", tuples))
-                mSpecificationRows.add(SpecificationRow("مشخصات کلی", tuples))
-                mSpecificationRows.add(SpecificationRow("مشخصات کلی", tuples))
+        call.enqueue(object: Callback<ResponseWrapper<ArrayList<SpecificationRow>>> {
+            override fun onResponse(call: Call<ResponseWrapper<ArrayList<SpecificationRow>>>?, response: Response<ResponseWrapper<ArrayList<SpecificationRow>>>?) {
+
+                val descRows = response?.body()?.metadata
+                if (descRows != null && descRows.size != 0) {
+                    mSpecificationRows.clear()
+                    mSpecificationRows.removeAll(mSpecificationRows)
+                    mSpecificationRows.addAll(descRows)
+                }
 
                 initStickyListHeadersListView()
             }
 
-            override fun onFailure(call: Call<ResponseWrapper<ArrayList<DescriptionRow>>>?, t: Throwable?) {
-                // TODO mock data
-                val tuples = ArrayList<SpecificationTuple>()
-                tuples.add(SpecificationTuple("رنگ", "مشکی، بنفش، طوسی، قهوه ای"))
-                tuples.add(SpecificationTuple("نام کامل", "\tگوشی موبایل سامسونگ مدل Galaxy S9 به همراه کد تخفیف دو میلیون ریالی سفر با اسنپ، پاوربانک ۱۰۲۰۰میلی آمپر ساعتی سامسونگ و کارت حافظه ۱۲۸ گیگابایتی SanDisk"))
-                tuples.add(SpecificationTuple("رنگ", "مشکی، بنفش، طوسی، قهوه ای"))
-                mSpecificationRows.add(SpecificationRow("مشخصات کلی", tuples))
-                mSpecificationRows.add(SpecificationRow("مشخصات کلی", tuples))
-                mSpecificationRows.add(SpecificationRow("مشخصات کلی", tuples))
-                mSpecificationRows.add(SpecificationRow("مشخصات کلی", tuples))
-                mSpecificationRows.add(SpecificationRow("مشخصات کلی", tuples))
-                mSpecificationRows.add(SpecificationRow("مشخصات کلی", tuples))
-                mSpecificationRows.add(SpecificationRow("مشخصات کلی", tuples))
-                initStickyListHeadersListView()
+            override fun onFailure(call: Call<ResponseWrapper<ArrayList<SpecificationRow>>>?, t: Throwable?) {
+                Log.e(TAG_DEBUG, t?.message)
             }
 
         })
