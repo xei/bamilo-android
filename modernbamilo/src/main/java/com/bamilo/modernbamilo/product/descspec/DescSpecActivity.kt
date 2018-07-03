@@ -19,6 +19,6 @@ class DescSpecActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_desc_spec)
 
-        replaceFragmentInActivity(DescSpecFragment.newInstance("1234"), R.id.activityDescSpec_frameLayout_container)
+        replaceFragmentInActivity(DescSpecFragment.newInstance(""), R.id.activityDescSpec_frameLayout_container)
     }
 }
