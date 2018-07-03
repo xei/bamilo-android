@@ -82,7 +82,7 @@ class DescriptionFragment : Fragment() {
 
             override fun onResponse(call: Call<ResponseWrapper<ArrayList<DescriptionRow>>>?, response: Response<ResponseWrapper<ArrayList<DescriptionRow>>>?) {
 
-                var descRow = response?.body()?.metadata
+                val descRow = response?.body()?.metadata
                 if (descRow != null && descRow.size != 0) {
                     mDescriptionRows.clear()
                     mDescriptionRows.removeAll(mDescriptionRows)
