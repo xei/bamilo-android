@@ -21,12 +21,14 @@ android {
     buildTypes {
 
         debug {
+            debuggable true
             minifyEnabled false
 
             buildConfigField "String", "URL_WEBAPI", URL_WEBAPI_STAGING
         }
 
         release {
+            debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
