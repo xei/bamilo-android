@@ -17,6 +17,7 @@ android {
         enabled = true
     }
 
+    publishNonDefault true
     buildTypes {
 
         debug {
