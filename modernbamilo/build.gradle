@@ -24,7 +24,7 @@ android {
             debuggable true
             minifyEnabled false
 
-            buildConfigField "String", "URL_WEBAPI", URL_WEBAPI_STAGING
+            buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_STAGING}v${VERSION_WEBAPI}\""
         }
 
         release {
@@ -36,7 +36,7 @@ android {
                     'proguard-rules-logs.pro'
                     'proguard-rules-retrofit.pro'
 
-            buildConfigField "String", "URL_WEBAPI", URL_WEBAPI_PRODUCTION
+            buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_PRODUCTION}v${VERSION_WEBAPI}\""
         }
 
         mock {
