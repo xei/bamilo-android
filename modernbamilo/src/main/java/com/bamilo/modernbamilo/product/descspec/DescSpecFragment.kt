@@ -78,8 +78,8 @@ class DescSpecFragment : Fragment() {
         val descriptionTabView = LayoutInflater.from(context).inflate(R.layout.row_tablayout, null) as XeiTextView
         val specificationTabView = LayoutInflater.from(context).inflate(R.layout.row_tablayout, null) as XeiTextView
 
-        descriptionTabView.text = "توضیحات"
-        specificationTabView.text = "مشخصات"
+        descriptionTabView.text = resources.getString(R.string.decSpec_tab_description)
+        specificationTabView.text = resources.getString(R.string.decSpec_tab_specification)
 
         descriptionTabView.isSelected = true
 
