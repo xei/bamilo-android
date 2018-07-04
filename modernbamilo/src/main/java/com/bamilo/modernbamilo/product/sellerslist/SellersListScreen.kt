@@ -91,7 +91,7 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun bindViewModel() {
-        mToolbarTitleTextView.text = "فروشندگان دیگر"
+        mToolbarTitleTextView.text = resources.getString(R.string.sellersList_title)
 
         mProductThumbnailImageView.loadImageFromNetwork(mViewModel.productThumbnailUrl)
         mProductTitleTextView.text = mViewModel.productTitle

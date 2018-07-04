@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Modern Bamilo</string>
 
+    <!-- Sellers List Screen -->
+    <string name="sellersList_title">فروشندگان دیگر</string>
+
     <!-- Description and Specification Screen -->
     <string name="decSpec_tab_description">توضیحات</string>
     <string name="decSpec_tab_specification">مشخصات</string>
