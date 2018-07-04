@@ -11,7 +11,7 @@ class DescSpecPagerAdapter(fm: FragmentManager, private val productId: String): 
     override fun getItem(position: Int): Fragment = when (position) {
         1 -> DescriptionFragment.newInstance(productId)
         0 -> SpecificationFragment.newInstance(productId)
-        else -> throw Exception("TRAP")
+        else -> throw Exception("THIS EXCEPTION NEVER THROWS!")
     }
 
     override fun getCount() = 2
