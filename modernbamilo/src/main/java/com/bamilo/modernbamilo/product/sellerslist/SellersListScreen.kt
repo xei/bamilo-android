@@ -16,6 +16,8 @@ import com.bamilo.modernbamilo.app.BaseActivity
 import com.bamilo.modernbamilo.product.sellerslist.pojo.SellerViewModel
 import com.bamilo.modernbamilo.product.sellerslist.pojo.SellersListScreenViewModel
 import com.bamilo.modernbamilo.util.extension.loadImageFromNetwork
+import com.bamilo.modernbamilo.util.logging.LogType
+import com.bamilo.modernbamilo.util.logging.Logger
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import retrofit2.Call
@@ -115,38 +117,18 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
         call.enqueue(object: Callback<ResponseWrapper<ArrayList<SellerViewModel>>> {
 
             override fun onResponse(call: Call<ResponseWrapper<ArrayList<SellerViewModel>>>?, response: Response<ResponseWrapper<ArrayList<SellerViewModel>>>?) {
-                // TODO: replace val sellers = response?.body()?.metadata
-                val sellers = ArrayList<SellerViewModel>()
-                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515583533, 4.0F, 30249000, 50249000, 33))
-                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515585674, 4.1F, 30249000, 40249000, 33))
-                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516365568, 4.2F, 30249000, 30249000, 33))
-                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516367243, 4.3F, 30249000, 20249000, 33))
-                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1517367243, 4.4F, 30249000, 10249000, 33))
+                val sellers = response?.body()?.metadata
 
-                mViewModel.sellersViewModel.removeAll(mViewModel.sellersViewModel)
-                mViewModel.sellersViewModel.addAll(sellers)
+                if (sellers != null && sellers.size == 0) {
+                    mViewModel.sellersViewModel.removeAll(mViewModel.sellersViewModel)
+                    mViewModel.sellersViewModel.addAll(sellers)
+                    sortSellersByPayableAmount()
+                }
 
-                sortSellersByPayableAmount()
             }
 
             override fun onFailure(call: Call<ResponseWrapper<ArrayList<SellerViewModel>>>?, t: Throwable?) {
-                Log.e(TAG_DEBUG, t?.message)
-
-
-
-
-                // TODO: replace val sellers = response?.body()?.metadata
-                val sellers = ArrayList<SellerViewModel>()
-                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515583533, 4.0F, 30249000, 50249000, 33))
-                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1515585674, 4.1F, 30249000, 40249000, 33))
-                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516365568, 4.2F, 30249000, 30249000, 33))
-                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1516367243, 4.3F, 30249000, 20249000, 33))
-                sellers.add(SellerViewModel("123", "ایران رهجو مرکزی", 1517367243, 4.4F, 30249000, 10249000, 33))
-
-                mViewModel.sellersViewModel.removeAll(mViewModel.sellersViewModel)
-                mViewModel.sellersViewModel.addAll(sellers)
-
-                sortSellersByPayableAmount()
+                Logger.log(t?.message.toString(), TAG_DEBUG, LogType.ERROR)
             }
 
         })
