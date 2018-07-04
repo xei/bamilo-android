@@ -4,9 +4,12 @@ import android.content.Context
 import android.graphics.Paint
 import android.util.AttributeSet
 import com.bamilo.modernbamilo.R
+import com.bamilo.modernbamilo.util.logging.LogType
+import com.bamilo.modernbamilo.util.logging.Logger
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
+private const val TAG_DEBUG = "PriceView"
 
 class PriceView: XeiTextView {
 
@@ -31,7 +34,7 @@ class PriceView: XeiTextView {
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
         } catch (e: Exception) {
-
+            Logger.log(message = e.message.toString(), tag = TAG_DEBUG, logType = LogType.ERROR)
         } finally {
             typedArray.recycle()
         }
