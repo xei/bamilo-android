@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.bamilo.modernbamilo.R
+import com.bamilo.modernbamilo.app.BaseActivity
 import com.bamilo.modernbamilo.util.logging.Logger
 
 private const val TAG_DEBUG = "SubmitRateActivity"
@@ -19,7 +20,7 @@ fun startActivity(invokerContext: Context, productId: String) {
     Logger.log("SubmitRateActivity has started for product: $productId", TAG_DEBUG)
 }
 
-class SubmitRateActivity : AppCompatActivity() {
+class SubmitRateActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
