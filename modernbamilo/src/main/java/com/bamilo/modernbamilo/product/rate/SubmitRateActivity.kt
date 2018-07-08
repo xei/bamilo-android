@@ -16,7 +16,7 @@ fun startActivity(invokerContext: Context, productId: String) {
     intent.putExtra(KEY_EXTRA_PRODUCT_ID, productId)
     invokerContext.startActivity(intent)
 
-    Logger.log("SubmitRateActivity has started for product: $productId")
+    Logger.log("SubmitRateActivity has started for product: $productId", TAG_DEBUG)
 }
 
 class SubmitRateActivity : AppCompatActivity() {
