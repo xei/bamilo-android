@@ -2,7 +2,6 @@ package com.bamilo.modernbamilo.product.rate
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.app.BaseActivity
