@@ -12,7 +12,10 @@
         <activity
             android:name=".product.sellerslist.SellersListActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".product.descspec.DescSpecActivity"></activity>
+        <activity android:name=".product.descspec.DescSpecActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".product.rate.SubmitRateActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
