@@ -30,8 +30,8 @@
     <!-- User Review Screen -->
     <color name="userReview_title">#FFF</color>
     <color name="userReview_stepper_empty">#F1F1F1</color>
-    <color name="userReview_stepper_full">#FF6B0C</color>
-    <color name="userReview_button_next">#FF6B0C</color>
+    <color name="userReview_stepper_full">@color/pantone1585c</color>
+    <color name="userReview_button_next">@color/pantone1585c</color>
     <color name="userReview_buttonText_next">#FFF</color>
     <color name="userReview_typeRadio_title_textColor">#53585B</color>
     <color name="userReview_typeRadio_optionButton_textColor">#53585B</color>
@@ -39,14 +39,14 @@
     <color name="userReview_typeRadio_optionButtons_startColor">@color/material_green_500</color>
     <color name="userReview_typeRadio_optionButtons_endColor">@color/material_pink_500</color>
     <color name="userReview_typeCheckbox_title_textColor">#53585B</color>
-    <color name="userReview_typeCheckbox_optionButton_buttonTintColor">#FF6B0C</color>
+    <color name="userReview_typeCheckbox_optionButton_buttonTintColor">@color/pantone1585c</color>
     <color name="userReview_typeCheckbox_optionButton_textColor">#53585B</color>
     <color name="userReview_typeCheckbox_optionButton_dividerColor">#eeeff1</color>
     <color name="userReview_typeEssay_title_textColor">#53585B</color>
     <color name="userReview_typeEssay_editText_textColor">#44484b</color>
     <color name="userReview_typeEssay_editText_borderColor">#909193</color>
     <color name="userReview_typeEssay_editText_backgroundColor">#edeff1</color>
-    <color name="userReview_typeThanks_doneIcon_tintColor">#FF6B0C</color>
+    <color name="userReview_typeThanks_doneIcon_tintColor">@color/pantone1585c</color>
     <color name="userReview_typeThanks_description_textColor">#53585B</color>
     <color name="userReview_typeImageSelect_title_textColor">#53585B</color>
 
@@ -60,10 +60,10 @@
     <color name="sellersList_row_deliveryTime">#434343</color>
     <color name="sellersList_row_rateBackground">#00a896</color>
     <color name="sellersList_row_rate">#fff</color>
-    <color name="sellersList_row_payableAmount">#fe6b0c</color>
+    <color name="sellersList_row_payableAmount">@color/pantone1585c</color>
     <color name="sellersList_row_baseAmount">#434343</color>
-    <color name="sellersList_row_discountPercent">#f7931d</color>
-    <color name="sellersList_row_addToCartButton">#fe6b0c</color>
+    <color name="sellersList_row_discountPercent">@color/pantone1375c</color>
+    <color name="sellersList_row_addToCartButton">@color/pantone1585c</color>
     <color name="sellersList_row_addToCartButtonText">#fff</color>
 
     <!-- Description & Specification Screen -->
@@ -79,5 +79,16 @@
     <color name="descSpec_spec_item_title_color">#FF434343</color>
     <color name="descSpec_spec_item_value_color">#000</color>
     <color name="descSpec_spec_item_divider">#efefef</color>
+
+    <!-- Submit Rate Screen -->
+    <color name="submitRate_background">@color/blueGrey2</color>
+    <color name="submitRate_question">@color/grey5</color>
+    <color name="submitRate_rate">@color/grey5</color>
+    <color name="submitRate_comment_title_text">@color/grey5</color>
+    <color name="submitRate_comment_title_hint">@color/grey2</color>
+    <color name="submitRate_comment_content_text">@color/grey5</color>
+    <color name="submitRate_comment_content_hint">@color/grey2</color>
+    <color name="submitRate_submitBtn_background">@color/pantone1585c</color>
+    <color name="submitRate_submitBtn_text">@color/white</color>
 
 </resources>

@@ -8,6 +8,15 @@
     <string name="decSpec_tab_description">توضیحات</string>
     <string name="decSpec_tab_specification">مشخصات</string>
 
+    <!-- Submit Rate Screen -->
+    <string name="submitRate_title">افزودن نظر</string>
+    <string name="submitRate_question">از پنج ستاره چند ستاره به این محصول می‌دهید؟</string>
+    <string name="submitRate_rate">%s ستاره</string>
+    <string name="submitRate_hint_title">عنوان</string>
+    <string name="submitRate_hint_comment">نظر شما</string>
+    <string name="submitRate_submitBtn">ثبت نظر</string>
+    <string name="submitRate_submitError">نظر شما ثبت نشد!</string>
+
 
     <string name="suffix_currency">%s ریال</string>
     <string name="suffix_percent">%s %%</string>

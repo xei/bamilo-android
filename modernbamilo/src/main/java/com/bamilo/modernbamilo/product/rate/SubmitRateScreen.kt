@@ -3,9 +3,17 @@ package com.bamilo.modernbamilo.product.rate
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.*
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.app.BaseActivity
+import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
+import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
+import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 private const val TAG_DEBUG = "SubmitRateActivity"
 
@@ -19,10 +27,80 @@ fun startActivity(invokerContext: Context, productId: String) {
     Logger.log("SubmitRateActivity has started for product: $productId", TAG_DEBUG)
 }
 
-class SubmitRateActivity : BaseActivity() {
+class SubmitRateActivity : BaseActivity(), View.OnClickListener {
+
+    private lateinit var mCloseBtnImageButton: ImageButton
+    private lateinit var mToolbarTitleTextView: TextView
+    private lateinit var mRateRatingBar: RatingBar
+    private lateinit var mRateTextView: TextView
+    private lateinit var mCommentTitleEditText: EditText
+    private lateinit var mCommentContentEditText: EditText
+    private lateinit var mSubmitRateButton: Button
+
+    private lateinit var mProductId: String
+
+    private val mWebApi = RetrofitHelper.makeWebApi(this, SubmitRateWebApi::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_submit_rate)
+
+        mProductId = intent.getStringExtra(KEY_EXTRA_PRODUCT_ID)
+
+        findViews()
+        mToolbarTitleTextView.text = resources.getString(R.string.submitRate_title)
+        setOnClickListeners()
+
     }
+
+    private fun findViews() {
+        mCloseBtnImageButton = findViewById(R.id.layoutToolbar_imageButton_close)
+        mToolbarTitleTextView = findViewById(R.id.layoutToolbar_xeiTextView_title)
+        mRateRatingBar = findViewById(R.id.activitySubmitRate_ratingBar_ratingBar)
+        mRateTextView = findViewById(R.id.activitySubmitRate_xeiTextView_rate)
+        mCommentTitleEditText = findViewById(R.id.activitySubmitRate_xeiEditText_title)
+        mCommentContentEditText = findViewById(R.id.activitySubmitRate_xeiEditText_comment)
+        mSubmitRateButton = findViewById(R.id.activitySubmitRate_xeiButton_submitRateBtn)
+    }
+
+    private fun setOnClickListeners() {
+        mCloseBtnImageButton.setOnClickListener(this)
+        mSubmitRateButton.setOnClickListener(this)
+    }
+
+    private fun submitRate() {
+        val rate = mRateRatingBar.rating
+        val title = mCommentTitleEditText.text.toString()
+        val content = mCommentContentEditText.text.toString()
+
+        val call = mWebApi.submit(mProductId, rate, title, content)
+        call.enqueue(object: Callback<ResponseWrapper<Boolean>> {
+
+            override fun onResponse(call: Call<ResponseWrapper<Boolean>>?, response: Response<ResponseWrapper<Boolean>>?) {
+                if (response?.body()?.metadata != null && response.body()?.metadata!!) {
+                    Logger.log("SubmitRate request succeed!", TAG_DEBUG, LogType.INFO)
+                    finish()
+                } else {
+                    Toast.makeText(this@SubmitRateActivity, resources.getText(R.string.submitRate_submitError), Toast.LENGTH_LONG).show()
+
+                    Logger.log("SubmitRate request failed!", TAG_DEBUG, LogType.ERROR)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseWrapper<Boolean>>?, t: Throwable?) {
+                Toast.makeText(this@SubmitRateActivity, resources.getText(R.string.submitRate_submitError), Toast.LENGTH_LONG).show()
+
+                Logger.log("SubmitRate request failed!", TAG_DEBUG, LogType.ERROR)
+            }
+
+        })
+    }
+
+    override fun onClick(clickedView: View?) {
+        when (clickedView?.id) {
+            R.id.layoutToolbar_imageButton_close -> finish()
+            R.id.activitySubmitRate_xeiButton_submitRateBtn -> submitRate()
+        }
+    }
+
 }
