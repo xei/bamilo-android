@@ -11,6 +11,10 @@ interface SubmitRateWebApi {
      * Submit a review for a product.
      */
     @POST("product/rating/{productId}?device=mobile_app")
-    fun submit(@Path("productId") userId: String) : Call<ResponseWrapper<Boolean>>
+    fun submit(@Path("productId") userId: String,
+               @Path("rating") rating:Float,
+               @Path("title") title: String,
+               @Path("content") content: String
+    ) : Call<ResponseWrapper<Boolean>>
 
 }
