@@ -10,7 +10,7 @@ private const val KEY_EXTRA_PRODUCT_ID = "KEY_EXTRA_PRODUCT_ID"
 
 fun startActivity(invokerContext: Context, productId: String) {
     val intent = Intent(invokerContext, SubmitRateActivity::class.java)
-    intent.putExtra("", productId)
+    intent.putExtra(KEY_EXTRA_PRODUCT_ID, productId)
     invokerContext.startActivity(intent)
 }
 
