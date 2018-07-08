@@ -15,7 +15,8 @@
         <activity android:name=".product.descspec.DescSpecActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".product.rate.SubmitRateActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

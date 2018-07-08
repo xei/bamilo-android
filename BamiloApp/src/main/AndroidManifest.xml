@@ -295,7 +295,8 @@
             android:screenOrientation="portrait" />
         <activity android:name="com.bamilo.modernbamilo.product.descspec.DescSpecActivity" />
         <activity android:name="com.bamilo.modernbamilo.product.rate.SubmitRateActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
     </application>
 
