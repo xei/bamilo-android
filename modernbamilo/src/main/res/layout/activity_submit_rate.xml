@@ -44,8 +44,8 @@
         app:locale="auto"
         app:style="bold" />
 
-    <RatingBar
-        android:id="@+id/activitySubmitRate_ratingBar_ratingBar"
+    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+        android:id="@+id/activitySubmitRate_materialRatingBar_ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -53,9 +53,13 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        style="@style/Widget.MaterialRatingBar.RatingBar"
+        app:mrb_progressTint="@color/submitRate_stars"
+        app:mrb_secondaryProgressTint="@color/submitRate_stars"
+        app:mrb_progressBackgroundTint="@color/submitRate_stars"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activitySubmitRate_xeiTextView_rateQuestion" />
+        app:layout_constraintTop_toBottomOf="@+id/activitySubmitRate_xeiTextView_rateQuestion"/>
 
     <com.bamilo.modernbamilo.customview.XeiTextView
         android:id="@+id/activitySubmitRate_xeiTextView_rate"
@@ -71,7 +75,7 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activitySubmitRate_ratingBar_ratingBar"
+        app:layout_constraintTop_toBottomOf="@+id/activitySubmitRate_materialRatingBar_ratingBar"
         app:locale="auto"
         app:style="bold"
         tools:text="۲ ستاره"/>

@@ -12,6 +12,7 @@ import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
+import me.zhanghai.android.materialratingbar.MaterialRatingBar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +34,7 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var mCloseBtnImageButton: ImageButton
     private lateinit var mToolbarTitleTextView: TextView
-    private lateinit var mRateRatingBar: RatingBar
+    private lateinit var mRateRatingBar: MaterialRatingBar
     private lateinit var mRateTextView: TextView
     private lateinit var mCommentTitleEditText: EditText
     private lateinit var mCommentContentEditText: EditText
@@ -59,7 +60,7 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
     private fun findViews() {
         mCloseBtnImageButton = findViewById(R.id.layoutToolbar_imageButton_close)
         mToolbarTitleTextView = findViewById(R.id.layoutToolbar_xeiTextView_title)
-        mRateRatingBar = findViewById(R.id.activitySubmitRate_ratingBar_ratingBar)
+        mRateRatingBar = findViewById(R.id.activitySubmitRate_materialRatingBar_ratingBar)
         mRateTextView = findViewById(R.id.activitySubmitRate_xeiTextView_rate)
         mCommentTitleEditText = findViewById(R.id.activitySubmitRate_xeiEditText_title)
         mCommentContentEditText = findViewById(R.id.activitySubmitRate_xeiEditText_comment)
