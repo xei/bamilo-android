@@ -76,6 +76,8 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
         mRateRatingBar.stepSize = 1f
         mRateRatingBar.rating = RATING_DEFAULT.toFloat()
         setRateTextView(RATING_DEFAULT)
+
+        mRateRatingBar.setOnRatingChangeListener { _, rate -> setRateTextView(rate.toInt()) }
     }
 
     private fun setRateTextView(rating: Int) {
