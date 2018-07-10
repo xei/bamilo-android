@@ -83,6 +83,7 @@
     <!-- Submit Rate Screen -->
     <color name="submitRate_background">@color/blueGrey2</color>
     <color name="submitRate_question">@color/grey5</color>
+    <color name="submitRate_stars">@color/pantone1375c</color>
     <color name="submitRate_rate">@color/grey5</color>
     <color name="submitRate_comment_title_text">@color/grey5</color>
     <color name="submitRate_comment_title_hint">@color/grey2</color>
