@@ -20,7 +20,7 @@ import retrofit2.Response
 private const val TAG_DEBUG = "SubmitRateActivity"
 
 private const val KEY_EXTRA_PRODUCT_ID = "KEY_EXTRA_PRODUCT_ID"
-private const val RATING_DEFAULT = 3
+private const val RATING_DEFAULT = 0
 
 fun startActivity(invokerContext: Context, productId: String) {
     val intent = Intent(invokerContext, SubmitRateActivity::class.java)
@@ -86,6 +86,12 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
 
     private fun submitRate() {
         val rate = mRateRatingBar.rating
+
+        if (rate == 0f) {
+            Toast.makeText(this, resources.getString(R.string.submitRate_selectStarError), Toast.LENGTH_LONG).show()
+            return
+        }
+
         val title = mCommentTitleEditText.text.toString()
         val content = mCommentContentEditText.text.toString()
 
