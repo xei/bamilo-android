@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.*
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.app.BaseActivity
+import com.bamilo.modernbamilo.util.extension.persianizeNumberString
 import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
@@ -18,6 +19,7 @@ import retrofit2.Response
 private const val TAG_DEBUG = "SubmitRateActivity"
 
 private const val KEY_EXTRA_PRODUCT_ID = "KEY_EXTRA_PRODUCT_ID"
+private const val RATING_DEFAULT = 3
 
 fun startActivity(invokerContext: Context, productId: String) {
     val intent = Intent(invokerContext, SubmitRateActivity::class.java)
@@ -50,6 +52,7 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
         findViews()
         mToolbarTitleTextView.text = resources.getString(R.string.submitRate_title)
         setOnClickListeners()
+        initRatingBar()
 
     }
 
@@ -66,6 +69,16 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
     private fun setOnClickListeners() {
         mCloseBtnImageButton.setOnClickListener(this)
         mSubmitRateButton.setOnClickListener(this)
+    }
+
+    private fun initRatingBar() {
+        mRateRatingBar.stepSize = 1f
+        mRateRatingBar.rating = RATING_DEFAULT.toFloat()
+        setRateTextView(RATING_DEFAULT)
+    }
+
+    private fun setRateTextView(rating: Int) {
+        mRateTextView.text = resources.getString(R.string.submitRate_rate, rating.toString().persianizeNumberString())
     }
 
     private fun submitRate() {
