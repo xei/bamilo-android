@@ -1,4 +1,4 @@
-package com.bamilo.modernbamilo.product.rate
+package com.bamilo.modernbamilo.product.comment.submit
 
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import retrofit2.Call

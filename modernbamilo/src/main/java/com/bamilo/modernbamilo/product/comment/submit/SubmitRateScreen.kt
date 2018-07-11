@@ -1,4 +1,4 @@
-package com.bamilo.modernbamilo.product.rate
+package com.bamilo.modernbamilo.product.comment.submit
 
 import android.content.Context
 import android.content.Intent
