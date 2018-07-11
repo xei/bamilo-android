@@ -8,6 +8,9 @@
     <string name="decSpec_tab_description">توضیحات</string>
     <string name="decSpec_tab_specification">مشخصات</string>
 
+    <!--  Comments Screen -->
+    <string name="comment_title">نظرات کاربران</string>
+
     <!-- Submit Rate Screen -->
     <string name="submitRate_title">افزودن نظر</string>
     <string name="submitRate_question">از پنج ستاره چند ستاره به این محصول می‌دهید؟</string>

@@ -12,11 +12,15 @@
         <activity
             android:name=".product.sellerslist.SellersListActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".product.descspec.DescSpecActivity"
+        <activity
+            android:name=".product.descspec.DescSpecActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".product.rate.SubmitRateActivity"
+        <activity
+            android:name=".product.comment.submit.SubmitRateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".product.comment.CommentsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

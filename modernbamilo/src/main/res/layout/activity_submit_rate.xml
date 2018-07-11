@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/submitRate_background"
-    tools:context=".product.rate.SubmitRateActivity">
+    tools:context=".product.comment.submit.SubmitRateActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/activitySubmitRate_toolbar_actionbar"
