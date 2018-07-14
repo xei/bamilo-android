@@ -32,16 +32,18 @@ fun startActivity(context: Context,
                   twoStarsAvg: Float,
                   threeStarsAvg: Float,
                   fourStarsAvg: Float) {
-    val intent = Intent(context, CommentsActivity::class.java)
-    intent.putExtra(KEY_EXTRA_PRODUCT_ID, productId)
-    intent.putExtra(KEY_EXTRA_RATE, rate)
-    intent.putExtra(KEY_EXTRA_RATE_SUM, rateSum)
-    intent.putExtra(KEY_EXTRA_COMMENTS_COUNT, commentsCount)
-    intent.putExtra(KEY_EXTRA_ONE_STARS_AVG, oneStarsAvg)
-    intent.putExtra(KEY_EXTRA_TWO_STARS_AVG, twoStarsAvg)
-    intent.putExtra(KEY_EXTRA_THREE_STARS_AVG, threeStarsAvg)
-    intent.putExtra(KEY_EXTRA_FOUR_STARS_AVG, fourStarsAvg)
-    intent.putExtra(KEY_EXTRA_FIVE_STARS_AVG, fourStarsAvg)
+
+    val intent = Intent(context, CommentsActivity::class.java).apply {
+        putExtra(KEY_EXTRA_PRODUCT_ID, productId)
+        putExtra(KEY_EXTRA_RATE, rate)
+        putExtra(KEY_EXTRA_RATE_SUM, rateSum)
+        putExtra(KEY_EXTRA_COMMENTS_COUNT, commentsCount)
+        putExtra(KEY_EXTRA_ONE_STARS_AVG, oneStarsAvg)
+        putExtra(KEY_EXTRA_TWO_STARS_AVG, twoStarsAvg)
+        putExtra(KEY_EXTRA_THREE_STARS_AVG, threeStarsAvg)
+        putExtra(KEY_EXTRA_FOUR_STARS_AVG, fourStarsAvg)
+        putExtra(KEY_EXTRA_FIVE_STARS_AVG, fourStarsAvg)
+    }
     context.startActivity(intent)
 
     Logger.log("CommentActivity has started for product: $productId", TAG_DEBUG)
@@ -51,7 +53,7 @@ class CommentsActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var mProductId: String
 
-    private val mWebApi = RetrofitHelper.makeWebApi(this, CommentWebApi::class.java)
+    private val mWebApi = RetrofitHelper.makeWebApi(this, CommentsWebApi::class.java)
 
     private lateinit var mViewModel: CommentsScreenViewModel
 
