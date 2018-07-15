@@ -1,6 +1,7 @@
 package com.bamilo.modernbamilo.product.comment
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ProgressBar
@@ -13,6 +14,9 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar
 private const val TAG_DEBUG = "RateBarView"
 
 class RateBarView : RelativeLayout {
+
+    private lateinit var mProgressBar: ProgressBar
+
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
@@ -33,9 +37,9 @@ class RateBarView : RelativeLayout {
                     rating = typedArray.getInt(R.styleable.RateBarView_rating, 0).toFloat()
                 }
 
-                findViewById<ProgressBar>(R.id.activitySubmitRate_progressBar_progressBar).run {
+                mProgressBar = findViewById<ProgressBar>(R.id.activitySubmitRate_progressBar_progressBar).apply {
                     rotation = 180f
-                    progressDrawable = resources.getDrawable(R.drawable.progress_comments_rate)
+                    progressDrawable = ContextCompat.getDrawable(context, R.drawable.progress_comments_rate)
                     progress = typedArray.getFloat(R.styleable.RateBarView_percentage, 0f).toInt()
                 }
 
@@ -44,6 +48,10 @@ class RateBarView : RelativeLayout {
         } finally {
             typedArray.recycle()
         }
+    }
+
+    fun setProgress(progress: Int) {
+        mProgressBar.progress = progress
     }
 
 }
