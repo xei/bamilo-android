@@ -1,6 +1,7 @@
 package com.mobile.view.productdetail.model
 
 class Reviews {
-    val average: Int = 0
-    val total: Int = 0
+    var total: Int = 0
+    var items = arrayListOf<Review>()
+    var average: Float = 0f
 }

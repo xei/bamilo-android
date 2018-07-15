@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class ResponseWrapper<T> (
 
         @SerializedName("success") val success: Boolean,
-        @SerializedName("messages") val messages: Messages,
+        @SerializedName("messages") val messages: ArrayList<Messages>,
         @SerializedName("session") val session: Session,
         @SerializedName("metadata") val metadata: T
 

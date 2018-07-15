@@ -26,7 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_64dp"
         android:layout_alignParentBottom="true"
+        android:paddingLeft="@dimen/dimen_16dp"
+        android:paddingRight="@dimen/dimen_16dp"
         android:background="@color/white"
+        android:clipToPadding="false"
         android:orientation="horizontal"/>
 
 </RelativeLayout>

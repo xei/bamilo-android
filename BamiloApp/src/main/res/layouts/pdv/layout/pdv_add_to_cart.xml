@@ -7,7 +7,7 @@
     android:layout_height="48dp"
     android:id="@+id/addToCart_linearLayout_parent"
     android:background="@color/colorAccent"
-    android:gravity="center_vertical"
+    android:gravity="center"
     android:orientation="horizontal">
 
     <android.support.v7.widget.AppCompatImageView
@@ -26,6 +26,8 @@
         android:textSize="14sp"/>
 
     <LinearLayout
+        android:visibility="gone"
+        tools:visibility="visible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -49,7 +51,7 @@
             android:paddingBottom="@dimen/dimen_1dp"
             android:layout_height="wrap_content"
             android:background="@drawable/round_white_12dp"
-            android:text="۴ عدد"
+            tools:text="۴ عدد"
             android:textColor="@color/colorAccent"
             android:textSize="12sp"/>
 

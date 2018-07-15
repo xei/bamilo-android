@@ -1,17 +1,17 @@
 package com.mobile.view.productdetail.viewtypes.bottomsheetvariation
 
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.components.ghostadapter.GhostAdapter
-import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
 import com.mobile.view.productdetail.OnItemClickListener
-import com.mobile.view.productdetail.model.Size
+import com.mobile.view.productdetail.PDVMainView
+import com.mobile.view.productdetail.model.Product
+import com.mobile.view.productdetail.model.Variation
 import com.mobile.view.productdetail.model.Variations
-import com.mobile.view.productdetail.viewtypes.variation.colors.VariationsColorItem
+import com.mobile.view.productdetail.viewtypes.variation.colors.OtherVariationsItem
 import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
 
 /**
@@ -19,15 +19,16 @@ import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
  * since 6/30/2018.
  * contact farshidabazari@gmail.com
  */
+
 @BindItem(layout = R.layout.content_pdv_bottom_sheet_variations, holder = PDVBottomSheetVariationHolder::class)
-class PDVBottomSheetVariationItem(var variations: Variations?) {
+class PDVBottomSheetVariationItem(var variations: ArrayList<Variation>?, var pdvMainView: PDVMainView) {
     private lateinit var colorsAdapter: GhostAdapter
     private lateinit var sizesAdapter: GhostAdapter
 
     private lateinit var colorsItem: ArrayList<Any>
     private lateinit var sizesItem: ArrayList<Any>
 
-    var selectedSize = Size()
+    var selectedSize = Product()
 
     @Binder
     public fun binder(holder: PDVBottomSheetVariationHolder) {
@@ -74,31 +75,46 @@ class PDVBottomSheetVariationItem(var variations: Variations?) {
     }
 
     private fun addSizeVariation(holder: PDVBottomSheetVariationHolder) {
-        if (variations != null && variations!!.sizeVariation != null) {
-            for (sizeVariation in variations!!.sizeVariation!!) {
-                sizesItem.add(VariationsSizeItem(sizeVariation, object : OnItemClickListener {
-                    override fun onItemClicked(any: Any?) {
-                        for (sizeItem in sizesItem) {
-                            (sizeItem as VariationsSizeItem).disableView()
+        for (variation in variations!!) {
+            if (variation.type == "size") {
+                for (product in variation.products) {
+                    sizesItem.add(VariationsSizeItem(product, object : OnItemClickListener {
+                        override fun onItemClicked(any: Any?) {
+                            for (sizeItem in sizesItem) {
+                                (sizeItem as VariationsSizeItem).disableView()
+                            }
+                            selectedSize = any as Product
+                            pdvMainView.onSizeVariationClicked(any)
                         }
-                        selectedSize = any as Size
-                    }
-                }))
+                    }))
+                }
             }
             sizesAdapter.setItems(sizesItem)
-        } else {
+        }
+
+        if (sizesAdapter.itemCount == 0) {
             holder.sizeRoot.visibility = View.GONE
         }
     }
 
     private fun addOtherVariations(holder: PDVBottomSheetVariationHolder) {
-        if (variations != null && variations!!.otherVariations != null) {
-            for (otherVariation in variations!!.otherVariations!!) {
-                val variationsColorItem = VariationsColorItem(otherVariation)
-                colorsItem.add(variationsColorItem)
+        for (variation in variations!!) {
+            if (variation.type != "size") {
+                for (product in variation.products) {
+                    colorsItem.add(OtherVariationsItem(product, object : OnItemClickListener{
+                        override fun onItemClicked(any: Any?) {
+                            for (item in colorsItem) {
+                                (item as OtherVariationsItem).deSelectProduct()
+                            }
+                            pdvMainView.onOtherVariationClicked(any as Product)
+                        }
+                    }))
+                }
             }
             colorsAdapter.setItems(colorsItem)
-        } else {
+        }
+
+        if (colorsAdapter.itemCount == 0) {
             holder.othersRoot.visibility = View.GONE
         }
     }

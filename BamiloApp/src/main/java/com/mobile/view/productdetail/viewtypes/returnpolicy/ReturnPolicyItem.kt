@@ -4,7 +4,7 @@ import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.utils.imageloader.ImageManager
 import com.mobile.view.R
-import com.mobile.view.productdetail.model.Warranty
+import com.mobile.view.productdetail.model.ReturnPolicy
 
 /**
  * Created by Farshid
@@ -12,7 +12,7 @@ import com.mobile.view.productdetail.model.Warranty
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_return_policy, holder = ReturnPolicyHolder::class)
-class ReturnPolicyItem(var returnPolicy: Warranty) {
+class ReturnPolicyItem(private var returnPolicy: ReturnPolicy) {
     @Binder
     public fun binder(holder: ReturnPolicyHolder) {
         ImageManager.getInstance().loadImage(returnPolicy.icon,

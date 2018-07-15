@@ -1,7 +1,6 @@
 package com.mobile.view.productdetail.model
 
-class Warranty {
+class ReturnPolicy {
     var icon: String = ""
     var title: String = ""
-    var url: String = ""
 }

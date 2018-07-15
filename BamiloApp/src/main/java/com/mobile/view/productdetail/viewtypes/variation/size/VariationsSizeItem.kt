@@ -5,6 +5,7 @@ import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.view.R
 import com.mobile.view.productdetail.OnItemClickListener
+import com.mobile.view.productdetail.model.Product
 import com.mobile.view.productdetail.model.Size
 
 /**
@@ -13,7 +14,7 @@ import com.mobile.view.productdetail.model.Size
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_size, holder = VariationsSizeHolder::class)
-class VariationsSizeItem(var size: Size, private var onItemClickListener: OnItemClickListener?) {
+class VariationsSizeItem(var size: Product, private var onItemClickListener: OnItemClickListener?) {
     var holder: VariationsSizeHolder? = null
     @Binder
     public fun binder(holder: VariationsSizeHolder) {

@@ -1,59 +1,36 @@
 package com.mobile.view.productdetail
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.text.TextUtils
-import android.widget.RelativeLayout
-import android.widget.Toast
-import com.bamilo.modernbamilo.util.dpToPx
-import com.mobile.app.BamiloApplication
-import com.mobile.components.ghostadapter.GhostAdapter
-import com.mobile.helpers.wishlist.AddToWishListHelper
-import com.mobile.helpers.wishlist.RemoveFromWishListHelper
-import com.mobile.interfaces.IResponseCallback
-import com.mobile.service.pojo.BaseResponse
+import com.mobile.classes.models.BaseScreenModel
+import com.mobile.classes.models.MainEventModel
+import com.mobile.constants.tracking.EventActionKeys
+import com.mobile.constants.tracking.EventConstants
+import com.mobile.managers.TrackerManager
+import com.mobile.service.tracking.TrackingPage
 import com.mobile.utils.ConfigurationWrapper
-import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
 import com.mobile.view.databinding.ActivityProductDetailBinding
-import com.mobile.view.productdetail.model.*
-import com.mobile.view.productdetail.viewtypes.description.DescriptionItem
-import com.mobile.view.productdetail.viewtypes.primaryinfo.PrimaryInfoItem
-import com.mobile.view.productdetail.viewtypes.recyclerheader.RecyclerHeaderItem
-import com.mobile.view.productdetail.viewtypes.returnpolicy.ReturnPolicyItem
-import com.mobile.view.productdetail.viewtypes.seller.SellerItem
-import com.mobile.view.productdetail.viewtypes.slider.SliderItem
-import com.mobile.view.productdetail.viewtypes.specifications.SpecificationItem
-import com.mobile.view.productdetail.viewtypes.variation.VariationsItem
+import com.mobile.view.productdetail.mainfragment.ProductDetailMainFragment
+import com.mobile.view.productdetail.model.Product
+import com.mobile.view.productdetail.model.ProductDetail
 import java.util.*
 
-class ProductDetailActivity : AppCompatActivity(), IResponseCallback {
+class ProductDetailActivity : AppCompatActivity(), PDVMainView {
 
-    var specificationItemPosition: Int = 0
-    var descriptionItemPosition: Int = 0
-
+    private lateinit var productDetail: ProductDetail
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var productDetailPresenter: ProductDetailPresenter
 
-    private var productDetailViewModel: ProductDetailViewModel? = null
+    private var changeProductDetailOnViewVisible = false
 
-    private lateinit var adapter: GhostAdapter
-    private lateinit var items: ArrayList<Any>
+    private var sizeVariation = Product()
 
-    private lateinit var variationsItem: VariationsItem
-
-    var sku: String? = ""
-
-    private var toolbarFadingOffset: Float = 0.0f
-    private var toolbarTitleSlidingOffset = 0
-    private var recyclerViewOverallScroll: Int = 0
-    private var toolbarTitleCenterPositionMargin: Int = 0
+    private var sku: String? = ""
 
     override fun attachBaseContext(newBase: Context?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && newBase != null) {
@@ -66,348 +43,109 @@ class ProductDetailActivity : AppCompatActivity(), IResponseCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_detail)
-        productDetailPresenter = ProductDetailPresenter(this, binding)
+        productDetailPresenter = ProductDetailPresenter(this, binding, this)
 
         fetchExtraIntentData()
-
-        bindToolbarClickListener()
-        setupToolbarOnScrollBehavior()
-
-        setupViewModel()
-        setUpMainViewAdapter()
-        setupRefreshView()
-        setupDetailRecycler()
-
-        loadProductDetail()
         bindAddToCartClickListener()
 
-        addFakeItem()
+        displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
+
+        val screenModel = BaseScreenModel(
+                getString(TrackingPage.PRODUCT_DETAIL.getName()),
+                getString(R.string.gaScreen), "", System.currentTimeMillis())
+        TrackerManager.trackScreen(this, screenModel, false)
     }
 
     private fun fetchExtraIntentData() {
         if (intent != null) {
             sku = intent.getStringExtra("sku")
         }
-
-        sku = "productId"
-
-        if (TextUtils.isEmpty(sku)) {
-            showNoProductView()
-            return
-        }
+        sku = "HU820CD0CQJVWNAFAMZ"
     }
 
     private fun bindAddToCartClickListener() {
         binding.productDetailLinearLayoutAddToCart!!.setOnClickListener({
-            if (variationsItem.selectedSize.sku.isEmpty()) {
+            if (sizeVariation.sku.isEmpty()) {
                 productDetailPresenter.showBottomSheet()
             } else {
-                //TODO add production to card
-            }
-        })
-    }
-
-    private fun setupToolbarOnScrollBehavior() {
-        toolbarFadingOffset = UIUtils.dpToPx(this, 300f).toFloat()
-        toolbarTitleCenterPositionMargin = UIUtils.dpToPx(this, 16f)
-        toolbarTitleSlidingOffset = UIUtils.dpToPx(this, 348f)
-    }
-
-    private fun showNoProductView() {
-    }
-
-    private fun setupRefreshView() {
-        binding.productDetailSwipeRefresh.setProgressViewOffset(false,
-                0,
-                dpToPx(this, 64f))
-
-        binding.productDetailSwipeRefresh.setOnRefreshListener({ loadProductDetail() })
-    }
-
-    private fun setupDetailRecycler() {
-        binding.productDetailRecyclerDetailList.adapter = adapter
-        binding.productDetailRecyclerDetailList.layoutManager = LinearLayoutManager(this)
-        binding.productDetailRecyclerDetailList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                recyclerViewOverallScroll += dy
-                setToolbarAlpha()
-                setupToolbarTitle()
-
-                val view = binding.productDetailRecyclerDetailList.getChildAt(0)
-                if (view != null &&
-                        binding.productDetailRecyclerDetailList.getChildAdapterPosition(view) == 0) {
-                    view.translationY = (-view.top / 3).toFloat()
-                }
-            }
-        })
-    }
-
-    private fun setupToolbarTitle() {
-        val layoutParams: RelativeLayout.LayoutParams =
-                binding.productDetailTextViewTitle.layoutParams as RelativeLayout.LayoutParams
-
-        layoutParams.topMargin = toolbarTitleSlidingOffset - recyclerViewOverallScroll
-        binding.productDetailTextViewTitle.layoutParams = layoutParams
-
-        if (toolbarTitleSlidingOffset - recyclerViewOverallScroll < toolbarTitleCenterPositionMargin) {
-            layoutParams.topMargin = toolbarTitleCenterPositionMargin
-            binding.productDetailTextViewTitle.layoutParams = layoutParams
-
-        }
-    }
-
-    private fun setToolbarAlpha() {
-        var alpha = (recyclerViewOverallScroll / toolbarFadingOffset)
-        if (alpha > 1) {
-            alpha = 1f
-        }
-        binding.productDetailRelativeLayoutPrimaryToolbar.alpha = alpha
-    }
-
-    private fun addFakeItem() {
-        addImagesToSlider()
-        addPrimaryInfoItem()
-        addVariations()
-        addReturnPolicy()
-        addHeader("تامین کننده")
-        addSellerInfo()
-        addHeader("توضیحات")
-        addDescription()
-        addHeader("مشخصات")
-        addSpecification()
-
-        adapter.setItems(items)
-
-        productDetailPresenter.fillChooseVariationBottomSheet(createFakePrimaryInfo(),
-                "https://media.bamilo.com/p/honor-1601-6634413-1-product.jpg",
-                createFakeVariation())
-    }
-
-    private fun addSpecification() {
-        items.add(SpecificationItem("• \tدو سیم کارته\n" +
-                "• \tپردازنده هشت هسته ای\n" +
-                "• \tصفحه نمایش ۵/۴ اینچی IPS\t",
-                sku!!))
-
-        specificationItemPosition = items.size - 1
-
-    }
-
-    private fun addDescription() {
-        items.add(DescriptionItem("سمنتبسکمینتب سمنیتب سکمینتب کسمنیتب کسمنتیب " +
-                "سیمنبت سکیبنت سکمینتب " +
-                "سمینتب کسینتب کسمینتب کسمینت ب" +
-                "مسنیتب سکمنتیب کسیتنب کسیمتب " +
-                "سمینبت سکمنیبت سکمینتب کسمینت ب" +
-                "منستیب مسنتیب مسنیتبسگیسکمینبسکیمنب ستنیا بسنمتیبا سمینت" +
-                "منستی بکسمنیتب کسمینت بکسیتب " +
-                "مسنیتب سمنیتب سمینتب سمیتنب ", sku!!))
-
-        descriptionItemPosition = items.size - 1
-
-    }
-
-    private fun addSellerInfo() {
-        val seller = Seller()
-        val sellerScore = getScore()
-
-        val presenceDuration = PresenceDuration()
-        presenceDuration.label = "مدت همکاری"
-        presenceDuration.value = "۲ سال و ۴ ماه"
-
-        seller.name = "سامان گستر"
-        seller.isNew = false
-        seller.score = sellerScore
-        seller.presenceDuration = presenceDuration
-
-        items.add(SellerItem(seller, 5, sku!!))
-    }
-
-    private fun getScore(): Score {
-        val sellerScore = Score()
-        val fullFillment = FullFillment()
-        val notReturned = NotReturned()
-        val sLAReached = SLAReached()
-        val overall = Overall()
-
-        fullFillment.label = "تامین به موقع"
-        fullFillment.value = 4.2
-
-        notReturned.label = "بدون بازگشت"
-        notReturned.value = 3.5
-
-        sLAReached.label = "ارسال به موقع"
-        sLAReached.value = 3.9
-
-        overall.color = "#47b638"
-        overall.label = "امتیاز"
-        overall.value = 4.0
-
-        sellerScore.maxValue = 5
-        sellerScore.isEnabled = true
-
-        sellerScore.fullFillment = fullFillment
-        sellerScore.notReturned = notReturned
-        sellerScore.overall = overall
-        sellerScore.sLAReached = sLAReached
-
-        return sellerScore
-    }
-
-    private fun addReturnPolicy() {
-        val warranty = Warranty()
-        warranty.title = "۱۰۰ روز بازگشت کالا"
-        warranty.icon = "https://image.flaticon.com/icons/png/512/248/248968.png"
-        warranty.url = "https://www.bamilo.com/help/?source=fwb"
-
-        items.add(ReturnPolicyItem(warranty))
-    }
-
-    private fun addVariations() {
-        variationsItem = VariationsItem(createFakeVariation())
-        variationsItem.onItemClickListener(object : OnItemClickListener {
-            override fun onItemClicked(any: Any?) {
-                if (any == VariationsItem.description) {
-                    binding.productDetailRecyclerDetailList.smoothScrollToPosition(descriptionItemPosition)
-                } else {
-                    binding.productDetailRecyclerDetailList.smoothScrollToPosition(specificationItemPosition)
-                }
+                displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
             }
         })
 
-        items.add(variationsItem)
+//        TrackerManager.trackEvent(this, EventConstants.AddToCart, addToCartEventModel)
+
     }
 
-    private fun createFakeVariation(): Variations {
-        val variations = Variations()
-
-        variations.sizeVariation.add(createFakeSizeModel("XXS"))
-        variations.sizeVariation.add(createFakeSizeModel("XS"))
-        variations.sizeVariation.add(createFakeSizeModel("S"))
-        variations.sizeVariation.add(createFakeSizeModel("L"))
-        variations.sizeVariation.add(createFakeSizeModel("XL"))
-        variations.sizeVariation.add(createFakeSizeModel("XXL"))
-
-        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4661-1403161-1-cart.jpg"))
-        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4713-5403161-1-cart.jpg"))
-        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4661-8303161-1-cart.jpg"))
-        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4672-6303161-1-cart.jpg"))
-        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4661-1403161-1-cart.jpg"))
-        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4713-5403161-1-cart.jpg"))
-        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4661-8303161-1-cart.jpg"))
-        variations.otherVariations.add(createFakeColorModel("https://media.bamilo.com/p/navales-4672-6303161-1-cart.jpg"))
-
-        return variations
+    private fun getCurrentFragment(): Fragment {
+        return try {
+            val fragmentManager = supportFragmentManager
+            val fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.backStackEntryCount - 1).name
+            fragmentManager.findFragmentByTag(fragmentTag)
+        } catch (e: Exception) {
+            ProductDetailMainFragment.newInstance(sku)
+        }
     }
 
-    private fun createFakeColorModel(imageUrl: String): OtherVariations {
-        val otherVariations = OtherVariations()
-        otherVariations.title = ""
-        otherVariations.image = imageUrl
-        otherVariations.sku = "9873264"
-        return otherVariations
+    private fun displaySelectedScreen(fragmentTag: FragmentTag) {
+        val fragment = getFragment(fragmentTag) ?: return
+
+//        if (getCurrentFragment() == fragment /* and if selected product sku is equal to current sku*/) {
+//            return
+//        }
+
+        try {
+            replaceFragment(fragment)
+        } catch (ignored: Exception) {
+        }
     }
 
-    private fun createFakeSizeModel(s: String): Size {
-        val size = Size()
-        size.image = ""
-        size.isSelected = false
-        size.sku = "9876321654"
-        size.title = s
-        return size
+    private fun replaceFragment(fragment: Fragment) {
+        val backStateName = fragment.javaClass.simpleName
+
+//        val fragmentPopped = manager.popBackStackImmediate(backStateName, 0)
+
+//        if (!fragmentPopped && manager.findFragmentByTag(backStateName) == null) {
+            val ft = supportFragmentManager.beginTransaction()
+            ft.replace(R.id.pdv_frameLayout_fragmentContainer, fragment, backStateName)
+            ft.addToBackStack(backStateName)
+            ft.commit()
+//        }
     }
 
-    private fun addHeader(headerTitle: String) {
-        items.add(RecyclerHeaderItem(headerTitle))
-    }
-
-    private fun addPrimaryInfoItem() {
-        items.add(PrimaryInfoItem(createFakePrimaryInfo()))
-    }
-
-    private fun createFakePrimaryInfo(): PrimaryInfoModel {
-        val primaryInfoModel = PrimaryInfoModel()
-        primaryInfoModel.title = "آیفون X-256GB"
-        primaryInfoModel.priceModel.cost = "9,999,000"
-        primaryInfoModel.priceModel.currency = "تومان"
-        primaryInfoModel.priceModel.discount = "9,000,000"
-        primaryInfoModel.priceModel.discountBenefit = "سود شما شما 900 هزار تومان"
-        primaryInfoModel.priceModel.discountPercentage = "10%"
-        primaryInfoModel.rating.average = 3.8f
-        primaryInfoModel.rating.maxScore = 5
-        primaryInfoModel.rating.ratingCount = 25
-        primaryInfoModel.isExist = false
-
-        return primaryInfoModel
-    }
-
-    private fun addImagesToSlider() {
-        val images = arrayListOf<ImageList>()
-        for (i in 1 until 9) {
-            val imageList = ImageList()
-            imageList.medium = "https://media.bamilo.com/p/honor-1601-6634413-$i-product.jpg"
-            imageList.large = "https://media.bamilo.com/p/honor-1601-6634413-$i-product.jpg"
-            imageList.small = "https://media.bamilo.com/p/honor-1601-6634413-$i-product.jpg"
-            images.add(imageList)
+    private fun getFragment(fragmentTag: FragmentTag): Fragment? {
+        when (fragmentTag.name) {
+            FragmentTag.PRODUCT_MAIN_VIEW.name -> {
+                return ProductDetailMainFragment.newInstance(sku)
+            }
+            FragmentTag.RATE_AND_REVIEW.name -> {
+            }
         }
 
-        val imageSliderModel = ImageSliderModel()
-        imageSliderModel.images = images
-        imageSliderModel.isWishList = false
-        imageSliderModel.productSku = sku!!
-
-        items.add(SliderItem(supportFragmentManager, imageSliderModel))
+        return ProductDetailMainFragment.newInstance(sku)
     }
 
-    private fun onLikeButtonClicked(any: Any?) {
-        if (any == null) {
-            loginUser()
+    override fun onBackButtonClicked() {
+        onBackPressed()
+    }
+
+    override fun onOtherVariationClicked(product: Product) {
+        changeProductDetailOnViewVisible = if (getCurrentFragment() is ProductDetailMainFragment) {
+            val productDetailMainFragment = supportFragmentManager
+                    .findFragmentByTag(ProductDetailMainFragment::class.java.simpleName)
+                    as ProductDetailMainFragment
+            productDetailMainFragment.reloadData(product.sku)
+            false
         } else {
-            if (any == true) {
-                addProductToWishList()
-            } else {
-                removeProductToWishList()
-            }
+            true
         }
     }
 
-    private fun removeProductToWishList() {
-        BamiloApplication.INSTANCE.sendRequest(AddToWishListHelper(),
-                AddToWishListHelper.createBundle(sku),
-                this)
+    override fun onSizeVariationClicked(sizeVariation: Product) {
+        this.sizeVariation = sizeVariation
     }
 
-    private fun addProductToWishList() {
-        BamiloApplication.INSTANCE.sendRequest(RemoveFromWishListHelper(),
-                RemoveFromWishListHelper.createBundle(sku),
-                this)
-    }
-
-    private fun loginUser() {
-        Toast.makeText(this, R.string.please_login_first, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun loadProductDetail() {
-        productDetailViewModel?.loadData(sku!!)
-    }
-
-    private fun setupViewModel() {
-        if (productDetailViewModel != null) {
-            return
-        }
-
-        productDetailViewModel = ViewModelProviders.of(this).get(ProductDetailViewModel::class.java)
-    }
-
-    private fun setUpMainViewAdapter() {
-        adapter = GhostAdapter()
-        items = ArrayList()
-    }
-
-    private fun bindToolbarClickListener() {
-        binding.productDetailAppImageViewBack.setOnClickListener { _ -> super.onBackPressed() }
-        binding.productDetailAppImageViewCart.setOnClickListener { _ -> gotoCartView() }
+    override fun onShowFragment(fragmentTag: FragmentTag) {
+        displaySelectedScreen(fragmentTag)
     }
 
     override fun onBackPressed() {
@@ -416,15 +154,32 @@ class ProductDetailActivity : AppCompatActivity(), IResponseCallback {
             return
         }
 
+//        if (getCurrentFragment() is ProductDetailMainFragment) {
+//            finish()
+//            return
+//        }
+
         super.onBackPressed()
     }
 
-    private fun gotoCartView() {
+    override fun onProductReceived(product: ProductDetail) {
+        productDetail = product
+        productDetailPresenter.fillChooseVariationBottomSheet(productDetail)
+
+        val viewProductEventModel = MainEventModel("category",
+                EventActionKeys.VIEW_PRODUCT,
+                sku,
+                product.price.price.replace(",", "").toLong(),
+                MainEventModel.createViewProductEventModelAttributes("category uri key",
+                        product.price.price.replace(",", "").toLong()))
+        TrackerManager.trackEvent(this, EventConstants.ViewProduct, viewProductEventModel)
     }
 
-    override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
-    }
-
-    override fun onRequestError(baseResponse: BaseResponse<*>?) {
+    enum class FragmentTag {
+        EMPTY,
+        PRODUCT_MAIN_VIEW,
+        RATE_AND_REVIEW,
+        SPECIFICATIONS_DESCRIPTION,
+        RETURN_POLICY
     }
 }

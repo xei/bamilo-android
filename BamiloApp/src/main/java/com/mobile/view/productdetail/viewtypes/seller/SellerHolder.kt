@@ -24,19 +24,17 @@ class SellerHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
     var sellerScoreMaxValue: TextView = itemView!!.findViewById(R.id.pdvSellerScore_textView_maxValue)
 
     var collaborationPeriod: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_textView_collaborationPeriod)
-    var collaborationPeriodLabel: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_textView_collaborationPeriodLabel)
+    var collaborationLable: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_textView_collaborationPeriodLabel)
 
-    var sellerShortDescription: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_textView_shortDescription)
+    var warranty: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_textView_warranty)
     var deliveryTimeAndCity: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_texView_deliverTimeAndCity)
     var editCity: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_textView_editCity)
     var otherSellersCount: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_textView_otherSellersCount)
-    var successfulSupplyRate: TextView = itemView!!.findViewById(R.id.sellerScore_textView_successfulSupplyRate)
-    var successfulSupplyRateText: TextView = itemView!!.findViewById(R.id.sellerScore_textView_successfulSupplyText)
 
+    var successfulSupplyRate: TextView = itemView!!.findViewById(R.id.sellerScore_textView_successfulSupplyRate)
     var salesWithoutReturnRate: TextView = itemView!!.findViewById(R.id.sellerScore_textView_salesWithoutReturnRate)
-    var salesWithoutReturnText: TextView = itemView!!.findViewById(R.id.sellerScore_textView_salesWithoutReturnText)
     var sendOnTimeRate: TextView = itemView!!.findViewById(R.id.sellerScore_textView_sendOnTimeRate)
-    var sendOnTimeText: TextView = itemView!!.findViewById(R.id.sellerScore_textView_sendOnTimeText)
+
     var maxValueOfScore: TextView = itemView!!.findViewById(R.id.sellerScore_textView_maxValueOfScore)
 
     var successfulSupplyProgress: ProgressBar = itemView!!.findViewById(R.id.sellerScore_progressBar_successfulSupply)
@@ -60,4 +58,7 @@ class SellerHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
     var deliveryCitySpinner: AppCompatSpinner = itemView!!.findViewById(R.id.pdv_spinner_deliveryCity)
     var deliveryRegionSpinner: AppCompatSpinner= itemView!!.findViewById(R.id.pdv_spinner_deliveryRegion)
+
+    var warrantyLayout : LinearLayout = itemView!!.findViewById(R.id.pdvSellerInfo_linearLayout_warrantyRoot)
+    var percentageLayout : LinearLayout = itemView!!.findViewById(R.id.pdvSellerInfo_linearLayout_percentageRoot)
 }

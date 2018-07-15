@@ -19,7 +19,7 @@
         android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
-            android:background="?attr/selectableItemBackground"
+            android:background="?android:attr/selectableItemBackground"
             android:id="@+id/pdvSellerInfo_constraintLayout_sellerInfoHeader"
             android:layout_width="match_parent"
             android:layout_height="48dp">
@@ -108,6 +108,7 @@
                     android:layout_marginTop="@dimen/dimen_8dp"/>
 
                 <LinearLayout
+                    android:id="@+id/pdvSellerInfo_linearLayout_percentageRoot"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp">
@@ -121,6 +122,7 @@
                         android:id="@+id/pdvSellerInfo_textView_collaborationPeriodLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="6dp"
                         android:text="@string/collaboration_period_"
                         android:textColor="@color/primary_text_color"
@@ -130,6 +132,7 @@
                         android:id="@+id/pdvSellerInfo_textView_collaborationPeriod"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="8dp"
                         android:textColor="@color/primary_text_color"
                         android:textSize="12sp"/>
@@ -137,6 +140,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/pdvSellerInfo_linearLayout_warrantyRoot"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_12dp">
@@ -147,10 +151,11 @@
                         app:srcCompat="@drawable/ic_trusted_gray"/>
 
                     <com.mobile.components.customfontviews.TextView
-                        android:id="@+id/pdvSellerInfo_textView_shortDescription"
+                        android:id="@+id/pdvSellerInfo_textView_warranty"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dimen_18dp"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="6dp"
                         android:textColor="@color/primary_text_color"
                         android:textSize="12sp"/>
@@ -205,6 +210,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="visible"
+                    android:layout_marginBottom="@dimen/dimen_8dp"
                     android:layout_marginTop="@dimen/dimen_16dp"
                     android:layout_marginLeft="@dimen/dimen_4dp"
                     android:layout_marginRight="@dimen/dimen_4dp"
@@ -230,7 +236,7 @@
                         app:srcCompat="@drawable/ic_edit_blue"/>
 
                     <com.mobile.components.customfontviews.TextView
-                        android:background="?attr/selectableItemBackground"
+                        android:background="?android:attr/selectableItemBackground"
                         android:id="@+id/pdvSellerInfo_textView_editCity"
                         android:visibility="gone"
                         android:layout_width="wrap_content"
@@ -246,7 +252,7 @@
                     android:id="@+id/pdvSellerInfo_view_otherSellersDivider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/dimen_16dp"
+                    android:layout_marginTop="@dimen/dimen_8dp"
                     android:layout_marginLeft="@dimen/dimen_8dp"
                     android:layout_marginRight="@dimen/dimen_8dp"
                     android:background="@color/grey_dividerlight"/>
@@ -255,7 +261,7 @@
                     android:id="@+id/pdvSellerInfo_linearLayout_otherSellers"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?android:attr/selectableItemBackground"
                     android:gravity="center"
                     android:orientation="horizontal">
 

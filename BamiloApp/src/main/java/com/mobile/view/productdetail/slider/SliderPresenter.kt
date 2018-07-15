@@ -3,7 +3,6 @@ package com.mobile.view.productdetail.slider
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -13,7 +12,6 @@ import com.mobile.components.widget.likebutton.SparkButton
 import com.mobile.helpers.wishlist.AddToWishListHelper
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper
 import com.mobile.interfaces.IResponseCallback
-import com.mobile.service.Darwin
 import com.mobile.service.pojo.BaseResponse
 import com.mobile.service.pojo.RestConstants
 import com.mobile.view.R
@@ -23,7 +21,7 @@ import com.mobile.view.productdetail.model.ImageList
 /**
  * Created by Farshid since 6/19/2018. contact farshidabazari@gmail.com
  */
-class SliderPresenter(var context: Context, var productSku: String, var imageList: ArrayList<ImageList>) {
+class SliderPresenter(var context: Context, private var productSku: String, private var imageList: ImageList) {
     fun onLikeButtonClicked(likeButton: SparkButton) {
         if (BamiloApplication.isCustomerLoggedIn()) {
             loginUser()

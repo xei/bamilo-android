@@ -13,15 +13,16 @@ import com.mobile.view.R
  * contact farshidabazari@gmail.com
  */
 class PrimaryInfoHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    var title = itemView!!.findViewById<TextView>(R.id.pdvPrimaryInfo_textView_title)
-    var averageScore = itemView!!.findViewById<TextView>(R.id.pdvPrimaryInfo_textView_averageScore)
-    var scoreCount = itemView!!.findViewById<TextView>(R.id.pdvPrimaryInfo_textView_scoreCount)
-    var oldPrice = itemView!!.findViewById<TextView>(R.id.pdvPrimaryInfo_textView_oldPrice)
-    var currentPrice = itemView!!.findViewById<TextView>(R.id.pdvPrimaryInfo_textView_currentPrice)
-    var discountPercentage = itemView!!.findViewById<TextView>(R.id.pdvPrimaryInfo_textView_discountPercentage)
-    var discountBenefit = itemView!!.findViewById<TextView>(R.id.pdvPrimaryInfo_textView_discountBenefit)
-    var currency = itemView!!.findViewById<TextView>(R.id.pdvPrimaryInfo_textView_currency)
+    var title:TextView = itemView!!.findViewById(R.id.pdvPrimaryInfo_textView_title)
+    var averageScore:TextView = itemView!!.findViewById(R.id.pdvPrimaryInfo_textView_averageScore)
+    var scoreCount:TextView = itemView!!.findViewById(R.id.pdvPrimaryInfo_textView_scoreCount)
+    var oldPrice:TextView = itemView!!.findViewById(R.id.pdvPrimaryInfo_textView_oldPrice)
+    var currentPrice:TextView = itemView!!.findViewById(R.id.pdvPrimaryInfo_textView_currentPrice)
+    var discountPercentage:TextView = itemView!!.findViewById(R.id.pdvPrimaryInfo_textView_discountPercentage)
+    var discountBenefit:TextView = itemView!!.findViewById(R.id.pdvPrimaryInfo_textView_discountBenefit)
+    var currency:TextView = itemView!!.findViewById(R.id.pdvPrimaryInfo_textView_currency)
+    var outOfStockText:TextView = itemView!!.findViewById(R.id.pdvPrimaryInfo_textView_outOfStock)
 
-    var ratingBar = itemView!!.findViewById<RatingBar>(R.id.pdvPrimaryInfo_ratingBar)
-    var discountPercentageRoot = itemView!!.findViewById<RelativeLayout>(R.id.pdvPrimaryInfo_relativeLayout_discountPercentageRoot)
+    var ratingBar:RatingBar = itemView!!.findViewById(R.id.pdvPrimaryInfo_ratingBar)
+    var discountPercentageRoot :RelativeLayout = itemView!!.findViewById(R.id.pdvPrimaryInfo_relativeLayout_discountPercentageRoot)
 }

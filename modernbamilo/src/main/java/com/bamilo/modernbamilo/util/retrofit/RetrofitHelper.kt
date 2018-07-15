@@ -27,7 +27,7 @@ object RetrofitHelper {
 
     private val sLogLevel = HttpLoggingInterceptor.Level.BODY
 
-    private const val URL_BASE = "http://staging.bamilo.com/mobapi/v2.9/"
+    private const val URL_BASE = "http://staging.bamilo.com/mobapi/v2.10/"
 //    private const val URL_BASE = "http://staging.bamilo.com/mobapi/v2.9/"
     private val defaultHeaders = hashMapOf(
 //            "app-version" to BuildConfig.VERSION_CODE.toString(),
@@ -63,7 +63,7 @@ object RetrofitHelper {
      * the method "buildDefaultHeaders"
      */
     private fun buildOkHttpClient(context: Context): OkHttpClient {
-        return OkHttpClient().newBuilder()
+        val client = OkHttpClient().newBuilder()
                 .addInterceptor(getInterceptor())
                 .addInterceptor { chain ->
                     val modifiedRequest = chain.request().newBuilder()
@@ -72,15 +72,20 @@ object RetrofitHelper {
 
                     chain.proceed(modifiedRequest)
                 }
-                .cookieJar(getCookieJar(context))
-                .build()
+
+        if (TextUtils.isEmpty(getCookie(context))) {
+            return client.build()
+        }
+
+        client.cookieJar(getCookieJar(context))
+        return client.build()
     }
 
     /**
      * This method builds a converter factory (Gson, Protobuf, ...) to convert objects
      * to/from a serialization.
      */
-    private fun buildConverterFactory() : Converter.Factory = GsonConverterFactory.create()
+    private fun buildConverterFactory(): Converter.Factory = GsonConverterFactory.create()
 
     /**
      * This method sets the log level of Logging Interceptor of OkHttp
@@ -101,9 +106,9 @@ object RetrofitHelper {
 
             }
 
-            override fun loadForRequest(httpUrl: HttpUrl): List<Cookie> {
+            override fun loadForRequest(httpUrl: HttpUrl): List<Cookie>? {
                 val sharedCookie = decodeCookie(getCookie(context)!!)
-                val cookie = Cookie.Builder()
+                val cookieBuilder = Cookie.Builder()
                         .name(sharedCookie!!.name)
                         .value(sharedCookie.value)
                         .httpOnly()
@@ -111,7 +116,7 @@ object RetrofitHelper {
                         .path(httpUrl.encodedPath())
                         .build()
                 val cookies = ArrayList<Cookie>()
-                cookies.add(cookie)
+                cookies.add(cookieBuilder)
                 return cookies
             }
         }

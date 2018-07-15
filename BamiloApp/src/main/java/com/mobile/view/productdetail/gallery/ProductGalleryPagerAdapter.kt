@@ -8,15 +8,15 @@ import com.mobile.view.productdetail.model.ImageList
 /**
  * Created by Farshid since 6/13/2018. contact farshidabazari@gmail.com
  */
-class ProductGalleryPagerAdapter(fm: FragmentManager, private var images: ArrayList<ImageList>?) : FragmentStatePagerAdapter(fm) {
+class ProductGalleryPagerAdapter(fm: FragmentManager, private var images: ImageList?) : FragmentStatePagerAdapter(fm) {
     override fun getItem(position: Int): Fragment? {
-        return ProductGalleryPageFragment().newInstance(images!![position].large)
+        return ProductGalleryPageFragment().newInstance(images!!.image_list[position].large)
     }
 
     override fun getCount(): Int {
         if (images == null) {
             return 0
         }
-        return images!!.size
+        return images!!.image_list.size
     }
 }

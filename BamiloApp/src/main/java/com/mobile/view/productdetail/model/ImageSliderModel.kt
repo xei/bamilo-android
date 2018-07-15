@@ -6,7 +6,7 @@ package com.mobile.view.productdetail.model
  * contact farshidabazari@gmail.com
  */
 class ImageSliderModel{
-    var images = ArrayList<ImageList>()
+    var images = ImageList()
     var productSku : String = ""
     var isWishList : Boolean = false
 }

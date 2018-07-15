@@ -11,10 +11,10 @@ import com.mobile.view.R
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.recycler_view_header, holder = RecyclerHeaderHolder::class)
-class RecyclerHeaderItem(var title: String,
-                         var showMoreItem: Boolean = false,
-                         var moreTitle: String = "",
-                         var clickListener: View.OnClickListener? = null) {
+class RecyclerHeaderItem(private var title: String,
+                         private var showMoreItem: Boolean = false,
+                         private var moreTitle: String = "",
+                         private var clickListener: View.OnClickListener? = null) {
     @Binder
     public fun binder(holder: RecyclerHeaderHolder) {
         if (showMoreItem) {

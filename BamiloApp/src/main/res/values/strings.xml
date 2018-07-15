@@ -674,5 +674,13 @@
     <string name="notify_me_when_exist">موجود شد اطلاع بده</string>
     <string name="remain">مانده</string>
     <string name="remain_">مانده: </string>
+    <string name="see_all_reviews">مشاهده همه نظرات</string>
+    <string name="more_3dot">بیشتر…</string>
+    <string name="close_bracket">)</string>
+    <string name="open_bracket">(</string>
+    <string name="customers_review">نظرات کاربران درباره کالا</string>
+    <string name="selle_not_returned">فروش بدون بازگشت</string>
+    <string name="fullfilment">تامین موفق کالا</string>
+    <string name="sla_reached">ارسال به موقع</string>
 
 </resources>

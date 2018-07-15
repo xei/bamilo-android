@@ -10,9 +10,9 @@ import com.mobile.components.ghostadapter.GhostAdapter
 import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
 import com.mobile.view.productdetail.OnItemClickListener
-import com.mobile.view.productdetail.model.Size
-import com.mobile.view.productdetail.model.Variations
-import com.mobile.view.productdetail.viewtypes.variation.colors.VariationsColorItem
+import com.mobile.view.productdetail.model.Product
+import com.mobile.view.productdetail.model.Variation
+import com.mobile.view.productdetail.viewtypes.variation.colors.OtherVariationsItem
 import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
 
 /**
@@ -20,8 +20,9 @@ import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
  * since 6/17/2018.
  * contact farshidabazari@gmail.com
  */
+
 @BindItem(layout = R.layout.content_pdv_variations, holder = VariationsHolder::class)
-class VariationsItem(var variations: Variations?) {
+class VariationsItem(var variations: ArrayList<Variation>, private var onItemClickListener: OnItemClickListener) {
     companion object {
         const val specification = "SPECIFICATION"
         const val description = "DESCRIPTION"
@@ -30,26 +31,28 @@ class VariationsItem(var variations: Variations?) {
     private lateinit var colorsAdapter: GhostAdapter
     private lateinit var sizesAdapter: GhostAdapter
 
-    private lateinit var colorsItem: ArrayList<Any>
+    private lateinit var otherItems: ArrayList<Any>
     private lateinit var sizesItem: ArrayList<Any>
 
-    var selectedSize = Size()
-
-    private lateinit var onItemClickListener: OnItemClickListener
-
-    fun onItemClickListener(onItemClickListener: OnItemClickListener) {
-        this.onItemClickListener = onItemClickListener
-    }
+    var selectedSize = Product()
 
     @Binder
     public fun binder(holder: VariationsHolder) {
         setupColorRecycler(holder)
         setupSizedRecycler(holder)
 
-        addFakeData(holder)
+        colorsAdapter.removeAll()
+        sizesAdapter.removeAll()
+
+        sizesItem.clear()
+        otherItems.clear()
+
+        addOtherVariations(holder)
+        addSizeVariation(holder)
+
         holder.sizeHelp.setOnClickListener { _ -> }
 
-        if (variations!!.otherVariations.size == 0 && variations!!.sizeVariation.size == 0) {
+        if (variations.size <= 0) {
             val layoutParams = holder.parentView.layoutParams as RecyclerView.LayoutParams
             layoutParams.topMargin = UIUtils.dpToPx(holder.itemView.context, 8f)
             holder.parentView.layoutParams = layoutParams
@@ -72,7 +75,7 @@ class VariationsItem(var variations: Variations?) {
 
     private fun setupColorsAdapter() {
         colorsAdapter = GhostAdapter()
-        colorsItem = ArrayList()
+        otherItems = ArrayList()
     }
 
     private fun setupSizedRecycler(holder: VariationsHolder) {
@@ -87,37 +90,46 @@ class VariationsItem(var variations: Variations?) {
         sizesItem = ArrayList()
     }
 
-    private fun addFakeData(holder: VariationsHolder) {
-        addOtherVariations(holder)
-        addSizeVariation(holder)
-    }
-
     private fun addSizeVariation(holder: VariationsHolder) {
-        if (variations != null && variations!!.sizeVariation != null) {
-            for (sizeVariation in variations!!.sizeVariation!!) {
-                sizesItem.add(VariationsSizeItem(sizeVariation, object : OnItemClickListener {
-                    override fun onItemClicked(any: Any?) {
-                        for (sizeItem in sizesItem) {
-                            (sizeItem as VariationsSizeItem).disableView()
+        for (variation in variations) {
+            if (variation.type == "size") {
+                for (product in variation.products) {
+                    sizesItem.add(VariationsSizeItem(product, object : OnItemClickListener {
+                        override fun onItemClicked(any: Any?) {
+                            for (sizeItem in sizesItem) {
+                                (sizeItem as VariationsSizeItem).disableView()
+                            }
+                            selectedSize = any as Product
+                            onItemClickListener.onItemClicked(selectedSize)
                         }
-                        selectedSize = any as Size
-                    }
-                }))
+                    }))
+                }
             }
             sizesAdapter.setItems(sizesItem)
-        } else {
+        }
+
+        if (sizesAdapter.itemCount == 0) {
             holder.sizeRoot.visibility = View.GONE
         }
     }
 
     private fun addOtherVariations(holder: VariationsHolder) {
-        if (variations != null && variations!!.otherVariations != null) {
-            for (otherVariation in variations!!.otherVariations!!) {
-                val variationsColorItem = VariationsColorItem(otherVariation)
-                colorsItem.add(variationsColorItem)
+        for (variation in variations) {
+            if (variation.type != "size") {
+                for (product in variation.products) {
+                    otherItems.add(OtherVariationsItem(product, object : OnItemClickListener {
+                        override fun onItemClicked(any: Any?) {
+                            for (item in otherItems) {
+                                (item as OtherVariationsItem).deSelectProduct()
+                            }
+                        }
+                    }))
+                }
             }
-            colorsAdapter.setItems(colorsItem)
-        } else {
+            colorsAdapter.setItems(otherItems)
+        }
+
+        if (colorsAdapter.itemCount == 0) {
             holder.othersRoot.visibility = View.GONE
         }
     }

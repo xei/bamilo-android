@@ -5,11 +5,11 @@
     android:layout_width="wrap_content"
     android:layout_marginLeft="@dimen/dimen_4dp"
     android:layout_marginRight="@dimen/dimen_4dp"
-    android:layout_height="36dp"
+    android:layout_height="29dp"
     android:id="@+id/pdvSize_linearLayout_rootLayout"
     android:background="@drawable/round_size_background_2dp"
     android:gravity="center"
-    android:minWidth="@dimen/dimen_40dp">
+    android:minWidth="41dp">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdvSize_textView_title"
@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:layout_marginTop="@dimen/dimen_2dp"
         android:textColor="@color/secondary_text_color"
         android:textSize="14sp"
         tools:text="XL"/>

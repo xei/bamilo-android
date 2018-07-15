@@ -209,50 +209,50 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         super.onViewCreated(view, savedInstanceState);
         this.rootView = view;
         // Title
-        mTitleContainer = (ViewGroup) view.findViewById(R.id.pdv_title_container);
+        mTitleContainer = view.findViewById(R.id.pdv_title_container);
         // Slide show
         // created a new ProductImageGalleryFragment
         // Wish list
-        mWishListButton = (ImageView) view.findViewById(R.id.pdv_button_wish_list);
+        mWishListButton = view.findViewById(R.id.pdv_button_wish_list);
         mWishListButton.setOnClickListener(this);
         // Price
         mPriceContainer = view.findViewById(R.id.pdv_price_container);
         // Rating
         view.findViewById(R.id.pdv_rating_container).setOnClickListener(this);
-        mProductRating = (RatingBar) view.findViewById(R.id.pdv_rating_bar);
-        mProductRatingCount = (TextView) view.findViewById(R.id.pdv_rating_bar_count);
+        mProductRating = view.findViewById(R.id.pdv_rating_bar);
+        mProductRatingCount = view.findViewById(R.id.pdv_rating_bar_count);
         //brand section
-        mBrandView = (ViewGroup) view.findViewById(R.id.pdv_brand_section);
+        mBrandView = view.findViewById(R.id.pdv_brand_section);
         // Specifications
-        mSpecificationsView = (ViewGroup) view.findViewById(R.id.pdv_specs_container);
+        mSpecificationsView = view.findViewById(R.id.pdv_specs_container);
         // Variations
-        mOtherVariationsLayout = (ViewGroup) view.findViewById(R.id.pdv_variations_container);
-        mSizeLayout = (ViewGroup) view.findViewById(R.id.pdv_simples_container);
+        mOtherVariationsLayout = view.findViewById(R.id.pdv_variations_container);
+        mSizeLayout = view.findViewById(R.id.pdv_simples_container);
         // Seller
-        mSellerContainer = (ViewGroup) view.findViewById(R.id.pdv_seller_container);
+        mSellerContainer = view.findViewById(R.id.pdv_seller_container);
         mGlobalButton = view.findViewById(R.id.pdv_button_global_seller);
         // Product Description
-        mDescriptionView = (ViewGroup) view.findViewById(R.id.pdv_desc_container);
+        mDescriptionView = view.findViewById(R.id.pdv_desc_container);
         // Product Combos
-        mComboProductsLayout = (ViewGroup) view.findViewById(R.id.pdv_combo_parent);
+        mComboProductsLayout = view.findViewById(R.id.pdv_combo_parent);
         mComboProductsLayout.setVisibility(View.GONE);
         // Related Products
-        mRelatedProductsView = (ViewGroup) view.findViewById(R.id.pdv_related_container);
+        mRelatedProductsView = view.findViewById(R.id.pdv_related_container);
         // Offers
         mOtherSellersContainer = view.findViewById(R.id.pdv_other_sellers_button);
         // Bottom Buy Bar
         view.findViewById(R.id.pdv_button_share).setOnClickListener(this);
         view.findViewById(R.id.pdv_button_call).setOnClickListener(this);
-        mBuyButton = (TextView) view.findViewById(R.id.pdv_button_buy);
+        mBuyButton = view.findViewById(R.id.pdv_button_buy);
         mBuyButton.setOnClickListener(this);
         // Save for later
-        mSaveForLater = (TextView) view.findViewById(R.id.pdv_button_add_to_save);
+        mSaveForLater = view.findViewById(R.id.pdv_button_add_to_save);
         mSaveForLater.setOnClickListener(this);
 
-        mRegionSpinner = (Spinner) view.findViewById(R.id.pdv_delivery_region);
-        mCitySpinner = (Spinner) view.findViewById(R.id.pdv_delivery_city);
+        mRegionSpinner = view.findViewById(R.id.pdv_delivery_region);
+        mCitySpinner = view.findViewById(R.id.pdv_delivery_city);
 
-        mDeliveryTimeTextView = (TextView) view.findViewById(R.id.pdv_seller_delivery_info);
+        mDeliveryTimeTextView = view.findViewById(R.id.pdv_seller_delivery_info);
         if (mRegions != null) {
             setRegions(mRegions);
         }
@@ -561,7 +561,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
     private void setOtherSellersOffers() {
         //show button offers with separator if has offers
         if (mProduct.hasOffers()) {
-            TextView txOffers = (TextView) mOtherSellersContainer.findViewById(R.id.tx_single_line_text);
+            TextView txOffers = mOtherSellersContainer.findViewById(R.id.tx_single_line_text);
             txOffers.setText(String.format(getString(R.string.other_sellers_starting), CurrencyFormatter.formatCurrency(mProduct.getMinPriceOffer())));
             mOtherSellersContainer.setOnClickListener(this);
         } else {
@@ -575,10 +575,10 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
     private void setProductPriceInfo() {
         Print.d(TAG, "SHOW PRICE INFO: " + mProduct.getPrice() + " " + mProduct.getSpecialPrice());
         // Get views
-        TextView special = (TextView) mPriceContainer.findViewById(R.id.pdv_price_text_special);
-        TextView price = (TextView) mPriceContainer.findViewById(R.id.pdv_price_text_price);
-        TextView percentage = (TextView) mPriceContainer.findViewById(R.id.pdv_price_text_discount);
-        TextView shipping = (TextView) mPriceContainer.findViewById(R.id.pdv_price_text_shipping);
+        TextView special = mPriceContainer.findViewById(R.id.pdv_price_text_special);
+        TextView price = mPriceContainer.findViewById(R.id.pdv_price_text_price);
+        TextView percentage = mPriceContainer.findViewById(R.id.pdv_price_text_discount);
+        TextView shipping = mPriceContainer.findViewById(R.id.pdv_price_text_shipping);
         // Set views
         UIProductUtils.setPriceRules(mProduct, price, special);
         UIProductUtils.setDiscountRules(mProduct, percentage);
@@ -616,10 +616,10 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
             mBrandView.setTag(R.id.target_title, brand.getName());
             mBrandView.setOnClickListener(this);
             // Set text
-            TextView button = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
+            TextView button = mBrandView.findViewById(R.id.pdv_brand_text);
             button.setText(getString(R.string.visit_the_official_brand_store, brand.getName()));
             // Set image
-            ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
+            ImageView brandImage = mBrandView.findViewById(R.id.pdv_brand_image);
             if (TextUtils.isNotEmpty(brand.getImageUrl())) {
                 ImageManager.getInstance().loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_large, false);
             } else {
@@ -637,7 +637,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
             // Set seller view
             mSellerContainer.setVisibility(View.VISIBLE);
             // Name
-            final TextView sellerName = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_name);
+            final TextView sellerName = mSellerContainer.findViewById(R.id.pdv_seller_name);
             // Set name
             sellerName.setText(mProduct.getSeller().getName());
             // Set shop first except B project
@@ -656,7 +656,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
                 mGlobalButton.setOnClickListener(this);
                 // Delivery Info
                 mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_container).setVisibility(View.VISIBLE);
-                /*((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_title)).setText(mProduct.getSeller().getDeliveryTime());
+                /*((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_title)).setText(mProduct.getSeller().getDelivery_time());
                 if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
                     TextView info = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_cms);
                     info.setText(mProduct.getSeller().getDeliveryCMSInfo());
@@ -664,31 +664,31 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
                 }*/
                 // Shipping Info
                 if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryShippingInfo())) {
-                    TextView info2 = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_info);
+                    TextView info2 = mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_info);
                     info2.setText(mProduct.getSeller().getDeliveryShippingInfo());
                     info2.setVisibility(View.VISIBLE);
                 }
                 // Button link
                 if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryMoreDetailsText())) {
                     mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_divider).setVisibility(View.VISIBLE);
-                    TextView link = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_link);
+                    TextView link = mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_link);
                     link.setText(mProduct.getSeller().getDeliveryMoreDetailsText());
                     link.setOnClickListener(this);
                     link.setVisibility(View.VISIBLE);
                 }
             }
             // Case normal
-            /*else if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryTime())) {
+            /*else if (TextUtils.isNotEmpty(mProduct.getSeller().getDelivery_time())) {
                 // Delivery Info
                 TextView textView = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_delivery_info);
-                textView.setText(mProduct.getSeller().getDeliveryTime());
+                textView.setText(mProduct.getSeller().getDelivery_time());
                 textView.setVisibility(View.VISIBLE);
             }*/
             // Seller warranty
             if (TextUtils.isNotEmpty(mProduct.getSeller().getWarranty())) {
                 mSellerContainer.findViewById(R.id.pdv_seller_warranty_column).setVisibility(View.VISIBLE);
                 mSellerContainer.findViewById(R.id.pdv_seller_warranty_container).setVisibility(View.VISIBLE);
-                TextView textView = ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_warranty));
+                TextView textView = mSellerContainer.findViewById(R.id.pdv_seller_warranty);
 //                String warranty = String.format(getResources().getString(R.string.warranty), mProduct.getSeller().getWarranty());
                 textView.setText(mProduct.getSeller().getWarranty());
                 textView.setVisibility(View.VISIBLE);
@@ -724,7 +724,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         // Multi line
         ((TextView) mDescriptionView.findViewById(R.id.pdv_specs_multi_line)).setText(description);
         // Button
-        TextView button = (TextView) mDescriptionView.findViewById(R.id.pdv_specs_button);
+        TextView button = mDescriptionView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.read_more));
         button.setOnClickListener(new OnClickListener() {
             @Override
@@ -757,7 +757,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         // Multi line
         ((TextView) mSpecificationsView.findViewById(R.id.pdv_specs_multi_line)).setText(features);
         // Button
-        TextView button = (TextView) mSpecificationsView.findViewById(R.id.pdv_specs_button);
+        TextView button = mSpecificationsView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.more_specifications));
         button.setOnClickListener(this);
     }
@@ -923,7 +923,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
     private void onClickGlobalSellerButton() {
         Log.i(TAG, "ON CLICK GLOBAL SELLER");
         try {
-            ScrollView scrollView = (ScrollView) getView().findViewById(R.id.product_detail_scrollview);
+            ScrollView scrollView = getView().findViewById(R.id.product_detail_scrollview);
             scrollView.smoothScrollTo(0, mSellerContainer.getTop());
         } catch (NullPointerException e) {
             Log.i(TAG, "WARNING: NPE ON TRY SCROLL TO SELLER VIEW");
@@ -941,7 +941,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         final ProductBundle productBundle = bundleList.getProducts().get(position);
 
         // Update check
-        final CheckBox checkBox = (CheckBox) bundleItemView.findViewById(R.id.item_check);
+        final CheckBox checkBox = bundleItemView.findViewById(R.id.item_check);
         checkBox.post(new Runnable() {
             @Override
             public void run() {
@@ -1483,13 +1483,13 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
             return;
         }
         // Get header
-        TextView title = (TextView) mComboProductsLayout.findViewById(R.id.pdv_combo_title);
+        TextView title = mComboProductsLayout.findViewById(R.id.pdv_combo_title);
         title.setText(mProduct.isFashion() ? R.string.buy_the_look : R.string.combos);
         // Get price
-        TextView price = (TextView) mComboProductsLayout.findViewById(R.id.pdv_combo_price);
+        TextView price = mComboProductsLayout.findViewById(R.id.pdv_combo_price);
         price.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
         // Get container
-        ViewGroup comboGroup = (ViewGroup) mComboProductsLayout.findViewById(R.id.pdv_combo_container);
+        ViewGroup comboGroup = mComboProductsLayout.findViewById(R.id.pdv_combo_container);
         comboGroup.removeAllViews();
         // Revert elements if RTL (the original is used for ComboFragment)
         ArrayList<ProductBundle> bundleProducts = new ArrayList<>(bundleList.getProducts());
@@ -1506,7 +1506,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
             if (!item.getSku().equals(mProduct.getSku())) {
                 comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem, price, bundleList, i));
             } else {
-                final CheckBox checkBox = (CheckBox) comboProductItem.findViewById(R.id.item_check);
+                final CheckBox checkBox = comboProductItem.findViewById(R.id.item_check);
                 checkBox.post(new Runnable() {
                     @Override
                     public void run() {
@@ -1523,7 +1523,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         }
         // Slide the horizontal scroll view to the end to show the first element
         if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
-            final HorizontalScrollView scroll = (HorizontalScrollView) mComboProductsLayout.findViewById(R.id.pdv_combo_scroll);
+            final HorizontalScrollView scroll = mComboProductsLayout.findViewById(R.id.pdv_combo_scroll);
             scroll.postDelayed(new Runnable() {
                 public void run() {
                     scroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
@@ -1542,9 +1542,9 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
      * @param productBundleItem - product bundle
      */
     private void fillProductBundleInfo(View view, final ProductBundle productBundleItem) {
-        ImageView mImage = (ImageView) view.findViewById(R.id.image_view);
-        ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
-        final CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);
+        ImageView mImage = view.findViewById(R.id.image_view);
+        ProgressBar mProgress = view.findViewById(R.id.image_loading_progress);
+        final CheckBox mCheck = view.findViewById(R.id.item_check);
         mCheck.post(new Runnable() {
             @Override
             public void run() {
@@ -1555,11 +1555,11 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         
         ImageManager.getInstance().loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large, false);
 
-        TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
+        TextView mBrand = view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());
-        TextView mTitle = (TextView) view.findViewById(R.id.item_title);
+        TextView mTitle = view.findViewById(R.id.item_title);
         mTitle.setText(productBundleItem.getName());
-        TextView mPrice = (TextView) view.findViewById(R.id.item_price);
+        TextView mPrice = view.findViewById(R.id.item_price);
         if (productBundleItem.hasDiscount()) {
             mPrice.setText(CurrencyFormatter.formatCurrency(productBundleItem.getSpecialPrice()));
         } else {
@@ -1819,7 +1819,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
             }
             if (value != null) {
                 convertView = super.getView(position, convertView, parent);
-                TextView tv = (TextView) convertView.findViewById(android.R.id.text1);
+                TextView tv = convertView.findViewById(android.R.id.text1);
                 // change first item's color to gray
                 tv.setTextColor(ContextCompat.getColor(tv.getContext(), value == -1 ? R.color.black_700 : R.color.black_47));
             }

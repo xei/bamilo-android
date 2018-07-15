@@ -41,14 +41,13 @@
             android:id="@+id/pdvSpecification_linearLayout_showFullSpecification"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_48dp"
-            android:background="?attr/selectableItemBackground">
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center">
 
             <com.mobile.components.customfontviews.TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:lineSpacingMultiplier="1.91"
                 android:text="@string/show_full_specifications"
                 android:textColor="#FF25A8ED"
                 android:textSize="12sp"/>

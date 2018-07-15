@@ -2,11 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <variable
-            name="productDetail_viewModel"
-            type="com.mobile.view.productdetail.ProductDetailViewModel"/>
-    </data>
+    <!--<data>-->
+        <!--<variable-->
+            <!--name="productDetail_viewModel"-->
+            <!--type="com.mobile.view.productdetail.ProductDetailViewModel"/>-->
+    <!--</data>-->
 
     <LinearLayout
         android:id="@+id/chooseVariation_linearLayout_layout"

@@ -23,7 +23,6 @@
         tools:text="۴.۷ از ۵"/>
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/sellerScore_textView_successfulSupplyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:alpha="0.5"
@@ -32,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/sellerScore_textView_successfulSupplyRate"
         app:layout_constraintStart_toStartOf="@+id/sellerScore_progressBar_successfulSupply"
         app:layout_constraintTop_toTopOf="@+id/sellerScore_textView_successfulSupplyRate"
-        tools:text="تامین موفق کالا"/>
+        android:text="@string/fullfilment"/>
 
     <ProgressBar
         android:id="@+id/sellerScore_progressBar_successfulSupply"
@@ -76,7 +75,7 @@
         app:layout_constraintBottom_toTopOf="@+id/sellerScore_progressBar_salesWithoutReturn"
         app:layout_constraintStart_toStartOf="@+id/sellerScore_progressBar_salesWithoutReturn"
         app:layout_constraintTop_toTopOf="@+id/sellerScore_textView_salesWithoutReturnRate"
-        tools:text="فروش بدون بازگشت"/>
+        android:text="@string/selle_not_returned"/>
 
     <ProgressBar
         android:id="@+id/sellerScore_progressBar_salesWithoutReturn"
@@ -120,7 +119,7 @@
         app:layout_constraintBottom_toTopOf="@+id/sellerScore_progressBar_sendOnTime"
         app:layout_constraintStart_toStartOf="@+id/sellerScore_progressBar_sendOnTime"
         app:layout_constraintTop_toTopOf="@+id/sellerScore_textView_sendOnTimeRate"
-        tools:text="فروش بدون بازگشت"/>
+        android:text="@string/sla_reached"/>
 
     <ProgressBar
         android:id="@+id/sellerScore_progressBar_sendOnTime"

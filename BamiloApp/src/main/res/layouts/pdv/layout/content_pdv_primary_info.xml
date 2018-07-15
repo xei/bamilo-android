@@ -12,8 +12,7 @@
     android:layout_marginLeft="@dimen/dimen_8dp"
     android:layout_marginRight="@dimen/dimen_8dp"
     app:cardCornerRadius="2dp"
-    app:cardElevation="2dp"
-    tools:layout_height="177dp">
+    app:cardElevation="2dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -92,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="2dp"
-            android:text=")"
+            android:text="@string/close_bracket"
             android:textColor="#d8d8d8"
             app:fontFamily="@string/bamilo_font"
             app:layout_constraintBottom_toBottomOf="@+id/textView19"
@@ -105,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="@dimen/dimen_4dp"
-            android:text="("
+            android:text="@string/open_bracket"
             android:textColor="#d8d8d8"
             app:fontFamily="@string/bamilo_font"
             app:layout_constraintBottom_toBottomOf="@+id/pdvPrimaryInfo_textView_averageScore"
@@ -157,12 +156,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
             android:layout_marginRight="@dimen/dimen_8dp"
             android:textColor="#fe6b0c"
             android:textSize="24sp"
             app:fontFamily="@string/bamilo_bold_font"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2"/>
+            app:layout_constraintTop_toBottomOf="@+id/view2"
+            app:layout_constraintVertical_bias="0.0"/>
 
         <RelativeLayout
             android:id="@+id/pdvPrimaryInfo_relativeLayout_discountPercentageRoot"
@@ -219,6 +221,7 @@
             app:layout_constraintStart_toEndOf="@+id/pdvPrimaryInfo_textView_currentPrice"/>
 
         <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pdvPrimaryInfo_textView_outOfStock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -230,9 +233,11 @@
             android:text="@string/product_no_exist"
             android:textColor="@color/primary_text_color"
             android:textSize="14sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view2"/>
+
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

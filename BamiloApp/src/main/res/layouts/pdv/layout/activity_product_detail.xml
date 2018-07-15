@@ -1,108 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <variable
-            name="productDetail_viewModel"
-            type="com.mobile.view.productdetail.ProductDetailViewModel"/>
-    </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/main_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/productDetail_swipeRefresh"
+            <FrameLayout
+                android:id="@+id/pdv_frameLayout_fragmentContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dimen_48dp"
-                android:descendantFocusability="blocksDescendants"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/productDetail_recycler_detailList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#f9f9f9"/>
-
-            </android.support.v4.widget.SwipeRefreshLayout>
-
-            <RelativeLayout
-                android:id="@+id/productDetail_relativeLayout_transparentToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@null">
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/productDetail_appImageView_back"
-                    android:layout_width="@dimen/dimen_40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_margin="@dimen/dimen_8dp"
-                    android:layout_alignParentRight="true"
-                    android:padding="@dimen/dimen_8dp"
-                    android:background="?attr/selectableItemBackground"
-                    app:srcCompat="@drawable/ic_arrow_back_primary"/>
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/productDetail_appImageView_cart"
-                    android:layout_width="@dimen/dimen_40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_margin="@dimen/dimen_8dp"
-                    android:layout_alignParentLeft="true"
-                    android:padding="@dimen/dimen_8dp"
-                    android:background="?attr/selectableItemBackground"
-                    app:srcCompat="@drawable/ic_cart_primary"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/productDetail_relativeLayout_primaryToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:alpha="0.0"
-                android:background="@color/colorPrimary">
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/productDetail_appImageView_whiteBack"
-                    android:layout_width="@dimen/dimen_40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_margin="@dimen/dimen_8dp"
-                    android:layout_alignParentRight="true"
-                    android:padding="@dimen/dimen_8dp"
-                    android:background="?attr/selectableItemBackground"
-                    app:srcCompat="@drawable/ic_arrow_back_white"/>
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/productDetail_appImageView_whiteCart"
-                    android:layout_width="@dimen/dimen_40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_margin="@dimen/dimen_8dp"
-                    android:layout_alignParentLeft="true"
-                    android:padding="@dimen/dimen_8dp"
-                    android:background="?attr/selectableItemBackground"
-                    app:srcCompat="@drawable/ic_cart_white"/>
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/productDetail_textView_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="56dp"
-                    android:layout_toLeftOf="@+id/productDetail_appImageView_whiteBack"
-                    android:layout_toRightOf="@+id/productDetail_appImageView_whiteCart"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="آیفون X"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"/>
-
-            </RelativeLayout>
+                android:layout_height="match_parent"/>
 
             <include
                 android:id="@+id/productDetail_linearLayout_notifyMe"
@@ -125,7 +36,10 @@
             android:id="@+id/productDetail_transparentBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#69000000"
+            android:background="#80000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:alpha="0.0"
             android:visibility="gone"/>
 
         <include

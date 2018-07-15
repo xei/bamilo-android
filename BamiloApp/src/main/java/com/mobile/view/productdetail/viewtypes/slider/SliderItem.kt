@@ -18,7 +18,7 @@ import com.mobile.view.productdetail.slider.SliderPresenter
  */
 @BindItem(layout = R.layout.content_pdv_slider, holder = SliderHolder::class)
 class SliderItem(private var supportFragmentManager: FragmentManager,
-                 var imageSliderModel: ImageSliderModel) {
+                 private var imageSliderModel: ImageSliderModel) {
 
     private var holder: SliderHolder? = null
     private lateinit var sliderPresenter: SliderPresenter

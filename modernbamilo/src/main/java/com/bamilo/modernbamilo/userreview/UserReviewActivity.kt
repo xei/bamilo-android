@@ -21,8 +21,6 @@ import com.bamilo.modernbamilo.util.extension.replaceFragmentInActivity
 import com.bamilo.modernbamilo.util.extension.replaceFragmentInActivityWithAnim
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
