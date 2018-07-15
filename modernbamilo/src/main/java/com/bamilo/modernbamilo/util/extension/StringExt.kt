@@ -16,6 +16,7 @@ fun String.persianizeNumberString(): String {
             in 48..57 -> numberUnicode + 1728   // The digit character is Latin
             in 1632..1641 -> numberUnicode + 144    // The digit is Arabic
             in 1776..1785 -> numberUnicode  // The digit character is Persian
+            '.'.toInt() -> '/'.toInt()
             else -> throw NumberFormatException("\"numberStr\" has an invalid digit character") // The digit character is invalid
         }
         persianNumberStr += persianUnicode.toChar()
