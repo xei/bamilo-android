@@ -4,12 +4,18 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.util.logging.Logger
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
+import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 private const val TAG_DEBUG = "SubmitRateActivity"
 
@@ -59,6 +65,7 @@ class CommentsActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var mCloseBtnImageButton: ImageButton
     private lateinit var mToolbarTitleTextView: TextView
+    private lateinit var mCommentsListRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +77,8 @@ class CommentsActivity : AppCompatActivity(), View.OnClickListener {
         findViews()
         mToolbarTitleTextView.text = resources.getString(R.string.comment_title)
         setOnClickListeners()
+        initRecyclerView()
+        loadComments(0)
     }
 
     private fun createViewModel() {
@@ -88,10 +97,35 @@ class CommentsActivity : AppCompatActivity(), View.OnClickListener {
     private fun findViews() {
         mCloseBtnImageButton = findViewById(R.id.layoutToolbar_imageButton_close)
         mToolbarTitleTextView = findViewById(R.id.layoutToolbar_xeiTextView_title)
+        mCommentsListRecyclerView = findViewById(R.id.activityComments_recyclerView_commentsList)
     }
 
     private fun setOnClickListeners() {
         mCloseBtnImageButton.setOnClickListener(this)
+    }
+
+    private fun initRecyclerView() = mCommentsListRecyclerView.run {
+        layoutManager = LinearLayoutManager(this@CommentsActivity)
+        adapter = CommentsAdapter(mViewModel)
+    }
+
+    private fun loadComments(page: Int) {
+        mWebApi.getComment(mProductId, page).enqueue(object: Callback<ResponseWrapper<ArrayList<CommentViewModel>>> {
+
+            override fun onResponse(call: Call<ResponseWrapper<ArrayList<CommentViewModel>>>?, response: Response<ResponseWrapper<ArrayList<CommentViewModel>>>?) {
+                response?.body()?.metadata?.let {
+                    mViewModel.comments.addAll(it)
+                    mCommentsListRecyclerView.adapter?.notifyDataSetChanged()
+                }
+
+                Logger.log("page $page of comments loaded: ${response?.body()?.metadata}", TAG_DEBUG)
+            }
+
+            override fun onFailure(call: Call<ResponseWrapper<ArrayList<CommentViewModel>>>?, t: Throwable?) {
+                Logger.log("page $page of comments does not loaded: ${t?.message}")
+            }
+
+        })
     }
 
     override fun onClick(clickedView: View?) {
