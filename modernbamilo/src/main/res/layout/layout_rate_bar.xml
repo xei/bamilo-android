@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:layoutDirection="ltr" >
+
+    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+        android:id="@+id/activitySubmitRate_materialRatingBar_ratingBar"
+        style="@style/Widget.MaterialRatingBar.RatingBar.Indicator.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mrb_progressBackgroundTint="@color/commentsList_header_ratingBar_background"
+        app:mrb_progressTint="@color/commentsList_header_ratingBar_stars"
+        app:mrb_secondaryProgressTint="@color/commentsList_header_ratingBar_stars"
+        tools:rating="4" />
+
+    <ProgressBar
+        android:id="@+id/activitySubmitRate_progressBar_progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="100dp"
+        android:layout_height="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/activitySubmitRate_materialRatingBar_ratingBar"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:progress="75" />
+
+</android.support.constraint.ConstraintLayout>

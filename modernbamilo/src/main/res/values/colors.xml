@@ -80,6 +80,12 @@
     <color name="descSpec_spec_item_value_color">#000</color>
     <color name="descSpec_spec_item_divider">#efefef</color>
 
+    <!-- Comments List Screen -->
+    <color name="commentsList_header_ratingBar_background">@color/white</color>
+    <color name="commentsList_header_ratingBar_stars">@color/grey1</color>
+    <color name="commentsList_header_progress_background">@color/grey1</color>
+    <color name="commentsList_header_progress_tint">@color/pantone534c</color>
+
     <!-- Submit Rate Screen -->
     <color name="submitRate_background">@color/blueGrey2</color>
     <color name="submitRate_question">@color/grey5</color>
