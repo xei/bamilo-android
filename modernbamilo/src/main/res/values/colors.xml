@@ -81,10 +81,23 @@
     <color name="descSpec_spec_item_divider">#efefef</color>
 
     <!-- Comments List Screen -->
+    <color name="commentsList_header_averageRate">@color/grey5</color>
+    <color name="commentsList_header_rateSum">@color/grey4</color>
+    <color name="commentsList_header_commentsCount">@color/grey5</color>
     <color name="commentsList_header_ratingBar_background">@color/white</color>
     <color name="commentsList_header_ratingBar_stars">@color/grey1</color>
     <color name="commentsList_header_progress_background">@color/grey1</color>
     <color name="commentsList_header_progress_tint">@color/pantone534c</color>
+    <color name="commentsList_comment_background">@color/blueGrey2</color>
+    <color name="commentsList_comment_title">@color/grey5</color>
+    <color name="commentsList_comment_authorName">@color/grey2</color>
+    <color name="commentsList_comment_composedTime">@color/grey2</color>
+    <color name="commentsList_comment_hasUserBeenBought">@color/pantone3275c</color>
+    <color name="commentsList_comment_ratingBar_background">@color/grey2</color>
+    <color name="commentsList_comment_ratingBar_stars">@color/pantone1375c</color>
+    <color name="commentsList_comment_commentContent">@color/grey5</color>
+    <color name="commentsList_comment_seeMoreBtn">@color/pantone2995cp</color>
+    <color name="commentsList_comment_likeDislike">@color/grey2</color>
 
     <!-- Submit Rate Screen -->
     <color name="submitRate_background">@color/blueGrey2</color>
