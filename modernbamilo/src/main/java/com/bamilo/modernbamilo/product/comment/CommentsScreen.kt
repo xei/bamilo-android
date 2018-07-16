@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
+import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
@@ -27,7 +28,7 @@ private const val KEY_EXTRA_ONE_STARS_AVG = "KEY_EXTRA_ONE_STARS_AVG"
 private const val KEY_EXTRA_TWO_STARS_AVG = "KEY_EXTRA_TWO_STARS_AVG"
 private const val KEY_EXTRA_THREE_STARS_AVG = "KEY_EXTRA_THREE_STARS_AVG"
 private const val KEY_EXTRA_FOUR_STARS_AVG = "KEY_EXTRA_FOUR_STARS_AVG"
-private const val KEY_EXTRA_FIVE_STARS_AVG = "KEY_EXTRA_FOUR_STARS_AVG"
+private const val KEY_EXTRA_FIVE_STARS_AVG = "KEY_EXTRA_FIVE_STARS_AVG"
 
 fun startActivity(context: Context,
                   productId: String,
@@ -37,7 +38,8 @@ fun startActivity(context: Context,
                   oneStarsAvg: Float,
                   twoStarsAvg: Float,
                   threeStarsAvg: Float,
-                  fourStarsAvg: Float) {
+                  fourStarsAvg: Float,
+                  fiveStarsAvg: Float) {
 
     val intent = Intent(context, CommentsActivity::class.java).apply {
         putExtra(KEY_EXTRA_PRODUCT_ID, productId)
@@ -48,7 +50,7 @@ fun startActivity(context: Context,
         putExtra(KEY_EXTRA_TWO_STARS_AVG, twoStarsAvg)
         putExtra(KEY_EXTRA_THREE_STARS_AVG, threeStarsAvg)
         putExtra(KEY_EXTRA_FOUR_STARS_AVG, fourStarsAvg)
-        putExtra(KEY_EXTRA_FIVE_STARS_AVG, fourStarsAvg)
+        putExtra(KEY_EXTRA_FIVE_STARS_AVG, fiveStarsAvg)
     }
     context.startActivity(intent)
 
@@ -90,7 +92,7 @@ class CommentsActivity : AppCompatActivity(), View.OnClickListener {
                 twoStarsAvg = intent.getFloatExtra(KEY_EXTRA_TWO_STARS_AVG, 0f),
                 threeStarsAvg = intent.getFloatExtra(KEY_EXTRA_THREE_STARS_AVG, 0f),
                 fourStarsAvg = intent.getFloatExtra(KEY_EXTRA_FOUR_STARS_AVG, 0f),
-                fiveStarsAvg = intent.getFloatExtra(KEY_EXTRA_ONE_STARS_AVG, 0f)
+                fiveStarsAvg = intent.getFloatExtra(KEY_EXTRA_FIVE_STARS_AVG, 0f)
         )
     }
 
@@ -122,7 +124,27 @@ class CommentsActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onFailure(call: Call<ResponseWrapper<ArrayList<CommentViewModel>>>?, t: Throwable?) {
-                Logger.log("page $page of comments does not loaded: ${t?.message}")
+                Logger.log("page $page of comments does not loaded: ${t?.message}", TAG_DEBUG, LogType.ERROR)
+
+
+
+                val comments = ArrayList<CommentViewModel>()
+                val comm = CommentViewModel("بهترین پذ این محدوده قیمت", "۹۷/۰۵/۲۳", "حمیدرضا حسیم خانی", true, 3.5f, "آقا بسیار محصول عالی بود، خیلی تشکر داریم داریم هم بنده هم منزل انشاله خداوند برکتتان دهد، دست دیزاینر های بسیار خوبتان هم درد نکند انشالله، خداوند آنان را نیز خیر دنیا و آخرت بدهد، چون ظاهر قبلی بسـ", 34, 346)
+                comments.add(comm)
+                comments.add(comm)
+                comments.add(comm)
+                comments.add(comm)
+                comments.add(comm)
+                comments.add(comm)
+                comments.add(comm)
+                comments.add(comm)
+                comments.add(comm)
+                comments.add(comm)
+                comments.add(comm)
+                comments.add(comm)
+
+                mViewModel.comments.addAll(comments)
+                mCommentsListRecyclerView.adapter?.notifyDataSetChanged()
             }
 
         })

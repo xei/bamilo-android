@@ -10,6 +10,13 @@
 
     <!--  Comments Screen -->
     <string name="comment_title">نظرات کاربران</string>
+    <string name="comment_header_rateSum">از %s</string>
+    <string name="comment_header_commentsCount">%s نظر</string>
+    <string name="comment_comment_hasUseBeenBoughtLabel">خریدار محصول</string>
+    <string name="comment_comment_seeMore">بیشتر...</string>
+    <string name="comment_comment_seeLess">کمتر...</string>
+    <string name="comment_comment_likeCount">\u200f(%s)</string>
+    <string name="comment_comment_dislikeCount">\u200f(%s)</string>
 
     <!-- Submit Rate Screen -->
     <string name="submitRate_title">افزودن نظر</string>
