@@ -90,8 +90,7 @@
     <color name="commentsList_header_progress_tint">@color/pantone534c</color>
     <color name="commentsList_comment_background">@color/blueGrey2</color>
     <color name="commentsList_comment_title">@color/grey5</color>
-    <color name="commentsList_comment_authorName">@color/grey2</color>
-    <color name="commentsList_comment_composedTime">@color/grey2</color>
+    <color name="commentsList_comment_authorAndTime">@color/grey2</color>
     <color name="commentsList_comment_hasUserBeenBought">@color/pantone3275c</color>
     <color name="commentsList_comment_ratingBar_background">@color/grey2</color>
     <color name="commentsList_comment_ratingBar_stars">@color/pantone1375c</color>
