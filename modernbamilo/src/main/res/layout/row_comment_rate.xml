@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/rowCommentRate_xeiTextView_avgRate"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textColor="@color/commentsList_header_averageRate"
+        android:textSize="48sp"
+        app:locale="auto"
+        app:style="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="۴/۶"/>
+
+    <com.bamilo.modernbamilo.product.comment.RateBarView
+        android:id="@+id/rowCommentRate_rateBarView_fiveStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:percentage="30"
+        app:rating="5" />
+
+    <com.bamilo.modernbamilo.product.comment.RateBarView
+        android:id="@+id/rowCommentRate_rateBarView_fourStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rowCommentRate_rateBarView_fiveStar"
+        tools:percentage="80"
+        app:rating="4" />
+
+    <com.bamilo.modernbamilo.product.comment.RateBarView
+        android:id="@+id/rowCommentRate_rateBarView_threeStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rowCommentRate_rateBarView_fourStar"
+        tools:percentage="35"
+        app:rating="3" />
+
+    <com.bamilo.modernbamilo.product.comment.RateBarView
+        android:id="@+id/rowCommentRate_rateBarView_twoStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rowCommentRate_rateBarView_threeStar"
+        tools:percentage="25"
+        app:rating="2" />
+
+    <com.bamilo.modernbamilo.product.comment.RateBarView
+        android:id="@+id/rowCommentRate_rateBarView_oneStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rowCommentRate_rateBarView_twoStar"
+        tools:percentage="10"
+        app:rating="1" />
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/rowCommentRate_xeiTextView_rateSum"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        tools:text="از ۵"
+        android:textColor="@color/commentsList_header_averageRate"
+        app:layout_constraintRight_toLeftOf="@+id/rowCommentRate_xeiTextView_avgRate"
+        app:layout_constraintTop_toTopOf="@+id/rowCommentRate_xeiTextView_avgRate"
+        app:locale="auto" />
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/rowCommentRate_xeiTextView_commentsCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/commentsList_header_commentsCount"
+        app:layout_constraintBottom_toBottomOf="@+id/rowCommentRate_xeiTextView_avgRate"
+        app:layout_constraintRight_toLeftOf="@+id/imageView3"
+        app:layout_constraintLeft_toRightOf="@+id/rowCommentRate_rateBarView_twoStar"
+        app:style="bold"
+        tools:text="۳۴۳۷ نظر" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_marginRight="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rowCommentRate_xeiTextView_rateSum"
+        app:layout_constraintRight_toLeftOf="@+id/rowCommentRate_xeiTextView_rateSum"
+        app:layout_constraintTop_toTopOf="@+id/rowCommentRate_xeiTextView_rateSum"
+        app:srcCompat="@drawable/ic_star_filled" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rowCommentRate_xeiTextView_commentsCount"
+        app:layout_constraintRight_toLeftOf="@+id/rowCommentRate_xeiTextView_avgRate"
+        app:layout_constraintTop_toTopOf="@+id/rowCommentRate_xeiTextView_commentsCount"
+        app:srcCompat="@drawable/ic_person_black_24dp" />
+
+
+</android.support.constraint.ConstraintLayout>
