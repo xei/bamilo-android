@@ -12,7 +12,7 @@ import java.util.*
  *
  * Created by hamidreza on 2/14/16.
  */
-class XeiTextView : AppCompatTextView {
+open class XeiTextView : AppCompatTextView {
 
     companion object {
 

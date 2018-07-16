@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/layoutRowSellerslistadapter_xeiTextView_sellerTitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="start|center_vertical"
+        android:text="نام فروشنده:"
+        android:textColor="@color/sellersList_row_labels"
+        app:locale="auto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/layoutRowSellerslistadapter_xeiTextView_sellerTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:gravity="start|center_vertical"
+        tools:text="ایران رهجو مرکزی (سه راه جمهوری)"
+        android:textColor="@color/sellersList_row_sellerTitle"
+        app:locale="auto"
+        app:style="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/layoutRowSellerslistadapter_xeiTextView_sellerRateLabel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/layoutRowSellerslistadapter_xeiTextView_deliveryTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="start|center_vertical"
+        android:text="تاریخ ارسال:"
+        android:textColor="@color/sellersList_row_labels"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutRowSellerslistadapter_xeiTextView_sellerTitle"
+        app:locale="auto" />
+
+    <com.bamilo.modernbamilo.customview.DateTimeView
+        android:id="@+id/layoutRowSellerslistadapter_dateTimeView_deliveryTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="24dp"
+        android:gravity="start|center_vertical"
+        android:textColor="@color/sellersList_row_deliveryTime"
+        app:locale="auto"
+        app:layout_constraintBaseline_toBaselineOf="@+id/layoutRowSellerslistadapter_xeiTextView_deliveryTimeLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/layoutRowSellerslistadapter_xeiTextView_sellerRateLabel" />
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/layoutRowSellerslistadapter_xeiTextView_sellerRateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:locale="auto"
+        android:gravity="start|center_vertical"
+        android:text="امتیاز فزوشنده:"
+        android:textColor="@color/sellersList_row_labels"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutRowSellerslistadapter_xeiTextView_deliveryTimeLabel" />
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/layoutRowSellerslistadapter_xeiTextView_sellerRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:gravity="center"
+        android:background="@drawable/background_seller_rate"
+        tools:text="۴/۳"
+        android:textColor="@color/sellersList_row_rate"
+        app:locale="auto"
+        app:layout_constraintBaseline_toBaselineOf="@+id/layoutRowSellerslistadapter_xeiTextView_sellerRateLabel"
+        app:layout_constraintStart_toEndOf="@+id/layoutRowSellerslistadapter_xeiTextView_sellerRateLabel" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutRowSellerslistadapter_xeiTextView_sellerRateLabel" />
+
+    <com.bamilo.modernbamilo.customview.PriceView
+        android:id="@+id/layoutRowSellerslistadapter_priceView_payablePrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        tools:text="۱۱۳۴۶۰۰۰"
+        android:textColor="@color/sellersList_row_payableAmount"
+        app:locale="auto"
+        app:style="bold"
+        app:strike="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        android:id="@+id/layoutRowSellerslistadapter_xeiTextView_discountPercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        tools:text="۳۳٪"
+        android:textColor="@color/sellersList_row_discountPercent"
+        android:background="@drawable/background_discount"
+        app:locale="auto"
+        app:layout_constraintBaseline_toBaselineOf="@+id/layoutRowSellerslistadapter_priceView_payablePrice"
+        app:layout_constraintStart_toEndOf="@+id/layoutRowSellerslistadapter_priceView_payablePrice" />
+
+    <com.bamilo.modernbamilo.customview.PriceView
+        android:id="@+id/layoutRowSellerslistadapter_priceView_basePrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        tools:text="۲۰۳۴۹۰۰۰"
+        android:textColor="@color/sellersList_row_baseAmount"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutRowSellerslistadapter_priceView_payablePrice"
+        app:locale="auto"
+        app:strike="true" />
+
+    <com.bamilo.modernbamilo.customview.XeiButton
+        android:id="@+id/layoutRowSellerslistadapter_xeiButton_addToCart"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:background="@color/sellersList_row_addToCartButton"
+        android:text="افرودن به سبد"
+        android:textColor="@color/sellersList_row_addToCartButtonText"
+        app:locale="auto"
+        app:style="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="w,3:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+</android.support.constraint.ConstraintLayout>

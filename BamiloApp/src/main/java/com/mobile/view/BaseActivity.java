@@ -108,8 +108,6 @@ import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.DrawerFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 
-import junit.framework.Assert;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -2212,7 +2210,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     private void setScrollContentPadding(final View scrollContainer) {
-        Assert.assertNotNull(scrollContainer);
+//        Assert.assertNotNull(scrollContainer);
 
         scrollContainer.post(new Runnable() {
             @Override

@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">Modern Bamilo</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Sellers List Screen -->
+    <string name="sellersList_title">فروشندگان دیگر</string>
+
+    <!-- Description and Specification Screen -->
+    <string name="decSpec_tab_description">توضیحات</string>
+    <string name="decSpec_tab_specification">مشخصات</string>
+
+
+    <string name="suffix_currency">%s ریال</string>
+    <string name="suffix_percent">%s %%</string>
+
 </resources>
