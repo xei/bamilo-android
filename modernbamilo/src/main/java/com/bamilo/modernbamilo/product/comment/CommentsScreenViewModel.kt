@@ -1,5 +1,7 @@
 package com.bamilo.modernbamilo.product.comment
 
+import com.google.gson.annotations.SerializedName
+
 data class CommentsScreenViewModel(
         val rate: Float,
         val rateSum: Int,
@@ -9,16 +11,22 @@ data class CommentsScreenViewModel(
         val threeStarsAvg: Float,
         val fourStarsAvg: Float,
         val fiveStarsAvg: Float,
-        val comments: ArrayList<CommentViewModel> = ArrayList<CommentViewModel>()
+        val comments: ArrayList<CommentViewModel> = ArrayList()
+)
+
+data class GetCommentsResponse (
+        @SerializedName("total") val totalCommentsCount: Long,
+        @SerializedName("items") val comments: ArrayList<CommentViewModel>
 )
 
 data class CommentViewModel(
-        val title: String,
-        val composedTime: String,
-        val authorName: String,
-        val hasUserBeenBought: Boolean,
-        val rate: Float,
-        val commentContent: String,
-        val likesCount: Int,
-        val dislikesCount: Int
+        @SerializedName("id") val id: String,
+        @SerializedName("title") val title: String,
+        @SerializedName("date") val composedTime: String,
+        @SerializedName("username") val authorName: String,
+        @SerializedName("is_bought_by_user") val hasUserBeenBought: Boolean,
+        @SerializedName("rate") val rate: Float,
+        @SerializedName("comment") val commentContent: String,
+        @SerializedName("like") val likesCount: Int,
+        @SerializedName("dislike") val dislikesCount: Int
 )
