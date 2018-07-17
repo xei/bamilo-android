@@ -97,7 +97,6 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         setupRefreshView()
         setupDetailRecycler()
 
-        updateUi()
         loadProductDetail(sku!!)
         return binding.root
     }
@@ -224,24 +223,9 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
             return
         }
 
-        items.add(VariationsItem(product.variations, object : OnItemClickListener {
-            override fun onItemClicked(any: Any?) {
-                when (any) {
-                    VariationsItem.description -> {
-                        gotoDescriptionPage()
-                    }
-                    VariationsItem.specification -> {
-                        gotoDescriptionPage()
-                    }
-                    is Product -> pdvMainView.onSizeVariationClicked(any)
-                }
-            }
-        }))
+        items.add(VariationsItem(product.variations, pdvMainView))
     }
 
-    private fun gotoDescriptionPage() {
-
-    }
 
     private fun addReturnPolicy() {
         items.add(ReturnPolicyItem(product.return_policy))
@@ -268,9 +252,9 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     }
 
     private fun loadProductDetail(sku: String) {
+        binding.pdvSwipeRefresh.isRefreshing = true
         pdvMainFragmentViewModel!!.loadData(sku).observe(this, Observer { product ->
             binding.pdvSwipeRefresh.isRefreshing = false
-
             if (product != null) {
                 this.product = product
                 updateUi()

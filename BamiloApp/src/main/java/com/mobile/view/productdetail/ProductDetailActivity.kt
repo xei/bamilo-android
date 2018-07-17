@@ -75,12 +75,21 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
 
     private fun bindAddToCartClickListener() {
         binding.productDetailLinearLayoutAddToCart!!.setOnClickListener({
-            if (sizeVariation.sku.isEmpty()) {
+            if (productHasSizeVariation() && sizeVariation.sku.isEmpty()) {
                 productDetailPresenter.showBottomSheet()
             } else {
                 trackAddToCartEvent()
             }
         })
+    }
+
+    private fun productHasSizeVariation(): Boolean {
+        for (variation in productDetail.variations) {
+            if (variation.type == "size") {
+                return true
+            }
+        }
+        return false
     }
 
     private fun trackAddToCartEvent() {
@@ -106,7 +115,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
             val fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.backStackEntryCount - 1).name
             fragmentManager.findFragmentByTag(fragmentTag)
         } catch (e: Exception) {
-            ProductDetailMainFragment.newInstance(sku)
+            ProductDetailMainFragment()
         }
     }
 
@@ -148,15 +157,13 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
     }
 
     override fun onOtherVariationClicked(product: Product) {
-        changeProductDetailOnViewVisible = if (getCurrentFragment() is ProductDetailMainFragment) {
-            val productDetailMainFragment = supportFragmentManager
-                    .findFragmentByTag(ProductDetailMainFragment::class.java.simpleName)
-                    as ProductDetailMainFragment
-            productDetailMainFragment.reloadData(product.sku)
-            false
-        } else {
-            true
-        }
+        sku = product.sku
+        displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
+
+        val productDetailMainFragment = supportFragmentManager
+                .findFragmentByTag(ProductDetailMainFragment::class.java.simpleName)
+                as ProductDetailMainFragment
+        productDetailMainFragment.reloadData(product.sku)
     }
 
     override fun onSizeVariationClicked(sizeVariation: Product) {
@@ -173,7 +180,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
             return
         }
 
-        if (fragmentManager.backStackEntryCount == 0) {
+        if (supportFragmentManager.backStackEntryCount == 1) {
             finish()
             return
         }

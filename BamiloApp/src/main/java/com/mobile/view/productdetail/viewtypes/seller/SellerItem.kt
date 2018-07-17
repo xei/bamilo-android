@@ -144,6 +144,7 @@ class SellerItem(private var seller: Seller,
                 seller.score.maxValue)
 
         holder.sellerScore.text = seller.score.overall.toString()
+        holder.overallScore.text = seller.score.overall.toString()
 
         holder.sellerScore.setBackgroundDrawable(createRoundDrawable("#47b638",
                 UIUtils.dpToPx(holder.itemView.context, 2f)))

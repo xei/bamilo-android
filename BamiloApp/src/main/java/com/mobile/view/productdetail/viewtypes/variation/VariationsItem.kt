@@ -10,6 +10,7 @@ import com.mobile.components.ghostadapter.GhostAdapter
 import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
 import com.mobile.view.productdetail.OnItemClickListener
+import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.Product
 import com.mobile.view.productdetail.model.Variation
 import com.mobile.view.productdetail.viewtypes.variation.colors.OtherVariationsItem
@@ -22,7 +23,7 @@ import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
  */
 
 @BindItem(layout = R.layout.content_pdv_variations, holder = VariationsHolder::class)
-class VariationsItem(var variations: ArrayList<Variation>, private var onItemClickListener: OnItemClickListener) {
+class VariationsItem(var variations: ArrayList<Variation>, private var pdvMainView: PDVMainView) {
     companion object {
         const val specification = "SPECIFICATION"
         const val description = "DESCRIPTION"
@@ -59,11 +60,19 @@ class VariationsItem(var variations: ArrayList<Variation>, private var onItemCli
         }
 
         holder.itemView.findViewById<TextView>(R.id.pdvVariations_textView_specification).setOnClickListener {
-            onItemClickListener.onItemClicked(specification)
+            gotoSpecificationPage()
         }
         holder.itemView.findViewById<TextView>(R.id.pdvVariations_textView_descriptions).setOnClickListener {
-            onItemClickListener.onItemClicked(description)
+            gotoDescriptionPage()
         }
+    }
+
+    private fun gotoSpecificationPage(){
+
+    }
+
+    private fun gotoDescriptionPage() {
+
     }
 
     private fun setupColorRecycler(holder: VariationsHolder) {
@@ -100,7 +109,7 @@ class VariationsItem(var variations: ArrayList<Variation>, private var onItemCli
                                 (sizeItem as VariationsSizeItem).disableView()
                             }
                             selectedSize = any as Product
-                            onItemClickListener.onItemClicked(selectedSize)
+                            pdvMainView.onSizeVariationClicked(selectedSize)
                         }
                     }))
                 }
@@ -124,6 +133,7 @@ class VariationsItem(var variations: ArrayList<Variation>, private var onItemCli
                             for (item in otherItems) {
                                 (item as OtherVariationsItem).deSelectProduct()
                             }
+                            pdvMainView.onOtherVariationClicked(any as Product)
                         }
                     }))
                 }

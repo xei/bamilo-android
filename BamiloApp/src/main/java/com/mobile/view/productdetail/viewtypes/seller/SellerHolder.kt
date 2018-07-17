@@ -20,6 +20,7 @@ class SellerHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
     var sellerName: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_textView_name)
 
     var sellerScore: TextView = itemView!!.findViewById(R.id.pdvSellerScore_textView_score)
+    var overallScore: TextView = itemView!!.findViewById(R.id.sellerScore_textView_score)
     var sellerScoreMaxValue: TextView = itemView!!.findViewById(R.id.pdvSellerScore_textView_maxValue)
 
     var collaborationPeriod: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_textView_collaborationPeriod)
