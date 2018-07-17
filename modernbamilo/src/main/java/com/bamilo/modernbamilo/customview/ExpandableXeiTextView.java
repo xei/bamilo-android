@@ -2,11 +2,8 @@ package com.bamilo.modernbamilo.customview;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,10 +13,8 @@ import android.util.SparseBooleanArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -218,10 +213,6 @@ public class ExpandableXeiTextView extends LinearLayout implements View.OnClickL
         }
     }
 
-    public void setOnExpandStateChangeListener(@Nullable OnExpandStateChangeListener listener) {
-        mListener = listener;
-    }
-
     public void setText(@Nullable CharSequence text) {
         mRelayout = true;
         mTv.setText(text);
@@ -270,7 +261,7 @@ public class ExpandableXeiTextView extends LinearLayout implements View.OnClickL
     }
 
     private void findViews() {
-        mTv = (TextView) findViewById(mExpandableTextId);
+        mTv = findViewById(mExpandableTextId);
         if (mExpandToggleOnTextClick) {
             mTv.setOnClickListener(this);
         } else {
@@ -282,35 +273,8 @@ public class ExpandableXeiTextView extends LinearLayout implements View.OnClickL
         mToggleView.setOnClickListener(this);
     }
 
-    private static boolean isPostHoneycomb() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
-    }
-
-    private static boolean isPostLolipop() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
-
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private static void applyAlphaAnimation(View view, float alpha) {
-        if (isPostHoneycomb()) {
-            view.setAlpha(alpha);
-        } else {
-            AlphaAnimation alphaAnimation = new AlphaAnimation(alpha, alpha);
-            // make it instant
-            alphaAnimation.setDuration(0);
-            alphaAnimation.setFillAfter(true);
-            view.startAnimation(alphaAnimation);
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static Drawable getDrawable(@NonNull Context context, @DrawableRes int resId) {
-        Resources resources = context.getResources();
-        if (isPostLolipop()) {
-            return resources.getDrawable(resId, context.getTheme());
-        } else {
-            return resources.getDrawable(resId);
-        }
+        view.setAlpha(alpha);
     }
 
     private static int getRealTextViewHeight(@NonNull TextView textView) {
@@ -324,15 +288,6 @@ public class ExpandableXeiTextView extends LinearLayout implements View.OnClickL
         final ExpandIndicatorController expandIndicatorController;
         switch (expandToggleType) {
             case EXPAND_INDICATOR_IMAGE_BUTTON:
-                Drawable expandDrawable = typedArray.getDrawable(R.styleable.ExpandableTextView_expandIndicator);
-                Drawable collapseDrawable = typedArray.getDrawable(R.styleable.ExpandableTextView_collapseIndicator);
-
-                if (expandDrawable == null) {
-                    expandDrawable = getDrawable(context, R.drawable.ic_close_24dp);
-                }
-                if (collapseDrawable == null) {
-                    collapseDrawable = getDrawable(context, R.drawable.ic_hasbeenbought);
-                }
                 expandIndicatorController = new ImageButtonExpandController(context.getResources().getString(R.string.comment_comment_seeMore), context.getResources().getString(R.string.comment_comment_seeLess));
                 break;
             case EXPAND_INDICATOR_TEXT_VIEW:
@@ -404,7 +359,7 @@ public class ExpandableXeiTextView extends LinearLayout implements View.OnClickL
 
         private TextView mImageButton;
 
-        public ImageButtonExpandController(String expandDrawable, String collapseDrawable) {
+        ImageButtonExpandController(String expandDrawable, String collapseDrawable) {
             mExpandDrawable = expandDrawable;
             mCollapseDrawable = collapseDrawable;
         }
@@ -427,7 +382,7 @@ public class ExpandableXeiTextView extends LinearLayout implements View.OnClickL
 
         private TextView mTextView;
 
-        public TextViewExpandController(String expandText, String collapseText) {
+        TextViewExpandController(String expandText, String collapseText) {
             mExpandText = expandText;
             mCollapseText = collapseText;
         }
