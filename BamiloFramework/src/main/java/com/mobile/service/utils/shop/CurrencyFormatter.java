@@ -2,11 +2,9 @@ package com.mobile.service.utils.shop;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.mobile.service.Darwin;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
-
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -17,14 +15,14 @@ import java.util.Locale;
 
 /**
  * Static class responsible for formatting the currency.
- * @author GuilhermeSilva
  *
+ * @author GuilhermeSilva
  */
 public class CurrencyFormatter {
-    
-	private final static String TAG = CurrencyFormatter.class.getSimpleName();
-	
-	public final static String EURO_CODE = "EUR";
+
+    private final static String TAG = CurrencyFormatter.class.getSimpleName();
+
+    public final static String EURO_CODE = "EUR";
 
     /**
      * Current currency of the shop.
@@ -35,47 +33,59 @@ public class CurrencyFormatter {
     private static String currencyThousandsDelim;
     private static int currencyFractionCount;
     private static String currencyFractionDelim;
-    
+
     /**
-     * Placement of the server 
+     * Placement of the server
      */
     private static Locale apiLocale;
     private static boolean initialized = false;
 
     /**
-     * Initializes the Currency formatter.
-     * This function accesses the content data in order to access the currency language and country of the currency.
+     * Initializes the Currency formatter. This function accesses the content data in order to
+     * access the currency language and country of the currency.
      */
     public static void initialize(Context context, String currCode) {
-    	currencyCode = currCode;
+        currencyCode = currCode;
         apiLocale = Locale.US;
         initialized = true;
         // Load currency configurations
         loadCurrencyInformation(context);
-        
-        if (TextUtils.isEmpty(currCode)) throw new RuntimeException("Currency code is empty or null - fix this");
-        
+
+        if (TextUtils.isEmpty(currCode)) {
+            throw new RuntimeException("Currency code is empty or null - fix this");
+        }
+
         // Currency fallbacks
         // Case Uganda (Jumia)
-        if(currCode.equalsIgnoreCase("USH"))currCode = "UGX";
+        if (currCode.equalsIgnoreCase("USH")) {
+            currCode = "UGX";
+        }
         // Case Iran (Bamilo)
-        else if(currCode.equalsIgnoreCase("ريال")) currCode = "IRR";
+        else if (currCode.equalsIgnoreCase("ريال")) {
+            currCode = "IRR";
+        }
 
         Currency currency = Currency.getInstance(currCode);
         formatter = getNumberFormatter();
-        
-        Print.i(TAG, "CURRENCY: currency code = " + currency.getCurrencyCode() + " fraction digits = " + currency.getDefaultFractionDigits());
+
+        Print.i(TAG,
+                "CURRENCY: currency code = " + currency.getCurrencyCode() + " fraction digits = "
+                        + currency.getDefaultFractionDigits());
     }
 
     /**
      * Load currency info from country configurations.
      */
     public static void loadCurrencyInformation(Context context) {
-    	SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-    	currencyThousandsDelim = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, ",");
-    	currencyFractionCount = sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, 0);
-    	currencyFractionDelim = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, ".");
-    	currencyUnitPattern = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, ".");
+        SharedPreferences sharedPrefs = context
+                .getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        currencyThousandsDelim = sharedPrefs
+                .getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, ",");
+        currencyFractionCount = sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, 0);
+        currencyFractionDelim = sharedPrefs
+                .getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, ".");
+        currencyUnitPattern = sharedPrefs
+                .getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, ".");
     }
 
     public static String formatCurrency(double value) {
@@ -91,9 +101,27 @@ public class CurrencyFormatter {
         }
     }
 
+    public static String formatCurrency(String value, boolean showCurrency) {
+        if (!showCurrency) {
+            try {
+                NumberFormat format = NumberFormat.getInstance(apiLocale);
+                Number number = format.parse(value);
+                Double valueDouble = number.doubleValue();
+
+                return formatter.format(valueDouble);
+
+            } catch (Exception e) {
+                return value;
+            }
+        }
+
+        return formatCurrency(value);
+    }
+
     /**
-     * Formats a string containing a numeric value into the proper formatted
-     * currency of the country in question.
+     * Formats a string containing a numeric value into the proper formatted currency of the country
+     * in question.
+     *
      * @return the formatted string
      */
     public static String formatCurrency(String value) {
@@ -115,13 +143,16 @@ public class CurrencyFormatter {
         }
         return value;
     }
-    
+
     /**
      * Get the currency formatter.
+     *
      * @return NumberFormat
      */
     private static NumberFormat getNumberFormatter() {
-        if (!initialized) throw new RuntimeException("Currency converter not initialized");
+        if (!initialized) {
+            throw new RuntimeException("Currency converter not initialized");
+        }
         // Get the universal number format
         NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance(Locale.US);
         currencyFormat.setRoundingMode(RoundingMode.HALF_UP);
@@ -132,17 +163,17 @@ public class CurrencyFormatter {
         dfs.setCurrencySymbol("");
         dfs.setGroupingSeparator(currencyThousandsDelim.charAt(0));
         if (currencyFractionDelim != null) {
-        	dfs.setMonetaryDecimalSeparator(currencyFractionDelim.charAt(0));
+            dfs.setMonetaryDecimalSeparator(currencyFractionDelim.charAt(0));
         }
-        ((DecimalFormat)currencyFormat).setDecimalFormatSymbols(dfs);
+        ((DecimalFormat) currencyFormat).setDecimalFormatSymbols(dfs);
         return currencyFormat;
     }
-    
-    
+
+
     /**
-     * Get the number format.<br>
-     * Case build version <= 2.x returns the universal number format (Locale.US).<br>
-     * Otherwise returns the number format for the current Locale.<br>
+     * Get the number format.<br> Case build version <= 2.x returns the universal number format
+     * (Locale.US).<br> Otherwise returns the number format for the current Locale.<br>
+     *
      * @return NumberFormat
      * @author GuilhermeSilva
      */
@@ -150,15 +181,16 @@ public class CurrencyFormatter {
     private static NumberFormat getNumberFormat() {
         return DecimalFormat.getCurrencyInstance();
     }
-    
-	public static String getCurrencyCode() {
-    	return currencyCode;
+
+    public static String getCurrencyCode() {
+        return currencyCode;
     }
 
     /**
      * Test if text is number
-     * @see "http://stackoverflow.com/questions/1102891/how-to-check-if-a-string-is-a-numeric-type-in-java?answertab=active#tab-top"
+     *
      * @return true or false
+     * @see "http://stackoverflow.com/questions/1102891/how-to-check-if-a-string-is-a-numeric-type-in-java?answertab=active#tab-top"
      */
     public static boolean isNumber(String text) {
         try {
@@ -169,8 +201,8 @@ public class CurrencyFormatter {
         }
     }
 
-    public static String formatCurrencyPattern(String toFormat){
+    public static String formatCurrencyPattern(String toFormat) {
         return String.format(currencyUnitPattern, toFormat);
     }
-    
+
 }

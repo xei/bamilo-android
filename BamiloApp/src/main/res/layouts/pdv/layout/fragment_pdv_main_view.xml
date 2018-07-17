@@ -92,12 +92,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="56dp"
-                    android:maxLength="20"
                     android:gravity="center_vertical|right"
                     android:textAlignment="gravity"
                     android:layout_toLeftOf="@+id/pdv_appImageView_whiteBack"
                     android:layout_toRightOf="@+id/pdv_appImageView_whiteCart"
                     android:ellipsize="end"
+                    android:singleLine="true"
                     android:maxLines="1"
                     android:textColor="@color/white"
                     android:textSize="16sp"/>

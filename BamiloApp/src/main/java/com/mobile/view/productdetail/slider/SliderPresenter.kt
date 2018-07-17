@@ -7,29 +7,29 @@ import android.support.v4.view.ViewPager
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.Toast
+import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
+import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import com.mobile.app.BamiloApplication
 import com.mobile.components.widget.likebutton.SparkButton
-import com.mobile.helpers.wishlist.AddToWishListHelper
-import com.mobile.helpers.wishlist.RemoveFromWishListHelper
-import com.mobile.interfaces.IResponseCallback
-import com.mobile.service.pojo.BaseResponse
 import com.mobile.service.pojo.RestConstants
 import com.mobile.view.R
 import com.mobile.view.productdetail.gallery.GalleryActivity
-import com.mobile.view.productdetail.model.ImageList
+import com.mobile.view.productdetail.model.Image
+import com.mobile.view.productdetail.network.ProductWebApi
+import retrofit2.Callback
 
 /**
  * Created by Farshid since 6/19/2018. contact farshidabazari@gmail.com
  */
-class SliderPresenter(var context: Context, private var productSku: String, private var imageList: ImageList) {
-    fun onLikeButtonClicked(likeButton: SparkButton) {
+class SliderPresenter(var context: Context, private var productSku: String, private var imageList: ArrayList<Image>) {
+    fun onLikeButtonClicked(likeButton: SparkButton, callBack: Callback<ResponseWrapper<Any>>) {
         if (BamiloApplication.isCustomerLoggedIn()) {
             loginUser()
         } else {
             if (likeButton.isChecked) {
-                removeProductToWishList(likeButton)
+                removeProductToWishList(callBack)
             } else {
-                addProductToWishList(likeButton)
+                addProductToWishList(callBack)
             }
         }
     }
@@ -38,33 +38,16 @@ class SliderPresenter(var context: Context, private var productSku: String, priv
         Toast.makeText(context, R.string.please_login_first, Toast.LENGTH_SHORT).show()
     }
 
-    private fun removeProductToWishList(likeButton: SparkButton) {
-        BamiloApplication.INSTANCE.sendRequest(AddToWishListHelper(),
-                AddToWishListHelper.createBundle(productSku),
-                object : IResponseCallback {
-                    override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
-                        likeButton.isChecked = false
-                        likeButton.playAnimation()
-                    }
-
-                    override fun onRequestError(baseResponse: BaseResponse<*>?) {
-                    }
-                })
+    private fun removeProductToWishList(callBack: Callback<ResponseWrapper<Any>>) {
+        RetrofitHelper.makeWebApi(context, ProductWebApi::class.java)
+                .removeFromWishList(productSku)
+                .enqueue(callBack)
     }
 
-    private fun addProductToWishList(likeButton: SparkButton) {
-        BamiloApplication.INSTANCE.sendRequest(RemoveFromWishListHelper(),
-                RemoveFromWishListHelper.createBundle(productSku),
-                object : IResponseCallback {
-                    override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
-                        likeButton.isChecked = true
-                        likeButton.playAnimation()
-                    }
-
-                    override fun onRequestError(baseResponse: BaseResponse<*>?) {
-                    }
-                })
-
+    private fun addProductToWishList(callBack: Callback<ResponseWrapper<Any>>) {
+        RetrofitHelper.makeWebApi(context, ProductWebApi::class.java)
+                .addToWishList(productSku)
+                .enqueue(callBack)
     }
 
     fun shareProduct() {

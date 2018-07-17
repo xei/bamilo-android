@@ -663,10 +663,12 @@
     <string name="remain_">مانده: </string>
     <string name="see_all_reviews">مشاهده همه نظرات</string>
     <string name="more_3dot">بیشتر…</string>
-    <string name="close_bracket">)</string>
-    <string name="open_bracket">(</string>
+    <string name="close_bracket">\u200f)</string>
+    <string name="open_bracket">\u200f(</string>
     <string name="customers_review">نظرات کاربران درباره کالا</string>
     <string name="selle_not_returned">فروش بدون بازگشت</string>
     <string name="fullfilment">تامین موفق کالا</string>
+    <string name="discount_benifit">سود شما: %1$s %2$s  می باشد</string>
+    <string name="percent_sign">%</string>
 
 </resources>

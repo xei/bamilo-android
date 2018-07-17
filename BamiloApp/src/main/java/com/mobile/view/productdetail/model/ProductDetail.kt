@@ -18,7 +18,7 @@ class ProductDetail {
     var bundle: Boolean = false
     var has_stock = true
 
-    var image_list = ImageList()
+    var image_list = ArrayList<Image>()
     var price = Price()
     var variations = ArrayList<Variation>()
     var return_policy = ReturnPolicy()

@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.Toast
 import com.mobile.app.BamiloApplication
+import com.mobile.classes.models.MainEventModel
 import com.mobile.classes.models.SimpleEventModel
 import com.mobile.components.ghostadapter.GhostAdapter
 import com.mobile.constants.tracking.EventActionKeys
@@ -47,10 +48,6 @@ import com.mobile.view.productdetail.viewtypes.variation.VariationsItem
  * contact farshidabazari@gmail.com
  */
 class ProductDetailMainFragment : Fragment(), IResponseCallback {
-
-    var specificationItemPosition: Int = 0
-    var descriptionItemPosition: Int = 0
-
     private var sku: String? = ""
     private lateinit var binding: FragmentPdvMainViewBinding
 
@@ -100,12 +97,8 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         setupRefreshView()
         setupDetailRecycler()
 
+        updateUi()
         loadProductDetail(sku!!)
-
-//        val addFakeItem = AddFakeDataToMainFragment(context, fragmentManager!!, sku, adapter, items, pdvMainView)
-//        addFakeItem.addFakeItem()
-//        pdvMainView.onProductReceived(addFakeItem.productDetail)
-
         return binding.root
     }
 
@@ -196,11 +189,15 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         addVariations()
         addReturnPolicy()
         addSellerInfo()
-        addDescription()
-        addSpecification()
         addReviews()
 
         adapter.setItems(items)
+
+        val viewProductEventModel = MainEventModel("pdv", EventActionKeys.VIEW_PRODUCT, product.sku,
+                product.price.price.toLong(),
+                MainEventModel.createViewProductEventModelAttributes("categoryUrlKey",
+                product.price.price.toLong()))
+        TrackerManager.trackEvent(context, EventConstants.ViewProduct, viewProductEventModel)
     }
 
     private fun addImagesToSlider() {
@@ -215,7 +212,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     private fun addPrimaryInfoItem() {
         val primaryInfoModel = PrimaryInfoModel()
         primaryInfoModel.priceModel = product.price
-        primaryInfoModel.isExist = product.has_stock
+        primaryInfoModel.hasStock = product.has_stock
         primaryInfoModel.rating = product.rating
         primaryInfoModel.title = product.title
 
@@ -231,15 +228,19 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
             override fun onItemClicked(any: Any?) {
                 when (any) {
                     VariationsItem.description -> {
-                        binding.pdvRecyclerDetailList.smoothScrollToPosition(descriptionItemPosition)
+                        gotoDescriptionPage()
                     }
                     VariationsItem.specification -> {
-                        binding.pdvRecyclerDetailList.smoothScrollToPosition(specificationItemPosition)
+                        gotoDescriptionPage()
                     }
                     is Product -> pdvMainView.onSizeVariationClicked(any)
                 }
             }
         }))
+    }
+
+    private fun gotoDescriptionPage() {
+
     }
 
     private fun addReturnPolicy() {
@@ -252,23 +253,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
 
     private fun addSellerInfo() {
         addHeader(context!!.getString(R.string.fulfilled))
-        items.add(SellerItem(product.seller, product.other_seller_count, sku!!))
-    }
-
-    private fun addDescription() {
-        // todo if( product has description add header and description esle return
-        // addHeader(context!!.getString(R.string.description))
-        // items.add(DescriptionItem(product.))
-        descriptionItemPosition = items.size - 1
-    }
-
-    private fun addSpecification() {
-        // todo if( product has specification add header and specification else return
-
-        // addHeader(context!!.getString(R.string.specifications))
-
-        // items.add(DescriptionItem(product.))
-        specificationItemPosition = items.size - 1
+        items.add(SellerItem(product.seller, product.other_seller_count, product.simple_sku))
     }
 
     private fun addReviews() {
@@ -276,58 +261,6 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
             addHeader(context!!.getString(R.string.customers_review))
             items.add(ReviewsItem(product.reviews))
         }
-    }
-
-    private fun onLikeButtonClicked(any: Any?) {
-        if (any == null) {
-            loginUser()
-        } else {
-            if (any == true) {
-                addProductToWishList()
-            } else {
-                removeProductFromWishList()
-            }
-        }
-    }
-
-    private fun removeProductFromWishList() {
-        BamiloApplication.INSTANCE.sendRequest(AddToWishListHelper(),
-                AddToWishListHelper.createBundle(sku),
-                this)
-
-        //TODO, add GA after product added to wishList
-        val sem = SimpleEventModel()
-        sem.category = getString(TrackingPage.PRODUCT_DETAIL.getName())
-        sem.action = EventActionKeys.ADD_TO_WISHLIST
-        sem.label = sku
-
-        if (pdvMainFragmentViewModel!!.getItems(sku!!).value != null) {
-            sem.value = pdvMainFragmentViewModel!!.getItems(sku!!).value!!.price.price.toLong()
-        }
-
-        TrackerManager.trackEvent(context, EventConstants.RemoveFromWishList, sem)
-    }
-
-    private fun addProductToWishList() {
-        BamiloApplication.INSTANCE.sendRequest(AddToWishListHelper(),
-                AddToWishListHelper.createBundle(sku),
-                this)
-
-        //TODO, add GA after product added to wishList
-        val sem = SimpleEventModel()
-        sem.category = getString(TrackingPage.PRODUCT_DETAIL.getName())
-        sem.action = EventActionKeys.REMOVE_FROM_WISHLIST
-        sem.label = sku
-
-        if (pdvMainFragmentViewModel!!.getItems(sku!!).value != null) {
-            sem.value = pdvMainFragmentViewModel!!.getItems(sku!!).value!!.price.price.toLong()
-        }
-
-        TrackerManager.trackEvent(context, EventConstants.RemoveFromWishList, sem)
-    }
-
-    private fun loginUser() {
-        Toast.makeText(context, R.string.please_login_first, Toast.LENGTH_SHORT).show()
     }
 
     public fun reloadData(sku: String) {

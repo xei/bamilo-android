@@ -1,11 +1,13 @@
 package com.mobile.view.productdetail
 
 import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import com.mobile.app.BamiloApplication
 import com.mobile.classes.models.BaseScreenModel
 import com.mobile.classes.models.MainEventModel
 import com.mobile.constants.tracking.EventActionKeys
@@ -31,6 +33,15 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
     private var sizeVariation = Product()
 
     private var sku: String? = ""
+
+    companion object {
+        @JvmStatic
+        fun start(invokerContext: Context, sku: String) {
+            val intent = Intent(invokerContext, ProductDetailActivity::class.java)
+            intent.putExtra("sku", sku)
+            invokerContext.startActivity(intent)
+        }
+    }
 
     override fun attachBaseContext(newBase: Context?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && newBase != null) {
@@ -60,7 +71,6 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
         if (intent != null) {
             sku = intent.getStringExtra("sku")
         }
-        sku = "HU820CD0CQJVWNAFAMZ"
     }
 
     private fun bindAddToCartClickListener() {
@@ -68,12 +78,26 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
             if (sizeVariation.sku.isEmpty()) {
                 productDetailPresenter.showBottomSheet()
             } else {
-                displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
+                trackAddToCartEvent()
             }
         })
+    }
 
-//        TrackerManager.trackEvent(this, EventConstants.AddToCart, addToCartEventModel)
+    private fun trackAddToCartEvent() {
+        val addToCartEventModel = MainEventModel(getString(TrackingPage.PDV.getName()), EventActionKeys.ADD_TO_CART,
+                productDetail.sku, productDetail.price.price.toLong(), null)
 
+        val cart = BamiloApplication.INSTANCE.cart
+
+        if (cart != null) {
+            addToCartEventModel.customAttributes = MainEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label,
+                    cart.total.toLong(), true)
+        } else {
+            addToCartEventModel.customAttributes = MainEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label,
+                    0, true)
+        }
+
+        TrackerManager.trackEvent(this, EventConstants.AddToCart, addToCartEventModel)
     }
 
     private fun getCurrentFragment(): Fragment {
@@ -101,15 +125,10 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
 
     private fun replaceFragment(fragment: Fragment) {
         val backStateName = fragment.javaClass.simpleName
-
-//        val fragmentPopped = manager.popBackStackImmediate(backStateName, 0)
-
-//        if (!fragmentPopped && manager.findFragmentByTag(backStateName) == null) {
-            val ft = supportFragmentManager.beginTransaction()
-            ft.replace(R.id.pdv_frameLayout_fragmentContainer, fragment, backStateName)
-            ft.addToBackStack(backStateName)
-            ft.commit()
-//        }
+        val ft = supportFragmentManager.beginTransaction()
+        ft.replace(R.id.pdv_frameLayout_fragmentContainer, fragment, backStateName)
+        ft.addToBackStack(backStateName)
+        ft.commit()
     }
 
     private fun getFragment(fragmentTag: FragmentTag): Fragment? {
@@ -154,10 +173,10 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
             return
         }
 
-//        if (getCurrentFragment() is ProductDetailMainFragment) {
-//            finish()
-//            return
-//        }
+        if (fragmentManager.backStackEntryCount == 0) {
+            finish()
+            return
+        }
 
         super.onBackPressed()
     }

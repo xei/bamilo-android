@@ -4,12 +4,15 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.util.Log
+import android.content.Context
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
+import com.mobile.classes.models.BaseScreenModel
+import com.mobile.managers.TrackerManager
+import com.mobile.service.tracking.TrackingPage
+import com.mobile.view.R
 import com.mobile.view.productdetail.model.ProductDetail
 import com.mobile.view.productdetail.network.ProductWebApi
-import com.mobile.view.productdetail.network.response.ProductDetailResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,16 +47,23 @@ class ProductDetailMainFragmentViewModel(application: Application) : AndroidView
     }
 
     private fun getProductInfo(sku: String) {
+        val screenModel = BaseScreenModel(
+                (getApplication() as Context).getString(TrackingPage.PDV.getName()),
+                (getApplication() as Context).getString(R.string.gaScreen),
+                sku, System.currentTimeMillis())
+
+        TrackerManager.trackScreenTiming(getApplication(), screenModel)
+
         RetrofitHelper
                 .makeWebApi(getApplication(), ProductWebApi::class.java)
                 .getProductDetail(sku)
-                .enqueue(object : Callback<ResponseWrapper<ProductDetailResponse>> {
-                    override fun onFailure(call: Call<ResponseWrapper<ProductDetailResponse>>?, t: Throwable?) {
+                .enqueue(object : Callback<ResponseWrapper<ProductDetail>> {
+                    override fun onFailure(call: Call<ResponseWrapper<ProductDetail>>?, t: Throwable?) {
                         setItems(null)
                     }
 
-                    override fun onResponse(call: Call<ResponseWrapper<ProductDetailResponse>>?,
-                                            response: Response<ResponseWrapper<ProductDetailResponse>>?) {
+                    override fun onResponse(call: Call<ResponseWrapper<ProductDetail>>?,
+                                            response: Response<ResponseWrapper<ProductDetail>>?) {
                         if (response == null) {
                             return
                         }
@@ -64,7 +74,7 @@ class ProductDetailMainFragmentViewModel(application: Application) : AndroidView
                         if (response.body() == null) {
                             return
                         }
-                        setItems(response.body().metadata.data)
+                        setItems(response.body().metadata)
                     }
                 })
         //get from server

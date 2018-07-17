@@ -12,7 +12,7 @@ import android.support.v7.widget.RecyclerView
 import com.mobile.components.ghostadapter.GhostAdapter
 import com.mobile.view.R
 import com.mobile.view.productdetail.OnItemClickListener
-import com.mobile.view.productdetail.model.ImageList
+import com.mobile.view.productdetail.model.Image
 import com.mobile.view.productdetail.viewtypes.gallery.GalleryBottomImageItem
 import java.lang.Exception
 
@@ -21,7 +21,7 @@ const val KEY_EXTRA_IMAGES = "KEY_EXTRA_IMAGES"
 @Suppress("UNCHECKED_CAST")
 class GalleryActivity : AppCompatActivity() {
 
-    private var images: ImageList? = null
+    private var images: ArrayList<Image>? = null
 
     private var adapter = GhostAdapter()
     private var items = ArrayList<Any>()
@@ -32,7 +32,7 @@ class GalleryActivity : AppCompatActivity() {
     companion object {
 
         @JvmStatic
-        fun start(invokerContext: Context, images: ImageList) {
+        fun start(invokerContext: Context, images: ArrayList<Image>) {
             val intent = Intent(invokerContext, GalleryActivity::class.java)
             intent.putExtra(KEY_EXTRA_IMAGES, images)
             invokerContext.startActivity(intent)
@@ -46,7 +46,7 @@ class GalleryActivity : AppCompatActivity() {
         onCloseItemClicked()
         getImagesListFromBundle()
 
-        if (images != null && images!!.image_list.size > 0) {
+        if (images != null && images!!.size > 0) {
             showImages()
         } else {
             showNoImageView()
@@ -55,7 +55,7 @@ class GalleryActivity : AppCompatActivity() {
 
     private fun getImagesListFromBundle() {
         try {
-            images = intent.extras[KEY_EXTRA_IMAGES] as ImageList?
+            images = intent.extras[KEY_EXTRA_IMAGES] as ArrayList<Image>?
         } catch (e: Exception) {
         }
     }
@@ -101,7 +101,7 @@ class GalleryActivity : AppCompatActivity() {
     }
 
     private fun addImagesToRecyclerView() {
-        for (imageUrl in images!!.image_list) {
+        for (imageUrl in images!!) {
             items.add(GalleryBottomImageItem(imageUrl.medium, object : OnItemClickListener {
                 override fun onItemClicked(any: Any?) {
                     val position = any as Int

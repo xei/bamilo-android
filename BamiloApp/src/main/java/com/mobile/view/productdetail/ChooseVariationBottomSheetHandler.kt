@@ -100,11 +100,13 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
         bottomSheetAdapter.removeAll()
         bottomSheetItems.clear()
 
-        ImageManager.getInstance().loadImage(product.image_list.image_list[0].medium, binding.chooseVariationRelativeLayoutLayout!!
-                .chooseVariationAppImageViewProductImage,
-                null,
-                R.drawable.no_image_large,
-                false)
+        if (product.image_list.size > 0) {
+            ImageManager.getInstance().loadImage(product.image_list[0].medium, binding.chooseVariationRelativeLayoutLayout!!
+                    .chooseVariationAppImageViewProductImage,
+                    null,
+                    R.drawable.no_image_large,
+                    false)
+        }
 
         binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewTitle.text = product.title
         binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewPrice.text = product.price.price

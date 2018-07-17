@@ -5,6 +5,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,9 +59,9 @@ public class GhostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 try {
                     method.invoke(o, holder);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    Log.v("ghost adapter", "IllegalAccessException ");
                 } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+                    Log.v("ghost adapter", "InvocationTargetException");
                 }
             }
         }
@@ -100,7 +101,6 @@ public class GhostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         bind(holder, items.get(position));
-//        items.storeAllContactInDB(position).bind(holder);
     }
 
     @Override

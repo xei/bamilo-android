@@ -14,15 +14,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/dimen_8dp"
-        android:paddingRight="@dimen/dimen_8dp"
         android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
-            android:background="?android:attr/selectableItemBackground"
             android:id="@+id/pdvSellerInfo_constraintLayout_sellerInfoHeader"
             android:layout_width="match_parent"
-            android:layout_height="48dp">
+            android:layout_height="48dp"
+            android:paddingLeft="@dimen/dimen_8dp"
+            android:paddingRight="@dimen/dimen_8dp"
+            android:background="?android:attr/selectableItemBackground">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/pdvSellerInfo_textView_name"
@@ -31,10 +31,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
                 android:fontFamily="@string/bamilo_bold_font"
                 android:textColor="#25a8ed"
                 android:textSize="14sp"
@@ -77,9 +77,9 @@
         <net.cachapa.expandablelayout.ExpandableLayout
             android:id="@+id/pdvSellerInfo_expandableLayout"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:el_duration="250"
-            app:el_expanded="true"
-            android:layout_height="wrap_content">
+            app:el_expanded="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -91,27 +91,35 @@
                     layout="@layout/seller_no_score"
                     android:layout_width="wrap_content"
                     android:layout_height="26dp"
-                    android:layout_marginTop="@dimen/dimen_4dp"/>
+                    android:layout_marginTop="@dimen/dimen_4dp"
+                    android:layout_marginLeft="@dimen/dimen_12dp"
+                    android:layout_marginRight="@dimen/dimen_12dp"/>
 
                 <include
                     android:id="@+id/pdvSellerInfo_relativeLayout_sellerScoreTitleParent"
                     layout="@layout/seller_score"
                     android:layout_width="wrap_content"
                     android:layout_height="26dp"
-                    android:layout_marginTop="@dimen/dimen_4dp"/>
+                    android:layout_marginTop="@dimen/dimen_4dp"
+                    android:layout_marginLeft="@dimen/dimen_12dp"
+                    android:layout_marginRight="@dimen/dimen_12dp"/>
 
                 <include
                     android:id="@+id/pdvSellerInfo_constraintLayout_sellerScoreParent"
                     layout="@layout/content_seller_score_old"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_8dp"/>
+                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:layout_marginLeft="@dimen/dimen_8dp"
+                    android:layout_marginRight="@dimen/dimen_8dp"/>
 
                 <LinearLayout
                     android:id="@+id/pdvSellerInfo_linearLayout_percentageRoot"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp">
+                    android:layout_marginTop="12dp"
+                    android:paddingLeft="@dimen/dimen_12dp"
+                    android:paddingRight="@dimen/dimen_12dp">
 
                     <android.support.v7.widget.AppCompatImageView
                         android:layout_width="24dp"
@@ -122,8 +130,8 @@
                         android:id="@+id/pdvSellerInfo_textView_collaborationPeriodLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="6dp"
+                        android:layout_gravity="center_vertical"
                         android:text="@string/collaboration_period_"
                         android:textColor="@color/primary_text_color"
                         android:textSize="12sp"/>
@@ -132,8 +140,8 @@
                         android:id="@+id/pdvSellerInfo_textView_collaborationPeriod"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="8dp"
+                        android:layout_gravity="center_vertical"
                         android:textColor="@color/primary_text_color"
                         android:textSize="12sp"/>
 
@@ -143,7 +151,9 @@
                     android:id="@+id/pdvSellerInfo_linearLayout_warrantyRoot"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_12dp">
+                    android:layout_marginTop="@dimen/dimen_12dp"
+                    android:paddingLeft="@dimen/dimen_12dp"
+                    android:paddingRight="@dimen/dimen_12dp">
 
                     <android.support.v7.widget.AppCompatImageView
                         android:layout_width="24dp"
@@ -155,8 +165,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dimen_18dp"
-                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="6dp"
+                        android:layout_gravity="center_vertical"
                         android:textColor="@color/primary_text_color"
                         android:textSize="12sp"/>
 
@@ -165,21 +175,21 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:visibility="visible"
                     android:layout_marginTop="@dimen/dimen_16dp"
-                    android:layout_marginLeft="@dimen/dimen_8dp"
-                    android:layout_marginRight="@dimen/dimen_8dp"
-                    android:background="@color/grey_dividerlight"/>
+                    android:layout_marginLeft="@dimen/dimen_16dp"
+                    android:layout_marginRight="@dimen/dimen_16dp"
+                    android:background="@color/grey_dividerlight"
+                    android:visibility="visible"/>
 
                 <com.mobile.components.customfontviews.TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
                     android:layout_marginTop="@dimen/dimen_16dp"
-                    android:layout_marginRight="@dimen/dimen_4dp"
+                    android:layout_marginRight="@dimen/dimen_12dp"
                     android:text="@string/estimated_delivery_time"
                     android:textColor="@color/primary_text_color"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp"
+                    android:visibility="visible"/>
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/pdv_spinner_deliveryRegion"
@@ -187,11 +197,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_4dp"
-                    android:layout_marginLeft="@dimen/margin_padding_xl"
-                    android:layout_marginRight="@dimen/margin_padding_xl"
+                    android:layout_marginLeft="@dimen/dimen_12dp"
+                    android:layout_marginRight="@dimen/dimen_12dp"
                     android:minHeight="@dimen/dimen_50dp"
                     android:prompt="@string/delivery_state"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/pdv_spinner_deliveryCity"
@@ -204,24 +214,25 @@
                     android:prompt="@string/delivery_city"
                     android:spinnerMode="dropdown"
                     android:textSize="18sp"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    android:layout_marginBottom="@dimen/dimen_8dp"
                     android:layout_marginTop="@dimen/dimen_16dp"
-                    android:layout_marginLeft="@dimen/dimen_4dp"
-                    android:layout_marginRight="@dimen/dimen_4dp"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="@dimen/dimen_8dp"
+                    android:layout_marginLeft="@dimen/dimen_12dp"
+                    android:layout_marginRight="@dimen/dimen_12dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
 
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/pdvSellerInfo_texView_deliverTimeAndCity"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginLeft="@dimen/dimen_8dp"
+                        android:layout_marginLeft="@dimen/dimen_12dp"
+                        android:layout_marginRight="@dimen/dimen_12dp"
                         android:fontFamily="@string/bamilo_bold_font"
                         android:textColor="@color/primary_text_color"
                         android:textSize="12sp"
@@ -231,20 +242,20 @@
                         android:id="@+id/pdvSellerInfo_appImageView_editCity"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:visibility="gone"
                         android:layout_marginTop="2dp"
+                        android:visibility="gone"
                         app:srcCompat="@drawable/ic_edit_blue"/>
 
                     <com.mobile.components.customfontviews.TextView
-                        android:background="?android:attr/selectableItemBackground"
                         android:id="@+id/pdvSellerInfo_textView_editCity"
-                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
+                        android:background="?android:attr/selectableItemBackground"
                         android:text="@string/edit_city"
                         android:textColor="#25a8ed"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 
@@ -269,12 +280,12 @@
                         android:id="@+id/pdvSellerInfo_textView_otherSellersCount"
                         android:layout_width="wrap_content"
                         android:layout_height="18dp"
-                        android:textSize="@dimen/dimen_12sp"
-                        android:paddingLeft="@dimen/dimen_4dp"
-                        android:paddingRight="@dimen/dimen_4dp"
+                        android:paddingLeft="@dimen/dimen_6dp"
+                        android:paddingRight="@dimen/dimen_6dp"
                         android:background="#25a8ed"
                         android:gravity="center"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dimen_12sp"/>
 
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/pdvSellerInfo_textView_otherSellersText"
@@ -284,9 +295,9 @@
                         android:paddingLeft="@dimen/dimen_4dp"
                         android:paddingRight="@dimen/dimen_4dp"
                         android:gravity="center"
-                        android:textSize="@dimen/dimen_12sp"
                         android:text="@string/other_sellers_foroshandegan"
-                        android:textColor="#25a8ed"/>
+                        android:textColor="#25a8ed"
+                        android:textSize="@dimen/dimen_12sp"/>
 
                 </LinearLayout>
 

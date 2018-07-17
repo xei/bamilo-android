@@ -86,6 +86,7 @@ import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
 import com.mobile.view.newfragments.NewSessionLoginMainFragment;
 import com.mobile.view.newfragments.NewShoppingCartFragment;
 import com.mobile.view.newfragments.SubCategoryFilterFragment;
+import com.mobile.view.productdetail.ProductDetailActivity;
 import com.pushwoosh.BasePushMessageReceiver;
 import com.pushwoosh.BaseRegistrationReceiver;
 import com.pushwoosh.PushManager;
@@ -454,10 +455,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 break;
             case PRODUCT_DETAILS:
                 // Create instance
-                fragment = newFragmentInstance(OldProductDetailsFragment.class, bundle);
-                // Put the type with unique identifier
-                type = FragmentType.getUniqueIdentifier(type, fragment);
-                break;
+                ProductDetailActivity.start(this, bundle.getString(ConstantsIntentExtra.CONTENT_ID));
+                return;
             case PRODUCT_INFO:
                 fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);
                 break;

@@ -44,7 +44,7 @@ import java.util.*
 @BindItem(layout = R.layout.content_pdv_seller_info, holder = SellerHolder::class)
 class SellerItem(private var seller: Seller,
                  private var otherSellersCount: Int,
-                 private var sku: String) {
+                 private var simpleSku: String) {
 
     private var regions: ArrayList<Region>? = null
     private var cities: ArrayList<City>? = null
@@ -57,6 +57,39 @@ class SellerItem(private var seller: Seller,
 
     /***************************** Setup Seller Info ************************************/
 
+    private fun showNoScoreWithBadge(holder: SellerHolder) {
+        holder.noScoreLayout.visibility = View.VISIBLE
+        holder.newBadge.visibility = View.VISIBLE
+
+        holder.sellerScoreParent.visibility = View.GONE
+        holder.scoreLayout.visibility = View.GONE
+    }
+
+    private fun showNoScoreWithoutBadge(holder: SellerHolder) {
+        holder.noScoreLayout.visibility = View.VISIBLE
+
+        holder.newBadge.visibility = View.GONE
+        holder.sellerScoreParent.visibility = View.GONE
+        holder.scoreLayout.visibility = View.GONE
+    }
+
+    private fun doNotShowSellerScore(holder: SellerHolder) {
+        holder.sellerScoreParent.visibility = View.GONE
+        holder.scoreLayout.visibility = View.GONE
+    }
+
+    private fun showSellerScore(holder: SellerHolder) {
+        holder.noScoreLayout.visibility = View.GONE
+        holder.newBadge.visibility = View.GONE
+
+        holder.sellerScoreParent.visibility = View.VISIBLE
+        holder.scoreLayout.visibility = View.VISIBLE
+
+        setupSellerRate(holder)
+        showSellerRateProgressRate(holder)
+        showSellerRateTexts(holder, seller.score)
+    }
+
     /**
      * onBindItem
      * */
@@ -65,21 +98,20 @@ class SellerItem(private var seller: Seller,
         holder.sellerName.text = seller.name
         this.holder = holder
 
-        when {
-            seller.isNew -> {
-                setUpNewSeller(holder)
+        if (seller.score.overall == 0F) {
+            if (seller.isNew) {
+                showNoScoreWithBadge(holder)
+            } else {
+                showNoScoreWithoutBadge(holder)
             }
-            seller.score.isEnabled -> {
-                setupSellerRate(holder)
-                showSellerRateProgressRate(holder)
-                showSellerRateTexts(holder, seller.score)
-            }
-            else -> {
-                goneAllSellerRateViews(holder)
-            }
+        } else if (seller.score.isEnabled) {
+            showSellerScore(holder)
+        } else {
+            doNotShowSellerScore(holder)
         }
 
-        showSellerCollaborationPeriod(holder)
+        setupSellerCollaborationPeriod(holder)
+        setupWarranty(holder)
         setupOtherSellers(holder)
 
         triggerGetRegions()
@@ -102,15 +134,7 @@ class SellerItem(private var seller: Seller,
     }
 
     private fun showOtherSellers() {
-    }
 
-    private fun goneAllSellerRateViews(holder: SellerHolder) {
-        holder.collaborationPeriod.visibility = View.GONE
-        holder.warranty.visibility = View.GONE
-        holder.percentageLayout.visibility = View.GONE
-        holder.sellerScoreParent.visibility = View.GONE
-        holder.scoreLayout.visibility = View.GONE
-        holder.noScoreLayout.visibility = View.GONE
     }
 
     private fun setupSellerRate(holder: SellerHolder) {
@@ -119,7 +143,7 @@ class SellerItem(private var seller: Seller,
         holder.sellerScoreMaxValue.text = holder.itemView.context.getString(R.string.of_number,
                 seller.score.maxValue)
 
-//        holder.sellerScore.text = seller.score.overall.toString()
+        holder.sellerScore.text = seller.score.overall.toString()
 
         holder.sellerScore.setBackgroundDrawable(createRoundDrawable("#47b638",
                 UIUtils.dpToPx(holder.itemView.context, 2f)))
@@ -137,6 +161,7 @@ class SellerItem(private var seller: Seller,
         holder.percentageLayout.visibility = View.GONE
         holder.sellerScoreParent.visibility = View.GONE
         holder.scoreLayout.visibility = View.GONE
+
         holder.noScoreLayout.visibility = View.VISIBLE
     }
 
@@ -159,7 +184,7 @@ class SellerItem(private var seller: Seller,
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showSellerCollaborationPeriod(holder: SellerHolder) {
+    private fun setupSellerCollaborationPeriod(holder: SellerHolder) {
         if (TextUtils.isEmpty(seller.presenceDuration.value)) {
             holder.percentageLayout.visibility = View.GONE
         } else {
@@ -171,6 +196,15 @@ class SellerItem(private var seller: Seller,
             holder.collaborationPeriod.text = seller.presenceDuration.value
         }
 
+        if (TextUtils.isEmpty(seller.warranty)) {
+            holder.warrantyLayout.visibility = View.GONE
+        } else {
+            holder.warrantyLayout.visibility = View.VISIBLE
+            holder.warranty.text = seller.warranty
+        }
+    }
+
+    private fun setupWarranty(holder: SellerHolder) {
         if (TextUtils.isEmpty(seller.warranty)) {
             holder.warrantyLayout.visibility = View.GONE
         } else {
@@ -201,10 +235,9 @@ class SellerItem(private var seller: Seller,
         holder.successfulSupplyProgress.max = seller.score.maxValue * 10
         holder.sendOnTimeProgress.max = seller.score.maxValue * 10
 
-//        holder.salesWithoutReturnProgress.progress = (seller.score.notReturned * 10).toInt()
-//        holder.successfulSupplyProgress.progress = (seller.score.fullFillment * 10).toInt()
-//        holder.sendOnTimeProgress.progress = (seller.score.sLAReached * 10).toInt()
-
+        holder.salesWithoutReturnProgress.progress = (seller.score.notReturned * 10).toInt()
+        holder.successfulSupplyProgress.progress = (seller.score.fullFillment * 10).toInt()
+        holder.sendOnTimeProgress.progress = (seller.score.sLAReached * 10).toInt()
     }
 
     private fun showSellerRateTexts(holder: SellerHolder, id: Int, value: String) {
@@ -228,33 +261,33 @@ class SellerItem(private var seller: Seller,
 
     @SuppressLint("StringFormatMatches")
     private fun showSLAReach(holder: SellerHolder, sellerScore: Score) {
-//        val result = getScoreString(sellerScore.sLAReached)
+        val result = getScoreString(sellerScore.sLAReached)
 
-//        showSellerRateTexts(holder, R.id.sellerScore_textView_sendOnTimeRate,
-//                holder.itemView.context.getString(R.string.seller_info_rate_from,
-//                        result,
-//                        sellerScore.maxValue))
+        showSellerRateTexts(holder, R.id.sellerScore_textView_sendOnTimeRate,
+                holder.itemView.context.getString(R.string.seller_info_rate_from,
+                        result,
+                        sellerScore.maxValue))
     }
 
     @SuppressLint("StringFormatMatches")
     private fun showNotReturned(holder: SellerHolder, sellerScore: Score) {
-//        val result = getScoreString(sellerScore.notReturned)
-//        showSellerRateTexts(holder, R.id.sellerScore_textView_salesWithoutReturnRate,
-//                holder.itemView.context.getString(R.string.seller_info_rate_from,
-//                        result,
-//                        sellerScore.maxValue))
+        val result = getScoreString(sellerScore.notReturned)
+        showSellerRateTexts(holder, R.id.sellerScore_textView_salesWithoutReturnRate,
+                holder.itemView.context.getString(R.string.seller_info_rate_from,
+                        result,
+                        sellerScore.maxValue))
     }
 
     @SuppressLint("StringFormatMatches")
     private fun showFullfilment(holder: SellerHolder, sellerScore: Score) {
-//        val result = getScoreString(sellerScore.fullFillment)
-//        showSellerRateTexts(holder, R.id.sellerScore_textView_successfulSupplyRate,
-//                holder.itemView.context.getString(R.string.seller_info_rate_from,
-//                        result,
-//                        sellerScore.maxValue))
+        val result = getScoreString(sellerScore.fullFillment)
+        showSellerRateTexts(holder, R.id.sellerScore_textView_successfulSupplyRate,
+                holder.itemView.context.getString(R.string.seller_info_rate_from,
+                        result,
+                        sellerScore.maxValue))
     }
 
-    private fun getScoreString(value: Double): String {
+    private fun getScoreString(value: Float): String {
         @SuppressLint("DefaultLocale")
         var result = String.format("%.1f", value)
 
@@ -366,7 +399,7 @@ class SellerItem(private var seller: Seller,
 
     private fun triggerGetDeliveryTime(cityId: Int) {
         RetrofitHelper.makeWebApi(holder.itemView.context, RegionWebApi::class.java)
-                .getDeliveryTime(cityId, sku)
+                .getDeliveryTime(cityId, simpleSku)
                 .enqueue(object : Callback<ResponseWrapper<DeliveryTimeResponse>> {
 
                     override fun onFailure(call: Call<ResponseWrapper<DeliveryTimeResponse>>?,

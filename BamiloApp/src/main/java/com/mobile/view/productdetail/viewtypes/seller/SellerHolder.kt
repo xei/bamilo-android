@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import android.widget.RelativeLayout
 import com.mobile.components.customfontviews.TextView
 import com.mobile.view.R
 import net.cachapa.expandablelayout.ExpandableLayout
@@ -31,10 +30,6 @@ class SellerHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
     var editCity: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_textView_editCity)
     var otherSellersCount: TextView = itemView!!.findViewById(R.id.pdvSellerInfo_textView_otherSellersCount)
 
-    var successfulSupplyRate: TextView = itemView!!.findViewById(R.id.sellerScore_textView_successfulSupplyRate)
-    var salesWithoutReturnRate: TextView = itemView!!.findViewById(R.id.sellerScore_textView_salesWithoutReturnRate)
-    var sendOnTimeRate: TextView = itemView!!.findViewById(R.id.sellerScore_textView_sendOnTimeRate)
-
     var maxValueOfScore: TextView = itemView!!.findViewById(R.id.sellerScore_textView_maxValueOfScore)
 
     var successfulSupplyProgress: ProgressBar = itemView!!.findViewById(R.id.sellerScore_progressBar_successfulSupply)
@@ -46,7 +41,7 @@ class SellerHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
     var sellerScoreParent: ConstraintLayout = itemView!!.findViewById(R.id.pdvSellerInfo_constraintLayout_sellerScoreParent)
     var sellerInfoHeader: ConstraintLayout = itemView!!.findViewById(R.id.pdvSellerInfo_constraintLayout_sellerInfoHeader)
 
-    var noScoreLayout: RelativeLayout = itemView!!.findViewById(R.id.pdvSellerInfo_relativeLayout_noScore)
+    var noScoreLayout: LinearLayout = itemView!!.findViewById(R.id.pdvSellerInfo_relativeLayout_noScore)
 
     var showDetailImageView: AppCompatImageView = itemView!!.findViewById(R.id.pdvSellerInfo_appImageView_showDetail)
     var editCityImage: AppCompatImageView = itemView!!.findViewById(R.id.pdvSellerInfo_appImageView_editCity)
@@ -57,8 +52,9 @@ class SellerHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
     var sellerInfoExpandableLayout: ExpandableLayout = itemView!!.findViewById(R.id.pdvSellerInfo_expandableLayout)
 
     var deliveryCitySpinner: AppCompatSpinner = itemView!!.findViewById(R.id.pdv_spinner_deliveryCity)
-    var deliveryRegionSpinner: AppCompatSpinner= itemView!!.findViewById(R.id.pdv_spinner_deliveryRegion)
+    var deliveryRegionSpinner: AppCompatSpinner = itemView!!.findViewById(R.id.pdv_spinner_deliveryRegion)
+    var newBadge: AppCompatImageView = itemView!!.findViewById(R.id.pdvSellerInfo_appImageView_newBadge)
 
-    var warrantyLayout : LinearLayout = itemView!!.findViewById(R.id.pdvSellerInfo_linearLayout_warrantyRoot)
-    var percentageLayout : LinearLayout = itemView!!.findViewById(R.id.pdvSellerInfo_linearLayout_percentageRoot)
+    var warrantyLayout: LinearLayout = itemView!!.findViewById(R.id.pdvSellerInfo_linearLayout_warrantyRoot)
+    var percentageLayout: LinearLayout = itemView!!.findViewById(R.id.pdvSellerInfo_linearLayout_percentageRoot)
 }

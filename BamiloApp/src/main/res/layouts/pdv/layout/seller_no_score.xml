@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="26dp"
-    android:orientation="horizontal">
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:background="@drawable/round_light_gray_8">
-
-        <com.mobile.components.customfontviews.TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="38dp"
-            android:layout_centerVertical="true"
-            android:text="@string/no_score_submited"
-            android:textColor="@color/secondary_text_color"
-            android:textSize="@dimen/dimen_12sp"/>
-
-    </RelativeLayout>
+    android:paddingRight="@dimen/dimen_4dp"
+    android:paddingLeft="@dimen/dimen_4dp"
+    android:layoutDirection="rtl"
+    android:gravity="right"
+    android:background="@drawable/round_light_gray_8"
+    android:orientation="horizontal"
+    tools:targetApi="jelly_bean_mr1">
 
     <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/pdvSellerInfo_appImageView_newBadge"
         android:layout_width="24dp"
         android:layout_height="20dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="@dimen/dimen_4dp"
+        android:layout_marginLeft="@dimen/dimen_4dp"
+        android:visibility="visible"
         app:srcCompat="@drawable/new_seller_badge"/>
 
-</RelativeLayout>
+    <com.mobile.components.customfontviews.TextView
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dimen_4dp"
+        android:layout_marginLeft="4dp"
+        android:visibility="visible"
+        android:text="@string/no_score_submited"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="@dimen/dimen_12sp"/>
+
+</LinearLayout>

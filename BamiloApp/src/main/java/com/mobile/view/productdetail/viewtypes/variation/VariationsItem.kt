@@ -110,6 +110,8 @@ class VariationsItem(var variations: ArrayList<Variation>, private var onItemCli
 
         if (sizesAdapter.itemCount == 0) {
             holder.sizeRoot.visibility = View.GONE
+        } else {
+            holder.sizeRoot.visibility = View.VISIBLE
         }
     }
 
@@ -131,6 +133,8 @@ class VariationsItem(var variations: ArrayList<Variation>, private var onItemCli
 
         if (colorsAdapter.itemCount == 0) {
             holder.othersRoot.visibility = View.GONE
+        } else {
+            holder.othersRoot.visibility = View.VISIBLE
         }
     }
 }

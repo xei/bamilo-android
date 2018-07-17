@@ -10,7 +10,6 @@ import com.mobile.view.productdetail.OnItemClickListener
 import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.Product
 import com.mobile.view.productdetail.model.Variation
-import com.mobile.view.productdetail.model.Variations
 import com.mobile.view.productdetail.viewtypes.variation.colors.OtherVariationsItem
 import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
 
@@ -35,14 +34,10 @@ class PDVBottomSheetVariationItem(var variations: ArrayList<Variation>?, var pdv
         setupColorRecycler(holder)
         setupSizedRecycler(holder)
 
-        addFakeData(holder)
-        holder.sizeHelp.setOnClickListener { _ -> }
+        addOtherVariations(holder)
+        addSizeVariation(holder)
 
-//        if (variations!!.otherVariations.size == 0 && variations!!.sizeVariation.size == 0) {
-//            val layoutParams = holder.parentView.layoutParams as RecyclerView.LayoutParams
-//            layoutParams.topMargin = UIUtils.dpToPx(holder.itemView.context, 8f)
-//            holder.parentView.layoutParams = layoutParams
-//        }
+        holder.sizeHelp.setOnClickListener { _ -> }
     }
 
     private fun setupColorRecycler(holder: PDVBottomSheetVariationHolder) {
@@ -69,11 +64,6 @@ class PDVBottomSheetVariationItem(var variations: ArrayList<Variation>?, var pdv
         sizesItem = ArrayList()
     }
 
-    private fun addFakeData(holder: PDVBottomSheetVariationHolder) {
-        addOtherVariations(holder)
-        addSizeVariation(holder)
-    }
-
     private fun addSizeVariation(holder: PDVBottomSheetVariationHolder) {
         for (variation in variations!!) {
             if (variation.type == "size") {
@@ -94,6 +84,8 @@ class PDVBottomSheetVariationItem(var variations: ArrayList<Variation>?, var pdv
 
         if (sizesAdapter.itemCount == 0) {
             holder.sizeRoot.visibility = View.GONE
+        } else {
+            holder.sizeRoot.visibility = View.VISIBLE
         }
     }
 
@@ -101,7 +93,7 @@ class PDVBottomSheetVariationItem(var variations: ArrayList<Variation>?, var pdv
         for (variation in variations!!) {
             if (variation.type != "size") {
                 for (product in variation.products) {
-                    colorsItem.add(OtherVariationsItem(product, object : OnItemClickListener{
+                    colorsItem.add(OtherVariationsItem(product, object : OnItemClickListener {
                         override fun onItemClicked(any: Any?) {
                             for (item in colorsItem) {
                                 (item as OtherVariationsItem).deSelectProduct()
@@ -116,6 +108,8 @@ class PDVBottomSheetVariationItem(var variations: ArrayList<Variation>?, var pdv
 
         if (colorsAdapter.itemCount == 0) {
             holder.othersRoot.visibility = View.GONE
+        } else {
+            holder.othersRoot.visibility = View.VISIBLE
         }
     }
 }

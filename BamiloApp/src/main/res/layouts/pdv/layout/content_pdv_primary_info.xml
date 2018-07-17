@@ -14,9 +14,10 @@
     app:cardCornerRadius="2dp"
     app:cardElevation="2dp">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdvPrimaryInfo_textView_title"
@@ -24,220 +25,260 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:textColor="#434343"
             android:textSize="12sp"
             app:fontFamily="@string/bamilo_bold_font"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="گوشی موبایل هواوی مدل آنر ۶سی ۶۴ گیگابایت رنگ آبی شش اینج چهار گیگ رم"/>
 
-        <RatingBar
-            android:id="@+id/pdvPrimaryInfo_ratingBar"
-            style="@style/StarBar.Indicator"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/pdvPrimaryInfo_linearLayout_brandLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:paddingEnd="@dimen/dimen_10dp"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:paddingRight="@dimen/dimen_10dp"
+            android:gravity="right"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal"
+            tools:targetApi="jelly_bean_mr1">
+
+            <com.mobile.components.customfontviews.TextView
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brand_label"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="10sp"
+                app:fontFamily="@string/bamilo_bold_font"
+                tools:ignore="SmallSp"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdvPrimaryInfo_textView_brand"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dimen_4dp"
+                android:textColor="#FF00ADE6"
+                android:textSize="10sp"
+                app:fontFamily="@string/bamilo_bold_font"
+                tools:ignore="SmallSp"
+                tools:text="هوآوی Huawei"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pdvPrimaryInfo_linearLayout_ratingLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="@dimen/dimen_16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="@dimen/dimen_16dp"
-            android:rating="4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pdvPrimaryInfo_textView_title"/>
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:paddingRight="@dimen/dimen_10dp"
+            android:gravity="start|center_vertical"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal"
+            tools:targetApi="jelly_bean_mr1">
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/score_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/score"
-            android:textColor="#757575"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/pdvPrimaryInfo_ratingBar"
-            app:layout_constraintStart_toEndOf="@+id/pdvPrimaryInfo_ratingBar"
-            tools:ignore="SmallSp"/>
+            <RatingBar
+                android:id="@+id/pdvPrimaryInfo_ratingBar"
+                style="@style/StarBar.Indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rating="4"/>
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pdvPrimaryInfo_textView_averageScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:textColor="#1a365e"
-            android:textSize="12sp"
-            app:fontFamily="@string/bamilo_bold_font"
-            app:layout_constraintBottom_toBottomOf="@+id/pdvPrimaryInfo_ratingBar"
-            app:layout_constraintStart_toEndOf="@+id/score_text"
-            tools:ignore="SmallSp"/>
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/score_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/score"
+                android:textColor="#757575"
+                android:textSize="12sp"
+                tools:ignore="SmallSp"/>
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pdvPrimaryInfo_textView_scoreCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#d8d8d8"
-            android:textSize="@dimen/dimen_12sp"
-            app:fontFamily="@string/bamilo_font"
-            app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView2"
-            app:layout_constraintStart_toEndOf="@+id/appCompatImageView2"
-            app:layout_constraintTop_toTopOf="@+id/appCompatImageView2"/>
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdvPrimaryInfo_textView_averageScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:textColor="#1a365e"
+                android:textSize="12sp"
+                app:fontFamily="@string/bamilo_bold_font"
+                tools:ignore="SmallSp"
+                tools:text="3.5"/>
 
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
-            android:text="@string/close_bracket"
-            android:textColor="#d8d8d8"
-            app:fontFamily="@string/bamilo_font"
-            app:layout_constraintBottom_toBottomOf="@+id/textView19"
-            app:layout_constraintStart_toEndOf="@+id/pdvPrimaryInfo_textView_scoreCount"
-            app:layout_constraintTop_toTopOf="@+id/textView19"/>
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="@dimen/dimen_4dp"
+                android:text="@string/open_bracket"
+                android:textColor="#d8d8d8"
+                app:fontFamily="@string/bamilo_font"
+                tools:text="("/>
 
-        <TextView
-            android:id="@+id/textView19"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="@dimen/dimen_4dp"
-            android:text="@string/open_bracket"
-            android:textColor="#d8d8d8"
-            app:fontFamily="@string/bamilo_font"
-            app:layout_constraintBottom_toBottomOf="@+id/pdvPrimaryInfo_textView_averageScore"
-            app:layout_constraintStart_toEndOf="@+id/pdvPrimaryInfo_textView_averageScore"
-            app:layout_constraintTop_toTopOf="@+id/pdvPrimaryInfo_textView_averageScore"/>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/appCompatImageView2"
+                android:layout_width="@dimen/dimen_16dp"
+                android:layout_height="@dimen/dimen_16dp"
+                android:layout_marginRight="2dp"
+                app:fontFamily="@string/bamilo_font"
+                app:srcCompat="@drawable/ic_person_gray"/>
 
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/appCompatImageView2"
-            android:layout_width="@dimen/dimen_16dp"
-            android:layout_height="@dimen/dimen_16dp"
-            android:layout_marginRight="2dp"
-            app:fontFamily="@string/bamilo_font"
-            app:layout_constraintBottom_toBottomOf="@+id/textView19"
-            app:layout_constraintStart_toEndOf="@+id/textView19"
-            app:layout_constraintTop_toTopOf="@+id/textView19"
-            app:srcCompat="@drawable/ic_person_gray"/>
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdvPrimaryInfo_textView_scoreCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#d8d8d8"
+                android:layout_marginTop="2dp"
+                android:textSize="@dimen/dimen_12sp"
+                app:fontFamily="@string/bamilo_font"
+                tools:text="16"/>
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:text="@string/close_bracket"
+                android:textColor="#d8d8d8"
+                app:fontFamily="@string/bamilo_font"
+                tools:text=")"/>
+
+        </LinearLayout>
 
         <View
             android:id="@+id/view2"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="#d8d8d8"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pdvPrimaryInfo_ratingBar"/>
+            android:background="#d8d8d8"/>
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pdvPrimaryInfo_textView_oldPrice"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/pdvPrimaryInfo_linearLayout_priceLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="@dimen/dimen_16dp"
-            android:layout_marginRight="@dimen/dimen_8dp"
-            android:textColor="#757575"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pdvPrimaryInfo_textView_currentPrice"
-            app:layout_goneMarginBottom="@dimen/dimen_16dp"
-            tools:ignore="SmallSp"/>
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pdvPrimaryInfo_textView_currentPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="12dp"
-            android:layout_marginRight="@dimen/dimen_8dp"
-            android:textColor="#fe6b0c"
-            android:textSize="24sp"
-            app:fontFamily="@string/bamilo_bold_font"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2"
-            app:layout_constraintVertical_bias="0.0"/>
-
-        <RelativeLayout
-            android:id="@+id/pdvPrimaryInfo_relativeLayout_discountPercentageRoot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="@dimen/dimen_8dp"
-            android:background="@drawable/discount_percentage_round_background"
-            app:layout_constraintBottom_toBottomOf="@+id/pdvPrimaryInfo_textView_currentPrice"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/pdvPrimaryInfo_textView_currentPrice">
+            android:layout_marginTop="@dimen/dimen_8dp"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:paddingRight="@dimen/dimen_10dp"
+            android:gravity="center_vertical"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            tools:targetApi="jelly_bean_mr1">
 
             <com.mobile.components.customfontviews.TextView
-                android:id="@+id/pdvPrimaryInfo_textView_discountPercentage"
+                android:id="@+id/pdvPrimaryInfo_textView_currentPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:paddingLeft="@dimen/dimen_4dp"
-                android:paddingRight="@dimen/dimen_4dp"
-                android:fontFamily="@string/bamilo_bold_font"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textColor="#f7931d"
-                android:textSize="14sp"/>
+                android:textColor="#fe6b0c"
+                android:textSize="24sp"
+                app:fontFamily="@string/bamilo_bold_font"
+                tools:text="۱،۴۰۵،۵۰۰"/>
 
-        </RelativeLayout>
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdvPrimaryInfo_textView_currency"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/dimen_8dp"
+                android:layout_marginLeft="@dimen/dimen_8dp"
+                android:layout_marginRight="@dimen/dimen_8dp"
+                android:gravity="right"
+                android:text="@string/rial"
+                android:textAlignment="gravity"
+                android:textColor="#434343"
+                android:textSize="12sp"/>
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pdvPrimaryInfo_textView_discountBenefit"
-            android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/pdvPrimaryInfo_relativeLayout_discountPercentageRoot"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:background="@drawable/discount_percentage_round_background">
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/pdvPrimaryInfo_textView_discountPercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/dimen_4dp"
+                    android:paddingRight="@dimen/dimen_4dp"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:fontFamily="@string/bamilo_bold_font"
+                    tools:text="33%"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pdvPrimaryInfo_linearLayout_discountLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="@dimen/dimen_8dp"
-            android:layout_marginRight="48dp"
-            android:textColor="#757575"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@+id/pdvPrimaryInfo_textView_oldPrice"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/pdvPrimaryInfo_textView_oldPrice"
-            tools:ignore="SmallSp"/>
+            android:layout_marginBottom="@dimen/dimen_8dp"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:paddingRight="@dimen/dimen_10dp"
+            android:gravity="center_vertical"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            tools:targetApi="jelly_bean_mr1">
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pdvPrimaryInfo_textView_currency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:text="@string/rial"
-            android:textColor="#434343"
-            android:textSize="12sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/pdvPrimaryInfo_textView_currentPrice"
-            app:layout_constraintStart_toEndOf="@+id/pdvPrimaryInfo_textView_currentPrice"/>
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdvPrimaryInfo_textView_oldPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textAlignment="gravity"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="11sp"
+                tools:ignore="SmallSp"
+                tools:text="۱،۷۴۹،۰۰۰"/>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdvPrimaryInfo_textView_discountBenefit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="11sp"
+                tools:ignore="SmallSp"
+                tools:text="سود شما: ۱/۴۳۰ میلیون ریال"/>
+
+        </LinearLayout>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdvPrimaryInfo_textView_outOfStock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="@dimen/dimen_8dp"
-            android:fontFamily="@string/bamilo_bold_font"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="@dimen/dimen_16dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/product_no_exist"
             android:textColor="@color/primary_text_color"
             android:textSize="14sp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2"/>
+            app:fontFamily="@string/bamilo_bold_font"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>
