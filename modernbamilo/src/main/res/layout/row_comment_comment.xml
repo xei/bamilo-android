@@ -111,6 +111,7 @@
             android:id="@+id/expandable_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="false"
             android:textColor="@color/commentsList_comment_commentContent"
             tools:text="آقا بسیار محصول عالی بود، خیلی تشکر داریم داریم هم بنده هم منزل انشاله خداوند برکتتان دهد، دست دیزاینر های بسیار خوبتان هم درد نکند انشالله، خداوند آنان را نیز خیر دنیا و آخرت بدهد، چون ظاهر قبلی بسـ" />
         <com.bamilo.modernbamilo.customview.XeiTextView
