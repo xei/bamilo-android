@@ -9,7 +9,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:padding="8dp"
-    android:background="@color/commentsList_comment_background" >
+    android:background="@drawable/background_row_comment" >
 
     <com.bamilo.modernbamilo.customview.XeiTextView
         android:id="@+id/rowCommentComment_xeiTextView_title"
