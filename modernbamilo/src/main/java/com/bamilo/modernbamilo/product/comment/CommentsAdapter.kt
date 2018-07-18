@@ -50,7 +50,13 @@ class CommentsAdapter(private val viewModel: CommentsScreenViewModel): RecyclerV
 
                 } else -> (viewHolder as CommentViewHolder).run {
                     comments[position - 1].let {
-                        titleTextView.text = it.title
+
+                        if (it.title != null) {
+                            titleTextView.text = it.title
+                            titleTextView.visibility = View.VISIBLE
+                        } else {
+                            titleTextView.visibility = View.GONE
+                        }
                         authorNameTextView.text = it.authorName
                         composedTimeTextView.text = it.composedTime
                         if (it.hasUserBeenBought) {

@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
+import com.bamilo.modernbamilo.app.BaseActivity
 import com.bamilo.modernbamilo.product.comment.submit.SubmitRateActivity
 import com.bamilo.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.bamilo.modernbamilo.util.logging.LogType
@@ -60,7 +61,7 @@ fun startActivity(context: Context,
     Logger.log("CommentActivity has started for product: $productId", TAG_DEBUG)
 }
 
-class CommentsActivity : AppCompatActivity(), View.OnClickListener {
+class CommentsActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var mProductId: String
 

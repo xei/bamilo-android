@@ -14,14 +14,16 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:paddingTop="8dp"
+        android:gravity="right|center_vertical"
         android:paddingBottom="8dp"
+        android:paddingTop="8dp"
         android:textColor="@color/descSpec_spec_item_title_color"
-        app:locale="auto"
-        app:style="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="عنوان"/>
+        app:locale="auto"
+        app:style="bold"
+        tools:text="عنوان" />
 
     <com.bamilo.modernbamilo.customview.XeiTextView
         android:id="@+id/rowSpecItemTuple_xeiTextView_value"
@@ -31,12 +33,14 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:paddingTop="8dp"
+        android:gravity="right|center_vertical"
         android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="توضیحات"
         android:textColor="@color/descSpec_spec_item_value_color"
-        app:locale="auto"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rowSpecItemTuple_xeiTextView_title"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="توضیحات" />
+        app:locale="auto" />
 </android.support.constraint.ConstraintLayout>

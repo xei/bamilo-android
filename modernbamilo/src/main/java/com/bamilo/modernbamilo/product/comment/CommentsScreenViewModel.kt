@@ -16,12 +16,13 @@ data class CommentsScreenViewModel(
 
 data class GetCommentsResponse (
         @SerializedName("total") val totalCommentsCount: Long,
-        @SerializedName("items") val comments: ArrayList<CommentViewModel>
+        @SerializedName("items") val comments: ArrayList<CommentViewModel>,
+        @SerializedName("pagination") val pagination: Pagination
 )
 
 data class CommentViewModel(
         @SerializedName("id") val id: String,
-        @SerializedName("title") val title: String,
+        @SerializedName("title") val title: String?,
         @SerializedName("date") val composedTime: String,
         @SerializedName("username") val authorName: String,
         @SerializedName("is_bought_by_user") val hasUserBeenBought: Boolean,
@@ -29,4 +30,10 @@ data class CommentViewModel(
         @SerializedName("comment") val commentContent: String,
         @SerializedName("like") val likesCount: Int,
         @SerializedName("dislike") val dislikesCount: Int
+)
+
+data class Pagination(
+        @SerializedName("total_pages") val totalPagesCount: Int,
+        @SerializedName("current_page")  val currentPage: Int,
+        @SerializedName("per_page")  val pageSize: Int
 )

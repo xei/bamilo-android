@@ -1,19 +1,21 @@
-package com.bamilo.modernbamilo.product.descspec.spec
+package com.bamilo.modernbamilo.product.descspec.tempdesc
 
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.webkit.WebView
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.product.descspec.DescSpecWebApi
 import com.bamilo.modernbamilo.product.descspec.desc.pojo.DescriptionRow
+import com.bamilo.modernbamilo.product.descspec.desc.pojo.GetDescriptionResponse
 import com.bamilo.modernbamilo.product.descspec.spec.pojo.GetSpecificationResponse
-import com.bamilo.modernbamilo.product.descspec.spec.pojo.SpecificationRow
-import com.bamilo.modernbamilo.product.descspec.spec.pojo.SpecificationTuple
 import com.bamilo.modernbamilo.product.sellerslist.TAG_DEBUG
 import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
@@ -22,24 +24,22 @@ import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView
 
 private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SpecificationFragment.newInstance] factory method to
+ * Use the [DescriptionFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class SpecificationFragment : Fragment() {
+class TemporaryDescriptionFragment : Fragment() {
 
-    private lateinit var mSpecificationTableStickyHeadersListView: StickyListHeadersListView
+    private lateinit var mWebView: WebView
 
     private lateinit var mWebApi: DescSpecWebApi
 
     private var mProductId: String? = null
-    private val mSpecificationRows = ArrayList<SpecificationRow>()
 
     companion object {
         /**
@@ -48,12 +48,11 @@ class SpecificationFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment SpecificationFragment.
+         * @return A new instance of fragment DescriptionFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(productId: String) =
-                SpecificationFragment().apply {
+                TemporaryDescriptionFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_PRODUCT_ID, productId)
                     }
@@ -72,44 +71,29 @@ class SpecificationFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val rootView = inflater.inflate(R.layout.fragment_specification, container, false)
-        findViews(rootView)
-        loadSpecification()
+        val rootView = inflater.inflate(R.layout.fragment_description_temp, container, false)
+        mWebView = rootView.findViewById(R.id.fragmentDescription_webView_descriptionWebView)
+
+        loadDescription()
+
         return rootView
     }
 
-    private fun findViews(rootView: View) {
-        mSpecificationTableStickyHeadersListView = rootView.findViewById(R.id.fragmentSpecification_stickyListHeadersListView_specificationTable)
-    }
+    private fun loadDescription() {
+        val call = mWebApi.getDescription(mProductId!!)
+        call.enqueue(object: Callback<ResponseWrapper<GetDescriptionResponse>> {
 
-    private fun loadSpecification() {
-        val call = mWebApi.getSpecification(mProductId!!)
-        call.enqueue(object: Callback<ResponseWrapper<GetSpecificationResponse>> {
-            override fun onResponse(call: Call<ResponseWrapper<GetSpecificationResponse>>?, response: Response<ResponseWrapper<GetSpecificationResponse>>?) {
-
-                response?.body()?.metadata?.specification?.let {
-                    if (it.size != 0) {
-                        mSpecificationRows.clear()
-                        mSpecificationRows.removeAll(mSpecificationRows)
-                        mSpecificationRows.addAll(it)
-                    }
+            override fun onResponse(call: Call<ResponseWrapper<GetDescriptionResponse>>?, response: Response<ResponseWrapper<GetDescriptionResponse>>?) {
+                response?.body()?.metadata?.description.let {
+                    mWebView.loadData("\u200f$it", "text/html", "UTF-8")
                 }
-
-                initStickyListHeadersListView()
             }
 
-            override fun onFailure(call: Call<ResponseWrapper<GetSpecificationResponse>>?, t: Throwable?) {
+            override fun onFailure(call: Call<ResponseWrapper<GetDescriptionResponse>>?, t: Throwable?) {
                 Logger.log(t?.message.toString(), TAG_DEBUG, LogType.ERROR)
             }
 
         })
-    }
-
-    /**
-     * https://github.com/emilsjolander/StickyListHeaders
-     */
-    private fun initStickyListHeadersListView() {
-        mSpecificationTableStickyHeadersListView.adapter = SpecificationTableAdapter(mSpecificationRows)
     }
 
 }

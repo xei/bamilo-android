@@ -4,7 +4,7 @@
     <!-- Sellers List Screen -->
     <string name="sellersList_title">فروشندگان دیگر</string>
 
-    <!-- Description and Specification Screen -->
+    <!-- Description and GetSpecificationResponse Screen -->
     <string name="decSpec_tab_description">توضیحات</string>
     <string name="decSpec_tab_specification">مشخصات</string>
 

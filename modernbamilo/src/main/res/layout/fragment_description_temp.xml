@@ -9,8 +9,8 @@
     tools:context=".product.descspec.desc.DescriptionFragment">
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragmentDescription_recyclerView_descriptionRecyclerView"
+    <WebView
+        android:id="@+id/fragmentDescription_webView_descriptionWebView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
