@@ -28,10 +28,23 @@
         android:id="@+id/activityComments_recyclerView_commentsList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/activityComments_button_submitComment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activityComments_toolbar_toolbar" />
+
+    <com.bamilo.modernbamilo.customview.XeiButton
+        android:id="@+id/activityComments_button_submitComment"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:text="@string/comment_button_addComment"
+        android:background="@color/commentsList_button_addComment_background"
+        android:textColor="@color/commentsList_button_addComment_text"
+        app:style="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

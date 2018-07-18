@@ -22,7 +22,7 @@ private const val TAG_DEBUG = "SubmitRateActivity"
 private const val KEY_EXTRA_PRODUCT_ID = "KEY_EXTRA_PRODUCT_ID"
 private const val RATING_DEFAULT = 0
 
-fun startActivity(invokerContext: Context, productId: String) {
+fun startSubmitRateActivity(invokerContext: Context, productId: String) {
     val intent = Intent(invokerContext, SubmitRateActivity::class.java)
     intent.putExtra(KEY_EXTRA_PRODUCT_ID, productId)
     invokerContext.startActivity(intent)

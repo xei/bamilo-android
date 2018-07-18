@@ -17,6 +17,7 @@
     <string name="comment_comment_seeLess">کمتر...</string>
     <string name="comment_comment_likeCount">\u200f(%s)</string>
     <string name="comment_comment_dislikeCount">\u200f(%s)</string>
+    <string name="comment_button_addComment">افزودن نظر</string>
 
     <!-- Submit Rate Screen -->
     <string name="submitRate_title">افزودن نظر</string>

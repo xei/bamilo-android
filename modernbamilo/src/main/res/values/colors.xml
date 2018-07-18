@@ -97,6 +97,8 @@
     <color name="commentsList_comment_commentContent">@color/grey5</color>
     <color name="commentsList_comment_seeMoreBtn">@color/pantone2995cp</color>
     <color name="commentsList_comment_likeDislike">@color/grey2</color>
+    <color name="commentsList_button_addComment_background">@color/pantone1585c</color>
+    <color name="commentsList_button_addComment_text">@color/white</color>
 
     <!-- Submit Rate Screen -->
     <color name="submitRate_background">@color/blueGrey2</color>
