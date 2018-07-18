@@ -65,8 +65,23 @@ class CommentsAdapter(private val viewModel: CommentsScreenViewModel): RecyclerV
                             mExpandIndicatorController.changeState(true)
                             text = it.commentContent
                         }
-                        likeCountTextView.text = itemView.context.resources.getString(R.string.comment_comment_likeCount, it.likesCount.toString().persianizeNumberString())
-                        dislikeCountTextView.text = itemView.context.resources.getString(R.string.comment_comment_likeCount, it.dislikesCount.toString().persianizeNumberString())
+
+                        if (it.likesCount == -1 || it.dislikesCount == -1) {
+                            // TODO: wrap these views inside a viewGroup
+                            likeImageView.visibility = View.GONE
+                            dislikeImageView.visibility = View.GONE
+                            likeCountTextView.visibility = View.GONE
+                            likeCountTextView.visibility = View.GONE
+                        } else {
+                            likeImageView.visibility = View.VISIBLE
+                            dislikeImageView.visibility = View.VISIBLE
+                            likeCountTextView.visibility = View.VISIBLE
+                            likeCountTextView.visibility = View.VISIBLE
+
+                            likeCountTextView.text = itemView.context.resources.getString(R.string.comment_comment_likeCount, it.likesCount.toString().persianizeNumberString())
+                            dislikeCountTextView.text = itemView.context.resources.getString(R.string.comment_comment_likeCount, it.dislikesCount.toString().persianizeNumberString())
+                        }
+
                     }
                 }
             }
@@ -93,6 +108,8 @@ class CommentsAdapter(private val viewModel: CommentsScreenViewModel): RecyclerV
         val hasUserBeenBoughtTextView = itemView.findViewById(R.id.rowCommentComment_xeiTextView_hasUserBeenBought) as TextView
         val rateRatingBar = itemView.findViewById(R.id.rowCommentComment_materialRatingBar_ratingBar) as MaterialRatingBar
         val commentContentTextView = itemView.findViewById(R.id.rowCommentComment_expandableTextView_commentContent) as ExpandableXeiTextView
+        val likeImageView = itemView.findViewById(R.id.rowCommentComment_imageView_like) as ImageView
+        val dislikeImageView = itemView.findViewById(R.id.rowCommentComment_imageView_dislike) as ImageView
         val likeCountTextView = itemView.findViewById(R.id.rowCommentComment_xeiTextView_likeCount) as TextView
         val dislikeCountTextView = itemView.findViewById(R.id.rowCommentComment_xeiTextView_dislikeCount) as TextView
     }
