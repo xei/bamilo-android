@@ -67,4 +67,5 @@ dependencies {
     compile 'com.github.faruktoptas:FancyShowCaseView:1.0.0'
     /** Masked EditText **/
     compile 'ru.egslava:MaskedEditText:1.0.5'
+    compile project(path: ':modernbamilo')
 }
