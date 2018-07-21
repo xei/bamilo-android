@@ -9,11 +9,11 @@ import android.widget.TextView
 import android.widget.Toast
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.customview.DateTimeView
-import com.bamilo.modernbamilo.product.sellerslist.pojo.SellerViewModel
+import com.bamilo.modernbamilo.customview.PriceView
 import com.bamilo.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.modernbamilo.util.extension.persianizeNumberString
 
-class SellersListAdapter(private val mSellersViewModels: List<SellerViewModel>) : RecyclerView.Adapter<SellersListAdapter.SellerViewHolder>() {
+class SellersListAdapter(private val mSellersViewModels: List<SellersListItemViewModel>) : RecyclerView.Adapter<SellersListAdapter.SellerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SellerViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.row_sellerslistadapter, parent, false)
@@ -23,10 +23,15 @@ class SellersListAdapter(private val mSellersViewModels: List<SellerViewModel>) 
     override fun onBindViewHolder(holder: SellerViewHolder, position: Int) {
         holder.titleTextView.text = mSellersViewModels[position].title
         holder.deliveryTimeTextView.setTime(mSellersViewModels[position].deliveryTime)
-        holder.rateTextView.text = mSellersViewModels[position].rate.toString().persianizeDigitsInString()
-        holder.payableAmountTextView.text = mSellersViewModels[position].payableAmount.toString()
+        if (mSellersViewModels[position].isRateValid) {
+            holder.rateTextView.visibility = View.VISIBLE
+            holder.rateTextView.text = mSellersViewModels[position].rate.toString().persianizeDigitsInString()
+        } else {
+            holder.rateTextView.visibility = View.GONE
+        }
+        holder.payableAmountTextView.setPrice(mSellersViewModels[position].payableAmount.toString(), mSellersViewModels[position].currency)
         holder.discountPercentTextView.text = holder.itemView.context.resources.getString(R.string.suffix_percent, mSellersViewModels[position].discount.toString().persianizeNumberString())
-        holder.baseAmountTextView.text = mSellersViewModels[position].baseAmount.toString()
+        holder.baseAmountTextView.setPrice(mSellersViewModels[position].baseAmount.toString(), mSellersViewModels[position].currency)
         holder.addToCartButton.setOnClickListener {
             Toast.makeText(holder.addToCartButton.context, mSellersViewModels[position].sellerId, Toast.LENGTH_LONG).show()
         }
@@ -38,9 +43,9 @@ class SellersListAdapter(private val mSellersViewModels: List<SellerViewModel>) 
         val titleTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_xeiTextView_sellerTitle) as TextView
         val deliveryTimeTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_dateTimeView_deliveryTime) as DateTimeView
         val rateTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_xeiTextView_sellerRate) as TextView
-        val payableAmountTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_priceView_payablePrice) as TextView
+        val payableAmountTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_priceView_payablePrice) as PriceView
         val discountPercentTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_xeiTextView_discountPercent) as TextView
-        val baseAmountTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_priceView_basePrice) as TextView
+        val baseAmountTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_priceView_basePrice) as PriceView
         val addToCartButton = itemView.findViewById(R.id.layoutRowSellerslistadapter_xeiButton_addToCart) as Button
     }
 }

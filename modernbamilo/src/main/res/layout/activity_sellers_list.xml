@@ -58,7 +58,8 @@
     <com.bamilo.modernbamilo.product.sellerslist.FilterButton
         android:id="@+id/activitySellersList_filterButton_price"
         android:layout_width="60dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:gravity="center"
@@ -73,7 +74,8 @@
     <com.bamilo.modernbamilo.product.sellerslist.FilterButton
         android:id="@+id/activitySellersList_filterButton_rate"
         android:layout_width="60dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:text="امتیاز"
@@ -88,7 +90,8 @@
     <com.bamilo.modernbamilo.product.sellerslist.FilterButton
         android:id="@+id/activitySellersList_filterButton_leadTime"
         android:layout_width="60dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:text="زمان ارسال"

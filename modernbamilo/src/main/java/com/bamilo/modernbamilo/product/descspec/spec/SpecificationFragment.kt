@@ -3,18 +3,13 @@ package com.bamilo.modernbamilo.product.descspec.spec
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.product.descspec.DescSpecWebApi
-import com.bamilo.modernbamilo.product.descspec.desc.pojo.DescriptionRow
 import com.bamilo.modernbamilo.product.descspec.spec.pojo.GetSpecificationResponse
 import com.bamilo.modernbamilo.product.descspec.spec.pojo.SpecificationRow
-import com.bamilo.modernbamilo.product.descspec.spec.pojo.SpecificationTuple
-import com.bamilo.modernbamilo.product.sellerslist.TAG_DEBUG
 import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
@@ -24,6 +19,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView
 
+private const val TAG_DEBUG = "SpecificationFragment"
 private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
 
 /**

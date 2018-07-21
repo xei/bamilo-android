@@ -30,4 +30,8 @@ class DateTimeView: XeiTextView {
 
     }
 
+    fun setTime(timeStr: String?) {
+        text = timeStr ?: "Invalid Time"
+    }
+
 }

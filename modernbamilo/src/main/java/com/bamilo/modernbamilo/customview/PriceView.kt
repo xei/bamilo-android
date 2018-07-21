@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
+import org.jetbrains.annotations.NotNull
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
@@ -41,13 +42,8 @@ class PriceView: XeiTextView {
 
     }
 
-    override fun setText(text: CharSequence?, type: BufferType?) =
-            if(text == null || text.isEmpty()) {
-                super.setText(text, type)
-            } else {
-                super.setText(resources.getString(R.string.suffix_currency, format(text!!.trim())), type)
-            }
-
+    fun setPrice(text: String, currencyStr: String) =
+            setText(resources.getString(R.string.priceAndCurrency, format(text.trim()), currencyStr.trim()))
 
     private fun format(price: CharSequence): String {
         val symbols = DecimalFormatSymbols()

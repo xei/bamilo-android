@@ -4,17 +4,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.bamilo.modernbamilo.R
-import com.bamilo.modernbamilo.customview.DateTimeView
 import com.bamilo.modernbamilo.product.descspec.desc.pojo.DescriptionRow
-import com.bamilo.modernbamilo.product.sellerslist.pojo.SellerViewModel
 import com.bamilo.modernbamilo.util.extension.loadImageFromNetwork
-import com.bamilo.modernbamilo.util.extension.persianizeDigitsInString
-import com.bamilo.modernbamilo.util.extension.persianizeNumberString
 
 class DescriptionRecyclerAdapter(private val mDescriptionRows: ArrayList<DescriptionRow>) : RecyclerView.Adapter<DescriptionRecyclerAdapter.DescriptionViewHolder>() {
 
