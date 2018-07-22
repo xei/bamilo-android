@@ -302,10 +302,9 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     }
 
     private fun addVariations() {
-        if (product.variations.size < 0) {
-            return
-        }
-
+//        if (product.variations.size < 0) {
+//            return
+//        }
         items.add(VariationsItem(product.variations, pdvMainView))
     }
 
@@ -366,7 +365,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
                 itemPositionToChangeGridSpanCountToDefault = itemPositionToChangeGridSpanCount
 
                 for (i in 0 until data.size) {
-                    if (i > 3) {
+                    if (i > 5) {
                         break
                     }
                     itemPositionToChangeGridSpanCountToDefault++

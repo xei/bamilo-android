@@ -48,16 +48,16 @@ class VariationsItem(var variations: ArrayList<Variation>, private var pdvMainVi
         sizesItem.clear()
         otherItems.clear()
 
-        addOtherVariations(holder)
-        addSizeVariation(holder)
-
-        holder.sizeHelp.setOnClickListener { _ -> }
-
         if (variations.size <= 0) {
             val layoutParams = holder.parentView.layoutParams as RecyclerView.LayoutParams
             layoutParams.topMargin = UIUtils.dpToPx(holder.itemView.context, 8f)
             holder.parentView.layoutParams = layoutParams
+        } else {
+            addOtherVariations(holder)
+            addSizeVariation(holder)
         }
+
+        holder.sizeHelp.setOnClickListener { _ -> }
 
         holder.itemView.findViewById<TextView>(R.id.pdvVariations_textView_specification).setOnClickListener {
             gotoSpecificationPage()
@@ -67,12 +67,12 @@ class VariationsItem(var variations: ArrayList<Variation>, private var pdvMainVi
         }
     }
 
-    private fun gotoSpecificationPage(){
-
+    private fun gotoSpecificationPage() {
+        pdvMainView.onShowDesAndSpecPage()
     }
 
     private fun gotoDescriptionPage() {
-
+        pdvMainView.onShowDesAndSpecPage()
     }
 
     private fun setupColorRecycler(holder: VariationsHolder) {

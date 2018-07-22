@@ -300,7 +300,7 @@
             android:screenOrientation="portrait" />
         <activity android:name="com.bamilo.modernbamilo.product.sellerslist.view.SellersListActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.bamilo.modernbamilo.product.descspec.DescSpecActivity" />
+
         <activity android:name="com.bamilo.modernbamilo.product.comment.submit.SubmitRateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />

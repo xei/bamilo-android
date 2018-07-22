@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import com.bamilo.modernbamilo.product.descspec.DescSpecFragment
 import com.mobile.app.BamiloApplication
 import com.mobile.classes.models.BaseScreenModel
 import com.mobile.classes.models.MainEventModel
@@ -167,7 +168,8 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
             FragmentTag.RATE_AND_REVIEW.name -> {
             }
 
-            FragmentTag.OTHER_SELLERS.name -> {
+            FragmentTag.SPECIFICATIONS_DESCRIPTION.name -> {
+                return DescSpecFragment.newInstance(sku!!)
             }
         }
 
@@ -189,6 +191,10 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
 
     override fun onShowOtherSeller() {
         displaySelectedScreen(FragmentTag.OTHER_SELLERS)
+    }
+
+    override fun onShowDesAndSpecPage() {
+        displaySelectedScreen(FragmentTag.SPECIFICATIONS_DESCRIPTION)
     }
 
     override fun onSizeVariationClicked(sizeVariation: SimpleProduct) {
