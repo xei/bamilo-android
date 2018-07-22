@@ -73,11 +73,8 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mCommentsListRecyclerView: RecyclerView
     private lateinit var mSubmitCommentButton: Button
 
-    private var mLoadedCommentsPage = 0
-//    private var mIsCommentsPageLoading = false
-//    private var mIsAllCommentsLoaded = falseprv
     private lateinit var mPaginationOnScrollListener: PaginationOnScrollListener
-
+    private var mLoadedCommentsPage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
