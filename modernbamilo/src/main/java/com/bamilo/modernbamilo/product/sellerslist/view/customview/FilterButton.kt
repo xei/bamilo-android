@@ -1,3 +1,7 @@
+/*
+ * Copyright 2018 Bamilo, Inc.
+ */
+
 package com.bamilo.modernbamilo.product.sellerslist.view.customview
 
 import android.content.Context
@@ -7,6 +11,9 @@ import android.util.TypedValue
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.customview.XeiTextView
 
+/**
+ * This custom view is a selectable round button to filter sellers list based on some criteria.
+ */
 class FilterButton : XeiTextView {
 
     constructor(context: Context) : super(context) {

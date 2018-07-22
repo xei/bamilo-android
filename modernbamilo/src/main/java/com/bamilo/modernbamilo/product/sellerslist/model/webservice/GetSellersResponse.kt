@@ -1,3 +1,9 @@
+/*
+ * Copyright 2018 Bamilo, Inc.
+ *
+ * This file contains the declaration of data transfer objects while interacting by sellers list web API.
+ */
+
 package com.bamilo.modernbamilo.product.sellerslist.model.webservice
 
 import com.google.gson.annotations.SerializedName
@@ -35,6 +41,6 @@ data class ProductInfo (
 data class Amount (
         @SerializedName("old_price") val baseAmount: Long,
         @SerializedName("price") val payableAmount: Long,
-        @SerializedName("discount_percentage") val discountPercentage: Float,
+        @SerializedName("discount_percentage") val discountPercentage: Int,
         @SerializedName("currency") val currencySuffix: String
 )

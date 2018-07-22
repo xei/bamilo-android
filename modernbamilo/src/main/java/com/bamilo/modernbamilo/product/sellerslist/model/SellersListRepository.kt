@@ -1,8 +1,16 @@
+/*
+ * Copyright 2018 Bamilo, Inc.
+ *
+ * This file acts as entry point to MODEL layer in MVVM architecture and contains a repository of
+ * fetched data and also a mapper to build the view model from DTOs.
+ */
+
 package com.bamilo.modernbamilo.product.sellerslist.model
 
 import android.content.Context
 import com.bamilo.modernbamilo.product.sellerslist.viewmodel.SellersListItemViewModel
 import com.bamilo.modernbamilo.product.sellerslist.model.webservice.GetSellersResponse
+import com.bamilo.modernbamilo.product.sellerslist.model.webservice.SellerProduct
 import com.bamilo.modernbamilo.product.sellerslist.model.webservice.SellersListWebApi
 import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
@@ -24,22 +32,7 @@ class SellersListRepository(context: Context) {
 
             override fun onResponse(call: Call<ResponseWrapper<GetSellersResponse>>?, response: Response<ResponseWrapper<GetSellersResponse>>?) {
                 response?.body()?.metadata?.sellers?.let {
-                    val sellersListItemViewModels = ArrayList<SellersListItemViewModel>().apply {
-                        it.forEach {
-                            add(SellersListItemViewModel(
-                                    sellerId = it.productInfo.sku,
-                                    title = it.sellerInfo.title,
-                                    deliveryTime = it.sellerInfo.deliveryTime.str,
-                                    rate = it.sellerInfo.rating.rating,
-                                    isRateValid = !it.sellerInfo.rating.isValid,
-                                    baseAmount = it.productInfo.amount.baseAmount,
-                                    payableAmount = it.productInfo.amount.payableAmount,
-                                    discount = it.productInfo.amount.discountPercentage,
-                                    currency = it.productInfo.amount.currencySuffix
-                            ))
-                        }
-                    }
-                    listener.onSucceed(sellersListItemViewModels)
+                    listener.onSucceed(buildSellersListItemViewModels(it))
                 }
             }
 
@@ -51,9 +44,35 @@ class SellersListRepository(context: Context) {
         })
     }
 
+    /**
+     * VIEWMODEL layer uses this interface to listen the repository for data changes.
+     * TODO: Think about using LiveData instead and the limitation of testing by JUnit.
+     */
     interface OnSellersListLoadListener {
         fun onSucceed(sellersListItemViewModels: ArrayList<SellersListItemViewModel>)
         fun onFailure(msg: String)
     }
 
+    /**
+     * This method gets the web API response as DTO and build corresponding View Model to serve to
+     * VIEWMODEL layer.
+     * This mapping can reduce the complexity of data model and make it more readable.
+     */
+    private fun buildSellersListItemViewModels(sellerProducts: ArrayList<SellerProduct>): ArrayList<SellersListItemViewModel> =
+            ArrayList<SellersListItemViewModel>().apply {
+                sellerProducts.forEach {
+                    add(SellersListItemViewModel(
+                            sellerId = it.productInfo.sku,
+                            title = it.sellerInfo.title,
+                            deliveryTime = it.sellerInfo.deliveryTime.str,
+                            rate = it.sellerInfo.rating.rating,
+                            isRateValid = !it.sellerInfo.rating.isValid,
+                            baseAmount = it.productInfo.amount.baseAmount,
+                            payableAmount = it.productInfo.amount.payableAmount,
+                            discount = it.productInfo.amount.discountPercentage,
+                            currency = it.productInfo.amount.currencySuffix
+                    ))
+                }
+            }
 }
+
