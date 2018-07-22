@@ -6,15 +6,32 @@
     <color name="material_green_500">#4CAF50</color>
     <color name="material_pink_500">#E91E63</color>
     
-    <!-- CI -->
-    <color name="colorPrimary">#1A365E</color>
-    <color name="colorAccent">#FF6B0C</color>
+    <!-- CI (Company Identity) -->
+    <color name="pantone1375c">#f7931d</color>
+    <color name="pantone1585c">#fe6b0c</color>
+    <color name="pantone534c">#1a365e</color>
+    <color name="blueGrey">#8392a8</color>
+    <color name="blueGrey2">#e8eaee</color>
+    <color name="grey1">#d8d8d8</color>
+    <color name="grey2">#a5a6a8</color>
+    <color name="grey3">#757575</color>
+    <color name="grey4">#55555a</color>
+    <color name="grey5">#434343</color>
+    <color name="light2">#f7f7f7</color>
+    <color name="pantone109u">#ffc700</color>
+    <color name="pantone2995cp">#00ade6</color>
+    <color name="pantone3275c">#00a896</color>
+    <color name="pantonetubineredc">#d41a5d</color>
+    <color name="white">#ffffff</color>
+
+    <color name="colorPrimary">@color/pantone534c</color>
+    <color name="colorAccent">@color/pantone1585c</color>
 
     <!-- User Review Screen -->
     <color name="userReview_title">#FFF</color>
     <color name="userReview_stepper_empty">#F1F1F1</color>
-    <color name="userReview_stepper_full">#FF6B0C</color>
-    <color name="userReview_button_next">#FF6B0C</color>
+    <color name="userReview_stepper_full">@color/pantone1585c</color>
+    <color name="userReview_button_next">@color/pantone1585c</color>
     <color name="userReview_buttonText_next">#FFF</color>
     <color name="userReview_typeRadio_title_textColor">#53585B</color>
     <color name="userReview_typeRadio_optionButton_textColor">#53585B</color>
@@ -22,15 +39,77 @@
     <color name="userReview_typeRadio_optionButtons_startColor">@color/material_green_500</color>
     <color name="userReview_typeRadio_optionButtons_endColor">@color/material_pink_500</color>
     <color name="userReview_typeCheckbox_title_textColor">#53585B</color>
-    <color name="userReview_typeCheckbox_optionButton_buttonTintColor">#FF6B0C</color>
+    <color name="userReview_typeCheckbox_optionButton_buttonTintColor">@color/pantone1585c</color>
     <color name="userReview_typeCheckbox_optionButton_textColor">#53585B</color>
     <color name="userReview_typeCheckbox_optionButton_dividerColor">#eeeff1</color>
     <color name="userReview_typeEssay_title_textColor">#53585B</color>
     <color name="userReview_typeEssay_editText_textColor">#44484b</color>
     <color name="userReview_typeEssay_editText_borderColor">#909193</color>
     <color name="userReview_typeEssay_editText_backgroundColor">#edeff1</color>
-    <color name="userReview_typeThanks_doneIcon_tintColor">#FF6B0C</color>
+    <color name="userReview_typeThanks_doneIcon_tintColor">@color/pantone1585c</color>
     <color name="userReview_typeThanks_description_textColor">#53585B</color>
     <color name="userReview_typeImageSelect_title_textColor">#53585B</color>
+
+    <!-- Sellers List Screen -->
+    <color name="sellersList_background">#f9f9f9</color>
+    <color name="sellersList_productTitle">#434343</color>
+    <color name="sellersList_sortingLabel">#757575</color>
+    <color name="sellersList_filterBtn">#1a365e</color>
+    <color name="sellersList_row_labels">#434343</color>
+    <color name="sellersList_row_sellerTitle">#434343</color>
+    <color name="sellersList_row_deliveryTime">#434343</color>
+    <color name="sellersList_row_rateBackground">#00a896</color>
+    <color name="sellersList_row_rate">#fff</color>
+    <color name="sellersList_row_payableAmount">@color/pantone1585c</color>
+    <color name="sellersList_row_baseAmount">#434343</color>
+    <color name="sellersList_row_discountPercent">@color/pantone1375c</color>
+    <color name="sellersList_row_addToCartButton">@color/pantone1585c</color>
+    <color name="sellersList_row_addToCartButtonText">#fff</color>
+
+    <!-- Description & GetSpecificationResponse Screen -->
+    <color name="descSpec_tab_title_selected">#fff</color>
+    <color name="descSpec_tab_title_deselected">#FF8392A8</color>
+    <color name="descSpec_tab_title">@color/tab_title</color>
+    <color name="descSpec_desc_title">#000</color>
+    <color name="descSpec_desc_hint_background">#3a4186e9</color>
+    <color name="descSpec_desc_hint_text">@color/colorPrimary</color>
+    <color name="descSpec_desc_description">#000</color>
+    <color name="descSpec_spec_header_background">#e7edf7</color>
+    <color name="descSpec_spec_header_text">#1a365e</color>
+    <color name="descSpec_spec_item_title_color">#FF434343</color>
+    <color name="descSpec_spec_item_value_color">#000</color>
+    <color name="descSpec_spec_item_divider">#efefef</color>
+
+    <!-- Comments List Screen -->
+    <color name="commentsList_header_averageRate">@color/grey5</color>
+    <color name="commentsList_header_rateSum">@color/grey4</color>
+    <color name="commentsList_header_commentsCount">@color/grey5</color>
+    <color name="commentsList_header_ratingBar_background">@color/white</color>
+    <color name="commentsList_header_ratingBar_stars">@color/grey1</color>
+    <color name="commentsList_header_progress_background">@color/grey1</color>
+    <color name="commentsList_header_progress_tint">@color/pantone534c</color>
+    <color name="commentsList_comment_background">@color/blueGrey2</color>
+    <color name="commentsList_comment_title">@color/grey5</color>
+    <color name="commentsList_comment_authorAndTime">@color/grey2</color>
+    <color name="commentsList_comment_hasUserBeenBought">@color/pantone3275c</color>
+    <color name="commentsList_comment_ratingBar_background">@color/grey2</color>
+    <color name="commentsList_comment_ratingBar_stars">@color/pantone1375c</color>
+    <color name="commentsList_comment_commentContent">@color/grey5</color>
+    <color name="commentsList_comment_seeMoreBtn">@color/pantone2995cp</color>
+    <color name="commentsList_comment_likeDislike">@color/grey2</color>
+    <color name="commentsList_button_addComment_background">@color/pantone1585c</color>
+    <color name="commentsList_button_addComment_text">@color/white</color>
+
+    <!-- Submit Rate Screen -->
+    <color name="submitRate_background">@color/blueGrey2</color>
+    <color name="submitRate_question">@color/grey5</color>
+    <color name="submitRate_stars">@color/pantone1375c</color>
+    <color name="submitRate_rate">@color/grey5</color>
+    <color name="submitRate_comment_title_text">@color/grey5</color>
+    <color name="submitRate_comment_title_hint">@color/grey2</color>
+    <color name="submitRate_comment_content_text">@color/grey5</color>
+    <color name="submitRate_comment_content_hint">@color/grey2</color>
+    <color name="submitRate_submitBtn_background">@color/pantone1585c</color>
+    <color name="submitRate_submitBtn_text">@color/white</color>
 
 </resources>

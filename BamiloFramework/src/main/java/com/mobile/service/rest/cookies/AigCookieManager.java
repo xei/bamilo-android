@@ -87,7 +87,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
         if (mCurrentCookie == null || !mCurrentCookie.getValue().equals(cookie.getValue())) {
             mCurrentCookie = cookie;
             SharedPreferences.Editor prefsWriter = mCookiePrefs.edit();
-            String str = encodeCookie(new AigPersistentHttpCookie(cookie));
+            String str = encodeCookie(new com.bamilo.modernbamilo.util.retrofit.AigPersistentHttpCookie(cookie));
             prefsWriter.putString(getCookieKey(), str);
             prefsWriter.apply();
             Print.i(TAG, "STORED COOKIE INTO COOKIE PREFS: " + cookie.getDomain() + " " + cookie.getName() + " " + cookie.getValue());
@@ -145,7 +145,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
      *
      * @return String or null
      */
-    private String encodeCookie(AigPersistentHttpCookie cookie) {
+    private String encodeCookie(com.bamilo.modernbamilo.util.retrofit.AigPersistentHttpCookie cookie) {
         if (cookie == null) {
             return null;
         }
@@ -173,7 +173,7 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
             try {
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-                cookie = ((AigPersistentHttpCookie) objectInputStream.readObject()).getCookie();
+                cookie = ((com.bamilo.modernbamilo.util.retrofit.AigPersistentHttpCookie) objectInputStream.readObject()).getCookie();
             } catch (IOException | ClassNotFoundException e) {
                 Print.w(TAG, "WARNING: EXCEPTION IN DECODE COOKIE", e);
             }
@@ -239,6 +239,6 @@ public class AigCookieManager extends CookieManager implements ISessionCookie {
      */
     @Override
     public String getEncodedSessionCookie() {
-        return mCurrentCookie != null ? encodeCookie(new AigPersistentHttpCookie(mCurrentCookie)) : null;
+        return mCurrentCookie != null ? encodeCookie(new com.bamilo.modernbamilo.util.retrofit.AigPersistentHttpCookie(mCurrentCookie)) : null;
     }
 }

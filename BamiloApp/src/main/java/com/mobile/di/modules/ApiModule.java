@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mobile.service.rest.cookies.AigPersistentHttpCookie;
 import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.security.Base64;
 import com.mobile.view.R;
@@ -244,7 +243,7 @@ public class ApiModule {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
             try {
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-                cookie = ((AigPersistentHttpCookie) objectInputStream.readObject()).getCookie();
+                cookie = ((com.bamilo.modernbamilo.util.retrofit.AigPersistentHttpCookie) objectInputStream.readObject()).getCookie();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

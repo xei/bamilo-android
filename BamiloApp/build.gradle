@@ -40,14 +40,14 @@ def getAppVersionCode(int releaseVersionCode) {
  */
 android {
 
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion '27.0.3'
 
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
         applicationId "com.bamilo.android"
         versionName "2.10.1"
         versionCode getAppVersionCode(176)
@@ -181,7 +181,7 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.11'
 
     compile project(':BamiloCore')
-    compile project(path: ':modernbamilo')
+    implementation project(path: ':modernbamilo')
 
     /** GLIDE **/
     compile 'com.github.bumptech.glide:glide:4.7.1'

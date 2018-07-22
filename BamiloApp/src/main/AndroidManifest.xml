@@ -22,39 +22,37 @@
 
     <!-- *W:SDK6 : Android 6.0 Dangerous Permission -->
 
-
     <!-- <badges> -->
     <!-- for Samsung -->
     <uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>
     <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
 
-    <!-- for htc -->
+    <!--for htc-->
     <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS"/>
     <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT"/>
 
-    <!-- for sony -->
+    <!--for sony-->
     <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
     <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE"/>
 
-    <!-- for apex -->
+    <!--for apex-->
     <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT"/>
 
-    <!-- for solid -->
+    <!--for solid-->
     <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE"/>
 
-    <!-- for huawei -->
+    <!--for huawei-->
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE"/>
     <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS"/>
     <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS"/>
 
-    <!-- for ZUK -->
+    <!--for ZUK-->
     <uses-permission android:name="android.permission.READ_APP_BADGE"/>
 
-    <!-- for OPPO -->
+    <!--for OPPO-->
     <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS"/>
     <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS"/>
     <!-- </badges> -->
-
 
     <!-- For rescheduling local notification and restarting location tracking after reboot -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -102,8 +100,10 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
             <!-- ############# DEEP LINK : Accepts URIs############# -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -297,6 +297,17 @@
         </service>
 
         <activity android:name="com.bamilo.modernbamilo.userreview.UserReviewActivity"/>
+        <!-- Components in Modern Bamilo Module -->
+        <activity android:name="com.bamilo.modernbamilo.userreview.UserReviewActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.bamilo.modernbamilo.product.sellerslist.SellersListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.bamilo.modernbamilo.product.descspec.DescSpecActivity" />
+        <activity android:name="com.bamilo.modernbamilo.product.comment.submit.SubmitRateActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name="com.bamilo.modernbamilo.product.comment.CommentsActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
