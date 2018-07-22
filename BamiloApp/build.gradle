@@ -97,7 +97,10 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-market.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-project-pro.txt',
+                    'proguard-project-market.txt',
+                    'proguard-rules-ghostadapter.pro'
         }
     }
 
@@ -145,6 +148,7 @@ android {
         main {
             res.srcDirs = ['src/main/res',
                            'src/main/res/layouts/pdv',
+                           'src/main/res/layouts/other',
                            'src/main/res/darwables',
                            'src/main/res/drawables/selectors',
                            'src/main/res/drawables/icon',
@@ -273,3 +277,4 @@ crashlytics {
 }
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jetbrains.dokka-android'

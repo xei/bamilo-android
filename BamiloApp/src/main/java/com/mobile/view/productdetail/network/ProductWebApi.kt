@@ -18,6 +18,7 @@ interface ProductWebApi {
     @POST("wishlist/addproduct")
     fun addToWishList(@Field("sku") sku: String): Call<ResponseWrapper<Any>>
 
-    @DELETE("wishlist/removeproduct")
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "wishlist/removeproduct", hasBody = true)
     fun removeFromWishList(@Field("sku") sku: String): Call<ResponseWrapper<Any>>
 }

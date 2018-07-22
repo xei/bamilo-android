@@ -1,7 +1,7 @@
 package com.mobile.view.productdetail
 
-import com.mobile.view.productdetail.model.Product
 import com.mobile.view.productdetail.model.ProductDetail
+import com.mobile.view.productdetail.model.SimpleProduct
 
 /**
  * Created by Farshid
@@ -10,8 +10,8 @@ import com.mobile.view.productdetail.model.ProductDetail
  */
 interface PDVMainView {
     fun onBackButtonClicked()
-    fun onSizeVariationClicked(sizeVariation: Product)
+    fun onSizeVariationClicked(sizeVariation: SimpleProduct)
     fun onShowFragment(fragmentTag: ProductDetailActivity.FragmentTag)
     fun onProductReceived(product: ProductDetail)
-    fun onOtherVariationClicked(product: Product)
+    fun onOtherVariationClicked(product: SimpleProduct)
 }

@@ -2,7 +2,6 @@ package com.mobile.view.productdetail.viewtypes.review
 
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.PagerSnapHelper
-import android.support.v7.widget.RecyclerView
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.components.ghostadapter.GhostAdapter
@@ -28,7 +27,11 @@ class ReviewsItem(var reviews: Reviews) {
         holder.total.text = reviews.total.toString()
         holder.maxRate.text = holder.itemView.context.getString(R.string.of_number, 5)
 
-        holder.rate.text = reviews.average.toString().replace(".", "/")
+        if (reviews.average.toInt().toFloat() == reviews.average) {
+            holder.rate.text = reviews.average.toInt().toString()
+        } else {
+            holder.rate.text = reviews.average.toString().replace(".", "/")
+        }
 
         setupRecyclerView()
         showReviews()

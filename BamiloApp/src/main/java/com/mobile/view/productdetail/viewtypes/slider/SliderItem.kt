@@ -57,31 +57,9 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
 
                 override fun onResponse(call: Call<ResponseWrapper<Any>>?, response: Response<ResponseWrapper<Any>>?) {
                     if (imageSliderModel.isWishList) {
-                        //removed from wish list
-                        imageSliderModel.isWishList = false
-                        holder.like.isChecked = false
-                        holder.like.playAnimation()
-
-                        val sem = SimpleEventModel()
-                        sem.category = holder.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName())
-                        sem.action = EventActionKeys.REMOVE_FROM_WISHLIST
-                        sem.label = imageSliderModel.productSku
-                        sem.value = imageSliderModel.price.toLong()
-                        TrackerManager.trackEvent(holder.itemView.context, EventConstants.RemoveFromWishList, sem)
-
+                        itemRemovedFromWishList()
                     } else {
-                        //added to wish list
-                        imageSliderModel.isWishList = true
-                        holder.like.isChecked = true
-                        holder.like.playAnimation()
-
-                        TrackerManager.trackEvent(holder.itemView.context,
-                                EventConstants.AddToWishList,
-                                MainEventModel(holder.itemView.context.getString(TrackingPage.PDV.getName()),
-                                        EventActionKeys.ADD_TO_WISHLIST,
-                                        imageSliderModel.productSku,
-                                        imageSliderModel.price.toLong(),
-                                        null))
+                        itemAddedToWishList()
                     }
                 }
             })
@@ -89,6 +67,42 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
             holder.like.isChecked = !imageSliderModel.isWishList
             holder.like.playAnimation()
         }
+    }
+
+    private fun itemAddedToWishList() {
+        if (holder == null) {
+            return
+        }
+
+        imageSliderModel.isWishList = true
+        holder!!.like.isChecked = true
+
+        val addToWishListEventModel =
+                MainEventModel(holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName()),
+                        EventActionKeys.ADD_TO_WISHLIST,
+                        imageSliderModel.productSku,
+                        imageSliderModel.price.toLong(),
+                        null)
+
+        TrackerManager.trackEvent(holder!!.itemView.context,
+                EventConstants.AddToWishList,
+                addToWishListEventModel)
+    }
+
+    private fun itemRemovedFromWishList() {
+        if (holder == null) {
+            return
+        }
+
+        imageSliderModel.isWishList = false
+        holder!!.like.isChecked = false
+
+        val sem = SimpleEventModel()
+        sem.category = holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName())
+        sem.action = EventActionKeys.REMOVE_FROM_WISHLIST
+        sem.label = imageSliderModel.productSku
+        sem.value = imageSliderModel.price.toLong()
+        TrackerManager.trackEvent(holder!!.itemView.context, EventConstants.RemoveFromWishList, sem)
     }
 
     private fun setupViewPager(holder: SliderHolder) {

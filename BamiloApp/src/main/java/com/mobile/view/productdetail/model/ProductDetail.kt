@@ -15,7 +15,7 @@ class ProductDetail {
     var simple_sku: String = ""
 
     var other_seller_count: Int = 0
-    var bundle: Boolean = false
+    var bundle = Bundle()
     var has_stock = true
 
     var image_list = ArrayList<Image>()

@@ -668,7 +668,8 @@
     <string name="customers_review">نظرات کاربران درباره کالا</string>
     <string name="selle_not_returned">فروش بدون بازگشت</string>
     <string name="fullfilment">تامین موفق کالا</string>
-    <string name="discount_benifit">سود شما: %1$s %2$s  می باشد</string>
+    <string name="discount_benifit">سود شما: %1$s %2$s</string>
     <string name="percent_sign">%</string>
+    <string name="related_products">کالاهای مشابه</string>
 
 </resources>

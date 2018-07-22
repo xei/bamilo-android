@@ -6,7 +6,7 @@ import com.mobile.components.ghostadapter.Binder
 import com.mobile.utils.imageloader.ImageManager
 import com.mobile.view.R
 import com.mobile.view.productdetail.OnItemClickListener
-import com.mobile.view.productdetail.model.Product
+import com.mobile.view.productdetail.model.SimpleProduct
 
 /**
  * Created by Farshid
@@ -15,7 +15,7 @@ import com.mobile.view.productdetail.model.Product
  */
 
 @BindItem(layout = R.layout.content_pdv_other_variation, holder = OtherVariationsHolder::class)
-class OtherVariationsItem(var product: Product, private var onItemClickListener: OnItemClickListener) {
+class OtherVariationsItem(var product: SimpleProduct, private var onItemClickListener: OnItemClickListener) {
     private lateinit var cardViewDefaultBackground: Drawable
     private lateinit var holder: OtherVariationsHolder
 

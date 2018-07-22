@@ -1,46 +1,51 @@
 package com.mobile.view.productdetail.mainfragment
 
+import com.emarsys.predict.RecommendedItem
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import android.widget.Toast
 import com.mobile.app.BamiloApplication
 import com.mobile.classes.models.MainEventModel
-import com.mobile.classes.models.SimpleEventModel
 import com.mobile.components.ghostadapter.GhostAdapter
+import com.mobile.constants.ConstantsIntentExtra
 import com.mobile.constants.tracking.EventActionKeys
 import com.mobile.constants.tracking.EventConstants
-import com.mobile.helpers.wishlist.AddToWishListHelper
+import com.mobile.controllers.fragments.FragmentType
+import com.mobile.extlibraries.emarsys.predict.recommended.Item
+import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager
 import com.mobile.interfaces.IResponseCallback
 import com.mobile.managers.TrackerManager
 import com.mobile.service.pojo.BaseResponse
-import com.mobile.service.tracking.TrackingPage
 import com.mobile.utils.ui.UIUtils
+import com.mobile.view.MainFragmentActivity
 import com.mobile.view.R
 import com.mobile.view.databinding.FragmentPdvMainViewBinding
-import com.mobile.view.productdetail.OnItemClickListener
 import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.ProductDetailActivity
 import com.mobile.view.productdetail.model.ImageSliderModel
 import com.mobile.view.productdetail.model.PrimaryInfoModel
-import com.mobile.view.productdetail.model.Product
 import com.mobile.view.productdetail.model.ProductDetail
+import com.mobile.view.productdetail.viewtypes.breadcrumbs.BreadcrumbListItem
 import com.mobile.view.productdetail.viewtypes.primaryinfo.PrimaryInfoItem
+import com.mobile.view.productdetail.viewtypes.recommendation.RecommendationItem
 import com.mobile.view.productdetail.viewtypes.recyclerheader.RecyclerHeaderItem
 import com.mobile.view.productdetail.viewtypes.returnpolicy.ReturnPolicyItem
 import com.mobile.view.productdetail.viewtypes.review.ReviewsItem
 import com.mobile.view.productdetail.viewtypes.seller.SellerItem
 import com.mobile.view.productdetail.viewtypes.slider.SliderItem
 import com.mobile.view.productdetail.viewtypes.variation.VariationsItem
+
 
 /**
  * Created by Farshid
@@ -56,6 +61,9 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     private var recyclerViewOverallScroll: Int = 0
     private var toolbarTitleCenterPositionMargin: Int = 0
 
+    private var itemPositionToChangeGridSpanCount = 0
+    private var itemPositionToChangeGridSpanCountToDefault = -1
+
     private var product = ProductDetail()
 
     private lateinit var adapter: GhostAdapter
@@ -64,6 +72,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     private var pdvMainFragmentViewModel: ProductDetailMainFragmentViewModel? = null
 
     private lateinit var pdvMainView: PDVMainView
+    private var recommendedItems: Any? = null
 
     companion object {
         fun newInstance(sku: String?): ProductDetailMainFragment {
@@ -97,8 +106,31 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         setupRefreshView()
         setupDetailRecycler()
 
+        setupCartItemClickListener()
+
         loadProductDetail(sku!!)
+
+        BamiloApplication.INSTANCE.cartViewStartedFromPDVCount++
+
         return binding.root
+    }
+
+    private fun setupCartItemClickListener() {
+        binding.pdvAppImageViewWhiteCart.setOnClickListener { onCartClicked() }
+        binding.pdvAppImageViewCart.setOnClickListener { onCartClicked() }
+    }
+
+    private fun onCartClicked() {
+        val intent = Intent(context, MainFragmentActivity::class.java)
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.SHOPPING_CART)
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false)
+
+        startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateCartBadge()
     }
 
     private fun fetchExtraIntentData() {
@@ -134,12 +166,57 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
                 0,
                 UIUtils.dpToPx(context, 64f))
 
-        binding.pdvSwipeRefresh.setOnRefreshListener({ loadProductDetail(sku!!) })
+        binding.pdvSwipeRefresh.setOnRefreshListener { loadProductDetail(sku!!) }
     }
 
     private fun setupDetailRecycler() {
         binding.pdvRecyclerDetailList.adapter = adapter
-        binding.pdvRecyclerDetailList.layoutManager = LinearLayoutManager(context)
+        setupRecyclerViewLayoutManager()
+        setupRecyclerViewDecoration()
+        setupRecyclerViewScrollListener()
+    }
+
+    private fun setupRecyclerViewLayoutManager() {
+        val layoutManager =
+                GridLayoutManager(context,
+                        2,
+                        GridLayoutManager.VERTICAL,
+                        false)
+
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                if (position in itemPositionToChangeGridSpanCount..(itemPositionToChangeGridSpanCountToDefault - 1)) {
+                    return 1
+                }
+
+                return 2
+            }
+        }
+
+        binding.pdvRecyclerDetailList.layoutManager = layoutManager
+    }
+
+    private fun setupRecyclerViewDecoration() {
+        binding.pdvRecyclerDetailList.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+                if (recommendedItems != null && parent != null) {
+                    val position = parent.getChildAdapterPosition(view)
+                    if (position in
+                            itemPositionToChangeGridSpanCount..(itemPositionToChangeGridSpanCountToDefault - 1)) {
+                        if (position % 2 == 0) {
+                            outRect!!.right = UIUtils.dpToPx(context, 4f)
+                            outRect.left = UIUtils.dpToPx(context, 6f)
+                        } else {
+                            outRect!!.right = UIUtils.dpToPx(context, 6f)
+                            outRect.left = UIUtils.dpToPx(context, 4f)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    private fun setupRecyclerViewScrollListener() {
         binding.pdvRecyclerDetailList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -151,6 +228,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
                 if (view != null &&
                         binding.pdvRecyclerDetailList.getChildAdapterPosition(view) == 0) {
                     view.translationY = (-view.top / 3).toFloat()
+                    view.alpha = (-view.top / 3).toFloat()
                 }
             }
         })
@@ -178,7 +256,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         binding.pdvRelativeLayoutPrimaryToolbar.alpha = alpha
     }
 
-    private fun updateUi() {
+    private fun addItemsToRecyclerInputList() {
         items.clear()
         adapter.removeAll()
 
@@ -189,14 +267,18 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         addReturnPolicy()
         addSellerInfo()
         addReviews()
+    }
 
+    private fun addItemsToAdapter() {
         adapter.setItems(items)
 
         val viewProductEventModel = MainEventModel("pdv", EventActionKeys.VIEW_PRODUCT, product.sku,
                 product.price.price.toLong(),
                 MainEventModel.createViewProductEventModelAttributes("categoryUrlKey",
-                product.price.price.toLong()))
+                        product.price.price.toLong()))
         TrackerManager.trackEvent(context, EventConstants.ViewProduct, viewProductEventModel)
+
+        binding.pdvRecyclerDetailList.smoothScrollBy(0, 5)
     }
 
     private fun addImagesToSlider() {
@@ -204,6 +286,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         imageSliderModel.productSku = sku!!
         imageSliderModel.isWishList = product.isWishList
         imageSliderModel.images = product.image_list
+        imageSliderModel.price = product.price.price
 
         items.add(SliderItem(fragmentManager!!, imageSliderModel))
     }
@@ -243,8 +326,16 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     private fun addReviews() {
         if (product.reviews.items.size > 0) {
             addHeader(context!!.getString(R.string.customers_review))
+            product.reviews.average = product.rating.average
             items.add(ReviewsItem(product.reviews))
         }
+    }
+
+    private fun addBreadCrumbs() {
+        if (product.breadcrumbs.size <= 0) {
+            return
+        }
+        items.add(BreadcrumbListItem(product.breadcrumbs))
     }
 
     public fun reloadData(sku: String) {
@@ -254,13 +345,51 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     private fun loadProductDetail(sku: String) {
         binding.pdvSwipeRefresh.isRefreshing = true
         pdvMainFragmentViewModel!!.loadData(sku).observe(this, Observer { product ->
-            binding.pdvSwipeRefresh.isRefreshing = false
             if (product != null) {
                 this.product = product
-                updateUi()
                 pdvMainView.onProductReceived(product)
+                getRecommendedProducts()
             }
         })
+    }
+
+    private fun getRecommendedProducts() {
+        val recommendManager = RecommendManager()
+        recommendManager.sendRelatedRecommend(getRecommendationItem(), null, product.sku, null)
+        { _, data ->
+            addItemsToRecyclerInputList()
+            recommendedItems = data
+            if (data != null) {
+                addHeader(getString(R.string.related_products))
+
+                itemPositionToChangeGridSpanCount = items.size
+                itemPositionToChangeGridSpanCountToDefault = itemPositionToChangeGridSpanCount
+
+                for (i in 0 until data.size) {
+                    if (i > 3) {
+                        break
+                    }
+                    itemPositionToChangeGridSpanCountToDefault++
+                    items.add(RecommendationItem(data[i], product.price.currency))
+                }
+            }
+            addBreadCrumbs()
+            addItemsToAdapter()
+            binding.pdvSwipeRefresh.isRefreshing = false
+        }
+    }
+
+    private fun getRecommendationItem(): RecommendedItem? {
+        val item = Item()
+        item.brand = product.brand
+        item.category = product.breadcrumbs[0].target.split("::")[1]
+        item.image = product.image
+        item.isAvailable = product.has_stock
+        item.itemID = product.sku
+        item.price = product.price.price.toDouble()
+        item.title = product.title
+
+        return item.recommendedItem
     }
 
     private fun bindToolbarClickListener() {
@@ -277,5 +406,17 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     }
 
     override fun onRequestError(baseResponse: BaseResponse<*>?) {
+    }
+
+    fun updateCartBadge() {
+        val cart = BamiloApplication.INSTANCE.cart
+        when {
+            cart == null -> binding.pdvAppImageViewCartBadge.visibility = View.GONE
+            cart.cartCount == 0 -> binding.pdvAppImageViewCartBadge.visibility = View.GONE
+            else -> {
+                binding.pdvAppImageViewCartBadge.visibility = View.VISIBLE
+                binding.pdvAppImageViewCartBadge.text = cart.cartCount.toString()
+            }
+        }
     }
 }

@@ -680,6 +680,7 @@
     <string name="selle_not_returned">فروش بدون بازگشت</string>
     <string name="fullfilment">تامین موفق کالا</string>
     <string name="sla_reached">ارسال به موقع</string>
-    <string name="discount_benifit">سود شما: s$1% s$1% می باشد</string>
+    <string name="discount_benifit">سود شما: s$1% s$1%</string>
+    <string name="related_products">کالاهای مشابه</string>
 
 </resources>

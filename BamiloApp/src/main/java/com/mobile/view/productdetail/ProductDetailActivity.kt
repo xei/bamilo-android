@@ -7,33 +7,38 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.mobile.app.BamiloApplication
 import com.mobile.classes.models.BaseScreenModel
 import com.mobile.classes.models.MainEventModel
 import com.mobile.constants.tracking.EventActionKeys
 import com.mobile.constants.tracking.EventConstants
+import com.mobile.interfaces.IResponseCallback
 import com.mobile.managers.TrackerManager
+import com.mobile.service.pojo.BaseResponse
 import com.mobile.service.tracking.TrackingPage
 import com.mobile.utils.ConfigurationWrapper
 import com.mobile.view.R
 import com.mobile.view.databinding.ActivityProductDetailBinding
 import com.mobile.view.productdetail.mainfragment.ProductDetailMainFragment
-import com.mobile.view.productdetail.model.Product
 import com.mobile.view.productdetail.model.ProductDetail
+import com.mobile.view.productdetail.model.SimpleProduct
 import java.util.*
 
 class ProductDetailActivity : AppCompatActivity(), PDVMainView {
-
     private lateinit var productDetail: ProductDetail
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var productDetailPresenter: ProductDetailPresenter
 
     private var changeProductDetailOnViewVisible = false
 
-    private var sizeVariation = Product()
+    private var sizeVariation = SimpleProduct()
 
     private var sku: String? = ""
 
+    /**
+     * create a bundle of requirements
+     **/
     companion object {
         @JvmStatic
         fun start(invokerContext: Context, sku: String) {
@@ -74,14 +79,32 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
     }
 
     private fun bindAddToCartClickListener() {
-        binding.productDetailLinearLayoutAddToCart!!.setOnClickListener({
+        binding.productDetailLinearLayoutAddToCart!!.setOnClickListener {
             if (productHasSizeVariation() && sizeVariation.sku.isEmpty()) {
                 productDetailPresenter.showBottomSheet()
             } else {
-                trackAddToCartEvent()
+                productDetailPresenter.addToCart(productDetail.simple_sku, object : IResponseCallback {
+                    override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
+                        trackAddToCartEvent()
+                        onProductAddedToCart()
+                    }
+                    override fun onRequestError(baseResponse: BaseResponse<*>?) {
+                    }
+                })
             }
-        })
+        }
     }
+
+    fun onProductAddedToCart() {
+        if (getCurrentFragment() is ProductDetailMainFragment) {
+            val productDetailMainFragment = supportFragmentManager
+                    .findFragmentByTag(ProductDetailMainFragment::class.java.simpleName)
+                    as ProductDetailMainFragment
+
+            productDetailMainFragment.updateCartBadge()
+        }
+    }
+
 
     private fun productHasSizeVariation(): Boolean {
         for (variation in productDetail.variations) {
@@ -122,10 +145,6 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
     private fun displaySelectedScreen(fragmentTag: FragmentTag) {
         val fragment = getFragment(fragmentTag) ?: return
 
-//        if (getCurrentFragment() == fragment /* and if selected product sku is equal to current sku*/) {
-//            return
-//        }
-
         try {
             replaceFragment(fragment)
         } catch (ignored: Exception) {
@@ -156,17 +175,16 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
         onBackPressed()
     }
 
-    override fun onOtherVariationClicked(product: Product) {
+    override fun onOtherVariationClicked(product: SimpleProduct) {
+        if (product.sku == sku) {
+            return
+        }
+
         sku = product.sku
         displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
-
-        val productDetailMainFragment = supportFragmentManager
-                .findFragmentByTag(ProductDetailMainFragment::class.java.simpleName)
-                as ProductDetailMainFragment
-        productDetailMainFragment.reloadData(product.sku)
     }
 
-    override fun onSizeVariationClicked(sizeVariation: Product) {
+    override fun onSizeVariationClicked(sizeVariation: SimpleProduct) {
         this.sizeVariation = sizeVariation
     }
 
@@ -181,6 +199,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
         }
 
         if (supportFragmentManager.backStackEntryCount == 1) {
+            BamiloApplication.INSTANCE.cartViewStartedFromPDVCount--
             finish()
             return
         }

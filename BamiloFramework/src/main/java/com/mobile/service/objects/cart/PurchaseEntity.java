@@ -423,4 +423,96 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         }
     };
 
+    public void setTotal(double total) {
+        mTotal = total;
+    }
+
+    public void setTotalConverted(double totalConverted) {
+        mTotalConverted = totalConverted;
+    }
+
+    public void setSubTotal(double subTotal) {
+        mSubTotal = subTotal;
+    }
+
+    public void setSubTotalConverted(double subTotalConverted) {
+        mSubTotalConverted = subTotalConverted;
+    }
+
+    public void setCartCount(int cartCount) {
+        mCartCount = cartCount;
+    }
+
+    public void setVatValue(double vatValue) {
+        mVatValue = vatValue;
+    }
+
+    public void setVatLabel(String vatLabel) {
+        mVatLabel = vatLabel;
+    }
+
+    public void setShippingValue(double shippingValue) {
+        mShippingValue = shippingValue;
+    }
+
+    public void setExtraCosts(double extraCosts) {
+        mExtraCosts = extraCosts;
+    }
+
+    public void setSumCostsValue(double sumCostsValue) {
+        mSumCostsValue = sumCostsValue;
+    }
+
+    public void setCouponDiscount(double couponDiscount) {
+        mCouponDiscount = couponDiscount;
+    }
+
+    public void setCouponCode(String couponCode) {
+        mCouponCode = couponCode;
+    }
+
+    public void setPriceRules(HashMap<String, String> priceRules) {
+        mPriceRules = priceRules;
+    }
+
+    public void setCartItems(ArrayList<PurchaseCartItem> cartItems) {
+        mCartItems = cartItems;
+    }
+
+    public void setShippingMethod(String shippingMethod) {
+        mShippingMethod = shippingMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        mPaymentMethod = paymentMethod;
+    }
+
+    public void setBillingAddress(Address billingAddress) {
+        mBillingAddress = billingAddress;
+    }
+
+    public void setShippingAddress(Address shippingAddress) {
+        mShippingAddress = shippingAddress;
+    }
+
+    public void setVatEnabled(boolean vatEnabled) {
+        mIsVatEnabled = vatEnabled;
+    }
+
+    public void setFulfillmentList(
+            ArrayList<Fulfillment> fulfillmentList) {
+        mFulfillmentList = fulfillmentList;
+    }
+
+    public void setLastItemAdded(PurchaseCartItem lastItemAdded) {
+        mLastItemAdded = lastItemAdded;
+    }
+
+    public void setHasFreeShipping(boolean hasFreeShipping) {
+        this.hasFreeShipping = hasFreeShipping;
+    }
+
+    public void setSubTotalUnDiscounted(double subTotalUnDiscounted) {
+        mSubTotalUnDiscounted = subTotalUnDiscounted;
+    }
 }

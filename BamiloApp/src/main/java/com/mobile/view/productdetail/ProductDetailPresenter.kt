@@ -1,6 +1,9 @@
 package com.mobile.view.productdetail
 
 import android.content.Context
+import com.mobile.app.BamiloApplication
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper
+import com.mobile.interfaces.IResponseCallback
 import com.mobile.view.databinding.ActivityProductDetailBinding
 import com.mobile.view.productdetail.model.ProductDetail
 
@@ -27,5 +30,10 @@ class ProductDetailPresenter(var context: Context, binding: ActivityProductDetai
 
     fun isBottomSheetShown(): Boolean {
         return chooseVariationBottomSheetHandler.isBottomSheetShown()
+    }
+
+    fun addToCart(simpleSku: String, iResponseCallback: IResponseCallback) {
+        BamiloApplication.INSTANCE.sendRequest(ShoppingCartAddItemHelper(),
+                ShoppingCartAddItemHelper.createBundle(simpleSku), iResponseCallback)
     }
 }

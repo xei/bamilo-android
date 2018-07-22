@@ -23,7 +23,7 @@ import retrofit2.Callback
  */
 class SliderPresenter(var context: Context, private var productSku: String, private var imageList: ArrayList<Image>) {
     fun onLikeButtonClicked(likeButton: SparkButton, callBack: Callback<ResponseWrapper<Any>>) {
-        if (BamiloApplication.isCustomerLoggedIn()) {
+        if (!BamiloApplication.isCustomerLoggedIn()) {
             loginUser()
         } else {
             if (likeButton.isChecked) {
@@ -73,9 +73,9 @@ class SliderPresenter(var context: Context, private var productSku: String, priv
     @SuppressLint("ClickableViewAccessibility")
     fun handleOnViewPagerClicked(viewPager: ViewPager?) {
         val tapGestureDetector = GestureDetector(context, TapGestureListener())
-        viewPager!!.setOnTouchListener({ _, event ->
+        viewPager!!.setOnTouchListener { _, event ->
             viewPagerTouched(tapGestureDetector, event)
-        })
+        }
     }
 
     private fun viewPagerTouched(tapGestureDetector: GestureDetector, event: MotionEvent?): Boolean {

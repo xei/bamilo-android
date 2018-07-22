@@ -77,6 +77,5 @@ class ProductDetailMainFragmentViewModel(application: Application) : AndroidView
                         setItems(response.body().metadata)
                     }
                 })
-        //get from server
     }
 }

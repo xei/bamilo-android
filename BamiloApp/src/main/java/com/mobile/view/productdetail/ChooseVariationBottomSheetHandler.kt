@@ -6,6 +6,7 @@ import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.mobile.components.ghostadapter.GhostAdapter
+import com.mobile.service.utils.TextUtils
 import com.mobile.utils.imageloader.ImageManager
 import com.mobile.view.R
 import com.mobile.view.databinding.ActivityProductDetailBinding
@@ -35,6 +36,15 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
         setupBottomSheetAdapter()
         setupBottomSheetRecycler()
         setupBottomSheetStateListener()
+        setupOutSideTochListener()
+    }
+
+    private fun setupOutSideTochListener() {
+        binding.productDetailTransparentBackground.setOnClickListener {
+            if(binding.productDetailTransparentBackground.visibility == View.VISIBLE){
+                hideBottomSheet()
+            }
+        }
     }
 
     private fun setupBottomSheetStateListener() {
@@ -111,9 +121,13 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
         binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewTitle.text = product.title
         binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewPrice.text = product.price.price
         binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewCurrency.text = product.price.currency
-        binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.text = product.price.oldPrice
 
+        binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.text = product.price.oldPrice
         binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+
+        if (TextUtils.isEmpty(product.price.oldPrice) || product.price.oldPrice == "0") {
+            binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.visibility = View.GONE
+        }
 
         bottomSheetItems.add(PDVBottomSheetVariationItem(product.variations, pdvMainView))
 

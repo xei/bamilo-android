@@ -8,5 +8,5 @@ package com.mobile.view.productdetail.model
 class Variation {
     var type: String = ""
     var title: String = ""
-    var products = arrayListOf<Product>()
+    var products = arrayListOf<SimpleProduct>()
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="pdv_main_fragment_viewModel"
@@ -92,17 +93,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="56dp"
-                    android:gravity="center_vertical|right"
-                    android:textAlignment="gravity"
                     android:layout_toLeftOf="@+id/pdv_appImageView_whiteBack"
                     android:layout_toRightOf="@+id/pdv_appImageView_whiteCart"
                     android:ellipsize="end"
-                    android:singleLine="true"
+                    android:gravity="center_vertical|right"
                     android:maxLines="1"
+                    android:singleLine="true"
+                    android:textAlignment="gravity"
                     android:textColor="@color/white"
                     android:textSize="16sp"/>
 
             </RelativeLayout>
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/pdv_appImageView_cartBadge"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:layout_marginLeft="@dimen/dimen_28dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/circle_primary_orange"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:visibility="gone"
+                tools:ignore="SmallSp"
+                tools:text="8"
+                tools:visibility="visible"/>
 
         </RelativeLayout>
 

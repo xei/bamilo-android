@@ -22,6 +22,12 @@ class PrimaryInfoItem(private var primaryInfoModel: PrimaryInfoModel) {
     public fun binder(holder: PrimaryInfoHolder) {
         setPriceAndDiscount(holder)
 
+        if (primaryInfoModel.rating.total == 0) {
+            holder.ratingLayout.visibility = View.GONE
+        } else {
+            holder.ratingLayout.visibility = View.VISIBLE
+        }
+
         holder.currency.text = primaryInfoModel.priceModel.currency
 
         holder.title.text = primaryInfoModel.title

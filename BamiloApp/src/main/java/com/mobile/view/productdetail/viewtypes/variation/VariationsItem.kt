@@ -11,7 +11,7 @@ import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
 import com.mobile.view.productdetail.OnItemClickListener
 import com.mobile.view.productdetail.PDVMainView
-import com.mobile.view.productdetail.model.Product
+import com.mobile.view.productdetail.model.SimpleProduct
 import com.mobile.view.productdetail.model.Variation
 import com.mobile.view.productdetail.viewtypes.variation.colors.OtherVariationsItem
 import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
@@ -35,7 +35,7 @@ class VariationsItem(var variations: ArrayList<Variation>, private var pdvMainVi
     private lateinit var otherItems: ArrayList<Any>
     private lateinit var sizesItem: ArrayList<Any>
 
-    var selectedSize = Product()
+    var selectedSize = SimpleProduct()
 
     @Binder
     public fun binder(holder: VariationsHolder) {
@@ -108,7 +108,7 @@ class VariationsItem(var variations: ArrayList<Variation>, private var pdvMainVi
                             for (sizeItem in sizesItem) {
                                 (sizeItem as VariationsSizeItem).disableView()
                             }
-                            selectedSize = any as Product
+                            selectedSize = any as SimpleProduct
                             pdvMainView.onSizeVariationClicked(selectedSize)
                         }
                     }))
@@ -133,7 +133,7 @@ class VariationsItem(var variations: ArrayList<Variation>, private var pdvMainVi
                             for (item in otherItems) {
                                 (item as OtherVariationsItem).deSelectProduct()
                             }
-                            pdvMainView.onOtherVariationClicked(any as Product)
+                            pdvMainView.onOtherVariationClicked(any as SimpleProduct)
                         }
                     }))
                 }

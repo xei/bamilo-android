@@ -88,6 +88,8 @@ public class BamiloApplication extends Application {
         return component;
     }
 
+    public int cartViewStartedFromPDVCount = 0;
+
     /**
      * Create application
      */
@@ -359,6 +361,5 @@ public class BamiloApplication extends Application {
     public String getSearchedTerm() {
         return mSavedSearchTerm;
     }
-
 }
 
