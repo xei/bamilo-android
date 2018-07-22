@@ -1,4 +1,4 @@
-package com.bamilo.modernbamilo.product.sellerslist
+package com.bamilo.modernbamilo.product.sellerslist.view.customview
 
 import android.content.Context
 import android.support.v4.content.ContextCompat

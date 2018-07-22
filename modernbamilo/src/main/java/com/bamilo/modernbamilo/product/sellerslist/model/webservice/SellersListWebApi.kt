@@ -1,4 +1,4 @@
-package com.bamilo.modernbamilo.product.sellerslist.webservice
+package com.bamilo.modernbamilo.product.sellerslist.model.webservice
 
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import retrofit2.Call

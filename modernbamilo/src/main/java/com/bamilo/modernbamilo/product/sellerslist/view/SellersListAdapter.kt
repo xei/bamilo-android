@@ -1,4 +1,4 @@
-package com.bamilo.modernbamilo.product.sellerslist
+package com.bamilo.modernbamilo.product.sellerslist.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.customview.DateTimeView
 import com.bamilo.modernbamilo.customview.PriceView
+import com.bamilo.modernbamilo.product.sellerslist.viewmodel.SellersListItemViewModel
 import com.bamilo.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.modernbamilo.util.extension.persianizeNumberString
 

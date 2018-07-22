@@ -1,4 +1,4 @@
-package com.bamilo.modernbamilo.product.sellerslist.webservice
+package com.bamilo.modernbamilo.product.sellerslist.model.webservice
 
 import com.google.gson.annotations.SerializedName
 
@@ -9,7 +9,6 @@ data class GetSellersResponse (
 data class SellerProduct (
         @SerializedName("seller") val sellerInfo: SellerInfo,
         @SerializedName("product_offer") val productInfo: ProductInfo
-
 )
 
 data class SellerInfo (

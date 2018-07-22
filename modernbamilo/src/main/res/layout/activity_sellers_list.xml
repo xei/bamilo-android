@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/sellersList_background"
-    tools:context=".product.sellerslist.SellersListActivity" >
+    tools:context=".product.sellerslist.view.SellersListActivity" >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/activitySellersList_toolbar_toolbar"
@@ -55,7 +55,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
-    <com.bamilo.modernbamilo.product.sellerslist.FilterButton
+    <com.bamilo.modernbamilo.product.sellerslist.view.customview.FilterButton
         android:id="@+id/activitySellersList_filterButton_price"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/activitySellersList_xeiTextView_sortingLabel"
         app:layout_constraintStart_toEndOf="@+id/activitySellersList_xeiTextView_sortingLabel" />
 
-    <com.bamilo.modernbamilo.product.sellerslist.FilterButton
+    <com.bamilo.modernbamilo.product.sellerslist.view.customview.FilterButton
         android:id="@+id/activitySellersList_filterButton_rate"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/activitySellersList_filterButton_price"
         app:layout_constraintStart_toEndOf="@+id/activitySellersList_filterButton_price" />
 
-    <com.bamilo.modernbamilo.product.sellerslist.FilterButton
+    <com.bamilo.modernbamilo.product.sellerslist.view.customview.FilterButton
         android:id="@+id/activitySellersList_filterButton_leadTime"
         android:layout_width="60dp"
         android:layout_height="wrap_content"

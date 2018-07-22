@@ -1,4 +1,4 @@
-package com.bamilo.modernbamilo.product.sellerslist
+package com.bamilo.modernbamilo.product.sellerslist.viewmodel
 
 class SellersListScreenViewModel(
         val productTitle: String,

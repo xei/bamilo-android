@@ -1,4 +1,4 @@
-package com.bamilo.modernbamilo.product.sellerslist
+package com.bamilo.modernbamilo.product.sellerslist.view
 
 import android.content.Context
 import android.content.Intent
@@ -12,6 +12,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.app.BaseActivity
+import com.bamilo.modernbamilo.product.sellerslist.viewmodel.SellersListItemViewModel
+import com.bamilo.modernbamilo.product.sellerslist.model.SellersListRepository
+import com.bamilo.modernbamilo.product.sellerslist.viewmodel.SellersListScreenViewModel
+import com.bamilo.modernbamilo.product.sellerslist.view.customview.FilterButton
 import com.bamilo.modernbamilo.util.extension.loadImageFromNetwork
 import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger

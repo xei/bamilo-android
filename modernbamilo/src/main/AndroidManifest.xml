@@ -10,7 +10,7 @@
             android:name=".userreview.UserReviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".product.sellerslist.SellersListActivity"
+            android:name=".product.sellerslist.view.SellersListActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".product.descspec.DescSpecActivity"

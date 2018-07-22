@@ -1,8 +1,9 @@
-package com.bamilo.modernbamilo.product.sellerslist
+package com.bamilo.modernbamilo.product.sellerslist.model
 
 import android.content.Context
-import com.bamilo.modernbamilo.product.sellerslist.webservice.GetSellersResponse
-import com.bamilo.modernbamilo.product.sellerslist.webservice.SellersListWebApi
+import com.bamilo.modernbamilo.product.sellerslist.viewmodel.SellersListItemViewModel
+import com.bamilo.modernbamilo.product.sellerslist.model.webservice.GetSellersResponse
+import com.bamilo.modernbamilo.product.sellerslist.model.webservice.SellersListWebApi
 import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
