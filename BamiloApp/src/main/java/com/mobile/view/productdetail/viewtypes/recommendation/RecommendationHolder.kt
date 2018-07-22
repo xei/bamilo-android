@@ -12,11 +12,11 @@ import com.mobile.view.R
  * since 7/21/2018.
  * contact farshidabazari@gmail.com
  */
-class RecommendationHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    var title: TextView = itemView!!.findViewById(R.id.recommendation_textView_title)
-    var price: TextView = itemView!!.findViewById(R.id.recommendation_textView_price)
-    var oldPrice: TextView = itemView!!.findViewById(R.id.recommendation_textView_oldPrice)
+class RecommendationHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var title: TextView = itemView.findViewById(R.id.recommendation_textView_title)
+    var price: TextView = itemView.findViewById(R.id.recommendation_textView_price)
+    var oldPrice: TextView = itemView.findViewById(R.id.recommendation_textView_oldPrice)
 
-    var image: ImageView = itemView!!.findViewById(R.id.home_teaser_item_image)
-    var progressBar: ProgressBar = itemView!!.findViewById(R.id.home_teaser_item_progress)
+    var image: ImageView = itemView.findViewById(R.id.home_teaser_item_image)
+    var progressBar: ProgressBar = itemView.findViewById(R.id.home_teaser_item_progress)
 }

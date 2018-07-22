@@ -198,16 +198,16 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
 
     private fun setupRecyclerViewDecoration() {
         binding.pdvRecyclerDetailList.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
-                if (recommendedItems != null && parent != null) {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                if (recommendedItems != null) {
                     val position = parent.getChildAdapterPosition(view)
                     if (position in
                             itemPositionToChangeGridSpanCount..(itemPositionToChangeGridSpanCountToDefault - 1)) {
                         if (position % 2 == 0) {
-                            outRect!!.right = UIUtils.dpToPx(context, 4f)
+                            outRect.right = UIUtils.dpToPx(context, 4f)
                             outRect.left = UIUtils.dpToPx(context, 6f)
                         } else {
-                            outRect!!.right = UIUtils.dpToPx(context, 6f)
+                            outRect.right = UIUtils.dpToPx(context, 6f)
                             outRect.left = UIUtils.dpToPx(context, 4f)
                         }
                     }
@@ -218,7 +218,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
 
     private fun setupRecyclerViewScrollListener() {
         binding.pdvRecyclerDetailList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 recyclerViewOverallScroll += dy
                 setToolbarAlpha()
@@ -320,7 +320,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
 
     private fun addSellerInfo() {
         addHeader(context!!.getString(R.string.fulfilled))
-        items.add(SellerItem(product.seller, product.other_seller_count, product.simple_sku))
+        items.add(SellerItem(product.seller, product.other_seller_count, product.simple_sku, pdvMainView))
     }
 
     private fun addReviews() {

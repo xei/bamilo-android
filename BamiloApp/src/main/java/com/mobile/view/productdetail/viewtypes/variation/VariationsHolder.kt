@@ -12,17 +12,17 @@ import com.mobile.view.R
  * since 6/17/2018.
  * contact farshidabazari@gmail.com
  */
-class VariationsHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    var colorTitle: TextView = itemView!!.findViewById(R.id.pdvVariations_textView_colorTitle)
-    var sizeTitle: TextView = itemView!!.findViewById(R.id.pdvVariations_textView_sizeTitle)
+class VariationsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var colorTitle: TextView = itemView.findViewById(R.id.pdvVariations_textView_colorTitle)
+    var sizeTitle: TextView = itemView.findViewById(R.id.pdvVariations_textView_sizeTitle)
 
-    var sizeHelp: LinearLayout = itemView!!.findViewById(R.id.pdvVariations_linearLayout_sizeHelp)
+    var sizeHelp: LinearLayout = itemView.findViewById(R.id.pdvVariations_linearLayout_sizeHelp)
 
-    var sizesRecyclerView: RecyclerView = itemView!!.findViewById(R.id.pdvVariations_recyclerView_size)
-    var colorsRecyclerView: RecyclerView = itemView!!.findViewById(R.id.pdvVariations_recyclerView_colors)
+    var sizesRecyclerView: RecyclerView = itemView.findViewById(R.id.pdvVariations_recyclerView_size)
+    var colorsRecyclerView: RecyclerView = itemView.findViewById(R.id.pdvVariations_recyclerView_colors)
 
-    var othersRoot: LinearLayout = itemView!!.findViewById(R.id.pdvVariations_linearLayout_othersRoot)
-    var sizeRoot: LinearLayout = itemView!!.findViewById(R.id.pdvVariations_linearLayout_sizeRoot)
+    var othersRoot: LinearLayout = itemView.findViewById(R.id.pdvVariations_linearLayout_othersRoot)
+    var sizeRoot: LinearLayout = itemView.findViewById(R.id.pdvVariations_linearLayout_sizeRoot)
 
-    var parentView : CardView = itemView!!.findViewById(R.id.pdvVariations_cardView_root)
+    var parentView : CardView = itemView.findViewById(R.id.pdvVariations_cardView_root)
 }

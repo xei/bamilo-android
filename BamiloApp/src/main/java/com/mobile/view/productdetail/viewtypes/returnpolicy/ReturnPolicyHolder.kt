@@ -11,7 +11,7 @@ import com.mobile.view.R
  * since 6/23/2018.
  * contact farshidabazari@gmail.com
  */
-class ReturnPolicyHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    var title: TextView = itemView!!.findViewById(R.id.returnPolicy_textView_returnPolicyText)
-    var icon: AppCompatImageView = itemView!!.findViewById(R.id.returnPolicy_appImageView_returnPolicyIcon)
+class ReturnPolicyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var title: TextView = itemView.findViewById(R.id.returnPolicy_textView_returnPolicyText)
+    var icon: AppCompatImageView = itemView.findViewById(R.id.returnPolicy_appImageView_returnPolicyIcon)
 }

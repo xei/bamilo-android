@@ -11,7 +11,7 @@ import com.mobile.view.R
  * since 6/17/2018.
  * contact farshidabazari@gmail.com
  */
-class VariationsSizeHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    var rootLayout: LinearLayout = itemView!!.findViewById(R.id.pdvSize_linearLayout_rootLayout)
-    var title: TextView = itemView!!.findViewById(R.id.pdvSize_textView_title)
+class VariationsSizeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var rootLayout: LinearLayout = itemView.findViewById(R.id.pdvSize_linearLayout_rootLayout)
+    var title: TextView = itemView.findViewById(R.id.pdvSize_textView_title)
 }

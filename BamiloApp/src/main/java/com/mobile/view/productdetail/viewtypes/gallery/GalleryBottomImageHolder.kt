@@ -11,7 +11,7 @@ import com.mobile.view.R
  * since 6/19/2018.
  * contact farshidabazari@gmail.com
  */
-class GalleryBottomImageHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    var progressBar = itemView!!.findViewById<ProgressBar>(R.id.pdvGalleryBottomImage_progressBar)
-    var image = itemView!!.findViewById<AppCompatImageView>(R.id.pdvGalleryBottomImage_appImageView_Image)
+class GalleryBottomImageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var progressBar = itemView.findViewById<ProgressBar>(R.id.pdvGalleryBottomImage_progressBar)
+    var image = itemView.findViewById<AppCompatImageView>(R.id.pdvGalleryBottomImage_appImageView_Image)
 }

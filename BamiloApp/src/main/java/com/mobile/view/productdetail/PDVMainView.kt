@@ -14,4 +14,5 @@ interface PDVMainView {
     fun onShowFragment(fragmentTag: ProductDetailActivity.FragmentTag)
     fun onProductReceived(product: ProductDetail)
     fun onOtherVariationClicked(product: SimpleProduct)
+    fun onShowOtherSeller()
 }

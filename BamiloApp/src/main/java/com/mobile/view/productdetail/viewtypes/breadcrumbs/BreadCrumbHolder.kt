@@ -11,7 +11,7 @@ import com.mobile.view.R
  * since 7/22/2018.
  * contact farshidabazari@gmail.com
  */
-class BreadCrumbHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    var chevronImage: AppCompatImageView = itemView!!.findViewById(R.id.breadcrumbs_appImageView_chevron)
-    var title: TextView = itemView!!.findViewById(R.id.breadcrumbs_textView_title)
+class BreadCrumbHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var chevronImage: AppCompatImageView = itemView.findViewById(R.id.breadcrumbs_appImageView_chevron)
+    var title: TextView = itemView.findViewById(R.id.breadcrumbs_textView_title)
 }

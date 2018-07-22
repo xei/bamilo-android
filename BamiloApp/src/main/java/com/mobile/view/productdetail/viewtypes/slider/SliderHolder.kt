@@ -12,8 +12,8 @@ import com.mobile.view.R
  * since 6/17/2018.
  * contact farshidabazari@gmail.com
  */
-class SliderHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    var viewPager = itemView!!.findViewById<ViewPager>(R.id.contentProductSlider_viewPager)
-    var share = itemView!!.findViewById<AppCompatImageView>(R.id.pdvSlider_appImageView_share)
-    var like = itemView!!.findViewById<SparkButton>(R.id.pdvSlider_appImageView_like)
+class SliderHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var viewPager: ViewPager = itemView.findViewById(R.id.contentProductSlider_viewPager)
+    var share: AppCompatImageView = itemView.findViewById(R.id.pdvSlider_appImageView_share)
+    var like: SparkButton = itemView.findViewById(R.id.pdvSlider_appImageView_like)
 }

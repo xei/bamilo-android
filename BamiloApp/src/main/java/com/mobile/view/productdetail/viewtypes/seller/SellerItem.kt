@@ -22,6 +22,7 @@ import com.mobile.service.utils.CollectionUtils
 import com.mobile.service.utils.TextUtils
 import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
+import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.Score
 import com.mobile.view.productdetail.model.Seller
 import com.mobile.view.productdetail.network.RegionWebApi
@@ -44,7 +45,8 @@ import java.util.*
 @BindItem(layout = R.layout.content_pdv_seller_info, holder = SellerHolder::class)
 class SellerItem(private var seller: Seller,
                  private var otherSellersCount: Int,
-                 private var simpleSku: String) {
+                 private var simpleSku: String,
+                 private var pdvMainView: PDVMainView) {
 
     private var regions: ArrayList<Region>? = null
     private var cities: ArrayList<City>? = null
@@ -90,9 +92,6 @@ class SellerItem(private var seller: Seller,
         showSellerRateTexts(holder, seller.score)
     }
 
-    /**
-     * onBindItem
-     * */
     @Binder
     public fun binder(holder: SellerHolder) {
         holder.sellerName.text = seller.name
@@ -134,7 +133,7 @@ class SellerItem(private var seller: Seller,
     }
 
     private fun showOtherSellers() {
-
+        pdvMainView.onShowOtherSeller()
     }
 
     private fun setupSellerRate(holder: SellerHolder) {

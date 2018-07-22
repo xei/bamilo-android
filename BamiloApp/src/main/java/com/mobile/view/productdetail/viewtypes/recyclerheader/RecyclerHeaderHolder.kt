@@ -10,7 +10,7 @@ import com.mobile.view.R
  * since 6/17/2018.
  * contact farshidabazari@gmail.com
  */
-class RecyclerHeaderHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    var title = itemView!!.findViewById<TextView>(R.id.recyclerViewHeader_textView_title)
-    var more = itemView!!.findViewById<TextView>(R.id.recyclerViewHeader_textView_more)
+class RecyclerHeaderHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var title: TextView = itemView.findViewById(R.id.recyclerViewHeader_textView_title)
+    var more: TextView = itemView.findViewById(R.id.recyclerViewHeader_textView_more)
 }

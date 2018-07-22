@@ -9,6 +9,6 @@ import com.mobile.view.R
  * since 7/22/2018.
  * contact farshidabazari@gmail.com
  */
-class BreadCrumbListHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    var breadCrumbsRecycler: RecyclerView = itemView!!.findViewById(R.id.breadcrumbs_recyclerView)
+class BreadCrumbListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var breadCrumbsRecycler: RecyclerView = itemView.findViewById(R.id.breadcrumbs_recyclerView)
 }

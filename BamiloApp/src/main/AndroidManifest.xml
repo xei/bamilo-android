@@ -296,11 +296,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name="com.bamilo.modernbamilo.userreview.UserReviewActivity"/>
-        <!-- Components in Modern Bamilo Module -->
         <activity android:name="com.bamilo.modernbamilo.userreview.UserReviewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.bamilo.modernbamilo.product.sellerslist.SellersListActivity"
+        <activity android:name="com.bamilo.modernbamilo.product.sellerslist.view.SellersListActivity"
             android:screenOrientation="portrait" />
         <activity android:name="com.bamilo.modernbamilo.product.descspec.DescSpecActivity" />
         <activity android:name="com.bamilo.modernbamilo.product.comment.submit.SubmitRateActivity"

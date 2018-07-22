@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.mobile.app.BamiloApplication
 import com.mobile.classes.models.BaseScreenModel
 import com.mobile.classes.models.MainEventModel
@@ -26,6 +25,7 @@ import com.mobile.view.productdetail.model.SimpleProduct
 import java.util.*
 
 class ProductDetailActivity : AppCompatActivity(), PDVMainView {
+
     private lateinit var productDetail: ProductDetail
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var productDetailPresenter: ProductDetailPresenter
@@ -136,7 +136,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
         return try {
             val fragmentManager = supportFragmentManager
             val fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.backStackEntryCount - 1).name
-            fragmentManager.findFragmentByTag(fragmentTag)
+            fragmentManager.findFragmentByTag(fragmentTag)!!
         } catch (e: Exception) {
             ProductDetailMainFragment()
         }
@@ -166,6 +166,9 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
             }
             FragmentTag.RATE_AND_REVIEW.name -> {
             }
+
+            FragmentTag.OTHER_SELLERS.name -> {
+            }
         }
 
         return ProductDetailMainFragment.newInstance(sku)
@@ -182,6 +185,10 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
 
         sku = product.sku
         displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
+    }
+
+    override fun onShowOtherSeller() {
+        displaySelectedScreen(FragmentTag.OTHER_SELLERS)
     }
 
     override fun onSizeVariationClicked(sizeVariation: SimpleProduct) {
@@ -225,6 +232,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
         PRODUCT_MAIN_VIEW,
         RATE_AND_REVIEW,
         SPECIFICATIONS_DESCRIPTION,
-        RETURN_POLICY
+        RETURN_POLICY,
+        OTHER_SELLERS
     }
 }
