@@ -11,6 +11,7 @@ package com.bamilo.modernbamilo.product.sellerslist.viewmodel
  * a reference to a list of item view models.
  */
 class SellersListScreenViewModel(
+        val productId: String,
         val productTitle: String,
         val productThumbnailUrl: String,
         val sellersViewModel: ArrayList<SellersListItemViewModel> = ArrayList()

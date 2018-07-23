@@ -6,8 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sellersList_background"
-    tools:context=".product.sellerslist.view.SellersListActivity" >
+    android:background="@color/sellersList_background" >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/activitySellersList_toolbar_toolbar"

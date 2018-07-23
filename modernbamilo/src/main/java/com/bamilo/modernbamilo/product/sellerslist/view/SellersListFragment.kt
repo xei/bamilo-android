@@ -1,44 +1,43 @@
 package com.bamilo.modernbamilo.product.sellerslist.view
 
-import android.content.Context
-import android.content.Intent
+
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+
 import com.bamilo.modernbamilo.R
-import com.bamilo.modernbamilo.app.BaseActivity
-import com.bamilo.modernbamilo.product.sellerslist.viewmodel.SellersListItemViewModel
 import com.bamilo.modernbamilo.product.sellerslist.model.SellersListRepository
-import com.bamilo.modernbamilo.product.sellerslist.viewmodel.SellersListScreenViewModel
 import com.bamilo.modernbamilo.product.sellerslist.view.customview.FilterButton
+import com.bamilo.modernbamilo.product.sellerslist.viewmodel.SellersListItemViewModel
+import com.bamilo.modernbamilo.product.sellerslist.viewmodel.SellersListScreenViewModel
 import com.bamilo.modernbamilo.util.extension.loadImageFromNetwork
 import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
 
-private const val TAG_DEBUG = "SellersListScreen"
+private const val TAG_DEBUG = "SellersListFragment"
 
-const val KEY_EXTRA_PRODUCT_ID = "KEY_EXTRA_PRODUCT_ID"
-const val KEY_EXTRA_PRODUCT_TITLE = "KEY_EXTRA_PRODUCT_TITLE"
-const val KEY_EXTRA_PRODUCT_THUMBNAIL_URL = "KEY_EXTRA_PRODUCT_THUMBNAIL_URL"
+const val ARG_PRODUCT_ID = "KEY_EXTRA_PRODUCT_ID"
+const val ARG_PRODUCT_TITLE = "KEY_EXTRA_PRODUCT_TITLE"
+const val ARG_PRODUCT_THUMBNAIL_URL = "KEY_EXTRA_PRODUCT_THUMBNAIL_URL"
 
-fun startActivity(context: Context, productId: String, productTitle: String, productThumbnailUrl: String) {
-    val startIntent = Intent(context, SellersListActivity::class.java).apply {
-        putExtra(KEY_EXTRA_PRODUCT_ID, productId)
-        putExtra(KEY_EXTRA_PRODUCT_TITLE, productTitle)
-        putExtra(KEY_EXTRA_PRODUCT_THUMBNAIL_URL, productThumbnailUrl)
-    }
-    context.startActivity(startIntent)
-}
-
-class SellersListActivity : BaseActivity(), View.OnClickListener {
+/**
+ * A simple [Fragment] subclass.
+ * Use the [SellersListFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ *
+ */
+class SellersListFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mViewModel: SellersListScreenViewModel
-    private val mRepository = SellersListRepository(this)
+    private lateinit var mRepository: SellersListRepository
 
     private lateinit var mCloseBtnImageButton: ImageButton
     private lateinit var mToolbarTitleTextView: TextView
@@ -52,35 +51,59 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var mSellersRecyclerView: RecyclerView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sellers_list)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_sellers_list, container, false)
+        findViews(view)
+        return view
+    }
 
-        findViews()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         createViewModel()
+        createRepository()
         bindViewModel()
         setOnClickListeners()
         initSellersRecyclerView()
         loadSellers()
-
     }
 
-    private fun findViews() {
-        mCloseBtnImageButton = findViewById(R.id.layoutToolbar_imageButton_close)
-        mToolbarTitleTextView = findViewById(R.id.layoutToolbar_xeiTextView_title)
-        mProductThumbnailImageView = findViewById(R.id.layoutSellerslistProduct_imageView_thumbnail)
-        mProductTitleTextView = findViewById(R.id.layoutSellerslistProduct_xeiTextView_title)
-        mPriceFilterButton = findViewById(R.id.activitySellersList_filterButton_price)
-        mRateFilterButton = findViewById(R.id.activitySellersList_filterButton_rate)
-        mLeadTimeFilterButton = findViewById(R.id.activitySellersList_filterButton_leadTime)
-        mSellersRecyclerView = findViewById(R.id.activitySellersList_recyclerView_sellers)
+
+    companion object {
+        @JvmStatic
+        fun newInstance(productId: String, productTitle: String, productThumbnailUrl: String) =
+                SellersListFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_PRODUCT_ID, productId)
+                        putString(ARG_PRODUCT_TITLE, productTitle)
+                        putString(ARG_PRODUCT_THUMBNAIL_URL, productThumbnailUrl)
+                    }
+                }
+    }
+
+    private fun findViews(rootView: View) {
+        mCloseBtnImageButton = rootView.findViewById(R.id.layoutToolbar_imageButton_close)
+        mToolbarTitleTextView = rootView.findViewById(R.id.layoutToolbar_xeiTextView_title)
+        mProductThumbnailImageView = rootView.findViewById(R.id.layoutSellerslistProduct_imageView_thumbnail)
+        mProductTitleTextView = rootView.findViewById(R.id.layoutSellerslistProduct_xeiTextView_title)
+        mPriceFilterButton = rootView.findViewById(R.id.activitySellersList_filterButton_price)
+        mRateFilterButton = rootView.findViewById(R.id.activitySellersList_filterButton_rate)
+        mLeadTimeFilterButton = rootView.findViewById(R.id.activitySellersList_filterButton_leadTime)
+        mSellersRecyclerView = rootView.findViewById(R.id.activitySellersList_recyclerView_sellers)
     }
 
     private fun createViewModel() {
-        mViewModel = SellersListScreenViewModel(
-                intent.getStringExtra(KEY_EXTRA_PRODUCT_TITLE),
-                intent.getStringExtra(KEY_EXTRA_PRODUCT_THUMBNAIL_URL)
-        )
+        arguments?.let {
+            mViewModel = SellersListScreenViewModel(
+                    it.getString(ARG_PRODUCT_ID),
+                    it.getString(ARG_PRODUCT_TITLE),
+                    it.getString(ARG_PRODUCT_THUMBNAIL_URL)
+            )
+        }
+    }
+
+    private fun createRepository() {
+        mRepository = SellersListRepository(context!!)
     }
 
     private fun bindViewModel() {
@@ -98,14 +121,14 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initSellersRecyclerView() {
-        mSellersRecyclerView.layoutManager = LinearLayoutManager(this)
+        mSellersRecyclerView.layoutManager = LinearLayoutManager(context)
         mSellersRecyclerView.itemAnimator = DefaultItemAnimator()
         mSellersRecyclerView.adapter = SellersListAdapter(mViewModel.sellersViewModel)
 
     }
 
     private fun loadSellers() {
-        mRepository.getAllSellersList(intent.getStringExtra(KEY_EXTRA_PRODUCT_ID), object: SellersListRepository.OnSellersListLoadListener {
+        mRepository.getAllSellersList(mViewModel.productId, object: SellersListRepository.OnSellersListLoadListener {
 
             override fun onSucceed(sellersListItemViewModels: ArrayList<SellersListItemViewModel>) {
                 if (sellersListItemViewModels.size != 0) {
@@ -124,7 +147,7 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(clickedView: View?) {
         when (clickedView?.id) {
-            R.id.layoutToolbar_imageButton_close -> finish()
+            R.id.layoutToolbar_imageButton_close -> activity?.onBackPressed()
             R.id.activitySellersList_filterButton_price -> sortSellersByPayableAmount()
             R.id.activitySellersList_filterButton_rate -> sortSellersByRate()
             R.id.activitySellersList_filterButton_leadTime -> sortSellersByLeadTime()
@@ -160,5 +183,4 @@ class SellersListActivity : BaseActivity(), View.OnClickListener {
         mRateFilterButton.deselectButton()
         mLeadTimeFilterButton.selectButton()
     }
-
 }
