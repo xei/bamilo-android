@@ -22,8 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/dimen_48dp"
-                android:descendantFocusability="blocksDescendants"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:descendantFocusability="blocksDescendants">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/pdv_recycler_detailList"
