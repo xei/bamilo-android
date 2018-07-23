@@ -169,7 +169,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
             }
 
             FragmentTag.SPECIFICATIONS_DESCRIPTION.name -> {
-                return DescSpecFragment.newInstance(sku!!)
+                return DescSpecFragment.newInstance(sku!!,0) // TODO: replace 0
             }
         }
 
