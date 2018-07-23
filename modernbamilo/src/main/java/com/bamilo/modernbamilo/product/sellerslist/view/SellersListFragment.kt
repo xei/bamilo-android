@@ -1,6 +1,7 @@
 package com.bamilo.modernbamilo.product.sellerslist.view
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
@@ -50,11 +51,20 @@ class SellersListFragment : Fragment(), View.OnClickListener {
     private lateinit var mLeadTimeFilterButton: FilterButton
 
     private lateinit var mSellersRecyclerView: RecyclerView
+    private lateinit var mOnAddToCartButtonClickListener: OnAddToCartButtonClickListener
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_sellers_list, container, false)
         findViews(view)
         return view
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        if (context is OnAddToCartButtonClickListener) {
+            mOnAddToCartButtonClickListener = context
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -123,7 +133,7 @@ class SellersListFragment : Fragment(), View.OnClickListener {
     private fun initSellersRecyclerView() {
         mSellersRecyclerView.layoutManager = LinearLayoutManager(context)
         mSellersRecyclerView.itemAnimator = DefaultItemAnimator()
-        mSellersRecyclerView.adapter = SellersListAdapter(mViewModel.sellersViewModel)
+        mSellersRecyclerView.adapter = SellersListAdapter(mViewModel.sellersViewModel, mOnAddToCartButtonClickListener)
 
     }
 
@@ -182,5 +192,9 @@ class SellersListFragment : Fragment(), View.OnClickListener {
         mPriceFilterButton.deselectButton()
         mRateFilterButton.deselectButton()
         mLeadTimeFilterButton.selectButton()
+    }
+
+    interface OnAddToCartButtonClickListener {
+        fun onAddToCartButtonClicked(sku: String)
     }
 }

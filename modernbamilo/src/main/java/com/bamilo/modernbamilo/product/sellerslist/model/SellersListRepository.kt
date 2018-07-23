@@ -62,7 +62,7 @@ class SellersListRepository(context: Context) {
             ArrayList<SellersListItemViewModel>().apply {
                 sellerProducts.forEach {
                     add(SellersListItemViewModel(
-                            sellerId = it.productInfo.sku,
+                            sku = it.productInfo.sku,
                             title = it.sellerInfo.title,
                             deliveryTime = it.sellerInfo.deliveryTime.str,
                             rate = it.sellerInfo.rating.rating,
