@@ -14,7 +14,10 @@ import com.bamilo.modernbamilo.product.sellerslist.viewmodel.SellersListItemView
 import com.bamilo.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.modernbamilo.util.extension.persianizeNumberString
 
-class SellersListAdapter(private val mSellersViewModels: List<SellersListItemViewModel>) : RecyclerView.Adapter<SellersListAdapter.SellerViewHolder>() {
+class SellersListAdapter(
+        private val mSellersViewModels: List<SellersListItemViewModel>,
+        private val mOnAddToCartButtonClickListener: SellersListFragment.OnAddToCartButtonClickListener
+) : RecyclerView.Adapter<SellersListAdapter.SellerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SellerViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.row_sellerslistadapter, parent, false)
@@ -53,7 +56,7 @@ class SellersListAdapter(private val mSellersViewModels: List<SellersListItemVie
         }
 
         holder.addToCartButton.setOnClickListener {
-            Toast.makeText(holder.addToCartButton.context, mSellersViewModels[position].sellerId, Toast.LENGTH_LONG).show()
+            mOnAddToCartButtonClickListener.onAddToCartButtonClicked(mSellersViewModels[position].sku)
         }
     }
 

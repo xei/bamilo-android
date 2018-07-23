@@ -21,7 +21,7 @@ class SellersListScreenViewModel(
  * This view model contains the presentation data of any row in sellers list screen.
  */
 class SellersListItemViewModel (
-    val sellerId: String,
+    val sku: String,
     val title: String,
     val deliveryTime: String,
     val rate: Float,

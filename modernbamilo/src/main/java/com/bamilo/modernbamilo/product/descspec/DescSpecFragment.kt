@@ -13,6 +13,7 @@ import com.bamilo.modernbamilo.customview.XeiTextView
 
 
 private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
+private const val ARG_WHICH_SCREEN = "ARG_WHICH_SCREEN"
 
 /**
  * A simple [Fragment] subclass.
@@ -22,11 +23,14 @@ private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
  */
 class DescSpecFragment : Fragment() {
     private var mProductId: String? = null
+    private var mWhichPage: Int = 0
 
     private lateinit var mPagerViewPager: ViewPager
     private lateinit var mTabsTabLayout: TabLayout
 
     companion object {
+        const val WHICH_SCREEN_DESC = 0
+        const val WHICH_SCREEN_SPEC = 1
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -35,10 +39,11 @@ class DescSpecFragment : Fragment() {
          * @return A new instance of fragment DescSpecFragment.
          */
         @JvmStatic
-        fun newInstance(productId: String) =
+        fun newInstance(productId: String, whichScreen: Int) =
                 DescSpecFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_PRODUCT_ID, productId)
+                        putInt(ARG_WHICH_SCREEN, whichScreen)
                     }
                 }
     }
@@ -47,6 +52,7 @@ class DescSpecFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             mProductId = it.getString(ARG_PRODUCT_ID)
+            mWhichPage = it.getInt(ARG_WHICH_SCREEN)
         }
     }
 
@@ -69,7 +75,7 @@ class DescSpecFragment : Fragment() {
 
     private fun initViewPager() {
         mPagerViewPager.adapter = DescSpecPagerAdapter(childFragmentManager, mProductId!!)
-        mPagerViewPager.currentItem = 1
+        mPagerViewPager.currentItem = mWhichPage
     }
 
     private fun initTabLayout() {
@@ -83,8 +89,8 @@ class DescSpecFragment : Fragment() {
 
         descriptionTabView.isSelected = true
 
-        mTabsTabLayout.getTabAt(1)?.customView = descriptionTabView
-        mTabsTabLayout.getTabAt(0)?.customView = specificationTabView
+        mTabsTabLayout.getTabAt(WHICH_SCREEN_SPEC)?.customView = descriptionTabView
+        mTabsTabLayout.getTabAt(WHICH_SCREEN_DESC)?.customView = specificationTabView
 
     }
 
