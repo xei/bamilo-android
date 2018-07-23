@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.bamilo.modernbamilo.product.descspec.DescSpecFragment
+import com.bamilo.modernbamilo.product.sellerslist.view.SellersListFragment
 import com.mobile.app.BamiloApplication
 import com.mobile.classes.models.BaseScreenModel
 import com.mobile.classes.models.MainEventModel
@@ -30,8 +31,6 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
     private lateinit var productDetail: ProductDetail
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var productDetailPresenter: ProductDetailPresenter
-
-    private var changeProductDetailOnViewVisible = false
 
     private var sizeVariation = SimpleProduct()
 
@@ -89,6 +88,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
                         trackAddToCartEvent()
                         onProductAddedToCart()
                     }
+
                     override fun onRequestError(baseResponse: BaseResponse<*>?) {
                     }
                 })
@@ -165,9 +165,12 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
             FragmentTag.PRODUCT_MAIN_VIEW.name -> {
                 return ProductDetailMainFragment.newInstance(sku)
             }
-            FragmentTag.RATE_AND_REVIEW.name -> {
-            }
 
+            FragmentTag.OTHER_SELLERS.name -> {
+                return SellersListFragment.newInstance(sku!!,
+                        productDetail.title,
+                        productDetail.image)
+            }
             FragmentTag.SPECIFICATIONS_DESCRIPTION.name -> {
                 return DescSpecFragment.newInstance(sku!!)
             }
@@ -236,7 +239,6 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
     enum class FragmentTag {
         EMPTY,
         PRODUCT_MAIN_VIEW,
-        RATE_AND_REVIEW,
         SPECIFICATIONS_DESCRIPTION,
         RETURN_POLICY,
         OTHER_SELLERS

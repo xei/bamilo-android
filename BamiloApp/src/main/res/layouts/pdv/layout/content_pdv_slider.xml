@@ -64,6 +64,8 @@
         android:paddingBottom="@dimen/dimen_5dp"
         android:paddingLeft="@dimen/dimen_6dp"
         android:paddingRight="@dimen/dimen_6dp"
+        android:layout_marginLeft="@dimen/dimen_8dp"
+        android:layout_marginRight="@dimen/dimen_8dp"
         android:background="@drawable/slider_indicator_background"
         app:piv_animationType="worm"
         app:piv_dynamicCount="true"
