@@ -68,7 +68,7 @@ class DescSpecFragment : Fragment() {
     }
 
     private fun initViewPager() {
-        mPagerViewPager.adapter = DescSpecPagerAdapter(fragmentManager!!, mProductId!!)
+        mPagerViewPager.adapter = DescSpecPagerAdapter(childFragmentManager, mProductId!!)
         mPagerViewPager.currentItem = 1
     }
 

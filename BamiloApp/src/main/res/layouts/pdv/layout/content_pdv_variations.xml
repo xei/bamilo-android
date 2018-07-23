@@ -94,8 +94,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="@dimen/dimen_12dp"
-                android:textColor="@color/secondary_text_color"
                 android:text="@string/other_variations"
+                android:textColor="@color/secondary_text_color"
                 android:textSize="12sp"
                 tools:ignore="SmallSp"/>
 
@@ -123,11 +123,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginTop="2dp"
-                android:fontFamily="@string/bamilo_font"
+                android:background="?android:attr/selectableItemBackground"
                 android:gravity="center"
                 android:text="@string/product_description"
                 android:textColor="#25a8ed"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                app:fontFamily="@string/bamilo_font"/>
 
             <View
                 android:layout_width="1dp"
@@ -142,11 +143,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginTop="2dp"
-                android:fontFamily="@string/bamilo_font"
+                android:background="?android:attr/selectableItemBackground"
                 android:gravity="center"
                 android:text="@string/specifications"
                 android:textColor="#25a8ed"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                app:fontFamily="@string/bamilo_font"/>
 
         </LinearLayout>
 

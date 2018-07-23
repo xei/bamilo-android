@@ -52,6 +52,7 @@ import com.mobile.view.productdetail.viewtypes.variation.VariationsItem
  * since 7/4/2018.
  * contact farshidabazari@gmail.com
  */
+
 class ProductDetailMainFragment : Fragment(), IResponseCallback {
     private var sku: String? = ""
     private lateinit var binding: FragmentPdvMainViewBinding
@@ -228,7 +229,6 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
                 if (view != null &&
                         binding.pdvRecyclerDetailList.getChildAdapterPosition(view) == 0) {
                     view.translationY = (-view.top / 3).toFloat()
-                    view.alpha = (-view.top / 3).toFloat()
                 }
             }
         })
@@ -257,6 +257,10 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     }
 
     private fun addItemsToRecyclerInputList() {
+        if (!isAdded || context == null) {
+            return
+        }
+
         items.clear()
         adapter.removeAll()
 
@@ -277,8 +281,6 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
                 MainEventModel.createViewProductEventModelAttributes("categoryUrlKey",
                         product.price.price.toLong()))
         TrackerManager.trackEvent(context, EventConstants.ViewProduct, viewProductEventModel)
-
-        binding.pdvRecyclerDetailList.smoothScrollBy(0, 5)
     }
 
     private fun addImagesToSlider() {
@@ -307,7 +309,6 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
 //        }
         items.add(VariationsItem(product.variations, pdvMainView))
     }
-
 
     private fun addReturnPolicy() {
         items.add(ReturnPolicyItem(product.return_policy))
@@ -356,25 +357,27 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         val recommendManager = RecommendManager()
         recommendManager.sendRelatedRecommend(getRecommendationItem(), null, product.sku, null)
         { _, data ->
-            addItemsToRecyclerInputList()
-            recommendedItems = data
-            if (data != null) {
-                addHeader(getString(R.string.related_products))
+            if (isAdded && context != null) {
+                addItemsToRecyclerInputList()
+                recommendedItems = data
+                if (data != null) {
+                    addHeader(getString(R.string.related_products))
 
-                itemPositionToChangeGridSpanCount = items.size
-                itemPositionToChangeGridSpanCountToDefault = itemPositionToChangeGridSpanCount
+                    itemPositionToChangeGridSpanCount = items.size
+                    itemPositionToChangeGridSpanCountToDefault = itemPositionToChangeGridSpanCount
 
-                for (i in 0 until data.size) {
-                    if (i > 5) {
-                        break
+                    for (i in 0 until data.size) {
+                        if (i > 5) {
+                            break
+                        }
+                        itemPositionToChangeGridSpanCountToDefault++
+                        items.add(RecommendationItem(data[i], product.price.currency))
                     }
-                    itemPositionToChangeGridSpanCountToDefault++
-                    items.add(RecommendationItem(data[i], product.price.currency))
                 }
+                addBreadCrumbs()
+                addItemsToAdapter()
+                binding.pdvSwipeRefresh.isRefreshing = false
             }
-            addBreadCrumbs()
-            addItemsToAdapter()
-            binding.pdvSwipeRefresh.isRefreshing = false
         }
     }
 
