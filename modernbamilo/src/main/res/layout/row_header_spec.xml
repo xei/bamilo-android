@@ -15,6 +15,7 @@
         android:paddingEnd="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+        android:gravity="right"
         android:background="@color/descSpec_spec_header_background"
         android:textColor="@color/descSpec_spec_header_text"
         app:locale="auto"
