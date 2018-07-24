@@ -27,33 +27,33 @@ private const val KEY_EXTRA_PRODUCT_ID = "KEY_EXTRA_PRODUCT_ID"
 private const val KEY_EXTRA_RATE = "KEY_EXTRA_RATE"
 private const val KEY_EXTRA_RATE_SUM = "KEY_EXTRA_RATE_SUM"
 private const val KEY_EXTRA_COMMENTS_COUNT = "KEY_EXTRA_COMMENTS_COUNT"
-private const val KEY_EXTRA_ONE_STARS_AVG = "KEY_EXTRA_ONE_STARS_AVG"
-private const val KEY_EXTRA_TWO_STARS_AVG = "KEY_EXTRA_TWO_STARS_AVG"
-private const val KEY_EXTRA_THREE_STARS_AVG = "KEY_EXTRA_THREE_STARS_AVG"
-private const val KEY_EXTRA_FOUR_STARS_AVG = "KEY_EXTRA_FOUR_STARS_AVG"
-private const val KEY_EXTRA_FIVE_STARS_AVG = "KEY_EXTRA_FIVE_STARS_AVG"
+private const val KEY_EXTRA_ONE_STARS_COUNT = "KEY_EXTRA_ONE_STARS_COUNT"
+private const val KEY_EXTRA_TWO_STARS_COUNT = "KEY_EXTRA_TWO_STARS_COUNT"
+private const val KEY_EXTRA_THREE_STARS_COUNT = "KEY_EXTRA_THREE_STARS_COUNT"
+private const val KEY_EXTRA_FOUR_STARS_COUNT = "KEY_EXTRA_FOUR_STARS_COUNT"
+private const val KEY_EXTRA_FIVE_STARS_COUNT = "KEY_EXTRA_FIVE_STARS_COUNT"
 
 fun startCommentsActivity(context: Context,
                   productId: String,
                   rate: Float,
                   rateSum: Int,
                   commentsCount: Int,
-                  oneStarsAvg: Float,
-                  twoStarsAvg: Float,
-                  threeStarsAvg: Float,
-                  fourStarsAvg: Float,
-                  fiveStarsAvg: Float) {
+                  oneStarsCount: Float,
+                  twoStarsCount: Float,
+                  threeStarsCount: Float,
+                  fourStarsCount: Float,
+                  fiveStarsCount: Float) {
 
     val intent = Intent(context, CommentsActivity::class.java).apply {
         putExtra(KEY_EXTRA_PRODUCT_ID, productId)
         putExtra(KEY_EXTRA_RATE, rate)
         putExtra(KEY_EXTRA_RATE_SUM, rateSum)
         putExtra(KEY_EXTRA_COMMENTS_COUNT, commentsCount)
-        putExtra(KEY_EXTRA_ONE_STARS_AVG, oneStarsAvg)
-        putExtra(KEY_EXTRA_TWO_STARS_AVG, twoStarsAvg)
-        putExtra(KEY_EXTRA_THREE_STARS_AVG, threeStarsAvg)
-        putExtra(KEY_EXTRA_FOUR_STARS_AVG, fourStarsAvg)
-        putExtra(KEY_EXTRA_FIVE_STARS_AVG, fiveStarsAvg)
+        putExtra(KEY_EXTRA_ONE_STARS_COUNT, oneStarsCount)
+        putExtra(KEY_EXTRA_TWO_STARS_COUNT, twoStarsCount)
+        putExtra(KEY_EXTRA_THREE_STARS_COUNT, threeStarsCount)
+        putExtra(KEY_EXTRA_FOUR_STARS_COUNT, fourStarsCount)
+        putExtra(KEY_EXTRA_FIVE_STARS_COUNT, fiveStarsCount)
     }
     context.startActivity(intent)
 
@@ -91,15 +91,16 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun createViewModel() {
+        var commentsCount = intent.getIntExtra(KEY_EXTRA_COMMENTS_COUNT, 0)
         mViewModel = CommentsScreenViewModel(
                 rate = intent.getFloatExtra(KEY_EXTRA_RATE, 0f),
                 rateSum = intent.getIntExtra(KEY_EXTRA_RATE_SUM, 5),
-                commentsCount = intent.getIntExtra(KEY_EXTRA_COMMENTS_COUNT, 0),
-                oneStarsAvg = intent.getFloatExtra(KEY_EXTRA_ONE_STARS_AVG, 0f),
-                twoStarsAvg = intent.getFloatExtra(KEY_EXTRA_TWO_STARS_AVG, 0f),
-                threeStarsAvg = intent.getFloatExtra(KEY_EXTRA_THREE_STARS_AVG, 0f),
-                fourStarsAvg = intent.getFloatExtra(KEY_EXTRA_FOUR_STARS_AVG, 0f),
-                fiveStarsAvg = intent.getFloatExtra(KEY_EXTRA_FIVE_STARS_AVG, 0f)
+                commentsCount = commentsCount,
+                oneStarsAvg = intent.getFloatExtra(KEY_EXTRA_ONE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                twoStarsAvg = intent.getFloatExtra(KEY_EXTRA_TWO_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                threeStarsAvg = intent.getFloatExtra(KEY_EXTRA_THREE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                fourStarsAvg = intent.getFloatExtra(KEY_EXTRA_FOUR_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                fiveStarsAvg = intent.getFloatExtra(KEY_EXTRA_FIVE_STARS_COUNT, 0f / (if (commentsCount != 0) commentsCount else 1))
         )
     }
 
