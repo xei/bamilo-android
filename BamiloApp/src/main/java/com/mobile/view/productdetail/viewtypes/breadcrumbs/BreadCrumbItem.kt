@@ -1,8 +1,11 @@
 package com.mobile.view.productdetail.viewtypes.breadcrumbs
 
+import android.content.Context
+import android.content.Intent
 import android.view.View
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
+import com.mobile.view.MainFragmentActivity
 import com.mobile.view.R
 import com.mobile.view.productdetail.model.Breadcrumbs
 
@@ -23,6 +26,14 @@ class BreadcrumbItem(var breadcrumbs: Breadcrumbs, var isLastItem: Boolean) {
             holder.chevronImage.visibility = View.VISIBLE
         }
 
-        holder.itemView.setOnClickListener { }
+        holder.itemView.setOnClickListener { showTargetView(holder.itemView.context) }
+    }
+
+    private fun showTargetView(context: Context?) {
+        val intent = Intent(context!!, MainFragmentActivity::class.java).apply {
+            putExtra("target", breadcrumbs.target)
+            putExtra("title", breadcrumbs.title)
+        }
+        context.startActivity(intent)
     }
 }

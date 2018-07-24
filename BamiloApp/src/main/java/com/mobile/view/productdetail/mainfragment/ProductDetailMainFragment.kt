@@ -327,7 +327,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         if (product.reviews.items.size > 0) {
             addHeader(context!!.getString(R.string.customers_review))
             product.reviews.average = product.rating.average
-            items.add(ReviewsItem(product.reviews))
+            items.add(ReviewsItem(product.reviews, sku!!, pdvMainView))
         }
     }
 

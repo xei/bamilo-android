@@ -9,8 +9,8 @@ import com.bamilo.modernbamilo.product.descspec.tempdesc.TemporaryDescriptionFra
 class DescSpecPagerAdapter(fm: FragmentManager, private val productId: String): FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment = when (position) {
-        DescSpecFragment.WHICH_SCREEN_SPEC -> TemporaryDescriptionFragment.newInstance(productId)
-        DescSpecFragment.WHICH_SCREEN_DESC -> SpecificationFragment.newInstance(productId)
+        DescSpecFragment.WHICH_SCREEN_SPEC -> SpecificationFragment.newInstance(productId)
+        DescSpecFragment.WHICH_SCREEN_DESC -> TemporaryDescriptionFragment.newInstance(productId)
         else -> throw Exception("THIS EXCEPTION NEVER THROWS!")
     }
 

@@ -1,11 +1,14 @@
 package com.mobile.view.productdetail.viewtypes.review
 
+import android.content.Context
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.PagerSnapHelper
+import com.bamilo.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.components.ghostadapter.GhostAdapter
 import com.mobile.view.R
+import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.Reviews
 
 /**
@@ -14,7 +17,8 @@ import com.mobile.view.productdetail.model.Reviews
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_reviews, holder = ReviewsHolder::class)
-class ReviewsItem(var reviews: Reviews) {
+class ReviewsItem(var reviews: Reviews, var sku: String, var pdvMainView: PDVMainView) {
+
     private var adapter = GhostAdapter()
     private var recyclerItems = ArrayList<Any>()
 
@@ -24,13 +28,18 @@ class ReviewsItem(var reviews: Reviews) {
     public fun binder(holder: ReviewsHolder) {
         this.holder = holder
 
-        holder.total.text = reviews.total.toString()
-        holder.maxRate.text = holder.itemView.context.getString(R.string.of_number, 5)
+        holder.run {
+            total.text = reviews.total.toString()
+            maxRate.text = itemView.context.getString(R.string.of_number, 5)
 
-        if (reviews.average.toInt().toFloat() == reviews.average) {
-            holder.rate.text = reviews.average.toInt().toString()
-        } else {
-            holder.rate.text = reviews.average.toString().replace(".", "/")
+            if (reviews.average.toInt().toFloat() == reviews.average) {
+                rate.text = reviews.average.toInt().toString()
+            } else {
+                rate.text = reviews.average.toString().replace(".", "/")
+            }
+
+            addReview.setOnClickListener { showAddReviewActivity(itemView.context) }
+            showAllReviews.setOnClickListener { pdvMainView.onShowAllReviewsClicked() }
         }
 
         setupRecyclerView()
@@ -52,5 +61,9 @@ class ReviewsItem(var reviews: Reviews) {
         }
 
         adapter.setItems(recyclerItems)
+    }
+
+    private fun showAddReviewActivity(context: Context) {
+        startSubmitRateActivity(context, sku)
     }
 }

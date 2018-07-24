@@ -26,10 +26,12 @@ import com.mobile.factories.EmarsysEventFactory;
 import com.mobile.managers.TrackerManager;
 import com.mobile.service.pojo.IntConstants;
 import com.mobile.service.utils.CollectionUtils;
+import com.mobile.service.utils.TextUtils;
 import com.mobile.service.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.tracking.PushWooshTracker;
 import com.mobile.utils.tracking.emarsys.EmarsysTracker;
 import com.mobile.utils.tracking.ga.GATracker;
@@ -231,10 +233,12 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.d(TAG, "ON CREATE");
+
         //Init Pushwoosh fragment
         PushFragment.init(this);
         registerReceivers();
         PushManager pushManager = PushManager.getInstance(this);
+
         try {
             pushManager.onStartup(this);
         } catch (Exception e) {
@@ -252,6 +256,16 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             Print.d(TAG, "################### SAVED INSTANCE IS NULL");
             // Initialize fragment controller
             FragmentController.getInstance().init();
+
+            if (getIntent() != null && !TextUtils.isEmpty(getIntent().getStringExtra("target"))) {
+                new TargetLink(getWeakBaseActivity(), getIntent().getStringExtra("target"))
+                        .addTitle(getIntent().getStringExtra("title"))
+                        .enableWarningErrorMessage()
+                        .run();
+
+                return;
+            }
+
             // Case invalid deep link goto HOME else goto deep link
             if (!DeepLinkManager.onSwitchToDeepLink(this, getIntent())) {
                 Bundle args = getIntent().getExtras();

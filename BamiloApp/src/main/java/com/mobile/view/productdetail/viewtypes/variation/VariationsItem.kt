@@ -68,7 +68,7 @@ class VariationsItem(var variations: ArrayList<Variation>, private var pdvMainVi
     }
 
     private fun gotoSpecificationPage() {
-        pdvMainView.onShowDesAndSpecPage()
+        pdvMainView.onShowSpecsAndSpecPage()
     }
 
     private fun gotoDescriptionPage() {

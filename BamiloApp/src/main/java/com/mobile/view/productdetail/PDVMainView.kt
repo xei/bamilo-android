@@ -16,4 +16,6 @@ interface PDVMainView {
     fun onOtherVariationClicked(product: SimpleProduct)
     fun onShowOtherSeller()
     fun onShowDesAndSpecPage()
+    fun onShowSpecsAndSpecPage()
+    fun onShowAllReviewsClicked()
 }

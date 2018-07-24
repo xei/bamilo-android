@@ -17,5 +17,7 @@ class ReviewsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var maxRate: TextView = itemView.findViewById(R.id.pdvReview_textView_maxRate)
 
     var reviewsRecycler: RecyclerView = itemView.findViewById(R.id.pdvReview_recyclerView_reviews)
+
     var addReview: LinearLayout = itemView.findViewById(R.id.pdvReview_linearLayout_addReview)
+    var showAllReviews: LinearLayout = itemView.findViewById(R.id.pdvReview_linearLayout_seeAllReviews)
 }

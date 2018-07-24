@@ -33,7 +33,7 @@ private const val KEY_EXTRA_THREE_STARS_AVG = "KEY_EXTRA_THREE_STARS_AVG"
 private const val KEY_EXTRA_FOUR_STARS_AVG = "KEY_EXTRA_FOUR_STARS_AVG"
 private const val KEY_EXTRA_FIVE_STARS_AVG = "KEY_EXTRA_FIVE_STARS_AVG"
 
-fun startActivity(context: Context,
+fun startCommentsActivity(context: Context,
                   productId: String,
                   rate: Float,
                   rateSum: Int,

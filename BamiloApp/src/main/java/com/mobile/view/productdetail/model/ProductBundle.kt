@@ -5,6 +5,6 @@ package com.mobile.view.productdetail.model
  * since 7/21/2018.
  * contact farshidabazari@gmail.com
  */
-class Bundle {
+class ProductBundle {
     var products: List<Any>? = null
 }

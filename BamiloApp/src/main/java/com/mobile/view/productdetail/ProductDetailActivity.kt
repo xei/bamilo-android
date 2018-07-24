@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import com.bamilo.modernbamilo.product.comment.startCommentsActivity
 import com.bamilo.modernbamilo.product.descspec.DescSpecFragment
 import com.bamilo.modernbamilo.product.sellerslist.view.SellersListFragment
 import com.mobile.app.BamiloApplication
@@ -26,8 +27,7 @@ import com.mobile.view.productdetail.model.ProductDetail
 import com.mobile.view.productdetail.model.SimpleProduct
 import java.util.*
 
-class ProductDetailActivity : AppCompatActivity(), PDVMainView {
-
+class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragment.OnAddToCartButtonClickListener {
     private lateinit var productDetail: ProductDetail
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var productDetailPresenter: ProductDetailPresenter
@@ -80,19 +80,23 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
 
     private fun bindAddToCartClickListener() {
         binding.productDetailLinearLayoutAddToCart!!.setOnClickListener {
-            if (productHasSizeVariation() && sizeVariation.sku.isEmpty()) {
-                productDetailPresenter.showBottomSheet()
-            } else {
-                productDetailPresenter.addToCart(productDetail.simple_sku, object : IResponseCallback {
-                    override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
-                        trackAddToCartEvent()
-                        onProductAddedToCart()
-                    }
+            addProductToCart(sku!!)
+        }
+    }
 
-                    override fun onRequestError(baseResponse: BaseResponse<*>?) {
-                    }
-                })
-            }
+    private fun addProductToCart(sku: String) {
+        if (productHasSizeVariation() && sizeVariation.sku.isEmpty()) {
+            productDetailPresenter.showBottomSheet()
+        } else {
+            productDetailPresenter.addToCart(sku, object : IResponseCallback {
+                override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
+                    trackAddToCartEvent()
+                    onProductAddedToCart()
+                }
+
+                override fun onRequestError(baseResponse: BaseResponse<*>?) {
+                }
+            })
         }
     }
 
@@ -171,8 +175,12 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
                         productDetail.title,
                         productDetail.image)
             }
-            FragmentTag.SPECIFICATIONS_DESCRIPTION.name -> {
-                return DescSpecFragment.newInstance(sku!!,0) // TODO: replace 0
+            FragmentTag.DESCRIPTION.name -> {
+                return DescSpecFragment.newInstance(sku!!, DescSpecFragment.WHICH_SCREEN_DESC)
+            }
+
+            FragmentTag.SPECIFICATIONS.name -> {
+                return DescSpecFragment.newInstance(sku!!, DescSpecFragment.WHICH_SCREEN_SPEC)
             }
         }
 
@@ -181,6 +189,10 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
 
     override fun onBackButtonClicked() {
         onBackPressed()
+    }
+
+    override fun onAddToCartButtonClicked(sku: String) {
+        addProductToCart(sku)
     }
 
     override fun onOtherVariationClicked(product: SimpleProduct) {
@@ -197,7 +209,23 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
     }
 
     override fun onShowDesAndSpecPage() {
-        displaySelectedScreen(FragmentTag.SPECIFICATIONS_DESCRIPTION)
+        displaySelectedScreen(FragmentTag.DESCRIPTION)
+    }
+
+    override fun onShowSpecsAndSpecPage() {
+        displaySelectedScreen(FragmentTag.SPECIFICATIONS)
+    }
+
+    override fun onShowAllReviewsClicked() {
+        startCommentsActivity(this, sku!!,
+                productDetail.rating.average,
+                productDetail.rating.total,
+                productDetail.reviews.total,
+                productDetail.rating.stars[0].count.toFloat(),
+                productDetail.rating.stars[1].count.toFloat(),
+                productDetail.rating.stars[2].count.toFloat(),
+                productDetail.rating.stars[3].count.toFloat(),
+                productDetail.rating.stars[4].count.toFloat())
     }
 
     override fun onSizeVariationClicked(sizeVariation: SimpleProduct) {
@@ -239,7 +267,8 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView {
     enum class FragmentTag {
         EMPTY,
         PRODUCT_MAIN_VIEW,
-        SPECIFICATIONS_DESCRIPTION,
+        DESCRIPTION,
+        SPECIFICATIONS,
         RETURN_POLICY,
         OTHER_SELLERS
     }

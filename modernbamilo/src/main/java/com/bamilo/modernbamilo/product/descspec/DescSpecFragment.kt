@@ -1,6 +1,7 @@
 package com.bamilo.modernbamilo.product.descspec
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -29,8 +30,8 @@ class DescSpecFragment : Fragment() {
     private lateinit var mTabsTabLayout: TabLayout
 
     companion object {
-        const val WHICH_SCREEN_DESC = 0
-        const val WHICH_SCREEN_SPEC = 1
+        const val WHICH_SCREEN_DESC = 1
+        const val WHICH_SCREEN_SPEC = 0
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -78,6 +79,7 @@ class DescSpecFragment : Fragment() {
         mPagerViewPager.currentItem = mWhichPage
     }
 
+    @SuppressLint("InflateParams")
     private fun initTabLayout() {
         mTabsTabLayout.setupWithViewPager(mPagerViewPager)
 
@@ -89,9 +91,7 @@ class DescSpecFragment : Fragment() {
 
         descriptionTabView.isSelected = true
 
-        mTabsTabLayout.getTabAt(WHICH_SCREEN_SPEC)?.customView = descriptionTabView
-        mTabsTabLayout.getTabAt(WHICH_SCREEN_DESC)?.customView = specificationTabView
-
+        mTabsTabLayout.getTabAt(WHICH_SCREEN_SPEC)?.customView = specificationTabView
+        mTabsTabLayout.getTabAt(WHICH_SCREEN_DESC)?.customView = descriptionTabView
     }
-
 }
