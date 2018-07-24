@@ -64,17 +64,9 @@ class ProductDetailMainFragmentViewModel(application: Application) : AndroidView
 
                     override fun onResponse(call: Call<ResponseWrapper<ProductDetail>>?,
                                             response: Response<ResponseWrapper<ProductDetail>>?) {
-                        if (response == null) {
-                            return
+                        response?.body()?.metadata?.let {
+                            setItems(it)
                         }
-                        if (!response.isSuccessful) {
-                            return
-                        }
-
-                        if (response.body() == null) {
-                            return
-                        }
-                        setItems(response.body().metadata)
                     }
                 })
     }

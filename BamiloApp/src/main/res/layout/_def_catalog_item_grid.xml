@@ -5,10 +5,10 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
-    android:layout_marginTop="4dp"
     android:background="@drawable/selector_grid_item_highlight"
     card_view:cardCornerRadius="0dp">
 
@@ -19,8 +19,8 @@
             layout="@layout/_def_gen_image_loadable"
             android:layout_width="136dp"
             android:layout_height="170dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"/>
 
 
         <ImageView
@@ -32,60 +32,60 @@
             android:layout_centerInParent="false"
             android:padding="@dimen/dimen_8dp"
             android:src="@drawable/selector_favorite"
-            android:visibility="visible" />
+            android:visibility="visible"/>
 
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/image_loadable"
+            android:layout_marginTop="4dp"
             android:layout_marginLeft="@dimen/margin_padding_xl"
             android:layout_marginRight="@dimen/margin_padding_xl"
-            android:layout_marginTop="4dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/image_loadable"
             android:gravity="right"
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="12sp"
-            tools:text="Name" />
+            tools:text="Name"/>
 
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_brand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/item_name"
             android:layout_marginLeft="@dimen/margin_padding_xl"
             android:layout_marginRight="@dimen/margin_padding_xl"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/item_name"
             android:gravity="right"
             android:textColor="@color/lightgrey"
             android:textSize="11sp"
-            tools:text="BRAND" />
+            tools:text="BRAND"/>
 
         <RelativeLayout
             android:id="@+id/rating_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:layout_alignRight="@id/item_name"
             android:layout_below="@+id/item_brand"
-            android:layout_marginTop="2dp"
             android:gravity="right|center_vertical"
             android:orientation="horizontal">
 
             <RatingBar
                 android:id="@+id/item_rating"
+                style="@style/StarBar.Small.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="12dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="2dp"
                 android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_alignParentRight="true"
                 android:isIndicator="true"
                 android:maxHeight="@dimen/ratingbar_height"
-                android:progressDrawable="@drawable/custom_rating_bar"
                 android:stepSize="0.1"
-                tools:rating="3.5" />
+                tools:rating="3.5"/>
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
@@ -97,15 +97,15 @@
                 android:layout_toLeftOf="@id/item_rating"
                 android:textColor="@color/black_800"
                 android:textSize="11sp"
-                tools:text="(12)" />
+                tools:text="(12)"/>
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:layout_alignRight="@id/item_brand"
             android:layout_below="@+id/rating_container"
-            android:layout_marginTop="4dp"
             android:orientation="vertical">
 
             <com.mobile.components.customfontviews.TextView
@@ -117,7 +117,7 @@
                 android:gravity="right"
                 android:textColor="@color/black"
                 android:textSize="12sp"
-                tools:text="Discount" />
+                tools:text="Discount"/>
 
             <RelativeLayout
                 android:id="@+id/item_regprice_rl"
@@ -128,19 +128,19 @@
                     android:id="@+id/rlDiscount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="2dp">
+                    android:layout_marginTop="2dp"
+                    android:layout_alignParentRight="true">
 
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/item_regprice"
                         style="@style/TextBase.Body.Black_800"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_marginLeft="@dimen/margin_padding_xl"
+                        android:layout_alignParentRight="true"
                         android:textColor="@color/lightgrey"
                         android:textSize="9sp"
-                        tools:text="Price" />
+                        tools:text="Price"/>
 
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/discount_percentage"
@@ -151,7 +151,7 @@
                         android:gravity="center"
                         android:textColor="@color/lightgrey"
                         android:textSize="9sp"
-                        tools:text="54 %" />
+                        tools:text="54 %"/>
                 </RelativeLayout>
 
 
@@ -160,14 +160,14 @@
                     style="@style/NewArrivalBadge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_l"
+                    android:layout_marginLeft="@dimen/margin_padding_xl"
                     android:layout_alignParentLeft="true"
                     android:layout_below="@id/rlDiscount"
-                    android:layout_marginLeft="@dimen/margin_padding_xl"
-                    android:layout_marginTop="@dimen/margin_padding_l"
                     android:gravity="center"
                     android:text="@string/new_arrival_badge"
                     android:visibility="gone"
-                    tools:visibility="visible" />
+                    tools:visibility="visible"/>
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.bamilo.modernbamilo.util.retrofit
 
 import android.content.Context
+import android.os.Build
 import android.text.TextUtils
 import android.util.Base64
 import com.bamilo.modernbamilo.BuildConfig
@@ -14,7 +15,13 @@ import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.net.HttpCookie
-import java.util.ArrayList
+import java.security.KeyStore
+import java.security.cert.Certificate
+import java.security.cert.CertificateFactory
+import java.util.*
+import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManagerFactory
 
 /**
  * This object contains the necessary configurations for Retrofit and make the developers free of
@@ -32,11 +39,15 @@ object RetrofitHelper {
 
     private var retrofitInstance: Retrofit? = null
 
+    private var SOCKET_TIMEOUT: Long = 20 * 1000
+    private var CONNECTION_TIMEOUT: Long = 20 * 1000
+    private var write_TIMEOUT: Long = 20 * 1000
+
     /**
      * This method is responsible for creation of the web APIs via Retrofit.
      */
     @JvmStatic
-    fun<T> makeWebApi(context: Context, service: Class<T>): T = getRetrofitInstance(context).create(service)
+    fun <T> makeWebApi(context: Context, service: Class<T>): T = getRetrofitInstance(context).create(service)
 
     /**
      * This method provides a single instance of Retrofit based on the base url, provided
@@ -69,12 +80,109 @@ object RetrofitHelper {
                     chain.proceed(modifiedRequest)
                 }
 
+        setCertificates(client)
+
+        client.followSslRedirects(false)
+        client.followRedirects(true)
+
+        client.readTimeout(SOCKET_TIMEOUT, TimeUnit.MILLISECONDS)
+        client.connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
+        client.writeTimeout(write_TIMEOUT, TimeUnit.MILLISECONDS)
+
         if (TextUtils.isEmpty(getCookie(context))) {
             return client.build()
         }
 
         client.cookieJar(getCookieJar(context))
         return client.build()
+    }
+
+    private fun setCertificates(okHttpClientBuilder: OkHttpClient.Builder) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            try {
+                val cf = CertificateFactory.getInstance("X.509")
+                val certString = "-----BEGIN CERTIFICATE-----\n" +
+                        "MIIEYjCCA0qgAwIBAgIKIQak23Abuwj69DANBgkqhkiG9w0BAQsFADBLMQswCQYD\n" +
+                        "VQQGEwJOTzEdMBsGA1UECgwUQnV5cGFzcyBBUy05ODMxNjMzMjcxHTAbBgNVBAMM\n" +
+                        "FEJ1eXBhc3MgQ2xhc3MgMiBDQSAyMB4XDTE3MTEyODE0MDUyMloXDTE4MTEyODIy\n" +
+                        "NTkwMFowFTETMBEGA1UEAwwKYmFtaWxvLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD\n" +
+                        "ggEPADCCAQoCggEBANnJ77A/bgpINMEuz4f9LpjdckYnB5N4t8DzFlIvrcqV3DpA\n" +
+                        "0n0e4UpI1DO+Vx+8PEDsbzo8cdbVORxpaBR8kLcc8t3KP14F0J6jTBBzTX9/hVWl\n" +
+                        "uNxOJaIjAe/1d3mMa8ZrKNYc3Ut7cReLU+QNGiPTsOoXkQ3i5hQlmkAIdx8ChDbM\n" +
+                        "VU9UerjOJC+unXBWRKVyht2FwJG/bmWRb2UcuQLCHWTeMiP/T2Ino3KGo1C6IGLh\n" +
+                        "gC8mYQtSocZU6xDnGlLua44qdKAVb0kUGnY06a7/+fZ5OUNoUVadoIvtlCZNpCPm\n" +
+                        "ZwHTWYGh+KcDtEbDMLfBkewPru2bfLaEAKaBv4ECAwEAAaOCAXwwggF4MAkGA1Ud\n" +
+                        "EwQCMAAwHwYDVR0jBBgwFoAUkq1libIAD8tRDcEj7JROj8EEP3cwHQYDVR0OBBYE\n" +
+                        "FGWPQzy3EOK868sbyas29TmC1K+KMA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAU\n" +
+                        "BggrBgEFBQcDAQYIKwYBBQUHAwIwHwYDVR0gBBgwFjAKBghghEIBGgECBDAIBgZn\n" +
+                        "gQwBAgEwOgYDVR0fBDMwMTAvoC2gK4YpaHR0cDovL2NybC5idXlwYXNzLm5vL2Ny\n" +
+                        "bC9CUENsYXNzMkNBMi5jcmwwMwYDVR0RBCwwKoIKYmFtaWxvLmNvbYIMKi5iYW1p\n" +
+                        "bG8uY29tgg53d3cuYmFtaWxvLmNvbTBqBggrBgEFBQcBAQReMFwwIwYIKwYBBQUH\n" +
+                        "MAGGF2h0dHA6Ly9vY3NwLmJ1eXBhc3MuY29tMDUGCCsGAQUFBzAChilodHRwOi8v\n" +
+                        "Y3J0LmJ1eXBhc3Mubm8vY3J0L0JQQ2xhc3MyQ0EyLmNlcjANBgkqhkiG9w0BAQsF\n" +
+                        "AAOCAQEAS3xvoo4kSQNYLWb3C2UAvG+kM2SHcju4juFOEaGZ9jomEaEYZr2FTwPq\n" +
+                        "RHPEnbBjtnCXezYxGR8vYr9ESivJgF69AnkOrzBeR9/wBfCYuen4eUvn1QtMhBWv\n" +
+                        "Ge5fawrapB8bDgjX+pbMk+USCIh/lctLNur5e3ZwjQwhF0SnfQvFDjNNejAhsTw/\n" +
+                        "hW8pKiCjbgb0rLv9Wtf6biDcc+io6scFO/gIg5QZ/daBGnU8b2njfMOWVZjr/dyW\n" +
+                        "X1HvB8iQrRWiwWhddsOty8qgzcSpfCpO9aZDNbGXxFtDVHXl4Vo+kI/P+Dn8NgSC\n" +
+                        "eKcCU2WVVLQP/4wB2Wftk6tZoxWL0g==\n" +
+                        "-----END CERTIFICATE-----\n" +
+                        "-----BEGIN CERTIFICATE-----\n" +
+                        "MIIFADCCAuigAwIBAgIBGjANBgkqhkiG9w0BAQsFADBOMQswCQYDVQQGEwJOTzEd\n" +
+                        "MBsGA1UECgwUQnV5cGFzcyBBUy05ODMxNjMzMjcxIDAeBgNVBAMMF0J1eXBhc3Mg\n" +
+                        "Q2xhc3MgMiBSb290IENBMB4XDTE2MTIwMjEwMDAwMFoXDTMwMTAyNjA5MTYxN1ow\n" +
+                        "SzELMAkGA1UEBhMCTk8xHTAbBgNVBAoMFEJ1eXBhc3MgQVMtOTgzMTYzMzI3MR0w\n" +
+                        "GwYDVQQDDBRCdXlwYXNzIENsYXNzIDIgQ0EgMjCCASIwDQYJKoZIhvcNAQEBBQAD\n" +
+                        "ggEPADCCAQoCggEBAJyrZ8aWSw0PkdLsyswzK/Ny/A5/uU6EqQ99c6omDMpI+yNo\n" +
+                        "HjUO42ryrATs4YHla+xj+MieWyvz9HYaCnrGL0CE4oX8M7WzD+g8h6tUCS0AakJx\n" +
+                        "dC5PBocUkjQGZ5ZAoF92ms6C99qfQXhHx7lBP/AZT8sCWP0chOf9/cNxCplspYVJ\n" +
+                        "HkQjKN3VGa+JISavCcBqf33ihbPZ+RaLjOTxoaRaWTvlkFxHqsaZ3AsW71qSJwaE\n" +
+                        "55l9/qH45vn5mPrHQJ8h5LjgQcN5KBmxUMoA2iT/VSLThgcgl+Iklbcv9rs6aaMC\n" +
+                        "JH+zKbub+RyRijmyzD9YBr+ZTaowHvJs9G59uZMCAwEAAaOB6zCB6DAPBgNVHRMB\n" +
+                        "Af8EBTADAQH/MB8GA1UdIwQYMBaAFMmAd+BikoL1RpzzuvdMw964o605MB0GA1Ud\n" +
+                        "DgQWBBSSrWWJsgAPy1ENwSPslE6PwQQ/dzAOBgNVHQ8BAf8EBAMCAQYwEQYDVR0g\n" +
+                        "BAowCDAGBgRVHSAAMD0GA1UdHwQ2MDQwMqAwoC6GLGh0dHA6Ly9jcmwuYnV5cGFz\n" +
+                        "cy5uby9jcmwvQlBDbGFzczJSb290Q0EuY3JsMDMGCCsGAQUFBwEBBCcwJTAjBggr\n" +
+                        "BgEFBQcwAYYXaHR0cDovL29jc3AuYnV5cGFzcy5jb20wDQYJKoZIhvcNAQELBQAD\n" +
+                        "ggIBAESxBqAQmbrsyDeWL7r3QspDhkZxX+VtqHkI6A9OxR1HgahHDW4jJgGypwP4\n" +
+                        "jjWkvqZ7lG4DHNv4tfAiR9bEg8wrRC9HLzF+Jm6vtUJsa/sMmkLDlmL8OKKFEZwI\n" +
+                        "oBwEuwbCpDByTkD4m7ckPLI0XMzCxSXanKGgtxzFQdmnUHP3NpK9SdULGvz6E3I6\n" +
+                        "QomcWJXRqOo8QOrnOLEkI5OM4Bq9lx/GVHubIOz2GZfiX3x91pcb6IxayTSIQDlL\n" +
+                        "mcinv/AHInVqrVH/7hWv90yA6qG9LZc10DvnNw5/MyHEZuYsNqo8Gh14SNPqU696\n" +
+                        "TSwDzEBHo4LgQsVdQlGCmmr0tF6Lu7kJlukYXFBTDFYD45pG2mPbtHgOQfBLOVjx\n" +
+                        "/iNlxhu31vzcII0USKDnCYPaCOyXihnLbblHiJFTXzhNbZEstoSBH6PfChkUxORc\n" +
+                        "YQ6w69TtOXs75fvfP4aVcBc6tIALQKYews3+xxqDOmXxJmL5d+B/sxzlmHruNELu\n" +
+                        "Nqc5I66yJGEBrhIhNrRBUXIIz+W5w+uw2zg1T9Fo4Nq4EmEL4o1o6DyvI50D0EWZ\n" +
+                        "0fkjkYNhL7htM6ktLyBoqMZaMDFsfD9S3e6ZjyNbpjHMFEvhr0vHVHWBMScYs6q2\n" +
+                        "owfuqc6rT+Pco5CyOfYF33ke+z/hFe+6n6Y3oiGMDqvaTAfp\n" +
+                        "-----END CERTIFICATE-----\n"
+                val cert = ByteArrayInputStream(certString.toByteArray())
+                val ca: Certificate
+                try {
+                    ca = cf.generateCertificate(cert)
+                } finally {
+                    cert.close()
+                }
+
+                val keyStoreType = KeyStore.getDefaultType()
+                val keyStore = KeyStore.getInstance(keyStoreType)
+                keyStore.load(null, null)
+                keyStore.setCertificateEntry("ca", ca)
+
+                // creating a TrustManager that trusts the CAs in our KeyStore
+                val tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm()
+                val tmf = TrustManagerFactory.getInstance(tmfAlgorithm)
+                tmf.init(keyStore)
+
+                // creating an SSLSocketFactory that uses our TrustManager
+                val sslContext = SSLContext.getInstance("TLS")
+                sslContext.init(null, tmf.trustManagers, null)
+
+                okHttpClientBuilder.sslSocketFactory(sslContext.socketFactory)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     /**

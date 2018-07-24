@@ -8,6 +8,6 @@ import java.io.Serializable
  * contact farshidabazari@gmail.com
  */
 class Image : Serializable {
-    var large: String = ""
-    var medium: String = ""
+    var large: String? = null
+    var medium: String? = null
 }

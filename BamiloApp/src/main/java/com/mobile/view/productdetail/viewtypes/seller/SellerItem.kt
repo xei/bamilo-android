@@ -18,7 +18,6 @@ import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import com.mobile.components.customfontviews.TextView
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
-import com.mobile.service.utils.CollectionUtils
 import com.mobile.service.utils.TextUtils
 import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
@@ -94,7 +93,10 @@ class SellerItem(private var seller: Seller,
 
     @Binder
     public fun binder(holder: SellerHolder) {
-        holder.sellerName.text = seller.name
+        seller.name?.let {
+            holder.sellerName.text = it
+        }
+
         this.holder = holder
 
         if (seller.score.overall == 0F) {
@@ -387,9 +389,8 @@ class SellerItem(private var seller: Seller,
                     }
 
                     override fun onResponse(call: Call<ResponseWrapper<GetRegionsListResponse>>?, response: Response<ResponseWrapper<GetRegionsListResponse>>?) {
-                        regions = response?.body()?.metadata?.data
-
-                        if (!CollectionUtils.isEmpty(regions)) {
+                        response?.body()?.metadata?.data?.let {
+                            regions = it
                             setRegions(regions!!)
                             triggerGetDeliveryTime(selectedCityId)
                         }
@@ -408,39 +409,24 @@ class SellerItem(private var seller: Seller,
 
                     override fun onResponse(call: Call<ResponseWrapper<DeliveryTimeResponse>>?,
                                             response: Response<ResponseWrapper<DeliveryTimeResponse>>?) {
-                        if (response == null) {
-                            return
+                        response?.body()?.metadata?.data?.let {
+                            val deliveryTime: DeliveryTimeData = it[0]
+
+                            val strDeliveryTime = if (deliveryTime.tehranDeliveryTime.isEmpty()) {
+                                deliveryTime.delivery_message
+                            } else {
+                                String.format(Locale("fa"),
+                                        "%s %s\n%s %s",
+                                        holder.itemView.context.getString(R.string.tehran_delivery_time),
+                                        deliveryTime.tehranDeliveryTime,
+                                        holder.itemView.context.getString(R.string.other_cities_delivery_time),
+                                        deliveryTime.otherCitiesDeliveryTime)
+                            }
+
+                            holder.deliveryTimeAndCity.text = strDeliveryTime
+                            holder.deliveryTimeAndCity.visibility = View.VISIBLE
+                            selectDefaultRegion(regions)
                         }
-
-                        if (!response.isSuccessful) {
-                            return
-                        }
-
-                        if (response.body().metadata.data == null) {
-                            return
-                        }
-
-                        if (response.body().metadata.data?.size == 0) {
-                            return
-                        }
-
-                        val deliveryTime: DeliveryTimeData = response.body().metadata.data?.get(0)
-                                ?: return
-
-                        val strDeliveryTime = if (deliveryTime.tehranDeliveryTime.isEmpty()) {
-                            deliveryTime.delivery_message
-                        } else {
-                            String.format(Locale("fa"),
-                                    "%s %s\n%s %s",
-                                    holder.itemView.context.getString(R.string.tehran_delivery_time),
-                                    deliveryTime.tehranDeliveryTime,
-                                    holder.itemView.context.getString(R.string.other_cities_delivery_time),
-                                    deliveryTime.otherCitiesDeliveryTime)
-                        }
-
-                        holder.deliveryTimeAndCity.text = strDeliveryTime
-                        holder.deliveryTimeAndCity.visibility = View.VISIBLE
-                        selectDefaultRegion(regions)
                     }
                 })
     }
@@ -454,8 +440,8 @@ class SellerItem(private var seller: Seller,
 
                     override fun onResponse(call: Call<ResponseWrapper<GetCityListResponse>>?,
                                             response: Response<ResponseWrapper<GetCityListResponse>>?) {
-                        cities = response?.body()?.metadata?.data
-                        if (!CollectionUtils.isEmpty(cities)) {
+                        response?.body()?.metadata?.data?.let {
+                            cities = it
                             setCities(cities)
                         }
                     }

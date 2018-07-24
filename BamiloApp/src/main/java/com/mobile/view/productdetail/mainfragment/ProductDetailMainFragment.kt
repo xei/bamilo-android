@@ -1,6 +1,5 @@
 package com.mobile.view.productdetail.mainfragment
 
-import com.emarsys.predict.RecommendedItem
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -15,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import com.emarsys.predict.RecommendedItem
 import com.mobile.app.BamiloApplication
 import com.mobile.classes.models.MainEventModel
 import com.mobile.components.ghostadapter.GhostAdapter
@@ -110,8 +110,6 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         setupCartItemClickListener()
 
         loadProductDetail(sku!!)
-
-        BamiloApplication.INSTANCE.cartViewStartedFromPDVCount++
 
         return binding.root
     }
@@ -300,7 +298,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         primaryInfoModel.rating = product.rating
         primaryInfoModel.title = product.title
 
-        items.add(PrimaryInfoItem(primaryInfoModel))
+        items.add(PrimaryInfoItem(primaryInfoModel, pdvMainView))
     }
 
     private fun addVariations() {
@@ -320,7 +318,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
 
     private fun addSellerInfo() {
         addHeader(context!!.getString(R.string.fulfilled))
-        items.add(SellerItem(product.seller, product.other_seller_count, product.simple_sku, pdvMainView))
+        items.add(SellerItem(product.seller, product.other_seller_count, product.simple_sku!!, pdvMainView))
     }
 
     private fun addReviews() {
@@ -382,14 +380,19 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     }
 
     private fun getRecommendationItem(): RecommendedItem? {
-        val item = Item()
-        item.brand = product.brand
-        item.category = product.breadcrumbs[0].target.split("::")[1]
-        item.image = product.image
-        item.isAvailable = product.has_stock
-        item.itemID = product.sku
-        item.price = product.price.price.toDouble()
-        item.title = product.title
+        val item = Item().apply {
+            brand = product.brand
+
+            product.breadcrumbs[0].target?.let {
+                category = it.split("::")[1]
+            }
+
+            image = product.image
+            isAvailable = product.has_stock
+            itemID = product.sku
+            price = product.price.price.toDouble()
+            title = product.title
+        }
 
         return item.recommendedItem
     }

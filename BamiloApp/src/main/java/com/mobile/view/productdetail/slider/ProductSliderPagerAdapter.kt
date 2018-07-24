@@ -10,7 +10,7 @@ import com.mobile.view.productdetail.model.Image
  */
 class ProductSliderPagerAdapter(fm: FragmentManager, private var images: ArrayList<Image>?) : FragmentStatePagerAdapter(fm) {
     override fun getItem(position: Int): Fragment? {
-        return ProductImageSlidePageFragment().newInstance(images!![position].medium)
+        return ProductImageSlidePageFragment().newInstance(images!![position].medium!!)
     }
 
     override fun getCount(): Int {

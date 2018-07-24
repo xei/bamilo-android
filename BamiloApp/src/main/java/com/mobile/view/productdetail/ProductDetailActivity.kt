@@ -15,6 +15,7 @@ import com.mobile.classes.models.BaseScreenModel
 import com.mobile.classes.models.MainEventModel
 import com.mobile.constants.tracking.EventActionKeys
 import com.mobile.constants.tracking.EventConstants
+import com.mobile.controllers.fragments.FragmentController
 import com.mobile.interfaces.IResponseCallback
 import com.mobile.managers.TrackerManager
 import com.mobile.service.pojo.BaseResponse
@@ -66,6 +67,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
 
         displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
 
+        FragmentController.getInstance().addToBackStack("pdv")
         val screenModel = BaseScreenModel(
                 getString(TrackingPage.PRODUCT_DETAIL.getName()),
                 getString(R.string.gaScreen), "", System.currentTimeMillis())
@@ -80,12 +82,12 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
 
     private fun bindAddToCartClickListener() {
         binding.productDetailLinearLayoutAddToCart!!.setOnClickListener {
-            addProductToCart(sku!!)
+            addProductToCart(productDetail.simple_sku!!)
         }
     }
 
     private fun addProductToCart(sku: String) {
-        if (productHasSizeVariation() && sizeVariation.sku.isEmpty()) {
+        if (productHasSizeVariation() && sizeVariation.sku!!.isEmpty()) {
             productDetailPresenter.showBottomSheet()
         } else {
             productDetailPresenter.addToCart(sku, object : IResponseCallback {
@@ -112,11 +114,14 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
 
 
     private fun productHasSizeVariation(): Boolean {
-        for (variation in productDetail.variations) {
-            if (variation.type == "size") {
-                return true
+        productDetail.variations.let {
+            for (variation in it) {
+                if (variation.type == "size") {
+                    return true
+                }
             }
         }
+
         return false
     }
 
@@ -158,10 +163,11 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
 
     private fun replaceFragment(fragment: Fragment) {
         val backStateName = fragment.javaClass.simpleName
-        val ft = supportFragmentManager.beginTransaction()
-        ft.replace(R.id.pdv_frameLayout_fragmentContainer, fragment, backStateName)
-        ft.addToBackStack(backStateName)
-        ft.commit()
+        supportFragmentManager.beginTransaction().run {
+            replace(R.id.pdv_frameLayout_fragmentContainer, fragment, backStateName)
+            addToBackStack(backStateName)
+            commit()
+        }
     }
 
     private fun getFragment(fragmentTag: FragmentTag): Fragment? {
@@ -173,7 +179,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
             FragmentTag.OTHER_SELLERS.name -> {
                 return SellersListFragment.newInstance(sku!!,
                         productDetail.title,
-                        productDetail.image)
+                        productDetail.image!!)
             }
             FragmentTag.DESCRIPTION.name -> {
                 return DescSpecFragment.newInstance(sku!!, DescSpecFragment.WHICH_SCREEN_DESC)
@@ -217,15 +223,17 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
     }
 
     override fun onShowAllReviewsClicked() {
-        startCommentsActivity(this, sku!!,
-                productDetail.rating.average,
-                productDetail.rating.total,
-                productDetail.reviews.total,
-                productDetail.rating.stars[0].count.toFloat(),
-                productDetail.rating.stars[1].count.toFloat(),
-                productDetail.rating.stars[2].count.toFloat(),
-                productDetail.rating.stars[3].count.toFloat(),
-                productDetail.rating.stars[4].count.toFloat())
+        with(productDetail.rating) {
+            startCommentsActivity(this@ProductDetailActivity, sku!!,
+                    average,
+                    5,
+                    productDetail.reviews.total,
+                    stars[0].count.toFloat(),
+                    stars[1].count.toFloat(),
+                    stars[2].count.toFloat(),
+                    stars[3].count.toFloat(),
+                    stars[4].count.toFloat())
+        }
     }
 
     override fun onSizeVariationClicked(sizeVariation: SimpleProduct) {
@@ -243,7 +251,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
         }
 
         if (supportFragmentManager.backStackEntryCount == 1) {
-            BamiloApplication.INSTANCE.cartViewStartedFromPDVCount--
+            FragmentController.getInstance().popPdvFromBackStack()
             finish()
             return
         }

@@ -7,12 +7,12 @@ class ProductDetail {
     var isWishList: Boolean = false
 
     var title: String = ""
-    var summery: String = ""
-    var share_url: String = ""
-    var image: String = ""
-    var brand: String = ""
+    var summery: String? = null
+    var share_url: String? = null
+    var image: String? = null
+    var brand: String? = null
     var sku: String = ""
-    var simple_sku: String = ""
+    var simple_sku: String? = null
 
     var other_seller_count: Int = 0
     var bundle = ProductBundle()

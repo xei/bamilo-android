@@ -6,7 +6,7 @@ package com.mobile.view.productdetail.model
  * contact farshidabazari@gmail.com
  */
 class Variation {
-    var type: String = ""
-    var title: String = ""
+    var type: String ? = null
+    var title: String ? = null
     var products = arrayListOf<SimpleProduct>()
 }

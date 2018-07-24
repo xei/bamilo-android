@@ -24,11 +24,6 @@ import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
 
 @BindItem(layout = R.layout.content_pdv_variations, holder = VariationsHolder::class)
 class VariationsItem(var variations: ArrayList<Variation>, private var pdvMainView: PDVMainView) {
-    companion object {
-        const val specification = "SPECIFICATION"
-        const val description = "DESCRIPTION"
-    }
-
     private lateinit var colorsAdapter: GhostAdapter
     private lateinit var sizesAdapter: GhostAdapter
 

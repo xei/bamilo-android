@@ -97,19 +97,28 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
         imageSliderModel.isWishList = false
         holder!!.like.isChecked = false
 
-        val sem = SimpleEventModel()
-        sem.category = holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName())
-        sem.action = EventActionKeys.REMOVE_FROM_WISHLIST
-        sem.label = imageSliderModel.productSku
-        sem.value = imageSliderModel.price.toLong()
+        val sem = SimpleEventModel().apply {
+            category = holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName())
+            action = EventActionKeys.REMOVE_FROM_WISHLIST
+            label = imageSliderModel.productSku
+            value = imageSliderModel.price.toLong()
+        }
         TrackerManager.trackEvent(holder!!.itemView.context, EventConstants.RemoveFromWishList, sem)
     }
 
     private fun setupViewPager(holder: SliderHolder) {
-        val pagerAdapter: PagerAdapter = ProductSliderPagerAdapter(supportFragmentManager, imageSliderModel.images)
+        if(holder.viewPager.adapter != null){
+            return
+        }
 
-        holder.viewPager.setPageTransformer(true, DepthPageTransformer())
-        holder.viewPager.adapter = pagerAdapter
+        val pagerAdapter: PagerAdapter = ProductSliderPagerAdapter(supportFragmentManager,
+                ArrayList(imageSliderModel.images.asReversed()))
+
+        with(holder.viewPager) {
+            setPageTransformer(true, DepthPageTransformer())
+            adapter = pagerAdapter
+            currentItem = pagerAdapter.count - 1
+        }
 
         sliderPresenter.handleOnViewPagerClicked(holder.viewPager)
     }

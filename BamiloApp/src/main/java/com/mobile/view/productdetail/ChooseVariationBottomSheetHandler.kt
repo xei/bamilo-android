@@ -110,8 +110,8 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
         bottomSheetAdapter.removeAll()
         bottomSheetItems.clear()
 
-        if (product.image_list.size > 0) {
-            ImageManager.getInstance().loadImage(product.image_list[0].medium, binding.chooseVariationRelativeLayoutLayout!!
+        product.image_list.let {
+            ImageManager.getInstance().loadImage(it[0].medium, binding.chooseVariationRelativeLayoutLayout!!
                     .chooseVariationAppImageViewProductImage,
                     null,
                     R.drawable.no_image_large,
@@ -119,14 +119,16 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
         }
 
         binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewTitle.text = product.title
-        binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewPrice.text = product.price.price
-        binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewCurrency.text = product.price.currency
+        product.price.let {
+            binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewPrice.text = it.price
+            binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewCurrency.text = it.currency
 
-        binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.text = product.price.oldPrice
-        binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.text = it.oldPrice
+            binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
 
-        if (TextUtils.isEmpty(product.price.oldPrice) || product.price.oldPrice == "0") {
-            binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.visibility = View.GONE
+            if (TextUtils.isEmpty(it.oldPrice) || it.oldPrice == "0") {
+                binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.visibility = View.GONE
+            }
         }
 
         bottomSheetItems.add(PDVBottomSheetVariationItem(product.variations, pdvMainView))

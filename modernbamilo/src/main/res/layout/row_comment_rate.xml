@@ -8,21 +8,19 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp" >
 
-
     <com.bamilo.modernbamilo.customview.XeiTextView
         android:id="@+id/rowCommentRate_xeiTextView_avgRate"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
         android:gravity="center"
         android:textColor="@color/commentsList_header_averageRate"
-        android:textSize="48sp"
-        app:locale="auto"
-        app:style="bold"
+        android:textSize="42sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:locale="auto"
+        app:style="bold"
         tools:text="۴/۶"/>
 
     <com.bamilo.modernbamilo.product.comment.RateBarView
@@ -81,30 +79,31 @@
         android:id="@+id/rowCommentRate_xeiTextView_rateSum"
         android:layout_width="wrap_content"
         android:layout_height="21dp"
-        android:layout_marginRight="4dp"
         android:layout_marginTop="16dp"
+        android:layout_marginRight="6dp"
         android:gravity="center_vertical"
-        tools:text="از ۵"
         android:textColor="@color/commentsList_header_averageRate"
         app:layout_constraintRight_toLeftOf="@+id/rowCommentRate_xeiTextView_avgRate"
         app:layout_constraintTop_toTopOf="@+id/rowCommentRate_xeiTextView_avgRate"
-        app:locale="auto" />
+        app:locale="auto"
+        tools:text="از ۵"/>
 
     <com.bamilo.modernbamilo.customview.XeiTextView
         android:id="@+id/rowCommentRate_xeiTextView_commentsCount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:gravity="center_vertical"
+        android:gravity="right|center_vertical"
+        android:maxLines="1"
         android:textColor="@color/commentsList_header_commentsCount"
-        app:layout_constraintBottom_toBottomOf="@+id/rowCommentRate_xeiTextView_avgRate"
-        app:layout_constraintRight_toLeftOf="@+id/imageView3"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintLeft_toRightOf="@+id/rowCommentRate_rateBarView_twoStar"
+        app:layout_constraintRight_toLeftOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
         app:style="bold"
-        tools:text="۳۴۳۷ نظر" />
+        tools:text="۳۴۳۷ نظر"/>
 
     <ImageView
         android:id="@+id/imageView2"
@@ -120,12 +119,13 @@
         android:id="@+id/imageView3"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginRight="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/rowCommentRate_xeiTextView_commentsCount"
+        app:layout_constraintBottom_toBottomOf="@+id/rowCommentRate_xeiTextView_avgRate"
         app:layout_constraintRight_toLeftOf="@+id/rowCommentRate_xeiTextView_avgRate"
-        app:layout_constraintTop_toTopOf="@+id/rowCommentRate_xeiTextView_commentsCount"
-        app:srcCompat="@drawable/ic_person_black_24dp" />
+        app:layout_constraintTop_toBottomOf="@+id/rowCommentRate_xeiTextView_rateSum"
+        app:srcCompat="@drawable/ic_person_black_24dp"/>
 
 
 </android.support.constraint.ConstraintLayout>

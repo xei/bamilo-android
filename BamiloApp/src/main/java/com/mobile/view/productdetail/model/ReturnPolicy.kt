@@ -1,6 +1,6 @@
 package com.mobile.view.productdetail.model
 
 class ReturnPolicy {
-    var icon: String = ""
-    var title: String = ""
+    var icon: String? = null
+    var title: String? = null
 }

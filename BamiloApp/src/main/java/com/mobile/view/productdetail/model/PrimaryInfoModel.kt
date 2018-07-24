@@ -8,7 +8,7 @@ package com.mobile.view.productdetail.model
 class PrimaryInfoModel {
     var priceModel = Price()
     var rating = Rating()
-    var title = ""
-    var brand = ""
+    var title:String? = null
+    var brand:String? = null
     var hasStock = true
 }

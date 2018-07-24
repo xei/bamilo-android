@@ -9,6 +9,7 @@ import android.view.View
 import android.view.WindowManager
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
+import com.mobile.service.utils.TextUtils
 import com.mobile.view.R
 import com.mobile.view.productdetail.model.Review
 
@@ -25,7 +26,10 @@ class ReviewItemAdapter(var review: Review) {
         holder.date.text = review.date
         holder.comment.text = review.comment
         holder.title.text = review.username
-        holder.ratingBar.rating = review.rate.toFloat()
+
+        review.rate?.let {
+            holder.ratingBar.rating = it.toFloat()
+        }
 
         setupViewWidth(holder)
         setUpMoreButton(holder, review.comment)
@@ -37,17 +41,21 @@ class ReviewItemAdapter(var review: Review) {
         holder.itemView.layoutParams.width = getCardSize(holder)
     }
 
-    private fun getCardSize(holder: ReviewItemHolder): Int{
+    private fun getCardSize(holder: ReviewItemHolder): Int {
         val deviceWidth = getDeviceWidth(holder.itemView.context)
         return deviceWidth - (deviceWidth / 7)
     }
 
-    private fun setUpMoreButton(holder: ReviewItemHolder, comment: String) {
+    private fun setUpMoreButton(holder: ReviewItemHolder, comment: String?) {
+        if (TextUtils.isEmpty(comment)) {
+            return
+        }
+
         val bounds = Rect()
         val paint = Paint()
 
         paint.textSize = spToPx(12f, holder.itemView.context).toFloat()
-        paint.getTextBounds(comment, 0, comment.length, bounds)
+        paint.getTextBounds(comment, 0, comment!!.length, bounds)
 
         val currentSize = getCardSize(holder)
         val numLines = Math.ceil((bounds.width().toFloat() / currentSize).toDouble()).toInt()

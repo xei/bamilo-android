@@ -6,9 +6,11 @@ import android.view.View
 import android.widget.LinearLayout
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
+import com.mobile.service.utils.TextUtils
 import com.mobile.service.utils.shop.CurrencyFormatter
 import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
+import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.PrimaryInfoModel
 
 /**
@@ -17,30 +19,35 @@ import com.mobile.view.productdetail.model.PrimaryInfoModel
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_primary_info, holder = PrimaryInfoHolder::class)
-class PrimaryInfoItem(private var primaryInfoModel: PrimaryInfoModel) {
+class PrimaryInfoItem(private var primaryInfoModel: PrimaryInfoModel, private var pdvMainView: PDVMainView) {
     @Binder
     public fun binder(holder: PrimaryInfoHolder) {
         setPriceAndDiscount(holder)
+        holder.run {
+            if (primaryInfoModel.rating.total == 0) {
+                ratingLayout.visibility = View.GONE
+            } else {
+                ratingLayout.visibility = View.VISIBLE
+            }
 
-        if (primaryInfoModel.rating.total == 0) {
-            holder.ratingLayout.visibility = View.GONE
-        } else {
-            holder.ratingLayout.visibility = View.VISIBLE
+            currency.text = primaryInfoModel.priceModel.currency
+            title.text = primaryInfoModel.title
+            ratingBar.rating = primaryInfoModel.rating.average
+            averageScore.text = primaryInfoModel.rating.average.toString().replace(".", "/")
+            scoreCount.text = primaryInfoModel.rating.total.toString()
+
+            brandLayout.visibility = View.GONE
+            primaryInfoModel.brand?.let {
+                brandLayout.visibility = View.VISIBLE
+                brand.text = primaryInfoModel.brand
+            }
+
+            ratingLayout.setOnClickListener { gotoAllReviewsPage() }
         }
+    }
 
-        holder.currency.text = primaryInfoModel.priceModel.currency
-
-        holder.title.text = primaryInfoModel.title
-        holder.ratingBar.rating = primaryInfoModel.rating.average
-        holder.averageScore.text = primaryInfoModel.rating.average.toString().replace(".", "/")
-        holder.scoreCount.text = primaryInfoModel.rating.total.toString()
-
-        if (primaryInfoModel.brand.isEmpty()) {
-            holder.brandLayout.visibility = View.GONE
-        } else {
-            holder.brandLayout.visibility = View.VISIBLE
-            holder.brand.text = primaryInfoModel.brand
-        }
+    private fun gotoAllReviewsPage() {
+        pdvMainView.onShowAllReviewsClicked()
     }
 
     private fun setPriceAndDiscount(holder: PrimaryInfoHolder) {
@@ -48,53 +55,57 @@ class PrimaryInfoItem(private var primaryInfoModel: PrimaryInfoModel) {
             return
         }
 
-        if (primaryInfoModel.priceModel.oldPrice.isEmpty() ||
-                primaryInfoModel.priceModel.oldPrice == primaryInfoModel.priceModel.price ||
-                primaryInfoModel.priceModel.oldPrice.toLong() == 0L) {
-            setPriceWithOutDiscount(holder)
-        } else {
+        if (!TextUtils.isEmpty(primaryInfoModel.priceModel.oldPrice) &&
+                primaryInfoModel.priceModel.oldPrice != primaryInfoModel.priceModel.price &&
+                primaryInfoModel.priceModel.oldPrice?.toLong() == 0L) {
             setPriceWithDiscount(holder)
+        } else {
+            setPriceWithOutDiscount(holder)
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun setPriceWithDiscount(holder: PrimaryInfoHolder) {
-        holder.outOfStockText.visibility = View.GONE
+        holder.run {
+            outOfStockText.visibility = View.GONE
 
-        holder.priceLayout.visibility = View.VISIBLE
-        holder.discountPercentageRoot.visibility = View.VISIBLE
-        holder.discountLayout.visibility = View.VISIBLE
+            priceLayout.visibility = View.VISIBLE
+            discountPercentageRoot.visibility = View.VISIBLE
+            discountLayout.visibility = View.VISIBLE
 
-        holder.oldPrice.text = CurrencyFormatter.formatCurrency(primaryInfoModel.priceModel.oldPrice, false)
-        holder.oldPrice.paintFlags = holder.oldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            oldPrice.text = CurrencyFormatter.formatCurrency(primaryInfoModel.priceModel.oldPrice, false)
+            oldPrice.paintFlags = holder.oldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 
-        holder.currentPrice.text = CurrencyFormatter.formatCurrency(primaryInfoModel.priceModel.price, false)
-        holder.discountBenefit.text = String.format(holder.itemView.context.getString(R.string.discount_benifit),
-                CurrencyFormatter.formatCurrency(primaryInfoModel.priceModel.discount_benefit, false),
-                primaryInfoModel.priceModel.currency)
+            currentPrice.text = CurrencyFormatter.formatCurrency(primaryInfoModel.priceModel.price, false)
+            discountBenefit.text = String.format(holder.itemView.context.getString(R.string.discount_benifit),
+                    CurrencyFormatter.formatCurrency(primaryInfoModel.priceModel.discount_benefit, false),
+                    primaryInfoModel.priceModel.currency)
 
-        if (primaryInfoModel.priceModel.discount_percentage.isEmpty()) {
-            holder.discountPercentageRoot.visibility = View.GONE
-            holder.discountPercentage.visibility = View.GONE
-        } else {
-            holder.discountPercentageRoot.visibility = View.VISIBLE
-            holder.discountPercentage.visibility = View.VISIBLE
-            holder.discountPercentage.text = primaryInfoModel.priceModel.discount_percentage +
-                    holder.itemView.context.getString(R.string.percent_sign)
+            if (TextUtils.isEmpty(primaryInfoModel.priceModel.discount_percentage)) {
+                discountPercentageRoot.visibility = View.GONE
+                discountPercentage.visibility = View.GONE
+            } else {
+                discountPercentageRoot.visibility = View.VISIBLE
+                discountPercentage.visibility = View.VISIBLE
+                discountPercentage.text = primaryInfoModel.priceModel.discount_percentage +
+                        itemView.context.getString(R.string.percent_sign)
+            }
+
+            setPriceLayoutMargin(this, 0)
         }
-
-        setPriceLayoutMargin(holder, 0)
     }
 
     private fun setPriceWithOutDiscount(holder: PrimaryInfoHolder) {
-        holder.priceLayout.visibility = View.VISIBLE
-        holder.currentPrice.text = CurrencyFormatter.formatCurrency(primaryInfoModel.priceModel.price, false)
+        holder.run {
+            priceLayout.visibility = View.VISIBLE
+            currentPrice.text = CurrencyFormatter.formatCurrency(primaryInfoModel.priceModel.price, false)
 
-        holder.outOfStockText.visibility = View.GONE
-        holder.discountLayout.visibility = View.GONE
-        holder.discountPercentageRoot.visibility = View.GONE
+            outOfStockText.visibility = View.GONE
+            discountLayout.visibility = View.GONE
+            discountPercentageRoot.visibility = View.GONE
 
-        setPriceLayoutMargin(holder, 16)
+            setPriceLayoutMargin(this, 16)
+        }
     }
 
     private fun setPriceLayoutMargin(holder: PrimaryInfoHolder, margin: Int) {

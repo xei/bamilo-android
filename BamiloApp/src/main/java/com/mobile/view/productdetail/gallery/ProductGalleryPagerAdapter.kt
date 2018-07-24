@@ -10,7 +10,7 @@ import com.mobile.view.productdetail.model.Image
  */
 class ProductGalleryPagerAdapter(fm: FragmentManager, private var images: ArrayList<Image>?) : FragmentStatePagerAdapter(fm) {
     override fun getItem(position: Int): Fragment? {
-        return ProductGalleryPageFragment().newInstance(images!![position].large)
+        return ProductGalleryPageFragment().newInstance(images!![position].large!!)
     }
 
     override fun getCount(): Int {

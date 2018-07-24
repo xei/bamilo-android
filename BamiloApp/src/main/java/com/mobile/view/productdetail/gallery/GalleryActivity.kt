@@ -102,7 +102,7 @@ class GalleryActivity : AppCompatActivity() {
 
     private fun addImagesToRecyclerView() {
         for (imageUrl in images!!) {
-            items.add(GalleryBottomImageItem(imageUrl.medium, object : OnItemClickListener {
+            items.add(GalleryBottomImageItem(imageUrl.medium!!, object : OnItemClickListener {
                 override fun onItemClicked(any: Any?) {
                     val position = any as Int
                     recyclerView.scrollToPosition(position)

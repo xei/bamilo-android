@@ -1,5 +1,8 @@
 package com.mobile.controllers.fragments;
 
+import android.annotation.SuppressLint;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
@@ -56,6 +59,7 @@ public class FragmentController {
 
     private final int POP_BACK_STACK_NO_INCLUSIVE = 0;
     private static FragmentController sFragmentController;
+    @SuppressLint("NewApi")
     private ConcurrentLinkedDeque<String> mBackStack = new ConcurrentLinkedDeque<>();
     protected WorkerThread mWorkerThread;
 
@@ -114,9 +118,15 @@ public class FragmentController {
      *
      * @param tag The fragment tag
      */
-    private void addToBackStack(String tag) {
+    public void addToBackStack(String tag) {
         Print.i("ADD TO BACK STACK: " + tag);
         this.mBackStack.addLast(tag);
+    }
+
+    public void popPdvFromBackStack() {
+        if (!mBackStack.isEmpty() && mBackStack.getLast().equals("pdv")) {
+            mBackStack.removeLast();
+        }
     }
 
     /**
@@ -191,9 +201,11 @@ public class FragmentController {
      */
     @SuppressWarnings("unused")
     public void printAllEntries() {
-        String entries = "";
-        for (String aBackStack : mBackStack) {
-            entries += " " + aBackStack;
+        StringBuilder entries = new StringBuilder();
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            for (String aBackStack : mBackStack) {
+                entries.append(" ").append(aBackStack);
+            }
         }
         Print.d("ENTRY: " + entries);
     }
@@ -274,7 +286,7 @@ public class FragmentController {
 
             @Override
             public void run() {
-                removeAllEntriesWithTag(tag);
+//                removeAllEntriesWithTag(tag);
                 addToBackStack(tag);
             }
         });
@@ -309,16 +321,26 @@ public class FragmentController {
         Print.i("BACK STACK SIZE: " + size);
         Print.i("THE CURRENT BACK STACK ENTRIES: " + mBackStack);
 
-        if (mBackStack.getLast().equals(FragmentType.SHOPPING_CART.toString())) {
-            if (BamiloApplication.INSTANCE.cartViewStartedFromPDVCount == 1) {
+        Iterator<String> it = mBackStack.descendingIterator();
+        if(it.hasNext()){
+            it.next();
+            if (it.hasNext() && it.next().equals("pdv")) {
                 popBackStack(activity);
-                activity.finish();
-                return;
-            } else if (BamiloApplication.INSTANCE.cartViewStartedFromPDVCount > 1) {
                 activity.finish();
                 return;
             }
         }
+
+//        if (mBackStack.getLast().equals(FragmentType.SHOPPING_CART.toString())) {
+//            if (BamiloApplication.INSTANCE.cartViewStartedFromPDVCount == 1) {
+//                popBackStack(activity);
+//                activity.finish();
+//                return;
+//            } else if (BamiloApplication.INSTANCE.cartViewStartedFromPDVCount > 1) {
+//                activity.finish();
+//                return;
+//            }
+//        }
 
         switch (size) {
             case 1:
