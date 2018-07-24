@@ -91,7 +91,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun createViewModel() {
-        var commentsCount = intent.getIntExtra(KEY_EXTRA_COMMENTS_COUNT, 0)
+        val commentsCount = intent.getIntExtra(KEY_EXTRA_COMMENTS_COUNT, 0)
         mViewModel = CommentsScreenViewModel(
                 rate = intent.getFloatExtra(KEY_EXTRA_RATE, 0f),
                 rateSum = intent.getIntExtra(KEY_EXTRA_RATE_SUM, 5),
