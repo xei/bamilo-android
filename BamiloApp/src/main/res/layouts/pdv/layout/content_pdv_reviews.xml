@@ -17,6 +17,7 @@
         android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/pdvReview_constraintLayout_rateLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

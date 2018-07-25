@@ -671,5 +671,7 @@
     <string name="discount_benifit">سود شما: %1$s %2$s</string>
     <string name="percent_sign">%</string>
     <string name="related_products">کالاهای مشابه</string>
+    <string name="no_review_added">هنوز نظری ثبت نشده</string>
+    <string name="be_first_to_comment">اولین نفری باشید که نظر می دهید</string>
 
 </resources>

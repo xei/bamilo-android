@@ -3,6 +3,7 @@ package com.mobile.view.productdetail.viewtypes.review
 import android.content.Context
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.PagerSnapHelper
+import android.view.View
 import com.bamilo.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
@@ -17,7 +18,7 @@ import com.mobile.view.productdetail.model.Reviews
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_reviews, holder = ReviewsHolder::class)
-class ReviewsItem(var reviews: Reviews, var sku: String, var pdvMainView: PDVMainView) {
+class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdvMainView: PDVMainView) {
 
     private var adapter = GhostAdapter()
     private var recyclerItems = ArrayList<Any>()
@@ -29,6 +30,12 @@ class ReviewsItem(var reviews: Reviews, var sku: String, var pdvMainView: PDVMai
         this.holder = holder
 
         holder.run {
+            if (reviews.total == 0 && reviews.average == 0F) {
+                productRateLayout.visibility = View.GONE
+            } else {
+                productRateLayout.visibility = View.VISIBLE
+            }
+
             total.text = reviews.total.toString()
             maxRate.text = itemView.context.getString(R.string.of_number, 5)
 
@@ -43,7 +50,11 @@ class ReviewsItem(var reviews: Reviews, var sku: String, var pdvMainView: PDVMai
         }
 
         setupRecyclerView()
-        showReviews()
+        if (reviews.items.size > 0) {
+            showReviews()
+        } else {
+            showRateToProduct()
+        }
     }
 
     private fun setupRecyclerView() {
@@ -56,11 +67,20 @@ class ReviewsItem(var reviews: Reviews, var sku: String, var pdvMainView: PDVMai
     }
 
     private fun showReviews() {
+        recyclerItems.clear()
+        adapter.removeAll()
         for (review in reviews.items) {
             recyclerItems.add(ReviewItemAdapter(review))
         }
 
         adapter.setItems(recyclerItems)
+    }
+
+    private fun showRateToProduct() {
+        recyclerItems.clear()
+        adapter.removeAll()
+
+        recyclerItems.add(AddReviewItem(sku))
     }
 
     private fun showAddReviewActivity(context: Context) {

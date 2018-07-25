@@ -1,5 +1,6 @@
 package com.mobile.view.productdetail.viewtypes.review
 
+import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
@@ -20,4 +21,6 @@ class ReviewsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     var addReview: LinearLayout = itemView.findViewById(R.id.pdvReview_linearLayout_addReview)
     var showAllReviews: LinearLayout = itemView.findViewById(R.id.pdvReview_linearLayout_seeAllReviews)
+
+    var productRateLayout: ConstraintLayout = itemView.findViewById(R.id.pdvReview_constraintLayout_rateLayout)
 }

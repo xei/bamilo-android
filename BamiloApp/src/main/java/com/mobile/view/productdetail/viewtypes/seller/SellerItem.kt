@@ -410,6 +410,10 @@ class SellerItem(private var seller: Seller,
                     override fun onResponse(call: Call<ResponseWrapper<DeliveryTimeResponse>>?,
                                             response: Response<ResponseWrapper<DeliveryTimeResponse>>?) {
                         response?.body()?.metadata?.data?.let {
+                            if(it.isEmpty()){
+                                return
+                            }
+
                             val deliveryTime: DeliveryTimeData = it[0]
 
                             val strDeliveryTime = if (deliveryTime.tehranDeliveryTime.isEmpty()) {
