@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.product.sellerslist.model.SellersListRepository
 import com.bamilo.modernbamilo.product.sellerslist.view.customview.FilterButton
@@ -53,19 +52,32 @@ class SellersListFragment : Fragment(), View.OnClickListener {
     private lateinit var mSellersRecyclerView: RecyclerView
     private lateinit var mOnAddToCartButtonClickListener: OnAddToCartButtonClickListener
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_sellers_list, container, false)
-        findViews(view)
-        return view
+    companion object {
+
+        @JvmStatic
+        fun newInstance(productId: String, productTitle: String, productThumbnailUrl: String) =
+                SellersListFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_PRODUCT_ID, productId)
+                        putString(ARG_PRODUCT_TITLE, productTitle)
+                        putString(ARG_PRODUCT_THUMBNAIL_URL, productThumbnailUrl)
+                    }
+                }
+
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        if (context is OnAddToCartButtonClickListener) {
-            mOnAddToCartButtonClickListener = context
+        context?.takeIf { it is OnAddToCartButtonClickListener }.apply {
+            mOnAddToCartButtonClickListener = this as OnAddToCartButtonClickListener
         }
     }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+            inflater.inflate(R.layout.fragment_sellers_list, container, false).apply {
+                findViews(this)
+            }!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,19 +88,6 @@ class SellersListFragment : Fragment(), View.OnClickListener {
         setOnClickListeners()
         initSellersRecyclerView()
         loadSellers()
-    }
-
-
-    companion object {
-        @JvmStatic
-        fun newInstance(productId: String, productTitle: String, productThumbnailUrl: String) =
-                SellersListFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PRODUCT_ID, productId)
-                        putString(ARG_PRODUCT_TITLE, productTitle)
-                        putString(ARG_PRODUCT_THUMBNAIL_URL, productThumbnailUrl)
-                    }
-                }
     }
 
     private fun findViews(rootView: View) {
