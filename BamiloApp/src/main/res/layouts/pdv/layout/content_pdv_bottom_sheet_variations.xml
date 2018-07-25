@@ -28,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/dimen_12dp"
                 android:layout_alignParentRight="true"
-                android:lineSpacingMultiplier="1.58"
                 android:text="@string/choose_size"
                 android:textColor="@color/secondary_text_color"
                 android:textSize="12sp"

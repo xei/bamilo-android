@@ -1,5 +1,6 @@
 package com.mobile.view.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -248,6 +249,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         super.onStart();
         srlRecommendItemsList.setRefreshing(loadInProgress);
         rvRecommendedItemsList.post(new Runnable() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void run() {
                 if (recommendListScrollPosition == 0) {

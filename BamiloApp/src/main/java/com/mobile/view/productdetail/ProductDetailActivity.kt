@@ -14,9 +14,11 @@ import com.bamilo.modernbamilo.product.sellerslist.view.SellersListFragment
 import com.mobile.app.BamiloApplication
 import com.mobile.classes.models.BaseScreenModel
 import com.mobile.classes.models.MainEventModel
+import com.mobile.constants.ConstantsIntentExtra
 import com.mobile.constants.tracking.EventActionKeys
 import com.mobile.constants.tracking.EventConstants
 import com.mobile.controllers.fragments.FragmentController
+import com.mobile.controllers.fragments.FragmentType
 import com.mobile.interfaces.IResponseCallback
 import com.mobile.managers.TrackerManager
 import com.mobile.service.pojo.BaseResponse
@@ -25,15 +27,16 @@ import com.mobile.service.utils.TextUtils
 import com.mobile.utils.ConfigurationWrapper
 import com.mobile.utils.dialogfragments.DialogProgressFragment
 import com.mobile.utils.ui.WarningFactory
+import com.mobile.view.MainFragmentActivity
 import com.mobile.view.R
 import com.mobile.view.databinding.ActivityProductDetailBinding
 import com.mobile.view.productdetail.mainfragment.ProductDetailMainFragment
 import com.mobile.view.productdetail.model.ProductDetail
+import com.mobile.view.productdetail.model.Review
 import com.mobile.view.productdetail.model.SimpleProduct
 import java.util.*
 
 class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragment.OnAddToCartButtonClickListener {
-
     private lateinit var productDetail: ProductDetail
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var productDetailPresenter: ProductDetailPresenter
@@ -282,6 +285,10 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
         }
     }
 
+    override fun onShowSpecificComment(review: Review) {
+
+    }
+
     override fun showProgressView() {
         showProgress()
     }
@@ -304,9 +311,18 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
         this.sizeVariation = sizeVariation
     }
 
+    override fun onShowMoreRelatedProducts() {
+        val intent = Intent(this, MainFragmentActivity::class.java)
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.MORE_RELATED_PRODUCTS)
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false)
+
+        startActivity(intent)
+    }
+
     override fun onShowFragment(fragmentTag: FragmentTag) {
         displaySelectedScreen(fragmentTag)
     }
+
 
     override fun onBackPressed() {
         if (productDetailPresenter.isBottomSheetShown()) {

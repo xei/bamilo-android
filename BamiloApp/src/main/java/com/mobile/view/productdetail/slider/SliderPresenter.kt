@@ -25,6 +25,7 @@ class SliderPresenter(var context: Context, private var productSku: String, priv
     fun onLikeButtonClicked(likeButton: SparkButton, callBack: Callback<ResponseWrapper<Any>>) {
         if (!BamiloApplication.isCustomerLoggedIn()) {
             loginUser()
+            callBack.onFailure(null, null)
         } else {
             if (likeButton.isChecked) {
                 removeProductToWishList(callBack)
@@ -50,7 +51,7 @@ class SliderPresenter(var context: Context, private var productSku: String, priv
                 .enqueue(callBack)
     }
 
-    fun shareProduct(shareUrl: String) {
+    fun shareProduct(shareUrl: String?) {
         try {
             val extraSubject = context.getString(R.string.share_subject, context.getString(R.string.app_name_placeholder))
             val extraMsg =

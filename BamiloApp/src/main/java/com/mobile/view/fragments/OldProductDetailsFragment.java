@@ -1756,17 +1756,17 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         };
 
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseActivity());
-        String logic = sharedPref.getString("", "RELATED");
-        RecommendManager recommendManager = new RecommendManager();
-        Item item = recommendManager.getCartItem(mProduct);
-        recommendManager.sendRelatedRecommend(item.getRecommendedItem(),
-                null,
-                item.getItemID(),
-                null,
-                handler);
-
-
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseActivity());
+//        String logic = sharedPref.getString("", "RELATED");
+//        RecommendManager recommendManager = new RecommendManager();
+//        Item item = recommendManager.getCartItem(mProduct);
+//        recommendManager.sendRelatedRecommend(item.getRecommendedItem(),
+//                null,
+//                item.getItemID(),
+//                null,
+//                handler);
+//
+//
 
         /*recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
             @Override

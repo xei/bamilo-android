@@ -238,8 +238,8 @@ class SellerItem(private var seller: Seller,
         holder.sendOnTimeProgress.max = seller.score.maxValue * 10
 
         holder.salesWithoutReturnProgress.progress = (seller.score.notReturned * 10).toInt()
-        holder.successfulSupplyProgress.progress = (seller.score.fullFillment * 10).toInt()
-        holder.sendOnTimeProgress.progress = (seller.score.sLAReached * 10).toInt()
+        holder.successfulSupplyProgress.progress = (seller.score.fullfilment * 10).toInt()
+        holder.sendOnTimeProgress.progress = (seller.score.SLAReached * 10).toInt()
     }
 
     private fun showSellerRateTexts(holder: SellerHolder, id: Int, value: String) {
@@ -263,7 +263,7 @@ class SellerItem(private var seller: Seller,
 
     @SuppressLint("StringFormatMatches")
     private fun showSLAReach(holder: SellerHolder, sellerScore: Score) {
-        val result = getScoreString(sellerScore.sLAReached)
+        val result = getScoreString(sellerScore.SLAReached)
 
         showSellerRateTexts(holder, R.id.sellerScore_textView_sendOnTimeRate,
                 holder.itemView.context.getString(R.string.seller_info_rate_from,
@@ -282,7 +282,7 @@ class SellerItem(private var seller: Seller,
 
     @SuppressLint("StringFormatMatches")
     private fun showFullfilment(holder: SellerHolder, sellerScore: Score) {
-        val result = getScoreString(sellerScore.fullFillment)
+        val result = getScoreString(sellerScore.fullfilment)
         showSellerRateTexts(holder, R.id.sellerScore_textView_successfulSupplyRate,
                 holder.itemView.context.getString(R.string.seller_info_rate_from,
                         result,

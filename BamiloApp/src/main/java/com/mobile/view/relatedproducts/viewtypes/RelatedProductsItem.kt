@@ -40,7 +40,7 @@ class RelatedProductsItem(private var mRecommendedItem: RecommendedItem) {
 
         showPrice(holder, data)
 
-        holder.itemView.setOnClickListener { v: View? -> mOnItemClickListener.onItemClicked(mRecommendedItem) }
+        holder.itemView.setOnClickListener { _: View? -> mOnItemClickListener.onItemClicked(mRecommendedItem) }
     }
 
     private fun showPrice(holder: RelatedProductsHolder, data: MutableMap<String, Any>) {

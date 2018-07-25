@@ -235,24 +235,13 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
 
         try {
             pushManager.onStartup(this);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
+
         pushManager.registerForPushNotifications();
         checkMessage(getIntent());
 
-        if (getIntent() != null && getIntent().getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
-                == FragmentType.SHOPPING_CART) {
-            onSwitchFragment(FragmentType.SHOPPING_CART, null, true);
-            return;
-        }
-
-        if (getIntent() != null && !TextUtils.isEmpty(getIntent().getStringExtra("target"))) {
-            new TargetLink(getWeakBaseActivity(), getIntent().getStringExtra("target"))
-                    .addTitle(getIntent().getStringExtra("title"))
-                    .retainBackStackEntries()
-                    .enableWarningErrorMessage()
-                    .run();
-
+        if (checkIntentsFromPDV()) {
             return;
         }
 
@@ -313,6 +302,34 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             isInMaintenance = splashScreenParams.getExtras()
                     .getBoolean(ConstantsIntentExtra.IN_MAINTANCE, false);
         }
+    }
+
+    private boolean checkIntentsFromPDV() {
+        if (getIntent() != null
+                && getIntent().getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
+                == FragmentType.MORE_RELATED_PRODUCTS) {
+            onSwitchFragment(FragmentType.MORE_RELATED_PRODUCTS, null, true);
+            return true;
+        }
+
+        if (getIntent() != null
+                && getIntent().getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
+                == FragmentType.SHOPPING_CART) {
+            onSwitchFragment(FragmentType.SHOPPING_CART, null, true);
+            return true;
+        }
+
+        if (getIntent() != null && !TextUtils.isEmpty(getIntent().getStringExtra("target"))) {
+            new TargetLink(getWeakBaseActivity(), getIntent().getStringExtra("target"))
+                    .addTitle(getIntent().getStringExtra("title"))
+                    .retainBackStackEntries()
+                    .enableWarningErrorMessage()
+                    .run();
+
+            return true;
+        }
+
+        return false;
     }
 
     /*

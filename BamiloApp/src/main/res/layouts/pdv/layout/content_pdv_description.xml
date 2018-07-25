@@ -25,7 +25,6 @@
             android:layout_marginRight="@dimen/dimen_8dp"
             android:ellipsize="end"
             android:gravity="right"
-            android:lineSpacingMultiplier="1.91"
             android:maxLines="4"
             android:textColor="@color/primary_text_color"
             android:textSize="11sp"

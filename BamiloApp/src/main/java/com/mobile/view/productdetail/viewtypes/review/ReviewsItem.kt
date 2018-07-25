@@ -74,7 +74,7 @@ class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdv
         recyclerItems.clear()
         adapter.removeAll()
         for (review in reviews.items) {
-            recyclerItems.add(ReviewItemAdapter(review))
+            recyclerItems.add(ReviewItemAdapter(review, pdvMainView))
         }
 
         adapter.setItems(recyclerItems)

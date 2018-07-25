@@ -287,6 +287,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     private fun addImagesToSlider() {
         val imageSliderModel = ImageSliderModel()
         imageSliderModel.productSku = sku!!
+        imageSliderModel.shareUrl = product.share_url
         imageSliderModel.isWishList = product.isWishList
         imageSliderModel.images = product.image_list
         imageSliderModel.price = product.price.price
@@ -323,12 +324,14 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
 
     private fun addReviews() {
         addHeader(context!!.getString(R.string.customers_review))
+        product.reviews.average = product.rating.average
         items.add(ReviewsItem(product.reviews, sku!!, pdvMainView))
     }
 
     private fun addSeeMoreRecommendItem() {
         items.add(SeeMoreButtonItem(getString(R.string.see_all_related_products), object : OnItemClickListener {
             override fun onItemClicked(any: Any?) {
+                pdvMainView.onShowMoreRelatedProducts()
             }
         }))
     }
@@ -356,7 +359,11 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
 
     private fun getRecommendedProducts() {
         val recommendManager = RecommendManager()
-        recommendManager.sendRelatedRecommend(getRecommendationItem(), null, product.sku, null)
+        recommendManager.sendRelatedRecommend(getRecommendationItem(),
+                null,
+                product.sku,
+                null,
+                6)
         { _, data ->
             if (isAdded && context != null) {
                 addItemsToRecyclerInputList()
@@ -405,11 +412,6 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     private fun bindToolbarClickListener() {
         binding.pdvAppImageViewBack.setOnClickListener { _ -> pdvMainView.onBackButtonClicked() }
         binding.pdvAppImageViewWhiteBack.setOnClickListener { _ -> pdvMainView.onBackButtonClicked() }
-
-        binding.pdvAppImageViewCart.setOnClickListener { _ -> gotoCartView() }
-    }
-
-    private fun gotoCartView() {
     }
 
     override fun onRequestComplete(baseResponse: BaseResponse<*>?) {

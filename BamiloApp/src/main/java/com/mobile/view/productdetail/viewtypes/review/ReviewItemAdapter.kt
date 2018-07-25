@@ -11,6 +11,7 @@ import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.service.utils.TextUtils
 import com.mobile.view.R
+import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.Review
 
 
@@ -20,7 +21,7 @@ import com.mobile.view.productdetail.model.Review
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_review, holder = ReviewItemHolder::class)
-class ReviewItemAdapter(var review: Review) {
+class ReviewItemAdapter(var review: Review, var pdvMainView: PDVMainView) {
     @Binder
     public fun binder(holder: ReviewItemHolder) {
         holder.date.text = review.date
@@ -34,7 +35,7 @@ class ReviewItemAdapter(var review: Review) {
         setupViewWidth(holder)
         setUpMoreButton(holder, review.comment)
 
-        holder.more.setOnClickListener { gotoReviewView(holder) }
+        holder.more.setOnClickListener { gotoReviewView() }
     }
 
     private fun setupViewWidth(holder: ReviewItemHolder) {
@@ -54,7 +55,7 @@ class ReviewItemAdapter(var review: Review) {
         val bounds = Rect()
         val paint = Paint()
 
-        paint.textSize = spToPx(12f, holder.itemView.context).toFloat()
+        paint.textSize = spToPx(15f, holder.itemView.context).toFloat()
         paint.getTextBounds(comment, 0, comment!!.length, bounds)
 
         val currentSize = getCardSize(holder)
@@ -80,6 +81,7 @@ class ReviewItemAdapter(var review: Review) {
         return displayMetrics.widthPixels
     }
 
-    private fun gotoReviewView(holder: ReviewItemHolder) {
+    private fun gotoReviewView() {
+        pdvMainView.onShowSpecificComment(review)
     }
 }
