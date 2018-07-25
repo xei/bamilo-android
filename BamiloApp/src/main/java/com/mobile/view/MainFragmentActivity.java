@@ -89,6 +89,7 @@ import com.mobile.view.newfragments.NewSessionLoginMainFragment;
 import com.mobile.view.newfragments.NewShoppingCartFragment;
 import com.mobile.view.newfragments.SubCategoryFilterFragment;
 import com.mobile.view.productdetail.ProductDetailActivity;
+import com.mobile.view.relatedproducts.RecommendProductsFragment;
 import com.pushwoosh.BasePushMessageReceiver;
 import com.pushwoosh.BaseRegistrationReceiver;
 import com.pushwoosh.PushManager;
@@ -221,13 +222,6 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         setIntent(intent);
         checkMessage(intent);
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.utils.MyActivity#onCreate(android.os.Bundle)
-     */
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -649,6 +643,9 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 break;
             case CATEGORIES:
                 fragment = newFragmentInstance(NavigationCategoryFragment.class, bundle);
+                break;
+            case MORE_RELATED_PRODUCTS:
+                fragment = newFragmentInstance(RecommendProductsFragment.class, bundle);
                 break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");

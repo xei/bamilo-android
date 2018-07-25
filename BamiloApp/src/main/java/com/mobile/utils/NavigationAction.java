@@ -39,6 +39,7 @@ public class NavigationAction {
     public static final int FAQ = 26;
     public static final int ABOUT = 27;
     public static final int MY_ORDER_STATUS = 28;
+    public static final int RELATED_PRODUCTS = 29;
 
     @IntDef({
             LOGIN_OUT,
@@ -68,7 +69,8 @@ public class NavigationAction {
             UNKNOWN,
             CAMPAIGN,
             FAQ,
-            ABOUT
+            ABOUT,
+            RELATED_PRODUCTS
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface Type{}
