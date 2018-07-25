@@ -33,5 +33,9 @@
     <string name="suffix_currency">%s ریال</string>
     <string name="priceAndCurrency">%s %s</string>
     <string name="suffix_percent">%s %%</string>
+    <string name="delivery_time">زمان ارسال</string>
+    <string name="score">امتیاز</string>
+    <string name="price">قیمت</string>
+    <string name="sort_by_">مرتب‌سازی بر اساس:</string>
 
 </resources>

@@ -50,12 +50,14 @@ class SliderPresenter(var context: Context, private var productSku: String, priv
                 .enqueue(callBack)
     }
 
-    fun shareProduct() {
+    fun shareProduct(shareUrl: String) {
         try {
             val extraSubject = context.getString(R.string.share_subject, context.getString(R.string.app_name_placeholder))
-            val extraMsg = context.getString(R.string.share_checkout_this_product) + "share url"
+            val extraMsg =
+                    context.getString(R.string.share_checkout_this_product) + "\n" + shareUrl
+
             val shareIntent = createShareIntent(extraSubject, extraMsg)
-            shareIntent.putExtra(RestConstants.SKU, "sku")
+            shareIntent.putExtra(RestConstants.SKU, productSku)
             context.startActivity(shareIntent)
         } catch (e: NullPointerException) {
         }

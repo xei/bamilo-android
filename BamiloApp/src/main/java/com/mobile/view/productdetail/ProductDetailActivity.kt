@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.bamilo.modernbamilo.product.comment.startCommentsActivity
 import com.bamilo.modernbamilo.product.descspec.DescSpecFragment
 import com.bamilo.modernbamilo.product.sellerslist.view.SellersListFragment
@@ -20,7 +21,10 @@ import com.mobile.interfaces.IResponseCallback
 import com.mobile.managers.TrackerManager
 import com.mobile.service.pojo.BaseResponse
 import com.mobile.service.tracking.TrackingPage
+import com.mobile.service.utils.TextUtils
 import com.mobile.utils.ConfigurationWrapper
+import com.mobile.utils.dialogfragments.DialogProgressFragment
+import com.mobile.utils.ui.WarningFactory
 import com.mobile.view.R
 import com.mobile.view.databinding.ActivityProductDetailBinding
 import com.mobile.view.productdetail.mainfragment.ProductDetailMainFragment
@@ -29,6 +33,7 @@ import com.mobile.view.productdetail.model.SimpleProduct
 import java.util.*
 
 class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragment.OnAddToCartButtonClickListener {
+
     private lateinit var productDetail: ProductDetail
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var productDetailPresenter: ProductDetailPresenter
@@ -36,6 +41,11 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
     private var sizeVariation = SimpleProduct()
 
     private var sku: String? = ""
+    private var productToShowSku: String? = ""
+
+    private var progressDialog: DialogProgressFragment? = null
+
+    private lateinit var warningFactory: WarningFactory
 
     /**
      * create a bundle of requirements
@@ -63,7 +73,8 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
         productDetailPresenter = ProductDetailPresenter(this, binding, this)
 
         fetchExtraIntentData()
-        bindAddToCartClickListener()
+        setupAddToCard()
+        setupWarningMessage()
 
         displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
 
@@ -74,10 +85,20 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
         TrackerManager.trackScreen(this, screenModel, false)
     }
 
+    private fun setupAddToCard() {
+        binding.productDetailLinearLayoutAddToCart!!.visibility = View.GONE
+        bindAddToCartClickListener()
+    }
+
     private fun fetchExtraIntentData() {
         if (intent != null) {
             sku = intent.getStringExtra("sku")
+            productToShowSku = sku
         }
+    }
+
+    private fun setupWarningMessage() {
+        warningFactory = WarningFactory(binding.productDetailRelativeLayoutWarningLayout)
     }
 
     private fun bindAddToCartClickListener() {
@@ -87,18 +108,38 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
     }
 
     private fun addProductToCart(sku: String) {
-        if (productHasSizeVariation() && sizeVariation.sku!!.isEmpty()) {
+        if (productHasSizeVariation() && TextUtils.isEmpty(sizeVariation.sku)) {
             productDetailPresenter.showBottomSheet()
         } else {
+            showProgress()
             productDetailPresenter.addToCart(sku, object : IResponseCallback {
                 override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
+                    dismissProgressDialog()
                     trackAddToCartEvent()
                     onProductAddedToCart()
                 }
 
                 override fun onRequestError(baseResponse: BaseResponse<*>?) {
+                    dismissProgressDialog()
                 }
             })
+        }
+    }
+
+    private fun showProgress() {
+        if (progressDialog == null) {
+            progressDialog = DialogProgressFragment.newInstance()
+        }
+
+        progressDialog?.run {
+            isCancelable = false
+            show(supportFragmentManager, null)
+        }
+    }
+
+    private fun dismissProgressDialog() {
+        progressDialog?.run {
+            dismiss()
         }
     }
 
@@ -173,7 +214,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
     private fun getFragment(fragmentTag: FragmentTag): Fragment? {
         when (fragmentTag.name) {
             FragmentTag.PRODUCT_MAIN_VIEW.name -> {
-                return ProductDetailMainFragment.newInstance(sku)
+                return ProductDetailMainFragment.newInstance(productToShowSku)
             }
 
             FragmentTag.OTHER_SELLERS.name -> {
@@ -190,7 +231,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
             }
         }
 
-        return ProductDetailMainFragment.newInstance(sku)
+        return ProductDetailMainFragment.newInstance(productToShowSku)
     }
 
     override fun onBackButtonClicked() {
@@ -206,7 +247,12 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
             return
         }
 
-        sku = product.sku
+        productToShowSku = product.sku
+        displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
+    }
+
+    override fun onRelatedProductClicked(sku: String) {
+        productToShowSku = sku
         displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
     }
 
@@ -236,6 +282,24 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
         }
     }
 
+    override fun showProgressView() {
+        showProgress()
+    }
+
+    override fun dismissProgressView() {
+        dismissProgressDialog()
+    }
+
+    override fun showErrorMessage(warningFact: Int, message: String) {
+        if (::warningFactory.isInitialized) {
+            warningFactory.showWarning(warningFact, message)
+        }
+    }
+
+    override fun onAddToCartClicked() {
+        addProductToCart(productDetail.simple_sku!!)
+    }
+
     override fun onSizeVariationClicked(sizeVariation: SimpleProduct) {
         this.sizeVariation = sizeVariation
     }
@@ -260,6 +324,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
     }
 
     override fun onProductReceived(product: ProductDetail) {
+        binding.productDetailLinearLayoutAddToCart!!.visibility = View.VISIBLE
         productDetail = product
         productDetailPresenter.fillChooseVariationBottomSheet(productDetail)
 

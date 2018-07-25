@@ -438,9 +438,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             findViewById(R.id.viewToobarElevationMock).setVisibility(View.VISIBLE);
         }
         // Get tab layout
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        mAppBarLayout = findViewById(R.id.app_bar);
         // Get tool bar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTitleTextAppearance);
         setSupportActionBar(toolbar);
         mSupportActionBar = getSupportActionBar();
@@ -621,7 +621,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     public void setupDrawerNavigation() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close) {
             @Override
@@ -927,7 +927,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             basket.setVisible(true);
             basket.setEnabled(true);
             View actionCartView = MenuItemCompat.getActionView(basket);
-            mActionCartCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
+            mActionCartCount = actionCartView.findViewById(R.id.action_cart_count);
             mActionCartCount.setVisibility(View.INVISIBLE);
             View actionCartImage = actionCartView.findViewById(R.id.action_cart_image);
             actionCartImage.setOnClickListener(new OnClickListener() {
@@ -953,7 +953,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             basket.setEnabled(false);
             View actionCartView = MenuItemCompat.getActionView(basket);
             actionCartView.findViewById(R.id.action_cart_image).setEnabled(false);
-            mActionCartIndicatorCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
+            mActionCartIndicatorCount = actionCartView.findViewById(R.id.action_cart_count);
             mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
             updateCartIndicatorInfoInActionBar();
         } else {
@@ -1002,8 +1002,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             }
         });
         // Get edit text
-        mSearchOverlay = (FrameLayout) findViewById(R.id.search_overlay);
-        mSearchListView = (RecyclerView) mSearchOverlay.findViewById(R.id.search_overlay_listview);
+        mSearchOverlay = findViewById(R.id.search_overlay);
+        mSearchListView = mSearchOverlay.findViewById(R.id.search_overlay_listview);
         mSearchListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mSearchListView.addItemDecoration(new HorizontalSpaceItemDecoration(getApplicationContext(), R.drawable._gen_divider_horizontal_black_400));
         // Set font
@@ -2137,7 +2137,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         if (mExtraTabLayoutHeight == -1) {
             mExtraTabLayoutHeight = getResources().getDimension(R.dimen.tab_layout_height);
         }
-        ViewGroup tabLayoutContainer = (ViewGroup) findViewById(R.id.llExtraTabLayoutContainer);
+        ViewGroup tabLayoutContainer = findViewById(R.id.llExtraTabLayoutContainer);
         tabLayoutContainer.addView(mExtraTabLayout);
         setScrollContentPadding(findViewById(R.id.rlScrollableContent));
     }
@@ -2147,7 +2147,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         disableActionbarAutoHide();
         if (!isNestedFragment) {
             if (mExtraTabLayout != null) {
-                ViewGroup tabLayoutContainer = (ViewGroup) findViewById(R.id.llExtraTabLayoutContainer);
+                ViewGroup tabLayoutContainer = findViewById(R.id.llExtraTabLayoutContainer);
                 tabLayoutContainer.removeView(mExtraTabLayout);
                 mExtraTabLayout = null;
                 mExtraTabLayoutHeight = -1;

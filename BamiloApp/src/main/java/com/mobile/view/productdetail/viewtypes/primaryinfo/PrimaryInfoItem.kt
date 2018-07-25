@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.view.View
 import android.widget.LinearLayout
+import com.bamilo.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.service.utils.TextUtils
 import com.mobile.service.utils.shop.CurrencyFormatter
 import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
-import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.PrimaryInfoModel
 
 /**
@@ -19,7 +19,7 @@ import com.mobile.view.productdetail.model.PrimaryInfoModel
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_primary_info, holder = PrimaryInfoHolder::class)
-class PrimaryInfoItem(private var primaryInfoModel: PrimaryInfoModel, private var pdvMainView: PDVMainView) {
+class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: PrimaryInfoModel) {
     @Binder
     public fun binder(holder: PrimaryInfoHolder) {
         setPriceAndDiscount(holder)
@@ -42,12 +42,8 @@ class PrimaryInfoItem(private var primaryInfoModel: PrimaryInfoModel, private va
                 brand.text = primaryInfoModel.brand
             }
 
-            ratingLayout.setOnClickListener { gotoAllReviewsPage() }
+            ratingLayout.setOnClickListener { startSubmitRateActivity(holder.itemView.context, sku) }
         }
-    }
-
-    private fun gotoAllReviewsPage() {
-        pdvMainView.onShowAllReviewsClicked()
     }
 
     private fun setPriceAndDiscount(holder: PrimaryInfoHolder) {

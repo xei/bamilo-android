@@ -246,9 +246,19 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         pushManager.registerForPushNotifications();
         checkMessage(getIntent());
 
-        if (getIntent().getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
+        if (getIntent() != null && getIntent().getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
                 == FragmentType.SHOPPING_CART) {
             onSwitchFragment(FragmentType.SHOPPING_CART, null, true);
+            return;
+        }
+
+        if (getIntent() != null && !TextUtils.isEmpty(getIntent().getStringExtra("target"))) {
+            new TargetLink(getWeakBaseActivity(), getIntent().getStringExtra("target"))
+                    .addTitle(getIntent().getStringExtra("title"))
+                    .retainBackStackEntries()
+                    .enableWarningErrorMessage()
+                    .run();
+
             return;
         }
 
@@ -256,15 +266,6 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             Print.d(TAG, "################### SAVED INSTANCE IS NULL");
             // Initialize fragment controller
             FragmentController.getInstance().init();
-
-            if (getIntent() != null && !TextUtils.isEmpty(getIntent().getStringExtra("target"))) {
-                new TargetLink(getWeakBaseActivity(), getIntent().getStringExtra("target"))
-                        .addTitle(getIntent().getStringExtra("title"))
-                        .enableWarningErrorMessage()
-                        .run();
-
-                return;
-            }
 
             // Case invalid deep link goto HOME else goto deep link
             if (!DeepLinkManager.onSwitchToDeepLink(this, getIntent())) {

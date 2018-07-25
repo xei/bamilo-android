@@ -4,7 +4,7 @@ import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.utils.imageloader.ImageManager
 import com.mobile.view.R
-import com.mobile.view.productdetail.OnItemClickListener
+import com.mobile.utils.OnItemClickListener
 
 /**
  * Created by Farshid

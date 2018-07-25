@@ -78,7 +78,6 @@ class SellersListFragment : Fragment(), View.OnClickListener {
         loadSellers()
     }
 
-
     companion object {
         @JvmStatic
         fun newInstance(productId: String, productTitle: String, productThumbnailUrl: String) =

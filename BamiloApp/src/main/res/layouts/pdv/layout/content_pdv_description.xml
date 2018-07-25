@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/show_full_description"
-                android:textColor="#FF25A8ED"
+                android:textColor="@color/link_text_color"
                 android:textSize="12sp"/>
 
         </LinearLayout>

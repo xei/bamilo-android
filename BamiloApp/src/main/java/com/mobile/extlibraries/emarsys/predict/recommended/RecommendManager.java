@@ -188,7 +188,7 @@ public class RecommendManager {
             RecommendationRequest recommend = new RecommendationRequest(logic);
             int recommendCount = RecommendLimit;
             if (logic.compareTo("RELATED") == 0) {
-                recommendCount = 4;
+                recommendCount = 6;
             }
             recommend.setLimit(recommendCount);
             if (excludeItems != null) {

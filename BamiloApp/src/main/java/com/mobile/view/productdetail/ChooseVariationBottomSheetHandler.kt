@@ -36,12 +36,20 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
         setupBottomSheetAdapter()
         setupBottomSheetRecycler()
         setupBottomSheetStateListener()
-        setupOutSideTochListener()
+        setupOutSideTouchListener()
+        bindAddToCartClickListener()
     }
 
-    private fun setupOutSideTochListener() {
+    private fun bindAddToCartClickListener() {
+        binding.chooseVariationRelativeLayoutLayout!!.pdvChooseVariationLinearLayoutAddToCart!!.setOnClickListener {
+                    pdvMainView.onAddToCartClicked()
+                    hideBottomSheet()
+                }
+    }
+
+    private fun setupOutSideTouchListener() {
         binding.productDetailTransparentBackground.setOnClickListener {
-            if(binding.productDetailTransparentBackground.visibility == View.VISIBLE){
+            if (binding.productDetailTransparentBackground.visibility == View.VISIBLE) {
                 hideBottomSheet()
             }
         }

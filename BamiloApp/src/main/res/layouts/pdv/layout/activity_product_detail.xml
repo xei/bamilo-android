@@ -31,6 +31,13 @@
                 android:layout_height="48dp"
                 android:layout_alignParentBottom="true"/>
 
+            <include
+                android:id="@+id/productDetail_relativeLayout_warningLayout"
+                layout="@layout/warning"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
         <View

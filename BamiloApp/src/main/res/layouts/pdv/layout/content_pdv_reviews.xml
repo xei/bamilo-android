@@ -103,6 +103,8 @@
             android:layout_height="wrap_content"/>
 
         <View
+            android:id="@+id/pdvReview_view_divider"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_1dp"
             android:layout_marginTop="@dimen/dimen_16dp"
@@ -111,6 +113,7 @@
             android:background="@color/grey_dividerlight"/>
 
         <LinearLayout
+            android:visibility="visible"
             android:id="@+id/pdvReview_linearLayout_seeAllReviews"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -123,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/see_all_reviews"
-                android:textColor="#FF25A8ED"
+                android:textColor="@color/link_text_color"
                 android:textSize="@dimen/dimen_12sp"/>
 
         </LinearLayout>

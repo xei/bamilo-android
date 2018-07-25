@@ -1,5 +1,6 @@
 package com.mobile.view.productdetail
 
+import com.mobile.utils.ui.WarningFactory
 import com.mobile.view.productdetail.model.ProductDetail
 import com.mobile.view.productdetail.model.SimpleProduct
 
@@ -18,4 +19,9 @@ interface PDVMainView {
     fun onShowDesAndSpecPage()
     fun onShowSpecsAndSpecPage()
     fun onShowAllReviewsClicked()
+    fun onRelatedProductClicked(sku: String)
+    fun showProgressView()
+    fun dismissProgressView()
+    fun showErrorMessage(@WarningFactory.WarningErrorType warningFact: Int, message: String)
+    fun onAddToCartClicked()
 }

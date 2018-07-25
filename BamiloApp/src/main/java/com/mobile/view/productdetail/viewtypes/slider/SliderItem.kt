@@ -11,7 +11,9 @@ import com.mobile.constants.tracking.EventActionKeys
 import com.mobile.constants.tracking.EventConstants
 import com.mobile.managers.TrackerManager
 import com.mobile.service.tracking.TrackingPage
+import com.mobile.utils.ui.WarningFactory
 import com.mobile.view.R
+import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.ImageSliderModel
 import com.mobile.view.productdetail.slider.DepthPageTransformer
 import com.mobile.view.productdetail.slider.ProductSliderPagerAdapter
@@ -28,7 +30,8 @@ import retrofit2.Response
  */
 @BindItem(layout = R.layout.content_pdv_slider, holder = SliderHolder::class)
 class SliderItem(private var supportFragmentManager: FragmentManager,
-                 private var imageSliderModel: ImageSliderModel) {
+                 private var imageSliderModel: ImageSliderModel,
+                 private var pdvMainView: PDVMainView) {
 
     private var holder: SliderHolder? = null
     private lateinit var sliderPresenter: SliderPresenter
@@ -45,13 +48,16 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
 
         setupViewPager(holder)
         bindLikeButtonClickListener(holder)
-        holder.share.setOnClickListener { _ -> sliderPresenter.shareProduct() }
+        holder.share.setOnClickListener { _ -> sliderPresenter.shareProduct(imageSliderModel.shareUrl) }
     }
 
     private fun bindLikeButtonClickListener(holder: SliderHolder) {
         holder.like.setOnClickListener { _ ->
             sliderPresenter.onLikeButtonClicked(holder.like, object : Callback<ResponseWrapper<Any>> {
                 override fun onFailure(call: Call<ResponseWrapper<Any>>?, t: Throwable?) {
+                    pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
+                            holder.itemView.context.getString(R.string.error_occured))
+
                     holder.like.isChecked = imageSliderModel.isWishList
                 }
 
@@ -107,7 +113,7 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
     }
 
     private fun setupViewPager(holder: SliderHolder) {
-        if(holder.viewPager.adapter != null){
+        if (holder.viewPager.adapter != null) {
             return
         }
 

@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.support.v7.widget.AppCompatImageView
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
@@ -20,6 +19,7 @@ import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.service.utils.TextUtils
 import com.mobile.utils.ui.UIUtils
+import com.mobile.utils.ui.WarningFactory
 import com.mobile.view.R
 import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.Score
@@ -385,7 +385,8 @@ class SellerItem(private var seller: Seller,
                 .getRegionsList()
                 .enqueue(object : Callback<ResponseWrapper<GetRegionsListResponse>> {
                     override fun onFailure(call: Call<ResponseWrapper<GetRegionsListResponse>>?, t: Throwable?) {
-                        Log.e(">>>>>", "error " + t!!.message)
+                        pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
+                                holder.itemView.context.getString(R.string.error_occured))
                     }
 
                     override fun onResponse(call: Call<ResponseWrapper<GetRegionsListResponse>>?, response: Response<ResponseWrapper<GetRegionsListResponse>>?) {
@@ -405,12 +406,14 @@ class SellerItem(private var seller: Seller,
 
                     override fun onFailure(call: Call<ResponseWrapper<DeliveryTimeResponse>>?,
                                            t: Throwable?) {
+                        pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
+                                holder.itemView.context.getString(R.string.error_occured))
                     }
 
                     override fun onResponse(call: Call<ResponseWrapper<DeliveryTimeResponse>>?,
                                             response: Response<ResponseWrapper<DeliveryTimeResponse>>?) {
                         response?.body()?.metadata?.data?.let {
-                            if(it.isEmpty()){
+                            if (it.isEmpty()) {
                                 return
                             }
 
@@ -439,7 +442,8 @@ class SellerItem(private var seller: Seller,
         RetrofitHelper.makeWebApi(holder.itemView.context, RegionWebApi::class.java)
                 .getCitiesList(region).enqueue(object : Callback<ResponseWrapper<GetCityListResponse>> {
                     override fun onFailure(call: Call<ResponseWrapper<GetCityListResponse>>?, t: Throwable?) {
-                        Log.e(">>>>>", "error " + t!!.message)
+                        pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
+                                holder.itemView.context.getString(R.string.error_occured))
                     }
 
                     override fun onResponse(call: Call<ResponseWrapper<GetCityListResponse>>?,
