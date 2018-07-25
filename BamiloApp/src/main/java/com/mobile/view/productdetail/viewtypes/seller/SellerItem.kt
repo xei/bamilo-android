@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.support.v7.widget.AppCompatImageView
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
@@ -20,6 +19,7 @@ import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.service.utils.TextUtils
 import com.mobile.utils.ui.UIUtils
+import com.mobile.utils.ui.WarningFactory
 import com.mobile.view.R
 import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.Score
@@ -238,8 +238,8 @@ class SellerItem(private var seller: Seller,
         holder.sendOnTimeProgress.max = seller.score.maxValue * 10
 
         holder.salesWithoutReturnProgress.progress = (seller.score.notReturned * 10).toInt()
-        holder.successfulSupplyProgress.progress = (seller.score.fullFillment * 10).toInt()
-        holder.sendOnTimeProgress.progress = (seller.score.sLAReached * 10).toInt()
+        holder.successfulSupplyProgress.progress = (seller.score.fullfilment * 10).toInt()
+        holder.sendOnTimeProgress.progress = (seller.score.SLAReached * 10).toInt()
     }
 
     private fun showSellerRateTexts(holder: SellerHolder, id: Int, value: String) {
@@ -263,7 +263,7 @@ class SellerItem(private var seller: Seller,
 
     @SuppressLint("StringFormatMatches")
     private fun showSLAReach(holder: SellerHolder, sellerScore: Score) {
-        val result = getScoreString(sellerScore.sLAReached)
+        val result = getScoreString(sellerScore.SLAReached)
 
         showSellerRateTexts(holder, R.id.sellerScore_textView_sendOnTimeRate,
                 holder.itemView.context.getString(R.string.seller_info_rate_from,
@@ -282,7 +282,7 @@ class SellerItem(private var seller: Seller,
 
     @SuppressLint("StringFormatMatches")
     private fun showFullfilment(holder: SellerHolder, sellerScore: Score) {
-        val result = getScoreString(sellerScore.fullFillment)
+        val result = getScoreString(sellerScore.fullfilment)
         showSellerRateTexts(holder, R.id.sellerScore_textView_successfulSupplyRate,
                 holder.itemView.context.getString(R.string.seller_info_rate_from,
                         result,
@@ -385,7 +385,8 @@ class SellerItem(private var seller: Seller,
                 .getRegionsList()
                 .enqueue(object : Callback<ResponseWrapper<GetRegionsListResponse>> {
                     override fun onFailure(call: Call<ResponseWrapper<GetRegionsListResponse>>?, t: Throwable?) {
-                        Log.e(">>>>>", "error " + t!!.message)
+                        pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
+                                holder.itemView.context.getString(R.string.error_occured))
                     }
 
                     override fun onResponse(call: Call<ResponseWrapper<GetRegionsListResponse>>?, response: Response<ResponseWrapper<GetRegionsListResponse>>?) {
@@ -405,12 +406,14 @@ class SellerItem(private var seller: Seller,
 
                     override fun onFailure(call: Call<ResponseWrapper<DeliveryTimeResponse>>?,
                                            t: Throwable?) {
+                        pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
+                                holder.itemView.context.getString(R.string.error_occured))
                     }
 
                     override fun onResponse(call: Call<ResponseWrapper<DeliveryTimeResponse>>?,
                                             response: Response<ResponseWrapper<DeliveryTimeResponse>>?) {
                         response?.body()?.metadata?.data?.let {
-                            if(it.isEmpty()){
+                            if (it.isEmpty()) {
                                 return
                             }
 
@@ -439,7 +442,8 @@ class SellerItem(private var seller: Seller,
         RetrofitHelper.makeWebApi(holder.itemView.context, RegionWebApi::class.java)
                 .getCitiesList(region).enqueue(object : Callback<ResponseWrapper<GetCityListResponse>> {
                     override fun onFailure(call: Call<ResponseWrapper<GetCityListResponse>>?, t: Throwable?) {
-                        Log.e(">>>>>", "error " + t!!.message)
+                        pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
+                                holder.itemView.context.getString(R.string.error_occured))
                     }
 
                     override fun onResponse(call: Call<ResponseWrapper<GetCityListResponse>>?,

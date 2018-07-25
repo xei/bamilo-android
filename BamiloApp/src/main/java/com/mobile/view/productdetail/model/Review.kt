@@ -9,7 +9,7 @@ class Review {
     var id: String? = null
     var title: String? = null
     var comment: String? = null
-//    var is_bought_by_user: Boolean = false
+    var is_bought_by_user: Boolean = false
     var username: String? = null
     var date: String? = null
     var rate: String? = null

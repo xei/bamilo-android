@@ -3,12 +3,13 @@ package com.mobile.view.productdetail.viewtypes.recommendation
 import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.view.View
+import com.emarsys.predict.RecommendedItem
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.service.utils.shop.CurrencyFormatter
 import com.mobile.utils.imageloader.ImageManager
 import com.mobile.view.R
-import com.emarsys.predict.RecommendedItem
+import com.mobile.view.productdetail.PDVMainView
 
 /**
  * Created by Farshid
@@ -16,11 +17,13 @@ import com.emarsys.predict.RecommendedItem
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_recommendation, holder = RecommendationHolder::class)
-class RecommendationItem(private var recommendedItem: RecommendedItem, private var currency: String) {
+class RecommendationItem(private var recommendedItem: RecommendedItem,
+                         private var currency: String,
+                         private var pdvMainView: PDVMainView) {
     @SuppressLint("SetTextI18n")
     @Binder
     public fun binder(holder: RecommendationHolder) {
-        val data = recommendedItem.getData() as Map<String, Any>
+        val data = recommendedItem.data as Map<String, Any>
         ImageManager.getInstance().loadImage(data["image"] as String,
                 holder.image,
                 holder.progressBar,
@@ -43,6 +46,10 @@ class RecommendationItem(private var recommendedItem: RecommendedItem, private v
             holder.oldPrice.text = CurrencyFormatter.formatCurrency(discountPrice.toString()) + " $currency"
             holder.oldPrice.paintFlags = holder.oldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             holder.oldPrice.visibility = View.VISIBLE
+        }
+
+        holder.itemView.setOnClickListener {
+            pdvMainView.onRelatedProductClicked(data["item"] as String)
         }
     }
 }

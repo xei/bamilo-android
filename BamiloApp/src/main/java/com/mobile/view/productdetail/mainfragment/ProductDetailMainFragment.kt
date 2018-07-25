@@ -27,7 +27,11 @@ import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager
 import com.mobile.interfaces.IResponseCallback
 import com.mobile.managers.TrackerManager
 import com.mobile.service.pojo.BaseResponse
+import com.mobile.utils.OnItemClickListener
+import com.mobile.utils.headerandmorebutton.morebutton.SeeMoreButtonItem
+import com.mobile.utils.headerandmorebutton.recyclerheader.RecyclerHeaderItem
 import com.mobile.utils.ui.UIUtils
+import com.mobile.utils.ui.WarningFactory
 import com.mobile.view.MainFragmentActivity
 import com.mobile.view.R
 import com.mobile.view.databinding.FragmentPdvMainViewBinding
@@ -39,7 +43,6 @@ import com.mobile.view.productdetail.model.ProductDetail
 import com.mobile.view.productdetail.viewtypes.breadcrumbs.BreadcrumbListItem
 import com.mobile.view.productdetail.viewtypes.primaryinfo.PrimaryInfoItem
 import com.mobile.view.productdetail.viewtypes.recommendation.RecommendationItem
-import com.mobile.view.productdetail.viewtypes.recyclerheader.RecyclerHeaderItem
 import com.mobile.view.productdetail.viewtypes.returnpolicy.ReturnPolicyItem
 import com.mobile.view.productdetail.viewtypes.review.ReviewsItem
 import com.mobile.view.productdetail.viewtypes.seller.SellerItem
@@ -284,11 +287,12 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     private fun addImagesToSlider() {
         val imageSliderModel = ImageSliderModel()
         imageSliderModel.productSku = sku!!
+        imageSliderModel.shareUrl = product.share_url
         imageSliderModel.isWishList = product.isWishList
         imageSliderModel.images = product.image_list
         imageSliderModel.price = product.price.price
 
-        items.add(SliderItem(fragmentManager!!, imageSliderModel))
+        items.add(SliderItem(fragmentManager!!, imageSliderModel, pdvMainView))
     }
 
     private fun addPrimaryInfoItem() {
@@ -298,13 +302,10 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         primaryInfoModel.rating = product.rating
         primaryInfoModel.title = product.title
 
-        items.add(PrimaryInfoItem(primaryInfoModel, pdvMainView))
+        items.add(PrimaryInfoItem(sku!!, primaryInfoModel))
     }
 
     private fun addVariations() {
-//        if (product.variations.size < 0) {
-//            return
-//        }
         items.add(VariationsItem(product.variations, pdvMainView))
     }
 
@@ -322,11 +323,17 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     }
 
     private fun addReviews() {
-        if (product.reviews.items.size > 0) {
-            addHeader(context!!.getString(R.string.customers_review))
-            product.reviews.average = product.rating.average
-            items.add(ReviewsItem(product.reviews, sku!!, pdvMainView))
-        }
+        addHeader(context!!.getString(R.string.customers_review))
+        product.reviews.average = product.rating.average
+        items.add(ReviewsItem(product.reviews, sku!!, pdvMainView))
+    }
+
+    private fun addSeeMoreRecommendItem() {
+        items.add(SeeMoreButtonItem(getString(R.string.see_all_related_products), object : OnItemClickListener {
+            override fun onItemClicked(any: Any?) {
+                pdvMainView.onShowMoreRelatedProducts()
+            }
+        }))
     }
 
     private fun addBreadCrumbs() {
@@ -336,24 +343,27 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         items.add(BreadcrumbListItem(product.breadcrumbs))
     }
 
-    public fun reloadData(sku: String) {
-        loadProductDetail(sku)
-    }
-
     private fun loadProductDetail(sku: String) {
         binding.pdvSwipeRefresh.isRefreshing = true
-        pdvMainFragmentViewModel!!.loadData(sku).observe(this, Observer { product ->
-            if (product != null) {
-                this.product = product
-                pdvMainView.onProductReceived(product)
+        pdvMainFragmentViewModel!!.loadData(sku).observe(this, Observer {
+            if (it != null) {
+                this.product = it
+                pdvMainView.onProductReceived(it)
                 getRecommendedProducts()
+            } else if (context != null) {
+                pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
+                        context!!.getString(R.string.error_occured))
             }
         })
     }
 
     private fun getRecommendedProducts() {
         val recommendManager = RecommendManager()
-        recommendManager.sendRelatedRecommend(getRecommendationItem(), null, product.sku, null)
+        recommendManager.sendRelatedRecommend(getRecommendationItem(),
+                null,
+                product.sku,
+                null,
+                6)
         { _, data ->
             if (isAdded && context != null) {
                 addItemsToRecyclerInputList()
@@ -369,8 +379,10 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
                             break
                         }
                         itemPositionToChangeGridSpanCountToDefault++
-                        items.add(RecommendationItem(data[i], product.price.currency))
+                        items.add(RecommendationItem(data[i], product.price.currency, pdvMainView))
                     }
+
+                    addSeeMoreRecommendItem()
                 }
                 addBreadCrumbs()
                 addItemsToAdapter()
@@ -400,11 +412,6 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     private fun bindToolbarClickListener() {
         binding.pdvAppImageViewBack.setOnClickListener { _ -> pdvMainView.onBackButtonClicked() }
         binding.pdvAppImageViewWhiteBack.setOnClickListener { _ -> pdvMainView.onBackButtonClicked() }
-
-        binding.pdvAppImageViewCart.setOnClickListener { _ -> gotoCartView() }
-    }
-
-    private fun gotoCartView() {
     }
 
     override fun onRequestComplete(baseResponse: BaseResponse<*>?) {

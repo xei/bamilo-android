@@ -6,7 +6,7 @@ import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.components.ghostadapter.GhostAdapter
 import com.mobile.view.R
-import com.mobile.view.productdetail.OnItemClickListener
+import com.mobile.utils.OnItemClickListener
 import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.SimpleProduct
 import com.mobile.view.productdetail.model.Variation

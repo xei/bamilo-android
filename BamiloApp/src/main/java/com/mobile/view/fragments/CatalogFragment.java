@@ -1340,46 +1340,17 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     private void sendRecommend(CatalogPage catalogPage) {
-        /*recommendedAdapter.clear();
-        recommendedAdapter.notifyDataSetChanged();
-        recyclerView.invalidate();*/
         RecommendManager recommendManager = new RecommendManager();
         RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
-
             }
         };
-
-
-       /* ArrayList<ProductRegular> productList = catalogPage.getProducts();
-
-        List<String> excludedItems = null;
-
-        if (productList != null && productList.size() > 0) {
-            if (productList.size() > 1) {
-                excludedItems = new ArrayList<>();
-                for (int i = 1; i > productList.size(); i++) {
-                    excludedItems.add(productList.get(i).getSku());
-                }
-            }
-
-            recommendManager.sendRelatedRecommend(null,
-                    catalogPage.getSearchTerm(),
-                    productList.get(0).getSku(),
-                    excludedItems,
-                    handler);
-
-        }*/
-        //else {
 
         ArrayList<String> categories = catalogPage.getBreadcrumb();
         if (categories != null && categories.size()>0) {
             String category = android.text.TextUtils.join(">", categories);
-
-            recommendManager.sendCategoryRecommend(catalogPage.getSearchTerm(), category, handler);
+            recommendManager.sendCategoryRecommend(catalogPage.getSearchTerm(), category, 6, handler);
         }
-        //}
     }
-
 }

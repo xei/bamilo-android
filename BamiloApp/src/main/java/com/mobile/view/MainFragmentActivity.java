@@ -89,6 +89,7 @@ import com.mobile.view.newfragments.NewSessionLoginMainFragment;
 import com.mobile.view.newfragments.NewShoppingCartFragment;
 import com.mobile.view.newfragments.SubCategoryFilterFragment;
 import com.mobile.view.productdetail.ProductDetailActivity;
+import com.mobile.view.relatedproducts.RecommendProductsFragment;
 import com.pushwoosh.BasePushMessageReceiver;
 import com.pushwoosh.BaseRegistrationReceiver;
 import com.pushwoosh.PushManager;
@@ -222,13 +223,6 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
         checkMessage(intent);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.utils.MyActivity#onCreate(android.os.Bundle)
-     */
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -241,14 +235,13 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
 
         try {
             pushManager.onStartup(this);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
+
         pushManager.registerForPushNotifications();
         checkMessage(getIntent());
 
-        if (getIntent().getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
-                == FragmentType.SHOPPING_CART) {
-            onSwitchFragment(FragmentType.SHOPPING_CART, null, true);
+        if (checkIntentsFromPDV()) {
             return;
         }
 
@@ -256,15 +249,6 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             Print.d(TAG, "################### SAVED INSTANCE IS NULL");
             // Initialize fragment controller
             FragmentController.getInstance().init();
-
-            if (getIntent() != null && !TextUtils.isEmpty(getIntent().getStringExtra("target"))) {
-                new TargetLink(getWeakBaseActivity(), getIntent().getStringExtra("target"))
-                        .addTitle(getIntent().getStringExtra("title"))
-                        .enableWarningErrorMessage()
-                        .run();
-
-                return;
-            }
 
             // Case invalid deep link goto HOME else goto deep link
             if (!DeepLinkManager.onSwitchToDeepLink(this, getIntent())) {
@@ -318,6 +302,34 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             isInMaintenance = splashScreenParams.getExtras()
                     .getBoolean(ConstantsIntentExtra.IN_MAINTANCE, false);
         }
+    }
+
+    private boolean checkIntentsFromPDV() {
+        if (getIntent() != null
+                && getIntent().getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
+                == FragmentType.MORE_RELATED_PRODUCTS) {
+            onSwitchFragment(FragmentType.MORE_RELATED_PRODUCTS, null, true);
+            return true;
+        }
+
+        if (getIntent() != null
+                && getIntent().getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
+                == FragmentType.SHOPPING_CART) {
+            onSwitchFragment(FragmentType.SHOPPING_CART, null, true);
+            return true;
+        }
+
+        if (getIntent() != null && !TextUtils.isEmpty(getIntent().getStringExtra("target"))) {
+            new TargetLink(getWeakBaseActivity(), getIntent().getStringExtra("target"))
+                    .addTitle(getIntent().getStringExtra("title"))
+                    .retainBackStackEntries()
+                    .enableWarningErrorMessage()
+                    .run();
+
+            return true;
+        }
+
+        return false;
     }
 
     /*
@@ -648,6 +660,9 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
                 break;
             case CATEGORIES:
                 fragment = newFragmentInstance(NavigationCategoryFragment.class, bundle);
+                break;
+            case MORE_RELATED_PRODUCTS:
+                fragment = newFragmentInstance(RecommendProductsFragment.class, bundle);
                 break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");

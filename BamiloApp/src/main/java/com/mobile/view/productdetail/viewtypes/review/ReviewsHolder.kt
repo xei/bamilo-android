@@ -23,4 +23,6 @@ class ReviewsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var showAllReviews: LinearLayout = itemView.findViewById(R.id.pdvReview_linearLayout_seeAllReviews)
 
     var productRateLayout: ConstraintLayout = itemView.findViewById(R.id.pdvReview_constraintLayout_rateLayout)
+
+    var viewDivider: View = itemView.findViewById(R.id.pdvReview_view_divider)
 }

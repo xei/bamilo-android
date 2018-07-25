@@ -1,4 +1,4 @@
-package com.mobile.view.productdetail.viewtypes.recyclerheader
+package com.mobile.utils.headerandmorebutton.recyclerheader
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

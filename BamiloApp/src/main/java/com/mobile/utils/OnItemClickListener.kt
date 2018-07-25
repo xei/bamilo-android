@@ -1,4 +1,4 @@
-package com.mobile.view.productdetail
+package com.mobile.utils
 
 /**
  * Created by Farshid

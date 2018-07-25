@@ -199,4 +199,6 @@
     <color name="secondary_text_color">#757575</color>
     <color name="primary_text_color">#434343</color>
 
+    <color name="link_text_color">#FF25A8ED</color>
+
 </resources>

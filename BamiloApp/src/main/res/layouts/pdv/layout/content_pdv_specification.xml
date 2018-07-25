@@ -24,7 +24,6 @@
             android:layout_marginLeft="@dimen/dimen_8dp"
             android:layout_marginRight="@dimen/dimen_8dp"
             android:gravity="right"
-            android:lineSpacingMultiplier="1.75"
             android:textColor="@color/primary_text_color"
             android:textSize="12sp"
             tools:ignore="SmallSp"/>
@@ -49,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/show_full_specifications"
-                android:textColor="#FF25A8ED"
+                android:textColor="@color/link_text_color"
                 android:textSize="12sp"/>
 
         </LinearLayout>

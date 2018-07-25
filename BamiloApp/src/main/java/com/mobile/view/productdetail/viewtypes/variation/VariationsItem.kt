@@ -3,13 +3,12 @@ package com.mobile.view.productdetail.viewtypes.variation
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.mobile.components.customfontviews.TextView
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.components.ghostadapter.GhostAdapter
 import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
-import com.mobile.view.productdetail.OnItemClickListener
+import com.mobile.utils.OnItemClickListener
 import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.SimpleProduct
 import com.mobile.view.productdetail.model.Variation
@@ -54,10 +53,11 @@ class VariationsItem(var variations: ArrayList<Variation>, private var pdvMainVi
 
         holder.sizeHelp.setOnClickListener { _ -> }
 
-        holder.itemView.findViewById<TextView>(R.id.pdvVariations_textView_specification).setOnClickListener {
+        holder.itemView.findViewById<View>(R.id.pdvVariations_linearLayout_specification).setOnClickListener {
             gotoSpecificationPage()
         }
-        holder.itemView.findViewById<TextView>(R.id.pdvVariations_textView_descriptions).setOnClickListener {
+
+        holder.itemView.findViewById<View>(R.id.pdvVariations_linearLayout_descriptions).setOnClickListener {
             gotoDescriptionPage()
         }
     }

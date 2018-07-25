@@ -11,7 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.mobile.components.ghostadapter.GhostAdapter
 import com.mobile.view.R
-import com.mobile.view.productdetail.OnItemClickListener
+import com.mobile.utils.OnItemClickListener
 import com.mobile.view.productdetail.model.Image
 import com.mobile.view.productdetail.viewtypes.gallery.GalleryBottomImageItem
 import java.lang.Exception

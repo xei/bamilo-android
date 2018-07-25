@@ -331,17 +331,6 @@ public class FragmentController {
             }
         }
 
-//        if (mBackStack.getLast().equals(FragmentType.SHOPPING_CART.toString())) {
-//            if (BamiloApplication.INSTANCE.cartViewStartedFromPDVCount == 1) {
-//                popBackStack(activity);
-//                activity.finish();
-//                return;
-//            } else if (BamiloApplication.INSTANCE.cartViewStartedFromPDVCount > 1) {
-//                activity.finish();
-//                return;
-//            }
-//        }
-
         switch (size) {
             case 1:
                 /**

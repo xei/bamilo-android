@@ -10,4 +10,5 @@ class ImageSliderModel{
     var productSku : String = ""
     var price : String = ""
     var isWishList : Boolean = false
+    var shareUrl : String? = ""
 }

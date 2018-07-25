@@ -32,8 +32,12 @@ class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdv
         holder.run {
             if (reviews.total == 0 && reviews.average == 0F) {
                 productRateLayout.visibility = View.GONE
+                showAllReviews.visibility = View.GONE
+                viewDivider.visibility = View.GONE
             } else {
                 productRateLayout.visibility = View.VISIBLE
+                showAllReviews.visibility = View.VISIBLE
+                viewDivider.visibility = View.VISIBLE
             }
 
             total.text = reviews.total.toString()
@@ -70,7 +74,7 @@ class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdv
         recyclerItems.clear()
         adapter.removeAll()
         for (review in reviews.items) {
-            recyclerItems.add(ReviewItemAdapter(review))
+            recyclerItems.add(ReviewItemAdapter(review, pdvMainView))
         }
 
         adapter.setItems(recyclerItems)
@@ -81,6 +85,7 @@ class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdv
         adapter.removeAll()
 
         recyclerItems.add(AddReviewItem(sku))
+        adapter.setItems(recyclerItems)
     }
 
     private fun showAddReviewActivity(context: Context) {

@@ -30,7 +30,6 @@
                 android:paddingTop="@dimen/dimen_8dp"
                 android:paddingBottom="@dimen/dimen_8dp"
                 app:fontFamily="@string/bamilo_bold_font"
-                android:lineSpacingMultiplier="1.56"
                 android:textColor="@color/primary_text_color"
                 android:textSize="48sp"
                 app:layout_constraintRight_toRightOf="parent"
@@ -43,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginRight="@dimen/dimen_8dp"
-                android:lineSpacingMultiplier="1.57"
                 android:textColor="@color/secondary_text_color"
                 android:textSize="14sp"
                 app:layout_constraintRight_toLeftOf="@+id/pdvReview_textView_rate"
@@ -63,7 +61,6 @@
                 android:id="@+id/pdvReview_textView_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lineSpacingMultiplier="1.57"
                 android:textColor="@color/primary_text_color"
                 app:layout_constraintBottom_toBottomOf="@+id/img"
                 app:layout_constraintRight_toLeftOf="@+id/img"
@@ -103,6 +100,8 @@
             android:layout_height="wrap_content"/>
 
         <View
+            android:id="@+id/pdvReview_view_divider"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_1dp"
             android:layout_marginTop="@dimen/dimen_16dp"
@@ -111,6 +110,7 @@
             android:background="@color/grey_dividerlight"/>
 
         <LinearLayout
+            android:visibility="visible"
             android:id="@+id/pdvReview_linearLayout_seeAllReviews"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -123,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/see_all_reviews"
-                android:textColor="#FF25A8ED"
+                android:textColor="@color/link_text_color"
                 android:textSize="@dimen/dimen_12sp"/>
 
         </LinearLayout>
