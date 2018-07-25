@@ -25,6 +25,7 @@ android {
             minifyEnabled false
 
             buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_PRODUCTION}v${VERSION_WEBAPI}/\""
+            buildConfigField "String", "CERT_SSL", SSL_CERTIFICATE
         }
 
         release {
@@ -37,6 +38,7 @@ android {
             'proguard-rules-retrofit.pro'
 
             buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_PRODUCTION}v${VERSION_WEBAPI}/\""
+            buildConfigField "String", "CERT_SSL", SSL_CERTIFICATE
         }
 
         mock {

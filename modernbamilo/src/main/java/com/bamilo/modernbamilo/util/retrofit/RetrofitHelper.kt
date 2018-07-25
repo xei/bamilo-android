@@ -32,16 +32,18 @@ import javax.net.ssl.TrustManagerFactory
  */
 object RetrofitHelper {
 
-    private val sLogLevel = HttpLoggingInterceptor.Level.BODY
-
     private const val URL_BASE = BuildConfig.URL_WEBAPI
     private val defaultHeaders = hashMapOf("locale" to "fa-ir")
 
-    private var retrofitInstance: Retrofit? = null
+    private const val SOCKET_TIMEOUT_SECOND: Long = 20
+    private const val CONNECTION_TIMEOUT_SECOND: Long = 20
+    private const val WRITE_TIMEOUT_SECOND: Long = 20
 
-    private var SOCKET_TIMEOUT: Long = 20 * 1000
-    private var CONNECTION_TIMEOUT: Long = 20 * 1000
-    private var write_TIMEOUT: Long = 20 * 1000
+    private const val CERT_SSL = BuildConfig.CERT_SSL
+
+    private val sLogLevel = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+
+    private var retrofitInstance: Retrofit? = null
 
     /**
      * This method is responsible for creation of the web APIs via Retrofit.
@@ -69,33 +71,25 @@ object RetrofitHelper {
      * This method builds an OkHttpClient instance with the default headers provided by
      * the method "buildDefaultHeaders"
      */
-    private fun buildOkHttpClient(context: Context): OkHttpClient {
-        val client = OkHttpClient().newBuilder()
-                .addInterceptor(getInterceptor())
+    private fun buildOkHttpClient(context: Context) = OkHttpClient().newBuilder()
+                .addInterceptor(getLogInterceptor())
                 .addInterceptor { chain ->
                     val modifiedRequest = chain.request().newBuilder()
                             .headers(Headers.of(defaultHeaders))
                             .build()
-
                     chain.proceed(modifiedRequest)
-                }
+                }.apply {
+                    setCertificates(this)
+                    followSslRedirects(false)
+                    followRedirects(true)
+                    setTimeOutToOkHttpClient(this)
 
-        setCertificates(client)
+                    getCookie(context)?.takeIf { !it.isEmpty() }.apply {
+                        cookieJar(getCookieJar(context))
+                    }
 
-        client.followSslRedirects(false)
-        client.followRedirects(true)
+                }.build()
 
-        client.readTimeout(SOCKET_TIMEOUT, TimeUnit.MILLISECONDS)
-        client.connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
-        client.writeTimeout(write_TIMEOUT, TimeUnit.MILLISECONDS)
-
-        if (TextUtils.isEmpty(getCookie(context))) {
-            return client.build()
-        }
-
-        client.cookieJar(getCookieJar(context))
-        return client.build()
-    }
 
     private fun setCertificates(okHttpClientBuilder: OkHttpClient.Builder) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
@@ -185,6 +179,12 @@ object RetrofitHelper {
         }
     }
 
+    private fun setTimeOutToOkHttpClient(okHttpClientBuilder: OkHttpClient.Builder) = okHttpClientBuilder.apply {
+        readTimeout(SOCKET_TIMEOUT_SECOND, TimeUnit.SECONDS)
+        connectTimeout(CONNECTION_TIMEOUT_SECOND, TimeUnit.SECONDS)
+        writeTimeout(WRITE_TIMEOUT_SECOND, TimeUnit.SECONDS)
+    }
+
     /**
      * This method builds a converter factory (Gson, Protobuf, ...) to convert objects
      * to/from a serialization.
@@ -194,10 +194,7 @@ object RetrofitHelper {
     /**
      * This method sets the log level of Logging Interceptor of OkHttp
      */
-    private fun getInterceptor() = HttpLoggingInterceptor().apply {
-        this.level = sLogLevel
-
-    }
+    private fun getLogInterceptor() = HttpLoggingInterceptor().apply { level = sLogLevel}
 
     /**
      * This class is responsible for read cookie from shared preferences and use it by OkHttp requests.
