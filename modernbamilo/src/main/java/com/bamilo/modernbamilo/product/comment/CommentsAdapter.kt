@@ -14,7 +14,10 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar
 private const val TYPE_VIEW_HEADER = 0
 private const val TYPE_VIEW_COMMENT = 1
 
-class CommentsAdapter(private val viewModel: CommentsScreenViewModel): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CommentsAdapter(
+        private val viewModel: CommentsScreenViewModel,
+        private val isThisScreenJustForOneDistinctComment: Boolean)
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mLayoutInflater: LayoutInflater? = null
 
@@ -68,7 +71,7 @@ class CommentsAdapter(private val viewModel: CommentsScreenViewModel): RecyclerV
                         }
                         rateRatingBar.rating = it.rate
                         commentContentTextView.run {
-                            mExpandIndicatorController.changeState(true)
+                            mExpandIndicatorController.changeState(!isThisScreenJustForOneDistinctComment)
                             text = it.commentContent
                         }
 
