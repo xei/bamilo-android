@@ -16,6 +16,7 @@ import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +33,8 @@ private const val KEY_EXTRA_TWO_STARS_COUNT = "KEY_EXTRA_TWO_STARS_COUNT"
 private const val KEY_EXTRA_THREE_STARS_COUNT = "KEY_EXTRA_THREE_STARS_COUNT"
 private const val KEY_EXTRA_FOUR_STARS_COUNT = "KEY_EXTRA_FOUR_STARS_COUNT"
 private const val KEY_EXTRA_FIVE_STARS_COUNT = "KEY_EXTRA_FIVE_STARS_COUNT"
+private const val KEY_EXTRA_IS_THIS_SCREEN_JUST_FOR_ONE_DISTINCT_COMMENT = "KEY_EXTRA_IS_THIS_SCREEN_JUST_FOR_ONE_DISTINCT_COMMENT"
+private const val KEY_EXTRA_SERIALIZED_COMMENT_VIEWMODEL = "KEY_EXTRA_SERIALIZED_COMMENT_VIEWMODEL"
 
 fun startCommentsActivity(context: Context,
                   productId: String,
@@ -54,10 +57,43 @@ fun startCommentsActivity(context: Context,
         putExtra(KEY_EXTRA_THREE_STARS_COUNT, threeStarsCount)
         putExtra(KEY_EXTRA_FOUR_STARS_COUNT, fourStarsCount)
         putExtra(KEY_EXTRA_FIVE_STARS_COUNT, fiveStarsCount)
+        putExtra(KEY_EXTRA_IS_THIS_SCREEN_JUST_FOR_ONE_DISTINCT_COMMENT, false)
     }
-    context.startActivity(intent)
 
-    Logger.log("CommentActivity has started for product: $productId", TAG_DEBUG)
+    context.startActivity(intent).also {
+        Logger.log("CommentActivity has started for product: $productId", TAG_DEBUG)
+    }
+}
+
+fun startCommentsActivityForJustOneDistinctComment(context: Context,
+                                                   productId: String,
+                                                   rate: Float,
+                                                   rateSum: Int,
+                                                   commentsCount: Int,
+                                                   oneStarsCount: Float,
+                                                   twoStarsCount: Float,
+                                                   threeStarsCount: Float,
+                                                   fourStarsCount: Float,
+                                                   fiveStarsCount: Float,
+                                                   commentViewModelSerialized: String) {
+
+    val intent = Intent(context, CommentsActivity::class.java).apply {
+        putExtra(KEY_EXTRA_PRODUCT_ID, productId)
+        putExtra(KEY_EXTRA_RATE, rate)
+        putExtra(KEY_EXTRA_RATE_SUM, rateSum)
+        putExtra(KEY_EXTRA_COMMENTS_COUNT, commentsCount)
+        putExtra(KEY_EXTRA_ONE_STARS_COUNT, oneStarsCount)
+        putExtra(KEY_EXTRA_TWO_STARS_COUNT, twoStarsCount)
+        putExtra(KEY_EXTRA_THREE_STARS_COUNT, threeStarsCount)
+        putExtra(KEY_EXTRA_FOUR_STARS_COUNT, fourStarsCount)
+        putExtra(KEY_EXTRA_FIVE_STARS_COUNT, fiveStarsCount)
+        putExtra(KEY_EXTRA_IS_THIS_SCREEN_JUST_FOR_ONE_DISTINCT_COMMENT, true)
+        putExtra(KEY_EXTRA_SERIALIZED_COMMENT_VIEWMODEL, commentViewModelSerialized)
+    }
+
+    context.startActivity(intent).also {
+        Logger.log("CommentActivity has started for product: $productId", TAG_DEBUG)
+    }
 }
 
 class CommentsActivity : BaseActivity(), View.OnClickListener {
@@ -87,21 +123,41 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
         mToolbarTitleTextView.text = resources.getString(R.string.comment_title)
         setOnClickListeners()
         initRecyclerView()
-        loadCommentsNextPage()
+
+        if (!intent.getBooleanExtra(KEY_EXTRA_IS_THIS_SCREEN_JUST_FOR_ONE_DISTINCT_COMMENT, false)) {
+            loadCommentsNextPage()
+        }
     }
 
     private fun createViewModel() {
         val commentsCount = intent.getIntExtra(KEY_EXTRA_COMMENTS_COUNT, 0)
-        mViewModel = CommentsScreenViewModel(
-                rate = intent.getFloatExtra(KEY_EXTRA_RATE, 0f),
-                rateSum = intent.getIntExtra(KEY_EXTRA_RATE_SUM, 5),
-                commentsCount = commentsCount,
-                oneStarsAvg = intent.getFloatExtra(KEY_EXTRA_ONE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                twoStarsAvg = intent.getFloatExtra(KEY_EXTRA_TWO_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                threeStarsAvg = intent.getFloatExtra(KEY_EXTRA_THREE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                fourStarsAvg = intent.getFloatExtra(KEY_EXTRA_FOUR_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                fiveStarsAvg = intent.getFloatExtra(KEY_EXTRA_FIVE_STARS_COUNT, 0f / (if (commentsCount != 0) commentsCount else 1))
-        )
+        val comments = ArrayList<CommentViewModel>()
+        comments.add(Gson().fromJson(intent.getStringExtra(KEY_EXTRA_SERIALIZED_COMMENT_VIEWMODEL), CommentViewModel::class.java))
+
+        mViewModel = if (!intent.getBooleanExtra(KEY_EXTRA_IS_THIS_SCREEN_JUST_FOR_ONE_DISTINCT_COMMENT, false))
+            CommentsScreenViewModel(
+                    rate = intent.getFloatExtra(KEY_EXTRA_RATE, 0f),
+                    rateSum = intent.getIntExtra(KEY_EXTRA_RATE_SUM, 5),
+                    commentsCount = commentsCount,
+                    oneStarsAvg = intent.getFloatExtra(KEY_EXTRA_ONE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                    twoStarsAvg = intent.getFloatExtra(KEY_EXTRA_TWO_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                    threeStarsAvg = intent.getFloatExtra(KEY_EXTRA_THREE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                    fourStarsAvg = intent.getFloatExtra(KEY_EXTRA_FOUR_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                    fiveStarsAvg = intent.getFloatExtra(KEY_EXTRA_FIVE_STARS_COUNT, 0f / (if (commentsCount != 0) commentsCount else 1))
+            )
+        else
+            CommentsScreenViewModel(
+                    rate = intent.getFloatExtra(KEY_EXTRA_RATE, 0f),
+                    rateSum = intent.getIntExtra(KEY_EXTRA_RATE_SUM, 5),
+                    commentsCount = commentsCount,
+                    oneStarsAvg = intent.getFloatExtra(KEY_EXTRA_ONE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                    twoStarsAvg = intent.getFloatExtra(KEY_EXTRA_TWO_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                    threeStarsAvg = intent.getFloatExtra(KEY_EXTRA_THREE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                    fourStarsAvg = intent.getFloatExtra(KEY_EXTRA_FOUR_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
+                    fiveStarsAvg = intent.getFloatExtra(KEY_EXTRA_FIVE_STARS_COUNT, 0f / (if (commentsCount != 0) commentsCount else 1)),
+                    comments = comments
+            )
+
     }
 
     private fun findViews() {
