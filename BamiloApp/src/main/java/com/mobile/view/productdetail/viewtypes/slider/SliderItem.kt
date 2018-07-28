@@ -56,7 +56,7 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
             holder.like.isChecked = !imageSliderModel.isWishList
             holder.like.playAnimation()
 
-            sliderPresenter.onLikeButtonClicked(holder.like, object : Callback<ResponseWrapper<Any>> {
+            sliderPresenter.onLikeButtonClicked(imageSliderModel, object : Callback<ResponseWrapper<Any>> {
                 override fun onFailure(call: Call<ResponseWrapper<Any>>?, t: Throwable?) {
                     pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
                             holder.itemView.context.getString(R.string.error_occured))

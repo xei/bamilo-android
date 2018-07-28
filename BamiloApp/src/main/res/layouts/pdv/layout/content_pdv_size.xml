@@ -2,11 +2,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pdvSize_linearLayout_rootLayout"
     android:layout_width="wrap_content"
+    android:layout_height="29dp"
     android:layout_marginLeft="@dimen/dimen_4dp"
     android:layout_marginRight="@dimen/dimen_4dp"
-    android:layout_height="29dp"
-    android:id="@+id/pdvSize_linearLayout_rootLayout"
     android:background="@drawable/round_size_background_2dp"
     android:gravity="center"
     android:minWidth="41dp">
@@ -15,11 +15,11 @@
         android:id="@+id/pdvSize_textView_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_2dp"
+        android:layout_marginLeft="@dimen/dimen_4dp"
+        android:layout_marginRight="@dimen/dimen_4dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_marginRight="@dimen/dimen_4dp"
-        android:layout_marginLeft="@dimen/dimen_4dp"
-        android:layout_marginTop="@dimen/dimen_2dp"
         android:textColor="@color/secondary_text_color"
         android:textSize="14sp"
         tools:text="XL"/>

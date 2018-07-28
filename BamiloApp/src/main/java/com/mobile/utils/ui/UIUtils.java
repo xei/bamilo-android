@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -61,12 +64,21 @@ public class UIUtils {
         return px / (metrics.densityDpi / 160f);
     }
 
-    private int spToPx(Context context, Float sp ){
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+    private int spToPx(Context context, Float sp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
+                context.getResources().getDisplayMetrics());
     }
 
     public static int spToPx(float dp, Context context) {
         return Math.round(dp * context.getResources().getDisplayMetrics().scaledDensity);
+    }
+
+    public static Drawable createRoundDrawable(String colorHex, int round) {
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setCornerRadius((float) round);
+        shape.setColor(Color.parseColor(colorHex));
+        return shape;
     }
 
     /**

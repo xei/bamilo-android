@@ -89,3 +89,23 @@ fun getInterpolatedColors(startColor: Int, endColor: Int, n: Int) : IntArray{
 
     return colors
 }
+
+/**
+ * This helper function convert . to / also
+ * also remove .0 from end of float numbers
+ * */
+public fun getScoreString(value: Float): String {
+    @SuppressLint("DefaultLocale")
+    var result = String.format("%.1f", value)
+
+    if (result.contains("٫")) {
+        result = result.replace("٫", "/")
+    }
+
+    if (result.contains("/0") || result.contains("/۰")) {
+        result = result.replace("/0", "")
+        result = result.replace("/۰", "")
+    }
+
+    return result
+}

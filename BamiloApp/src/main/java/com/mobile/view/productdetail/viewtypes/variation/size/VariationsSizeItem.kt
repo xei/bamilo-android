@@ -3,8 +3,8 @@ package com.mobile.view.productdetail.viewtypes.variation.size
 import android.view.animation.AnimationUtils
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
-import com.mobile.view.R
 import com.mobile.utils.OnItemClickListener
+import com.mobile.view.R
 import com.mobile.view.productdetail.model.SimpleProduct
 
 /**
@@ -25,6 +25,18 @@ class VariationsSizeItem(var size: SimpleProduct, private var onItemClickListene
         } else {
             disableView()
         }
+
+        setHasOrNotStock(holder)
+    }
+
+    private fun setHasOrNotStock(holder: VariationsSizeHolder) {
+        if (!size.has_stock) {
+            holder.rootLayout.setBackgroundResource(R.drawable.round_size_background_disable_gray_2dp)
+            holder.title.setTextColor(holder.itemView.context.resources.getColor(R.color.gray))
+        } else {
+            holder.rootLayout.setBackgroundResource(R.drawable.round_size_background_2dp)
+            holder.title.setTextColor(holder.itemView.context.resources.getColor(R.color.secondary_text_color))
+        }
     }
 
     private fun enableView() {
@@ -34,6 +46,10 @@ class VariationsSizeItem(var size: SimpleProduct, private var onItemClickListene
     }
 
     private fun onItemClicked() {
+        if (!size.has_stock) {
+            return
+        }
+
         val myAnim = AnimationUtils.loadAnimation(holder?.itemView?.context, R.anim.bounce)
         holder?.rootLayout?.startAnimation(myAnim)
         onItemClickListener?.onItemClicked(size)
@@ -42,9 +58,14 @@ class VariationsSizeItem(var size: SimpleProduct, private var onItemClickListene
 
     fun disableView() {
         size.isSelected = false
-        if (holder != null) {
-            holder?.rootLayout!!.setBackgroundResource(R.drawable.round_size_background_2dp)
-            holder?.title!!.setTextColor(holder!!.itemView.context.resources.getColor(R.color.secondary_text_color))
+        holder?.let {
+            if (size.has_stock) {
+                it.rootLayout.setBackgroundResource(R.drawable.round_size_background_2dp)
+                it.title.setTextColor(it.itemView.context.resources.getColor(R.color.secondary_text_color))
+            } else {
+                it.rootLayout.setBackgroundResource(R.drawable.round_size_background_disable_gray_2dp)
+                it.title.setTextColor(it.itemView.context.resources.getColor(R.color.gray))
+            }
         }
     }
 }

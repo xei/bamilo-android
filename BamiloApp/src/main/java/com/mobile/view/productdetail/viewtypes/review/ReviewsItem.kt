@@ -40,6 +40,10 @@ class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdv
                 viewDivider.visibility = View.VISIBLE
             }
 
+            if (reviews.total == 0) {
+                showAllReviews.visibility = View.GONE
+            }
+
             total.text = reviews.total.toString()
             maxRate.text = itemView.context.getString(R.string.of_number, 5)
 

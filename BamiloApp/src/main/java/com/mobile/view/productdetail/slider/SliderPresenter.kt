@@ -15,6 +15,7 @@ import com.mobile.service.pojo.RestConstants
 import com.mobile.view.R
 import com.mobile.view.productdetail.gallery.GalleryActivity
 import com.mobile.view.productdetail.model.Image
+import com.mobile.view.productdetail.model.ImageSliderModel
 import com.mobile.view.productdetail.network.ProductWebApi
 import retrofit2.Callback
 
@@ -22,12 +23,12 @@ import retrofit2.Callback
  * Created by Farshid since 6/19/2018. contact farshidabazari@gmail.com
  */
 class SliderPresenter(var context: Context, private var productSku: String, private var imageList: ArrayList<Image>) {
-    fun onLikeButtonClicked(likeButton: SparkButton, callBack: Callback<ResponseWrapper<Any>>) {
+    fun onLikeButtonClicked(imageSliderModel: ImageSliderModel, callBack: Callback<ResponseWrapper<Any>>) {
         if (!BamiloApplication.isCustomerLoggedIn()) {
             loginUser()
             callBack.onFailure(null, null)
         } else {
-            if (likeButton.isChecked) {
+            if (imageSliderModel.isWishList) {
                 removeProductToWishList(callBack)
             } else {
                 addProductToWishList(callBack)
