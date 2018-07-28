@@ -5,11 +5,9 @@ package com.mobile.view.productdetail.viewtypes.seller
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.widget.AdapterView
+import com.bamilo.modernbamilo.util.getScoreString
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import com.mobile.components.customfontviews.TextView
@@ -17,6 +15,7 @@ import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.service.utils.TextUtils
 import com.mobile.utils.ui.UIUtils
+import com.mobile.utils.ui.UIUtils.createRoundDrawable
 import com.mobile.utils.ui.WarningFactory
 import com.mobile.view.MainFragmentActivity
 import com.mobile.view.R
@@ -239,30 +238,6 @@ class SellerItem(private var seller: Seller,
                 holder.itemView.context.getString(R.string.seller_info_rate_from,
                         result,
                         sellerScore.maxValue))
-    }
-
-    private fun getScoreString(value: Float): String {
-        @SuppressLint("DefaultLocale")
-        var result = String.format("%.1f", value)
-
-        if (result.contains("٫")) {
-            result = result.replace("٫", "/")
-        }
-
-        if (result.contains("/0") || result.contains("/۰")) {
-            result = result.replace("/0", "")
-            result = result.replace("/۰", "")
-        }
-
-        return result
-    }
-
-    private fun createRoundDrawable(colorHex: String, round: Int): Drawable? {
-        val shape = GradientDrawable()
-        shape.shape = GradientDrawable.RECTANGLE
-        shape.cornerRadius = round.toFloat()
-        shape.setColor(Color.parseColor(colorHex))
-        return shape
     }
 
     /***************************** End Of Setup Seller Info ************************************/

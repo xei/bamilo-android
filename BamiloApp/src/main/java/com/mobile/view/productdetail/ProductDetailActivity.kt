@@ -138,7 +138,7 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
         }
 
         progressDialog?.run {
-            isCancelable = false
+            isCancelable = true
             show(supportFragmentManager, null)
         }
     }

@@ -24,9 +24,7 @@ import com.mobile.constants.tracking.EventConstants
 import com.mobile.controllers.fragments.FragmentType
 import com.mobile.extlibraries.emarsys.predict.recommended.Item
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager
-import com.mobile.interfaces.IResponseCallback
 import com.mobile.managers.TrackerManager
-import com.mobile.service.pojo.BaseResponse
 import com.mobile.utils.OnItemClickListener
 import com.mobile.utils.headerandmorebutton.morebutton.SeeMoreButtonItem
 import com.mobile.utils.headerandmorebutton.recyclerheader.RecyclerHeaderItem
@@ -56,7 +54,7 @@ import com.mobile.view.productdetail.viewtypes.variation.VariationsItem
  * contact farshidabazari@gmail.com
  */
 
-class ProductDetailMainFragment : Fragment(), IResponseCallback {
+class ProductDetailMainFragment : Fragment() {
     private var sku: String? = ""
     private lateinit var binding: FragmentPdvMainViewBinding
 
@@ -256,14 +254,15 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         items.clear()
         adapter.removeAll()
 
+        binding.pdvTextViewTitle.text = product.title
+        addImagesToSlider()
+        addPrimaryInfoItem()
+
         if (!product.has_stock) {
             showOutOfStock()
             return
         }
 
-        binding.pdvTextViewTitle.text = product.title
-        addImagesToSlider()
-        addPrimaryInfoItem()
         addVariations()
         addReturnPolicy()
         addSellerInfo()
@@ -301,6 +300,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         primaryInfoModel.hasStock = product.has_stock
         primaryInfoModel.rating = product.rating
         primaryInfoModel.title = product.title
+        primaryInfoModel.brand = product.brand
 
         items.add(PrimaryInfoItem(sku!!, primaryInfoModel))
     }
@@ -413,12 +413,6 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     private fun bindToolbarClickListener() {
         binding.pdvAppImageViewBack.setOnClickListener { _ -> pdvMainView.onBackButtonClicked() }
         binding.pdvAppImageViewWhiteBack.setOnClickListener { _ -> pdvMainView.onBackButtonClicked() }
-    }
-
-    override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
-    }
-
-    override fun onRequestError(baseResponse: BaseResponse<*>?) {
     }
 
     fun updateCartBadge() {

@@ -60,19 +60,16 @@ class ProductDetailMainFragmentViewModel(application: Application) : AndroidView
                 .getProductDetail(sku)
                 .enqueue(object : Callback<ResponseWrapper<ProductDetail>> {
                     override fun onFailure(call: Call<ResponseWrapper<ProductDetail>>?, t: Throwable?) {
-                        Log.e(">>>>>", "${t?.message} ")
                         setItems(null)
                     }
 
                     override fun onResponse(call: Call<ResponseWrapper<ProductDetail>>?,
                                             response: Response<ResponseWrapper<ProductDetail>>?) {
-                        Log.e(">>>>>", "Received")
                         response?.body()?.metadata?.let {
                             setItems(it)
                         }
 
                         if (response?.body()?.metadata == null) {
-                            Log.e(">>>>>", "Error")
                             setItems(null)
                         }
                     }

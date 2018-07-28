@@ -30,8 +30,8 @@
             android:paddingBottom="@dimen/dimen_4dp"
             android:paddingLeft="@dimen/dimen_4dp"
             android:paddingRight="@dimen/dimen_4dp"
-            android:textColor="@color/blue_link"
             android:background="?android:attr/selectableItemBackground"
+            android:textColor="@color/blue_link"
             android:textSize="14sp"
             app:fontFamily="@string/bamilo_bold_font"
             tools:text="ایران رهجو"/>
@@ -40,7 +40,7 @@
             android:id="@+id/pdvSellerInfo_relativeLayout_noScore"
             layout="@layout/seller_no_score"
             android:layout_width="wrap_content"
-            android:layout_height="26dp"
+            android:layout_height="24dp"
             android:layout_marginTop="@dimen/dimen_4dp"
             android:layout_marginLeft="@dimen/dimen_12dp"
             android:layout_marginRight="@dimen/dimen_12dp"
@@ -50,17 +50,11 @@
             android:id="@+id/pdvSellerInfo_relativeLayout_sellerScoreTitleParent"
             layout="@layout/seller_score"
             android:layout_width="wrap_content"
-            android:layout_height="26dp"
+            android:layout_height="24dp"
             android:layout_marginTop="@dimen/dimen_4dp"
             android:layout_marginLeft="@dimen/dimen_12dp"
             android:layout_marginRight="@dimen/dimen_12dp"
             android:visibility="gone"/>
-
-        <include
-            android:id="@+id/pdvSellerInfo_constraintLayout_sellerScoreParent"
-            layout="@layout/content_seller_score_old"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:id="@+id/pdvSellerInfo_linearLayout_percentageRoot"
@@ -116,10 +110,18 @@
                 android:layout_marginLeft="@dimen/dimen_18dp"
                 android:layout_marginRight="6dp"
                 android:layout_gravity="center_vertical"
+                android:gravity="right|center_vertical"
+                android:textAlignment="gravity"
                 android:textColor="@color/primary_text_color"
                 android:textSize="12sp"/>
 
         </LinearLayout>
+
+        <include
+            android:id="@+id/pdvSellerInfo_constraintLayout_sellerScoreParent"
+            layout="@layout/content_seller_score_old"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <View
             android:layout_width="match_parent"
