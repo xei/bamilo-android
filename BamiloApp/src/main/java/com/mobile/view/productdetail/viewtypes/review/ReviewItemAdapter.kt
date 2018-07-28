@@ -58,7 +58,7 @@ class ReviewItemAdapter(var review: Review, var pdvMainView: PDVMainView, var re
         val bounds = Rect()
         val paint = Paint()
 
-        paint.textSize = spToPx(15f, holder.itemView.context).toFloat()
+        paint.textSize = spToPx(16f, holder.itemView.context).toFloat()
         paint.getTextBounds(comment, 0, comment!!.length, bounds)
 
         val currentSize = getCardSize(holder)

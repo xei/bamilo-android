@@ -8,9 +8,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.bamilo.modernbamilo.product.comment.CommentViewModel
 import com.bamilo.modernbamilo.product.comment.startCommentsActivity
+import com.bamilo.modernbamilo.product.comment.startCommentsActivityForJustOneDistinctComment
 import com.bamilo.modernbamilo.product.descspec.DescSpecFragment
 import com.bamilo.modernbamilo.product.sellerslist.view.SellersListFragment
+import com.google.gson.Gson
 import com.mobile.app.BamiloApplication
 import com.mobile.classes.models.BaseScreenModel
 import com.mobile.classes.models.MainEventModel
@@ -286,6 +289,19 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
     }
 
     override fun onShowSpecificComment(review: Review) {
+        startCommentsActivityForJustOneDistinctComment(this,
+                sku!!,
+                productDetail.rating.average,
+                productDetail.rating.total,
+                productDetail.reviews.total,
+                productDetail.rating.stars[0].count.toFloat(),
+                productDetail.rating.stars[1].count.toFloat(),
+                productDetail.rating.stars[2].count.toFloat(),
+                productDetail.rating.stars[3].count.toFloat(),
+                productDetail.rating.stars[4].count.toFloat(),
+                Gson().toJson(CommentViewModel(review.id!!, review.title, review.date!!, review.username!!,
+                        review.is_bought_by_user, review.rate!!.toFloat(), review.comment!!,
+                        review.like, review.dislike)))
     }
 
     override fun showOutOfStock() {

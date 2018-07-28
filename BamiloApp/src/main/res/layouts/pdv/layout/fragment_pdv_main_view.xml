@@ -17,20 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/pdv_swipeRefresh"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pdv_recycler_detailList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dimen_48dp"
-                android:descendantFocusability="blocksDescendants">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/pdv_recycler_detailList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#f9f9f9"/>
-
-            </android.support.v4.widget.SwipeRefreshLayout>
+                android:background="#f9f9f9"/>
 
             <RelativeLayout
                 android:id="@+id/pdv_relativeLayout_transparentToolbar"

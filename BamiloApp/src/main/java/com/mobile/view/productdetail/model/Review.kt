@@ -1,11 +1,13 @@
 package com.mobile.view.productdetail.model
 
+import java.io.Serializable
+
 /**
  * Created by Farshid
  * since 7/2/2018.
  * contact farshidabazari@gmail.com
  */
-class Review {
+class Review : Serializable {
     var id: String? = null
     var title: String? = null
     var comment: String? = null

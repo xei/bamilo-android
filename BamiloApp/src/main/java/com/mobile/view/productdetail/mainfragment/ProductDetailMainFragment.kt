@@ -107,7 +107,6 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
 
         setupViewModel()
         setUpMainViewAdapter()
-        setupRefreshView()
         setupDetailRecycler()
 
         setupCartItemClickListener()
@@ -161,14 +160,6 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         toolbarFadingOffset = UIUtils.dpToPx(context, 300f).toFloat()
         toolbarTitleCenterPositionMargin = UIUtils.dpToPx(context, 16f)
         toolbarTitleSlidingOffset = UIUtils.dpToPx(context, 348f)
-    }
-
-    private fun setupRefreshView() {
-        binding.pdvSwipeRefresh.setProgressViewOffset(false,
-                0,
-                UIUtils.dpToPx(context, 64f))
-
-        binding.pdvSwipeRefresh.setOnRefreshListener { loadProductDetail(sku!!) }
     }
 
     private fun setupDetailRecycler() {
@@ -353,13 +344,14 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     }
 
     private fun loadProductDetail(sku: String) {
-        binding.pdvSwipeRefresh.isRefreshing = true
+        pdvMainView.showProgressView()
         pdvMainFragmentViewModel!!.loadData(sku).observe(this, Observer {
             if (it != null) {
                 this.product = it
                 pdvMainView.onProductReceived(it)
                 getRecommendedProducts()
             } else if (context != null) {
+                pdvMainView.dismissProgressView()
                 pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
                         context!!.getString(R.string.error_occured))
             }
@@ -395,7 +387,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
                 }
                 addBreadCrumbs()
                 addItemsToAdapter()
-                binding.pdvSwipeRefresh.isRefreshing = false
+                pdvMainView.dismissProgressView()
             }
         }
     }
