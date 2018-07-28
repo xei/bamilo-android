@@ -85,9 +85,9 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun submitRate() {
-        val rate = mRateRatingBar.rating
+        val rate = mRateRatingBar.rating.toInt()
 
-        if (rate == 0f) {
+        if (rate == 0) {
             Toast.makeText(this, resources.getString(R.string.submitRate_selectStarError), Toast.LENGTH_LONG).show()
             return
         }
