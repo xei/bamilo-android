@@ -71,7 +71,12 @@ class CommentsAdapter(
                         }
                         rateRatingBar.rating = it.rate
                         commentContentTextView.run {
-                            mExpandIndicatorController.changeState(!isThisScreenJustForOneDistinctComment)
+                            if (isThisScreenJustForOneDistinctComment) {
+                                commentContentTextView.onClick(mExpandIndicatorController.indicator)
+
+                            } else {
+                                mExpandIndicatorController.changeState(true)
+                            }
                             text = it.commentContent
                         }
 
