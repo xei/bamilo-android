@@ -174,7 +174,7 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
 
     private fun initRecyclerView() = mCommentsListRecyclerView.run {
         layoutManager = LinearLayoutManager(this@CommentsActivity)
-        adapter = CommentsAdapter(mViewModel)
+        adapter = CommentsAdapter(mViewModel, intent.getBooleanExtra(KEY_EXTRA_IS_THIS_SCREEN_JUST_FOR_ONE_DISTINCT_COMMENT, false))
 
         if (!intent.getBooleanExtra(KEY_EXTRA_IS_THIS_SCREEN_JUST_FOR_ONE_DISTINCT_COMMENT, false)) {
             mPaginationOnScrollListener = PaginationOnScrollListener(Runnable { loadCommentsNextPage() })
