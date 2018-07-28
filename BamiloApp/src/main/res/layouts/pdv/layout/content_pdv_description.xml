@@ -36,7 +36,7 @@
             android:layout_marginTop="@dimen/dimen_12dp"
             android:layout_marginLeft="@dimen/dimen_8dp"
             android:layout_marginRight="@dimen/dimen_8dp"
-            android:background="#FFD8D8D8"/>
+            android:background="@color/grey_dividerlight"/>
 
         <LinearLayout
             android:id="@+id/pdvDescription_linearLayout_showFullDescription"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/show_full_description"
-                android:textColor="@color/link_text_color"
+                android:textColor="@color/blue_link"
                 android:textSize="12sp"/>
 
         </LinearLayout>

@@ -6,9 +6,9 @@ import android.view.View
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.components.ghostadapter.GhostAdapter
+import com.mobile.utils.OnItemClickListener
 import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
-import com.mobile.utils.OnItemClickListener
 import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.SimpleProduct
 import com.mobile.view.productdetail.model.Variation
@@ -22,7 +22,7 @@ import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
  */
 
 @BindItem(layout = R.layout.content_pdv_variations, holder = VariationsHolder::class)
-class VariationsItem(var variations: ArrayList<Variation>, private var pdvMainView: PDVMainView) {
+class VariationsItem(var sku: String, var variations: ArrayList<Variation>, private var pdvMainView: PDVMainView) {
     private lateinit var colorsAdapter: GhostAdapter
     private lateinit var sizesAdapter: GhostAdapter
 
@@ -122,6 +122,11 @@ class VariationsItem(var variations: ArrayList<Variation>, private var pdvMainVi
     private fun addOtherVariations(holder: VariationsHolder) {
         for (variation in variations) {
             if (variation.type != "size") {
+                if(variation.products.size == 1 && variation.products[0].sku == sku){
+                    holder.othersRoot.visibility = View.GONE
+                    return
+                }
+                holder.othersRoot.visibility = View.VISIBLE
                 for (product in variation.products) {
                     otherItems.add(OtherVariationsItem(product, object : OnItemClickListener {
                         override fun onItemClicked(any: Any?) {

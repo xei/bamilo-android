@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rules_and_terms"
-                android:textColor="#25a8ed"
+                android:textColor="@color/blue_link"
                 android:textSize="12sp"/>
 
             <android.support.v7.widget.AppCompatImageView

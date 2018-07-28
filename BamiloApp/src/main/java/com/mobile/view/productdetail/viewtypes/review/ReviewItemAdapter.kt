@@ -4,12 +4,12 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.service.utils.TextUtils
+import com.mobile.utils.ui.UIUtils.spToPx
 import com.mobile.view.R
 import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.Review
@@ -21,7 +21,7 @@ import com.mobile.view.productdetail.model.Review
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_review, holder = ReviewItemHolder::class)
-class ReviewItemAdapter(var review: Review, var pdvMainView: PDVMainView) {
+class ReviewItemAdapter(var review: Review, var pdvMainView: PDVMainView, var reviewsCount: Int) {
     @Binder
     public fun binder(holder: ReviewItemHolder) {
         holder.date.text = review.date
@@ -32,7 +32,10 @@ class ReviewItemAdapter(var review: Review, var pdvMainView: PDVMainView) {
             holder.ratingBar.rating = it.toFloat()
         }
 
-        setupViewWidth(holder)
+        if (reviewsCount > 1) {
+            setupViewWidth(holder)
+        }
+
         setUpMoreButton(holder, review.comment)
 
         holder.more.setOnClickListener { gotoReviewView() }
@@ -68,10 +71,6 @@ class ReviewItemAdapter(var review: Review, var pdvMainView: PDVMainView) {
             holder.more.visibility = View.GONE
             holder.moreGradient.visibility = View.GONE
         }
-    }
-
-    private fun spToPx(sp: Float, context: Context): Int {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.resources.displayMetrics).toInt()
     }
 
     private fun getDeviceWidth(context: Context): Int {

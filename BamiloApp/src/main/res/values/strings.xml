@@ -685,5 +685,6 @@
     <string name="no_review_added">هنوز نظری ثبت نشده</string>
     <string name="be_first_to_comment">اولین نفری باشید که نظر می دهید</string>
     <string name="see_all_related_products">مشاهده همه کالاهای مشابه</string>
+    <string name="deliver_time_by_this_seller">زمان تقریبی تحویل کالای این تامین کننده</string>
 
 </resources>

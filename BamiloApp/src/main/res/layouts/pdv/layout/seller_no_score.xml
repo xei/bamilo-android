@@ -5,11 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="26dp"
-    android:paddingRight="@dimen/dimen_4dp"
     android:paddingLeft="@dimen/dimen_4dp"
-    android:layoutDirection="rtl"
-    android:gravity="right"
+    android:paddingRight="@dimen/dimen_4dp"
     android:background="@drawable/round_light_gray_8"
+    android:gravity="right"
+    android:layoutDirection="rtl"
     android:orientation="horizontal"
     tools:targetApi="jelly_bean_mr1">
 
@@ -17,21 +17,21 @@
         android:id="@+id/pdvSellerInfo_appImageView_newBadge"
         android:layout_width="24dp"
         android:layout_height="20dp"
-        android:layout_marginRight="@dimen/dimen_4dp"
         android:layout_marginLeft="@dimen/dimen_4dp"
+        android:layout_marginRight="@dimen/dimen_4dp"
         android:visibility="visible"
         app:srcCompat="@drawable/new_seller_badge"/>
 
     <com.mobile.components.customfontviews.TextView
         android:layout_width="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center_vertical"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/dimen_4dp"
         android:layout_marginLeft="4dp"
-        android:visibility="visible"
+        android:layout_marginRight="@dimen/dimen_4dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
         android:text="@string/no_score_submited"
         android:textColor="@color/secondary_text_color"
-        android:textSize="@dimen/dimen_12sp"/>
+        android:textSize="@dimen/dimen_12sp"
+        android:visibility="visible"/>
 
 </LinearLayout>

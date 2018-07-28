@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textColor="@color/link_text_color"
+        android:textColor="@color/blue_link"
         android:textSize="12sp"
         tools:text="@string/more"/>
 

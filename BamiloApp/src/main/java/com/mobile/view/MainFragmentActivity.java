@@ -319,11 +319,23 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             return true;
         }
 
-        if (getIntent() != null && !TextUtils.isEmpty(getIntent().getStringExtra("target"))) {
-            new TargetLink(getWeakBaseActivity(), getIntent().getStringExtra("target"))
-                    .addTitle(getIntent().getStringExtra("title"))
+        if (getIntent() != null && !TextUtils
+                .isEmpty(getIntent().getStringExtra("bread_crumb_target"))) {
+            new TargetLink(getWeakBaseActivity(), getIntent().getStringExtra("bread_crumb_target"))
+                    .addTitle(getIntent().getStringExtra("bread_crumb_title"))
                     .retainBackStackEntries()
                     .enableWarningErrorMessage()
+                    .run();
+
+            return true;
+        }
+
+        if (getIntent() != null && !TextUtils
+                .isEmpty(getIntent().getStringExtra("seller_target"))) {
+            @TargetLink.Type String target = getIntent().getStringExtra("seller_target");
+            new TargetLink(getWeakBaseActivity(), target)
+                    .enableWarningErrorMessage()
+                    .retainBackStackEntries()
                     .run();
 
             return true;

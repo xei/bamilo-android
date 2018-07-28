@@ -71,7 +71,7 @@
         android:layout_marginLeft="8dp"
         android:background="#f5f5f5"
         android:text="@string/more_3dot"
-        android:textColor="#FF00ADE6"
+        android:textColor="@color/blue_link"
         android:textSize="@dimen/dimen_12sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/pdvReview_textView_comment"

@@ -63,7 +63,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dimen_4dp"
                             android:text="@string/Size_guid"
-                            android:textColor="#FF00ADE6"
+                            android:textColor="@color/blue_link"
                             android:textSize="12sp"/>
 
                         <android.support.v7.widget.AppCompatImageView
@@ -123,9 +123,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginTop="@dimen/dimen_8dp"
-        android:layout_marginLeft="@dimen/dimen_2dp"
-        android:layout_marginRight="@dimen/dimen_2dp"
+        android:layout_marginTop="@dimen/dimen_4dp"
+        android:layout_marginLeft="@dimen/dimen_4dp"
+        android:layout_marginRight="@dimen/dimen_4dp"
         android:gravity="center"
         android:orientation="horizontal">
 

@@ -7,11 +7,12 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/spinnerContent_textView_title"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/dimen_8dp"
-        android:textColor="@color/black_900"
-        android:maxLines="3"
         android:background="@android:color/transparent"
         android:gravity="left|start|center_vertical"
-        android:layout_height="wrap_content"/>
+        android:maxLines="3"
+        android:textSize="@dimen/dimen_12sp"
+        android:textColor="@color/primary_text_color"/>
 
 </LinearLayout>

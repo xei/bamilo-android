@@ -28,10 +28,7 @@ class SellerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     var warranty: TextView = itemView.findViewById(R.id.pdvSellerInfo_textView_warranty)
     var deliveryTimeAndCity: TextView = itemView.findViewById(R.id.pdvSellerInfo_texView_deliverTimeAndCity)
-    var editCity: TextView = itemView.findViewById(R.id.pdvSellerInfo_textView_editCity)
     var otherSellersCount: TextView = itemView.findViewById(R.id.pdvSellerInfo_textView_otherSellersCount)
-
-    var maxValueOfScore: TextView = itemView.findViewById(R.id.sellerScore_textView_maxValueOfScore)
 
     var successfulSupplyProgress: ProgressBar = itemView.findViewById(R.id.sellerScore_progressBar_successfulSupply)
     var salesWithoutReturnProgress: ProgressBar = itemView.findViewById(R.id.sellerScore_progressBar_salesWithoutReturn)
@@ -40,17 +37,11 @@ class SellerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var otherSellersDivider: View = itemView.findViewById(R.id.pdvSellerInfo_view_otherSellersDivider)
 
     var sellerScoreParent: ConstraintLayout = itemView.findViewById(R.id.pdvSellerInfo_constraintLayout_sellerScoreParent)
-    var sellerInfoHeader: ConstraintLayout = itemView.findViewById(R.id.pdvSellerInfo_constraintLayout_sellerInfoHeader)
 
     var noScoreLayout: LinearLayout = itemView.findViewById(R.id.pdvSellerInfo_relativeLayout_noScore)
 
-    var showDetailImageView: AppCompatImageView = itemView.findViewById(R.id.pdvSellerInfo_appImageView_showDetail)
-    var editCityImage: AppCompatImageView = itemView.findViewById(R.id.pdvSellerInfo_appImageView_editCity)
-
     var otherSellerLayout: LinearLayout = itemView.findViewById(R.id.pdvSellerInfo_linearLayout_otherSellers)
     var scoreLayout: LinearLayout = itemView.findViewById(R.id.pdvSellerInfo_relativeLayout_sellerScoreTitleParent)
-
-    var sellerInfoExpandableLayout: ExpandableLayout = itemView.findViewById(R.id.pdvSellerInfo_expandableLayout)
 
     var deliveryCitySpinner: AppCompatSpinner = itemView.findViewById(R.id.pdv_spinner_deliveryCity)
     var deliveryRegionSpinner: AppCompatSpinner = itemView.findViewById(R.id.pdv_spinner_deliveryRegion)

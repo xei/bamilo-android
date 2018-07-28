@@ -13,8 +13,6 @@ import com.mobile.view.R
  * contact farshidabazari@gmail.com
  */
 class VariationsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var colorTitle: TextView = itemView.findViewById(R.id.pdvVariations_textView_colorTitle)
-    var sizeTitle: TextView = itemView.findViewById(R.id.pdvVariations_textView_sizeTitle)
 
     var sizeHelp: LinearLayout = itemView.findViewById(R.id.pdvVariations_linearLayout_sizeHelp)
 

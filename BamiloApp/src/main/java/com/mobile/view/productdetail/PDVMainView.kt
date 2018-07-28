@@ -27,4 +27,5 @@ interface PDVMainView {
     fun onAddToCartClicked()
     fun onShowSpecificComment(review: Review)
     fun onShowMoreRelatedProducts()
+    fun showOutOfStock()
 }

@@ -53,7 +53,7 @@ class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: Pri
 
         if (!TextUtils.isEmpty(primaryInfoModel.priceModel.oldPrice) &&
                 primaryInfoModel.priceModel.oldPrice != primaryInfoModel.priceModel.price &&
-                primaryInfoModel.priceModel.oldPrice?.toLong() == 0L) {
+                primaryInfoModel.priceModel.oldPrice?.toLong() != 0L) {
             setPriceWithDiscount(holder)
         } else {
             setPriceWithOutDiscount(holder)

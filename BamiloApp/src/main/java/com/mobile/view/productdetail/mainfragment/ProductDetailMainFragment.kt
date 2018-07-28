@@ -265,6 +265,11 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         items.clear()
         adapter.removeAll()
 
+        if (!product.has_stock) {
+            showOutOfStock()
+            return
+        }
+
         binding.pdvTextViewTitle.text = product.title
         addImagesToSlider()
         addPrimaryInfoItem()
@@ -272,6 +277,10 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
         addReturnPolicy()
         addSellerInfo()
         addReviews()
+    }
+
+    private fun showOutOfStock() {
+        pdvMainView.showOutOfStock()
     }
 
     private fun addItemsToAdapter() {
@@ -306,7 +315,7 @@ class ProductDetailMainFragment : Fragment(), IResponseCallback {
     }
 
     private fun addVariations() {
-        items.add(VariationsItem(product.variations, pdvMainView))
+        items.add(VariationsItem(sku!!, product.variations, pdvMainView))
     }
 
     private fun addReturnPolicy() {

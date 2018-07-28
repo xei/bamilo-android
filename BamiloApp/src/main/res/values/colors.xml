@@ -169,9 +169,6 @@
 
     <color name="gray_1">#53585b</color>
     <color name="gray_2">#656668</color>
-    <color name="gray_3">#747577</color>
-    <color name="gray_4">#858688</color>
-    <color name="gray_5">#959698</color>
     <color name="gray_6">#a5a6a8</color>
     <color name="gray_7">#b8b8b8</color>
     <color name="gray_8">#c8c8c8</color>
@@ -196,9 +193,29 @@
         <item>#ECEBDE</item>
     </array>
 
-    <color name="secondary_text_color">#757575</color>
-    <color name="primary_text_color">#434343</color>
+    <color name="secondary_text_color">@color/gray_3</color>
+    <color name="primary_text_color">@color/gray_5</color>
 
-    <color name="link_text_color">#FF25A8ED</color>
+
+    <!-- invision color pallet -->
+
+    <!-- primary colors -->
+    <color name="accent_light">#FFA014</color>
+    <color name="accent">#FF6E0A</color>
+    <color name="primary">#1E375F</color>
+
+    <!-- secondary colors -->
+    <color name="blue_gray">#8392a8</color>
+    <color name="blue_gray_secondary">#e8eaee</color>
+    <color name="gray">#d8d8d8</color>
+    <color name="gray_secondary">#A5A6A8</color>
+    <color name="gray_3">#757575</color>
+    <color name="gray_4">#55555A</color>
+    <color name="gray_5">#434343</color>
+    <color name="light_2">#F7F7F7</color>
+    <color name="yellow">#FFC700</color>
+    <color name="blue_link">#00ADE6</color>
+    <color name="green">#00A896</color>
+    <color name="tubin_red">#D41A5D</color>
 
 </resources>

@@ -21,6 +21,6 @@ interface RegionWebApi {
 
     @FormUrlEncoded
     @POST("catalog/deliverytime/")
-    fun getDeliveryTime(@Field("city-id") cityId: Int,
+    fun getDeliveryTime(@Field("city-id") cityId: Int?,
                         @Field("skus[]") simpleSku: String): Call<ResponseWrapper<DeliveryTimeResponse>>
 }

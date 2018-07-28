@@ -31,8 +31,8 @@ class BreadcrumbItem(var breadcrumbs: Breadcrumbs, var isLastItem: Boolean) {
 
     private fun showTargetView(context: Context?) {
         val intent = Intent(context!!, MainFragmentActivity::class.java).apply {
-            putExtra("target", breadcrumbs.target)
-            putExtra("title", breadcrumbs.title)
+            putExtra("bread_crumb_target", breadcrumbs.target)
+            putExtra("bread_crumb_title", breadcrumbs.title)
         }
         context.startActivity(intent)
     }

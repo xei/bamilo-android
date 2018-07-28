@@ -3,14 +3,12 @@
 package com.mobile.view.productdetail.viewtypes.seller
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
-import android.support.v7.widget.AppCompatImageView
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationSet
-import android.view.animation.RotateAnimation
 import android.widget.AdapterView
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
@@ -20,6 +18,7 @@ import com.mobile.components.ghostadapter.Binder
 import com.mobile.service.utils.TextUtils
 import com.mobile.utils.ui.UIUtils
 import com.mobile.utils.ui.WarningFactory
+import com.mobile.view.MainFragmentActivity
 import com.mobile.view.R
 import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.Score
@@ -96,7 +95,6 @@ class SellerItem(private var seller: Seller,
         seller.name?.let {
             holder.sellerName.text = it
         }
-
         this.holder = holder
 
         if (seller.score.overall == 0F) {
@@ -117,7 +115,7 @@ class SellerItem(private var seller: Seller,
 
         triggerGetRegions()
 
-        holder.sellerInfoHeader.setOnClickListener { onShowInfoClicked(holder) }
+        holder.sellerName.setOnClickListener { gotoSellerPage(holder.itemView.context) }
     }
 
     @SuppressLint("SetTextI18n")
@@ -145,7 +143,7 @@ class SellerItem(private var seller: Seller,
                 seller.score.maxValue)
 
         holder.sellerScore.text = seller.score.overall.toString()
-        holder.overallScore.text = seller.score.overall.toString()
+        holder.overallScore.text = getScoreString(seller.score.overall)
 
         holder.sellerScore.setBackgroundDrawable(createRoundDrawable("#47b638",
                 UIUtils.dpToPx(holder.itemView.context, 2f)))
@@ -156,33 +154,6 @@ class SellerItem(private var seller: Seller,
         holder.sellerScoreParent.visibility = View.VISIBLE
         holder.scoreLayout.visibility = View.GONE
         holder.noScoreLayout.visibility = View.GONE
-    }
-
-    private fun setUpNewSeller(holder: SellerHolder) {
-        holder.collaborationPeriod.visibility = View.GONE
-        holder.percentageLayout.visibility = View.GONE
-        holder.sellerScoreParent.visibility = View.GONE
-        holder.scoreLayout.visibility = View.GONE
-
-        holder.noScoreLayout.visibility = View.VISIBLE
-    }
-
-    private fun onShowInfoClicked(holder: SellerHolder) {
-        if (holder.sellerInfoExpandableLayout.isExpanded) {
-            collapseView(holder)
-        } else {
-            expandView(holder)
-        }
-    }
-
-    private fun collapseView(holder: SellerHolder) {
-        holder.sellerInfoExpandableLayout.collapse()
-        animateExpandIcon(holder.showDetailImageView, true)
-    }
-
-    private fun expandView(holder: SellerHolder) {
-        holder.sellerInfoExpandableLayout.expand()
-        animateExpandIcon(holder.showDetailImageView, false)
     }
 
     @SuppressLint("SetTextI18n")
@@ -215,23 +186,6 @@ class SellerItem(private var seller: Seller,
         }
     }
 
-    private fun animateExpandIcon(view: AppCompatImageView, reverse: Boolean) {
-        val animationSet = AnimationSet(true)
-        val rotateAnimation: RotateAnimation = if (!reverse) {
-            RotateAnimation(0f, 180f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        } else {
-            RotateAnimation(180f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        }
-
-        rotateAnimation.duration = 250
-        rotateAnimation.fillAfter = true
-        rotateAnimation.isFillEnabled = true
-
-        animationSet.addAnimation(rotateAnimation)
-
-        view.startAnimation(rotateAnimation)
-    }
-
     private fun showSellerRateProgressRate(holder: SellerHolder) {
         holder.salesWithoutReturnProgress.max = seller.score.maxValue * 10
         holder.successfulSupplyProgress.max = seller.score.maxValue * 10
@@ -254,11 +208,9 @@ class SellerItem(private var seller: Seller,
     }
 
     private fun showOverall(holder: SellerHolder, sellerScore: Score) {
-        val overallText: TextView = holder.itemView.findViewById(R.id.sellerScore_textView_score)
-        overallText.setTextColor(Color.parseColor("#47b638"))
-//        overallText.text = getScoreString(sellerScore.overall)
         showSellerRateTexts(holder, R.id.sellerScore_textView_maxValueOfScore,
-                holder.itemView.context.getString(R.string.seller_info_rate_from_score, sellerScore.maxValue))
+                holder.itemView.context.getString(R.string.seller_info_rate_from_score,
+                        getScoreString(sellerScore.maxValue.toFloat()).toInt()))
     }
 
     @SuppressLint("StringFormatMatches")
@@ -393,13 +345,18 @@ class SellerItem(private var seller: Seller,
                         response?.body()?.metadata?.data?.let {
                             regions = it
                             setRegions(regions!!)
-                            triggerGetDeliveryTime(selectedCityId)
+                            if (selectedCityId < 1) {
+                                triggerGetDeliveryTime(null)
+                            } else {
+                                triggerGetDeliveryTime(selectedCityId)
+                            }
+
                         }
                     }
                 })
     }
 
-    private fun triggerGetDeliveryTime(cityId: Int) {
+    private fun triggerGetDeliveryTime(cityId: Int?) {
         RetrofitHelper.makeWebApi(holder.itemView.context, RegionWebApi::class.java)
                 .getDeliveryTime(cityId, simpleSku)
                 .enqueue(object : Callback<ResponseWrapper<DeliveryTimeResponse>> {
@@ -473,12 +430,23 @@ class SellerItem(private var seller: Seller,
                     selectedRegionId = (holder.deliveryRegionSpinner.selectedItem as Region).value
                     holder.deliveryTimeAndCity.text = holder.itemView.context.getString(R.string.getting_data_from_server)
                     selectedCityId = city
-                    triggerGetDeliveryTime(city)
+                    if (city < 1) {
+                        triggerGetDeliveryTime(null)
+                    } else {
+                        triggerGetDeliveryTime(city)
+                    }
                 }
             }
         }
 
         override fun onNothingSelected(parent: AdapterView<*>) {
         }
+    }
+
+    private fun gotoSellerPage(context: Context) {
+        val intent = Intent(context, MainFragmentActivity::class.java).apply {
+            putExtra("seller_target", seller.target)
+        }
+        context.startActivity(intent)
     }
 }

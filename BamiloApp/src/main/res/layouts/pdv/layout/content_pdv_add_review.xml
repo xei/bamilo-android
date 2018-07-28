@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/be_first_to_comment"
-        android:textColor="#FF00ADE6"
+        android:textColor="@color/blue_link"
         android:textSize="14sp"
         app:fontFamily="@string/bamilo_bold_font"
         app:layout_constraintRight_toRightOf="@+id/no_review_added"

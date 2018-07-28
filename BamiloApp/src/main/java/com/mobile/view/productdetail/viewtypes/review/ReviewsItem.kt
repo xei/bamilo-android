@@ -73,8 +73,9 @@ class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdv
     private fun showReviews() {
         recyclerItems.clear()
         adapter.removeAll()
+        val size = reviews.items.size
         for (review in reviews.items) {
-            recyclerItems.add(ReviewItemAdapter(review, pdvMainView))
+            recyclerItems.add(ReviewItemAdapter(review, pdvMainView, size))
         }
 
         adapter.setItems(recyclerItems)

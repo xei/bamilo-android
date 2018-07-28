@@ -286,7 +286,11 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
     }
 
     override fun onShowSpecificComment(review: Review) {
+    }
 
+    override fun showOutOfStock() {
+        binding.productDetailLinearLayoutAddToCart!!.visibility = View.GONE
+        binding.productDetailLinearLayoutNotifyMe!!.visibility = View.VISIBLE
     }
 
     override fun showProgressView() {
@@ -341,6 +345,8 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
 
     override fun onProductReceived(product: ProductDetail) {
         binding.productDetailLinearLayoutAddToCart!!.visibility = View.VISIBLE
+        binding.productDetailLinearLayoutNotifyMe!!.visibility = View.GONE
+
         productDetail = product
         productDetailPresenter.fillChooseVariationBottomSheet(productDetail)
 

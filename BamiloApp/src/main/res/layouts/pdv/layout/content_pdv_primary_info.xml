@@ -30,7 +30,7 @@
             android:layout_marginBottom="@dimen/dimen_4dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:textColor="#434343"
+            android:textColor="@color/primary_text_color"
             android:textSize="12sp"
             app:fontFamily="@string/bamilo_bold_font"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/dimen_4dp"
-                android:textColor="#FF00ADE6"
+                android:textColor="@color/blue_link"
                 android:textSize="10sp"
                 app:fontFamily="@string/bamilo_bold_font"
                 tools:ignore="SmallSp"
@@ -102,7 +102,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@string/score"
-                android:textColor="#757575"
+                android:textColor="@color/secondary_text_color"
                 android:textSize="12sp"
                 tools:ignore="SmallSp"/>
 
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:textColor="#1a365e"
+                android:textColor="@color/primary"
                 android:textSize="12sp"
                 app:fontFamily="@string/bamilo_bold_font"
                 tools:ignore="SmallSp"
@@ -125,7 +125,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="@dimen/dimen_4dp"
                 android:text="@string/open_bracket"
-                android:textColor="#d8d8d8"
+                android:textColor="@color/gray"
                 app:fontFamily="@string/bamilo_font"
                 tools:text="("/>
 
@@ -141,7 +141,7 @@
                 android:id="@+id/pdvPrimaryInfo_textView_scoreCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#d8d8d8"
+                android:textColor="@color/gray"
                 android:layout_marginTop="2dp"
                 android:textSize="@dimen/dimen_12sp"
                 app:fontFamily="@string/bamilo_font"
@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
                 android:text="@string/close_bracket"
-                android:textColor="#d8d8d8"
+                android:textColor="@color/gray"
                 app:fontFamily="@string/bamilo_font"
                 tools:text=")"/>
 
@@ -168,7 +168,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="#d8d8d8"/>
+            android:background="@color/grey_dividerlight"/>
 
         <LinearLayout
             android:id="@+id/pdvPrimaryInfo_linearLayout_priceLayout"
@@ -187,7 +187,7 @@
                 android:id="@+id/pdvPrimaryInfo_textView_currentPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#fe6b0c"
+                android:textColor="@color/accent"
                 android:textSize="24sp"
                 app:fontFamily="@string/bamilo_bold_font"
                 tools:text="۱،۴۰۵،۵۰۰"/>
@@ -203,7 +203,7 @@
                 android:gravity="right"
                 android:text="@string/rial"
                 android:textAlignment="gravity"
-                android:textColor="#434343"
+                android:textColor="@color/primary_text_color"
                 android:textSize="12sp"/>
 
             <RelativeLayout
