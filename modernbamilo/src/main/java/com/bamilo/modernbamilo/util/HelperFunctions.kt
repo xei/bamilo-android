@@ -94,7 +94,7 @@ fun getInterpolatedColors(startColor: Int, endColor: Int, n: Int) : IntArray{
  * This helper function convert . to / also
  * also remove .0 from end of float numbers
  * */
-public fun getScoreString(value: Float): String {
+public fun getMorphNumberString(value: Float): String {
     @SuppressLint("DefaultLocale")
     var result = String.format("%.1f", value)
 

@@ -47,6 +47,7 @@
                         tools:ignore="RelativeOverlap,SmallSp"/>
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/pdvVariations_linearLayout_sizeHelp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -33,6 +33,10 @@ class VariationsItem(var sku: String, var variations: ArrayList<Variation>, priv
 
     @Binder
     public fun binder(holder: VariationsHolder) {
+        if (holder.isFilled) {
+            return
+        }
+
         setupColorRecycler(holder)
         setupSizedRecycler(holder)
 
@@ -60,6 +64,8 @@ class VariationsItem(var sku: String, var variations: ArrayList<Variation>, priv
         holder.itemView.findViewById<View>(R.id.pdvVariations_linearLayout_descriptions).setOnClickListener {
             gotoDescriptionPage()
         }
+
+        holder.isFilled = true
     }
 
     private fun gotoSpecificationPage() {

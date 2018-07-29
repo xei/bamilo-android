@@ -23,6 +23,9 @@ class RecommendationItem(private var recommendedItem: RecommendedItem,
     @SuppressLint("SetTextI18n")
     @Binder
     public fun binder(holder: RecommendationHolder) {
+        if (holder.isFilled) {
+            return
+        }
         val data = recommendedItem.data as Map<String, Any>
         ImageManager.getInstance().loadImage(data["image"] as String,
                 holder.image,
@@ -43,7 +46,7 @@ class RecommendationItem(private var recommendedItem: RecommendedItem,
             holder.price.text = CurrencyFormatter.formatCurrency(price.toString(),
                     false) + " $currency"
 
-            holder.oldPrice.text = CurrencyFormatter.formatCurrency(discountPrice.toString()) + " $currency"
+            holder.oldPrice.text = CurrencyFormatter.formatCurrency(discountPrice.toString(), false) + " $currency"
             holder.oldPrice.paintFlags = holder.oldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             holder.oldPrice.visibility = View.VISIBLE
         }
@@ -51,5 +54,6 @@ class RecommendationItem(private var recommendedItem: RecommendedItem,
         holder.itemView.setOnClickListener {
             pdvMainView.onRelatedProductClicked(data["item"] as String)
         }
+        holder.isFilled = true
     }
 }

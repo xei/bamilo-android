@@ -15,6 +15,9 @@ import com.mobile.view.productdetail.model.ReturnPolicy
 class ReturnPolicyItem(private var returnPolicy: ReturnPolicy) {
     @Binder
     public fun binder(holder: ReturnPolicyHolder) {
+        if (holder.isFilled) {
+            return
+        }
         ImageManager.getInstance().loadImage(returnPolicy.icon,
                 holder.icon,
                 null,
@@ -22,5 +25,6 @@ class ReturnPolicyItem(private var returnPolicy: ReturnPolicy) {
                 false)
 
         holder.title.text = returnPolicy.title
+        holder.isFilled = true
     }
 }

@@ -17,6 +17,7 @@ import net.cachapa.expandablelayout.ExpandableLayout
  * contact farshidabazari@gmail.com
  */
 class SellerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var isFilled = false
     var sellerName: TextView = itemView.findViewById(R.id.pdvSellerInfo_textView_name)
 
     var sellerScore: TextView = itemView.findViewById(R.id.pdvSellerScore_textView_score)
@@ -24,7 +25,7 @@ class SellerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var sellerScoreMaxValue: TextView = itemView.findViewById(R.id.pdvSellerScore_textView_maxValue)
 
     var collaborationPeriod: TextView = itemView.findViewById(R.id.pdvSellerInfo_textView_collaborationPeriod)
-    var collaborationLable: TextView = itemView.findViewById(R.id.pdvSellerInfo_textView_collaborationPeriodLabel)
+    var collaborationLabel: TextView = itemView.findViewById(R.id.pdvSellerInfo_textView_collaborationPeriodLabel)
 
     var warranty: TextView = itemView.findViewById(R.id.pdvSellerInfo_textView_warranty)
     var deliveryTimeAndCity: TextView = itemView.findViewById(R.id.pdvSellerInfo_texView_deliverTimeAndCity)

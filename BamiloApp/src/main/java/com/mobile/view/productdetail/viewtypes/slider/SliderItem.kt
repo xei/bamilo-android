@@ -38,6 +38,10 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
 
     @Binder
     public fun binder(holder: SliderHolder) {
+        if (holder.isFilled) {
+            return
+        }
+
         this.holder = holder
 
         sliderPresenter = SliderPresenter(holder.itemView.context,
@@ -49,6 +53,7 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
         setupViewPager(holder)
         bindLikeButtonClickListener(holder)
         holder.share.setOnClickListener { _ -> sliderPresenter.shareProduct(imageSliderModel.shareUrl) }
+        holder.isFilled = true
     }
 
     private fun bindLikeButtonClickListener(holder: SliderHolder) {
