@@ -11,7 +11,8 @@ import android.view.View
 import com.bamilo.modernbamilo.product.comment.CommentViewModel
 import com.bamilo.modernbamilo.product.comment.startCommentsActivity
 import com.bamilo.modernbamilo.product.comment.startCommentsActivityForJustOneDistinctComment
-import com.bamilo.modernbamilo.product.descspec.DescSpecFragment
+import com.bamilo.modernbamilo.product.descspec.spec.SpecificationFragment
+import com.bamilo.modernbamilo.product.descspec.tempdesc.TemporaryDescriptionFragment
 import com.bamilo.modernbamilo.product.sellerslist.view.SellersListFragment
 import com.google.gson.Gson
 import com.mobile.app.BamiloApplication
@@ -229,11 +230,13 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
                         productDetail.image!!)
             }
             FragmentTag.DESCRIPTION.name -> {
-                return DescSpecFragment.newInstance(sku!!, DescSpecFragment.WHICH_SCREEN_DESC)
+                return TemporaryDescriptionFragment.newInstance(sku!!)
+//                return DescSpecFragment.newInstance(sku!!, DescSpecFragment.WHICH_SCREEN_DESC)
             }
 
             FragmentTag.SPECIFICATIONS.name -> {
-                return DescSpecFragment.newInstance(sku!!, DescSpecFragment.WHICH_SCREEN_SPEC)
+                return  SpecificationFragment.newInstance(sku!!)
+//                return DescSpecFragment.newInstance(sku!!, DescSpecFragment.WHICH_SCREEN_SPEC)
             }
         }
 
