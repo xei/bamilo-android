@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.ImageButton
+import android.widget.TextView
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.product.descspec.DescSpecWebApi
 import com.bamilo.modernbamilo.product.descspec.desc.pojo.GetDescriptionResponse
@@ -27,8 +29,10 @@ private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
  * create an instance of this fragment.
  *
  */
-class TemporaryDescriptionFragment : Fragment() {
+class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
 
+    private lateinit var mTitleTextView: TextView
+    private lateinit var mCloseButton: ImageButton
     private lateinit var mWebView: WebView
 
     private lateinit var mWebApi: DescSpecWebApi
@@ -66,11 +70,23 @@ class TemporaryDescriptionFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val rootView = inflater.inflate(R.layout.fragment_description_temp, container, false)
-        mWebView = rootView.findViewById(R.id.fragmentDescription_webView_descriptionWebView)
 
+        findViews(rootView)
+        mTitleTextView.text = resources.getString(R.string.decSpec_tab_description)
+        setOnClickListeners()
         loadDescription()
 
         return rootView
+    }
+
+    private fun findViews(rootView: View) {
+        mTitleTextView = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_xeiTextView_title)
+        mCloseButton = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_imageButton_close)
+        mWebView = rootView.findViewById(R.id.fragmentDescription_webView_descriptionWebView)
+    }
+
+    private fun setOnClickListeners() {
+        mCloseButton.setOnClickListener(this)
     }
 
     private fun loadDescription() {
@@ -88,6 +104,12 @@ class TemporaryDescriptionFragment : Fragment() {
             }
 
         })
+    }
+
+    override fun onClick(clickedView: View?) {
+        when (clickedView?.id) {
+            R.id.layoutToolbar_imageButton_close -> activity?.onBackPressed()
+        }
     }
 
 }

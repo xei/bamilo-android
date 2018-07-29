@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.product.descspec.DescSpecWebApi
 import com.bamilo.modernbamilo.product.descspec.spec.pojo.GetSpecificationResponse
@@ -28,8 +30,10 @@ private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
  * create an instance of this fragment.
  *
  */
-class SpecificationFragment : Fragment() {
+class SpecificationFragment : Fragment(), View.OnClickListener {
 
+    private lateinit var mTitleTextView: TextView
+    private lateinit var mCloseButton: ImageButton
     private lateinit var mSpecificationTableStickyHeadersListView: StickyListHeadersListView
 
     private lateinit var mWebApi: DescSpecWebApi
@@ -70,12 +74,20 @@ class SpecificationFragment : Fragment() {
 
         val rootView = inflater.inflate(R.layout.fragment_specification, container, false)
         findViews(rootView)
+        mTitleTextView.text = resources.getString(R.string.decSpec_tab_specification)
+        setOnClickListeners()
         loadSpecification()
         return rootView
     }
 
     private fun findViews(rootView: View) {
+        mTitleTextView = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_xeiTextView_title)
+        mCloseButton = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_imageButton_close)
         mSpecificationTableStickyHeadersListView = rootView.findViewById(R.id.fragmentSpecification_stickyListHeadersListView_specificationTable)
+    }
+
+    private fun setOnClickListeners() {
+        mCloseButton.setOnClickListener(this)
     }
 
     private fun loadSpecification() {
@@ -106,6 +118,12 @@ class SpecificationFragment : Fragment() {
      */
     private fun initStickyListHeadersListView() {
         mSpecificationTableStickyHeadersListView.adapter = SpecificationTableAdapter(mSpecificationRows)
+    }
+
+    override fun onClick(clickedView: View?) {
+        when (clickedView?.id) {
+            R.id.layoutToolbar_imageButton_close -> activity?.onBackPressed()
+        }
     }
 
 }

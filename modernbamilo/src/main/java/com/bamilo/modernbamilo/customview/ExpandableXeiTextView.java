@@ -350,6 +350,9 @@ public class ExpandableXeiTextView extends LinearLayout implements View.OnClickL
         void changeState(boolean collapsed);
 
         void setView(View toggleView);
+
+        TextView getIndicator();
+        void hideIndicator();
     }
 
     static class ImageButtonExpandController implements ExpandIndicatorController {
@@ -372,6 +375,16 @@ public class ExpandableXeiTextView extends LinearLayout implements View.OnClickL
         @Override
         public void setView(View toggleView) {
             mImageButton = (TextView) toggleView;
+        }
+
+        @Override
+        public TextView getIndicator() {
+            return mImageButton;
+        }
+
+        @Override
+        public void hideIndicator() {
+            mImageButton.setVisibility(GONE);
         }
     }
 
@@ -396,5 +409,16 @@ public class ExpandableXeiTextView extends LinearLayout implements View.OnClickL
         public void setView(View toggleView) {
             mTextView = (TextView) toggleView;
         }
+
+        @Override
+        public TextView getIndicator() {
+            return mTextView;
+        }
+
+        @Override
+        public void hideIndicator() {
+            mTextView.setVisibility(GONE);
+        }
+
     }
 }
