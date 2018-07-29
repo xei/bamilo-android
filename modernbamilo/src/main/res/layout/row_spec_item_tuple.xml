@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:locale="auto"
+        app:locale="fa_IR"
         app:style="bold"
         tools:text="عنوان" />
 
@@ -42,5 +42,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rowSpecItemTuple_xeiTextView_title"
         app:layout_constraintTop_toTopOf="parent"
-        app:locale="auto" />
+        app:locale="fa_IR" />
 </android.support.constraint.ConstraintLayout>

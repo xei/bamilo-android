@@ -73,6 +73,7 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
 
         findViews(rootView)
         mTitleTextView.text = resources.getString(R.string.decSpec_tab_description)
+        initWebView()
         setOnClickListeners()
         loadDescription()
 
@@ -87,6 +88,15 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
 
     private fun setOnClickListeners() {
         mCloseButton.setOnClickListener(this)
+    }
+
+    private fun initWebView() {
+        mWebView.settings.run {
+            loadWithOverviewMode = true
+            useWideViewPort = true
+            builtInZoomControls = true
+            displayZoomControls = false
+        }
     }
 
     private fun loadDescription() {
