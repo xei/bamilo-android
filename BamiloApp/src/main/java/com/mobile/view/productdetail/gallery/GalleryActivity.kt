@@ -5,13 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatImageView
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import com.bamilo.modernbamilo.app.BaseActivity
 import com.mobile.components.ghostadapter.GhostAdapter
-import com.mobile.view.R
 import com.mobile.utils.OnItemClickListener
+import com.mobile.view.R
 import com.mobile.view.productdetail.model.Image
 import com.mobile.view.productdetail.viewtypes.gallery.GalleryBottomImageItem
 import java.lang.Exception
@@ -19,7 +19,7 @@ import java.lang.Exception
 const val KEY_EXTRA_IMAGES = "KEY_EXTRA_IMAGES"
 
 @Suppress("UNCHECKED_CAST")
-class GalleryActivity : AppCompatActivity() {
+class GalleryActivity : BaseActivity() {
 
     private var images: ArrayList<Image>? = null
 
@@ -71,8 +71,11 @@ class GalleryActivity : AppCompatActivity() {
     }
 
     private fun addImagesToViewPager() {
-        val pagerAdapter: PagerAdapter = ProductGalleryPagerAdapter(supportFragmentManager, images)
+        val pagerAdapter: PagerAdapter = ProductGalleryPagerAdapter(supportFragmentManager,
+                ArrayList(images?.asReversed()))
+
         zoomableViewPager.adapter = pagerAdapter
+        zoomableViewPager.currentItem = pagerAdapter.count - 1
     }
 
     private fun setupViewPager() {
@@ -87,7 +90,9 @@ class GalleryActivity : AppCompatActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-                recyclerView.scrollToPosition(position)
+                recyclerView.scrollToPosition(items.size - position - 1)
+                deSelectImages()
+                (items[items.size - position - 1] as GalleryBottomImageItem).selectImage()
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -101,22 +106,37 @@ class GalleryActivity : AppCompatActivity() {
     }
 
     private fun addImagesToRecyclerView() {
-        for (imageUrl in images!!) {
-            items.add(GalleryBottomImageItem(imageUrl.medium!!, object : OnItemClickListener {
-                override fun onItemClicked(any: Any?) {
-                    val position = any as Int
-                    recyclerView.scrollToPosition(position)
-                    zoomableViewPager.currentItem = position
-                }
-            }))
+        var selectImage = true
+
+        for (i in 0 until images!!.size) {
+            items.add(GalleryBottomImageItem(images!![i].medium!!,
+                    selectImage,
+                    object : OnItemClickListener {
+                        override fun onItemClicked(any: Any?) {
+                            deSelectImages()
+
+                            val position = any as Int
+                            val gotoPosition = items.size - position - 1
+                            recyclerView.scrollToPosition(gotoPosition)
+                            zoomableViewPager.currentItem = gotoPosition
+                        }
+                    }))
+            selectImage = false
         }
+
         adapter.setItems(items)
+    }
+
+    private fun deSelectImages() {
+        for (item in items) {
+            (item as GalleryBottomImageItem).deSelectImage()
+        }
     }
 
     private fun setupRecyclerView() {
         recyclerView = findViewById(R.id.gallery_recyclerView_images)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true)
+        recyclerView.layoutManager = GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false)
     }
 
     private fun showNoImageView() {

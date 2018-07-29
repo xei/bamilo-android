@@ -3,15 +3,16 @@ package com.mobile.view.productdetail.slider
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.GestureDetector
 import android.view.MotionEvent
-import android.widget.Toast
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import com.mobile.app.BamiloApplication
-import com.mobile.components.widget.likebutton.SparkButton
+import com.mobile.constants.ConstantsIntentExtra
 import com.mobile.service.pojo.RestConstants
+import com.mobile.view.MainFragmentActivity
 import com.mobile.view.R
 import com.mobile.view.productdetail.gallery.GalleryActivity
 import com.mobile.view.productdetail.model.Image
@@ -37,7 +38,13 @@ class SliderPresenter(var context: Context, private var productSku: String, priv
     }
 
     private fun loginUser() {
-        Toast.makeText(context, R.string.please_login_first, Toast.LENGTH_SHORT).show()
+        val intent = Intent(context, MainFragmentActivity::class.java)
+
+        val bundle = Bundle()
+        bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true)
+
+        intent.putExtra("pdv_login_bundle", bundle)
+        context.startActivity(intent)
     }
 
     private fun removeProductToWishList(callBack: Callback<ResponseWrapper<Any>>) {

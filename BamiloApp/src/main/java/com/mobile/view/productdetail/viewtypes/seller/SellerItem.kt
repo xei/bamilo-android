@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.widget.AdapterView
-import com.bamilo.modernbamilo.util.getScoreString
+import com.bamilo.modernbamilo.util.getMorphNumberString
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import com.mobile.components.customfontviews.TextView
@@ -91,6 +91,10 @@ class SellerItem(private var seller: Seller,
 
     @Binder
     public fun binder(holder: SellerHolder) {
+        if (holder.isFilled) {
+            return
+        }
+
         seller.name?.let {
             holder.sellerName.text = it
         }
@@ -115,6 +119,8 @@ class SellerItem(private var seller: Seller,
         triggerGetRegions()
 
         holder.sellerName.setOnClickListener { gotoSellerPage(holder.itemView.context) }
+
+        holder.isFilled = true
     }
 
     @SuppressLint("SetTextI18n")
@@ -142,7 +148,7 @@ class SellerItem(private var seller: Seller,
                 seller.score.maxValue)
 
         holder.sellerScore.text = seller.score.overall.toString()
-        holder.overallScore.text = getScoreString(seller.score.overall)
+        holder.overallScore.text = getMorphNumberString(seller.score.overall)
 
         holder.sellerScore.setBackgroundDrawable(createRoundDrawable("#47b638",
                 UIUtils.dpToPx(holder.itemView.context, 2f)))
@@ -161,10 +167,10 @@ class SellerItem(private var seller: Seller,
             holder.percentageLayout.visibility = View.GONE
         } else {
             holder.percentageLayout.visibility = View.VISIBLE
-            holder.collaborationLable.visibility = View.VISIBLE
+            holder.collaborationLabel.visibility = View.VISIBLE
             holder.collaborationPeriod.visibility = View.VISIBLE
 
-            holder.collaborationLable.text = seller.presenceDuration.label + " : "
+            holder.collaborationLabel.text = seller.presenceDuration.label + " : "
             holder.collaborationPeriod.text = seller.presenceDuration.value
         }
 
@@ -209,12 +215,12 @@ class SellerItem(private var seller: Seller,
     private fun showOverall(holder: SellerHolder, sellerScore: Score) {
         showSellerRateTexts(holder, R.id.sellerScore_textView_maxValueOfScore,
                 holder.itemView.context.getString(R.string.seller_info_rate_from_score,
-                        getScoreString(sellerScore.maxValue.toFloat()).toInt()))
+                        getMorphNumberString(sellerScore.maxValue.toFloat()).toInt()))
     }
 
     @SuppressLint("StringFormatMatches")
     private fun showSLAReach(holder: SellerHolder, sellerScore: Score) {
-        val result = getScoreString(sellerScore.SLAReached)
+        val result = getMorphNumberString(sellerScore.SLAReached)
 
         showSellerRateTexts(holder, R.id.sellerScore_textView_sendOnTimeRate,
                 holder.itemView.context.getString(R.string.seller_info_rate_from,
@@ -224,7 +230,7 @@ class SellerItem(private var seller: Seller,
 
     @SuppressLint("StringFormatMatches")
     private fun showNotReturned(holder: SellerHolder, sellerScore: Score) {
-        val result = getScoreString(sellerScore.notReturned)
+        val result = getMorphNumberString(sellerScore.notReturned)
         showSellerRateTexts(holder, R.id.sellerScore_textView_salesWithoutReturnRate,
                 holder.itemView.context.getString(R.string.seller_info_rate_from,
                         result,
@@ -233,7 +239,7 @@ class SellerItem(private var seller: Seller,
 
     @SuppressLint("StringFormatMatches")
     private fun showFullfilment(holder: SellerHolder, sellerScore: Score) {
-        val result = getScoreString(sellerScore.fullfilment)
+        val result = getMorphNumberString(sellerScore.fullfilment)
         showSellerRateTexts(holder, R.id.sellerScore_textView_successfulSupplyRate,
                 holder.itemView.context.getString(R.string.seller_info_rate_from,
                         result,

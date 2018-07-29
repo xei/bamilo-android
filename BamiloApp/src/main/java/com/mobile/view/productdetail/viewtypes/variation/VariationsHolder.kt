@@ -13,7 +13,7 @@ import com.mobile.view.R
  * contact farshidabazari@gmail.com
  */
 class VariationsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+    var isFilled = false
     var sizeHelp: LinearLayout = itemView.findViewById(R.id.pdvVariations_linearLayout_sizeHelp)
 
     var sizesRecyclerView: RecyclerView = itemView.findViewById(R.id.pdvVariations_recyclerView_size)

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.bamilo.modernbamilo.app.BaseActivity
 import com.bamilo.modernbamilo.product.comment.CommentViewModel
 import com.bamilo.modernbamilo.product.comment.startCommentsActivity
 import com.bamilo.modernbamilo.product.comment.startCommentsActivityForJustOneDistinctComment
@@ -40,7 +41,7 @@ import com.mobile.view.productdetail.model.Review
 import com.mobile.view.productdetail.model.SimpleProduct
 import java.util.*
 
-class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragment.OnAddToCartButtonClickListener {
+class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.OnAddToCartButtonClickListener {
     private lateinit var productDetail: ProductDetail
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var productDetailPresenter: ProductDetailPresenter
@@ -66,13 +67,13 @@ class ProductDetailActivity : AppCompatActivity(), PDVMainView, SellersListFragm
         }
     }
 
-    override fun attachBaseContext(newBase: Context?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && newBase != null) {
-            super.attachBaseContext(ConfigurationWrapper.wrapLocale(newBase, Locale("fa", "ir")))
-        } else {
-            super.attachBaseContext(newBase)
-        }
-    }
+//    override fun attachBaseContext(newBase: Context?) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && newBase != null) {
+//            super.attachBaseContext(ConfigurationWrapper.wrapLocale(newBase, Locale("fa", "ir")))
+//        } else {
+//            super.attachBaseContext(newBase)
+//        }
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

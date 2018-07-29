@@ -12,6 +12,7 @@ import com.mobile.view.R
  * contact farshidabazari@gmail.com
  */
 class ReturnPolicyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var isFilled = false
     var title: TextView = itemView.findViewById(R.id.returnPolicy_textView_returnPolicyText)
     var icon: AppCompatImageView = itemView.findViewById(R.id.returnPolicy_appImageView_returnPolicyIcon)
 }

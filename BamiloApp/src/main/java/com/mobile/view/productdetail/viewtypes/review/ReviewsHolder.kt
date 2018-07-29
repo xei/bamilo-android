@@ -13,6 +13,7 @@ import com.mobile.view.R
  * contact farshidabazari@gmail.com
  */
 class ReviewsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var isFilled = false
     var rate: TextView = itemView.findViewById(R.id.pdvReview_textView_rate)
     var total: TextView = itemView.findViewById(R.id.pdvReview_textView_total)
     var maxRate: TextView = itemView.findViewById(R.id.pdvReview_textView_maxRate)

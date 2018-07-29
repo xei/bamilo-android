@@ -13,6 +13,7 @@ import com.mobile.view.R
  * contact farshidabazari@gmail.com
  */
 class RecommendationHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var isFilled = false
     var title: TextView = itemView.findViewById(R.id.recommendation_textView_title)
     var price: TextView = itemView.findViewById(R.id.recommendation_textView_price)
     var oldPrice: TextView = itemView.findViewById(R.id.recommendation_textView_oldPrice)

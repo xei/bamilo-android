@@ -5,7 +5,7 @@ import android.graphics.Paint
 import android.view.View
 import android.widget.LinearLayout
 import com.bamilo.modernbamilo.product.comment.submit.startSubmitRateActivity
-import com.bamilo.modernbamilo.util.getScoreString
+import com.bamilo.modernbamilo.util.getMorphNumberString
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.service.utils.TextUtils
@@ -34,7 +34,7 @@ class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: Pri
             currency.text = primaryInfoModel.priceModel.currency
             title.text = primaryInfoModel.title
             ratingBar.rating = primaryInfoModel.rating.average
-            averageScore.text = getScoreString(primaryInfoModel.rating.average)
+            averageScore.text = getMorphNumberString(primaryInfoModel.rating.average)
             scoreCount.text = primaryInfoModel.rating.total.toString()
 
             brandLayout.visibility = View.GONE

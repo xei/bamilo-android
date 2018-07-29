@@ -13,7 +13,7 @@ interface SubmitRateWebApi {
     @POST("rating/addproductreview")
     @FormUrlEncoded
     fun submit(@Field(value="sku", encoded = false) productId: String,
-               @Field(value="rate", encoded = false) rating:Float,
+               @Field(value="rate", encoded = false) rating:Int,
                @Field(value="title", encoded = false) title: String,
                @Field(value="comment", encoded = false) content: String
     ) : Call<ResponseWrapper<Boolean>>

@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/dimen_4dp"
-                android:textColor="@color/secondary_text_color"
+                android:textColor="@color/blue_link"
                 android:textSize="11sp"
                 app:fontFamily="@string/bamilo_bold_font"
                 tools:ignore="SmallSp"

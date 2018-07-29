@@ -13,6 +13,7 @@ import com.mobile.view.R
  * contact farshidabazari@gmail.com
  */
 class SliderHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var isFilled = false
     var viewPager: ViewPager = itemView.findViewById(R.id.contentProductSlider_viewPager)
     var share: AppCompatImageView = itemView.findViewById(R.id.pdvSlider_appImageView_share)
     var like: SparkButton = itemView.findViewById(R.id.pdvSlider_appImageView_like)

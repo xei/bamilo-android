@@ -192,7 +192,10 @@ class CommentsActivity : BaseActivity(), View.OnClickListener {
 
             override fun onResponse(call: Call<ResponseWrapper<GetCommentsResponse>>?, response: Response<ResponseWrapper<GetCommentsResponse>>?) {
                 response?.body()?.metadata?.let {
-                    mViewModel.comments.addAll(it.comments)
+                    if(it.comments != null) {
+                        mViewModel.comments.addAll(it.comments)
+                    }
+
                     mCommentsListRecyclerView.adapter?.notifyDataSetChanged()
 
                     it.pagination.run {

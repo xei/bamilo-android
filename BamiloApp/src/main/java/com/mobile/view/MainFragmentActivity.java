@@ -341,6 +341,15 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             return true;
         }
 
+        if (getIntent() != null) {
+            Bundle bundle = getIntent().getBundleExtra("pdv_login_bundle");
+            if (bundle != null && bundle
+                    .containsKey(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API)) {
+                onSwitchFragment(FragmentType.LOGIN, getIntent().getBundleExtra("pdv_login_bundle"),
+                        true);
+                return true;
+            }
+        }
         return false;
     }
 
