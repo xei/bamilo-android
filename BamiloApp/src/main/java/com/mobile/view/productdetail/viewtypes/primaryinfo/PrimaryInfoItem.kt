@@ -33,6 +33,7 @@ class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: Pri
 
             currency.text = primaryInfoModel.priceModel.currency
             title.text = primaryInfoModel.title
+
             ratingBar.rating = primaryInfoModel.rating.average
             averageScore.text = getMorphNumberString(primaryInfoModel.rating.average)
             scoreCount.text = primaryInfoModel.rating.total.toString()

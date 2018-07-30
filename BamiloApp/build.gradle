@@ -182,6 +182,7 @@ dependencies {
 
     compile project(':BamiloCore')
     implementation project(path: ':modernbamilo')
+    implementation files('libs/touchimageview.jar')
 
     /** GLIDE **/
     compile 'com.github.bumptech.glide:glide:4.7.1'

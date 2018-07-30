@@ -1,5 +1,6 @@
 package com.bamilo.modernbamilo.product.descspec.spec
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,11 +29,12 @@ class SpecificationTableAdapter(private val mSpecificationRows: ArrayList<Specif
         return view
     }
 
+    @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val viewLinearLayout = LayoutInflater.from(parent?.context!!).inflate(R.layout.row_spec_item, parent, false) as LinearLayout
 
-        for (tuple in mSpecificationRows[position].content) {
-            val tupleView = LayoutInflater.from(parent?.context!!).inflate(R.layout.row_spec_item_tuple, parent, false)
+        for (tuple in mSpecificationRows[position].content!!) {
+            val tupleView = LayoutInflater.from(parent.context!!).inflate(R.layout.row_spec_item_tuple, parent, false)
 
             val titleTextView = tupleView.findViewById(R.id.rowSpecItemTuple_xeiTextView_title) as TextView
             titleTextView.text = tuple.title
@@ -41,12 +43,11 @@ class SpecificationTableAdapter(private val mSpecificationRows: ArrayList<Specif
             valueTextView.text = tuple.value
 
             viewLinearLayout.addView(tupleView)
-            viewLinearLayout.addView(LayoutInflater.from(parent?.context!!).inflate(R.layout.row_spec_item_divider, parent, false))
+            viewLinearLayout.addView(LayoutInflater.from(parent.context!!).inflate(R.layout.row_spec_item_divider, parent, false))
         }
 
         // because of touch feedback
         viewLinearLayout.setOnClickListener(null)
         return viewLinearLayout
     }
-
 }

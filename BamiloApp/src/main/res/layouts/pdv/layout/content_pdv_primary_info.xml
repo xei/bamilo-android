@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.mobile.components.customfontviews.TextView
+        <com.bamilo.modernbamilo.customview.XeiTextView
             android:id="@+id/pdvPrimaryInfo_textView_title"
             android:textStyle="bold"
             android:layout_width="wrap_content"
@@ -35,13 +35,14 @@
             app:fontFamily="@string/bamilo_bold_font"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:style="bold"
             tools:text="گوشی موبایل هواوی مدل آنر ۶سی ۶۴ گیگابایت رنگ آبی شش اینج چهار گیگ رم"/>
 
         <LinearLayout
             android:id="@+id/pdvPrimaryInfo_linearLayout_brandLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="12dp"
             android:paddingStart="@dimen/dimen_10dp"
             android:paddingEnd="@dimen/dimen_10dp"
             android:paddingLeft="@dimen/dimen_10dp"

@@ -99,7 +99,11 @@ class SpecificationFragment : Fragment(), View.OnClickListener {
                     if (it.size != 0) {
                         mSpecificationRows.clear()
                         mSpecificationRows.removeAll(mSpecificationRows)
-                        mSpecificationRows.addAll(it)
+                        for(row in it){
+                            if(row.content != null){
+                                mSpecificationRows.add(row)
+                            }
+                        }
                     }
                 }
 
