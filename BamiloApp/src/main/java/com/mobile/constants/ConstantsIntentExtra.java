@@ -101,7 +101,6 @@ public class ConstantsIntentExtra {
     public static final String ARG_1 = mPackage + "arg1";
     public static final String ARG_2 = mPackage + "arg2";
     public static final String ARG_3 = mPackage + "arg3";
-    @Deprecated
     public static final String CONTENT_ID = mPackage + "ContentId";
     @Deprecated
     public static final String CONTENT_TITLE = mPackage + "ContentTitle";

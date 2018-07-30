@@ -318,7 +318,7 @@ class ProductDetailMainFragment : Fragment() {
     }
 
     private fun addSellerInfo() {
-        addHeader(context!!.getString(R.string.fulfilled))
+//        addHeader(context!!.getString(R.string.fulfilled))
         items.add(SellerItem(product.seller, product.other_seller_count, product.simple_sku!!, pdvMainView))
     }
 

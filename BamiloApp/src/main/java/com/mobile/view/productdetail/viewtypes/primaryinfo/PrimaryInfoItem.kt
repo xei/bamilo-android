@@ -1,16 +1,22 @@
 package com.mobile.view.productdetail.viewtypes.primaryinfo
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
+import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import com.bamilo.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.bamilo.modernbamilo.util.getMorphNumberString
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
+import com.mobile.constants.ConstantsIntentExtra
+import com.mobile.controllers.fragments.FragmentType
 import com.mobile.service.utils.TextUtils
 import com.mobile.service.utils.shop.CurrencyFormatter
 import com.mobile.utils.ui.UIUtils
+import com.mobile.view.MainFragmentActivity
 import com.mobile.view.R
 import com.mobile.view.productdetail.model.PrimaryInfoModel
 
@@ -33,6 +39,7 @@ class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: Pri
 
             currency.text = primaryInfoModel.priceModel.currency
             title.text = primaryInfoModel.title
+
             ratingBar.rating = primaryInfoModel.rating.average
             averageScore.text = getMorphNumberString(primaryInfoModel.rating.average)
             scoreCount.text = primaryInfoModel.rating.total.toString()
@@ -44,6 +51,7 @@ class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: Pri
             }
 
             ratingLayout.setOnClickListener { startSubmitRateActivity(holder.itemView.context, sku) }
+            brandLayout.setOnClickListener { gotoBrandPage(itemView.context) }
         }
     }
 
@@ -121,5 +129,17 @@ class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: Pri
             return false
         }
         return true
+    }
+
+    private fun gotoBrandPage(context: Context?) {
+        val bundle = Bundle()
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, primaryInfoModel.brand)
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_BRAND)
+
+        val intent = Intent(context, MainFragmentActivity::class.java).apply {
+            putExtra("pdv_brand_bundle", bundle)
+        }
+
+        context?.startActivity(intent)
     }
 }

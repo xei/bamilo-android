@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import com.mobile.utils.imageloader.ImageManager
-import com.mobile.utils.photoview.PhotoView
 import com.mobile.view.R
+import com.ortiz.touch.TouchImageView
 
 /**
  * Created by Farshid
@@ -26,7 +26,7 @@ class ProductGalleryPageFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.content_pdv_gallery_slider_image, container, false)
-        val image: PhotoView = view.findViewById(R.id.pdvGallery_photoView_Image)
+        val image: TouchImageView = view.findViewById(R.id.pdvGallery_touchImageView_Image)
         val progressBar: ProgressBar = view.findViewById(R.id.pdvGallery_progressBar)
         arguments?.getString("image")
 

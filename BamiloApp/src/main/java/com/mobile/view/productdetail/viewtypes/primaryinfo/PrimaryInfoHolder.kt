@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.RelativeLayout
+import com.bamilo.modernbamilo.customview.XeiTextView
 import com.mobile.components.customfontviews.TextView
 import com.mobile.view.R
 
@@ -14,7 +15,7 @@ import com.mobile.view.R
  * contact farshidabazari@gmail.com
  */
 class PrimaryInfoHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var title: TextView = itemView.findViewById(R.id.pdvPrimaryInfo_textView_title)
+    var title: XeiTextView = itemView.findViewById(R.id.pdvPrimaryInfo_textView_title)
     var averageScore: TextView = itemView.findViewById(R.id.pdvPrimaryInfo_textView_averageScore)
     var scoreCount: TextView = itemView.findViewById(R.id.pdvPrimaryInfo_textView_scoreCount)
     var oldPrice: TextView = itemView.findViewById(R.id.pdvPrimaryInfo_textView_oldPrice)

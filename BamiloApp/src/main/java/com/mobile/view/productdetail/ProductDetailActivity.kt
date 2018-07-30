@@ -3,10 +3,8 @@ package com.mobile.view.productdetail
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.bamilo.modernbamilo.app.BaseActivity
 import com.bamilo.modernbamilo.product.comment.CommentViewModel
@@ -29,7 +27,6 @@ import com.mobile.managers.TrackerManager
 import com.mobile.service.pojo.BaseResponse
 import com.mobile.service.tracking.TrackingPage
 import com.mobile.service.utils.TextUtils
-import com.mobile.utils.ConfigurationWrapper
 import com.mobile.utils.dialogfragments.DialogProgressFragment
 import com.mobile.utils.ui.WarningFactory
 import com.mobile.view.MainFragmentActivity
@@ -39,7 +36,6 @@ import com.mobile.view.productdetail.mainfragment.ProductDetailMainFragment
 import com.mobile.view.productdetail.model.ProductDetail
 import com.mobile.view.productdetail.model.Review
 import com.mobile.view.productdetail.model.SimpleProduct
-import java.util.*
 
 class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.OnAddToCartButtonClickListener {
     private lateinit var productDetail: ProductDetail
@@ -67,14 +63,6 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
         }
     }
 
-//    override fun attachBaseContext(newBase: Context?) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && newBase != null) {
-//            super.attachBaseContext(ConfigurationWrapper.wrapLocale(newBase, Locale("fa", "ir")))
-//        } else {
-//            super.attachBaseContext(newBase)
-//        }
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_detail)
@@ -91,6 +79,11 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
                 getString(TrackingPage.PRODUCT_DETAIL.getName()),
                 getString(R.string.gaScreen), "", System.currentTimeMillis())
         TrackerManager.trackScreen(this, screenModel, false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        progressDialog?.dismiss()
     }
 
     private fun setupAddToCard() {
@@ -147,7 +140,9 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
 
     private fun dismissProgressDialog() {
         progressDialog?.run {
-            dismiss()
+            if (isAdded && context != null) {
+                dismiss()
+            }
         }
     }
 
@@ -201,22 +196,30 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
         }
     }
 
-    private fun displaySelectedScreen(fragmentTag: FragmentTag) {
+    private fun displaySelectedScreen(fragmentTag: FragmentTag, showAnimation: Boolean = false) {
         val fragment = getFragment(fragmentTag) ?: return
 
         try {
-            replaceFragment(fragment)
+            replaceFragment(fragment, showAnimation)
         } catch (ignored: Exception) {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: Fragment, showAnimation: Boolean = false) {
         val backStateName = fragment.javaClass.simpleName
-        supportFragmentManager.beginTransaction().run {
-            replace(R.id.pdv_frameLayout_fragmentContainer, fragment, backStateName)
-            addToBackStack(backStateName)
-            commit()
+        val ft = supportFragmentManager.beginTransaction()
+
+        if (showAnimation) {
+            ft.setCustomAnimations(R.anim.slide_from_right,
+                    R.anim.slide_to_left,
+                    R.anim.slide_from_left,
+                    R.anim.slide_to_right)
         }
+
+        ft.replace(R.id.pdv_frameLayout_fragmentContainer, fragment, backStateName)
+        ft.addToBackStack(backStateName)
+
+        ft.commit()
     }
 
     private fun getFragment(fragmentTag: FragmentTag): Fragment? {
@@ -236,7 +239,7 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
             }
 
             FragmentTag.SPECIFICATIONS.name -> {
-                return  SpecificationFragment.newInstance(sku!!)
+                return SpecificationFragment.newInstance(sku!!)
 //                return DescSpecFragment.newInstance(sku!!, DescSpecFragment.WHICH_SCREEN_SPEC)
             }
         }
@@ -271,11 +274,11 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
     }
 
     override fun onShowDesAndSpecPage() {
-        displaySelectedScreen(FragmentTag.DESCRIPTION)
+        displaySelectedScreen(FragmentTag.DESCRIPTION, true)
     }
 
     override fun onShowSpecsAndSpecPage() {
-        displaySelectedScreen(FragmentTag.SPECIFICATIONS)
+        displaySelectedScreen(FragmentTag.SPECIFICATIONS, true)
     }
 
     override fun onShowAllReviewsClicked() {

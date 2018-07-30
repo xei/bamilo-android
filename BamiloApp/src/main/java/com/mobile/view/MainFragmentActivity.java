@@ -305,24 +305,27 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
     }
 
     private boolean checkIntentsFromPDV() {
-        if (getIntent() != null
-                && getIntent().getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
+        Intent intent = getIntent();
+
+        if (intent == null) {
+            return false;
+        }
+
+        if (intent.getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
                 == FragmentType.MORE_RELATED_PRODUCTS) {
             onSwitchFragment(FragmentType.MORE_RELATED_PRODUCTS, null, true);
             return true;
         }
 
-        if (getIntent() != null
-                && getIntent().getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
+        if (intent.getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE)
                 == FragmentType.SHOPPING_CART) {
             onSwitchFragment(FragmentType.SHOPPING_CART, null, true);
             return true;
         }
 
-        if (getIntent() != null && !TextUtils
-                .isEmpty(getIntent().getStringExtra("bread_crumb_target"))) {
-            new TargetLink(getWeakBaseActivity(), getIntent().getStringExtra("bread_crumb_target"))
-                    .addTitle(getIntent().getStringExtra("bread_crumb_title"))
+        if (!TextUtils.isEmpty(intent.getStringExtra("bread_crumb_target"))) {
+            new TargetLink(getWeakBaseActivity(), intent.getStringExtra("bread_crumb_target"))
+                    .addTitle(intent.getStringExtra("bread_crumb_title"))
                     .retainBackStackEntries()
                     .enableWarningErrorMessage()
                     .run();
@@ -330,9 +333,8 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             return true;
         }
 
-        if (getIntent() != null && !TextUtils
-                .isEmpty(getIntent().getStringExtra("seller_target"))) {
-            @TargetLink.Type String target = getIntent().getStringExtra("seller_target");
+        if (!TextUtils.isEmpty(intent.getStringExtra("seller_target"))) {
+            @TargetLink.Type String target = intent.getStringExtra("seller_target");
             new TargetLink(getWeakBaseActivity(), target)
                     .enableWarningErrorMessage()
                     .retainBackStackEntries()
@@ -341,15 +343,21 @@ public class MainFragmentActivity extends BaseActivity implements PushEventListe
             return true;
         }
 
-        if (getIntent() != null) {
-            Bundle bundle = getIntent().getBundleExtra("pdv_login_bundle");
-            if (bundle != null && bundle
-                    .containsKey(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API)) {
-                onSwitchFragment(FragmentType.LOGIN, getIntent().getBundleExtra("pdv_login_bundle"),
-                        true);
-                return true;
-            }
+        Bundle loginBundle = intent.getBundleExtra("pdv_login_bundle");
+        if (loginBundle != null && loginBundle
+                .containsKey(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API)) {
+            onSwitchFragment(FragmentType.LOGIN, intent.getBundleExtra("pdv_login_bundle"),
+                    true);
+            return true;
         }
+
+        Bundle brandBundle = intent.getBundleExtra("pdv_brand_bundle");
+        if (brandBundle != null) {
+            onSwitchFragment(FragmentType.CATALOG_BRAND, intent.getBundleExtra("pdv_brand_bundle"),
+                    true);
+            return true;
+        }
+
         return false;
     }
 

@@ -4,11 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.mobile.utils.photoview.PhotoView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pdvGallery_photoView_Image"
+    <com.ortiz.touch.TouchImageView
+        android:id="@+id/pdvGallery_touchImageView_Image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:scaleType="fitCenter"/>
 
     <ProgressBar
         android:id="@+id/pdvGallery_progressBar"

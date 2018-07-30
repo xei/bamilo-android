@@ -294,6 +294,7 @@
     <string name="rat_rev">نظرات</string>
     <string name="fulfilled_by">تامین کننده: ‎%s‎</string>
     <string name="fulfilled">تامین کننده</string>
+    <string name="fulfilled_">تامین کننده: </string>
     <string name="policy">قوانین و سیاست ها</string>
     <string name="shipment">روش ارسال ‎%1$d‎ از ‎%2$d‎</string>
     <string name="delivery_time_placeholder">زمان تحویل: ‎%1$d‎ - ‎%2$d‎ روز کاری</string>
