@@ -55,22 +55,40 @@
                 app:locale="auto"
                 app:style="bold"/>
 
-            <me.zhanghai.android.materialratingbar.MaterialRatingBar
-                android:id="@+id/activitySubmitRate_materialRatingBar_ratingBar"
-                style="@style/Widget.MaterialRatingBar.RatingBar"
+            <com.willy.ratingbar.ScaleRatingBar
+                android:id="@+id/activitySubmitRate_scaleRatingBar_ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activitySubmitRate_xeiTextView_rateQuestion"
-                app:mrb_progressBackgroundTint="@color/submitRate_stars"
-                app:mrb_progressTint="@color/submitRate_stars"
-                app:mrb_secondaryProgressTint="@color/submitRate_stars"/>
+                app:srb_numStars="5"
+                app:srb_minimumStars="0"
+                app:srb_rating="0"
+                app:srb_starWidth="48dp"
+                app:srb_starHeight="48dp"
+                app:srb_starPadding="8dp"
+                app:srb_stepSize="1"
+                app:srb_isIndicator="false"
+                app:srb_clickable="true"
+                app:srb_scrollable="true"
+                app:srb_clearRatingEnabled="true"
+                app:srb_drawableEmpty="@drawable/ic_star_empty"
+                app:srb_drawableFilled="@drawable/ic_star_filled" />
+
+            <!--<me.zhanghai.android.materialratingbar.MaterialRatingBar-->
+                <!--android:id="@+id/activitySubmitRate_materialRatingBar_ratingBar"-->
+                <!--style="@style/Widget.MaterialRatingBar.RatingBar"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/activitySubmitRate_xeiTextView_rateQuestion"-->
+                <!--app:mrb_progressBackgroundTint="@color/submitRate_stars"-->
+                <!--app:mrb_progressTint="@color/submitRate_stars"-->
+                <!--app:mrb_secondaryProgressTint="@color/submitRate_stars"/>-->
 
             <com.bamilo.modernbamilo.customview.XeiTextView
                 android:id="@+id/activitySubmitRate_xeiTextView_rate"

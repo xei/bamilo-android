@@ -13,8 +13,8 @@
     <string name="comment_header_rateSum">از %s</string>
     <string name="comment_header_commentsCount">%s نظر</string>
     <string name="comment_comment_hasUseBeenBoughtLabel">خریدار محصول</string>
-    <string name="comment_comment_seeMore">بیشتر...</string>
-    <string name="comment_comment_seeLess">کمتر...</string>
+    <string name="comment_comment_seeMore">بیشتر…</string>
+    <string name="comment_comment_seeLess">کمتر…</string>
     <string name="comment_comment_likeCount">\u200f(%s)</string>
     <string name="comment_comment_dislikeCount">\u200f(%s)</string>
     <string name="comment_button_addComment">افزودن نظر</string>
@@ -27,6 +27,7 @@
     <string name="submitRate_hint_comment">نظر شما</string>
     <string name="submitRate_submitBtn">ثبت نظر</string>
     <string name="submitRate_selectStarError">لطفا به محصول امتیاز دهید.</string>
+    <string name="submitRate_succeed">با تشکر. نظر شما پس از بررسی منتشر خواهد شد.</string>
     <string name="submitRate_submitError">نظر شما ثبت نشد!</string>
 
 
