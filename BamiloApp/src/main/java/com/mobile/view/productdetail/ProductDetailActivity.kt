@@ -81,6 +81,11 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
         TrackerManager.trackScreen(this, screenModel, false)
     }
 
+    override fun onPause() {
+        super.onPause()
+        progressDialog?.dismiss()
+    }
+
     private fun setupAddToCard() {
         binding.productDetailLinearLayoutAddToCart!!.visibility = View.GONE
         bindAddToCartClickListener()
@@ -135,7 +140,9 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
 
     private fun dismissProgressDialog() {
         progressDialog?.run {
-            dismiss()
+            if (isAdded && context != null) {
+                dismiss()
+            }
         }
     }
 

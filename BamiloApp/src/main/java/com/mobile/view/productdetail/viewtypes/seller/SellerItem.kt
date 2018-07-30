@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.widget.AdapterView
+import android.widget.LinearLayout
 import com.bamilo.modernbamilo.util.getMorphNumberString
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
@@ -118,7 +119,9 @@ class SellerItem(private var seller: Seller,
 
         triggerGetRegions()
 
-        holder.sellerName.setOnClickListener { gotoSellerPage(holder.itemView.context) }
+        holder.itemView
+                .findViewById<LinearLayout>(R.id.pdvSellerInfo_linearLayout_nameLayout)
+                .setOnClickListener { gotoSellerPage(holder.itemView.context) }
 
         holder.isFilled = true
     }

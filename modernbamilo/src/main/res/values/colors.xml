@@ -93,7 +93,7 @@
     <color name="commentsList_comment_authorAndTime">@color/grey2</color>
     <color name="commentsList_comment_hasUserBeenBought">@color/pantone3275c</color>
     <color name="commentsList_comment_ratingBar_background">@color/grey2</color>
-    <color name="commentsList_comment_ratingBar_stars">@color/pantone1375c</color>
+    <color name="commentsList_comment_ratingBar_stars">@color/pantone109u</color>
     <color name="commentsList_comment_commentContent">@color/grey5</color>
     <color name="commentsList_comment_seeMoreBtn">@color/pantone2995cp</color>
     <color name="commentsList_comment_likeDislike">@color/grey2</color>
@@ -103,7 +103,7 @@
     <!-- Submit Rate Screen -->
     <color name="submitRate_background">@color/blueGrey2</color>
     <color name="submitRate_question">@color/grey5</color>
-    <color name="submitRate_stars">@color/pantone1375c</color>
+    <color name="submitRate_stars">@color/pantone109u</color>
     <color name="submitRate_rate">@color/grey5</color>
     <color name="submitRate_comment_title_text">@color/grey5</color>
     <color name="submitRate_comment_title_hint">@color/grey2</color>

@@ -18,23 +18,44 @@
         android:orientation="vertical"
         tools:ignore="UnusedAttribute">
 
+    <LinearLayout
+        android:id="@+id/pdvSellerInfo_linearLayout_nameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl"
+        android:orientation="horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        tools:ignore="UnusedAttribute">
+
+        <com.mobile.components.customfontviews.TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8dp"
+            android:layout_marginRight="@dimen/dimen_8dp"
+            android:paddingTop="@dimen/dimen_4dp"
+            android:paddingBottom="@dimen/dimen_4dp"
+            android:paddingLeft="@dimen/dimen_4dp"
+            android:paddingRight="@dimen/dimen_4dp"
+            android:textColor="@color/primary_text_color"
+            android:textSize="13sp"
+            android:text="@string/fulfilled_"/>
+
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdvSellerInfo_textView_name"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_8dp"
-            android:layout_marginLeft="@dimen/dimen_8dp"
-            android:layout_marginRight="@dimen/dimen_8dp"
             android:paddingTop="@dimen/dimen_4dp"
             android:paddingBottom="@dimen/dimen_4dp"
             android:paddingLeft="@dimen/dimen_4dp"
             android:paddingRight="@dimen/dimen_4dp"
-            android:background="?android:attr/selectableItemBackground"
             android:textColor="@color/blue_link"
             android:textSize="14sp"
             app:fontFamily="@string/bamilo_bold_font"
             tools:text="ایران رهجو"/>
+
+    </LinearLayout>
 
         <include
             android:id="@+id/pdvSellerInfo_relativeLayout_noScore"

@@ -208,16 +208,26 @@ object RetrofitHelper {
             }
 
             override fun loadForRequest(httpUrl: HttpUrl): List<Cookie>? {
-                val sharedCookie = decodeCookie(getCookie(context)!!)
+                val cookies = ArrayList<Cookie>()
+
+                val sharedCookie = decodeCookie(getCookie(context))
+
                 val cookieBuilder = Cookie.Builder()
-                        .name(sharedCookie!!.name)
-                        .value(sharedCookie.value)
-                        .httpOnly()
+                cookieBuilder.httpOnly()
                         .domain(httpUrl.topPrivateDomain()!!)
                         .path(httpUrl.encodedPath())
-                        .build()
-                val cookies = ArrayList<Cookie>()
-                cookies.add(cookieBuilder)
+
+                if (sharedCookie == null) {
+                    cookieBuilder
+                            .name("")
+                            .value("")
+                } else {
+                    cookieBuilder
+                            .name(sharedCookie.name)
+                            .value(sharedCookie.value)
+                }
+
+                cookies.add(cookieBuilder.build())
                 return cookies
             }
         }
