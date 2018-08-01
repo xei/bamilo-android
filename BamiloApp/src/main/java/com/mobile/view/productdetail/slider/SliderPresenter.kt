@@ -14,6 +14,7 @@ import com.mobile.constants.ConstantsIntentExtra
 import com.mobile.service.pojo.RestConstants
 import com.mobile.view.MainFragmentActivity
 import com.mobile.view.R
+import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.gallery.GalleryActivity
 import com.mobile.view.productdetail.model.Image
 import com.mobile.view.productdetail.model.ImageSliderModel
@@ -23,10 +24,14 @@ import retrofit2.Callback
 /**
  * Created by Farshid since 6/19/2018. contact farshidabazari@gmail.com
  */
-class SliderPresenter(var context: Context, private var productSku: String, private var imageList: ArrayList<Image>) {
+class SliderPresenter(var context: Context,
+                      private var productSku: String,
+                      private var imageList: ArrayList<Image>,
+                      private var pdvMainView: PDVMainView) {
+
     fun onLikeButtonClicked(imageSliderModel: ImageSliderModel, callBack: Callback<ResponseWrapper<Any>>) {
         if (!BamiloApplication.isCustomerLoggedIn()) {
-            loginUser()
+            pdvMainView.loginUser()
             callBack.onFailure(null, null)
         } else {
             if (imageSliderModel.isWishList) {
@@ -35,16 +40,6 @@ class SliderPresenter(var context: Context, private var productSku: String, priv
                 addProductToWishList(callBack)
             }
         }
-    }
-
-    private fun loginUser() {
-        val intent = Intent(context, MainFragmentActivity::class.java)
-
-        val bundle = Bundle()
-        bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true)
-
-        intent.putExtra("pdv_login_bundle", bundle)
-        context.startActivity(intent)
     }
 
     private fun removeProductToWishList(callBack: Callback<ResponseWrapper<Any>>) {

@@ -302,7 +302,7 @@ class ProductDetailMainFragment : Fragment() {
         primaryInfoModel.title = product.title
         primaryInfoModel.brand = product.brand
 
-        items.add(PrimaryInfoItem(sku!!, primaryInfoModel))
+        items.add(PrimaryInfoItem(sku!!, primaryInfoModel, pdvMainView))
     }
 
     private fun addVariations() {

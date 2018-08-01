@@ -28,4 +28,5 @@ interface PDVMainView {
     fun onShowSpecificComment(review: Review)
     fun onShowMoreRelatedProducts()
     fun showOutOfStock()
+    fun loginUser()
 }

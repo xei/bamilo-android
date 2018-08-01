@@ -21,6 +21,8 @@
                 android:id="@+id/pdv_recycler_detailList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingBottom="@dimen/dimen_48dp"
+                android:clipToPadding="false"
                 android:background="#f9f9f9"/>
 
             <RelativeLayout

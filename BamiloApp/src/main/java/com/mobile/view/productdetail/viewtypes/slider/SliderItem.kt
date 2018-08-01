@@ -46,7 +46,8 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
 
         sliderPresenter = SliderPresenter(holder.itemView.context,
                 imageSliderModel.productSku,
-                imageSliderModel.images)
+                imageSliderModel.images,
+                pdvMainView)
 
         holder.like.isChecked = imageSliderModel.isWishList
 

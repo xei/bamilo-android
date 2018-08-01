@@ -6,6 +6,7 @@ import android.support.v7.widget.PagerSnapHelper
 import android.view.View
 import com.bamilo.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.bamilo.modernbamilo.util.getMorphNumberString
+import com.mobile.app.BamiloApplication
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.components.ghostadapter.GhostAdapter
@@ -40,9 +41,17 @@ class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdv
             showRateToProduct()
         }
 
-        holder.addReview.setOnClickListener { showAddReviewActivity(holder.itemView.context) }
+        holder.addReview.setOnClickListener { gotoSubmitReviewPage(holder.itemView.context) }
         holder.showAllReviews.setOnClickListener { pdvMainView.onShowAllReviewsClicked() }
         holder.isFilled = true
+    }
+
+    private fun gotoSubmitReviewPage(context: Context) {
+        if (!BamiloApplication.isCustomerLoggedIn()) {
+            pdvMainView.loginUser()
+        } else {
+            startSubmitRateActivity(context, sku)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -96,9 +105,5 @@ class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdv
         holder.maxRate.visibility = View.GONE
         holder.total.visibility = View.GONE
         holder.rate.visibility = View.GONE
-    }
-
-    private fun showAddReviewActivity(context: Context) {
-        startSubmitRateActivity(context, sku)
     }
 }

@@ -13,7 +13,6 @@
             <FrameLayout
                 android:id="@+id/pdv_frameLayout_fragmentContainer"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="@dimen/dimen_48dp"
                 android:layout_height="match_parent"/>
 
             <include

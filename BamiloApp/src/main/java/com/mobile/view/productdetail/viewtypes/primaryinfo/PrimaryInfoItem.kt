@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.LinearLayout
 import com.bamilo.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.bamilo.modernbamilo.util.getMorphNumberString
+import com.mobile.app.BamiloApplication
 import com.mobile.components.ghostadapter.BindItem
 import com.mobile.components.ghostadapter.Binder
 import com.mobile.constants.ConstantsIntentExtra
@@ -18,6 +19,7 @@ import com.mobile.service.utils.shop.CurrencyFormatter
 import com.mobile.utils.ui.UIUtils
 import com.mobile.view.MainFragmentActivity
 import com.mobile.view.R
+import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.model.PrimaryInfoModel
 
 /**
@@ -26,7 +28,7 @@ import com.mobile.view.productdetail.model.PrimaryInfoModel
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_primary_info, holder = PrimaryInfoHolder::class)
-class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: PrimaryInfoModel) {
+class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: PrimaryInfoModel, var pdvMainView: PDVMainView) {
     @Binder
     public fun binder(holder: PrimaryInfoHolder) {
         setPriceAndDiscount(holder)
@@ -50,8 +52,17 @@ class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: Pri
                 brand.text = primaryInfoModel.brand
             }
 
-            ratingLayout.setOnClickListener { startSubmitRateActivity(holder.itemView.context, sku) }
+            ratingLayout.setOnClickListener { gotoSubmitView(holder.itemView.context) }
             brandLayout.setOnClickListener { gotoBrandPage(itemView.context) }
+        }
+    }
+
+    private fun gotoSubmitView(context: Context) {
+        if (!BamiloApplication.isCustomerLoggedIn()) {
+            pdvMainView.loginUser()
+        } else {
+            startSubmitRateActivity(context, sku!!)
+
         }
     }
 

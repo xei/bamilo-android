@@ -8,8 +8,8 @@ import android.support.v4.app.Fragment
 import android.view.View
 import com.bamilo.modernbamilo.app.BaseActivity
 import com.bamilo.modernbamilo.product.comment.CommentViewModel
-import com.bamilo.modernbamilo.product.comment.startCommentsActivity
-import com.bamilo.modernbamilo.product.comment.startCommentsActivityForJustOneDistinctComment
+import com.bamilo.modernbamilo.product.comment.CommentsFragment
+import com.bamilo.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.bamilo.modernbamilo.product.descspec.spec.SpecificationFragment
 import com.bamilo.modernbamilo.product.descspec.tempdesc.TemporaryDescriptionFragment
 import com.bamilo.modernbamilo.product.sellerslist.view.SellersListFragment
@@ -37,7 +37,11 @@ import com.mobile.view.productdetail.model.ProductDetail
 import com.mobile.view.productdetail.model.Review
 import com.mobile.view.productdetail.model.SimpleProduct
 
-class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.OnAddToCartButtonClickListener {
+class ProductDetailActivity : BaseActivity(),
+        PDVMainView,
+        SellersListFragment.OnAddToCartButtonClickListener,
+        CommentsFragment.OnSubmitCommentButtonClickListener {
+
     private lateinit var productDetail: ProductDetail
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var productDetailPresenter: ProductDetailPresenter
@@ -205,6 +209,13 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
         }
     }
 
+    private fun displaySelectedScreen(fragment: Fragment, showAnimation: Boolean = false) {
+        try {
+            replaceFragment(fragment, showAnimation)
+        } catch (ignored: Exception) {
+        }
+    }
+
     private fun replaceFragment(fragment: Fragment, showAnimation: Boolean = false) {
         val backStateName = fragment.javaClass.simpleName
         val ft = supportFragmentManager.beginTransaction()
@@ -235,12 +246,10 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
             }
             FragmentTag.DESCRIPTION.name -> {
                 return TemporaryDescriptionFragment.newInstance(sku!!)
-//                return DescSpecFragment.newInstance(sku!!, DescSpecFragment.WHICH_SCREEN_DESC)
             }
 
             FragmentTag.SPECIFICATIONS.name -> {
                 return SpecificationFragment.newInstance(sku!!)
-//                return DescSpecFragment.newInstance(sku!!, DescSpecFragment.WHICH_SCREEN_SPEC)
             }
         }
 
@@ -283,7 +292,7 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
 
     override fun onShowAllReviewsClicked() {
         with(productDetail.rating) {
-            startCommentsActivity(this@ProductDetailActivity, sku!!,
+            displaySelectedScreen(CommentsFragment.newInstance(sku!!,
                     average,
                     5,
                     productDetail.reviews.total,
@@ -291,24 +300,46 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
                     stars[1].count.toFloat(),
                     stars[2].count.toFloat(),
                     stars[3].count.toFloat(),
-                    stars[4].count.toFloat())
+                    stars[4].count.toFloat()))
         }
+        binding.productDetailLinearLayoutAddToCart!!.visibility = View.GONE
     }
 
     override fun onShowSpecificComment(review: Review) {
-        startCommentsActivityForJustOneDistinctComment(this,
-                sku!!,
-                productDetail.rating.average,
-                productDetail.rating.total,
-                productDetail.reviews.total,
-                productDetail.rating.stars[0].count.toFloat(),
-                productDetail.rating.stars[1].count.toFloat(),
-                productDetail.rating.stars[2].count.toFloat(),
-                productDetail.rating.stars[3].count.toFloat(),
-                productDetail.rating.stars[4].count.toFloat(),
-                Gson().toJson(CommentViewModel(review.id!!, review.title, review.date!!, review.username!!,
-                        review.is_bought_by_user, review.rate!!.toFloat(), review.comment!!,
-                        review.like, review.dislike)))
+        with(productDetail.rating) {
+            displaySelectedScreen(CommentsFragment.newInstanceForJustOneDistinctComment(sku!!,
+                    productDetail.rating.average,
+                    productDetail.rating.total,
+                    productDetail.reviews.total,
+                    productDetail.rating.stars[0].count.toFloat(),
+                    productDetail.rating.stars[1].count.toFloat(),
+                    productDetail.rating.stars[2].count.toFloat(),
+                    productDetail.rating.stars[3].count.toFloat(),
+                    productDetail.rating.stars[4].count.toFloat(),
+                    Gson().toJson(CommentViewModel(review.id!!, review.title, review.date!!, review.username!!,
+                            review.is_bought_by_user, review.rate!!.toFloat(), review.comment!!,
+                            review.like, review.dislike))))
+        }
+        binding.productDetailLinearLayoutAddToCart!!.visibility = View.GONE
+    }
+
+    override fun onSubmitCommentButtonClicked() {
+        if (!BamiloApplication.isCustomerLoggedIn()) {
+            loginUser()
+        } else {
+            startSubmitRateActivity(this, sku!!)
+
+        }
+    }
+
+    override fun loginUser() {
+        val intent = Intent(this, MainFragmentActivity::class.java)
+
+        val bundle = Bundle()
+        bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true)
+
+        intent.putExtra("pdv_login_bundle", bundle)
+        startActivity(intent)
     }
 
     override fun showOutOfStock() {
@@ -352,6 +383,10 @@ class ProductDetailActivity : BaseActivity(), PDVMainView, SellersListFragment.O
 
 
     override fun onBackPressed() {
+        if (getCurrentFragment().tag == CommentsFragment::class.java.simpleName) {
+            binding.productDetailLinearLayoutAddToCart!!.visibility = View.VISIBLE
+        }
+
         if (productDetailPresenter.isBottomSheetShown()) {
             productDetailPresenter.hideBottomSheet()
             return
