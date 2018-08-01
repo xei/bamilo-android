@@ -26,7 +26,7 @@ sourceSets {
     }
 }
 ext {
-    supportLibsVersion = '28.0.0-alpha3'
+    supportLibsVersion = '28.0.0-beta01'
 }
 dependencies {
     // https://wiki.jira.rocket-internet.de/pages/viewpage.action?title=Android+app+SDKs+and+libraries&spaceKey=NAFAMZ
