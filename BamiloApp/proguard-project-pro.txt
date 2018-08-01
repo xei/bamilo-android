@@ -232,7 +232,7 @@
 
 # Model Classes
 -keep class com.bamilo.apicore.service.** { *; }
--keep calss com.mobile.view.productdetail.model.** { *; }
+-keep class com.mobile.view.productdetail.model.** { *; }
 
 # apache commons
 -keep class org.apache.commons.** { *; }
