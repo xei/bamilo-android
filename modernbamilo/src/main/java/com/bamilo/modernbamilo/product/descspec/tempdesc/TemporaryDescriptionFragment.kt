@@ -93,7 +93,7 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
     private fun initWebView() {
         mWebView.settings.run {
             loadWithOverviewMode = true
-            useWideViewPort = true
+//            useWideViewPort = true
             builtInZoomControls = true
             displayZoomControls = false
         }
@@ -105,7 +105,13 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
 
             override fun onResponse(call: Call<ResponseWrapper<GetDescriptionResponse>>?, response: Response<ResponseWrapper<GetDescriptionResponse>>?) {
                 response?.body()?.metadata?.description.let {
-                    mWebView.loadData("\u200f$it", "text/html", "UTF-8")
+
+                    // Invalid characters was the cause of style (font) problem.
+                    val formattedString = it
+                            ?.replace("\u201c", "\"")
+                            ?.replace("\u201d", "\"")
+
+                    mWebView.loadData("\u200f$formattedString", "text/html", "UTF-8")
                 }
             }
 
