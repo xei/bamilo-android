@@ -11,6 +11,7 @@ import com.mobile.constants.tracking.EventActionKeys
 import com.mobile.constants.tracking.EventConstants
 import com.mobile.managers.TrackerManager
 import com.mobile.service.tracking.TrackingPage
+import com.mobile.utils.TrackerDelegator
 import com.mobile.utils.ui.WarningFactory
 import com.mobile.view.R
 import com.mobile.view.productdetail.PDVMainView
@@ -89,12 +90,15 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
         imageSliderModel.isWishList = true
         holder!!.like.isChecked = true
 
+        pdvMainView.trackAddFromWishList()
+
         val addToWishListEventModel =
                 MainEventModel(holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName()),
                         EventActionKeys.ADD_TO_WISHLIST,
                         imageSliderModel.productSku,
                         imageSliderModel.price.toLong(),
-                        null)
+                        MainEventModel.createAddToWishListEventModelAttributes(imageSliderModel.productSku,
+                                imageSliderModel.category, true))
 
         TrackerManager.trackEvent(holder!!.itemView.context,
                 EventConstants.AddToWishList,
@@ -105,6 +109,8 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
         if (holder == null) {
             return
         }
+
+        pdvMainView.trackRemoveFromWishList()
 
         imageSliderModel.isWishList = false
         holder!!.like.isChecked = false

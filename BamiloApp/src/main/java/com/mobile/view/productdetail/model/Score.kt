@@ -1,6 +1,8 @@
 package com.mobile.view.productdetail.model
 
-class Score {
+import java.io.Serializable
+
+class Score : Serializable {
     var overall: Float = 0.0f
     var SLAReached: Float = 0.0f
     var notReturned: Float = 0.0f

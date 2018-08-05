@@ -1,8 +1,9 @@
 package com.mobile.view.productdetail.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-class Seller {
+class Seller : Serializable {
     val delivery_time: String? = null
     var isNew: Boolean = false
     @SerializedName("precenceDuration")

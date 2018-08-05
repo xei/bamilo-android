@@ -1,14 +1,11 @@
 package com.mobile.managers;
 
 import android.content.Context;
-
 import com.mobile.classes.models.BaseEventModel;
 import com.mobile.classes.models.BaseScreenModel;
 import com.mobile.interfaces.tracking.IBaseTracker;
 import com.mobile.interfaces.tracking.IEventTracker;
 import com.mobile.interfaces.tracking.IScreenTracker;
-
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
@@ -17,6 +14,7 @@ import java.util.HashMap;
  */
 
 public final class TrackerManager {
+
     private static HashMap<String, IBaseTracker> trackers = new HashMap<>();
 
     public static void addTracker(IBaseTracker tracker) {
@@ -33,37 +31,29 @@ public final class TrackerManager {
 
     public static void trackEvent(Context context, String eventName, BaseEventModel eventModel) {
         for (IBaseTracker tracker : trackers.values()) {
-            if(tracker instanceof IEventTracker) {
+            if (tracker instanceof IEventTracker) {
                 Method eventMethod = null;
                 try {
-                    eventMethod = ((IEventTracker)tracker).getClass().getMethod("trackEvent" + eventName, Context.class, BaseEventModel.class);
-                }
-                catch (SecurityException e) {
-                    e.printStackTrace();
-                }
-                catch (NoSuchMethodException e) {
+                    eventMethod = ((IEventTracker) tracker).getClass()
+                            .getMethod("trackEvent" + eventName, Context.class,
+                                    BaseEventModel.class);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 try {
                     eventMethod.invoke(tracker, context, eventModel);
-                }
-                catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                }
-                catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-                catch (InvocationTargetException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
     }
 
-    public static void trackScreen(Context context, BaseScreenModel screenModel, boolean trackTiming) {
+    public static void trackScreen(Context context, BaseScreenModel screenModel,
+            boolean trackTiming) {
         for (IBaseTracker tracker : trackers.values()) {
-            if(tracker instanceof IScreenTracker) {
+            if (tracker instanceof IScreenTracker) {
                 if (trackTiming) {
                     ((IScreenTracker) tracker).trackScreenAndTiming(context, screenModel);
                 } else {

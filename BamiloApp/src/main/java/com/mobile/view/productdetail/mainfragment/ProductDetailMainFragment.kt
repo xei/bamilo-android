@@ -25,7 +25,10 @@ import com.mobile.controllers.fragments.FragmentType
 import com.mobile.extlibraries.emarsys.predict.recommended.Item
 import com.mobile.extlibraries.emarsys.predict.recommended.RecommendManager
 import com.mobile.managers.TrackerManager
+import com.mobile.service.tracking.AdjustTracker
+import com.mobile.service.tracking.TrackingPage
 import com.mobile.utils.OnItemClickListener
+import com.mobile.utils.TrackerDelegator
 import com.mobile.utils.headerandmorebutton.morebutton.SeeMoreButtonItem
 import com.mobile.utils.headerandmorebutton.recyclerheader.RecyclerHeaderItem
 import com.mobile.utils.ui.UIUtils
@@ -276,11 +279,17 @@ class ProductDetailMainFragment : Fragment() {
     private fun addItemsToAdapter() {
         adapter.setItems(items)
 
-        val viewProductEventModel = MainEventModel("pdv", EventActionKeys.VIEW_PRODUCT, product.sku,
+        val viewProductEventModel = MainEventModel(getString(TrackingPage.PDV.getName()), EventActionKeys.VIEW_PRODUCT, product.sku,
                 product.price.price.toLong(),
                 MainEventModel.createViewProductEventModelAttributes("categoryUrlKey",
                         product.price.price.toLong()))
         TrackerManager.trackEvent(context, EventConstants.ViewProduct, viewProductEventModel)
+
+        val params = Bundle()
+        params.putSerializable(AdjustTracker.PRODUCT, product)
+        params.putString(AdjustTracker.TREE, product.breadcrumbs[0].target?.let { it.split("::")[1] })
+
+        TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_DETAIL_LOADED, params)
     }
 
     private fun addImagesToSlider() {
@@ -290,6 +299,7 @@ class ProductDetailMainFragment : Fragment() {
         imageSliderModel.isWishList = product.isWishList
         imageSliderModel.images = product.image_list
         imageSliderModel.price = product.price.price
+        imageSliderModel.category = product.breadcrumbs[0].target!!.split("::")[1]
 
         items.add(SliderItem(fragmentManager!!, imageSliderModel, pdvMainView))
     }
@@ -350,6 +360,7 @@ class ProductDetailMainFragment : Fragment() {
                 this.product = it
                 pdvMainView.onProductReceived(it)
                 getRecommendedProducts()
+
             } else if (context != null) {
                 pdvMainView.dismissProgressView()
                 pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,

@@ -29,4 +29,6 @@ interface PDVMainView {
     fun onShowMoreRelatedProducts()
     fun showOutOfStock()
     fun loginUser()
+    fun trackRemoveFromWishList()
+    fun trackAddFromWishList()
 }

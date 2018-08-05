@@ -27,4 +27,9 @@ public class EventConstants {
     public static String CatalogSortChanged = "CatalogSortChanged";
     public static String CheckoutStart = "CheckoutStart";
     public static String CheckoutFinished = "CheckoutFinished";
+    public static String DESCRIPTION_TAPPED = "DescriptionTapped";
+    public static String OTHER_SELLERS_TAPPED = "OtherSellersTapped";
+    public static String RATE_TAPPED = "RateTapped";
+    public static String SPECIFICATIONS_TAPPED = "SpecificationTapped";
+    public static String ADD_REVIEW_TAPPED = "AddReviewTapped";
 }

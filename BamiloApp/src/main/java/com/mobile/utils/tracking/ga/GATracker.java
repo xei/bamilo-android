@@ -197,6 +197,31 @@ public final class GATracker implements IEventTracker, IScreenTracker {
         trackEvent(context, eventModel);
     }
 
+    @Override
+    public void trackEventSpecificationTapped(Context context, BaseEventModel eventModel) {
+        trackEvent(context, eventModel);
+    }
+
+    @Override
+    public void trackEventDescriptionTapped(Context context, BaseEventModel eventModel) {
+        trackEvent(context, eventModel);
+    }
+
+    @Override
+    public void trackEventAddReviewTapped(Context context, BaseEventModel eventModel) {
+        trackEvent(context, eventModel);
+    }
+
+    @Override
+    public void trackEventRateTapped(Context context, BaseEventModel eventModel) {
+        trackEvent(context, eventModel);
+    }
+
+    @Override
+    public void trackEventOtherSellersTapped(Context context, BaseEventModel eventModel) {
+        trackEvent(context, eventModel);
+    }
+
     private void setGACampaign(String campaignString) {
         // Clean data before every campaign tracking
         mUtmCampaign = null;
