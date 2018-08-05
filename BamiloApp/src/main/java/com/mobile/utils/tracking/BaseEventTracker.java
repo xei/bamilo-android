@@ -1,7 +1,6 @@
 package com.mobile.utils.tracking;
 
 import android.content.Context;
-
 import com.mobile.classes.models.BaseEventModel;
 import com.mobile.interfaces.tracking.IEventTracker;
 
@@ -78,5 +77,19 @@ public abstract class BaseEventTracker implements IEventTracker {
     @Override
     public void trackEventViewProduct(Context context, BaseEventModel eventModel) { return; }
 
+    @Override
+    public void trackEventSpecificationTapped(Context context, BaseEventModel eventModel) { return; }
+
+    @Override
+    public void trackEventDescriptionTapped(Context context, BaseEventModel eventModel) { return; }
+
+    @Override
+    public void trackEventAddReviewTapped(Context context, BaseEventModel eventModel) { return; }
+
+    @Override
+    public void trackEventRateTapped(Context context, BaseEventModel eventModel) { return; }
+
+    @Override
+    public void trackEventOtherSellersTapped(Context context, BaseEventModel eventModel) { return; }
 
 }

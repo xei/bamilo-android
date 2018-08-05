@@ -11,4 +11,5 @@ class ImageSliderModel{
     var price : String = ""
     var isWishList : Boolean = false
     var shareUrl : String? = ""
+    var category: String = ""
 }

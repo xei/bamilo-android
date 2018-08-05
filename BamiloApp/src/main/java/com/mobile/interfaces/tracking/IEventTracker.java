@@ -31,4 +31,9 @@ public interface IEventTracker extends IBaseTracker {
     void trackEventCatalogSortChanged(Context context, BaseEventModel eventModel);
     void trackEventCheckoutStart(Context context, BaseEventModel eventModel);
     void trackEventCheckoutFinished(Context context, BaseEventModel eventModel);
+    void trackEventSpecificationTapped(Context context, BaseEventModel eventModel);
+    void trackEventDescriptionTapped(Context context, BaseEventModel eventModel);
+    void trackEventAddReviewTapped(Context context, BaseEventModel eventModel);
+    void trackEventRateTapped(Context context, BaseEventModel eventModel);
+    void trackEventOtherSellersTapped(Context context, BaseEventModel eventModel);
 }

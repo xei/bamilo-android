@@ -236,5 +236,4 @@ public class ProductRegular extends ProductBase {
             return new ProductRegular[size];
         }
     };
-
 }

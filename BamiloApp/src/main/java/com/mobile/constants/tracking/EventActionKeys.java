@@ -1,5 +1,7 @@
 package com.mobile.constants.tracking;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Created by narbeh on 12/5/17.
  */
@@ -27,5 +29,10 @@ public final class EventActionKeys {
     public static final String CHECKOUT_FINISH = "CheckoutFinish";
     public static final String PURCHASE = "Purchase";
     public static final String TAPPED = "Tapped";
+    public static final String DESCRIPTION_TAPPED = "DescriptionTapped";
+    public static final String RATE_TAPPED = "RateTapped";
+    public static final String OTHER_SELLERS_TAPPED = "OtherSellersTapped";
+    public static final String SPECIFICATIONS_TAPPED = "SpecificationTapped";
+    public static final String ADD_REVIEW_TAPPED = "AddReviewTapped";
     public static final String APP_OPENED = "OpenApp";
 }

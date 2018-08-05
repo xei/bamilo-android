@@ -1,8 +1,9 @@
 package com.mobile.view.productdetail.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-class ProductDetail {
+class ProductDetail : Serializable {
     @SerializedName("is_wishlist")
     var isWishList: Boolean = false
 

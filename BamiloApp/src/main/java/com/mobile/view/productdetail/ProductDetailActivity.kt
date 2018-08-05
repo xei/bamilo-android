@@ -27,6 +27,7 @@ import com.mobile.managers.TrackerManager
 import com.mobile.service.pojo.BaseResponse
 import com.mobile.service.tracking.TrackingPage
 import com.mobile.service.utils.TextUtils
+import com.mobile.utils.TrackerDelegator
 import com.mobile.utils.dialogfragments.DialogProgressFragment
 import com.mobile.utils.ui.WarningFactory
 import com.mobile.view.MainFragmentActivity
@@ -174,6 +175,8 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     private fun trackAddToCartEvent() {
+        TrackerDelegator.trackProductAddedToCart(productDetail)
+
         val addToCartEventModel = MainEventModel(getString(TrackingPage.PDV.getName()), EventActionKeys.ADD_TO_CART,
                 productDetail.sku, productDetail.price.price.toLong(), null)
 
@@ -256,6 +259,16 @@ class ProductDetailActivity : BaseActivity(),
         return ProductDetailMainFragment.newInstance(productToShowSku)
     }
 
+    private fun trackCommentsView() {
+        val viewCommentsModel = MainEventModel(getString(TrackingPage.PDV.getName()),
+                EventActionKeys.RATE_TAPPED,
+                sku,
+                0,
+                null)
+
+        TrackerManager.trackEvent(this, EventConstants.RATE_TAPPED, viewCommentsModel)
+    }
+
     override fun onBackButtonClicked() {
         onBackPressed()
     }
@@ -279,18 +292,43 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun onShowOtherSeller() {
+        val viewOtherSellerModel = MainEventModel(getString(TrackingPage.PDV.getName()),
+                EventActionKeys.OTHER_SELLERS_TAPPED,
+                sku,
+                0,
+                null)
+
+        TrackerManager.trackEvent(this, EventConstants.OTHER_SELLERS_TAPPED, viewOtherSellerModel)
+
         displaySelectedScreen(FragmentTag.OTHER_SELLERS)
     }
 
     override fun onShowDesAndSpecPage() {
+        val viewDescView = MainEventModel(getString(TrackingPage.PDV.getName()),
+                EventActionKeys.DESCRIPTION_TAPPED,
+                sku,
+                0,
+                null)
+
+        TrackerManager.trackEvent(this, EventConstants.DESCRIPTION_TAPPED, viewDescView)
+
         displaySelectedScreen(FragmentTag.DESCRIPTION, true)
     }
 
     override fun onShowSpecsAndSpecPage() {
+        val viewSpecsModel = MainEventModel(getString(TrackingPage.PDV.getName()),
+                EventActionKeys.SPECIFICATIONS_TAPPED,
+                sku,
+                0,
+                null)
+
+        TrackerManager.trackEvent(this, EventConstants.SPECIFICATIONS_TAPPED, viewSpecsModel)
+
         displaySelectedScreen(FragmentTag.SPECIFICATIONS, true)
     }
 
     override fun onShowAllReviewsClicked() {
+        trackCommentsView()
         with(productDetail.rating) {
             displaySelectedScreen(CommentsFragment.newInstance(sku!!,
                     average,
@@ -306,6 +344,7 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun onShowSpecificComment(review: Review) {
+        trackCommentsView()
         with(productDetail.rating) {
             displaySelectedScreen(CommentsFragment.newInstanceForJustOneDistinctComment(sku!!,
                     productDetail.rating.average,
@@ -327,8 +366,15 @@ class ProductDetailActivity : BaseActivity(),
         if (!BamiloApplication.isCustomerLoggedIn()) {
             loginUser()
         } else {
-            startSubmitRateActivity(this, sku!!)
+            val viewAddReviewModel = MainEventModel(getString(TrackingPage.PDV.getName()),
+                    EventActionKeys.ADD_REVIEW_TAPPED,
+                    sku,
+                    0,
+                    null)
 
+            TrackerManager.trackEvent(this, EventConstants.ADD_REVIEW_TAPPED, viewAddReviewModel)
+
+            startSubmitRateActivity(this, sku!!)
         }
     }
 
@@ -369,6 +415,14 @@ class ProductDetailActivity : BaseActivity(),
         this.sizeVariation = sizeVariation
     }
 
+    override fun trackRemoveFromWishList() {
+        TrackerDelegator.trackRemoveFromFavorites(productDetail)
+    }
+
+    override fun trackAddFromWishList() {
+        TrackerDelegator.trackAddToFavorites(productDetail)
+    }
+
     override fun onShowMoreRelatedProducts() {
         val intent = Intent(this, MainFragmentActivity::class.java)
         intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.MORE_RELATED_PRODUCTS)
@@ -380,7 +434,6 @@ class ProductDetailActivity : BaseActivity(),
     override fun onShowFragment(fragmentTag: FragmentTag) {
         displaySelectedScreen(fragmentTag)
     }
-
 
     override fun onBackPressed() {
         if (getCurrentFragment().tag == CommentsFragment::class.java.simpleName) {
