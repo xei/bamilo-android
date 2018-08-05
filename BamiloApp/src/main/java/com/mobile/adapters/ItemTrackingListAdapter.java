@@ -132,6 +132,17 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             } else {
                 holder.tvPackageDeliveryDelayReason.setVisibility(View.GONE);
             }
+
+            if (p.getDeliveryType()!= null
+                    && p.getDeliveryType().getDropShipDescription()!= null
+                    && p.getDeliveryType().getDropShipDescription().length() != 0) {
+                holder.dropShipDescriptionTextView.setText(p.getDeliveryType().getDropShipDescription());
+                holder.dropShipDescriptionTextView.setVisibility(View.VISIBLE);
+            } else {
+                holder.dropShipDescriptionTextView.setVisibility(View.GONE);
+            }
+
+
         } else if (viewType == ITEM_ORDER_ITEM) {
             final PackageItem item = indexedItems.get(position);
             ItemTrackingProgressBar itemTrackingProgressBar = holder.itemTrackingProgressBar;
@@ -357,6 +368,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
 
         // header item
         TextView tvOrderNumberValue, tvOrderCostValue, tvOrderDateValue, tvOrderQuantityValue;
+        private TextView dropShipDescriptionTextView;
 
         // footer item
         TextView tvRecipientValue, tvDeliveryAddressValue, tvShipmentCostValue, tvPaymentMethodValue;
@@ -396,6 +408,8 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             tvPackageTitle = (TextView) itemView.findViewById(R.id.tvPackageTitle);
             tvPackageDeliveryTime = (TextView) itemView.findViewById(R.id.tvPackageDeliveryTime);
             tvPackageDeliveryDelayReason = (TextView) itemView.findViewById(R.id.tvPackageDeliveryDelayReason);
+
+            dropShipDescriptionTextView = itemView.findViewById(R.id.rowPackageSectionHeader_xeiTextView_dropShipMessage);
 
             clPackagedOrderItem = (ConstraintLayout) itemView.findViewById(R.id.clPackagedOrderItem);
             itemTrackingProgressBar = (ItemTrackingProgressBar) itemView.findViewById(R.id.itemTrackingProgressBar);

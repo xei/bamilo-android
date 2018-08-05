@@ -41,4 +41,15 @@
         android:visibility="gone"
         tools:text="چهارشنبه ۲۵ اردیبهشت" />
 
+    <com.bamilo.modernbamilo.customview.XeiTextView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rowPackageSectionHeader_xeiTextView_dropShipMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPackageTitle"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/gray_6"
+        app:locale="fa_IR"
+        android:visibility="gone" />
+
 </RelativeLayout>

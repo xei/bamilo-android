@@ -20,6 +20,10 @@ public class Package {
     @Expose
     private Delay delay;
 
+    @SerializedName("delivery_type")
+    @Expose
+    private DeliveryType deliveryType;
+
     public List<PackageItem> getPackageItems() {
         return packageItems;
     }
@@ -50,5 +54,13 @@ public class Package {
 
     public void setDelay(Delay delay) {
         this.delay = delay;
+    }
+
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
     }
 }

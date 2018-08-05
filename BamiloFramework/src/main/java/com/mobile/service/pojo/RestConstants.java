@@ -47,6 +47,8 @@ public class RestConstants {
     public static final String SCENARIO = "scenario";
     public static final String REGISTER_NEWSLETTER_CATEGORIES_SUBSCRIBED = "register[newsletter_categories_subscribed]";
     public static final String DELIVERY_TIME = "delivery_time";
+    public static final String DELIVERY_TYPE = "delivery_type";
+    public static final String DROPSHIP_DESC = "description";
     public static final String RELATED_DATA = "related_data";
     public static final String CHECKED = "checked";
     public static final String DISABLED = "disabled";

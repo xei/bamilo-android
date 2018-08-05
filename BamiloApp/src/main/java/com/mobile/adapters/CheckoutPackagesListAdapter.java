@@ -27,7 +27,9 @@ import java.util.Locale;
  */
 
 public class CheckoutPackagesListAdapter extends RecyclerView.Adapter<CheckoutPackagesListAdapter.CheckoutPackagesListViewHolder> {
-    private static final int ITEM_SECTION_HEADER = 2, ITEM_ORDER_ITEM = 3;
+
+    private static final int ITEM_SECTION_HEADER = 2;
+    private static final int ITEM_ORDER_ITEM = 3;
 
     private List<CartPackage> cartPackages;
     private ArrayList<Integer> headerPositions;
@@ -42,15 +44,19 @@ public class CheckoutPackagesListAdapter extends RecyclerView.Adapter<CheckoutPa
 
     @Override
     public CheckoutPackagesListViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        @LayoutRes int layoutId;
-        if (viewType == ITEM_SECTION_HEADER) {
-            layoutId = R.layout.row_package_section_header;
-        } else {
-            layoutId = R.layout._def_checkout_confirmation_product;
+
+        View view = null;
+
+        switch (viewType) {
+            case ITEM_SECTION_HEADER:
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_package_section_header, viewGroup, false);
+                break;
+            case ITEM_ORDER_ITEM:
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout._def_checkout_confirmation_product, viewGroup, false);
+                break;
         }
-        return new CheckoutPackagesListViewHolder(LayoutInflater
-                .from(viewGroup.getContext())
-                .inflate(layoutId, viewGroup, false));
+
+        return new CheckoutPackagesListViewHolder(view);
     }
 
     @Override
@@ -59,12 +65,23 @@ public class CheckoutPackagesListAdapter extends RecyclerView.Adapter<CheckoutPa
         Locale locale = new Locale("fa", "ir");
 
         if (viewType == ITEM_SECTION_HEADER) {
-            int index = headerPositions.indexOf(position);
-            CartPackage p = cartPackages.get(index);
-            holder.tvPackageTitle.setText(p.getTitle());
-            if (TextUtils.isNotEmpty(p.getDeliveryTime())) {
-                holder.tvPackageDeliveryTime.setText(String.format(locale, "زمان تحویل: %s", p.getDeliveryTime()));
+            CartPackage cartPackage = cartPackages.get(headerPositions.indexOf(position));
+
+            holder.tvPackageTitle.setText(cartPackage.getTitle());
+
+            if (TextUtils.isNotEmpty(cartPackage.getDeliveryTime())) {
+                holder.tvPackageDeliveryTime.setText(String.format(locale, "زمان تحویل: %s", cartPackage.getDeliveryTime()));
             }
+
+            if (cartPackage.getDeliveryType()!= null
+                    && cartPackage.getDeliveryType().getDropShipDescription()!= null
+                    && cartPackage.getDeliveryType().getDropShipDescription().length() != 0) {
+                holder.dropShipDescriptionTextView.setText(cartPackage.getDeliveryType().getDropShipDescription());
+                holder.dropShipDescriptionTextView.setVisibility(View.VISIBLE);
+            } else {
+                holder.dropShipDescriptionTextView.setVisibility(View.GONE);
+            }
+
         } else if (viewType == ITEM_ORDER_ITEM) {
             Context context = holder.itemView.getContext();
             PurchaseCartItem cartItem = indexedItems.get(position);
@@ -122,16 +139,18 @@ public class CheckoutPackagesListAdapter extends RecyclerView.Adapter<CheckoutPa
     public static class CheckoutPackagesListViewHolder extends RecyclerView.ViewHolder {
         // package section header
         TextView tvPackageTitle, tvPackageDeliveryTime;
+        private TextView dropShipDescriptionTextView;
 
         // package cart item
         public TextView brand, product, price, count;
         ImageView img;
 
-        public CheckoutPackagesListViewHolder(View itemView) {
+        CheckoutPackagesListViewHolder(View itemView) {
             super(itemView);
 
             tvPackageTitle = (TextView) itemView.findViewById(R.id.tvPackageTitle);
             tvPackageDeliveryTime = (TextView) itemView.findViewById(R.id.tvPackageDeliveryTime);
+            dropShipDescriptionTextView = itemView.findViewById(R.id.rowPackageSectionHeader_xeiTextView_dropShipMessage);
 
 
             brand = (com.mobile.components.customfontviews.TextView) itemView.findViewById(R.id.checkout_brand);

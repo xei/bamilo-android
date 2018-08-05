@@ -21,11 +21,17 @@ public class CartPackage implements IJSONSerializable {
     private String deliveryTime;
     private List<PurchaseCartItem> products;
 
+    private DeliveryType deliveryType;
+
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         if (jsonObject != null) {
             title = jsonObject.optString(RestConstants.TITLE);
             deliveryTime = jsonObject.optString(RestConstants.DELIVERY_TIME);
+
+            deliveryType = new DeliveryType();
+            deliveryType.initialize(jsonObject.optJSONObject(RestConstants.DELIVERY_TYPE));
+
             JSONArray productsArray = jsonObject.optJSONArray(RestConstants.PRODUCTS);
             products = new ArrayList<>();
             if (productsArray != null && productsArray.length() > 0) {
@@ -73,4 +79,13 @@ public class CartPackage implements IJSONSerializable {
     public void setProducts(List<PurchaseCartItem> products) {
         this.products = products;
     }
+
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
+    }
+
 }
