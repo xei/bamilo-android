@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import com.bamilo.modernbamilo.R
 import com.bamilo.modernbamilo.userreview.fragment.ReviewPageBaseFragment
 import com.bamilo.modernbamilo.userreview.fragment.ReviewPageTypeEssayFragment
@@ -187,12 +188,16 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
         call.enqueue(object: Callback<ResponseWrapper<SubmitSurveyResponse>> {
 
             override fun onResponse(call: Call<ResponseWrapper<SubmitSurveyResponse>>?, response: Response<ResponseWrapper<SubmitSurveyResponse>>?) {
-                if (response?.body()?.success!!) {
+                if (response?.isSuccessful != null && response?.isSuccessful && response?.body()?.success!!) {
+                    Toast.makeText(this@UserReviewActivity, resources.getString(R.string.userReview_submit_msg_succeed), Toast.LENGTH_LONG).show()
                     finish()
+                } else {
+                    Toast.makeText(this@UserReviewActivity, resources.getString(R.string.userReview_submit_msg_failed), Toast.LENGTH_LONG).show()
                 }
 
             }
             override fun onFailure(call: Call<ResponseWrapper<SubmitSurveyResponse>>?, t: Throwable?) {
+                Toast.makeText(this@UserReviewActivity, resources.getString(R.string.userReview_submit_msg_failed), Toast.LENGTH_LONG).show()
             }
 
         })

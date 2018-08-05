@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Modern Bamilo</string>
 
+    <!-- User Review -->
+    <string name="userReview_submit_msg_succeed">با تشکر از نظر شما</string>
+    <string name="userReview_submit_msg_failed">خطا در ثبت نظر!</string>
+
     <!-- Sellers List Screen -->
     <string name="sellersList_title">فروشندگان دیگر</string>
 
