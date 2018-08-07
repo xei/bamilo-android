@@ -92,8 +92,9 @@
                 android:id="@+id/pdvPrimaryInfo_ratingBar"
                 style="@style/StarBar.Indicator"
                 android:layout_width="wrap_content"
+                android:stepSize="0.1"
                 android:layout_height="wrap_content"
-                android:rating="4"/>
+                android:rating="3.7"/>
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/score_text"

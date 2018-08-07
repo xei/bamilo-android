@@ -157,7 +157,7 @@
                     android:gravity="center"
                     android:text="@string/product_description"
                     android:textColor="@color/primary_text_color"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     app:fontFamily="@string/bamilo_font"/>
 
                 <android.support.v7.widget.AppCompatImageView
@@ -197,7 +197,7 @@
                     android:gravity="center"
                     android:text="@string/specifications"
                     android:textColor="@color/primary_text_color"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     app:fontFamily="@string/bamilo_font"/>
 
                 <android.support.v7.widget.AppCompatImageView

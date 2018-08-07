@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="224dp"
     android:layout_marginBottom="@dimen/dimen_8dp"
     app:cardCornerRadius="2dp"
     app:cardElevation="2dp"
@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_8dp"
-        android:layout_marginBottom="@dimen/dimen_8dp"
         android:orientation="vertical">
 
         <FrameLayout
@@ -31,35 +30,32 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/recommendation_textView_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="@dimen/dimen_4dp"
             android:layout_marginLeft="@dimen/dimen_8dp"
             android:layout_marginRight="@dimen/dimen_8dp"
-            android:paddingTop="@dimen/dimen_2dp"
-            android:paddingBottom="@dimen/dimen_2dp"
             android:ellipsize="end"
-            android:gravity="right|center_vertical"
+            android:gravity="right"
             android:maxLines="2"
             android:textAlignment="gravity"
             android:textColor="#FF717171"
             android:textSize="12sp"
-            tools:text="Product Name"/>
+            tools:text="Product Name asdkaskdj
+lkajslkasjdlaksjdalskjd"/>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/recommendation_textView_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_4dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:paddingTop="@dimen/dimen_2dp"
             android:paddingBottom="@dimen/dimen_2dp"
-            android:fontFamily="@string/bamilo_bold_font"
             android:gravity="right|center_vertical"
             android:singleLine="true"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
+            app:fontFamily="@string/bamilo_bold_font"
             tools:text="18000 ریال"/>
 
         <com.mobile.components.customfontviews.TextView
@@ -68,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_8dp"
             android:layout_marginRight="@dimen/dimen_8dp"
-            android:paddingTop="@dimen/dimen_2dp"
             android:paddingBottom="@dimen/dimen_2dp"
             android:gravity="right|center_vertical"
             android:singleLine="true"

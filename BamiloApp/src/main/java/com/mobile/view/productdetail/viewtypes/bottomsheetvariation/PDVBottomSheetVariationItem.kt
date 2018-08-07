@@ -27,8 +27,6 @@ class PDVBottomSheetVariationItem(var variations: ArrayList<Variation>?, var pdv
     private lateinit var colorsItem: ArrayList<Any>
     private lateinit var sizesItem: ArrayList<Any>
 
-    var selectedSize = SimpleProduct()
-
     @Binder
     public fun binder(holder: PDVBottomSheetVariationHolder) {
         setupColorRecycler(holder)
@@ -73,8 +71,7 @@ class PDVBottomSheetVariationItem(var variations: ArrayList<Variation>?, var pdv
                             for (sizeItem in sizesItem) {
                                 (sizeItem as VariationsSizeItem).disableView()
                             }
-                            selectedSize = any as SimpleProduct
-                            pdvMainView.onSizeVariationClicked(any)
+                            pdvMainView.onSizeVariationClicked(any as SimpleProduct)
                         }
                     }))
                 }

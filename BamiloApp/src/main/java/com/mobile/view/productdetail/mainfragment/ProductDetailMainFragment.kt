@@ -41,6 +41,7 @@ import com.mobile.view.productdetail.ProductDetailActivity
 import com.mobile.view.productdetail.model.ImageSliderModel
 import com.mobile.view.productdetail.model.PrimaryInfoModel
 import com.mobile.view.productdetail.model.ProductDetail
+import com.mobile.view.productdetail.model.SimpleProduct
 import com.mobile.view.productdetail.viewtypes.breadcrumbs.BreadcrumbListItem
 import com.mobile.view.productdetail.viewtypes.primaryinfo.PrimaryInfoItem
 import com.mobile.view.productdetail.viewtypes.recommendation.RecommendationItem
@@ -78,6 +79,8 @@ class ProductDetailMainFragment : Fragment() {
 
     private lateinit var pdvMainView: PDVMainView
     private var recommendedItems: Any? = null
+
+    private var sizeVariation = SimpleProduct()
 
     companion object {
         fun newInstance(sku: String?): ProductDetailMainFragment {
@@ -133,6 +136,8 @@ class ProductDetailMainFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         updateCartBadge()
+        pdvMainView.onProductReceived(product)
+        pdvMainView.onSizeVariationClicked(sizeVariation)
     }
 
     private fun fetchExtraIntentData() {
@@ -316,7 +321,13 @@ class ProductDetailMainFragment : Fragment() {
     }
 
     private fun addVariations() {
-        items.add(VariationsItem(sku!!, product.variations, pdvMainView))
+
+        items.add(VariationsItem(sku!!, product.variations, pdvMainView, object : OnSizeVariationClicked {
+            override fun onSizeVariationClicked(selectedSize: SimpleProduct) {
+                sizeVariation = selectedSize.copy()
+                pdvMainView.onSizeVariationClicked(sizeVariation)
+            }
+        }))
     }
 
     private fun addReturnPolicy() {
@@ -436,5 +447,13 @@ class ProductDetailMainFragment : Fragment() {
                 binding.pdvAppImageViewCartBadge.text = cart.cartCount.toString()
             }
         }
+    }
+
+    fun updateSizeVariation(sizeVariation: SimpleProduct) {
+        this.sizeVariation = sizeVariation.copy()
+    }
+
+    public interface OnSizeVariationClicked {
+        fun onSizeVariationClicked(selectedSize: SimpleProduct)
     }
 }

@@ -42,7 +42,6 @@ class ProductDetailActivity : BaseActivity(),
         PDVMainView,
         SellersListFragment.OnAddToCartButtonClickListener,
         CommentsFragment.OnSubmitCommentButtonClickListener {
-
     private lateinit var productDetail: ProductDetail
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var productDetailPresenter: ProductDetailPresenter
@@ -50,7 +49,6 @@ class ProductDetailActivity : BaseActivity(),
     private var sizeVariation = SimpleProduct()
 
     private var sku: String? = ""
-    private var productToShowSku: String? = ""
 
     private var progressDialog: DialogProgressFragment? = null
 
@@ -99,7 +97,6 @@ class ProductDetailActivity : BaseActivity(),
     private fun fetchExtraIntentData() {
         if (intent != null) {
             sku = intent.getStringExtra("sku")
-            productToShowSku = sku
         }
     }
 
@@ -137,6 +134,10 @@ class ProductDetailActivity : BaseActivity(),
             progressDialog = DialogProgressFragment.newInstance()
         }
 
+        if (progressDialog!!.isAdded) {
+            progressDialog!!.dismiss()
+        }
+
         progressDialog?.run {
             isCancelable = true
             show(supportFragmentManager, null)
@@ -152,15 +153,32 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     fun onProductAddedToCart() {
-        if (getCurrentFragment() is ProductDetailMainFragment) {
-            val productDetailMainFragment = supportFragmentManager
-                    .findFragmentByTag(ProductDetailMainFragment::class.java.simpleName)
-                    as ProductDetailMainFragment
+        try {
+            if (getCurrentFragment() is ProductDetailMainFragment) {
+                val productDetailMainFragment = supportFragmentManager
+                        .findFragmentByTag(ProductDetailMainFragment::class.java.simpleName)
+                        as ProductDetailMainFragment
 
-            productDetailMainFragment.updateCartBadge()
+                productDetailMainFragment.updateCartBadge()
+            }
+        } catch (ignored: Exception) {
+
         }
     }
 
+    private fun onProductUpdateSizeVariation(sizeVariation: SimpleProduct) {
+        try {
+            if (getCurrentFragment() is ProductDetailMainFragment) {
+                val productDetailMainFragment = supportFragmentManager
+                        .findFragmentByTag(ProductDetailMainFragment::class.java.simpleName)
+                        as ProductDetailMainFragment
+
+                productDetailMainFragment.updateSizeVariation(sizeVariation)
+            }
+        } catch (ignored: Exception) {
+
+        }
+    }
 
     private fun productHasSizeVariation(): Boolean {
         productDetail.variations.let {
@@ -239,7 +257,7 @@ class ProductDetailActivity : BaseActivity(),
     private fun getFragment(fragmentTag: FragmentTag): Fragment? {
         when (fragmentTag.name) {
             FragmentTag.PRODUCT_MAIN_VIEW.name -> {
-                return ProductDetailMainFragment.newInstance(productToShowSku)
+                return ProductDetailMainFragment.newInstance(sku)
             }
 
             FragmentTag.OTHER_SELLERS.name -> {
@@ -256,7 +274,7 @@ class ProductDetailActivity : BaseActivity(),
             }
         }
 
-        return ProductDetailMainFragment.newInstance(productToShowSku)
+        return ProductDetailMainFragment.newInstance(sku)
     }
 
     private fun trackCommentsView() {
@@ -282,12 +300,12 @@ class ProductDetailActivity : BaseActivity(),
             return
         }
 
-        productToShowSku = product.sku
+        sku = product.sku
         displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
     }
 
     override fun onRelatedProductClicked(sku: String) {
-        productToShowSku = sku
+        this.sku = sku
         displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
     }
 
@@ -412,7 +430,8 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun onSizeVariationClicked(sizeVariation: SimpleProduct) {
-        this.sizeVariation = sizeVariation
+        this.sizeVariation = sizeVariation.copy()
+        onProductUpdateSizeVariation(this.sizeVariation)
     }
 
     override fun trackRemoveFromWishList() {
@@ -458,7 +477,14 @@ class ProductDetailActivity : BaseActivity(),
         binding.productDetailLinearLayoutAddToCart!!.visibility = View.VISIBLE
         binding.productDetailLinearLayoutNotifyMe!!.visibility = View.GONE
 
+        this.sku = product.sku
         productDetail = product
+        sizeVariation.sku = null
+
+        if (TextUtils.isEmpty(productDetail.sku)) {
+            return
+        }
+
         productDetailPresenter.fillChooseVariationBottomSheet(productDetail)
 
         val viewProductEventModel = MainEventModel("category",

@@ -3,16 +3,12 @@ package com.mobile.view.productdetail.slider
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.GestureDetector
 import android.view.MotionEvent
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
-import com.mobile.app.BamiloApplication
-import com.mobile.constants.ConstantsIntentExtra
 import com.mobile.service.pojo.RestConstants
-import com.mobile.view.MainFragmentActivity
 import com.mobile.view.R
 import com.mobile.view.productdetail.PDVMainView
 import com.mobile.view.productdetail.gallery.GalleryActivity
@@ -30,15 +26,10 @@ class SliderPresenter(var context: Context,
                       private var pdvMainView: PDVMainView) {
 
     fun onLikeButtonClicked(imageSliderModel: ImageSliderModel, callBack: Callback<ResponseWrapper<Any>>) {
-        if (!BamiloApplication.isCustomerLoggedIn()) {
-            pdvMainView.loginUser()
-            callBack.onFailure(null, null)
+        if (imageSliderModel.isWishList) {
+            removeProductToWishList(callBack)
         } else {
-            if (imageSliderModel.isWishList) {
-                removeProductToWishList(callBack)
-            } else {
-                addProductToWishList(callBack)
-            }
+            addProductToWishList(callBack)
         }
     }
 

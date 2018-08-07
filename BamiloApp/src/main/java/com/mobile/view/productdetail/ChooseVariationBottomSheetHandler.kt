@@ -11,6 +11,7 @@ import com.mobile.utils.imageloader.ImageManager
 import com.mobile.view.R
 import com.mobile.view.databinding.ActivityProductDetailBinding
 import com.mobile.view.productdetail.model.ProductDetail
+import com.mobile.view.productdetail.model.SimpleProduct
 import com.mobile.view.productdetail.viewtypes.bottomsheetvariation.PDVBottomSheetVariationItem
 import java.util.*
 

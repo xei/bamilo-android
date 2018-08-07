@@ -10,6 +10,7 @@ import com.mobile.utils.OnItemClickListener
 import com.mobile.utils.ui.UIUtils
 import com.mobile.view.R
 import com.mobile.view.productdetail.PDVMainView
+import com.mobile.view.productdetail.mainfragment.ProductDetailMainFragment
 import com.mobile.view.productdetail.model.SimpleProduct
 import com.mobile.view.productdetail.model.Variation
 import com.mobile.view.productdetail.viewtypes.variation.colors.OtherVariationsItem
@@ -22,7 +23,10 @@ import com.mobile.view.productdetail.viewtypes.variation.size.VariationsSizeItem
  */
 
 @BindItem(layout = R.layout.content_pdv_variations, holder = VariationsHolder::class)
-class VariationsItem(var sku: String, var variations: ArrayList<Variation>, private var pdvMainView: PDVMainView) {
+class VariationsItem(var sku: String,
+                     var variations: ArrayList<Variation>,
+                     private var pdvMainView: PDVMainView,
+                     private var onSizeVariationClicked : ProductDetailMainFragment.OnSizeVariationClicked) {
     private lateinit var colorsAdapter: GhostAdapter
     private lateinit var sizesAdapter: GhostAdapter
 
@@ -110,7 +114,7 @@ class VariationsItem(var sku: String, var variations: ArrayList<Variation>, priv
                                 (sizeItem as VariationsSizeItem).disableView()
                             }
                             selectedSize = any as SimpleProduct
-                            pdvMainView.onSizeVariationClicked(selectedSize)
+                            onSizeVariationClicked.onSizeVariationClicked(selectedSize)
                         }
                     }))
                 }

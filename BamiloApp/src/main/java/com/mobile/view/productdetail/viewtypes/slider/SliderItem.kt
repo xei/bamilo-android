@@ -3,6 +3,7 @@ package com.mobile.view.productdetail.viewtypes.slider
 import android.support.v4.app.FragmentManager
 import android.support.v4.view.PagerAdapter
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
+import com.mobile.app.BamiloApplication
 import com.mobile.classes.models.MainEventModel
 import com.mobile.classes.models.SimpleEventModel
 import com.mobile.components.ghostadapter.BindItem
@@ -11,7 +12,6 @@ import com.mobile.constants.tracking.EventActionKeys
 import com.mobile.constants.tracking.EventConstants
 import com.mobile.managers.TrackerManager
 import com.mobile.service.tracking.TrackingPage
-import com.mobile.utils.TrackerDelegator
 import com.mobile.utils.ui.WarningFactory
 import com.mobile.view.R
 import com.mobile.view.productdetail.PDVMainView
@@ -60,6 +60,11 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
 
     private fun bindLikeButtonClickListener(holder: SliderHolder) {
         holder.like.setOnClickListener { _ ->
+            if (!BamiloApplication.isCustomerLoggedIn()) {
+                pdvMainView.loginUser()
+                return@setOnClickListener
+            }
+
             holder.like.isChecked = !imageSliderModel.isWishList
             holder.like.playAnimation()
 

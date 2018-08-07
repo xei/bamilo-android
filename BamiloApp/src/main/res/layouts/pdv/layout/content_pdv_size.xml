@@ -20,8 +20,9 @@
         android:layout_marginRight="@dimen/dimen_4dp"
         android:layout_gravity="center"
         android:gravity="center"
+        android:alpha="0.8"
         android:textColor="@color/secondary_text_color"
-        android:textSize="14sp"
+        android:textSize="13sp"
         tools:text="XL"/>
 
 </LinearLayout>
