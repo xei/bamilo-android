@@ -21,12 +21,21 @@ import com.mobile.view.productdetail.model.Review
  * contact farshidabazari@gmail.com
  */
 @BindItem(layout = R.layout.content_pdv_review, holder = ReviewItemHolder::class)
-class ReviewItemAdapter(var review: Review, var pdvMainView: PDVMainView, var reviewsCount: Int) {
+class ReviewItemAdapter(var review: Review, var pdvMainView: PDVMainView, private var reviewsCount: Int) {
     @Binder
     public fun binder(holder: ReviewItemHolder) {
         holder.date.text = review.date
         holder.comment.text = review.comment
-        holder.title.text = review.username
+        holder.title.text = review.title
+        holder.authorName.text = review.username
+
+        if (review.is_bought_by_user) {
+            holder.hasUserBeenBoughtImage.visibility = View.VISIBLE
+            holder.hasUserBeenBoughtText.visibility = View.VISIBLE
+        } else {
+            holder.hasUserBeenBoughtImage.visibility = View.GONE
+            holder.hasUserBeenBoughtText.visibility = View.GONE
+        }
 
         review.rate?.let {
             holder.ratingBar.rating = it.toFloat()
