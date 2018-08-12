@@ -286,18 +286,9 @@ public class ExpandableXeiTextView extends LinearLayout implements View.OnClickL
     private static ExpandIndicatorController setupExpandToggleController(@NonNull Context context, TypedArray typedArray) {
         final int expandToggleType = typedArray.getInt(R.styleable.ExpandableTextView_expandToggleType, DEFAULT_TOGGLE_TYPE);
         final ExpandIndicatorController expandIndicatorController;
-        switch (expandToggleType) {
-            case EXPAND_INDICATOR_IMAGE_BUTTON:
-                expandIndicatorController = new ImageButtonExpandController(context.getResources().getString(R.string.comment_comment_seeMore), context.getResources().getString(R.string.comment_comment_seeLess));
-                break;
-            case EXPAND_INDICATOR_TEXT_VIEW:
-                String expandText = typedArray.getString(R.styleable.ExpandableTextView_expandIndicator);
-                String collapseText = typedArray.getString(R.styleable.ExpandableTextView_collapseIndicator);
-                expandIndicatorController = new TextViewExpandController(expandText, collapseText);
-                break;
-            default:
-                throw new IllegalStateException("Must be of enum: ExpandableTextView_expandToggleType, one of EXPAND_INDICATOR_IMAGE_BUTTON or EXPAND_INDICATOR_TEXT_VIEW.");
-        }
+        String expandText = typedArray.getString(R.styleable.ExpandableTextView_expandIndicator);
+        String collapseText = typedArray.getString(R.styleable.ExpandableTextView_collapseIndicator);
+        expandIndicatorController = new TextViewExpandController(expandText, collapseText);
 
         return expandIndicatorController;
     }
@@ -353,39 +344,6 @@ public class ExpandableXeiTextView extends LinearLayout implements View.OnClickL
 
         TextView getIndicator();
         void hideIndicator();
-    }
-
-    static class ImageButtonExpandController implements ExpandIndicatorController {
-
-        private final String mExpandDrawable;
-        private final String mCollapseDrawable;
-
-        private TextView mImageButton;
-
-        ImageButtonExpandController(String expandDrawable, String collapseDrawable) {
-            mExpandDrawable = expandDrawable;
-            mCollapseDrawable = collapseDrawable;
-        }
-
-        @Override
-        public void changeState(boolean collapsed) {
-            mImageButton.setText(collapsed ? mExpandDrawable : mCollapseDrawable);
-        }
-
-        @Override
-        public void setView(View toggleView) {
-            mImageButton = (TextView) toggleView;
-        }
-
-        @Override
-        public TextView getIndicator() {
-            return mImageButton;
-        }
-
-        @Override
-        public void hideIndicator() {
-            mImageButton.setVisibility(GONE);
-        }
     }
 
     static class TextViewExpandController implements ExpandIndicatorController {

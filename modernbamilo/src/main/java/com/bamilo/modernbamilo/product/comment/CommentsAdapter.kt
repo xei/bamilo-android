@@ -73,6 +73,7 @@ class CommentsAdapter(
                         commentContentTextView.run {
                             if (isThisScreenJustForOneDistinctComment) {
                                 commentContentTextView.onClick(mExpandIndicatorController.indicator)
+                                commentContentTextView.mExpandIndicatorController.hideIndicator()
 
                             } else {
                                 mExpandIndicatorController.changeState(true)
