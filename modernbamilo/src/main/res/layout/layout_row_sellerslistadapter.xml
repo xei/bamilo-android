@@ -80,6 +80,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:background="@drawable/background_seller_rate"
         android:gravity="center"
         android:textColor="@color/sellersList_row_rate"
@@ -119,10 +121,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="24dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         tools:text="۳۳٪"
         android:textColor="@color/sellersList_row_discountPercent"
         android:background="@drawable/background_discount"
         app:locale="auto"
+        app:style="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/layoutRowSellerslistadapter_priceView_payablePrice"
         app:layout_constraintRight_toLeftOf="@+id/layoutRowSellerslistadapter_priceView_payablePrice" />
 
