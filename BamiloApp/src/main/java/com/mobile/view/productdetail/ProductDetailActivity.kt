@@ -124,6 +124,7 @@ class ProductDetailActivity : BaseActivity(),
 
                 override fun onRequestError(baseResponse: BaseResponse<*>?) {
                     dismissProgressDialog()
+                    warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, baseResponse?.errorMessage)
                 }
             })
         }
