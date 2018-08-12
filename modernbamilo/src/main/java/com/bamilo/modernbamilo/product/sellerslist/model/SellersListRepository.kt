@@ -66,7 +66,7 @@ class SellersListRepository(context: Context) {
                             title = it.sellerInfo.title,
                             deliveryTime = it.sellerInfo.deliveryTime.str,
                             rate = it.sellerInfo.rating.rating,
-                            isRateValid = !it.sellerInfo.rating.isValid,
+                            isRateValid = it.sellerInfo.rating.isValid,
                             baseAmount = it.productInfo.amount.baseAmount,
                             payableAmount = it.productInfo.amount.payableAmount,
                             discount = it.productInfo.amount.discountPercentage,
