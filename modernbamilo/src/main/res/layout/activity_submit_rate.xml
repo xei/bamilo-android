@@ -114,6 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:padding="8dp"
@@ -152,19 +153,39 @@
 
     </ScrollView>
 
-    <com.bamilo.modernbamilo.customview.XeiButton
-        android:id="@+id/activitySubmitRate_xeiButton_submitRateBtn"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="58dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:background="@color/submitRate_submitBtn_background"
-        android:gravity="center"
-        android:text="@string/submitRate_submitBtn"
-        android:textColor="@color/submitRate_submitBtn_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:locale="auto"
-        app:style="bold"/>
+        app:layout_constraintStart_toStartOf="parent" >
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/activitySubmitRate_materialProgressBar_submitCommentLoading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-6dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:mpb_progressStyle="horizontal"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
+
+        <com.bamilo.modernbamilo.customview.XeiButton
+            android:id="@+id/activitySubmitRate_xeiButton_submitRateBtn"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+
+            android:background="@color/submitRate_submitBtn_background"
+            android:gravity="center"
+            android:text="@string/submitRate_submitBtn"
+            android:textColor="@color/submitRate_submitBtn_text"
+            app:locale="auto"
+            app:style="bold"/>
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

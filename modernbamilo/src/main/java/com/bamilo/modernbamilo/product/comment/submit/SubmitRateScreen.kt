@@ -13,6 +13,7 @@ import com.bamilo.modernbamilo.util.logging.Logger
 import com.bamilo.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import com.willy.ratingbar.ScaleRatingBar
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +40,9 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mCommentTitleEditText: EditText
     private lateinit var mCommentContentEditText: EditText
     private lateinit var mSubmitRateButton: Button
+    private lateinit var mSubmitRateProgressBar: MaterialProgressBar
+
+    private var mRateIsSubmiting = false
 
     private lateinit var mProductId: String
 
@@ -65,6 +69,7 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
         mCommentTitleEditText = findViewById(R.id.activitySubmitRate_xeiEditText_title)
         mCommentContentEditText = findViewById(R.id.activitySubmitRate_xeiEditText_comment)
         mSubmitRateButton = findViewById(R.id.activitySubmitRate_xeiButton_submitRateBtn)
+        mSubmitRateProgressBar = findViewById(R.id.activitySubmitRate_materialProgressBar_submitCommentLoading)
     }
 
     private fun setOnClickListeners() {
@@ -108,11 +113,14 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
 
                     Logger.log("SubmitRate request failed!", TAG_DEBUG, LogType.ERROR)
                 }
+                mRateIsSubmiting = false
+                mSubmitRateProgressBar.visibility = View.GONE
             }
 
             override fun onFailure(call: Call<ResponseWrapper<Boolean>>?, t: Throwable?) {
                 Toast.makeText(this@SubmitRateActivity, resources.getText(R.string.submitRate_submitError), Toast.LENGTH_LONG).show()
-
+                mRateIsSubmiting = false
+                mSubmitRateProgressBar.visibility = View.GONE
                 Logger.log("SubmitRate request failed!", TAG_DEBUG, LogType.ERROR)
             }
 
@@ -122,7 +130,16 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(clickedView: View?) {
         when (clickedView?.id) {
             R.id.layoutToolbar_imageButton_close -> finish()
-            R.id.activitySubmitRate_xeiButton_submitRateBtn -> submitRate()
+            R.id.activitySubmitRate_xeiButton_submitRateBtn ->
+                if(!mRateIsSubmiting) {
+                    if (mRateRatingBar.rating.toInt() == 0) {
+                        Toast.makeText(this, resources.getString(R.string.submitRate_selectStarError), Toast.LENGTH_LONG).show()
+                    } else {
+                        submitRate()
+                        mRateIsSubmiting = true
+                        mSubmitRateProgressBar.visibility = View.VISIBLE
+                    }
+            }
         }
     }
 
