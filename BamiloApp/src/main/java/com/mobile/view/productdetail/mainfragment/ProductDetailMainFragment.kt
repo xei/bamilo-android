@@ -74,6 +74,7 @@ class ProductDetailMainFragment : Fragment() {
 
     private lateinit var adapter: GhostAdapter
     private lateinit var items: ArrayList<Any>
+    private lateinit var recommendationAdapterItems: ArrayList<Any>
 
     private var pdvMainFragmentViewModel: ProductDetailMainFragmentViewModel? = null
 
@@ -160,6 +161,7 @@ class ProductDetailMainFragment : Fragment() {
     private fun setUpMainViewAdapter() {
         adapter = GhostAdapter()
         items = ArrayList()
+        recommendationAdapterItems = ArrayList()
     }
 
     private fun setupToolbarOnScrollBehavior() {
@@ -184,6 +186,10 @@ class ProductDetailMainFragment : Fragment() {
 
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
+                if (recommendedItems == null) {
+                    return 2
+                }
+
                 if (position in itemPositionToChangeGridSpanCount..(itemPositionToChangeGridSpanCountToDefault - 1)) {
                     return 1
                 }
@@ -349,14 +355,6 @@ class ProductDetailMainFragment : Fragment() {
         items.add(ReviewsItem(product.reviews, sku!!, pdvMainView))
     }
 
-    private fun addSeeMoreRecommendItem() {
-        items.add(SeeMoreButtonItem(getString(R.string.see_all_related_products), object : OnItemClickListener {
-            override fun onItemClicked(any: Any?) {
-                pdvMainView.onShowMoreRelatedProducts()
-            }
-        }))
-    }
-
     private fun addBreadCrumbs() {
         if (product.breadcrumbs.size <= 0) {
             return
@@ -369,7 +367,15 @@ class ProductDetailMainFragment : Fragment() {
         pdvMainFragmentViewModel!!.loadData(sku).observe(this, Observer {
             if (it != null) {
                 this.product = it
+
+                addItemsToRecyclerInputList()
+                addBreadCrumbs()
+                addItemsToAdapter()
+
                 pdvMainView.onProductReceived(it)
+
+                pdvMainView.dismissProgressView()
+
                 getRecommendedProducts()
 
             } else if (context != null) {
@@ -389,12 +395,11 @@ class ProductDetailMainFragment : Fragment() {
                 6)
         { _, data ->
             if (isAdded && context != null) {
-                addItemsToRecyclerInputList()
                 recommendedItems = data
                 if (data != null) {
                     addHeader(getString(R.string.related_products))
 
-                    itemPositionToChangeGridSpanCount = items.size
+                    itemPositionToChangeGridSpanCount = items.size - 2
                     itemPositionToChangeGridSpanCountToDefault = itemPositionToChangeGridSpanCount
 
                     for (i in 0 until data.size) {
@@ -402,24 +407,40 @@ class ProductDetailMainFragment : Fragment() {
                             break
                         }
                         itemPositionToChangeGridSpanCountToDefault++
-                        items.add(RecommendationItem(data[i], product.price.currency, pdvMainView))
+                        recommendationAdapterItems.add(RecommendationItem(data[i], product.price.currency, pdvMainView))
                     }
 
                     addSeeMoreRecommendItem()
+                    addRecommendItemsToAdapter()
                 }
-                addBreadCrumbs()
-                addItemsToAdapter()
-                pdvMainView.dismissProgressView()
             }
         }
+    }
+
+    private fun addRecommendItemsToAdapter() {
+        if (adapter.itemCount > 0) {
+            adapter.addItems(adapter.itemCount - 1, recommendationAdapterItems)
+        } else {
+            adapter.addItems(recommendationAdapterItems)
+        }
+    }
+
+    private fun addSeeMoreRecommendItem() {
+        recommendationAdapterItems.add(SeeMoreButtonItem(getString(R.string.see_all_related_products), object : OnItemClickListener {
+            override fun onItemClicked(any: Any?) {
+                pdvMainView.onShowMoreRelatedProducts()
+            }
+        }))
     }
 
     private fun getRecommendationItem(): RecommendedItem? {
         val item = Item().apply {
             brand = product.brand
 
-            product.breadcrumbs[0].target?.let {
-                category = it.split("::")[1]
+            if (product.breadcrumbs.size > 0) {
+                product.breadcrumbs[0].target?.let {
+                    category = it.split("::")[1]
+                }
             }
 
             image = product.image
