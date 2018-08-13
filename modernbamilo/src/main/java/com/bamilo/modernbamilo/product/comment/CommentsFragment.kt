@@ -119,7 +119,7 @@ class CommentsFragment : Fragment(), View.OnClickListener {
                         putFloat(ARG_THREE_STARS_COUNT, threeStarsCount)
                         putFloat(ARG_FOUR_STARS_COUNT, fourStarsCount)
                         putFloat(ARG_FIVE_STARS_COUNT, fiveStarsCount)
-                        putBoolean(ARG_IS_THIS_SCREEN_JUST_FOR_ONE_DISTINCT_COMMENT, false)
+                        putBoolean(ARG_IS_THIS_SCREEN_JUST_FOR_ONE_DISTINCT_COMMENT, true)
                         putString(ARG_SERIALIZED_COMMENT_VIEWMODEL, commentViewModelSerialized)
                     }
                 }
