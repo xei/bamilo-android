@@ -321,6 +321,8 @@ class ProductDetailActivity : BaseActivity(),
         TrackerManager.trackEvent(this, EventConstants.OTHER_SELLERS_TAPPED, viewOtherSellerModel)
 
         displaySelectedScreen(FragmentTag.OTHER_SELLERS)
+        binding.productDetailLinearLayoutAddToCart!!.visibility = View.GONE
+
     }
 
     override fun onShowDesAndSpecPage() {
@@ -457,7 +459,7 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun onBackPressed() {
-        if (getCurrentFragment().tag == CommentsFragment::class.java.simpleName) {
+        if (getCurrentFragment().tag == CommentsFragment::class.java.simpleName || getCurrentFragment().tag == SellersListFragment::class.java.simpleName) {
             binding.productDetailLinearLayoutAddToCart!!.visibility = View.VISIBLE
         }
 

@@ -283,7 +283,7 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
                 currentError = error;
                 handleError(error);
             }
-        }, RecommendManager.createHomeExcludeItemListsMap(null), HOME_PAGES_COUNT);
+        }, RecommendManager.createHomeExcludeItemListsMap((List<String>[]) null), HOME_PAGES_COUNT);
     }
 
     private void handleError(Error error) {
