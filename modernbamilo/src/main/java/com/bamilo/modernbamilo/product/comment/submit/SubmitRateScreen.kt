@@ -41,6 +41,7 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mCommentContentEditText: EditText
     private lateinit var mSubmitRateButton: Button
     private lateinit var mSubmitRateProgressBar: MaterialProgressBar
+    private lateinit var mMessageBox: View
 
     private var mRateIsSubmiting = false
 
@@ -70,6 +71,7 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
         mCommentContentEditText = findViewById(R.id.activitySubmitRate_xeiEditText_comment)
         mSubmitRateButton = findViewById(R.id.activitySubmitRate_xeiButton_submitRateBtn)
         mSubmitRateProgressBar = findViewById(R.id.activitySubmitRate_materialProgressBar_submitCommentLoading)
+        mMessageBox = findViewById(R.id.activitySubmitRate_layout_warningLayout)
     }
 
     private fun setOnClickListeners() {
@@ -109,7 +111,8 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
                     Logger.log("SubmitRate request succeed!", TAG_DEBUG, LogType.INFO)
                     finish()
                 } else {
-                    Toast.makeText(this@SubmitRateActivity, resources.getText(R.string.submitRate_submitError), Toast.LENGTH_LONG).show()
+                    mMessageBox.visibility = View.VISIBLE
+//                    Toast.makeText(this@SubmitRateActivity, resources.getText(R.string.submitRate_submitError), Toast.LENGTH_LONG).show()
 
                     Logger.log("SubmitRate request failed!", TAG_DEBUG, LogType.ERROR)
                 }
@@ -118,7 +121,8 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onFailure(call: Call<ResponseWrapper<Boolean>>?, t: Throwable?) {
-                Toast.makeText(this@SubmitRateActivity, resources.getText(R.string.submitRate_submitError), Toast.LENGTH_LONG).show()
+                mMessageBox.visibility = View.VISIBLE
+//                Toast.makeText(this@SubmitRateActivity, resources.getText(R.string.submitRate_submitError), Toast.LENGTH_LONG).show()
                 mRateIsSubmiting = false
                 mSubmitRateProgressBar.visibility = View.GONE
                 Logger.log("SubmitRate request failed!", TAG_DEBUG, LogType.ERROR)
@@ -138,6 +142,7 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
                         submitRate()
                         mRateIsSubmiting = true
                         mSubmitRateProgressBar.visibility = View.VISIBLE
+                        mMessageBox.visibility = View.GONE
                     }
             }
         }

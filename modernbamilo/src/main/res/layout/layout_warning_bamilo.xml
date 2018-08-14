@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:background="#e77979"
+    android:gravity="center"
+    android:layout_centerHorizontal="true"
+    android:shadowColor="#6f251c"
+    android:shadowDx="2"
+    android:shadowDy="2"
+    android:shadowRadius="2">
+
+    <ImageView
+        android:id="@+id/warning_image"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:paddingRight="6dp"
+        android:src="@drawable/ico_notifications_alert" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/warning_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/warning_image"
+        android:layout_toRightOf="@id/warning_image"
+        android:gravity="center"
+        android:text="@string/submitRate_submitError"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/warning_text_size"
+        android:maxLines="2"
+        android:textDirection="rtl"
+        android:ellipsize="end"/>
+</RelativeLayout>

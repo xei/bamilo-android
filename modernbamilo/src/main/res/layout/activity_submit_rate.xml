@@ -36,6 +36,13 @@
 
             </android.support.v7.widget.Toolbar>
 
+            <include
+                android:id="@+id/activitySubmitRate_layout_warningLayout"
+                layout="@layout/layout_warning_bamilo"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:visibility="gone" />
+
             <com.bamilo.modernbamilo.customview.XeiTextView
                 android:id="@+id/activitySubmitRate_xeiTextView_rateQuestion"
                 android:layout_width="match_parent"
