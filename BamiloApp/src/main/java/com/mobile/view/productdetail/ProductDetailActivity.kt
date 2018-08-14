@@ -12,7 +12,7 @@ import com.bamilo.modernbamilo.product.comment.CommentsFragment
 import com.bamilo.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.bamilo.modernbamilo.product.descspec.spec.SpecificationFragment
 import com.bamilo.modernbamilo.product.descspec.tempdesc.TemporaryDescriptionFragment
-import com.bamilo.modernbamilo.product.sellerslist.view.SellersListFragment
+import com.bamilo.modernbamilo.product.sellerslist.view.SellersListAdapter
 import com.google.gson.Gson
 import com.mobile.app.BamiloApplication
 import com.mobile.classes.models.BaseScreenModel
@@ -37,10 +37,11 @@ import com.mobile.view.productdetail.mainfragment.ProductDetailMainFragment
 import com.mobile.view.productdetail.model.ProductDetail
 import com.mobile.view.productdetail.model.Review
 import com.mobile.view.productdetail.model.SimpleProduct
+import com.mobile.view.productdetail.seller.SellersListFragment
 
 class ProductDetailActivity : BaseActivity(),
         PDVMainView,
-        SellersListFragment.OnAddToCartButtonClickListener,
+        SellersListAdapter.OnAddToCartButtonClickListener,
         CommentsFragment.OnSubmitCommentButtonClickListener {
     private lateinit var productDetail: ProductDetail
     private lateinit var binding: ActivityProductDetailBinding
