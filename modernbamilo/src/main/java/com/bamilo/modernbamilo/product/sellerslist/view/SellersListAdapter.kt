@@ -16,7 +16,7 @@ import com.bamilo.modernbamilo.util.extension.persianizeNumberString
 
 class SellersListAdapter(
         private val mSellersViewModels: List<SellersListItemViewModel>,
-        private val mOnAddToCartButtonClickListener: SellersListFragment.OnAddToCartButtonClickListener
+        private val mOnAddToCartButtonClickListener: OnAddToCartButtonClickListener
 ) : RecyclerView.Adapter<SellersListAdapter.SellerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SellerViewHolder {
@@ -72,4 +72,9 @@ class SellersListAdapter(
         val baseAmountTextView = itemView.findViewById(R.id.layoutRowSellerslistadapter_priceView_basePrice) as PriceView
         val addToCartButton = itemView.findViewById(R.id.layoutRowSellerslistadapter_xeiButton_addToCart) as Button
     }
+
+    interface OnAddToCartButtonClickListener {
+        fun onAddToCartButtonClicked(sku: String)
+    }
+
 }

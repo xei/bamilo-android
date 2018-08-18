@@ -85,6 +85,12 @@ class ProductDetailActivity : BaseActivity(),
         TrackerManager.trackScreen(this, screenModel, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        updateSellerFragmentCartItemsCountBadge()
+    }
+
     override fun onPause() {
         super.onPause()
         progressDialog?.dismiss()
@@ -162,9 +168,21 @@ class ProductDetailActivity : BaseActivity(),
                         as ProductDetailMainFragment
 
                 productDetailMainFragment.updateCartBadge()
+            } else {
+                updateSellerFragmentCartItemsCountBadge()
             }
         } catch (ignored: Exception) {
 
+        }
+    }
+
+    private fun updateSellerFragmentCartItemsCountBadge() {
+        if (getCurrentFragment() is SellersListFragment) {
+            val sellerListFragment = supportFragmentManager
+                    .findFragmentByTag(SellersListFragment::class.java.simpleName)
+                    as SellersListFragment
+
+            sellerListFragment.updateCartBadge(BamiloApplication.INSTANCE.cart?.cartCount)
         }
     }
 
@@ -265,7 +283,7 @@ class ProductDetailActivity : BaseActivity(),
             FragmentTag.OTHER_SELLERS.name -> {
                 return SellersListFragment.newInstance(sku!!,
                         productDetail.title,
-                        productDetail.image!!)
+                        productDetail.image!!).apply { updateCartBadge(BamiloApplication.INSTANCE.cart?.cartCount) }
             }
             FragmentTag.DESCRIPTION.name -> {
                 return TemporaryDescriptionFragment.newInstance(sku!!)

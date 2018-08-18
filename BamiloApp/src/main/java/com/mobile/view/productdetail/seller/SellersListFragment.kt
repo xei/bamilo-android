@@ -2,6 +2,7 @@ package com.mobile.view.productdetail.seller
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
@@ -22,6 +23,9 @@ import com.bamilo.modernbamilo.product.sellerslist.viewmodel.SellersListScreenVi
 import com.bamilo.modernbamilo.util.extension.loadImageFromNetwork
 import com.bamilo.modernbamilo.util.logging.LogType
 import com.bamilo.modernbamilo.util.logging.Logger
+import com.mobile.constants.ConstantsIntentExtra
+import com.mobile.controllers.fragments.FragmentType
+import com.mobile.view.MainFragmentActivity
 
 private const val TAG_DEBUG = "SellersListFragment"
 
@@ -42,6 +46,8 @@ class SellersListFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mCloseBtnImageButton: ImageButton
     private lateinit var mToolbarTitleTextView: TextView
+    private lateinit var mCartButtonImageView: ImageView
+    private lateinit var mCartBadgeTextView: TextView
 
     private lateinit var mProductThumbnailImageView: ImageView
     private lateinit var mProductTitleTextView: TextView
@@ -52,6 +58,8 @@ class SellersListFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mSellersRecyclerView: RecyclerView
     private lateinit var mOnAddToCartButtonClickListener: SellersListAdapter.OnAddToCartButtonClickListener
+
+    private var mDefaultCartItemCount = 0
 
     companion object {
 
@@ -78,6 +86,10 @@ class SellersListFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             inflater.inflate(R.layout.fragment_sellers_list, container, false).apply {
                 findViews(this)
+                if (mDefaultCartItemCount > 0) {
+                    mCartBadgeTextView.text = mDefaultCartItemCount.toString()
+                    mCartBadgeTextView.visibility = View.VISIBLE
+                }
             }!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,6 +106,8 @@ class SellersListFragment : Fragment(), View.OnClickListener {
     private fun findViews(rootView: View) {
         mCloseBtnImageButton = rootView.findViewById(R.id.layoutToolbar_imageButton_close)
         mToolbarTitleTextView = rootView.findViewById(R.id.layoutToolbar_xeiTextView_title)
+        mCartButtonImageView = rootView.findViewById(R.id.layoutToolbar_appCompatImageView_whiteCart)
+        mCartBadgeTextView = rootView.findViewById(R.id.layoutToolbar_xeiTextView_cartBadge)
         mProductThumbnailImageView = rootView.findViewById(R.id.layoutSellerslistProduct_imageView_thumbnail)
         mProductTitleTextView = rootView.findViewById(R.id.layoutSellerslistProduct_xeiTextView_title)
         mPriceFilterButton = rootView.findViewById(R.id.activitySellersList_filterButton_price)
@@ -125,6 +139,7 @@ class SellersListFragment : Fragment(), View.OnClickListener {
 
     private fun setOnClickListeners() {
         mCloseBtnImageButton.setOnClickListener(this)
+        mCartButtonImageView.setOnClickListener(this)
         mPriceFilterButton.setOnClickListener(this)
         mRateFilterButton.setOnClickListener(this)
         mLeadTimeFilterButton.setOnClickListener(this)
@@ -158,11 +173,18 @@ class SellersListFragment : Fragment(), View.OnClickListener {
     override fun onClick(clickedView: View?) {
         when (clickedView?.id) {
             R.id.layoutToolbar_imageButton_close -> activity?.onBackPressed()
+            R.id.layoutToolbar_appCompatImageView_whiteCart -> openCartScreen()
             R.id.activitySellersList_filterButton_price -> sortSellersByPayableAmount()
             R.id.activitySellersList_filterButton_rate -> sortSellersByRate()
             R.id.activitySellersList_filterButton_leadTime -> sortSellersByLeadTime()
         }
     }
+
+    private fun openCartScreen() = startActivity(
+            Intent(context, MainFragmentActivity::class.java).apply {
+            putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.SHOPPING_CART)
+            putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false)
+        })
 
     private fun sortSellersByPayableAmount() {
         mViewModel.sellersViewModel.sortWith(compareBy(SellersListItemViewModel::payableAmount))
@@ -192,6 +214,22 @@ class SellersListFragment : Fragment(), View.OnClickListener {
         mPriceFilterButton.deselectButton()
         mRateFilterButton.deselectButton()
         mLeadTimeFilterButton.selectButton()
+    }
+
+    fun updateCartBadge(cartItemsCount: Int?) {
+        cartItemsCount?.let {
+            try {
+                if (cartItemsCount > 0) {
+                    mCartBadgeTextView.text = cartItemsCount.toString()
+                    mCartBadgeTextView.visibility = View.VISIBLE
+                } else {
+                    mCartBadgeTextView.visibility = View.GONE
+                }
+            } catch (e: Exception) {
+                mDefaultCartItemCount = cartItemsCount
+            }
+        }
+
     }
 
 }
