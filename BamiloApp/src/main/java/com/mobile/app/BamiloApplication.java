@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -94,6 +95,8 @@ public class BamiloApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        MultiDex.install(this);
 
         // init dagger component
         component = createComponent();

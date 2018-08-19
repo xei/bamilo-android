@@ -54,6 +54,7 @@ android {
         resConfigs "fa"
 
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
 
     dexOptions {
@@ -159,7 +160,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true
     }
@@ -168,7 +169,7 @@ dependencies {
     compile project(':BamiloFramework')
     /** ############### DEBUG TOOLS ############### **/
     // #MULTIDEX
-    debugCompile 'com.android.support:multidex:1.0.1'
+    debugCompile 'com.android.support:multidex:1.0.3'
     // #STETHO :: http://facebook.github.io/stetho/
     debugCompile 'com.facebook.stetho:stetho:1.5.0'
     debugCompile 'com.facebook.stetho:stetho-okhttp:1.5.0'
