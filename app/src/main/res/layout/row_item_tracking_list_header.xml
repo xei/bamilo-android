@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp"
+    android:paddingTop="16dp">
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvOrderNumberTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="16dp"
+        android:gravity="right"
+        android:lineSpacingMultiplier="1"
+        android:text="@string/tracking_order_number"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvOrderNumberValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_toLeftOf="@+id/tvOrderNumberTitle"
+        android:gravity="right"
+        android:lineSpacingMultiplier="1"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        tools:text="۶۵۷۳۶۵۷۸۳۷" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvOrderCostTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvOrderNumberValue"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="right"
+        android:lineSpacingMultiplier="1"
+        android:text="@string/tracking_order_cost"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvOrderCostValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvOrderNumberValue"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_toLeftOf="@+id/tvOrderNumberTitle"
+        android:gravity="right"
+        android:lineSpacingMultiplier="1"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        tools:text="۳۰۰۰ ریال" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvOrderDateTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvOrderCostValue"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="right"
+        android:lineSpacingMultiplier="1"
+        android:text="@string/tracking_order_date"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvOrderDateValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvOrderCostValue"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_toLeftOf="@+id/tvOrderNumberTitle"
+        android:gravity="right"
+        android:lineSpacingMultiplier="1"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        tools:text="دوم فروردین" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvOrderQuantityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvOrderDateValue"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="right"
+        android:lineSpacingMultiplier="1"
+        android:text="@string/tracking_order_quantity"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvOrderQuantityValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvOrderDateValue"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_toLeftOf="@+id/tvOrderNumberTitle"
+        android:gravity="right"
+        android:lineSpacingMultiplier="1"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        tools:text="۳ عدد" />
+
+</RelativeLayout>

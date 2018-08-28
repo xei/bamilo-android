@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sellers_info"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|right"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dimen_16dp"
+    android:paddingRight="@dimen/dimen_16dp">
+
+    <!--SELLER NAME -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/offer_owner_name"
+        style="@style/TextBase.Body.Black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        tools:text="Elien Gold" />
+
+    <!-- SMALL RATING -->
+    <LinearLayout
+        android:id="@+id/ratingContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/item_reviews"
+            style="@style/TextBase.Caption"
+            color="@color/black_800"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_mid"
+            android:visibility="gone" />
+
+        <!-- changeFashion: choose the right rating bar considering vertical type -->
+        <RatingBar
+            android:id="@+id/item_rating"
+            style="@style/StarBar.Small.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <RatingBar
+            android:id="@+id/item_rating_fashion"
+            style="@style/StarBar.Small.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <!-- SIZE -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/button_variant"
+        android:layout_width="@dimen/product_item_addtocart_variation_width"
+        android:layout_height="@dimen/product_item_button_height"
+        android:layout_marginBottom="@dimen/rounded_margin_small"
+        android:background="@drawable/spinner_background"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/product_variant_placeholder"
+        android:textColor="@color/grey_middle"
+        android:textSize="@dimen/text_subtitle"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <!-- SHOP FIRST IMAGE -->
+    <ImageView
+        android:id="@+id/item_shop_first"
+        style="@style/ShopFirstStyle"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content" />
+
+    <!--SHIPPING INFO-->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/offer_item_shipping"
+        style="@style/TextFreeShippingRtl"
+        android:layout_marginTop="@dimen/margin_padding_l"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content" />
+
+    <!-- DELIVERY TIME SECTION -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/offer_item_delivery"
+        style="@style/TextBase.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_l"
+        android:layout_marginBottom="@dimen/margin_padding_xl"
+        android:textColor="@color/black"
+        tools:text="3 - 8 days" />
+</LinearLayout>

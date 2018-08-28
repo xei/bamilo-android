@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/clCancellationParent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nsvCancellation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnSubmitCancellation">
+
+        <LinearLayout
+            android:id="@+id/llScrollingContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@color/gray_10"
+                android:padding="16dp"
+                android:text="@string/order_cancellation_subtitle_label"
+                android:textColor="@color/gray_2"
+                android:textSize="12sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvItemsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/tvExplanationTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/order_cancellation_explanation_label"
+                android:textColor="@color/gray_2"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/etDescription"
+                android:layout_width="match_parent"
+                android:layout_height="112dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/multiline_text_block_bg"
+                android:gravity="top|right"
+                android:inputType="textMultiLine"
+                android:padding="4dp"
+                android:textColor="@color/gray_2"
+                android:textSize="12sp" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/tvRefundMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/order_cancellation_refund_msg_bg"
+                android:padding="8dp"
+                android:textColor="@color/gray_2"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/tvNoticeMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="12dp"
+                android:padding="8dp"
+                android:textColor="@color/gray_2"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <com.bamilo.android.framework.components.customfontviews.Button
+        android:id="@+id/btnSubmitCancellation"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_primary_selector"
+        android:text="@string/submit_cancellation_request_button_label"
+        android:textColor="@color/white" />
+</RelativeLayout>

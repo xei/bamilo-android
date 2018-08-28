@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <!-- STOCK OFF -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/campaign_item_stock_off"
+        style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+
+    <!-- BRAND -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/campaign_item_brand"
+        style="@style/TextBase.Caption"
+        android:layout_width="match_parent"
+        android:layout_toLeftOf="@id/campaign_item_stock_off"
+        android:layout_toStartOf="@id/campaign_item_stock_off"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="@color/black_800"
+        />
+
+    <!-- NAME -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/campaign_item_name"
+        style="@style/TextBase.Body"
+        android:ellipsize="end"
+        android:lines="1"
+        android:layout_below="@id/campaign_item_brand"
+        android:maxLines="1"
+        android:text=""
+        android:textColor="@color/black"
+        />
+
+</RelativeLayout>

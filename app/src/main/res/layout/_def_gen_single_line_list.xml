@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/layout_item_height"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+    <!-- ITEM -->
+    <ImageView
+        android:id="@+id/country_icon"
+        android:layout_width="@dimen/dimen_28dp"
+        android:layout_height="@dimen/dimen_43dp"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/ic_launcher"
+        android:layout_alignParentLeft="false"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp" />
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tx_single_line_text"
+        style="@style/SingleLineList"
+        tools:text="Single line"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp" />
+
+
+</RelativeLayout>

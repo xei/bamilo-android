@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:paddingRight="@dimen/margin_huge"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_clickableitem_highlight" >
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/item_text_suggestion"
+        style="@style/TextBase.Body"
+        android:layout_height="@dimen/item_height_normal"
+        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_toLeftOf="@+id/item_img"
+        android:gravity="center_vertical|right"
+        android:paddingLeft="@dimen/margin_mid"
+        android:text="Search suggestion"
+        android:textColor="@color/black"
+        tools:ignore="HardcodedText" />
+
+    <!-- android:textStyle="bold" -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/item_text_n_items"
+        style="@style/text_normal"
+        android:layout_height="@dimen/item_height_normal"
+        android:ellipsize="none"
+        android:layout_toLeftOf="@+id/item_img"
+        android:paddingLeft="@dimen/margin_huge"
+        android:paddingRight="@dimen/margin_huge"
+        android:gravity="center_vertical|right"
+        android:text="(9000 items)"
+        android:textColor="@color/grey_dividerlight"
+        android:textSize="@dimen/text_s"
+        android:visibility="gone"
+        tools:ignore="HardcodedText" />
+
+    <ImageView
+        android:id="@+id/item_img"
+        android:layout_width="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_height="@dimen/item_height_normal"
+        android:contentDescription="@string/app_name"
+        android:gravity="center_vertical"
+        android:src="@drawable/magnlens" />
+
+</RelativeLayout>

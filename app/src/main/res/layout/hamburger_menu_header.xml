@@ -1,0 +1,61 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/blue_app_primary"
+    android:clickable="true"
+    android:focusable="true">
+
+
+    <RelativeLayout
+        android:id="@+id/material_drawer_account_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/material_drawer_account_header_height">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/material_drawer_account_header_current"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:elevation="2dp" />
+
+
+        <LinearLayout
+            android:id="@+id/material_drawer_account_header_text_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/material_drawer_account_header_current"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dimen_16dp"
+            android:orientation="vertical">
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/material_drawer_account_header_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:lines="1"
+                android:maxLines="1"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/material_drawer_account_header_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:fontFamily="sans-serif"
+                android:gravity="right"
+                android:lines="1"
+                android:maxLines="1"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

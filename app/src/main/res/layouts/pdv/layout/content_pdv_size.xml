@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pdvSize_linearLayout_rootLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="29dp"
+    android:layout_marginLeft="@dimen/dimen_4dp"
+    android:layout_marginRight="@dimen/dimen_4dp"
+    android:background="@drawable/round_size_background_2dp"
+    android:gravity="center"
+    android:minWidth="41dp">
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/pdvSize_textView_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_2dp"
+        android:layout_marginLeft="@dimen/dimen_4dp"
+        android:layout_marginRight="@dimen/dimen_4dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:alpha="0.8"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="13sp"
+        tools:text="XL"/>
+
+</LinearLayout>

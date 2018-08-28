@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dimen_8dp"
+    android:layout_marginLeft="@dimen/dimen_8dp"
+    android:layout_marginRight="@dimen/dimen_8dp"
+    app:cardCornerRadius="@dimen/dimen_2dp"
+    app:elevation="@dimen/dimen_2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/pdvReview_constraintLayout_rateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/pdvReview_textView_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="@dimen/dimen_16dp"
+                android:paddingTop="@dimen/dimen_8dp"
+                android:paddingBottom="@dimen/dimen_8dp"
+                app:fontFamily="@string/bamilo_bold_font"
+                android:textColor="@color/primary_text_color"
+                android:textSize="48sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="۴/۶"/>
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/pdvReview_textView_maxRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="@dimen/dimen_8dp"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="14sp"
+                app:layout_constraintRight_toLeftOf="@+id/pdvReview_textView_rate"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="از ۵"/>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/img"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintRight_toRightOf="@+id/pdvReview_textView_maxRate"
+                app:layout_constraintTop_toBottomOf="@+id/pdvReview_textView_maxRate"
+                app:srcCompat="@drawable/ic_person_black"/>
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/pdvReview_textView_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text_color"
+                app:layout_constraintBottom_toBottomOf="@+id/img"
+                app:layout_constraintRight_toLeftOf="@+id/img"
+                app:layout_constraintTop_toTopOf="@+id/img"
+                tools:text=" ۳۴۳۷ نظر"/>
+
+            <LinearLayout
+                android:id="@+id/pdvReview_linearLayout_addReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                android:layout_marginLeft="@dimen/dimen_28dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_4dp"
+                    app:srcCompat="@drawable/ic_add_review_blue"/>
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_review"
+                    android:textColor="@color/blue_link"/>
+
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/pdvReview_recyclerView_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:id="@+id/pdvReview_view_divider"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginTop="@dimen/dimen_16dp"
+            android:layout_marginLeft="@dimen/dimen_6dp"
+            android:layout_marginRight="@dimen/dimen_6dp"
+            android:background="@color/grey_dividerlight"/>
+
+        <LinearLayout
+            android:visibility="visible"
+            android:id="@+id/pdvReview_linearLayout_seeAllReviews"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/see_all_reviews"
+                android:textColor="@color/blue_link"
+                android:textSize="@dimen/dimen_12sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

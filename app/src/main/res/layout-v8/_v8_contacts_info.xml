@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/divider"
+        style="@style/DividerHorizontal.Black_400"
+        android:layout_alignParentTop="true" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/error_contacts_info_label_phone"
+        style="@style/TextBase.Display_3"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/buy_bar_height"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/divider"
+        android:paddingRight="@dimen/padding_recent_search_item"
+        android:text="@string/phone_contact"
+        android:textColor="@color/black_800" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/phone_text"
+        style="@style/TextBase.Display_3"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/buy_bar_height"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/divider"
+        android:paddingLeft="@dimen/padding_recent_search_item"
+        android:textColor="@color/black_900" />
+
+    <View
+        android:id="@+id/divider1"
+        style="@style/DividerHorizontal.Black_400"
+        android:layout_below="@id/error_contacts_info_label_phone" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/email_label"
+        style="@style/TextBase.Display_3"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/buy_bar_height"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/divider1"
+        android:paddingRight="@dimen/padding_recent_search_item"
+        android:text="@string/email_contact"
+        android:textColor="@color/black_800" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/email_text"
+        style="@style/TextBase.Display_3"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/buy_bar_height"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/divider1"
+        android:paddingLeft="@dimen/padding_recent_search_item"
+        android:textColor="@color/black_900" />
+
+    <View
+        android:id="@+id/divider2"
+        style="@style/DividerHorizontal.Black_400"
+        android:layout_below="@id/email_label" />
+
+</RelativeLayout>

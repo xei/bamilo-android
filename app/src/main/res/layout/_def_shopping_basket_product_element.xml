@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- NAME -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/cart_item_text_name"
+        style="@style/TextBase.Body.Black"
+        android:layout_marginEnd="@dimen/margin_padding_xxl"
+        android:layout_marginRight="@dimen/margin_padding_xxl"
+        android:maxLines="2"
+        android:singleLine="false"
+        tools:text="Name" />
+
+    <!-- SHOP FIRST IMAGE -->
+    <ImageView
+        android:id="@+id/cart_item_image_shop_first"
+        style="@style/ShopFirstStyle"
+        android:layout_below="@id/cart_item_text_name" />
+
+
+    <!-- PRICE -->
+    <RelativeLayout
+        android:id="@+id/cart_item_container_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cart_item_image_shop_first">
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/cart_item_text_price"
+            style="@style/TextBase.List.Black_800"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_padding_xxl"
+            android:layout_marginStart="@dimen/margin_padding_xxl"
+            tools:text="EGP 200" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/cart_item_text_quantity"
+            style="@style/TextBase.List.Black_700"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="@string/quantity_label" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/cart_item_button_quantity"
+            style="@style/FormButtonSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/cart_item_text_quantity"
+            android:layout_toRightOf="@id/cart_item_text_quantity"
+            tools:text="10" />
+
+    </RelativeLayout>
+
+    <!-- SIZE -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/cart_item_text_variation"
+        style="@style/TextBase.List.Black_700"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/cart_item_container_price"
+        android:layout_marginEnd="@dimen/margin_padding_m"
+        android:layout_marginRight="@dimen/margin_padding_m"
+        tools:text="Size" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/cart_item_text_variation_value"
+        style="@style/TextBase.List.Black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/cart_item_text_variation"
+        android:layout_toEndOf="@id/cart_item_text_variation"
+        android:layout_toRightOf="@id/cart_item_text_variation"
+        tools:text="22" />
+
+    <!-- DELETE BUTTON -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/cart_item_button_delete"
+        style="@style/Button_Link.RemoveItem"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/cart_item_text_variation" />
+
+</RelativeLayout>

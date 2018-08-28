@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bamilo.android.appmodule.bamiloapp.utils.AigScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fillViewport="true"
+    android:paddingBottom="?attr/actionBarSize">
+
+    <LinearLayout
+        android:id="@+id/no_results_search_terms"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/no_results_search_error_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_0dp"
+            android:layout_marginEnd="@dimen/margin_veryhuge"
+            android:layout_marginLeft="@dimen/margin_veryhuge"
+            android:layout_marginRight="@dimen/margin_veryhuge"
+            android:layout_marginStart="@dimen/margin_veryhuge"
+            android:layout_marginTop="20dp"
+            android:drawablePadding="@dimen/no_results_bottom_margin"
+            android:drawableTop="@drawable/ico_nosearchresults"
+            android:fontFamily="roboto"
+            android:gravity="center"
+            android:textColor="@color/grey_dark"
+            android:textSize="11sp"
+            android:visibility="visible" />
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/no_results_search_error_message_guide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="@dimen/margin_veryhuge"
+            android:layout_marginLeft="@dimen/margin_veryhuge"
+            android:layout_marginRight="@dimen/margin_veryhuge"
+            android:layout_marginStart="@dimen/margin_veryhuge"
+            android:layout_marginTop="3dp"
+            android:drawablePadding="@dimen/no_results_bottom_margin"
+            android:fontFamily="roboto"
+            android:gravity="center"
+            android:textColor="@color/grey_middledark"
+            android:textSize="12sp"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:id="@+id/no_results_search_tips_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:paddingEnd="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:paddingStart="0dp"
+            android:paddingTop="0dp"
+            android:visibility="visible">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/db1_root"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|bottom"
+                android:orientation="vertical" >
+                <com.bamilo.android.appmodule.bamiloapp.view.ExpandableHeightListView
+                    android:dividerHeight="@dimen/dimen_1dp"
+                    android:divider="#D6D6D6"
+                    android:footerDividersEnabled="true"
+                    android:headerDividersEnabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dimen_50dp"
+                    android:id="@+id/search_listview"
+                    android:visibility="gone"
+                    android:gravity="center|bottom"/>
+
+                <LinearLayout
+                    android:id="@+id/recommendation_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dimen_50dp"
+                    android:background="@color/black_300"
+                    android:orientation="horizontal" />
+
+
+                </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</com.bamilo.android.appmodule.bamiloapp.utils.AigScrollViewWithHorizontal>

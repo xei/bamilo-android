@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="?android:attr/spinnerItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:background="@drawable/selector_clickableitem_highlight"
+    android:ellipsize="marquee"
+    android:fontFamily="@string/bamilo_regular_font"
+    android:gravity="right|center_vertical"
+    android:paddingRight="@dimen/margin_mid"
+    android:singleLine="true"
+    android:textColor="@color/grey_middle"
+    android:textSize="@dimen/text_m" />

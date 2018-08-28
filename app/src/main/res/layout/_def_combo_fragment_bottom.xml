@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View style="@style/DividerHorizontal.Black_400" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/buy_bar_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/txLabelTotal"
+            style="@style/TextBase.Display_3.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/margin_padding_xxl"
+            android:layout_marginStart="@dimen/margin_padding_xxl"
+            android:text="@string/total_price_bottom" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/pdv_combo_price"
+            style="@style/TextBase.Display_3.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="@dimen/margin_padding_xxl"
+            android:layout_toEndOf="@+id/txLabelTotal"
+            android:layout_toRightOf="@+id/txLabelTotal"
+            tools:text="RS 524" />
+
+    </RelativeLayout>
+
+    <com.bamilo.android.framework.components.customfontviews.Button
+        android:id="@+id/combo_button_buy"
+        style="@style/Button_1.Shop"
+        android:text="@string/buy_combo" />
+
+</LinearLayout>

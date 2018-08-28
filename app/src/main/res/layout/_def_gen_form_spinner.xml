@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Spinner xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/custom"
+    style="@style/CustomSpinnerStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:dropDownWidth="match_parent" />
+    <!-- WARNING: DROP DOWN WIDTH IS MATCH PARENT TO ENABLE MULTI LINE -->

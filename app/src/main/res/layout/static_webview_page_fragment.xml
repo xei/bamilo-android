@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <LinearLayout
+            android:id="@+id/title_container"
+            style="@style/activity_sectionheader_container"
+            android:orientation="vertical">
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/terms_title"
+                style="@style/activity_sectionheader_text"
+                android:text="@string/terms_and_conditions" />
+
+            <View style="@style/DividerHorizontal.Black_400"
+                android:layout_marginTop="@dimen/margin_padding_l"
+                android:layout_marginLeft="@dimen/margin_padding_s"
+                android:layout_marginRight="@dimen/margin_padding_s" />
+
+        </LinearLayout>
+
+        <!--HTML-->
+        <com.bamilo.android.framework.components.webview.SuperWebView
+            android:id="@+id/static_webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/title_container" />
+    </RelativeLayout>

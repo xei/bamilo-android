@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+    >
+
+    <!-- DIVIDER -->
+
+    <View
+        android:id="@+id/radio_divider"
+        style="@style/DividerHorizontal.Black_400" />
+
+    <!-- RADIO BUTTON -->
+
+    <com.bamilo.android.framework.components.customfontviews.RadioButton
+        android:id="@+id/radio_shipping"
+        style="@style/FormRadioButton"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        />
+
+    <!-- EXTRA CONTAINER -->
+
+    <LinearLayout
+        android:id="@+id/radio_extras_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <!-- PAYMENT -->
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/payment_text"
+            style="@style/MultiLineStyle"
+            android:paddingTop="@dimen/margin_padding_l"
+            android:paddingLeft="0dp"
+            android:paddingStart="0dp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <!-- SHIPPING INFO -->
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/shipping_time_label_and_value"
+            style="@style/TextBase.Caption"
+            android:visibility="gone" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/shipping_fee_label_and_value"
+            style="@style/TextBase.Caption"
+            android:visibility="gone" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/shipping_fee_info"
+            style="@style/TextBase.Caption"
+            android:text="@string/shipping_fee_info"
+            android:visibility="gone" />
+
+        <Space
+            android:id="@+id/shipping_info_space"
+            android:layout_width="wrap_content"
+            android:layout_height="12dp"
+            android:visibility="gone" />
+
+        <!-- SHIPPING PUS -->
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/pickup_stations_title"
+            style="@style/TextBase.Display_3"
+            android:text="@string/select_city"
+            android:visibility="gone" />
+
+        <com.bamilo.android.framework.components.absspinner.IcsSpinner
+            android:id="@android:id/custom"
+            style="@style/FormButtonSpinner.DropDown"
+            android:visibility="gone" />
+
+        <com.bamilo.android.framework.components.ExpandedGridViewComponent
+            android:id="@+id/pickup_stations_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="12dp"
+            android:horizontalSpacing="1dp"
+            android:divider="@color/black_700"
+            android:dividerHeight="1dp"
+            android:numColumns="1"
+            android:verticalSpacing="1dp"
+            android:visibility="gone"
+            app:expand="true"
+            android:scrollbars="none"
+            />
+
+        <!--
+            https://code.google.com/p/android/issues/detail?id=2254
+            FIXED only showing 2 lines
+            by setting android:ellipsize="none" after being set up as end by style="@style/text_normal"
+        -->
+    </LinearLayout>
+
+</LinearLayout>

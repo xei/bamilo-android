@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clPackagedOrderItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true">
+
+    <com.bamilo.android.appmodule.bamiloapp.view.widget.ItemTrackingProgressBar
+        android:id="@+id/itemTrackingProgressBar"
+        android:layout_width="0dp"
+        android:layout_height="84dp"
+        android:src="@drawable/item_tracking_progress_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/rlCancellationReason"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/item_tracking_cancellation_reason_bg"
+        android:paddingTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemTrackingProgressBar">
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/tvItemCancellationReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@color/gray_1"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:text="مداد طراحی منظره" />
+
+        <ImageView
+            android:id="@+id/imgRefundStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvItemCancellationReason"
+            android:layout_marginRight="8dp"
+            android:paddingTop="2dp"
+            android:visibility="gone" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/tvRefundMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvItemCancellationReason"
+            android:layout_toLeftOf="@+id/imgRefundStatus"
+            android:gravity="right|top"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@color/gray_1"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:text="مداد طراحی منظره" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imgProductThumb"
+        android:layout_width="82dp"
+        android:layout_height="100dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/no_image_large"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rlCancellationReason"
+        tools:background="@color/gray_2" />
+
+    <Space
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgProductThumb" />
+
+    <ImageView
+        android:id="@+id/imgArrowSeeMore"
+        android:layout_width="24dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:src="@drawable/ic_arrow_down_gray"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgProductThumb" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvProductName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp"
+        android:gravity="right"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@+id/imgArrowSeeMore"
+        app:layout_constraintRight_toLeftOf="@+id/imgProductThumb"
+        app:layout_constraintTop_toTopOf="@+id/imgProductThumb"
+        tools:text="مداد طراحی منظره" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvProductPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="right"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgProductThumb"
+        app:layout_constraintLeft_toRightOf="@+id/imgArrowSeeMore"
+        app:layout_constraintRight_toLeftOf="@+id/imgProductThumb"
+        tools:text="۳۵۵۰۰۰ ریال" />
+
+    <com.bamilo.android.framework.components.customfontviews.Button
+        android:id="@+id/btnCancelItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="@string/order_cancellation_cancel_item_btn"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:backgroundTint="@color/order_cancellation_button_bg_tint"
+        app:layout_constraintBottom_toBottomOf="@+id/tvProductPrice"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:visibility="visible" />
+
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvProductDetails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="right"
+        android:textColor="@color/gray_2"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@+id/imgArrowSeeMore"
+        app:layout_constraintRight_toLeftOf="@+id/imgProductThumb"
+        app:layout_constraintTop_toBottomOf="@+id/imgProductThumb"
+        tools:text="تعداد: ۲\nبرند: کتابهای ایرانی\nفروشنده: picnico\nرنگ: سفید"
+        tools:visibility="visible" />
+
+    <com.bamilo.android.framework.components.customfontviews.Button
+        android:id="@+id/btnReviewProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/add_review"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:backgroundTint="@color/button_secondary_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProductDetails"
+        tools:visibility="visible" />
+
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvItemIsOutOfStockMsg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="left|center_vertical"
+        android:text="@string/item_is_out_of_stock"
+        android:textColor="@color/gray_2"
+        android:textSize="10sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btnReviewProduct"
+        app:layout_constraintLeft_toRightOf="@+id/btnReviewProduct"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnReviewProduct"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/viewHorizontalLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/gray_9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

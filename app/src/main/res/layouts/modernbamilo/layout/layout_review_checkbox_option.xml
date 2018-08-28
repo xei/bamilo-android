@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.bamilo.android.appmodule.modernbamilo.customview.XeiCheckBox
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/checkedTextView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="16dp"
+    android:textSize="18sp"
+    android:textColor="@color/userReview_typeCheckbox_optionButton_textColor"
+    android:buttonTint="@color/userReview_typeCheckbox_optionButton_buttonTintColor"
+    android:clickable="false"
+    app:locale="auto" />

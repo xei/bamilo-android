@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- TITLE -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/margin_padding_l">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp">
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/checkout_address_form_shipping_title"
+                style="@style/HeaderStyle"
+                android:layout_width="match_parent"
+                android:text="@string/action_label_add_address"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dimen_15dp"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:paddingRight="@dimen/dimen_10dp">
+
+                <Spinner
+                    android:id="@+id/address_state"
+                    style="@style/CustomSpinnerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/dimen_50dp"
+                    android:prompt="@string/delivery_state"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/address_region_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="تکمیل این گزینه الزامی می‌باشد"
+                    android:textColor="#b90f00"
+                    android:textSize="@dimen/dimen_10dp"
+                    android:visibility="gone" />
+
+                <Spinner
+                    android:id="@+id/address_city"
+                    style="@style/CustomSpinnerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/dimen_50dp"
+                    android:prompt="@string/delivery_city"
+                    android:spinnerMode="dropdown"
+                    android:textSize="20sp" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/address_city_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="تکمیل این گزینه الزامی می‌باشد"
+                    android:textColor="#b90f00"
+                    android:textSize="@dimen/dimen_10dp"
+                    android:visibility="gone" />
+
+                <Spinner
+                    android:id="@+id/address_postal_region"
+                    style="@style/CustomSpinnerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/dimen_50dp"
+                    android:prompt="@string/delivery_neighbourhood"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <com.bamilo.android.framework.components.customfontviews.EditText
+                    android:id="@+id/address_direction"
+                    style="@style/BlueFormTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="255"
+                    android:hint="@string/delivery_address"
+                    android:inputType="textPersonName"
+                    android:minEms="2"
+                    android:text=""
+                    android:textColor="?attr/colorPrimary" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/address_text_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="تکمیل این گزینه الزامی می‌باشد"
+                    android:textColor="#b90f00"
+                    android:textSize="@dimen/dimen_10dp"
+                    android:visibility="gone" />
+
+                <com.bamilo.android.framework.components.customfontviews.EditText
+                    android:id="@+id/address_postal_code"
+                    style="@style/BlueFormTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/deliver_postal_code"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:minEms="10"
+                    android:text=""
+                    android:textColor="?attr/colorPrimary" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/address_postal_code_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="کدپستی نامعتبر است"
+                    android:textColor="#b90f00"
+                    android:textSize="@dimen/dimen_10dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/textView7"
+                style="@style/HeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/action_label_receiver"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:paddingRight="@dimen/dimen_10dp">
+
+                <com.bamilo.android.framework.components.customfontviews.EditText
+                    android:id="@+id/address_name"
+                    style="@style/BlueFormTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="50"
+                    android:hint="@string/first_name"
+                    android:inputType="textPersonName"
+                    android:minEms="2"
+                    android:text=""
+                    android:textColor="?attr/colorPrimary" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/address_name_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="تکمیل این گزینه الزامی می‌باشد"
+                    android:textColor="#b90f00"
+                    android:textSize="@dimen/dimen_10dp"
+                    android:visibility="gone" />
+
+                <com.bamilo.android.framework.components.customfontviews.EditText
+                    android:id="@+id/address_family"
+                    style="@style/BlueFormTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="50"
+                    android:hint="@string/last_name"
+                    android:inputType="textPersonName"
+                    android:minEms="2"
+                    android:text=""
+                    android:textColor="?attr/colorPrimary" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/address_last_name_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="تکمیل این گزینه الزامی می‌باشد"
+                    android:textColor="#b90f00"
+                    android:textSize="@dimen/dimen_10dp"
+                    android:visibility="gone" />
+
+
+                <com.bamilo.android.framework.components.customfontviews.EditText
+                    android:id="@+id/address_cell"
+                    style="@style/BlueFormTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="13"
+                    android:hint="@string/cellphone"
+                    android:inputType="numberDecimal"
+                    android:minEms="2"
+                    android:text=""
+                    android:textColor="?attr/colorPrimary" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/address_cellphone_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="تکمیل این گزینه الزامی می‌باشد"
+                    android:textColor="#b90f00"
+                    android:textSize="@dimen/dimen_10dp"
+                    android:visibility="gone" />
+
+
+                <com.bamilo.android.framework.components.customfontviews.Button
+                    android:id="@+id/edit_address_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_15dp"
+                    android:background="@color/button_secondary_color"
+                    android:text="@string/save_address_label"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- FORM -->
+</LinearLayout>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:minHeight="48dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <RatingBar
+        android:id="@+id/dialog_item_rating"
+        style="@style/StarBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:clickable="false"
+        android:focusable="false"
+        android:isIndicator="true"
+        android:scaleX="-1"
+        />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/dialog_products_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/dialog_item_rating"
+        android:fontFamily="@string/bamilo_regular_font"
+        android:textSize="16sp"
+        android:visibility="gone"
+        />
+
+    <com.bamilo.android.framework.components.customfontviews.CheckBox
+        android:id="@+id/dialog_item_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:button="@drawable/selector_btn_check_filters"
+        android:clickable="false"
+        android:focusable="false"
+        />
+</RelativeLayout>

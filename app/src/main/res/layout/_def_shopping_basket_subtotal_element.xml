@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        style="@style/HeaderStyle"
+        android:text="@string/sub_total_title" />
+
+    <!-- PRODUCTS -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
+        android:layout_marginStart="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/margin_large">
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/articles_count"
+            style="@style/TextBase.Body"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/black" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/vat_included_label"
+            style="@style/TextBase.Body"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/articles_count"
+            android:textColor="@color/black"
+            android:visibility="gone" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/vat_value"
+            style="@style/TextBase.Body"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/articles_count"
+            android:textColor="@color/black"
+            android:visibility="gone" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/price_unreduced"
+            style="@style/TextBase.Body"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dimen_20dp"
+            android:layout_marginRight="@dimen/dimen_20dp"
+            android:layout_toLeftOf="@+id/price_total"
+            android:layout_toStartOf="@+id/price_total"
+            android:textColor="@color/black_800" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/price_total"
+            style="@style/TextBase.Body"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+    <!-- Price Rules -->
+
+    <LinearLayout
+        android:id="@+id/price_rules_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
+        android:layout_marginStart="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:orientation="vertical"
+        android:visibility="gone" />
+
+
+    <!-- SHIPPING -->
+
+    <RelativeLayout
+        android:id="@+id/shipping_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
+        android:layout_marginStart="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:visibility="gone">
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            style="@style/TextBase.Body"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/shipping"
+            android:textColor="@color/black" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/shipping_value"
+            style="@style/TextBase.Body"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/free_label"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+    <!-- EXTRA COSTS -->
+
+    <RelativeLayout
+        android:id="@+id/extra_costs_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
+        android:layout_marginStart="@dimen/dimen_20dp"
+        android:visibility="gone">
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            style="@style/TextBase.Display_3"
+            android:layout_width="wrap_content"
+            android:text="@string/extra_costs_label" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/extra_costs_value"
+            style="@style/TextBase.Display_3"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <!-- VOUCHER -->
+
+    <RelativeLayout
+        android:id="@+id/voucher_info_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
+        android:visibility="gone">
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/basket_voucher_label"
+            style="@style/SingleLineList"
+            android:layout_width="match_parent"
+            android:layout_toLeftOf="@+id/text_voucher"
+            android:layout_toStartOf="@+id/text_voucher"
+            android:text="@string/my_order_voucher_label" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/text_voucher"
+            style="@style/SingleLineList"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <!-- TOTAL -->
+
+    <RelativeLayout
+        android:id="@+id/total_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_48dp"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
+        android:layout_marginStart="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:visibility="visible">
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_700" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            style="@style/TextBase.Display_3.Black"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="@string/my_order_total_label" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/total_value"
+            style="@style/TextBase.Display_3.Black"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
+
+    <!--FREE SHIPPING-->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/cart_total_text_shipping"
+        style="@style/TextFreeShipping"
+        android:layout_gravity="right|end"
+        android:layout_marginBottom="@dimen/margin_padding_l"
+        android:layout_marginLeft="@dimen/margin_padding_xxl"
+        android:layout_marginRight="@dimen/margin_padding_xxl"
+        android:visibility="gone"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content"
+        tools:visible="true" />
+
+</LinearLayout>

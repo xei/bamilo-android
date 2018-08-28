@@ -1,0 +1,182 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
+apply plugin: 'org.jetbrains.dokka-android'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '27.0.3'
+
+    defaultConfig {
+        applicationId "com.bamilo.android"
+
+        minSdkVersion 15
+        targetSdkVersion 28
+
+        versionCode Integer.valueOf(VERSION_CODE)
+        versionName VERSION_NAME
+
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    
+    dataBinding {
+        enabled = true
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("bamilo_android.keystore")
+            storePassword "bamiloandroid"
+            keyAlias "bamilo_android"
+            keyPassword "bamiloandroid"
+        }
+
+    }
+
+    buildTypes {
+
+        debug {
+            debuggable true
+            multiDexEnabled true
+
+            buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_PRODUCTION}v${VERSION_WEBAPI}/\""
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-project-pro.txt',
+                    'proguard-rules-ghostadapter.pro',
+                    'proguard-rules-glide.pro',
+                    'proguard-rules-logs.pro',
+                    'proguard-rules-retrofit.pro'
+
+            buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_PRODUCTION}v${VERSION_WEBAPI}/\""
+        }
+    }
+
+    flavorDimensions "default"
+    productFlavors {
+        live {
+        }
+        staging {
+            applicationIdSuffix '.staging'
+            versionNameSuffix ' Staging'
+        }
+    }
+
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res',
+                           'src/main/res/layouts/pdv',
+                           'src/main/res/layouts/other',
+                           'src/main/res/darwables',
+                           'src/main/res/drawables/selectors',
+                           'src/main/res/drawables/icon',
+                           'src/main/res/drawables/background',
+                           'src/main/res/drawables/other', 'src/main/res/layouts/moderbamilo', 'src/main/res/layouts', 'src/main/res/layouts/modernbamilo/']
+        }
+    }
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
+}
+
+ext {
+    support_library_version = '28.0.0-rc01'
+    lifecycle_version = '2.0.0-beta01'
+    ktx_version = '1.0.0-alpha3'
+    retrofit_version = '2.4.0'
+    okhttp_version = '3.9.1'
+    glide_version = '4.7.1'
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/touchimageview.jar')
+
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation 'com.google.dagger:dagger-android:2.11'
+    implementation 'com.google.dagger:dagger-android-support:2.11'
+    kapt 'com.google.dagger:dagger-android-processor:2.11'
+    kapt 'com.google.dagger:dagger-compiler:2.11'
+
+    implementation "com.android.support:support-v4:$support_library_version"
+    implementation "com.android.support:appcompat-v7:$support_library_version"
+    implementation "com.android.support:design:$support_library_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
+
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    kapt "android.arch.lifecycle:compiler:1.1.1"
+
+    //Bamilo core
+    implementation 'io.reactivex:rxjava:1.3.0'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+
+    //Bamilo Framework
+    implementation 'com.squareup.retrofit:retrofit:1.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.0'
+
+    implementation 'com.adjust.sdk:adjust-android:4.14.0'
+
+    implementation 'com.algolia:algoliasearch-android:2.6.0@aar'
+
+    implementation 'com.pushwoosh:pushwoosh:5.8.6'
+
+    implementation 'com.scarabresearch:predictsdk:1.0.6'
+    implementation 'com.emarsys:mobile-engage-sdk:1.6.0'
+
+    implementation fileTree(include: ['*.jar'], exclude: ['json.jar'], dir: 'libs')
+    implementation 'pl.openrnd.android:multi-level-listview:1.0.1'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+
+    implementation 'com.github.faruktoptas:FancyShowCaseView:1.0.0'
+
+    implementation 'ru.egslava:MaskedEditText:1.0.5'
+
+    //useful libraries
+    implementation 'com.romandanylyk:pageindicatorview:1.0.1@aar'
+
+    implementation 'com.jakewharton.scalpel:scalpel:1.1.2'
+
+    implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
+    implementation 'me.zhanghai.android.materialratingbar:library:1.3.1'
+
+    implementation 'se.emilsjolander:stickylistheaders:2.7.0'
+
+    implementation 'com.github.ome450901:SimpleRatingBar:1.4.2'
+
+    implementation 'com.shawnlin:number-picker:2.4.6'
+
+    implementation 'com.google.android.gms:play-services-analytics:16.0.3'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-ads:15.0.1'
+
+    implementation 'com.google.firebase:firebase-crash:16.2.0'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}

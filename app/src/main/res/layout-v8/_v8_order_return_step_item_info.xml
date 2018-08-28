@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/grid_row_style"
+    android:layoutDirection="ltr"
+    tools:layout_height="wrap_content"
+    tools:targetApi="jelly_bean_mr1">
+
+    <!-- BRAND -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_return_item_text_brand"
+        style="@style/TextBase.Body.Black_800"
+        android:layout_marginBottom="@dimen/margin_padding_xxs"
+        tools:text="BRAND" />
+
+    <!-- NAME -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_return_item_text_name"
+        style="@style/TextBase.Title.Black"
+        android:layout_below="@id/order_return_item_text_brand"
+        android:layout_marginBottom="@dimen/margin_padding_xxs"
+        tools:text="Name" />
+
+    <!-- QUANTITY -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_return_item_text_quantity"
+        style="@style/TextBase.Body.Black_800"
+        android:layout_below="@id/order_return_item_text_name"
+        android:layout_marginBottom="@dimen/margin_padding_xxs"
+        tools:text="Quantity: 2" />
+
+    <!-- ORDER -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_return_item_text_order"
+        style="@style/TextBase.Body.Black"
+        android:layout_below="@id/order_return_item_text_quantity"
+        android:layout_marginBottom="@dimen/margin_padding_xxs"
+        tools:text="Order Nº: 123456789" />
+
+    <!-- QUANTITY TO RETURN -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_return_item_button_quantity"
+        style="@style/FormButtonSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/order_return_item_text_order"
+        android:visibility="gone"
+        tools:text="1"
+        tools:visibility="visible" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_return_item_text_return_quantity"
+        style="@style/TextBase.Caption.Black"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_32dp"
+        android:layout_alignBottom="@id/order_return_item_button_quantity"
+        android:layout_marginRight="@dimen/margin_padding_l"
+        android:layout_toLeftOf="@id/order_return_item_button_quantity"
+        android:text="@string/quantity_to_return"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</RelativeLayout>

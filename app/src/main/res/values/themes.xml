@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- MATERIAL|CUSTOM THEME -->
+
+    <style name="Theme.Custom" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- #### Custom Material Color Palette -->
+        <!-- Color for the app bar -->
+        <item name="colorPrimary">@color/appBar</item>
+        <!-- Color for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/statusBar</item>
+        <!-- Color for UI controls like checkboxes and text fields -->
+        <item name="colorAccent">@color/color_accent</item>
+        <!-- Color for UI controls (switch|checkbox|radio) -->
+        <item name="colorControlActivated">@color/orange_lighter</item>
+        <!-- Color for UI controls like checkboxes and text fields -->
+        <item name="android:navigationBarColor">@color/black</item>
+        <!-- Color for app background -->
+        <item name="android:windowBackground">@color/window_background_color</item>
+        <!-- #### Text -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColorTertiary">@color/white</item>
+        <item name="android:editTextColor">@color/white</item>
+        <item name="editTextColor">@color/white</item>
+        <!-- #### Action Bar -->
+        <item name="android:actionBarTheme">@style/Widget.Custom.ActionBar</item>
+        <item name="actionBarTheme">@style/Widget.Custom.ActionBar</item>
+        <item name="android:actionButtonStyle">@style/Widget.Custom.ActionButton</item>
+        <item name="actionButtonStyle">@style/Widget.Custom.ActionButton</item>
+        <!-- #### Radio Button View -->
+        <item name="android:radioButtonStyle">@style/Widget.Custom.RadioButton</item>
+        <!-- #### Check Box View -->
+        <item name="android:checkboxStyle">@style/Widget.Custom.CheckBox</item>
+        <!-- #### List View -->
+        <item name="android:listViewStyle">@style/Widget.Custom.ListView</item>
+        <!-- #### List View Drop Down -->
+        <item name="android:dropDownListViewStyle">@style/Widget.Custom.DropDown.ListView</item>
+        <!-- #### Custom Spinner View -->
+        <!--<item name="actionCustomSpinnerDropDownStyle">@style="@style/CustomSpinnerStyle"</item>-->
+        <!-- #### View Page Indicator -->
+        <item name="vpiCirclePageIndicatorStyle">@style/Widget.CustomCirclePageIndicator</item>
+        <!-- #### Button View -->
+        <item name="android:buttonStyle">@style/Widget.Custom.Button</item>
+        <item name="buttonStyle">@style/Widget.Custom.Button</item>
+
+        <!--Popup menu styling-->
+        <item name="textAppearanceLargePopupMenu">@style/PopupTextAppearanceLarge</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/PopupTextAppearanceLarge</item>
+
+        <item name="textAppearanceSmallPopupMenu">@style/PopupTextAppearanceSmall</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/PopupTextAppearanceSmall</item>
+
+        <item name="popupMenuStyle">@style/Widget.AppCompat.Light.PopupMenu</item>
+        <item name="android:popupMenuStyle">@style/Widget.AppCompat.Light.PopupMenu</item>
+    </style>
+
+    <style name="PopupTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Large">
+        <item name="android:textColor">@color/extradarkgrey</item>
+    </style>
+    <style name="PopupTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/extradarkgrey</item>
+    </style>
+
+    <!-- MATERIAL|CUSTOM WIDGETS -->
+
+    <!-- Theme for ActionBar from support library compatibility -->
+    <style name="Widget.Custom.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <!-- Apply the color filter for AB Options (Copy/Paste) -->
+        <item name="actionModeStyle">@style/Widget.Custom.ActionModeBar</item>
+        <!-- Apply the ArrowStyle for AB -->
+        <item name="drawerArrowStyle">@style/Widget.Custom.DrawerArrowStyle</item>
+        <!-- To apply the color filter over indicator in Android v5.0.1 -->
+        <!--<item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>-->
+        <!-- Apply the search view style -->
+        <item name="android:searchViewStyle">@style/Widget.Custom.SearchView</item>
+        <item name="searchViewStyle">@style/Widget.Custom.SearchView</item>
+        <!-- remove shadow below action bar -->
+        <item name="android:elevation">0dp</item>
+        <item name="elevation">0dp</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:background">@color/tabBar</item>
+    </style>
+
+    <!-- Action Bar Action Mode -->
+    <style name="Widget.Custom.ActionModeBar" parent="Widget.AppCompat.ActionMode" >
+        <item name="background">@color/tabBar</item>
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <!-- Action Bar Tab Layout -->
+    <style name="Widget.Custom.ActionBarTab" parent="Base.Widget.Design.TabLayout" >
+        <item name="android:background">@color/tabBar</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabMaxWidth">0dp</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabIndicatorColor">@color/orange_lighter</item>
+    </style>
+
+    <!-- Checkout Tab Layout -->
+    <style name="Widget.Custom.CheckoutTab" parent="Base.Widget.Design.TabLayout" >
+        <item name="android:background">@color/tabBar</item>
+        <item name="tabGravity">center</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabIndicatorColor">@color/orange_lighter</item>
+    </style>
+
+    <!-- Sliding Tab Layout -->
+    <style name="SlidingTabBar">
+        <item name="android:background">@color/tabBar</item>
+        <item name="stsBottomBorderThickness">0dp</item>
+        <item name="stsDividerColor">@color/white</item>
+        <item name="stsDividerThickness">0dp</item>
+        <item name="stsIndicatorColor">@color/orange_lighter</item>
+        <item name="stsIndicatorThickness">2.5dp</item>
+    </style>
+
+    <!-- Style for DrawerArrow from support library compatibility -->
+    <style name="Widget.Custom.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/white</item>
+    </style>
+
+    <!-- Style for ActionBar Buttons from support library compatibility -->
+    <style name="Widget.Custom.ActionButton" parent="@style/Base.Widget.AppCompat.ActionButton">
+        <item name="android:layout_marginTop">4dip</item>
+        <item name="android:layout_marginBottom">4dip</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:paddingRight">8dip</item>
+        <!-- API v11: is used the abc_item_background_holo_light.xml file -->
+    </style>
+
+    <!-- Search view from support library compatibility -->
+    <style name="Widget.Custom.SearchView" parent="Widget.AppCompat.SearchView.ActionBar">
+        <!--<item name="queryBackground">@drawable/selector_textfield_orange</item>-->
+        <!--<item name="closeIcon">@drawable/btn_clearsearchfield</item>-->
+        <!--<item name="searchIcon">@drawable/selector_search_edit_icon</item>-->
+        <item name="collapseIcon">?attr/homeAsUpIndicator</item>
+    </style>
+
+    <!-- Radio Button -->
+    <style name="Widget.Custom.RadioButton" parent="android:Widget.CompoundButton.RadioButton">
+    </style>
+    <style name="RadioButtonTheme">
+        <item name="android:colorControlActivated">@color/blue_lighter</item>
+        <item name="colorControlActivated">@color/blue_lighter</item>
+        <item name="android:colorControlNormal">@color/black_800</item>
+        <item name="colorControlNormal">@color/black_800</item>
+    </style>
+    <!-- Check Box -->
+    <style name="Widget.Custom.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
+        <!--<item name="android:listChoiceIndicatorMultiple">@drawable/_gen_selector_check_box</item>-->
+        <item name="android:button">@drawable/_gen_selector_check_box</item>
+    </style>
+
+    <!-- List View -->
+    <style name="Widget.Custom.ListView" parent="android:Widget.ListView.White">
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:divider">@color/black_400</item>
+    </style>
+
+    <!-- List View Drop Down -->
+    <style name="Widget.Custom.DropDown.ListView" parent="@style/Widget.AppCompat.ListView.DropDown">
+        <item name="android:divider">@color/black_400</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <!-- Button View -->
+    <style name="Widget.Custom.Button" parent="Widget.AppCompat.Button"/>
+
+    <!-- Switch View :: based on Widget.AppCompat.CompoundButton.Switch -->
+    <style name="CustomSwitch">
+        <item name="colorControlActivated">@color/blue_lighter</item>
+        <item name="colorSwitchThumbNormal">@color/black_200</item>
+        <item name="switchTextAppearance">@style/TextBase.Button.Switch</item>
+    </style>
+
+    <!-- Base Dialog -->
+    <style name="Theme.Custom.Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowActionBar" tools:targetApi="honeycomb">false</item>
+        <item name="android:windowActionModeOverlay" tools:targetApi="honeycomb">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="listPreferredItemPaddingLeft">16dip</item>
+        <item name="listPreferredItemPaddingRight">16dip</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
+    <style name="Theme.Custom.Dialog.NoTitle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/dialog_shadow</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+    </style>
+
+    <style name="Theme.Custom.Dialog.NoTitle.DatePicker">
+        <item name="android:windowFrame">@null</item>
+    </style>
+
+    <!-- Progress dialog -->
+    <style name="Theme.Custom.Dialog.Progress" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/dialog_shadow</item>
+        <item name="android:windowMinWidthMajor" tools:targetApi="honeycomb">@null</item>
+        <item name="android:windowMinWidthMinor" tools:targetApi="honeycomb">@null</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <!-- Circle page indicator from attr:CirclePageIndicator -->
+    <style name="Widget.CustomCirclePageIndicator" parent="android:Widget">
+        <item name="fillColor">@color/color_accent</item>
+        <item name="pageColor">@color/grey_middlelight</item>
+        <item name="snap">true</item>
+        <item name="extraSpacing">2dp</item>
+        <item name="radius">2.5dp</item>
+    </style>
+
+</resources>

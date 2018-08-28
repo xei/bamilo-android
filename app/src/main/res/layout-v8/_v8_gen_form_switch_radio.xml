@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:divider="@drawable/_gen_divider_horizontal_black_400"
+    app:showDividers="middle">
+
+    <!-- SWITCH BUTTON -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switch_field"
+            style="@style/FormSwitchButton"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:gravity="left|center" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/switch_text"
+            style="@style/TextBase.Button.Switch"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/switch_field"
+            android:gravity="right|center"
+            android:paddingRight="@dimen/margin_padding_xl"
+            tools:text="Switch text" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.LinearLayoutCompat>

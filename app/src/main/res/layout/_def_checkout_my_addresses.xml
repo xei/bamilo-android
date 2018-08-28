@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- CONTENT -->
+
+    <ScrollView
+        android:id="@+id/checkout_addresses_one_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- DEFAULT SAME ADDRESS / SHIPPING ADDRESS -->
+
+            <include
+                android:id="@+id/checkout_addresses_section_shipping"
+                layout="@layout/_def_checkout_my_addresses_section" />
+
+            <!-- BILLING ADDRESS -->
+
+            <include
+                android:id="@+id/checkout_addresses_section_billing"
+                layout="@layout/_def_checkout_my_addresses_section" />
+
+            <!-- ADD NEW ADDRESS TOP -->
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/checkout_addresses_button_add_top"
+                style="@style/Button_Link.NewAddress" />
+
+            <!-- OTHER ADDRESSES -->
+
+            <include
+                android:id="@+id/checkout_addresses_section_other"
+                layout="@layout/_def_checkout_my_addresses_section" />
+
+            <!-- ADD NEW ADDRESS BOTTOM -->
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/checkout_addresses_button_add_bottom"
+                style="@style/Button_Link.NewAddress" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- NEXT BUTTON -->
+
+    <include layout="@layout/checkout_total_layout" />
+
+</android.support.v7.widget.LinearLayoutCompat>

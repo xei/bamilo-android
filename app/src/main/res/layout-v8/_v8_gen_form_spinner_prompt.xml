@@ -1,0 +1,13 @@
+<com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@android:id/text1"
+    style="@style/FormFieldStyle.Black_700"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:gravity="right|center_vertical"
+    android:layoutDirection="ltr"
+    android:maxLines="3"
+    android:paddingRight="@dimen/margin_20px"
+    android:singleLine="false"
+    tools:targetApi="jelly_bean_mr1"
+    tools:text="Please choose..." />

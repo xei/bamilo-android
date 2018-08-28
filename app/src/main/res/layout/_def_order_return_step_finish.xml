@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!--RETURN REASON-->
+    <include
+        android:id="@+id/order_return_finish_reason"
+        layout="@layout/gen_single_line_section_editable" />
+
+    <!--SPACE-->
+    <android.support.v4.widget.Space
+        android:layout_width="0dp"
+        android:layout_height="@dimen/margin_padding_l" />
+
+    <!--RETURN METHOD-->
+    <include
+        android:id="@+id/order_return_finish_method"
+        layout="@layout/gen_single_line_section_editable" />
+
+    <!--SPACE-->
+    <android.support.v4.widget.Space
+        android:layout_width="0dp"
+        android:layout_height="@dimen/margin_padding_l" />
+
+    <!--RETURN PAYMENT-->
+    <include
+        android:id="@+id/order_return_finish_refund"
+        layout="@layout/gen_single_line_section_editable" />
+
+    <!--RETURN ITEMS-->
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/order_return_finish_items"
+        style="@style/ViewGroupCompat.Vertical.HeaderDivider.MiddleDivider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_xl" />
+
+    <!--MESSAGE-->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        style="@style/TextBase.Body.Black_800"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_xxl"
+        android:gravity="center"
+        android:maxLines="2"
+        android:singleLine="false"
+        android:text="@string/everything_looks_good" />
+
+</android.support.v7.widget.LinearLayoutCompat>
+

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/subcateories_layout"
+        layout="@layout/filter_top_subcategories"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_alignParentTop="true"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttons"
+        android:layout_below="@id/subcateories_layout"
+        android:layoutDirection="ltr"
+        android:orientation="horizontal"
+        tools:ignore="UnusedAttribute">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- TITLE -->
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/filter_title"
+                style="@style/HeaderStyle"
+                tools:text="TITLE" />
+
+            <View style="@style/DividerHorizontal.Black_400" />
+
+            <FrameLayout
+                android:id="@+id/dialog_filter_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <View style="@style/DividerVertical.Black_400" />
+
+        <ListView
+            android:id="@+id/filters_key"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:background="@color/white"
+            android:divider="@color/black_400"
+            android:dividerHeight="1dp"
+            android:footerDividersEnabled="true" />
+    </LinearLayout>
+
+    <!-- BUTTONS -->
+    <include
+        android:id="@+id/buttons"
+        layout="@layout/filter_bottom_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

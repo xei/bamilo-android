@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_status_address_item_title"
+        style="@style/TextBase.Body.Black"
+        android:text="@string/shipping" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_status_address_item_name"
+        style="@style/TextBase.Body.Black_800" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_status_address_item_street"
+        style="@style/TextBase.Body.Black_800" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_status_address_item_region"
+        style="@style/TextBase.Body.Black_800" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_status_address_item_postcode"
+        style="@style/TextBase.Body.Black_800"
+        android:visibility="gone" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_status_address_item_phone"
+        style="@style/TextBase.Body.Black_800" />
+
+</LinearLayout>

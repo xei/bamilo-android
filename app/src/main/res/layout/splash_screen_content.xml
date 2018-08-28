@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- MAP -->
+
+    <ImageView
+        android:id="@+id/splashMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:src="@color/transparent" />
+
+    <!-- LOGO -->
+
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="32dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/img_splashlogo" />
+
+    <!-- SLOGAN -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="35dp"
+        android:fontFamily="@string/bamilo_regular_font"
+        android:text="@string/splash_slogan"
+        android:textColor="@color/grey_middledark"
+        android:textSize="@dimen/text_title"
+        android:visibility="gone" />
+
+    <!-- DEV INFO -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/dev_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:textColor="@color/grey_middle" />
+
+</merge>

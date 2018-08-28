@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bamilo.android.framework.components.customfontviews.CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checkbox_form"
+    style="@style/FormFieldCheckBoxStyle"
+    android:button="@null"
+    android:gravity="right|center_vertical"
+    android:paddingRight="@dimen/form_check_padding"
+    android:textColor="@color/form_text"
+    android:drawableRight="@drawable/_gen_selector_check_box"
+    android:drawablePadding="@dimen/form_check_padding"
+    android:textSize="@dimen/text_form"
+    android:singleLine="true" />

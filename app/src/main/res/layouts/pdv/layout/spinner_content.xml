@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/spinnerContent_textView_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_8dp"
+        android:background="@android:color/transparent"
+        android:gravity="left|start|center_vertical"
+        android:maxLines="3"
+        android:textSize="@dimen/dimen_12sp"
+        android:textColor="@color/primary_text_color"/>
+
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layoutDirection="ltr"
+    >
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        style="@style/HeaderTeaserStyle"
+        android:text="@string/featured_stores" />
+
+    <com.bamilo.android.framework.components.ExpandedGridViewComponent
+        android:id="@+id/home_teaser_featured_stores_container_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:verticalSpacing="@dimen/margin_padding_s"
+        android:horizontalSpacing="@dimen/margin_padding_s"
+        android:numColumns="@integer/home_featured_stores_teaser_num_columns"
+        android:scrollbars="none"
+        />
+
+</LinearLayout>

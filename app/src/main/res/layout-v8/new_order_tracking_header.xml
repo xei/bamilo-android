@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/order_header"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:background="@color/checkout_header">
+
+    <RelativeLayout
+        android:id="@+id/stepheader"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="50dp">
+
+
+        <include
+            layout="@layout/order_tracking_step_layout"
+            android:id="@+id/order_step2"
+            android:layout_width="@dimen/dimen_50dp"
+            android:layout_height="@dimen/dimen_50dp"
+            android:layout_centerInParent="true"
+            />
+
+        <View
+            android:id="@+id/order_header_line_1_2_invis"
+            android:layout_width="50dp"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/order_step2"
+            android:layout_marginRight="@dimen/line_margin_start"
+            android:layout_marginLeft="@dimen/line_margin_start"
+            android:background="@color/checkout_line_gray"/>
+
+        <include
+            layout="@layout/order_tracking_step_layout"
+            android:id="@+id/order_step1"
+            android:layout_width="@dimen/dimen_50dp"
+            android:layout_height="@dimen/dimen_50dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/order_header_line_1_2_invis"
+            android:gravity="center"
+            />
+
+
+        <View
+            android:id="@+id/order_header_line_2_3_invis"
+            android:layout_width="50dp"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/order_step2"
+            android:layout_marginRight="@dimen/line_margin_start"
+            android:layout_marginLeft="@dimen/line_margin_start"
+            android:background="@color/checkout_line_gray"/>
+
+
+        <include
+            layout="@layout/order_tracking_step_layout"
+            android:id="@+id/order_step3"
+            android:layout_width="@dimen/dimen_50dp"
+            android:layout_height="@dimen/dimen_50dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/order_header_line_2_3_invis"
+            android:gravity="center"
+            />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stepheader"
+        android:weightSum="3"
+        android:orientation="horizontal">
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/order_step1_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/order_step2_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/order_step3_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

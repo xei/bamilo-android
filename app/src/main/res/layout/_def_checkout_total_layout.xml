@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checkout_total_bar"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:orientation="horizontal"
+    android:weightSum="5">
+
+    <com.bamilo.android.framework.components.customfontviews.AutoResizeTextView
+        android:id="@+id/checkout_total_label"
+        style="@style/TextBase.Display_3"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:background="@drawable/_gen_background_top_border_black_700"
+        android:ellipsize="none"
+        android:gravity="left|start|center_vertical"
+        android:paddingLeft="@dimen/margin_padding_xxl"
+        android:paddingRight="@dimen/margin_padding_xxl"
+        android:singleLine="false"
+        android:text="@string/order_summary_total_label" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/checkout_button_enter"
+        style="@style/Button_1.Shop"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:text="@string/next_button" />
+
+</LinearLayout>

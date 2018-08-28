@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pdv_combo_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black_300"
+    android:layoutDirection="ltr"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/margin_padding_xl"
+    android:paddingLeft="@dimen/margin_padding_xl"
+    android:paddingRight="@dimen/margin_padding_xl"
+    tools:ignore="UnusedAttribute">
+
+    <!-- COMBO -->
+
+    <HorizontalScrollView
+        android:id="@+id/pdv_combo_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/pdv_combo_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_padding_xl" />
+
+    </HorizontalScrollView>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_padding_xxs"
+        android:background="@null" />
+
+    <!-- PRICE -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/pdv_combo_price"
+        style="@style/TextBase.Body.Blue_1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_36dp"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/ic_arrow_combo"
+        android:paddingRight="@dimen/margin_padding_xl"
+        tools:text="EGP 524" />
+
+</LinearLayout>

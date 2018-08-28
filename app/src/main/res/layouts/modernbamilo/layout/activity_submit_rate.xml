@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/submitRate_background"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:context=".product.comment.submit.SubmitRateActivity">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/activitySubmitRate_toolbar_actionbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/colorPrimary"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <include layout="@layout/layout_toolbar"/>
+
+            </android.support.v7.widget.Toolbar>
+
+            <include
+                android:id="@+id/activitySubmitRate_layout_warningLayout"
+                layout="@layout/layout_warning_bamilo"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:visibility="gone" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/activitySubmitRate_xeiTextView_rateQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="56dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:text="@string/submitRate_question"
+                android:textColor="@color/submitRate_question"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activitySubmitRate_toolbar_actionbar"
+                app:locale="auto"
+                app:style="bold"/>
+
+            <com.willy.ratingbar.ScaleRatingBar
+                android:id="@+id/activitySubmitRate_scaleRatingBar_ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srb_numStars="5"
+                app:srb_minimumStars="0"
+                app:srb_rating="0"
+                app:srb_starWidth="42dp"
+                app:srb_starHeight="42dp"
+                app:srb_starPadding="2dp"
+                app:srb_stepSize="1"
+                app:srb_isIndicator="false"
+                app:srb_clickable="true"
+                app:srb_scrollable="true"
+                app:srb_clearRatingEnabled="false"
+                app:srb_drawableEmpty="@drawable/ic_star_empty"
+                app:srb_drawableFilled="@drawable/ic_star_pantone109" />
+
+            <!--<me.zhanghai.android.materialratingbar.MaterialRatingBar-->
+                <!--android:id="@+id/activitySubmitRate_materialRatingBar_ratingBar"-->
+                <!--style="@style/Widget.MaterialRatingBar.RatingBar"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/activitySubmitRate_xeiTextView_rateQuestion"-->
+                <!--app:mrb_progressBackgroundTint="@color/submitRate_stars"-->
+                <!--app:mrb_progressTint="@color/submitRate_stars"-->
+                <!--app:mrb_secondaryProgressTint="@color/submitRate_stars"/>-->
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/activitySubmitRate_xeiTextView_rate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:textColor="@color/submitRate_rate"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activitySubmitRate_materialRatingBar_ratingBar"
+                app:locale="auto"
+                app:style="bold"
+                tools:text="۲ ستاره"/>
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                android:id="@+id/activitySubmitRate_xeiEditText_title"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:padding="8dp"
+                android:background="@drawable/background_edittext_essay"
+                android:gravity="start|center_vertical"
+                android:hint="@string/submitRate_hint_title"
+                android:textColor="@color/submitRate_comment_title_text"
+                android:textColorHint="@color/submitRate_comment_title_hint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activitySubmitRate_xeiTextView_rate"
+                app:locale="auto"/>
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                android:id="@+id/activitySubmitRate_xeiEditText_comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="64dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:padding="8dp"
+                android:background="@drawable/background_edittext_essay"
+                android:gravity="start|top"
+                android:hint="@string/submitRate_hint_comment"
+                android:textColor="@color/submitRate_comment_content_text"
+                android:textColorHint="@color/submitRate_comment_content_hint"
+                app:layout_constraintBottom_toTopOf="@+id/activitySubmitRate_xeiButton_submitRateBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activitySubmitRate_xeiEditText_title"
+                app:locale="auto"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" >
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/activitySubmitRate_materialProgressBar_submitCommentLoading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-6dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:mpb_progressStyle="horizontal"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiButton
+            android:id="@+id/activitySubmitRate_xeiButton_submitRateBtn"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+
+            android:background="@color/submitRate_submitBtn_background"
+            android:gravity="center"
+            android:text="@string/submitRate_submitBtn"
+            android:textColor="@color/submitRate_submitBtn_text"
+            app:locale="auto"
+            app:style="bold"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

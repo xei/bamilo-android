@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:fillViewport="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="46dp">
+
+        <!--INFO-->
+        <com.bamilo.android.appmodule.bamiloapp.utils.LoginHeaderComponent
+            android:id="@+id/login_component"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:loginHeaderType="login"
+            />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="34dp" />
+
+        <!-- FORM CONTAINER -->
+
+        <LinearLayout
+            android:id="@+id/login_email_form_container"
+            android:layout_width="@dimen/login_email_container_width"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="8dp" />
+
+        <!-- FORGOT PASSWORD -->
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/login_email_button_password"
+            style="@style/Button_Link.Blue_1.Right"
+            android:layout_width="@dimen/login_email_container_width"
+            android:text="@string/fgt_pass" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+
+        <!-- BUTTON -->
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/login_email_button_create"
+            style="@style/Button_1.Shop"
+            android:layout_width="@dimen/login_email_container_width"
+            android:text="@string/continue_label" />
+
+    </LinearLayout>
+
+</ScrollView>

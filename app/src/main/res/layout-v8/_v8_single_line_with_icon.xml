@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/component_container"
+    style="@style/SingleLineGroupStyle"
+    android:gravity="right|center_vertical"
+    android:layoutDirection="ltr"
+    tools:ignore="UnusedAttribute"
+    tools:layout_height="@dimen/dimen_48dp"
+    tools:layout_width="match_parent">
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tx_single_line_text"
+        style="@style/SingleLineList.WithIcon"
+        tools:text="Item" />
+
+    <ImageView
+        android:id="@+id/icon_start"
+        style="@style/SingleLineListIconStartRTL"
+        android:visibility="invisible" />
+
+
+</android.support.v7.widget.LinearLayoutCompat>

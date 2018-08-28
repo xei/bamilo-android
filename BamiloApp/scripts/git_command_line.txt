@@ -1,6 +1,0 @@
-
-# Delete all merged branches with tag NAFAMZ from ORIGIN (REMOTE)
-git branch -r --merged | grep 'NAFAMZ' | git push origin $(awk -F '/' '{ print ":"$2 }')
-
-# Delete all merged branches with tag NAFAMZ from LOCAL
-git branch --merged | grep 'NAFAMZ' | xargs git branch -D
