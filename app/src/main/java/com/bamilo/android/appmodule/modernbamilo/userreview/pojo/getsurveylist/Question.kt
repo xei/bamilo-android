@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.modernbamilo.userreview.pojo.getsurveylist
 
+import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.BaseModel
 import com.google.gson.annotations.SerializedName
 data class Question(
         @SerializedName("id") val id: Int, //0
@@ -9,4 +10,4 @@ data class Question(
         @SerializedName("hidden") val hidden: Boolean, //true
         @SerializedName("options") val options: List<Option>,
         @SerializedName("showRules") val showRules: List<ShowRule>
-)
+): BaseModel()

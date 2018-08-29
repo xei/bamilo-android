@@ -6,6 +6,8 @@
 
 package com.bamilo.android.appmodule.modernbamilo.product.sellerslist.viewmodel
 
+import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.BaseModel
+
 /**
  * This is the main view model of the sellers list screen and contains some fixed data and
  * a reference to a list of item view models.
@@ -15,7 +17,7 @@ class SellersListScreenViewModel(
         val productTitle: String,
         val productThumbnailUrl: String,
         val sellersViewModel: ArrayList<SellersListItemViewModel> = ArrayList()
-)
+): BaseModel()
 
 /**
  * This view model contains the presentation data of any row in sellers list screen.
@@ -30,4 +32,4 @@ class SellersListItemViewModel (
     val payableAmount: Long,
     val discount: Int,
     val currency: String
-)
+): BaseModel()

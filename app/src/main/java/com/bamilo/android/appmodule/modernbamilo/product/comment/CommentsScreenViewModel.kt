@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.modernbamilo.product.comment
 
+import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.BaseModel
 import com.google.gson.annotations.SerializedName
 
 data class CommentsScreenViewModel(
@@ -12,13 +13,13 @@ data class CommentsScreenViewModel(
         val fourStarsAvg: Float,
         val fiveStarsAvg: Float,
         val comments: ArrayList<CommentViewModel> = ArrayList()
-)
+): BaseModel()
 
 data class GetCommentsResponse (
         @SerializedName("total") val totalCommentsCount: Long,
         @SerializedName("items") val comments: ArrayList<CommentViewModel>,
         @SerializedName("pagination") val pagination: Pagination
-)
+): BaseModel()
 
 data class CommentViewModel(
         @SerializedName("id") val id: String,
@@ -30,10 +31,10 @@ data class CommentViewModel(
         @SerializedName("comment") val commentContent: String,
         @SerializedName("like") val likesCount: Int,
         @SerializedName("dislike") val dislikesCount: Int
-)
+): BaseModel()
 
 data class Pagination(
         @SerializedName("total_pages") val totalPagesCount: Int,
         @SerializedName("current_page")  val currentPage: Int,
         @SerializedName("per_page")  val pageSize: Int
-)
+): BaseModel()

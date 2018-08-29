@@ -5,4 +5,4 @@ data class MessageItem(
     @SerializedName("reason") val reason: String,
     @SerializedName("message") val message: String,
     @SerializedName("code") val code: Int
-)
+): BaseModel()

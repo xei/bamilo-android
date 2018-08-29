@@ -5,4 +5,4 @@ data class Session(
     @SerializedName("id") val id: String,
     @SerializedName("expire") val expire: Long?,
     @SerializedName("YII_CSRF_TOKEN") val yIICSRFTOKEN: String
-)
+): BaseModel()

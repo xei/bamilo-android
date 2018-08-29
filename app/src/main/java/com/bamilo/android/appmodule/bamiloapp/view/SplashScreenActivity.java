@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 
+import com.adjust.sdk.Adjust;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
@@ -32,7 +32,6 @@ import com.bamilo.android.appmodule.bamiloapp.utils.location.LocationHelper;
 import com.bamilo.android.appmodule.bamiloapp.utils.maintenance.MaintenancePage;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.ErrorLayoutFactory;
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
-import android.widget.TextView;
 import com.bamilo.android.framework.service.Darwin;
 import com.bamilo.android.framework.service.objects.configs.CountryConfigs;
 import com.bamilo.android.framework.service.objects.configs.RedirectPage;
@@ -44,7 +43,9 @@ import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
+import com.crashlytics.android.Crashlytics;
 import com.pushwoosh.Pushwoosh;
+import com.pushwoosh.exception.PushwooshException;
 
 import java.util.Locale;
 
@@ -752,9 +753,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private void initPushwoosh() {
         Pushwoosh.getInstance().registerForPushNotifications(result -> {
             if (result.isSuccess()) {
-                Log.e(">>>>>>>", "push woosh initialized successfully");
+                String token = result.getData();
+                Adjust.setPushToken(token);
+                Crashlytics.setUserIdentifier(Pushwoosh.getInstance().getHwid());
             } else {
-                Log.e(">>>>>>>", "push woosh initialized faild");
+                PushwooshException exception = result.getException();
+                // handle registration error
             }
         });
     }

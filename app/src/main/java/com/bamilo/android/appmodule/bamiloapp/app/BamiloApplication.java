@@ -50,7 +50,6 @@ import com.emarsys.mobileengage.MobileEngage;
 import com.emarsys.mobileengage.MobileEngageStatusListener;
 import com.emarsys.mobileengage.config.MobileEngageConfig;
 import com.emarsys.predict.Session;
-import com.pushwoosh.Pushwoosh;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -107,16 +106,12 @@ public class BamiloApplication extends Application {
                 .application(this)
                 .credentials(getString(R.string.Emarsys_ApplicationCode), getString(R.string.Emarsys_ApplicationPassword))
                 .statusListener(getStatusListener())
-                //either enable or disable the SDK provided Oreo default channel
-                //one must be chosen
-                //.enableDefaultChannel("default name", "description for the default channel")
+                .statusListener(getStatusListener())
                 .disableDefaultChannel()
                 .build();
         MobileEngage.setup(config);
 
-        // init crashlytics
-        Fabric.with(this, new Crashlytics());
-        Crashlytics.setUserIdentifier(Pushwoosh.getInstance().getHwid());
+        initFirebaseCrashlytics();
 
         // ON APPLICATION CREATE
         Print.i(TAG, "ON APPLICATION CREATE");
@@ -361,6 +356,18 @@ public class BamiloApplication extends Application {
      */
     public String getSearchedTerm() {
         return mSavedSearchTerm;
+    }
+
+    private void initFirebaseCrashlytics() {
+        Fabric.with(this, new Crashlytics());
+
+
+        // use following initialization to log and debug Crashlytics:
+//        final Fabric fabric = new Fabric.Builder(this)
+//                .kits(new Crashlytics())
+//                .debuggable(true)
+//                .build();
+//        Fabric.with(fabric);
     }
 }
 

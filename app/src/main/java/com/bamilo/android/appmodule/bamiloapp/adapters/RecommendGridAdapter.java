@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.Item;
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
@@ -65,12 +66,12 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
             double price = item.getPrice();
             double special = item.getSpecialPrice();
             if (price != special) {
-                holder.mPrice.setText(CurrencyFormatter.formatCurrency(price));
-                holder.mOldPrice.setText(CurrencyFormatter.formatCurrency(special));
+                holder.mPrice.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(price)));
+                holder.mOldPrice.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(special)));
                 holder.mOldPrice.setPaintFlags(holder.mOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 holder.mOldPrice.setVisibility(View.VISIBLE);
             } else {
-                holder.mPrice.setText(CurrencyFormatter.formatCurrency(price));
+                holder.mPrice.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(price)));
                 holder.mOldPrice.setVisibility(View.INVISIBLE);
             }
 

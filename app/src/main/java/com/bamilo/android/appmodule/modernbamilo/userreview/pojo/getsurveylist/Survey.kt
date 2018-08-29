@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.modernbamilo.userreview.pojo.getsurveylist
 
+import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.BaseModel
 import com.google.gson.annotations.SerializedName
 data class Survey(
         @SerializedName("id") val id: Int, //0
@@ -7,4 +8,4 @@ data class Survey(
         @SerializedName("product") val product: Product,
         @SerializedName("title") val title: String, //string
         @SerializedName("pages") val pages: List<Page>
-)
+): BaseModel()

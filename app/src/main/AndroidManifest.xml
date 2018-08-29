@@ -174,16 +174,20 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
 
         <!-- pushwoosh -->
-
-        <meta-data android:name="com.pushwoosh.appid" android:value="A9EF7-6FDD2" />
-
-        <meta-data android:name="com.pushwoosh.senderid" android:value="@string/fcm_sender_id" />
 
         <meta-data
             android:name="com.pushwoosh.notification_service_extension"
             android:value="com.bamilo.android.appmodule.bamiloapp.extlibraries.pushwoosh.PushwooshNotificationServiceExtension"/>
+
+
+        <meta-data android:name="com.pushwoosh.appid" android:value="@string/pushwoosh_app_id" />
+        <meta-data android:name="com.pushwoosh.senderid" android:value="@string/fcm_sender_id" />
+
 
         <!--<meta-data-->
             <!--android:name="PW_NOTIFICATION_RECEIVER"-->
@@ -249,13 +253,13 @@
             android:name=".appmodule.bamiloapp.extlibraries.emarsys.NotificationReceiver"/>
 
         <!-- Emarsys Engage -->
-        <service
-            android:name="com.emarsys.mobileengage.service.MobileEngageMessagingService"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
+        <!--<service-->
+            <!--android:name="com.emarsys.mobileengage.service.MobileEngageMessagingService"-->
+            <!--tools:ignore="ExportedService">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.firebase.MESSAGING_EVENT"/>-->
+            <!--</intent-filter>-->
+        <!--</service>-->
 
         <service
             android:name="com.emarsys.mobileengage.service.MobileEngageInstanceIdService"
