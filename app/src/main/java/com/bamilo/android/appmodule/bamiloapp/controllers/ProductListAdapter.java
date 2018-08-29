@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductRegular;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.product.UIProductUtils;
@@ -106,7 +108,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
                 holder.rating.setRating((float) item.getAvgRating());
                 holder.rating.setVisibility(View.VISIBLE);
                 int count = item.getTotalRatings();
-                String string = "(" + count + ")";
+                String string = "(" + StringExtKt.persianizeNumberString(String.valueOf(count)) + ")";
                 holder.reviews.setText(string);
             }
             // Hide rating

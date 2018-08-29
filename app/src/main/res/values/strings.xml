@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">‌Bamilo</string>
+    <string name="fcm_sender_id">459777214540</string>
 
     <!-- User Review -->
     <string name="userReview_submit_msg_succeed">با تشکر از نظر شما</string>
@@ -728,5 +729,6 @@
     <string name="be_first_to_comment">اولین نفری باشید که نظر می دهید</string>
     <string name="see_all_related_products">مشاهده همه کالاهای مشابه</string>
     <string name="deliver_time_by_this_seller">زمان تقریبی تحویل کالای این تامین کننده</string>
+
 
 </resources>

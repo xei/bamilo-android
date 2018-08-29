@@ -78,9 +78,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Custom"
-        tools:ignore="UnusedAttribute"
-        tools:node="replace">
+        android:theme="@style/Theme.Custom">
 
         <activity
             android:name=".appmodule.bamiloapp.view.SplashScreenActivity"
@@ -144,6 +142,7 @@
             android:name=".appmodule.bamiloapp.view.RedirectInfoActivity"
             android:resizeableActivity="false"
             android:screenOrientation="portrait"/>
+
         <activity
             android:name="com.pushwoosh.DeepLinkActivity"
             android:resizeableActivity="false"
@@ -168,7 +167,7 @@
             android:name=".appmodule.bamiloapp.view.productdetail.gallery.GalleryActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.bamilo.modernbamilo.userreview.UserReviewActivity"
+        <activity android:name=".appmodule.modernbamilo.userreview.UserReviewActivity"
             android:screenOrientation="portrait" />
 
         <activity android:name=".appmodule.modernbamilo.product.comment.submit.SubmitRateActivity"
@@ -176,20 +175,33 @@
             android:windowSoftInputMode="adjustResize" />
 
 
-        <meta-data
-            android:name="PW_NOTIFICATION_RECEIVER"
-            android:value="com.mobile.libraries.emarsys.NotificationReceiver"/>
-        <meta-data
-            android:name="PW_APPID"
-            android:value="@string/PW_APPID"/>
-        <meta-data
-            android:name="PW_PROJECT_ID"
-            android:value="@string/PW_PROJECT_ID"/>
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+        <!-- pushwoosh -->
 
-        <service android:name="com.pushwoosh.inapp.InAppRetrieverService"/>
+        <meta-data android:name="com.pushwoosh.appid" android:value="A9EF7-6FDD2" />
+
+        <meta-data android:name="com.pushwoosh.senderid" android:value="@string/fcm_sender_id" />
+
+        <meta-data
+            android:name="com.pushwoosh.notification_service_extension"
+            android:value="com.bamilo.android.appmodule.bamiloapp.extlibraries.pushwoosh.PushwooshNotificationServiceExtension"/>
+
+        <!--<meta-data-->
+            <!--android:name="PW_NOTIFICATION_RECEIVER"-->
+            <!--android:value="com.mobile.libraries.emarsys.NotificationReceiver"/>-->
+        <!--<meta-data-->
+            <!--android:name="PW_APPID"-->
+            <!--android:value="@string/PW_APPID"/>-->
+        <!--<meta-data-->
+            <!--android:name="PW_PROJECT_ID"-->
+            <!--android:value="@string/PW_PROJECT_ID"/>-->
+        <!--<meta-data-->
+            <!--android:name="com.google.android.gms.version"-->
+            <!--android:value="@integer/google_play_services_version"/>-->
+
+        <!--<service android:name="com.pushwoosh.inapp.InAppRetrieverService"/>-->
+
+        <!-- end of pushwoosh -->
+
 
         <receiver
             android:enabled="true"

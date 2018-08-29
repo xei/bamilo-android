@@ -45,7 +45,7 @@ public class InstallReceiver extends BroadcastReceiver {
                     saveCampaignParameters(context, GTMManager.IS_GTM_CAMPAIGN_SET, "YES");        
                     saveCampaignParameters(context, GTMManager.IS_REFERRER_CAMPAIGN_SET, "Yes");   
                 } catch (Exception e) {
-                    Print.e(TAG, "Exception while getting utm parameters : ", e);
+//                    Print.e(TAG, "Exception while getting utm parameters : ", e);
                 }
             }
         } else {

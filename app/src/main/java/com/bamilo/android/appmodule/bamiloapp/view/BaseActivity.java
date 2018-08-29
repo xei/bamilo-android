@@ -92,6 +92,8 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.DrawerFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.OldProductDetailsFragment;
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
 import android.widget.TextView;
+
+import com.bamilo.android.appmodule.modernbamilo.util.typography.TypeFaceHelper;
 import com.bamilo.android.framework.components.recycler.HorizontalSpaceItemDecoration;
 import com.bamilo.android.framework.service.database.SearchRecentQueriesTableHelper;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
@@ -1700,15 +1702,25 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void setActionBarTitle(@StringRes int actionBarTitleResId) {
         mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(getString(actionBarTitleResId));
-        // TODO: 8/28/18 farshid
-//        HoloFontLoader.applyDefaultFont(toolbar);
+
+        ViewGroup customView = toolbar;
+        for(int i = 0 ; i < customView.getChildCount() ; i++) {
+            if (customView.getChildAt(i) instanceof TextView) {
+                ((TextView)customView.getChildAt(i)).setTypeface(TypeFaceHelper.getInstance(this).getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_REGULAR));
+            }
+        }
     }
 
     public void setActionBarTitle(@NonNull String title) {
         mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(title);
-        // TODO: 8/28/18 farshid
-//        HoloFontLoader.applyDefaultFont(toolbar);
+
+        ViewGroup customView = toolbar;
+        for(int i = 0 ; i < customView.getChildCount() ; i++) {
+            if (customView.getChildAt(i) instanceof TextView) {
+                ((TextView)customView.getChildAt(i)).setTypeface(TypeFaceHelper.getInstance(this).getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_REGULAR));
+            }
+        }
     }
 
     /**

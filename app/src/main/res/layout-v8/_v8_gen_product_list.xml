@@ -128,7 +128,7 @@
                 android:id="@+id/item_rating"
                 android:progressDrawable="@drawable/custom_rating_bar"
                 android:layout_width="wrap_content"
-                android:layout_height="12dp"
+                android:layout_height="13dp"
                 android:layout_alignParentRight="true"
                 android:stepSize="0.1"
                 android:isIndicator="true"

@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
+import com.pushwoosh.Pushwoosh;
 
 import java.util.Locale;
 
@@ -86,6 +88,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initPushwoosh();
         //Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
         // Set Font
@@ -744,6 +747,16 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private boolean hasRedirectPage(RedirectPage redirect) {
         return CountryConfigs.isValidRedirectPage(redirect) && ActivitiesWorkFlow.showRedirectInfoActivity(this, redirect);
+    }
+
+    private void initPushwoosh() {
+        Pushwoosh.getInstance().registerForPushNotifications(result -> {
+            if (result.isSuccess()) {
+                Log.e(">>>>>>>", "push woosh initialized successfully");
+            } else {
+                Log.e(">>>>>>>", "push woosh initialized faild");
+            }
+        });
     }
 
 }

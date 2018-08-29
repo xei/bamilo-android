@@ -35,7 +35,7 @@
         android:title="@string/my_profile"
         android:visible="false"
         app:actionProviderClass="com.bamilo.android.appmodule.bamiloapp.utils.MyProfileActionProvider"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <!--
     SHARE VIEW

@@ -15,6 +15,7 @@ import com.bamilo.android.appmodule.bamiloapp.preferences.CountryPersistentConfi
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogGenericFragment;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment;
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.objects.product.Variation;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductBase;
@@ -33,7 +34,7 @@ public class UIProductUtils {
      */
     public static void setPriceRules(@NonNull ProductBase productBase, @NonNull TextView view) {
         double price = productBase.hasDiscount() ? productBase.getSpecialPrice() : productBase.getPrice();
-        view.setText(CurrencyFormatter.formatCurrency(price));
+        view.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(price)));
     }
 
     /**
@@ -47,7 +48,7 @@ public class UIProductUtils {
             setPrice(((ProductMultiple) productBase).getSelectedSimple(), price, specialPrice);
             //If hasn't simple but has range
         } else if (TextUtils.isNotEmpty(priceRange)) {
-            specialPrice.setText(priceRange);
+            specialPrice.setText(StringExtKt.persianizeDigitsInString(priceRange));
             price.setVisibility(View.GONE);
         } else {
             setPrice(productBase, price, specialPrice);
@@ -65,7 +66,7 @@ public class UIProductUtils {
             setPriceWithAutoAdjust(context, ((ProductMultiple) productBase).getSelectedSimple(), discount, price);
             //If hasn't simple but has range
         } else if (TextUtils.isNotEmpty(priceRange)) {
-            discount.setText(priceRange);
+            discount.setText(StringExtKt.persianizeDigitsInString(priceRange));
             price.setVisibility(View.GONE);
         } else {
             setPriceWithAutoAdjust(context, productBase, discount, price);
@@ -75,15 +76,15 @@ public class UIProductUtils {
     private static void setPrice(@NonNull ProductBase productBase, @NonNull TextView price, @NonNull TextView specialPrice) {
         // Case discount
         if (productBase.hasDiscount()) {
-            specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getSpecialPrice()));
-            price.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
+            specialPrice.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(productBase.getSpecialPrice())));
+            price.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(productBase.getPrice())));
             price.setPaintFlags(price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             price.setVisibility(View.VISIBLE);
         }
         // Case normal
         else {
             price.setVisibility(View.GONE);
-            specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
+            specialPrice.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(productBase.getPrice())));
 
         }
     }
@@ -94,21 +95,21 @@ public class UIProductUtils {
             final String specialPrice = CurrencyFormatter.formatCurrency(productBase.getSpecialPrice());
             final String regularPrice = CurrencyFormatter.formatCurrency(productBase.getPrice());
 
-            priceView.setText(regularPrice);
-            discountView.setText(specialPrice);
+            priceView.setText(StringExtKt.persianizeDigitsInString(regularPrice));
+            discountView.setText(StringExtKt.persianizeDigitsInString(specialPrice));
             priceView.setPaintFlags(discountView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         }
         // Case normal
         else {
-            discountView.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
+            discountView.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(productBase.getPrice())));
         }
     }
 
     public static void setDiscountRules(@NonNull ProductBase product, @NonNull TextView percentage) {
         if (product.hasDiscount()) {
             Resources resources = percentage.getResources();
-            percentage.setText(String.format(resources.getString(R.string.format_discount_percentage), product.getMaxSavingPercentage()));
+            percentage.setText(StringExtKt.persianizeDigitsInString(String.format(resources.getString(R.string.format_discount_percentage), product.getMaxSavingPercentage())));
             percentage.setVisibility(View.VISIBLE);
         } else {
             percentage.setVisibility(View.INVISIBLE);
@@ -128,7 +129,7 @@ public class UIProductUtils {
                 simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
             }
             if (view instanceof TextView) {
-                ((TextView) view).setText(simpleVariationValue);
+                ((TextView) view).setText(StringExtKt.persianizeDigitsInString(simpleVariationValue));
             }
             view.setVisibility(View.VISIBLE);
         } else {

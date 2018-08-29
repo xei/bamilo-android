@@ -141,7 +141,7 @@ dependencies {
 
     implementation 'com.algolia:algoliasearch-android:2.6.0@aar'
 
-    implementation 'com.pushwoosh:pushwoosh:5.8.6'
+    implementation 'com.pushwoosh:pushwoosh:5.8.5'
 
     implementation 'com.scarabresearch:predictsdk:1.0.6'
     implementation 'com.emarsys:mobile-engage-sdk:1.6.0'
@@ -172,8 +172,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:15.0.1'
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
 
-    implementation 'com.google.firebase:firebase-crash:16.2.0'
     implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.firebase:firebase-messaging:17.3.0'
+
+    implementation 'com.google.firebase:firebase-crash:16.2.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
 
     testImplementation 'junit:junit:4.12'

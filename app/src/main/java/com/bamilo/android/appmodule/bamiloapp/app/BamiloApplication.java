@@ -13,19 +13,17 @@ import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.di.components.DaggerMainComponent;
 import com.bamilo.android.appmodule.bamiloapp.di.components.MainComponent;
 import com.bamilo.android.appmodule.bamiloapp.di.modules.AndroidModule;
-import com.bamilo.android.appmodule.bamiloapp.preferences.PersistentSessionStore;
-import com.bamilo.android.appmodule.bamiloapp.preferences.ShopPreferences;
-import com.crashlytics.android.Crashlytics;
-import com.emarsys.mobileengage.MobileEngage;
-import com.emarsys.mobileengage.MobileEngageStatusListener;
-import com.emarsys.mobileengage.config.MobileEngageConfig;
-import com.emarsys.predict.Session;
+import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.AndroidStorage;
 import com.bamilo.android.appmodule.bamiloapp.helpers.SuperBaseHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.AndroidStorage;
+import com.bamilo.android.appmodule.bamiloapp.preferences.PersistentSessionStore;
+import com.bamilo.android.appmodule.bamiloapp.preferences.ShopPreferences;
+import com.bamilo.android.appmodule.bamiloapp.utils.CheckVersion;
+import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.framework.service.Darwin;
 import com.bamilo.android.framework.service.database.DarwinDatabaseHelper;
 import com.bamilo.android.framework.service.database.SearchRecentQueriesTableHelper;
@@ -47,10 +45,11 @@ import com.bamilo.android.framework.service.utils.SingletonMap;
 import com.bamilo.android.framework.service.utils.cache.WishListCache;
 import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
-
-import com.bamilo.android.appmodule.bamiloapp.utils.CheckVersion;
-import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
-import com.bamilo.android.R;
+import com.crashlytics.android.Crashlytics;
+import com.emarsys.mobileengage.MobileEngage;
+import com.emarsys.mobileengage.MobileEngageStatusListener;
+import com.emarsys.mobileengage.config.MobileEngageConfig;
+import com.emarsys.predict.Session;
 import com.pushwoosh.Pushwoosh;
 
 import java.io.IOException;
@@ -115,7 +114,6 @@ public class BamiloApplication extends Application {
                 .build();
         MobileEngage.setup(config);
 
-
         // init crashlytics
         Fabric.with(this, new Crashlytics());
         Crashlytics.setUserIdentifier(Pushwoosh.getInstance().getHwid());
@@ -156,7 +154,7 @@ public class BamiloApplication extends Application {
          */
         Print.i(TAG, "INIT CURRENCY");
         String currencyCode = ShopPreferences.getShopCountryCurrencyIso(getApplicationContext());
-        if(!TextUtils.isEmpty(SHOP_ID) && !TextUtils.isEmpty(currencyCode)) {
+        if (!TextUtils.isEmpty(SHOP_ID) && !TextUtils.isEmpty(currencyCode)) {
             Darwin.initialize(getApplicationContext(), SHOP_ID);
             getCustomerUtils();
         }
@@ -314,7 +312,7 @@ public class BamiloApplication extends Application {
         SearchRecentQueriesTableHelper.deleteAllRecentQueries();
     }
 
-    public void cleanAllPreviousLanguageValues(){
+    public void cleanAllPreviousLanguageValues() {
         try {
             AigHttpClient.clearCache(this);
         } catch (IOException e) {
@@ -325,7 +323,7 @@ public class BamiloApplication extends Application {
     /**
      * add a sku to a list of sku products that were added from a banner flow
      */
-    public void setBannerFlowSkus(String sku,TeaserGroupType groupType) {
+    public void setBannerFlowSkus(String sku, TeaserGroupType groupType) {
         bannerSkus = new HashMap<>();
     }
 
@@ -334,8 +332,8 @@ public class BamiloApplication extends Application {
      *
      * @return list of skus
      */
-    public HashMap<String,String> getBannerFlowSkus() {
-        if(bannerSkus == null){
+    public HashMap<String, String> getBannerFlowSkus() {
+        if (bannerSkus == null) {
             bannerSkus = new HashMap<>();
         }
         return bannerSkus;
@@ -353,7 +351,7 @@ public class BamiloApplication extends Application {
      * Save last searched term
      */
     public void setSearchedTerm(String searchTerm) {
-        mSavedSearchTerm =  searchTerm;
+        mSavedSearchTerm = searchTerm;
     }
 
     /**
