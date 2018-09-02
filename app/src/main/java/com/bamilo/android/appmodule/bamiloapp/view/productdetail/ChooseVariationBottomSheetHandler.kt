@@ -11,6 +11,7 @@ import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager
 import com.bamilo.android.framework.components.ghostadapter.GhostAdapter
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ProductDetail
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.bottomsheetvariation.PDVBottomSheetVariationItem
+import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.android.databinding.ActivityProductDetailBinding
 import java.util.*
 
@@ -128,10 +129,10 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
 
         binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewTitle.text = product.title
         product.price.let {
-            binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewPrice.text = it.price
+            binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewPrice.text = it.price.persianizeDigitsInString()
             binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewCurrency.text = it.currency
 
-            binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.text = it.oldPrice
+            binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.text = it.oldPrice?.persianizeDigitsInString()
             binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewOldPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
 
             if (TextUtils.isEmpty(it.oldPrice) || it.oldPrice == "0") {
