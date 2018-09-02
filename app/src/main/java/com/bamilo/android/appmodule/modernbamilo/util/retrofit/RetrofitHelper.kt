@@ -35,12 +35,6 @@ object RetrofitHelper {
     private const val URL_BASE = BuildConfig.URL_WEBAPI
     private val defaultHeaders = hashMapOf("locale" to "fa-ir")
 
-    private const val SOCKET_TIMEOUT_SECOND: Long = 20
-    private const val CONNECTION_TIMEOUT_SECOND: Long = 20
-    private const val WRITE_TIMEOUT_SECOND: Long = 20
-
-//    private const val CERT_SSL = BuildConfig.CERT_SSL
-
     private val sLogLevel = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
 
     private var retrofitInstance: Retrofit? = null
@@ -180,9 +174,9 @@ object RetrofitHelper {
     }
 
     private fun setTimeOutToOkHttpClient(okHttpClientBuilder: OkHttpClient.Builder) = okHttpClientBuilder.apply {
-        readTimeout(SOCKET_TIMEOUT_SECOND, TimeUnit.SECONDS)
-        connectTimeout(CONNECTION_TIMEOUT_SECOND, TimeUnit.SECONDS)
-        writeTimeout(WRITE_TIMEOUT_SECOND, TimeUnit.SECONDS)
+        readTimeout(BuildConfig.SOCKET_TIMEOUT_SECOND, TimeUnit.SECONDS)
+        connectTimeout(BuildConfig.CONNECTION_TIMEOUT_SECOND, TimeUnit.SECONDS)
+        writeTimeout(BuildConfig.WRITE_TIMEOUT_SECOND, TimeUnit.SECONDS)
     }
 
     /**

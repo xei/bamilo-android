@@ -292,15 +292,15 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
             requestLogin();
         }
         // Case invalid
-        else {
-            MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
-                Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-                MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
-            TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
-
-            EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
-
-        }
+//        else {
+//            MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+//                Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+//                MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+//            TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
+//
+//            EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
+//
+//        }
     }
 
     /*

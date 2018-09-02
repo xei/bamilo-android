@@ -22,6 +22,10 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
 
+        buildConfigField "Long", "SOCKET_TIMEOUT_SECOND", SOCKET_TIMEOUT_SECOND
+        buildConfigField "Long", "CONNECTION_TIMEOUT_SECOND", CONNECTION_TIMEOUT_SECOND
+        buildConfigField "Long", "WRITE_TIMEOUT_SECOND", WRITE_TIMEOUT_SECOND
+
         resValue "string", "fcm_sender_id", FCM_SENDER_ID
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
