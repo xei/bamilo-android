@@ -163,22 +163,22 @@ class CommentsFragment : Fragment(), View.OnClickListener {
                         rate = it.getFloat(ARG_RATE, 0f),
                         rateSum = it.getInt(ARG_RATE_SUM, 5),
                         commentsCount = commentsCount,
-                        oneStarsAvg = it.getFloat(ARG_ONE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                        twoStarsAvg = it.getFloat(ARG_TWO_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                        threeStarsAvg = it.getFloat(ARG_THREE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                        fourStarsAvg = it.getFloat(ARG_FOUR_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                        fiveStarsAvg = it.getFloat(ARG_FIVE_STARS_COUNT, 0f / (if (commentsCount != 0) commentsCount else 1))
+                        oneStarsAvg = it.getFloat(ARG_ONE_STARS_COUNT, 0f) * 100 / (if (commentsCount != 0) commentsCount else 1),
+                        twoStarsAvg = it.getFloat(ARG_TWO_STARS_COUNT, 0f) * 100 / (if (commentsCount != 0) commentsCount else 1),
+                        threeStarsAvg = it.getFloat(ARG_THREE_STARS_COUNT, 0f) * 100 / (if (commentsCount != 0) commentsCount else 1),
+                        fourStarsAvg = it.getFloat(ARG_FOUR_STARS_COUNT, 0f) * 100 / (if (commentsCount != 0) commentsCount else 1),
+                        fiveStarsAvg = it.getFloat(ARG_FIVE_STARS_COUNT, 0f) * 100 / (if (commentsCount != 0) commentsCount else 1)
                 )
             else
                 CommentsScreenViewModel(
                         rate = it.getFloat(ARG_RATE, 0f),
                         rateSum = it.getInt(ARG_RATE_SUM, 5),
                         commentsCount = commentsCount,
-                        oneStarsAvg = it.getFloat(ARG_ONE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                        twoStarsAvg = it.getFloat(ARG_TWO_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                        threeStarsAvg = it.getFloat(ARG_THREE_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                        fourStarsAvg = it.getFloat(ARG_FOUR_STARS_COUNT, 0f) / (if (commentsCount != 0) commentsCount else 1),
-                        fiveStarsAvg = it.getFloat(ARG_FIVE_STARS_COUNT, 0f / (if (commentsCount != 0) commentsCount else 1)),
+                        oneStarsAvg = it.getFloat(ARG_ONE_STARS_COUNT, 0f) * 100 / (if (commentsCount != 0) commentsCount else 1),
+                        twoStarsAvg = it.getFloat(ARG_TWO_STARS_COUNT, 0f) * 100 / (if (commentsCount != 0) commentsCount else 1),
+                        threeStarsAvg = it.getFloat(ARG_THREE_STARS_COUNT, 0f) * 100 / (if (commentsCount != 0) commentsCount else 1),
+                        fourStarsAvg = it.getFloat(ARG_FOUR_STARS_COUNT, 0f) * 100 / (if (commentsCount != 0) commentsCount else 1),
+                        fiveStarsAvg = it.getFloat(ARG_FIVE_STARS_COUNT, 0f) * 100 / (if (commentsCount != 0) commentsCount else 1),
                         comments = comments
                 )
 

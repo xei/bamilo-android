@@ -393,7 +393,7 @@ class ProductDetailActivity : BaseActivity(),
                     productDetail.rating.stars[2].count.toFloat(),
                     productDetail.rating.stars[3].count.toFloat(),
                     productDetail.rating.stars[4].count.toFloat(),
-                    Gson().toJson(CommentViewModel(review.id!!, review.title, review.date!!, review.username!!,
+                    Gson().toJson(CommentViewModel(review.id!!, review.title, review.date!!, review.username,
                             review.is_bought_by_user, review.rate!!.toFloat(), review.comment!!,
                             review.like, review.dislike))))
         }
