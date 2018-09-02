@@ -29,7 +29,6 @@ class ProductDetailPresenter(var context: Context, binding: ActivityProductDetai
     }
 
     fun isBottomSheetShown(): Boolean {
-        return false
         return chooseVariationBottomSheetHandler.isBottomSheetShown()
     }
 
