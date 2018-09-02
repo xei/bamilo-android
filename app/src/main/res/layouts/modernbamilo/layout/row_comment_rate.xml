@@ -32,6 +32,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="@+id/rowCommentRate_guideline_centerVertical"
         app:rating="5"
+
         tools:percentage="30" />
 
     <com.bamilo.android.appmodule.modernbamilo.product.comment.RateBarView

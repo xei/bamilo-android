@@ -25,7 +25,7 @@ data class CommentViewModel(
         @SerializedName("id") val id: String,
         @SerializedName("title") val title: String?,
         @SerializedName("date") val composedTime: String,
-        @SerializedName("username") val authorName: String,
+        @SerializedName("username") val authorName: String?,
         @SerializedName("is_bought_by_user") val hasUserBeenBought: Boolean,
         @SerializedName("rate") val rate: Float,
         @SerializedName("comment") val commentContent: String,

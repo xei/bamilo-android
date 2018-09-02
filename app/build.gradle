@@ -40,13 +40,6 @@ android {
 
     signingConfigs {
 
-        debug {
-            storeFile file(KEYSTORE_FILE_NAME_DEBUG)
-            storePassword KEYSTORE_PASSWORD_DEBUG
-            keyAlias KEYSTORE_ALIAS_DEBUG
-            keyPassword KEYSTORE_ALIAS_PASSWORD_DEBUG
-        }
-
         release {
             storeFile file(KEYSTORE_FILE_NAME_RELEASE)
             storePassword KEYSTORE_PASSWORD_RELEASE
@@ -62,13 +55,6 @@ android {
 //            applicationIdSuffix '.debug'
             debuggable true
             minifyEnabled false
-            signingConfig signingConfigs.debug
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-project-pro.txt',
-                    'proguard-rules-ghostadapter.pro',
-                    'proguard-rules-glide.pro',
-                    'proguard-rules-logs.pro',
-                    'proguard-rules-retrofit.pro'
         }
 
         release {
@@ -174,11 +160,11 @@ dependencies {
 
     implementation 'com.adjust.sdk:adjust-android:4.14.0'
     implementation 'com.algolia:algoliasearch-android:2.6.0@aar'
-    implementation 'com.pushwoosh:pushwoosh:5.8.5'
+    implementation 'com.pushwoosh:pushwoosh:5.8.6'
     implementation 'com.scarabresearch:predictsdk:1.0.6'
     implementation 'com.emarsys:mobile-engage-sdk:1.6.0'
 
-    //useful libraries
+    //other libraries
     implementation 'com.romandanylyk:pageindicatorview:1.0.1@aar'
     implementation 'com.jakewharton.scalpel:scalpel:1.1.2'
     implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
