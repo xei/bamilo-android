@@ -13,19 +13,18 @@ import okhttp3.OkHttpClient;
  */
 public class UnsafeOkHttpClient {
 
-    public static OkHttpClient getUnsafeOkHttpClient() {
+    public static OkHttpClient.Builder getOkHttpBuilder() {
         try {
-            // Create a trust manager that does not validate certificate chains
             final TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
                         @Override
                         public void checkClientTrusted(java.security.cert.X509Certificate[] chain,
-                                String authType) {
+                                                       String authType) {
                         }
 
                         @Override
                         public void checkServerTrusted(java.security.cert.X509Certificate[] chain,
-                                String authType) {
+                                                       String authType) {
                         }
 
                         @Override
@@ -51,10 +50,15 @@ public class UnsafeOkHttpClient {
                 }
             });
 
-            OkHttpClient okHttpClient = builder.build();
-            return okHttpClient;
-        } catch (Exception e) {
+            return builder;
+
+        } catch (Exception e){
             throw new RuntimeException(e);
         }
+    }
+
+
+    public static OkHttpClient getUnsafeOkHttpClient() {
+        return getOkHttpBuilder().build();
     }
 }
