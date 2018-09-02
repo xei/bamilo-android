@@ -84,7 +84,7 @@ object RetrofitHelper {
                 followRedirects(true)
                 setTimeOutToOkHttpClient(this)
 
-                getCookie(context)?.takeIf { !it.isEmpty() }.apply {
+                getCookie(context).takeIf { !it.isEmpty() }.apply {
                     cookieJar(getCookieJar(context))
                 }
 

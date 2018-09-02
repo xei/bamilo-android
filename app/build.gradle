@@ -50,29 +50,28 @@ android {
     }
 
     buildTypes {
-
         debug {
-//            applicationIdSuffix '.debug'
             debuggable true
             minifyEnabled false
         }
 
         release {
-            debuggable false
+            debuggable true
             minifyEnabled true
+            shrinkResources false
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-project-pro.txt',
                     'proguard-rules-ghostadapter.pro',
                     'proguard-rules-glide.pro',
                     'proguard-rules-logs.pro',
-                    'proguard-rules-retrofit.pro'
+                    'proguard-rules-retrofit.pro',
+                    'proguard-rules-pushwoosh.pro'
         }
     }
 
     flavorDimensions "default"
     productFlavors {
-
         staging {
             applicationIdSuffix '.staging'
             versionNameSuffix ' Staging'
@@ -86,7 +85,6 @@ android {
 
             resValue "string", "pushwoosh_app_id", PUSHWOOSH_APPID_LIVE
         }
-
     }
 
     compileOptions {
@@ -106,7 +104,6 @@ android {
                            'src/main/res/drawables/other', 'src/main/res/layouts/moderbamilo', 'src/main/res/layouts', 'src/main/res/layouts/modernbamilo/']
         }
     }
-
 }
 
 ext {
