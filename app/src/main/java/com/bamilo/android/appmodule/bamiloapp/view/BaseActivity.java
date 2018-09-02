@@ -341,6 +341,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
         // Get the cart and perform auto login
         recoverUserDataFromBackground();
+        updateCartInfo();
     }
 
     @Override
