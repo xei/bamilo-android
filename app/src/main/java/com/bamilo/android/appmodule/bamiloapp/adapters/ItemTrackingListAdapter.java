@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bamilo.android.appmodule.modernbamilo.product.comment.submit.SubmitRateScreenKt;
 import com.bamilo.android.core.service.model.data.itemtracking.Cancellation;
 import com.bamilo.android.core.service.model.data.itemtracking.CompleteOrder;
 import com.bamilo.android.core.service.model.data.itemtracking.History;
@@ -301,10 +302,12 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             holder.btnReviewProduct.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (onItemTrackingListClickListener != null) {
-                        PackageItem item = indexedItems.get(holder.getAdapterPosition());
-                        onItemTrackingListClickListener.onReviewButtonClicked(v, item);
-                    }
+                    PackageItem item = indexedItems.get(holder.getAdapterPosition());
+                    SubmitRateScreenKt.startSubmitRateActivity(context, item.getSku());
+//                    if (onItemTrackingListClickListener != null) {
+//                        PackageItem item = indexedItems.get(holder.getAdapterPosition());
+//                        onItemTrackingListClickListener.onReviewButtonClicked(v, item);
+//                    }
                 }
             });
         }
