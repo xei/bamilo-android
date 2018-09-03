@@ -79,6 +79,8 @@
 
     <View style="@style/FilterTabBarDivider"
         android:layout_height="match_parent"
+        android:paddingRight="4dp"
+        android:paddingLeft="4dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"/>
 
@@ -161,9 +163,8 @@
 
     <ImageButton
         android:id="@+id/catalog_bar_button_columns"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight=".2"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
         android:background="@null"
         android:contentDescription="@string/gproductlist"
         android:scaleType="centerInside"
