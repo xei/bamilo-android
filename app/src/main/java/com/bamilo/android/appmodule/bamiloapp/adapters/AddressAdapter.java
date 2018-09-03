@@ -15,6 +15,7 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentCont
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment;
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.components.customfontviews.RadioButton;
 import com.bamilo.android.framework.service.objects.addresses.AdapterItemSelection;
 import com.bamilo.android.framework.service.objects.addresses.Address;
@@ -96,7 +97,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         Address address = addressesList.get(position);
         holder.name.setText(String.format("%1s %2s", address.getFirstName(), address.getLastName()));
         holder.street.setText(address.getAddress());
-        holder.phone.setText(address.getPhone());
+        holder.phone.setText(StringExtKt.persianizeNumberString(address.getPhone()));
         holder.editButton.setOnClickListener(onClickEditAddressButton);
         holder.editButton.setTag(address.getId());
         holder.editButton_Rl.setOnClickListener(onClickEditAddressButton);
