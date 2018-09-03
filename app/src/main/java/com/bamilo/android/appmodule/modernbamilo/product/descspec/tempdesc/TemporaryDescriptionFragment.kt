@@ -1,8 +1,10 @@
 package com.bamilo.android.appmodule.modernbamilo.product.descspec.tempdesc
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.AppCompatImageView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,9 @@ import android.webkit.WebView
 import android.widget.ImageButton
 import android.widget.TextView
 import com.bamilo.android.R
+import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra
+import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
+import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity
 import com.bamilo.android.appmodule.modernbamilo.product.descspec.DescSpecWebApi
 import com.bamilo.android.appmodule.modernbamilo.product.descspec.desc.pojo.GetDescriptionResponse
 import com.bamilo.android.appmodule.modernbamilo.util.logging.LogType
@@ -33,6 +38,7 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mTitleTextView: TextView
     private lateinit var mCloseButton: ImageButton
+    private lateinit var mCartButton: AppCompatImageView
     private lateinit var mWebView: WebView
 
     private lateinit var mWebApi: DescSpecWebApi
@@ -83,11 +89,13 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
     private fun findViews(rootView: View) {
         mTitleTextView = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_xeiTextView_title)
         mCloseButton = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_imageButton_close)
+        mCartButton = rootView.findViewById(R.id.layoutToolbar_appCompatImageView_whiteCart)
         mWebView = rootView.findViewById(R.id.fragmentDescription_webView_descriptionWebView)
     }
 
     private fun setOnClickListeners() {
         mCloseButton.setOnClickListener(this)
+        mCartButton.setOnClickListener(this)
     }
 
     private fun initWebView() {
@@ -122,9 +130,16 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
         })
     }
 
+    private fun openCart() = startActivity(
+            Intent(context, MainFragmentActivity::class.java).apply {
+            putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.SHOPPING_CART)
+            putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false)
+        })
+
     override fun onClick(clickedView: View?) {
         when (clickedView?.id) {
             R.id.layoutToolbar_imageButton_close -> activity?.onBackPressed()
+            R.id.layoutToolbar_appCompatImageView_whiteCart -> openCart()
         }
     }
 
