@@ -651,7 +651,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         UIProductUtils.setPriceRules(item, priceView);
         // Delete
         deleteBtn.setTag(R.id.position, position);
-        deleteBtn.setOnClickListener(this::deleteSelectedElements);
+        deleteBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteSelectedElements(view);
+            }
+        });
         // Quantity
         quantityBtn.setText(String.valueOf(item.getQuantity()));
         if(item.getMaxQuantity() > 1) {

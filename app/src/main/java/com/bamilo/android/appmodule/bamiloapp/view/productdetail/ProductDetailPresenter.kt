@@ -4,7 +4,7 @@ import android.content.Context
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
 import com.bamilo.android.appmodule.bamiloapp.helpers.cart.ShoppingCartAddItemHelper
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ProductDetail
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail
 import com.bamilo.android.databinding.ActivityProductDetailBinding
 
 /**

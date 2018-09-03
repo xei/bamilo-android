@@ -9,8 +9,8 @@ import android.view.MotionEvent
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.gallery.GalleryActivity
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.Image
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ImageSliderModel
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Image
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ImageSliderModel
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.ProductWebApi
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.android.framework.service.pojo.RestConstants

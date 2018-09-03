@@ -14,7 +14,7 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils
 import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.PrimaryInfoModel
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.PrimaryInfoModel
 import com.bamilo.android.appmodule.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.android.appmodule.modernbamilo.util.getMorphNumberString

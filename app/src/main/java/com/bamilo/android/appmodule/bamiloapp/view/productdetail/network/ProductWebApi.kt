@@ -1,7 +1,7 @@
 package com.bamilo.android.appmodule.bamiloapp.view.productdetail.network
 
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ProductDetail
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail
 import retrofit2.Call
 import retrofit2.http.*
 

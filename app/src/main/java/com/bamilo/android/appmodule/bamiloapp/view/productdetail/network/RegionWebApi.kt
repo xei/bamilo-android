@@ -1,9 +1,9 @@
 package com.bamilo.android.appmodule.bamiloapp.view.productdetail.network
 
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.response.DeliveryTimeResponse
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.response.GetCityListResponse
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.DeliveryTimeResponse
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.GetCityListResponse
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.response.GetRegionsListResponse
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.GetRegionsListResponse
 import retrofit2.Call
 import retrofit2.http.*
 

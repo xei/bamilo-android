@@ -7,7 +7,7 @@ import android.view.View
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.Reviews
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Reviews
 import com.bamilo.android.appmodule.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.android.appmodule.modernbamilo.util.getMorphNumberString

@@ -5,7 +5,7 @@ import android.content.Intent
 import android.view.View
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.Breadcrumbs
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Breadcrumbs
 import com.bamilo.android.framework.components.ghostadapter.BindItem
 import com.bamilo.android.framework.components.ghostadapter.Binder
 

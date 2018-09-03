@@ -36,7 +36,7 @@ import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.bamilo.android.appmodule.bamiloapp.utils.catalog.CatalogSort;
 import com.bamilo.android.R;
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ProductDetail;
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail;
 
 import java.util.ArrayList;
 import java.util.HashMap;

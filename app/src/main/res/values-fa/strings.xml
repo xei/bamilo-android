@@ -125,7 +125,7 @@
     <string name="off_label">تخفیف</string>
     <string name="ok_label">تایید</string>
     <string name="or_text">یا</string>
-    <string name="order_no_items">شما هیچ کالایی در سبد خرید ندارید. \r\n</string>
+    <string name="order_no_items">شما هیچ کالایی در سبد خرید ندارید. \n</string>
     <string name="order_status_label">وضعیت سفارش</string>
     <string name="order_success">سفارش شما با موفقیت ثبت شد.</string>
     <string name="order_summary_label">خلاصه سفارش</string>
@@ -329,7 +329,7 @@
     <string name="order_track_check">از بخش "سفارشات من" می‌توانید وضعیت سفارش خود را پیگیری کنید.</string>
     <string name="select_city">شهر خود را انتخاب کنید</string>
     <string name="no_saved_items">کالای ذخیره‌ شده‌ای وجود ندارد.</string>
-    <string name="no_saved_items_subtitle">شما هیچ کالای ذخیره شده‌ای \r\n در علاقه مندی ها ندارید.</string>
+    <string name="no_saved_items_subtitle">شما هیچ کالای ذخیره شده‌ای \n در علاقه مندی ها ندارید.</string>
     <string name="no_recently_viewed_items">کالایی اخیراً مشاهده نشده است.</string>
     <string name="no_recently_viewed_items_subtitle">اخیراً هیچ کالایی مشاهده نکرده‌اید.</string>
     <string name="recent_searches_empty">اخیراً هیچ کالایی جستجو نکرده‌اید.</string>

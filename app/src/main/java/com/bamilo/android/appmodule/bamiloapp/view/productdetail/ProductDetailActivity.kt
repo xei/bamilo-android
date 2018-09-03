@@ -32,9 +32,9 @@ import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.mainfragment.ProductDetailMainFragment
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ProductDetail
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.Review
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.SimpleProduct
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Review
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.SimpleProduct
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.seller.SellersListFragment
 import com.bamilo.android.appmodule.modernbamilo.product.sellerslist.view.SellersListAdapter
 import com.bamilo.android.databinding.ActivityProductDetailBinding

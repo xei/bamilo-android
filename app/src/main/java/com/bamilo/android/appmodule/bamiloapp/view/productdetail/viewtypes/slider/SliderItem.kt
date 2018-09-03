@@ -15,7 +15,7 @@ import com.bamilo.android.framework.service.tracking.TrackingPage
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ImageSliderModel
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ImageSliderModel
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.slider.DepthPageTransformer
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.slider.ProductSliderPagerAdapter
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.slider.SliderPresenter

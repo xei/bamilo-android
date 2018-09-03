@@ -8,4 +8,4 @@ data class ResponseWrapper<T> (
 //        @SerializedName("messages") val messages: ArrayList<Messages>,
         @SerializedName("session") val session: Session,
         @SerializedName("metadata") val metadata: T
-): BaseModel()
+)

@@ -12,7 +12,7 @@ import com.bamilo.android.framework.service.utils.TextUtils
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils.spToPx
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.Review
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Review
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 
 

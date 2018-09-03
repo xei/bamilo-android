@@ -9,7 +9,7 @@ import android.view.View
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager
 import com.bamilo.android.framework.components.ghostadapter.GhostAdapter
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ProductDetail
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.bottomsheetvariation.PDVBottomSheetVariationItem
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.android.databinding.ActivityProductDetailBinding

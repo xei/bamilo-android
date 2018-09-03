@@ -3,7 +3,7 @@ package com.bamilo.android.appmodule.bamiloapp.view.productdetail.slider
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.Image
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Image
 
 /**
  * Created by Farshid since 6/13/2018. contact farshidabazari@gmail.com

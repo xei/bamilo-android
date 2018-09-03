@@ -5,7 +5,7 @@ import com.bamilo.android.framework.components.ghostadapter.BindItem
 import com.bamilo.android.framework.components.ghostadapter.Binder
 import com.bamilo.android.appmodule.bamiloapp.utils.OnItemClickListener
 import com.bamilo.android.R
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.SimpleProduct
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.SimpleProduct
 
 /**
  * Created by Farshid
