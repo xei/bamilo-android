@@ -775,18 +775,14 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private void initPushwoosh() {
         Pushwoosh.getInstance().registerForPushNotifications(
-                new Callback<String, RegisterForPushNotificationsException>() {
-                    @Override
-                    public void process(
-                            @NonNull Result<String, RegisterForPushNotificationsException> result) {
-                        if (result.isSuccess()) {
-                            String token = result.getData();
-                            Adjust.setPushToken(token, SplashScreenActivity.this);
-                            Crashlytics.setUserIdentifier(Pushwoosh.getInstance().getHwid());
-                        } else {
-                            PushwooshException exception = result.getException();
-                            // handle registration error
-                        }
+                result -> {
+                    if (result.isSuccess()) {
+                        String token = result.getData();
+                        Adjust.setPushToken(token, SplashScreenActivity.this);
+                        Crashlytics.setUserIdentifier(Pushwoosh.getInstance().getHwid());
+                    } else {
+                        PushwooshException exception = result.getException();
+                        // handle registration error
                     }
                 });
     }

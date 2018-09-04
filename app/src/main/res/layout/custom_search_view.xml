@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="fill_horizontal">
 
-    <EditText
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
         android:id="@+id/etSearchText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/imgMicOrClear"
+        android:layout_toRightOf="@+id/imgMicOrClear"
+        android:paddingLeft="@dimen/dimen_16dp"
+        android:paddingRight="@dimen/dimen_16dp"
         android:background="@android:color/transparent"
         android:gravity="center_vertical|right"
-        android:imeOptions="actionSearch"
         android:hint="@string/search_hint"
-        android:textSize="@dimen/dimen_12sp"
+        android:imeOptions="actionSearch"
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="@color/black_47"
-        android:textColorHint="@color/black_73" />
+        android:textColorHint="@color/black_73"
+        android:textSize="@dimen/dimen_12sp"
+        app:locale="fa_IR"
+        tools:ignore="RtlHardcoded"/>
 
     <ImageView
         android:id="@+id/imgMicOrClear"
         style="?attr/actionButtonStyle"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:clickable="true"
-        android:src="@drawable/ic_mic_gray" />
+        android:focusable="true"
+        android:src="@drawable/ic_mic_gray"
+        tools:ignore="RtlHardcoded"/>
+
 </RelativeLayout>

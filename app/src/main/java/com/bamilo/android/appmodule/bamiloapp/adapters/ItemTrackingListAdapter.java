@@ -269,9 +269,11 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
                 holder.btnReviewProduct.setVisibility(View.VISIBLE);
                 if (TextUtils.isEmpty(item.getSku())) {
                     holder.tvItemIsOutOfStock.setVisibility(View.VISIBLE);
+                    holder.btnReviewProduct.setVisibility(View.GONE);
                     holder.btnReviewProduct.setEnabled(false);
                 } else {
                     holder.tvItemIsOutOfStock.setVisibility(View.GONE);
+                    holder.btnReviewProduct.setVisibility(View.VISIBLE);
                     holder.btnReviewProduct.setEnabled(true);
                 }
             } else {

@@ -207,7 +207,7 @@ class SellersListFragment : Fragment(), View.OnClickListener {
     }
 
     private fun sortSellersByLeadTime() {
-        mViewModel.sellersViewModel.sortWith(compareBy(SellersListItemViewModel::deliveryTime))
+        mViewModel.sellersViewModel.sortWith(compareBy(SellersListItemViewModel::deliveryTimeEpoch))
         mSellersRecyclerView.adapter?.notifyDataSetChanged()
         mSellersRecyclerView.smoothScrollToPosition(0)
 
@@ -231,5 +231,4 @@ class SellersListFragment : Fragment(), View.OnClickListener {
         }
 
     }
-
 }

@@ -26,6 +26,7 @@ class SellersListItemViewModel (
     val sku: String,
     val title: String,
     val deliveryTime: String,
+    val deliveryTimeEpoch: Long,
     val rate: Float,
     val isRateValid: Boolean = true,
     val baseAmount: Long,

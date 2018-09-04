@@ -49,6 +49,8 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.varia
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.android.databinding.FragmentPdvMainViewBinding
 import com.bamilo.android.framework.components.ghostadapter.GhostAdapter
+import com.bamilo.android.framework.service.database.BrandsTableHelper
+import com.bamilo.android.framework.service.database.LastViewedTableHelper
 import com.bamilo.android.framework.service.tracking.AdjustTracker
 import com.bamilo.android.framework.service.tracking.TrackingPage
 import com.emarsys.predict.RecommendedItem
@@ -266,7 +268,6 @@ class ProductDetailMainFragment : Fragment() {
         if (!isAdded || context == null) {
             return
         }
-        Log.e(">>>>>", "add items to recyclerview")
         items.clear()
         adapter.removeAll()
 
@@ -373,18 +374,23 @@ class ProductDetailMainFragment : Fragment() {
                 addBreadCrumbs()
                 addItemsToAdapter()
 
+                addProductToLastViewDatabase()
                 pdvMainView.onProductReceived(it)
-
-                pdvMainView.dismissProgressView()
 
                 getRecommendedProducts()
 
             } else if (context != null) {
-                pdvMainView.dismissProgressView()
                 pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
                         context!!.getString(R.string.error_occured))
             }
+
+            pdvMainView.dismissProgressView()
         })
+    }
+
+    private fun addProductToLastViewDatabase() {
+        LastViewedTableHelper.insertLastViewedProduct(product)
+        BrandsTableHelper.updateBrandCounter(product.brand)
     }
 
     private fun getRecommendedProducts() {

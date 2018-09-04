@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductComplete;
 import com.bamilo.android.framework.service.utils.output.Print;
 
@@ -65,6 +66,26 @@ public class LastViewedTableHelper extends BaseTable {
     /*
      * ################## CRUD ##################  
      */
+
+    public static void insertLastViewedProduct(ProductDetail productDetail) {
+        try {
+            if (productDetail != null) {
+                String sku = productDetail.getSku();
+                if (!verifyIfExist(sku) && getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS) {
+                    removeOldestEntry();
+                } else {
+                    removeLastViewed(sku);
+                }
+
+                SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(LastViewedTableHelper._PRODUCT_SKU, sku);
+                db.insert(LastViewedTableHelper.TABLE_NAME, null, values);
+                db.close();
+            }
+        } catch (Exception ignored) {
+        }
+    }
 
     /**
      * Insert viewed product into database

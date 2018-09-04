@@ -1010,9 +1010,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mSearchListView = mSearchOverlay.findViewById(R.id.search_overlay_listview);
         mSearchListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mSearchListView.addItemDecoration(new HorizontalSpaceItemDecoration(getApplicationContext(), R.drawable._gen_divider_horizontal_black_400));
-        // Set font
-        // TODO: 8/28/18 farshid
-//        HoloFontLoader.applyDefaultFont(mSearchView);
+
         // Initial state
         MenuItemCompat.collapseActionView(mSearchMenuItem);
         // Set search

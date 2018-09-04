@@ -158,7 +158,7 @@ class ProductDetailActivity : BaseActivity(),
         }
 
         progressDialog?.run {
-            isCancelable = true
+            isCancelable = false
             show(supportFragmentManager, null)
         }
     }
@@ -173,17 +173,40 @@ class ProductDetailActivity : BaseActivity(),
 
     fun onProductAddedToCart() {
         try {
-            if (getCurrentFragment() is ProductDetailMainFragment) {
-                val productDetailMainFragment = supportFragmentManager
-                        .findFragmentByTag(ProductDetailMainFragment::class.java.simpleName)
-                        as ProductDetailMainFragment
-
-                productDetailMainFragment.updateCartBadge()
-            } else {
-                updateSellerFragmentCartItemsCountBadge()
+            when (getCurrentFragment()) {
+                is ProductDetailMainFragment -> {
+                    val productDetailMainFragment = supportFragmentManager
+                            .findFragmentByTag(ProductDetailMainFragment::class.java.simpleName)
+                            as ProductDetailMainFragment
+                    productDetailMainFragment.updateCartBadge()
+                }
+                is SellersListFragment -> updateSellerFragmentCartItemsCountBadge()
+                is SpecificationFragment -> updateSpecificationFragmentCartItemsCountBadge()
+                is TemporaryDescriptionFragment -> updateTemporaryDescriptionFragmentCartItemsCountBadge()
             }
+
         } catch (ignored: Exception) {
 
+        }
+    }
+
+    private fun updateSpecificationFragmentCartItemsCountBadge() {
+        if (getCurrentFragment() is SpecificationFragment) {
+            val specificationFragment = supportFragmentManager
+                    .findFragmentByTag(SpecificationFragment::class.java.simpleName)
+                    as SpecificationFragment
+
+            specificationFragment.updateCartBadge(BamiloApplication.INSTANCE.cart?.cartCount)
+        }
+    }
+
+    private fun updateTemporaryDescriptionFragmentCartItemsCountBadge() {
+        if (getCurrentFragment() is TemporaryDescriptionFragment) {
+            val temporaryDescriptionFragment = supportFragmentManager
+                    .findFragmentByTag(TemporaryDescriptionFragment::class.java.simpleName)
+                    as TemporaryDescriptionFragment
+
+            temporaryDescriptionFragment.updateCartBadge(BamiloApplication.INSTANCE.cart?.cartCount)
         }
     }
 
@@ -298,10 +321,12 @@ class ProductDetailActivity : BaseActivity(),
             }
             FragmentTag.DESCRIPTION.name -> {
                 return TemporaryDescriptionFragment.newInstance(sku!!)
+                        .apply { updateCartBadge(BamiloApplication.INSTANCE.cart?.cartCount) }
             }
 
             FragmentTag.SPECIFICATIONS.name -> {
                 return SpecificationFragment.newInstance(sku!!)
+                        .apply { updateCartBadge(BamiloApplication.INSTANCE.cart?.cartCount) }
             }
         }
 
