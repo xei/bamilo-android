@@ -6,15 +6,8 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.View
-import com.bamilo.android.appmodule.modernbamilo.app.BaseActivity
-import com.bamilo.android.appmodule.modernbamilo.product.comment.CommentViewModel
-import com.bamilo.android.appmodule.modernbamilo.product.comment.CommentsFragment
-import com.bamilo.android.appmodule.modernbamilo.product.comment.submit.startSubmitRateActivity
-import com.bamilo.android.appmodule.modernbamilo.product.descspec.spec.SpecificationFragment
-import com.bamilo.android.appmodule.modernbamilo.product.descspec.tempdesc.TemporaryDescriptionFragment
-import com.google.gson.Gson
-import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel
-import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel
+import com.bamilo.android.R
+import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants
@@ -22,22 +15,29 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentCont
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager
-import com.bamilo.android.framework.service.pojo.BaseResponse
-import com.bamilo.android.framework.service.tracking.TrackingPage
-import com.bamilo.android.framework.service.utils.TextUtils
+import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel
+import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel
 import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogProgressFragment
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory
 import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity
-import com.bamilo.android.R
-import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.mainfragment.ProductDetailMainFragment
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Review
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.SimpleProduct
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.seller.SellersListFragment
+import com.bamilo.android.appmodule.modernbamilo.app.BaseActivity
+import com.bamilo.android.appmodule.modernbamilo.product.comment.CommentViewModel
+import com.bamilo.android.appmodule.modernbamilo.product.comment.CommentsFragment
+import com.bamilo.android.appmodule.modernbamilo.product.comment.submit.startSubmitRateActivity
+import com.bamilo.android.appmodule.modernbamilo.product.descspec.spec.SpecificationFragment
+import com.bamilo.android.appmodule.modernbamilo.product.descspec.tempdesc.TemporaryDescriptionFragment
 import com.bamilo.android.appmodule.modernbamilo.product.sellerslist.view.SellersListAdapter
 import com.bamilo.android.databinding.ActivityProductDetailBinding
+import com.bamilo.android.framework.service.pojo.BaseResponse
+import com.bamilo.android.framework.service.tracking.TrackingPage
+import com.bamilo.android.framework.service.utils.TextUtils
+import com.google.gson.Gson
 
 class ProductDetailActivity : BaseActivity(),
         PDVMainView,
@@ -66,6 +66,7 @@ class ProductDetailActivity : BaseActivity(),
             invokerContext.startActivity(intent)
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_detail)
@@ -112,28 +113,39 @@ class ProductDetailActivity : BaseActivity(),
 
     private fun bindAddToCartClickListener() {
         binding.productDetailLinearLayoutAddToCart!!.setOnClickListener {
-            addProductToCart(productDetail.simple_sku!!)
+            if (!canAddToCart()) {
+                productDetailPresenter.showBottomSheet()
+                return@setOnClickListener
+            }
+            if (productHasSizeVariation() && !TextUtils.isEmpty(sizeVariation.simple_sku)) {
+                addProductToCart(sizeVariation.simple_sku!!)
+            } else {
+                addProductToCart(productDetail.simple_sku!!)
+            }
         }
     }
 
-    private fun addProductToCart(sku: String) {
-        if (productHasSizeVariation() && TextUtils.isEmpty(sizeVariation.sku)) {
-            productDetailPresenter.showBottomSheet()
-        } else {
-            showProgress()
-            productDetailPresenter.addToCart(sku, object : IResponseCallback {
-                override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
-                    dismissProgressDialog()
-                    trackAddToCartEvent()
-                    onProductAddedToCart()
-                }
-
-                override fun onRequestError(baseResponse: BaseResponse<*>?) {
-                    dismissProgressDialog()
-                    warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, baseResponse?.errorMessage)
-                }
-            })
+    private fun canAddToCart(): Boolean {
+        if (productHasSizeVariation() && TextUtils.isEmpty(sizeVariation.simple_sku)) {
+            return false
         }
+        return true
+    }
+
+    private fun addProductToCart(sku: String) {
+        showProgress()
+        productDetailPresenter.addToCart(sku, object : IResponseCallback {
+            override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
+                dismissProgressDialog()
+                trackAddToCartEvent()
+                onProductAddedToCart()
+            }
+
+            override fun onRequestError(baseResponse: BaseResponse<*>?) {
+                dismissProgressDialog()
+                warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, baseResponse?.errorMessage)
+            }
+        })
     }
 
     private fun showProgress() {
@@ -446,7 +458,12 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun onAddToCartClicked() {
-        addProductToCart(productDetail.simple_sku!!)
+        if (!canAddToCart()) {
+            return
+        }
+
+        addProductToCart(sizeVariation.simple_sku!!)
+        productDetailPresenter.hideBottomSheet()
     }
 
     override fun onSizeVariationClicked(sizeVariation: SimpleProduct) {
@@ -499,7 +516,7 @@ class ProductDetailActivity : BaseActivity(),
 
         this.sku = product.sku
         productDetail = product
-        sizeVariation.sku = null
+        sizeVariation.simple_sku = null
 
         if (TextUtils.isEmpty(productDetail.sku)) {
             return
