@@ -18,6 +18,7 @@ import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.view.widget.LimitedCountLinearLayoutManager;
 
+import com.bamilo.android.appmodule.modernbamilo.util.storage.SharedPreferencesHelperKt;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,12 +30,16 @@ public class CategoriesCarouselViewComponent extends BaseViewComponent<List<Cate
     @Override
     public View getView(Context context) {
         if (categoryItems != null) {
-            View rootView = LayoutInflater.from(context).inflate(R.layout.component_categories_carousel, null);
-            RecyclerView rvCarouselItems = (RecyclerView) rootView.findViewById(R.id.rvCarouselItems);
-            LimitedCountLinearLayoutManager layoutManager = new LimitedCountLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false,
-                    context.getResources().getInteger(R.integer.categories_carousel_items_quantity));
+            View rootView = LayoutInflater.from(context)
+                    .inflate(R.layout.component_categories_carousel, null);
+            RecyclerView rvCarouselItems = rootView.findViewById(R.id.rvCarouselItems);
+            LimitedCountLinearLayoutManager layoutManager = new LimitedCountLinearLayoutManager(
+                    context, LinearLayoutManager.HORIZONTAL, false,
+                    context.getResources()
+                            .getInteger(R.integer.categories_carousel_items_quantity));
             rvCarouselItems.setLayoutManager(layoutManager);
-            rvCarouselItems.setAdapter(new CarouselAdapter(categoryItems, onCarouselItemClickListener));
+            rvCarouselItems
+                    .setAdapter(new CarouselAdapter(categoryItems, onCarouselItemClickListener));
 
             return rootView;
         }
@@ -69,6 +74,7 @@ public class CategoriesCarouselViewComponent extends BaseViewComponent<List<Cate
         @DrawableRes
         public int imageResourceId;
         public String targetLink;
+        public int teaserId;
     }
 
     public interface OnCarouselItemClickListener {
@@ -120,21 +126,31 @@ public class CategoriesCarouselViewComponent extends BaseViewComponent<List<Cate
                         item = categoryItems.get(holder.getAdapterPosition() - 1);
                     }
                     if (mPage != null) {
-                        String category = String.format(Locale.US, "%s+%s_%d", mPage, ComponentType.Carousel.toString(), mInstanceIndex);
+                        String category = String.format(Locale.US, "%s+%s_%d_%d", mPage,
+                                ComponentType.Carousel.toString(),
+                                item.teaserId,
+                                holder.getAdapterPosition());
                         String action = EventActionKeys.TEASER_TAPPED;
                         String label = item.targetLink;
-                        SimpleEventModel sem = new SimpleEventModel(category, action, label, SimpleEventModel.NO_VALUE);
+                        SimpleEventModel sem = new SimpleEventModel(category, action, label,
+                                SimpleEventModel.NO_VALUE);
                         TrackerManager.trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
+
+                        SharedPreferencesHelperKt
+                                .setHomePageItemsPurchaseTrack(v.getContext(), category, label,
+                                        true);
                     }
                     if (onCarouselItemClickListener != null) {
-                        onCarouselItemClickListener.onCarouselClicked(v, holder.getAdapterPosition(), item);
+                        onCarouselItemClickListener
+                                .onCarouselClicked(v, holder.getAdapterPosition(), item);
                     }
                 }
             });
         }
 
         private void setImageToLoad(String imageUrl, ImageView imageView) {
-            ImageManager.getInstance().loadImage(imageUrl, imageView, null, R.drawable.no_image_small, false);
+            ImageManager.getInstance()
+                    .loadImage(imageUrl, imageView, null, R.drawable.no_image_small, false);
         }
 
         @Override

@@ -24,6 +24,8 @@ public abstract class BaseComponent {
     @Expose
     private String type;
 
+    protected int teaserId = 0;
+
     @SerializedName(JsonConstants.RestConstants.HAS_DATA)
     @Expose
     private boolean hasData;
@@ -42,5 +44,12 @@ public abstract class BaseComponent {
 
     public void setHasData(boolean hasData) {
         this.hasData = hasData;
+    }
+
+    public int getTeaserId() {
+        return teaserId;
+    }
+    public void setTeaserId(int teaserId) {
+        this.teaserId = teaserId;
     }
 }

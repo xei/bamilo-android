@@ -11,16 +11,15 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
+import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.adapters.DailyDealProductListAdapter;
-import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
-import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
 import com.bamilo.android.appmodule.bamiloapp.view.widget.LimitedCountLinearLayoutManager;
-
+import com.bamilo.android.appmodule.modernbamilo.util.storage.SharedPreferencesHelperKt;
+import com.bamilo.android.framework.service.utils.TextUtils;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,6 +28,7 @@ import java.util.Locale;
  */
 
 public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewComponent.DealItem> {
+
     private Handler mHandler;
     private DealItem mDealItem;
     private View rootView;
@@ -58,11 +58,13 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
         if (mDealItem != null) {
             // Deal count-down prefs
             if (mDealItem.countDownRemainingSeconds > -1) {
-                if (mDealItem.countDownRemainingSeconds > System.currentTimeMillis() / 1000 - mDealItem.countDownStartTimeSeconds) {
+                if (mDealItem.countDownRemainingSeconds
+                        > System.currentTimeMillis() / 1000 - mDealItem.countDownStartTimeSeconds) {
                     tvDealCountDown = (TextView) rootView.findViewById(R.id.tvDealCountDown);
                     tvDealCountDown.setVisibility(View.VISIBLE);
                     if (TextUtils.validateColorString(mDealItem.countDownTextColor)) {
-                        tvDealCountDown.setTextColor(Color.parseColor(mDealItem.countDownTextColor));
+                        tvDealCountDown
+                                .setTextColor(Color.parseColor(mDealItem.countDownTextColor));
                     }
                     start();
                 } else {
@@ -76,10 +78,12 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
             if (TextUtils.validateColorString(mDealItem.componentBackgroundColor)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     rootView.findViewById(R.id.llDailyDealsComponentContainer)
-                            .setBackground(createComponentBackground(context, Color.parseColor(mDealItem.componentBackgroundColor)));
+                            .setBackground(createComponentBackground(context,
+                                    Color.parseColor(mDealItem.componentBackgroundColor)));
                 } else {
                     rootView.findViewById(R.id.llDailyDealsComponentContainer)
-                            .setBackgroundDrawable(createComponentBackground(context, Color.parseColor(mDealItem.componentBackgroundColor)));
+                            .setBackgroundDrawable(createComponentBackground(context,
+                                    Color.parseColor(mDealItem.componentBackgroundColor)));
                 }
             }
 
@@ -103,41 +107,61 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
                     @Override
                     public void onClick(View v) {
                         if (onCountDownDealItemClickListener != null) {
-                            onCountDownDealItemClickListener.onMoreButtonClicked(v, mDealItem.moreOptionsTargetLink);
+                            onCountDownDealItemClickListener
+                                    .onMoreButtonClicked(v, mDealItem.moreOptionsTargetLink);
                         }
                         if (mPage != null) {
-                            String category = String.format(Locale.US, "%s+%s_%d", mPage, ComponentType.DailyDeal.toString(), mInstanceIndex);
+                            String category = String.format(Locale.US, "%s+%s_%d_%d", mPage,
+                                    ComponentType.DailyDeal.toString(),
+                                    mDealItem.dealProducts.get(mInstanceIndex).teaserId,
+                                    mInstanceIndex);
+
                             String action = EventActionKeys.TEASER_TAPPED;
                             String label = mDealItem.moreOptionsTargetLink;
-                            SimpleEventModel sem = new SimpleEventModel(category, action, label, SimpleEventModel.NO_VALUE);
-                            TrackerManager.trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
+                            SimpleEventModel sem = new SimpleEventModel(category, action, label,
+                                    SimpleEventModel.NO_VALUE);
+                            TrackerManager
+                                    .trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
+                            SharedPreferencesHelperKt
+                                    .setHomePageItemsPurchaseTrack(v.getContext(), category, label,
+                                            true);
                         }
                     }
                 });
             }
 
             // Product list
-            DailyDealProductListAdapter adapter = new DailyDealProductListAdapter(mDealItem.dealProducts);
-            adapter.setOnDealProductItemClickListener(new DailyDealProductListAdapter.OnDealProductItemClickListener() {
-                @Override
-                public void onDealProductClicked(View v, Product product) {
-                    if (onCountDownDealItemClickListener != null) {
-                        onCountDownDealItemClickListener.onProductItemClicked(v, product);
-                    }
+            DailyDealProductListAdapter adapter = new DailyDealProductListAdapter(
+                    mDealItem.dealProducts);
+            adapter.setOnDealProductItemClickListener(
+                    (v, product, position) -> {
+                        if (onCountDownDealItemClickListener != null) {
+                            onCountDownDealItemClickListener.onProductItemClicked(v, product);
+                        }
 
-                    if (mPage != null) {
-                        String category = String.format(Locale.US, "%s+%s_%d", mPage, ComponentType.DailyDeal.toString(), mInstanceIndex);
-                        String action = EventActionKeys.TEASER_TAPPED;
-                        String label = product.sku;
-                        SimpleEventModel sem = new SimpleEventModel(category, action, label, SimpleEventModel.NO_VALUE);
-                        TrackerManager.trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
-                    }
-                }
-            });
-            RecyclerView rvDealProducts = (RecyclerView) rootView.findViewById(R.id.rvDealProducts);
+                        if (mPage != null) {
+                            String category = String.format(Locale.US, "%s+%s_%d_%d", mPage,
+                                    ComponentType.DailyDeal.toString(), product.teaserId,
+                                    position);
+                            String action = EventActionKeys.TEASER_TAPPED;
+                            String label = product.sku;
+                            SimpleEventModel sem = new SimpleEventModel(category, action, label,
+                                    SimpleEventModel.NO_VALUE);
+                            TrackerManager
+                                    .trackEvent(v.getContext(), EventConstants.TeaserTapped,
+                                            sem);
+                            SharedPreferencesHelperKt
+                                    .setHomePageItemsPurchaseTrack(v.getContext(), category,
+                                            label, true);
+                        }
+                    });
+
+            RecyclerView rvDealProducts = rootView.findViewById(R.id.rvDealProducts);
             rvDealProducts.setAdapter(adapter);
-            LimitedCountLinearLayoutManager layoutManager = new LimitedCountLinearLayoutManager(context,
-                    LinearLayoutManager.HORIZONTAL, false, context.getResources().getInteger(R.integer.daily_deals_visible_items_count));
+            LimitedCountLinearLayoutManager layoutManager = new LimitedCountLinearLayoutManager(
+                    context,
+                    LinearLayoutManager.HORIZONTAL, false,
+                    context.getResources().getInteger(R.integer.daily_deals_visible_items_count));
             layoutManager.setLastItemVisiblePartAmount(0.25F);
             rvDealProducts.setLayoutManager(layoutManager);
         }
@@ -163,13 +187,15 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
 
     private String calculateRemainingTime() {
         if (tvDealCountDown != null) {
-            long secondsSpent = System.currentTimeMillis() / 1000 - mDealItem.countDownStartTimeSeconds;
+            long secondsSpent =
+                    System.currentTimeMillis() / 1000 - mDealItem.countDownStartTimeSeconds;
             if (secondsSpent < mDealItem.countDownRemainingSeconds) {
                 long secondsRemaining = mDealItem.countDownRemainingSeconds - secondsSpent;
                 long hours = secondsRemaining / 3600;
                 long minutes = secondsRemaining / 60 % 60;
                 long seconds = secondsRemaining % 60;
-                String remainingText = String.format(mLocale, "%02d:%02d:%02d", hours, minutes, seconds);
+                String remainingText = String
+                        .format(mLocale, "%02d:%02d:%02d", hours, minutes, seconds);
                 tvDealCountDown.setText(remainingText);
             } else {
                 rootView.setVisibility(View.GONE);
@@ -199,11 +225,13 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
         return onCountDownDealItemClickListener;
     }
 
-    public void setOnCountDownDealItemClickListener(OnCountDownDealItemClickListener onCountDownDealItemClickListener) {
+    public void setOnCountDownDealItemClickListener(
+            OnCountDownDealItemClickListener onCountDownDealItemClickListener) {
         this.onCountDownDealItemClickListener = onCountDownDealItemClickListener;
     }
 
     public static class DealItem {
+
         // Component background color
         public String componentBackgroundColor;
 
@@ -226,6 +254,7 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
     }
 
     public static class Product {
+
         public String thumb;
         public String sku;
         public String name;
@@ -234,9 +263,11 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
         public long price;
         public long oldPrice;
         public boolean hasStock;
+        public int teaserId;
     }
 
     public interface OnCountDownDealItemClickListener {
+
         void onMoreButtonClicked(View v, String targetLink);
 
         void onProductItemClicked(View v, Product product);

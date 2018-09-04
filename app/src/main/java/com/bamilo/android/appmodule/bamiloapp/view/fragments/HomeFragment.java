@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.bamilo.android.appmodule.modernbamilo.util.storage.SharedPreferencesHelperKt;
 import com.bamilo.android.core.modules.HomeModule;
 import com.bamilo.android.core.presentation.HomePresenter;
 import com.bamilo.android.core.service.model.EventType;
@@ -108,6 +109,12 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
         } else {
             showComponents(mComponents);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferencesHelperKt.clearTrackHomepagePurchase(getContext());
     }
 
     private void injectDependencies() {

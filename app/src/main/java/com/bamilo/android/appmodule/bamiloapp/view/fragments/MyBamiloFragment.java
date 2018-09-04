@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import com.bamilo.android.appmodule.modernbamilo.util.storage.SharedPreferencesHelperKt;
 import com.emarsys.predict.Error;
 import com.emarsys.predict.RecommendedItem;
 import com.bamilo.android.appmodule.bamiloapp.adapters.RecommendGridAdapter;
@@ -390,6 +391,9 @@ public class MyBamiloFragment extends BaseFragment implements RecommendListCompl
         sem.label = String.format("%s-%s", TRACKER_SCREEN_NAME, TRACKER_LOGIC);
         sem.value = SimpleEventModel.NO_VALUE;
         TrackerManager.trackEvent(getContext(), EventConstants.RecommendationTapped, sem);
+
+        SharedPreferencesHelperKt
+                .setHomePageItemsPurchaseTrack(v.getContext(), sem.category, sem.label, true);
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, item.getItemID());

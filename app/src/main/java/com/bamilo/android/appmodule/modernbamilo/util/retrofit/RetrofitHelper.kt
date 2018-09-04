@@ -78,7 +78,7 @@ object RetrofitHelper {
                 followRedirects(true)
                 setTimeOutToOkHttpClient(this)
 
-                getCookie(context).takeIf { !it.isEmpty() }.apply {
+                getCookie(context)?.takeIf { !it.isEmpty() }.apply {
                     cookieJar(getCookieJar(context))
                 }
 
@@ -235,7 +235,7 @@ object RetrofitHelper {
      *
      * TODO: remove this method while migrating to OAuth
      */
-    private fun decodeCookie(encodedCookieString: String): HttpCookie? {
+    private fun decodeCookie(encodedCookieString: String?): HttpCookie? {
         var cookie: HttpCookie? = null
         if (!TextUtils.isEmpty(encodedCookieString)) {
             val bytes = Base64.decode(encodedCookieString, Base64.DEFAULT)

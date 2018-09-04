@@ -8,7 +8,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created on 12/19/2017.
@@ -53,6 +55,19 @@ public class HomeResponse extends ServerResponse {
                             components.add((BaseComponent) gson.fromJson(componentObject, BaseComponent.componentsMap.get(type)));
                         }
                     }
+                }
+
+                Map<String, Integer> baseComponents = new HashMap<>();
+                for (BaseComponent component : components) {
+                    String key = component.getType();
+                    String componentType = component.getType();
+                    if (baseComponents.containsKey(componentType)) {
+                        baseComponents.put(key, baseComponents.get(key) + 1);
+                    } else {
+                        baseComponents.put(key, 0);
+                    }
+                    int indexOfComponent = baseComponents.get(componentType);
+                    component.setTeaserId(indexOfComponent);
                 }
             }
         }

@@ -33,6 +33,7 @@ import com.bamilo.android.appmodule.modernbamilo.product.comment.submit.startSub
 import com.bamilo.android.appmodule.modernbamilo.product.descspec.spec.SpecificationFragment
 import com.bamilo.android.appmodule.modernbamilo.product.descspec.tempdesc.TemporaryDescriptionFragment
 import com.bamilo.android.appmodule.modernbamilo.product.sellerslist.view.SellersListAdapter
+import com.bamilo.android.appmodule.modernbamilo.util.storage.*
 import com.bamilo.android.databinding.ActivityProductDetailBinding
 import com.bamilo.android.framework.service.pojo.BaseResponse
 import com.bamilo.android.framework.service.tracking.TrackingPage
@@ -52,6 +53,8 @@ class ProductDetailActivity : BaseActivity(),
     private var sku: String? = ""
 
     private var progressDialog: DialogProgressFragment? = null
+
+    private var isHomePageItemsPurchaseCanBeTrack: Boolean = false
 
     private lateinit var warningFactory: WarningFactory
 
@@ -73,6 +76,7 @@ class ProductDetailActivity : BaseActivity(),
         productDetailPresenter = ProductDetailPresenter(this, binding, this)
 
         fetchExtraIntentData()
+        getHomePageGATrackingData()
         setupAddToCard()
         setupWarningMessage()
 
@@ -85,10 +89,18 @@ class ProductDetailActivity : BaseActivity(),
         TrackerManager.trackScreen(this, screenModel, false)
     }
 
+    private fun getHomePageGATrackingData() {
+        isHomePageItemsPurchaseCanBeTrack = isHomePageItemsPurchaseCanBeTrack(this)
+    }
+
     override fun onResume() {
         super.onResume()
-
         updateSellerFragmentCartItemsCountBadge()
+
+        setHomePageItemsPurchaseTrack(this,
+                getHomePageItemsPurchaseTrackCategory(this),
+                getHomePageItemsPurchaseTrackLabel(this),
+                isHomePageItemsPurchaseCanBeTrack)
     }
 
     override fun onPause() {
@@ -139,6 +151,13 @@ class ProductDetailActivity : BaseActivity(),
                 dismissProgressDialog()
                 trackAddToCartEvent()
                 onProductAddedToCart()
+
+                if (isHomePageItemsPurchaseCanBeTrack &&
+                        !TextUtils.isEmpty(
+                                getHomePageItemsPurchaseTrackCategory(
+                                        this@ProductDetailActivity))) {
+                    BamiloApplication.INSTANCE.addSkuToHomepageTrackingItemsSkus(sku)
+                }
             }
 
             override fun onRequestError(baseResponse: BaseResponse<*>?) {
@@ -363,6 +382,7 @@ class ProductDetailActivity : BaseActivity(),
     override fun onRelatedProductClicked(sku: String) {
         this.sku = sku
         displaySelectedScreen(FragmentTag.PRODUCT_MAIN_VIEW)
+        setHomePageItemsPurchaseCanBeTrack(this, false)
     }
 
     override fun onShowOtherSeller() {

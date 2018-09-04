@@ -80,14 +80,14 @@ public class BamiloApplication extends Application {
     public Form ratingForm;
     // Countries
     public ArrayList<CountryObject> countriesAvailable = null;
-    // Tracking
-    private HashMap<String, String> bannerSkus = new HashMap<>();
     // Search
     public String mSavedSearchTerm;
 
     public static MainComponent getComponent() {
         return component;
     }
+
+    public ArrayList<String> homepageTrackingItemsSkus = new ArrayList<>();
 
     /**
      * Create application
@@ -303,7 +303,6 @@ public class BamiloApplication extends Application {
         ratingForm = null;
         WishListCache.clean();
         AdjustTracker.resetTransactionCount(getApplicationContext());
-        clearBannerFlowSkus();
         SearchRecentQueriesTableHelper.deleteAllRecentQueries();
     }
 
@@ -314,33 +313,6 @@ public class BamiloApplication extends Application {
             Print.e(TAG, "Error clearing requests cache", e);
         }
     }
-
-    /**
-     * add a sku to a list of sku products that were added from a banner flow
-     */
-    public void setBannerFlowSkus(String sku, TeaserGroupType groupType) {
-        bannerSkus = new HashMap<>();
-    }
-
-    /**
-     * returns a list of skus of products that were added to cart from a banner flow
-     *
-     * @return list of skus
-     */
-    public HashMap<String, String> getBannerFlowSkus() {
-        if (bannerSkus == null) {
-            bannerSkus = new HashMap<>();
-        }
-        return bannerSkus;
-    }
-
-    /**
-     * clear all skus from banner flow
-     */
-    public void clearBannerFlowSkus() {
-        bannerSkus = null;
-    }
-
 
     /**
      * Save last searched term
@@ -360,14 +332,15 @@ public class BamiloApplication extends Application {
 
     private void initFirebaseCrashlytics() {
         Fabric.with(this, new Crashlytics());
+    }
 
-
-        // use following initialization to log and debug Crashlytics:
-//        final Fabric fabric = new Fabric.Builder(this)
-//                .kits(new Crashlytics())
-//                .debuggable(true)
-//                .build();
-//        Fabric.with(fabric);
+    public void addSkuToHomepageTrackingItemsSkus(String sku) {
+        homepageTrackingItemsSkus.add(sku);
+    }
+    public ArrayList<String> getHomepageTrackingItemsSkus() {
+        return homepageTrackingItemsSkus;
+    }
+    public void clearHomepageTrackingItemsSkus(){
+        homepageTrackingItemsSkus.clear();
     }
 }
-

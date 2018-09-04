@@ -30,7 +30,8 @@ public class BaseViewComponentFactory {
         List<TileViewComponent.TileItem> tileItems = new ArrayList<>();
 
         for (TileComponent.Tile tile : tileComponent.getTiles()) {
-            TileViewComponent.TileItem tempTile = new TileViewComponent.TileItem(tile.getPortraitImage(), tile.getTarget());
+            TileViewComponent.TileItem tempTile = new TileViewComponent.TileItem(tile.getPortraitImage(),
+                    tile.getTarget(), tileComponent.getTeaserId());
             tileItems.add(tempTile);
         }
 
@@ -82,6 +83,7 @@ public class BaseViewComponentFactory {
                         tempProduct.oldPrice = product.getPrice();
                     }
                     tempProduct.hasStock = product.hasStock() == null ? true : product.hasStock();
+                    tempProduct.teaserId = dealComponent.getTeaserId();
                     dealProducts.add(tempProduct);
                 }
             }
@@ -98,6 +100,7 @@ public class BaseViewComponentFactory {
         for (CarouselComponent.CarouselItem carouselItem : carouselComponent.getCarouselItems()) {
             CategoriesCarouselViewComponent.CategoryItem tempItem =
                     new CategoriesCarouselViewComponent.CategoryItem(carouselItem.getTitle(), carouselItem.getPortraitImage(), carouselItem.getTarget());
+            tempItem.teaserId = carouselComponent.getTeaserId();
             categoryItems.add(tempItem);
         }
         CategoriesCarouselViewComponent carouselViewComponent = new CategoriesCarouselViewComponent();
@@ -111,6 +114,7 @@ public class BaseViewComponentFactory {
 
         for (SliderComponent.Slide slide : sliderComponent.getSlides()) {
             SliderViewComponent.Item tempItem = new SliderViewComponent.Item(slide.getPortraitImage(), slide.getTarget());
+            tempItem.teaserId = sliderComponent.getTeaserId();
             items.add(tempItem);
         }
 
