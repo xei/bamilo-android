@@ -68,7 +68,12 @@ class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdv
     private fun showReviews() {
         visibleReviewViews()
 
-        holder.total.text = reviews.total.toString().persianizeDigitsInString()
+        holder.total.text = holder
+                .itemView
+                .context
+                .getString(R.string.comment_header_commentsCount, reviews.total.toString()
+                        .persianizeDigitsInString())
+
         holder.maxRate.text = holder.itemView.context.getString(R.string.of_number, 5).persianizeDigitsInString()
         holder.rate.text = getMorphNumberString(reviews.average).persianizeDigitsInString()
 

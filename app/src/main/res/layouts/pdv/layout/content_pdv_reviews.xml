@@ -27,20 +27,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:layout_marginRight="@dimen/dimen_16dp"
-                android:paddingTop="@dimen/dimen_8dp"
-                android:paddingBottom="@dimen/dimen_8dp"
-                app:fontFamily="@string/bamilo_bold_font"
                 android:textColor="@color/primary_text_color"
                 android:textSize="48sp"
+                app:fontFamily="@string/bamilo_bold_font"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="RtlHardcoded"
                 tools:text="۴/۶"/>
 
             <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                 android:id="@+id/pdvReview_textView_maxRate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="18dp"
                 android:layout_marginRight="@dimen/dimen_8dp"
                 android:textColor="@color/secondary_text_color"
                 android:textSize="14sp"
@@ -61,22 +60,28 @@
                 android:id="@+id/pdvReview_textView_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_2dp"
+                android:layout_marginRight="@dimen/dimen_4dp"
                 android:textColor="@color/primary_text_color"
                 app:layout_constraintBottom_toBottomOf="@+id/img"
                 app:layout_constraintRight_toLeftOf="@+id/img"
                 app:layout_constraintTop_toTopOf="@+id/img"
-                tools:text=" ۳۴۳۷ نظر"/>
+                tools:text=" ۳۴۳۷ نظر"
+                tools:ignore="RtlHardcoded"/>
 
             <LinearLayout
                 android:id="@+id/pdvReview_linearLayout_addReview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="@dimen/dimen_28dp"
                 android:gravity="center"
                 android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/pdvReview_textView_rate"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="@+id/pdvReview_textView_rate"
+                tools:ignore="RtlHardcoded">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="wrap_content"
@@ -101,22 +106,22 @@
 
         <View
             android:id="@+id/pdvReview_view_divider"
-            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_1dp"
             android:layout_marginTop="@dimen/dimen_16dp"
             android:layout_marginLeft="@dimen/dimen_6dp"
             android:layout_marginRight="@dimen/dimen_6dp"
-            android:background="@color/grey_dividerlight"/>
+            android:background="@color/grey_dividerlight"
+            android:visibility="visible"/>
 
         <LinearLayout
-            android:visibility="visible"
             android:id="@+id/pdvReview_linearLayout_seeAllReviews"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                 android:layout_width="wrap_content"

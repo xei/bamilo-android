@@ -18,6 +18,7 @@ import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
@@ -148,9 +149,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 vh.cart_item_price_old_value.setPaintFlags(vh.cart_item_price_old_value.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             }
 
-            vh.cart_item_price_value.setText(CurrencyFormatter.formatCurrency(price));
-            vh.cart_item_price_old_value.setText(CurrencyFormatter.formatCurrency(oldPrice));
-            vh.cart_item_count.setText(""+item.getQuantity());
+            vh.cart_item_price_value.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(price)));
+            vh.cart_item_price_old_value.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(oldPrice)));
+            vh.cart_item_count.setText(StringExtKt.persianizeDigitsInString(String.valueOf(item.getQuantity())));
             vh.cart_item_remove.setTag(R.id.item_position, position);
             vh.cart_item_remove.setOnClickListener(mOnRemoveItemClickListener);
             vh.cart_item_remove_rl.setTag(R.id.item_position, position);
@@ -199,7 +200,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             {
                 vh.cart_item_option1_value.setVisibility(View.VISIBLE);
                 vh.cart_item_option1_label.setVisibility(View.VISIBLE);
-                vh.cart_item_option1_value.setText(item.getVariationValue());
+                vh.cart_item_option1_value.setText(StringExtKt.persianizeDigitsInString(item.getVariationValue()));
             }
             else
             {
@@ -219,14 +220,14 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             TextView labelT = totalView.findViewById(R.id.discount_label);
             TextView valueT = totalView.findViewById(R.id.discount_amount);
             labelT.setText(R.string.cart_total_amount);
-            valueT.setText(CurrencyFormatter.formatCurrency(mCart.getSubTotalUnDiscounted()));
+            valueT.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(mCart.getSubTotalUnDiscounted())));
             vh.root.addView(totalView);
 
             View discountView = LayoutInflater.from(mContext).inflate(R.layout.new_shopping_basket_discount_element, vh.root, false);
             TextView label = discountView.findViewById(R.id.discount_label);
             TextView value = discountView.findViewById(R.id.discount_amount);
             label.setText(R.string.cart_product_discount);
-            value.setText(CurrencyFormatter.formatCurrency(mCart.getSubTotalUnDiscounted()-mCart.getSubTotal()));
+            value.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(mCart.getSubTotalUnDiscounted()-mCart.getSubTotal())));
             vh.root.addView(discountView);
 
 
@@ -237,7 +238,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     label = discountView.findViewById(R.id.discount_label);
                     value = discountView.findViewById(R.id.discount_amount);
                     label.setText(entry.getKey());
-                    value.setText(CurrencyFormatter.formatCurrency(entry.getValue()));
+                    value.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(entry.getValue())));
                     vh.root.addView(discountView);
                 }
             }
@@ -248,7 +249,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 label = discountView.findViewById(R.id.discount_label);
                 value = discountView.findViewById(R.id.discount_amount);
                 label.setText(R.string.coupon_label);
-                value.setText(CurrencyFormatter.formatCurrency(mCart.getCouponDiscount()));
+                value.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(mCart.getCouponDiscount())));
                 vh.root.addView(discountView);
             }
 
@@ -258,17 +259,16 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 label = discountView.findViewById(R.id.discount_label);
                 value = discountView.findViewById(R.id.discount_amount);
                 label.setText(R.string.order_summary_shipping_fee_label);
-                value.setText(CurrencyFormatter.formatCurrency(mCart.getShippingValue()));
+                value.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(mCart.getShippingValue())));
                 vh.root.addView(discountView);
             }
             View finalView = LayoutInflater.from(mContext).inflate(R.layout.new_shopping_basket_total_element_adapter, vh.root, false);
             TextView totalValue = finalView.findViewById(R.id.total_value);
             TextView quantityValue = finalView.findViewById(R.id.total_quantity);
             // Set views
-            totalValue.setText(CurrencyFormatter.formatCurrency(mCart.getTotal()));
-            quantityValue.setText(TextUtils.getResourceString(mContext, R.string.cart_total_quantity, mCart.getCartCount()));
+            totalValue.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(mCart.getTotal())));
+            quantityValue.setText(StringExtKt.persianizeDigitsInString(TextUtils.getResourceString(mContext, R.string.cart_total_quantity, mCart.getCartCount())));
             vh.root.addView(finalView);
-
         }
     }
 

@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.bamiloapp.view;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
@@ -93,6 +94,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.OldProductDetailsFr
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
 import android.widget.TextView;
 
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.appmodule.modernbamilo.util.typography.TypeFaceHelper;
 import com.bamilo.android.framework.components.recycler.HorizontalSpaceItemDecoration;
 import com.bamilo.android.framework.service.database.SearchRecentQueriesTableHelper;
@@ -272,17 +274,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // perform showcase on drawer hamburger icon
         View actionView = getToolbarNavigationIcon(toolbar);
         if (actionView != null) {
-            actionView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isBackButtonEnabled || isCloseButtonEnabled) {
-                        onBackPressed();
-                    } else {
-                        mDrawerLayout.openDrawer(GravityCompat.START);
-                    }
-                    if (FancyShowCaseView.isVisible(BaseActivity.this)) {
-                        FancyShowCaseView.hideCurrent(BaseActivity.this);
-                    }
+            actionView.setOnClickListener(v -> {
+                if (isBackButtonEnabled || isCloseButtonEnabled) {
+                    onBackPressed();
+                } else {
+                    mDrawerLayout.openDrawer(GravityCompat.START);
+                }
+                if (FancyShowCaseView.isVisible(BaseActivity.this)) {
+                    FancyShowCaseView.hideCurrent(BaseActivity.this);
                 }
             });
             ShowcasePerformer.createSimpleCircleShowcase(this, HAMBURGER_ICON_ITEM_TRACKING_SHOWCASE,
@@ -329,11 +328,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Check version, disabled for Samsung (check_version_enabled)
         CheckVersion.run(getApplicationContext());
 
-        /**
-         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
-         * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
-         *           -can-not-perform -this-action-after-onsaveinstancestate-h
-         */
         if (mOnActivityResultIntent != null && getIntent().getExtras() != null) {
             initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
@@ -463,45 +457,37 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) searchBar.getLayoutParams();
         params.setMargins(params.leftMargin, 0, params.rightMargin, params.bottomMargin);
         searchBar.setLayoutParams(params);
-        searchBar.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSearchMenuItem.expandActionView();
-            }
-        });
+        searchBar.setOnClickListener(v -> mSearchMenuItem.expandActionView());
         searchBar.setVisibility(View.VISIBLE);
-        searchBar.post(new Runnable() {
-            @Override
-            public void run() {
-                if (views != null) {
-                    for (View v : views) {
-                        v.setPadding(v.getPaddingLeft(), (int) getResources().getDimension(R.dimen.search_bar_height),
-                                v.getPaddingRight(), v.getPaddingBottom());
+        searchBar.post(() -> {
+            if (views != null) {
+                for (View v : views) {
+                    v.setPadding(v.getPaddingLeft(), (int) getResources().getDimension(R.dimen.search_bar_height),
+                            v.getPaddingRight(), v.getPaddingBottom());
+                }
+            }
+            ViewGroup.MarginLayoutParams warningParams =
+                    (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
+            warningParams.topMargin = searchBar.getHeight();
+            findViewById(R.id.warning).setLayoutParams(warningParams);
+
+            if (autoHide && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                searchBarAutoHide = new TopViewAutoHideUtil(-searchBar.getHeight(), 0, searchBar);
+                searchBarAutoHide.setOnViewShowHideListener(new TopViewAutoHideUtil.OnViewShowHideListener() {
+                    @Override
+                    public void onViewHid() {
+                        if (searchBarEnabled) {
+                            mSearchMenuItem.setVisible(true);
+                        }
                     }
-                }
-                ViewGroup.MarginLayoutParams warningParams =
-                        (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
-                warningParams.topMargin = searchBar.getHeight();
-                findViewById(R.id.warning).setLayoutParams(warningParams);
 
-                if (autoHide && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    searchBarAutoHide = new TopViewAutoHideUtil(-searchBar.getHeight(), 0, searchBar);
-                    searchBarAutoHide.setOnViewShowHideListener(new TopViewAutoHideUtil.OnViewShowHideListener() {
-                        @Override
-                        public void onViewHid() {
-                            if (searchBarEnabled) {
-                                mSearchMenuItem.setVisible(true);
-                            }
+                    @Override
+                    public void onViewShowed() {
+                        if (searchBarEnabled) {
+                            mSearchMenuItem.setVisible(false);
                         }
-
-                        @Override
-                        public void onViewShowed() {
-                            if (searchBarEnabled) {
-                                mSearchMenuItem.setVisible(false);
-                            }
-                        }
-                    });
-                }
+                    }
+                });
             }
         });
     }
@@ -536,22 +522,19 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             params.topMargin = 0;
             toolbar.setLayoutParams(params);
 
-            toolbar.post(new Runnable() {
-                @Override
-                public void run() {
-                    findViewById(R.id.rlScrollableContent).setPadding(0, 0, 0, 0);
-                    if (views != null) {
-                        for (View v : views) {
-                            v.setPadding(v.getPaddingLeft(), toolbar.getHeight(),
-                                    v.getPaddingRight(), v.getPaddingBottom());
-                        }
+            toolbar.post(() -> {
+                findViewById(R.id.rlScrollableContent).setPadding(0, 0, 0, 0);
+                if (views != null) {
+                    for (View v : views) {
+                        v.setPadding(v.getPaddingLeft(), toolbar.getHeight(),
+                                v.getPaddingRight(), v.getPaddingBottom());
                     }
-                    ViewGroup.MarginLayoutParams warningParams =
-                            (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
-                    warningParams.topMargin = toolbar.getHeight();
-                    findViewById(R.id.warning).setLayoutParams(warningParams);
-                    actionBarAutoHide = new TopViewAutoHideUtil(-toolbar.getHeight(), 0, toolbar);
                 }
+                ViewGroup.MarginLayoutParams warningParams =
+                        (ViewGroup.MarginLayoutParams) findViewById(R.id.warning).getLayoutParams();
+                warningParams.topMargin = toolbar.getHeight();
+                findViewById(R.id.warning).setLayoutParams(warningParams);
+                actionBarAutoHide = new TopViewAutoHideUtil(-toolbar.getHeight(), 0, toolbar);
             });
         }
         return actionBarAutoHideEnabled;
@@ -650,30 +633,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         if (mDrawerFragment != null) {
             mDrawerFragment.CreateDrawer();
         }
-        /*DrawerFragment navigationCategoryFragment = new DrawerFragment();
-        NavigationCategoryFragment.getInstance(bundle);
-        fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
-        PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
-        if (cart != null && cart.getCartCount() != 0) {
-            mainDrawer.updateBadge(drawer_identifier_cart, new StringHolder(cart.getCartCount() + ""));
-        }*/
     }
-
-    /*
-     * ############### OPTIONS MENU #################
-     */
 
     public void closeNavigationDrawer() {
         if (FancyShowCaseView.isVisible(BaseActivity.this)) {
             FancyShowCaseView.hideCurrent(this);
         }
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
-                    mDrawerLayout.closeDrawer(mDrawerNavigation);
-                }
-            });
+            new Handler().post(() -> mDrawerLayout.closeDrawer(mDrawerNavigation));
         }
     }
 
@@ -689,18 +656,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-    /*
-     * ############### ACTION BAR MENU ITEMS #################
-     */
-
     /**
      * Updated the action bar and the navigation for initial country selection
      *
      * @author sergiopereira
      */
     private void updateContentViewsIfInitialCountrySelection() {
-        /**
-         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+        /*
+          @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
          * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
          *           -can-not-perform -this-action-after-onsaveinstancestate-h
          */
@@ -709,10 +672,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             mOnActivityResultIntent = null;
         }
 
-        /**
-         * Set the action bar and navigation drawer for initialCountry
-         *
-         * @author sergiopereira
+        /*
+          Set the action bar and navigation drawer for initialCountry
+
+          @author sergiopereira
          */
         if (initialCountry) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -735,10 +698,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         return initialCountry;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Print.d(TAG, "ON OPTIONS MENU: CREATE");
@@ -821,15 +780,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-    /*
-     * ########### TAB LAYOUT LISTENER ###########
-     */
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.app.Activity#setTitle(int)
-     */
     @Override
     public void setTitle(int titleId) {
         if (titleId != 0) {
@@ -893,34 +843,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // ...
     }
 
-
-    /*
-     * ############### SEARCH COMPONENT #################
-     */
-
-    /**
-     * Set the share menu item
-     *
-     * @modified sergiopereira
-     */
-    @SuppressWarnings("unused")
-    private void setActionShare() {
-        //menu.findItem(MyMenuItem.BASKET.resId).setVisible(true);
-        //menu.findItem(item.resId).setEnabled(true);
-        //mShareActionProvider = (ShareActionProvider) menu.findItem(item.resId).getActionProvider();
-        //mShareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
-        //            @Override
-        //            public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
-        //                getApplicationContext().startActivity(intent);
-        //                TrackerDelegator.trackItemShared(getApplicationContext(), intent);
-        //                return true;
-        //            }
-        //        });
-        //mShareActionProvider.setShareHistoryFileName(null);
-        //mShareActionProvider.setShareIntent(shareIntent);
-        //setShareIntent(createShareIntent());
-    }
-
     /**
      * Set the cart menu item
      */
@@ -934,12 +856,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             mActionCartCount = actionCartView.findViewById(R.id.action_cart_count);
             mActionCartCount.setVisibility(View.INVISIBLE);
             View actionCartImage = actionCartView.findViewById(R.id.action_cart_image);
-            actionCartImage.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu.performIdentifierAction(MyMenuItem.BASKET.resId, 0);
-                }
-            });
+            actionCartImage.setOnClickListener(
+                    v -> menu.performIdentifierAction(MyMenuItem.BASKET.resId, 0));
             updateCartInfoInActionBar();
         } else {
             basket.setVisible(false);
@@ -987,22 +905,19 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Get search action view
         mSearchView = (CustomSearchActionView) MenuItemCompat.getActionView(mSearchMenuItem);
         setSearchWidthToFillOnExpand();
-        mSearchView.setVoiceSearchClickListener(new CustomSearchActionView.VoiceSearchClickListener() {
-            @Override
-            public void onVoiceSearchClicked(View v) {
-                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        mSearchView.setVoiceSearchClickListener(v -> {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 //                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, new Locale("fa"));
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fa-IR");
-                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.search_hint));
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fa-IR");
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.search_hint));
 
-                try {
-                    startActivityForResult(intent, RESULT_SPEECH);
-                    voiceTyping = true;
-                } catch (ActivityNotFoundException a) {
-                    mSearchView.setVoiceSearchEnabled(false);
-                }
+            try {
+                startActivityForResult(intent, RESULT_SPEECH);
+                voiceTyping = true;
+            } catch (ActivityNotFoundException a) {
+                mSearchView.setVoiceSearchEnabled(false);
             }
         });
         // Get edit text
@@ -1068,29 +983,26 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         /*
          * Set IME action listener
          */
-        mSearchView.setOnEditorActionListener(new OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(android.widget.TextView textView, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
-                    String searchTerm = textView.getText().toString();
-                    Print.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
-                    if (TextUtils.isEmpty(searchTerm)) {
-                        getSuggestions();
-                        return false;
-                    }
-
-                    SimpleEventModel sem = new SimpleEventModel();
-                    sem.category = CategoryConstants.SEARCH_RESULTS;
-                    sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
-                    sem.label = searchTerm;
-                    sem.value = SimpleEventModel.NO_VALUE;
-                    TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchBarSearched, sem);
-
-                    fireSearch(searchTerm);
-                    return true;
+        mSearchView.setOnEditorActionListener((textView, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
+                String searchTerm = textView.getText().toString();
+                Print.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
+                if (TextUtils.isEmpty(searchTerm)) {
+                    getSuggestions();
+                    return false;
                 }
-                return false;
+
+                SimpleEventModel sem = new SimpleEventModel();
+                sem.category = CategoryConstants.SEARCH_RESULTS;
+                sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
+                sem.label = searchTerm;
+                sem.value = SimpleEventModel.NO_VALUE;
+                TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchBarSearched, sem);
+
+                fireSearch(searchTerm);
+                return true;
             }
+            return false;
         });
 
         /*
@@ -1098,7 +1010,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
          */
         MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, new OnActionExpandListener() {
             private final Handler handle = new Handler();
-            public int restoreSoftInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
+            int restoreSoftInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -1120,18 +1032,15 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 restoreSoftInputMode = getWindow().getAttributes().softInputMode;
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 // Re-set the searched text if it exists
-                mSearchView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        String searchedTerm = BamiloApplication.INSTANCE.getSearchedTerm();
-                        mSearchView.setFocus((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE));
-                        if (TextUtils.isNotEmpty(searchedTerm)) {
-                            mSearchView.setText(searchedTerm);
-                            mSearchView.setSelection(searchedTerm.length());
-                        } else {
-                            handle.removeCallbacks(run);
-                            handle.postDelayed(run, SEARCH_EDIT_DELAY);
-                        }
+                mSearchView.post(() -> {
+                    String searchedTerm = BamiloApplication.INSTANCE.getSearchedTerm();
+                    mSearchView.setFocus((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE));
+                    if (TextUtils.isNotEmpty(searchedTerm)) {
+                        mSearchView.setText(searchedTerm);
+                        mSearchView.setSelection(searchedTerm.length());
+                    } else {
+                        handle.removeCallbacks(run);
+                        handle.postDelayed(run, SEARCH_EDIT_DELAY);
                     }
                 });
                 return true;
@@ -1161,15 +1070,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         /*
          * Set focus listener, for back pressed with IME
          */
-        mSearchView.setOnFieldFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    Print.i(TAG, "SEARCH ON FOCUS CHANGE");
-                    if (!voiceTyping && isSearchComponentOpened) {
-                        MenuItemCompat.collapseActionView(mSearchMenuItem);
-                        setActionMenuItemsVisibility(true);
-                    }
+        mSearchView.setOnFieldFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                Print.i(TAG, "SEARCH ON FOCUS CHANGE");
+                if (!voiceTyping && isSearchComponentOpened) {
+                    MenuItemCompat.collapseActionView(mSearchMenuItem);
+                    setActionMenuItemsVisibility(true);
                 }
             }
         });
@@ -1307,10 +1213,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
     }
 
-    /*
-     * ############### SEARCH TRIGGER #################
-     */
-
     /**
      * set all menu items visibility to <code>visible</code>
      */
@@ -1349,10 +1251,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     /**
-     * ############### SEARCH RESPONSES #################
-     */
-
-    /**
      * Get suggestions and recent queries
      *
      * @author sergiopereira
@@ -1376,11 +1274,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }, text, CountryPersistentConfigs.isUseAlgolia(getApplicationContext()));
     }
 
-    /**
-     * #################### SHARE #####################
-     */
-
-//    /**
+    //    /**
 //     * Called to update the share intent
 //     *
 //     * @param shareIntent
@@ -1414,11 +1308,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible()) {
             return;
         }
-        // Hide dropdown
-        if (suggestionsStruct.size() == 0) {
-//            mSearchAutoComplete.dismissDropDown();
-        } else {
-            //show dropdown with recent queries
+        if (suggestionsStruct.size() > 0) {
             SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
             searchSuggestionsAdapter.setOnViewHolderClickListener(this);
             mSearchListView.setAdapter(searchSuggestionsAdapter);
@@ -1489,15 +1379,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Show 0 while the cart is not updated
         final int quantity = currentCart == null ? 0 : currentCart.getCartCount();
 
-        mActionCartCount.post(new Runnable() {
-            @Override
-            public void run() {
-                if (quantity > 0) {
-                    mActionCartCount.setVisibility(View.VISIBLE);
-                    mActionCartCount.setText(String.valueOf(quantity));
-                } else {
-                    mActionCartCount.setVisibility(View.INVISIBLE);
-                }
+        mActionCartCount.post(() -> {
+            if (quantity > 0) {
+                mActionCartCount.setVisibility(View.VISIBLE);
+                mActionCartCount.setText(StringExtKt.persianizeNumberString(String.valueOf(quantity)));
+            } else {
+                mActionCartCount.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -1514,15 +1401,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Show 0 while the cart is not updated
         final int quantity = currentCart == null ? 0 : currentCart.getCartCount();
 
-        mActionCartIndicatorCount.post(new Runnable() {
-            @Override
-            public void run() {
-                if (quantity > 0) {
-                    mActionCartIndicatorCount.setVisibility(View.VISIBLE);
-                    mActionCartIndicatorCount.setText(String.valueOf(quantity));
-                } else {
-                    mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
-                }
+        mActionCartIndicatorCount.post(() -> {
+            if (quantity > 0) {
+                mActionCartIndicatorCount.setVisibility(View.VISIBLE);
+                mActionCartIndicatorCount.setText(StringExtKt.persianizeNumberString(String.valueOf(quantity)));
+            } else {
+                mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -1578,6 +1462,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
 
     OnClickListener myProfileClickListener = new OnClickListener() {
+        @SuppressLint("SwitchIntDef")
         @Override
         public void onClick(View v) {
             boolean hideMyProfile = true;
@@ -1610,14 +1495,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                                     getString(R.string.logout_text_question),
                                     getString(R.string.no_label),
                                     getString(R.string.yes_label),
-                                    new OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            if (v.getId() == R.id.button2) {
-                                                LogOut.perform(getWeakBaseActivity(), null);
-                                            }
-                                            dialogLogout.dismiss();
+                                    v1 -> {
+                                        if (v1.getId() == R.id.button2) {
+                                            LogOut.perform(getWeakBaseActivity(), null);
                                         }
+                                        dialogLogout.dismiss();
                                     });
                             dialogLogout.show(getSupportFragmentManager(), null);
                         } else {
@@ -1805,8 +1687,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mDrawerToggle.syncState();
     }
 
-    /**
-     * ############### FRAGMENTS #################
+    /*
+      ############### FRAGMENTS #################
      */
 
     /**
@@ -1879,12 +1761,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // First time show toast
         this.backPressedOnce = true;
         CustomToastView.makeText(this, getString(R.string.exit_press_back_again), Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                backPressedOnce = false;
-            }
-        }, TOAST_LENGTH_SHORT);
+        new Handler().postDelayed(() -> backPressedOnce = false, TOAST_LENGTH_SHORT);
     }
 
     public void restartAppFlow() {
@@ -1893,113 +1770,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Finish MainFragmentActivity
         finish();
     }
-
-    /*
-     * ########## CHECKOUT ##########
-     */
-
-    /**
-     * Set the current checkout step otherwise return false
-     */
-    /*public void setCheckoutHeader(@ConstantsCheckout.CheckoutType int checkoutStep) {
-        Print.i(TAG, "SET CHECKOUT HEADER STEP ID: " + checkoutStep);
-        switch (checkoutStep) {
-            case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-            case ConstantsCheckout.CHECKOUT_BILLING:
-            case ConstantsCheckout.CHECKOUT_CONFIRMATION:
-            case ConstantsCheckout.CHECKOUT_SHIPPING:
-            case ConstantsCheckout.CHECKOUT_PAYMENT:
-                //377-7 selectCheckoutStep(checkoutStep);
-                updateBaseComponentsInCheckout(View.GONE);
-                break;
-            case ConstantsCheckout.CHECKOUT_ORDER:
-            case ConstantsCheckout.CHECKOUT_THANKS:
-                updateBaseComponentsInCheckout(View.GONE);
-                break;
-            case ConstantsCheckout.NO_CHECKOUT:
-            default:
-                updateBaseComponentsOutCheckout(View.GONE);
-                break;
-        }
-    }
-
-    *//**
-     * Update the base components out checkout
-     *//*
-    private void updateBaseComponentsOutCheckout(final int visibility) {
-        Print.d(TAG, "SET BASE FOR NON CHECKOUT: HIDE");
-        // Set header visibility
-        mCheckoutTabLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mCheckoutTabLayout.setVisibility(visibility);
-            }
-        }, 5);
-    }
-
-    *//**
-     * Update the base components in checkout
-     *//*
-    private void updateBaseComponentsInCheckout(int visibility) {
-        Print.d(TAG, "SET BASE FOR CHECKOUT: SHOW");
-        mCheckoutTabLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(android.view.View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                mCheckoutTabLayout.removeOnLayoutChangeListener(this);
-            }
-
-        });
-        // Set header visibility
-        mCheckoutTabLayout.setVisibility(visibility);
-    }
-
-    *//**
-     * Set the selected checkout step
-     *//*
-    private void selectCheckoutStep(int step) {
-        TabLayout.Tab tab = mCheckoutTabLayout.getTabAt(step);
-        if(tab != null) {
-            tab.select();
-        }
-    }
-
-    *//**
-     * Checkout header click listener associated to each item on layout
-     *//*
-    public void onCheckoutHeaderClickListener(int step) {
-        Print.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER " + step);
-        FragmentType fragmentType = ConstantsCheckout.getFragmentType(step);
-
-        if (fragmentType != FragmentType.UNKNOWN && mCheckoutTabLayout.getSelectedTabPosition() > step) {
-            if (FragmentController.getInstance().hasEntry(fragmentType.toString())) {
-                selectCheckoutStep(step);
-            } else {
-                onSwitchFragment(fragmentType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
-        }
-    }
-
-    *//**
-     * When user changes checkout step.
-     * @param step - selected position on header.
-     *//*
-    public void onCheckoutHeaderSelectedListener(int step) {
-        // CASE TAB_CHECKOUT_ABOUT_YOU - step == 0 - click is never allowed
-        // CASE TAB_CHECKOUT_BILLING
-        if (step == ConstantsCheckout.CHECKOUT_BILLING) {
-            String last = FragmentController.getInstance().getLastEntry();
-            // Validate last entry to support create and edit address (rotation)
-            if(!TextUtils.equals(last, FragmentType.CHECKOUT_CREATE_ADDRESS.toString()) &&
-                    !TextUtils.equals(last, FragmentType.CHECKOUT_EDIT_ADDRESS.toString())) {
-                popBackStackUntilTag(FragmentType.CHECKOUT_MY_ADDRESSES.toString());
-            }
-        }
-        // CASE TAB_CHECKOUT_SHIPPING
-        else if (step == ConstantsCheckout.CHECKOUT_SHIPPING ) {
-            popBackStackUntilTag(FragmentType.CHECKOUT_SHIPPING.toString());
-        }
-        // CASE TAB_CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
-    }*/
 
     /**
      * Method used to remove all native checkout entries from the back stack on the Fragment Controller
@@ -2135,8 +1905,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             injectExtraTabLayout();
         }
         mExtraTabLayout.setupWithViewPager(viewPager);
-        // TODO: 8/28/18 farshid
-//        HoloFontLoader.applyDefaultFont(mExtraTabLayout);
     }
 
     public void setUpExtraTabLayout(ViewPager viewPager, float height) {
@@ -2145,8 +1913,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             injectExtraTabLayout();
         }
         mExtraTabLayout.setupWithViewPager(viewPager);
-        // TODO: 8/28/18 farshid
-//        HoloFontLoader.applyDefaultFont(mExtraTabLayout);
     }
 
     private void injectExtraTabLayout() {
@@ -2169,23 +1935,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 mExtraTabLayout = null;
                 mExtraTabLayoutHeight = -1;
                 final View scrollContainer = findViewById(R.id.rlScrollableContent);
-                mAppBarLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
-                                toolbar.getHeight(),
-                                scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
-                    }
-                });
+                mAppBarLayout.post(() -> scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                        toolbar.getHeight(),
+                        scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom()));
             }
         }
     }
 
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.OnViewHolderClickListener#onViewHolderClick(android.support.v7.widget.RecyclerView.Adapter, android.view.View, int)
-     */
     @Override
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get suggestion
@@ -2213,7 +1969,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 showSearchOther(selectedSuggestion);
                 break;
         }
-
     }
 
     @Override
@@ -2227,16 +1982,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     private void setScrollContentPadding(final View scrollContainer) {
-//        Assert.assertNotNull(scrollContainer);
-
-        scrollContainer.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
-                        scrollContainer.getPaddingTop() + (int) mExtraTabLayoutHeight,
-                        scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom());
-            }
-        });
+        scrollContainer.post(() -> scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                scrollContainer.getPaddingTop() + (int) mExtraTabLayoutHeight,
+                scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom()));
     }
-
 }

@@ -1,9 +1,10 @@
 package com.bamilo.android.appmodule.bamiloapp.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
+import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
+import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
+import com.bamilo.android.appmodule.bamiloapp.view.widget.ItemTrackingProgressBar;
 import com.bamilo.android.appmodule.modernbamilo.product.comment.submit.SubmitRateScreenKt;
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.core.service.model.data.itemtracking.Cancellation;
 import com.bamilo.android.core.service.model.data.itemtracking.CompleteOrder;
 import com.bamilo.android.core.service.model.data.itemtracking.History;
@@ -24,13 +30,6 @@ import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
 import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
-import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
-import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
-import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
-import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity;
-import com.bamilo.android.R;
-import com.bamilo.android.appmodule.bamiloapp.view.widget.ItemTrackingProgressBar;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +39,9 @@ import java.util.Locale;
  * Created on 10/28/2017.
  */
 
-public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingListAdapter.ItemTrackingViewHolder> {
+public class ItemTrackingListAdapter extends
+        RecyclerView.Adapter<ItemTrackingListAdapter.ItemTrackingViewHolder> {
+
     private static final int ITEM_LIST_HEADER = 1, ITEM_SECTION_HEADER = 2, ITEM_ORDER_ITEM = 3,
             ITEM_LIST_FOOTER = 4, ITEM_CMS_MESSAGE = 5;
     private boolean cancellationEnabled;
@@ -57,6 +58,7 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         calculateItemCount(completeOrder);
     }
 
+    @SuppressLint("UseSparseArrays")
     private void calculateItemCount(CompleteOrder completeOrder) {
         headerPositions = new ArrayList<>();
         indexedItems = new HashMap<>();
@@ -79,8 +81,9 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         this.count = count;
     }
 
+    @NonNull
     @Override
-    public ItemTrackingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemTrackingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         @LayoutRes int layoutId = R.layout.row_item_tracking_list_header;
         if (viewType == ITEM_SECTION_HEADER) {
             layoutId = R.layout.row_package_section_header;
@@ -91,17 +94,20 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         } else if (viewType == ITEM_CMS_MESSAGE) {
             layoutId = R.layout.row_item_tracking_cms_message;
         }
-        return new ItemTrackingViewHolder(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
+        return new ItemTrackingViewHolder(
+                LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final ItemTrackingViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ItemTrackingViewHolder holder, int position) {
         int viewType = getItemViewType(position);
         Locale locale = new Locale("fa", "ir");
         final Context context = holder.itemView.getContext();
         if (viewType == ITEM_LIST_HEADER) {
-            holder.tvOrderNumberValue.setText(completeOrder.getOrderNumber());
-            holder.tvOrderCostValue.setText(CurrencyFormatter.formatCurrency(completeOrder.getGrandTotal()));
+            holder.tvOrderNumberValue
+                    .setText(StringExtKt.persianizeNumberString(completeOrder.getOrderNumber()));
+            holder.tvOrderCostValue.setText(StringExtKt.persianizeDigitsInString(
+                    CurrencyFormatter.formatCurrency(completeOrder.getGrandTotal())));
             holder.tvOrderDateValue.setText(completeOrder.getCreationDate());
             holder.tvOrderQuantityValue.setText(String.format(locale, "%d %s",
                     completeOrder.getTotalProductsCount(),
@@ -114,18 +120,26 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
                 holder.rlCMSMessage.setVisibility(View.GONE);
             }
         } else if (viewType == ITEM_LIST_FOOTER) {
-            holder.tvRecipientValue.setText(String.format(locale, "%s %s", completeOrder.getShippingAddress().getFirstName(), completeOrder.getShippingAddress().getLastName()));
+            holder.tvRecipientValue.setText(String.format(locale, "%s %s",
+                    completeOrder.getShippingAddress().getFirstName(),
+                    completeOrder.getShippingAddress().getLastName()));
             holder.tvDeliveryAddressValue.setText(completeOrder.getShippingAddress().getAddress1());
-            holder.tvShipmentCostValue.setText(completeOrder.getPayment().getDeliveryCost() == 0 ? context.getString(R.string.free_label) :
-                    CurrencyFormatter.formatCurrency(completeOrder.getPayment().getDeliveryCost()));
+            holder.tvShipmentCostValue.setText(StringExtKt.persianizeDigitsInString(
+                    completeOrder.getPayment().getDeliveryCost() == 0 ? context
+                            .getString(R.string.free_label) :
+                            CurrencyFormatter
+                                    .formatCurrency(completeOrder.getPayment().getDeliveryCost())));
             holder.tvPaymentMethodValue.setText(completeOrder.getPayment().getMethod());
         } else if (viewType == ITEM_SECTION_HEADER) {
             int index = headerPositions.indexOf(position);
             Package p = completeOrder.getPackages().get(index);
             holder.tvPackageTitle.setText(p.getTitle());
-            if (!(p.getDelay() != null && p.getDelay().hasDelay()) && TextUtils.isNotEmpty(p.getDeliveryTime())) {
+            if (!(p.getDelay() != null && p.getDelay().hasDelay()) && TextUtils
+                    .isNotEmpty(p.getDeliveryTime())) {
                 holder.tvPackageDeliveryTime.setText(
-                        String.format(locale, "%s %s", context.getString(R.string.pdv_delivery_time), p.getDeliveryTime()));
+                        String.format(locale, "%s %s",
+                                context.getString(R.string.pdv_delivery_time),
+                                p.getDeliveryTime()));
             }
             if (p.getDelay() != null && TextUtils.isNotEmpty(p.getDelay().getReason())) {
                 holder.tvPackageDeliveryDelayReason.setVisibility(View.VISIBLE);
@@ -134,16 +148,15 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
                 holder.tvPackageDeliveryDelayReason.setVisibility(View.GONE);
             }
 
-            if (p.getDeliveryType()!= null
-                    && p.getDeliveryType().getDropShipDescription()!= null
+            if (p.getDeliveryType() != null
+                    && p.getDeliveryType().getDropShipDescription() != null
                     && p.getDeliveryType().getDropShipDescription().length() != 0) {
-                holder.dropShipDescriptionTextView.setText(p.getDeliveryType().getDropShipDescription());
+                holder.dropShipDescriptionTextView
+                        .setText(p.getDeliveryType().getDropShipDescription());
                 holder.dropShipDescriptionTextView.setVisibility(View.VISIBLE);
             } else {
                 holder.dropShipDescriptionTextView.setVisibility(View.GONE);
             }
-
-
         } else if (viewType == ITEM_ORDER_ITEM) {
             final PackageItem item = indexedItems.get(position);
             ItemTrackingProgressBar itemTrackingProgressBar = holder.itemTrackingProgressBar;
@@ -155,8 +168,9 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
                 Refund refund = item.getRefund();
                 if (TextUtils.isNotEmpty(refund.getCancellationReason())) {
                     holder.tvItemCancellationReason.setVisibility(View.VISIBLE);
-                    holder.tvItemCancellationReason.setText(context.getString(R.string.item_tracking_cancellation_reason,
-                            refund.getCancellationReason()));
+                    holder.tvItemCancellationReason
+                            .setText(context.getString(R.string.item_tracking_cancellation_reason,
+                                    refund.getCancellationReason()));
                 } else {
                     holder.tvItemCancellationReason.setVisibility(View.GONE);
                 }
@@ -168,9 +182,15 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
                                     R.drawable.ic_refund_pending :
                                     R.drawable.ic_refund_success);
                     String refundMessage = context.getString(R.string.item_tracking_refund_message,
-                            TextUtils.isNotEmpty(refund.getCardNumber()) ? refund.getCardNumber() : context.getString(R.string.item_tracking_refund_used_card_number),
-                            TextUtils.isNotEmpty(refund.getDate()) ? context.getString(R.string.item_tracking_refund_date, refund.getDate()) : "",
-                            context.getString(refund.getStatus().equals(Refund.STATUS_PENDING) ? R.string.item_tracking_refund_will_be_returned : R.string.item_tracking_refund_is_returned));
+                            TextUtils.isNotEmpty(refund.getCardNumber()) ? refund.getCardNumber()
+                                    : context.getString(
+                                            R.string.item_tracking_refund_used_card_number),
+                            TextUtils.isNotEmpty(refund.getDate()) ? context
+                                    .getString(R.string.item_tracking_refund_date, refund.getDate())
+                                    : "",
+                            context.getString(refund.getStatus().equals(Refund.STATUS_PENDING)
+                                    ? R.string.item_tracking_refund_will_be_returned
+                                    : R.string.item_tracking_refund_is_returned));
                     holder.tvRefundMessage.setText(refundMessage);
                 } else {
                     holder.imgRefundStatus.setVisibility(View.GONE);
@@ -181,40 +201,47 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             }
 
             holder.tvProductName.setText(item.getName());
-            holder.tvProductPrice.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
+            holder.tvProductPrice.setText(StringExtKt
+                    .persianizeDigitsInString(CurrencyFormatter.formatCurrency(item.getPrice())));
             holder.imgProductThumb.setOnClickListener(null);
             if (cancellationEnabled && item.getCancellation() != null) {
                 if (item.getCancellation().isCancelable()) {
                     holder.btnCancelItem.setVisibility(View.VISIBLE);
-                    holder.btnCancelItem.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (onItemTrackingListClickListener != null) {
-                                PackageItem item = indexedItems.get(holder.getAdapterPosition());
-                                onItemTrackingListClickListener.onCancelItemButtonClicked(view, item);
-                            }
+                    holder.btnCancelItem.setOnClickListener(view -> {
+                        if (onItemTrackingListClickListener != null) {
+                            PackageItem item1 = indexedItems.get(holder.getAdapterPosition());
+                            onItemTrackingListClickListener
+                                    .onCancelItemButtonClicked(view, item1);
                         }
                     });
                 } else if (item.getCancellation().getNotCancelableReasonType() != null &&
-                        !item.getCancellation().getNotCancelableReasonType().equals(Cancellation.REASON_TYPE_IS_CANCELED)
+                        !item.getCancellation().getNotCancelableReasonType()
+                                .equals(Cancellation.REASON_TYPE_IS_CANCELED)
                         && CollectionUtils.isNotEmpty(item.getHistories()) &&
-                        (item.getHistories().get(item.getHistories().size() - 1).getStatus().equals(History.STATUS_INACTIVE) ||
-                                item.getHistories().get(item.getHistories().size() - 1).getStatus().equals(History.STATUS_ACTIVE))) {
+                        (item.getHistories().get(item.getHistories().size() - 1).getStatus()
+                                .equals(History.STATUS_INACTIVE) ||
+                                item.getHistories().get(item.getHistories().size() - 1).getStatus()
+                                        .equals(History.STATUS_ACTIVE))) {
                     holder.btnCancelItem.setVisibility(View.VISIBLE);
-                    holder.btnCancelItem.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            String message = null;
-                            if (item.getCancellation().getNotCancelableReasonType().equals(Cancellation.REASON_TYPE_HAS_CANCELLATION_REQUEST)) {
-                                message = context.getString(R.string.order_cancellation_item_has_cancellation_error);
-                            } else if (item.getCancellation().getNotCancelableReasonType().equals(Cancellation.REASON_TYPE_IS_SHIPPED)) {
-                                message = context.getString(R.string.order_cancellation_item_shipped_error);
-                            } else {
-                                message = context.getString(R.string.order_cancellation_item_is_not_cancelable);
-                            }
-                            if (context instanceof BaseActivity) {
-                                ((BaseActivity) context).showWarningMessage(WarningFactory.ERROR_MESSAGE, message);
-                            }
+                    holder.btnCancelItem.setOnClickListener(view -> {
+                        String message;
+                        switch (item.getCancellation().getNotCancelableReasonType()) {
+                            case Cancellation.REASON_TYPE_HAS_CANCELLATION_REQUEST:
+                                message = context.getString(
+                                        R.string.order_cancellation_item_has_cancellation_error);
+                                break;
+                            case Cancellation.REASON_TYPE_IS_SHIPPED:
+                                message = context
+                                        .getString(R.string.order_cancellation_item_shipped_error);
+                                break;
+                            default:
+                                message = context.getString(
+                                        R.string.order_cancellation_item_is_not_cancelable);
+                                break;
+                        }
+                        if (context instanceof BaseActivity) {
+                            ((BaseActivity) context)
+                                    .showWarningMessage(WarningFactory.ERROR_MESSAGE, message);
                         }
                     });
                 } else {
@@ -223,16 +250,16 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             }
             if (TextUtils.isNotEmpty(item.getImage())) {
                 try {
-                    holder.imgProductThumb.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (onItemTrackingListClickListener != null) {
-                                PackageItem item = indexedItems.get(holder.getAdapterPosition());
-                                onItemTrackingListClickListener.onProductThumbClickListener(v, item);
-                            }
+                    holder.imgProductThumb.setOnClickListener(v -> {
+                        if (onItemTrackingListClickListener != null) {
+                            PackageItem item12 = indexedItems.get(holder.getAdapterPosition());
+                            onItemTrackingListClickListener
+                                    .onProductThumbClickListener(v, item12);
                         }
                     });
-                    ImageManager.getInstance().loadImage(item.getImage(), holder.imgProductThumb, null, R.drawable.no_image_large, false);
+                    ImageManager.getInstance()
+                            .loadImage(item.getImage(), holder.imgProductThumb, null,
+                                    R.drawable.no_image_large, false);
                 } catch (Exception e) {
                     Print.d(e.getMessage());
                 }
@@ -240,24 +267,38 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
             String propertyFormat = "%s : %s\n";
             StringBuilder productProperties = new StringBuilder();
             if (item.getQuantity() != 0) {
-                productProperties.append(String.format(locale, "%s : %d\n", context.getString(R.string.quantity_label), item.getQuantity()));
+                productProperties.append(String
+                        .format(locale, "%s : %d\n", context.getString(R.string.quantity_label),
+                                item.getQuantity()));
             }
             if (TextUtils.isNotEmpty(item.getBrand())) {
-                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.brand_label), item.getBrand()));
+                productProperties.append(String
+                        .format(locale, propertyFormat, context.getString(R.string.brand_label),
+                                item.getBrand()));
             }
             if (TextUtils.isNotEmpty(item.getSeller())) {
-                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.seller_label), item.getSeller()));
+                productProperties.append(String
+                        .format(locale, propertyFormat, context.getString(R.string.seller_label),
+                                item.getSeller()));
             }
             if (item.getPrice() != 0) {
-                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.fee_label), CurrencyFormatter.formatCurrency(item.getPrice())));
+                productProperties.append(String
+                        .format(locale, propertyFormat, context.getString(R.string.fee_label),
+                                CurrencyFormatter.formatCurrency(item.getPrice())));
             }
             if (TextUtils.isNotEmpty(item.getFilters().getColor())) {
-                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.color_label), item.getFilters().getColor()));
+                productProperties.append(String
+                        .format(locale, propertyFormat, context.getString(R.string.color_label),
+                                item.getFilters().getColor()));
             }
             if (TextUtils.isNotEmpty(item.getFilters().getSize())) {
-                productProperties.append(String.format(locale, propertyFormat, context.getString(R.string.size_label), item.getFilters().getSize()));
+                productProperties.append(String
+                        .format(locale, propertyFormat, context.getString(R.string.size_label),
+                                item.getFilters().getSize()));
             }
-            holder.tvProductDetails.setText(productProperties.substring(0, productProperties.length() - 1));
+            holder.tvProductDetails
+                    .setText(StringExtKt.persianizeDigitsInString(
+                            productProperties.substring(0, productProperties.length() - 1)));
 
             Boolean visibility = itemsReviewButtonVisibility.get(holder.getAdapterPosition());
             if (visibility != null && visibility) {
@@ -286,31 +327,22 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
                 holder.tvItemIsOutOfStock.setVisibility(View.GONE);
             }
 
-            View.OnClickListener onCollapseClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Boolean visibility = itemsReviewButtonVisibility.get(holder.getAdapterPosition());
-                    if (visibility == null || !visibility) {
-                        itemsReviewButtonVisibility.put(holder.getAdapterPosition(), true);
-                    } else {
-                        itemsReviewButtonVisibility.put(holder.getAdapterPosition(), false);
-                    }
-                    notifyItemChanged(holder.getAdapterPosition());
+            View.OnClickListener onCollapseClickListener = v -> {
+                Boolean visibility1 = itemsReviewButtonVisibility
+                        .get(holder.getAdapterPosition());
+                if (visibility1 == null || !visibility1) {
+                    itemsReviewButtonVisibility.put(holder.getAdapterPosition(), true);
+                } else {
+                    itemsReviewButtonVisibility.put(holder.getAdapterPosition(), false);
                 }
+                notifyItemChanged(holder.getAdapterPosition());
             };
             holder.clPackagedOrderItem.setOnClickListener(onCollapseClickListener);
             holder.tvProductName.setOnClickListener(onCollapseClickListener);
             holder.imgArrowSeeMore.setOnClickListener(onCollapseClickListener);
-            holder.btnReviewProduct.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PackageItem item = indexedItems.get(holder.getAdapterPosition());
-                    SubmitRateScreenKt.startSubmitRateActivity(context, item.getSku());
-//                    if (onItemTrackingListClickListener != null) {
-//                        PackageItem item = indexedItems.get(holder.getAdapterPosition());
-//                        onItemTrackingListClickListener.onReviewButtonClicked(v, item);
-//                    }
-                }
+            holder.btnReviewProduct.setOnClickListener(v -> {
+                PackageItem item13 = indexedItems.get(holder.getAdapterPosition());
+                SubmitRateScreenKt.startSubmitRateActivity(context, item13.getSku());
             });
         }
     }
@@ -345,28 +377,13 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         return completeOrder;
     }
 
-    public void setCompleteOrder(CompleteOrder completeOrder) {
-        this.completeOrder = completeOrder;
-        calculateItemCount(completeOrder);
-    }
-
-    public OnItemTrackingListClickListener getOnItemTrackingListClickListener() {
-        return onItemTrackingListClickListener;
-    }
-
-    public void setOnItemTrackingListClickListener(OnItemTrackingListClickListener onItemTrackingListClickListener) {
+    public void setOnItemTrackingListClickListener(
+            OnItemTrackingListClickListener onItemTrackingListClickListener) {
         this.onItemTrackingListClickListener = onItemTrackingListClickListener;
     }
 
-    public boolean isCancellationEnabled() {
-        return cancellationEnabled;
-    }
+    static class ItemTrackingViewHolder extends RecyclerView.ViewHolder {
 
-    public void setCancellationEnabled(boolean cancellationEnabled) {
-        this.cancellationEnabled = cancellationEnabled;
-    }
-
-    public static class ItemTrackingViewHolder extends RecyclerView.ViewHolder {
         // cms message item
         TextView tvCMSMessage;
         RelativeLayout rlCMSMessage;
@@ -393,50 +410,54 @@ public class ItemTrackingListAdapter extends RecyclerView.Adapter<ItemTrackingLi
         TextView tvItemCancellationReason, tvRefundMessage;
         ImageView imgRefundStatus;
 
-
-        public ItemTrackingViewHolder(View itemView) {
+        ItemTrackingViewHolder(View itemView) {
             super(itemView);
 
-            tvCMSMessage = (TextView) itemView.findViewById(R.id.tvCMSMessage);
-            rlCMSMessage = (RelativeLayout) itemView.findViewById(R.id.rlCMSMessage);
+            tvCMSMessage = itemView.findViewById(R.id.tvCMSMessage);
+            rlCMSMessage = itemView.findViewById(R.id.rlCMSMessage);
 
-            tvOrderNumberValue = (TextView) itemView.findViewById(R.id.tvOrderNumberValue);
-            tvOrderCostValue = (TextView) itemView.findViewById(R.id.tvOrderCostValue);
-            tvOrderDateValue = (TextView) itemView.findViewById(R.id.tvOrderDateValue);
-            tvOrderQuantityValue = (TextView) itemView.findViewById(R.id.tvOrderQuantityValue);
+            tvOrderNumberValue = itemView.findViewById(R.id.tvOrderNumberValue);
+            tvOrderCostValue = itemView.findViewById(R.id.tvOrderCostValue);
+            tvOrderDateValue = itemView.findViewById(R.id.tvOrderDateValue);
+            tvOrderQuantityValue = itemView.findViewById(R.id.tvOrderQuantityValue);
 
-            tvRecipientValue = (TextView) itemView.findViewById(R.id.tvRecipientValue);
-            tvDeliveryAddressValue = (TextView) itemView.findViewById(R.id.tvDeliveryAddressValue);
-            tvShipmentCostValue = (TextView) itemView.findViewById(R.id.tvShipmentCostValue);
-            tvPaymentMethodValue = (TextView) itemView.findViewById(R.id.tvPaymentMethodValue);
+            tvRecipientValue = itemView.findViewById(R.id.tvRecipientValue);
+            tvDeliveryAddressValue = itemView.findViewById(R.id.tvDeliveryAddressValue);
+            tvShipmentCostValue = itemView.findViewById(R.id.tvShipmentCostValue);
+            tvPaymentMethodValue = itemView.findViewById(R.id.tvPaymentMethodValue);
 
-            tvPackageTitle = (TextView) itemView.findViewById(R.id.tvPackageTitle);
-            tvPackageDeliveryTime = (TextView) itemView.findViewById(R.id.tvPackageDeliveryTime);
-            tvPackageDeliveryDelayReason = (TextView) itemView.findViewById(R.id.tvPackageDeliveryDelayReason);
+            tvPackageTitle = itemView.findViewById(R.id.tvPackageTitle);
+            tvPackageDeliveryTime = itemView.findViewById(R.id.tvPackageDeliveryTime);
+            tvPackageDeliveryDelayReason = itemView
+                    .findViewById(R.id.tvPackageDeliveryDelayReason);
 
-            dropShipDescriptionTextView = itemView.findViewById(R.id.rowPackageSectionHeader_xeiTextView_dropShipMessage);
+            dropShipDescriptionTextView = itemView
+                    .findViewById(R.id.rowPackageSectionHeader_xeiTextView_dropShipMessage);
 
-            clPackagedOrderItem = (ConstraintLayout) itemView.findViewById(R.id.clPackagedOrderItem);
-            itemTrackingProgressBar = (ItemTrackingProgressBar) itemView.findViewById(R.id.itemTrackingProgressBar);
-            rlCancellationReason = (RelativeLayout) itemView.findViewById(R.id.rlCancellationReason);
-            tvItemCancellationReason = (TextView) itemView.findViewById(R.id.tvItemCancellationReason);
-            tvRefundMessage = (TextView) itemView.findViewById(R.id.tvRefundMessage);
-            imgRefundStatus = (ImageView) itemView.findViewById(R.id.imgRefundStatus);
-            imgProductThumb = (ImageView) itemView.findViewById(R.id.imgProductThumb);
-            imgArrowSeeMore = (ImageView) itemView.findViewById(R.id.imgArrowSeeMore);
-            tvProductName = (TextView) itemView.findViewById(R.id.tvProductName);
-            tvProductPrice = (TextView) itemView.findViewById(R.id.tvProductPrice);
-            tvProductDetails = (TextView) itemView.findViewById(R.id.tvProductDetails);
-            tvItemIsOutOfStock = (TextView) itemView.findViewById(R.id.tvItemIsOutOfStockMsg);
-            btnReviewProduct = (Button) itemView.findViewById(R.id.btnReviewProduct);
-            btnCancelItem = (Button) itemView.findViewById(R.id.btnCancelItem);
+            clPackagedOrderItem = itemView
+                    .findViewById(R.id.clPackagedOrderItem);
+            itemTrackingProgressBar = itemView
+                    .findViewById(R.id.itemTrackingProgressBar);
+            rlCancellationReason = itemView
+                    .findViewById(R.id.rlCancellationReason);
+            tvItemCancellationReason = itemView
+                    .findViewById(R.id.tvItemCancellationReason);
+            tvRefundMessage = itemView.findViewById(R.id.tvRefundMessage);
+            imgRefundStatus = itemView.findViewById(R.id.imgRefundStatus);
+            imgProductThumb = itemView.findViewById(R.id.imgProductThumb);
+            imgArrowSeeMore = itemView.findViewById(R.id.imgArrowSeeMore);
+            tvProductName = itemView.findViewById(R.id.tvProductName);
+            tvProductPrice = itemView.findViewById(R.id.tvProductPrice);
+            tvProductDetails = itemView.findViewById(R.id.tvProductDetails);
+            tvItemIsOutOfStock = itemView.findViewById(R.id.tvItemIsOutOfStockMsg);
+            btnReviewProduct = itemView.findViewById(R.id.btnReviewProduct);
+            btnCancelItem = itemView.findViewById(R.id.btnCancelItem);
         }
     }
 
     public interface OnItemTrackingListClickListener {
-        void onCancelItemButtonClicked(View v, PackageItem item);
 
-        void onReviewButtonClicked(View v, PackageItem item);
+        void onCancelItemButtonClicked(View v, PackageItem item);
 
         void onProductThumbClickListener(View v, PackageItem item);
     }

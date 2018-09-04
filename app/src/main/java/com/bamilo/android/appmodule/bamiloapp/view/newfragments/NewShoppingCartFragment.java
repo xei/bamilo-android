@@ -34,6 +34,7 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentCont
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
@@ -165,7 +166,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Get and set views
-        mCartRecycler = (RecyclerView) view.findViewById(R.id.shoppingcart_list);
+        mCartRecycler = view.findViewById(R.id.shoppingcart_list);
         mCartRecycler.setHasFixedSize(true);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -317,8 +318,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     public void setAppContentLayout(View view) {
         mCheckoutButton = view.findViewById(R.id.checkout_button);
         mTotalContainer = view.findViewById(R.id.total_container);
-        mDiscountContainer = (ViewGroup) view.findViewById(R.id.discount_container);
-        mDiscountContainerShadow = (ViewGroup) view.findViewById(R.id.discount_container_shadow);
+        mDiscountContainer = view.findViewById(R.id.discount_container);
+        mDiscountContainerShadow = view.findViewById(R.id.discount_container_shadow);
 
 
         // Get free shipping
@@ -331,11 +332,11 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     private void setTotal(@NonNull PurchaseEntity cart) {
         Print.d(TAG, "SET THE TOTAL VALUE");
         // Get views
-        TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
-        TextView quantityValue = (TextView) mTotalContainer.findViewById(R.id.total_quantity);
+        TextView totalValue = mTotalContainer.findViewById(R.id.total_value);
+        TextView quantityValue = mTotalContainer.findViewById(R.id.total_quantity);
         // Set views
-        totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
-        quantityValue.setText(TextUtils.getResourceString(getBaseActivity(), R.string.cart_total_quantity, new Integer[] {cart.getCartCount()}));
+        totalValue.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(cart.getTotal())));
+        quantityValue.setText(StringExtKt.persianizeDigitsInString(TextUtils.getResourceString(getBaseActivity(), R.string.cart_total_quantity, cart.getCartCount())));
 
 
         mTotalContainer.setVisibility(View.VISIBLE);
@@ -427,7 +428,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         mItemRemovedQuantity = item.getQuantity();
         mItemRemovedRating = -1d;
         if (TextUtils.isEmpty(cartValue)) {
-            TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
+            TextView totalValue = mTotalContainer.findViewById(R.id.total_value);
             mItemRemovedCartValue = totalValue.toString();
         } else {
             mItemRemovedCartValue = cartValue;
@@ -710,18 +711,20 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         mDiscountContainer.removeAllViews();
 
 
-        View totalView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.new_shopping_basket_discount_element, (ViewGroup) mDiscountContainer, false);
-        TextView labelT = (TextView) totalView.findViewById(R.id.discount_label);
-        TextView valueT = (TextView) totalView.findViewById(R.id.discount_amount);
+        View totalView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.new_shopping_basket_discount_element,
+                mDiscountContainer, false);
+        TextView labelT = totalView.findViewById(R.id.discount_label);
+        TextView valueT = totalView.findViewById(R.id.discount_amount);
         labelT.setText(R.string.cart_total_amount);
-        valueT.setText(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted()));
+        valueT.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted())));
         mDiscountContainer.addView(totalView);
 
-        View discountView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.new_shopping_basket_discount_element, (ViewGroup) mDiscountContainer, false);
-        TextView label = (TextView) discountView.findViewById(R.id.discount_label);
-        TextView value = (TextView) discountView.findViewById(R.id.discount_amount);
+        View discountView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.new_shopping_basket_discount_element,
+                mDiscountContainer, false);
+        TextView label = discountView.findViewById(R.id.discount_label);
+        TextView value = discountView.findViewById(R.id.discount_amount);
         label.setText(R.string.cart_total_discount);
-        value.setText(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted()+cart.getShippingValue()-cart.getTotal()));
+        value.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted()+cart.getShippingValue()-cart.getTotal())));
         mDiscountContainer.addView(discountView);
 
         LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());
@@ -747,15 +750,15 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         View view = mInflater.inflate(R.layout.shopping_cart_product_container, parent, false);
         Log.d( TAG, "getView: productName = " + item.getName());
         // Get item
-        ImageView productView = (ImageView) view.findViewById(R.id.image_view);
+        ImageView productView = view.findViewById(R.id.image_view);
         View pBar = view.findViewById(R.id.image_loading_progress);
-        TextView itemName = (TextView) view.findViewById(R.id.cart_item_text_name);
-        TextView priceView = (TextView) view.findViewById(R.id.cart_item_text_price);
-        TextView quantityBtn = (TextView) view.findViewById(R.id.cart_item_button_quantity);
-        ImageView shopFirstImage = (ImageView) view.findViewById(R.id.cart_item_image_shop_first);
-        TextView deleteBtn = (TextView) view.findViewById(R.id.cart_item_button_delete);
-        TextView variationName = (TextView) view.findViewById(R.id.cart_item_text_variation);
-        TextView variationValue = (TextView) view.findViewById(R.id.cart_item_text_variation_value);
+        TextView itemName = view.findViewById(R.id.cart_item_text_name);
+        TextView priceView = view.findViewById(R.id.cart_item_text_price);
+        TextView quantityBtn = view.findViewById(R.id.cart_item_button_quantity);
+        ImageView shopFirstImage = view.findViewById(R.id.cart_item_image_shop_first);
+        TextView deleteBtn = view.findViewById(R.id.cart_item_button_delete);
+        TextView variationName = view.findViewById(R.id.cart_item_text_variation);
+        TextView variationValue = view.findViewById(R.id.cart_item_text_variation_value);
         // Set item
         itemName.setText(item.getName());
         itemName.setSelected(true);
@@ -780,7 +783,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             }
         });
         // Quantity
-        quantityBtn.setText(String.valueOf(item.getQuantity()));
+        quantityBtn.setText(StringExtKt.persianizeDigitsInString(String.valueOf(item.getQuantity())));
         if(item.getMaxQuantity() > 1) {
             quantityBtn.setEnabled(true);
             quantityBtn.setOnClickListener(new OnClickListener() {
@@ -1026,11 +1029,11 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     {
         if (visibility == View.GONE)
         {
-            view.animate().alpha(0.0f).setDuration(400);;
+            view.animate().alpha(0.0f).setDuration(400);
         }
         else
         {
-            view.animate().alpha(1.0f).setDuration(400);;
+            view.animate().alpha(1.0f).setDuration(400);
         }
     }
 
