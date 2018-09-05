@@ -17,6 +17,7 @@ import com.bamilo.android.appmodule.bamiloapp.helpers.checkout.GetStepPaymentHel
 import com.bamilo.android.appmodule.bamiloapp.helpers.checkout.SetStepFinishHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.checkout.SetStepPaymentHelper;
 import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.components.customfontviews.EditText;
 import android.widget.TextView;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsCheckout;
@@ -498,7 +499,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
         TextView quantityValue = (TextView) mTotalContainer.findViewById(R.id.total_quantity);
         // Set views
-        totalValue.setText(CurrencyFormatter.formatCurrency(total));
+        totalValue.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(total)));
         quantityValue.setText(R.string.cart_total_amount);
 
         mTotalContainer.setVisibility(View.VISIBLE);

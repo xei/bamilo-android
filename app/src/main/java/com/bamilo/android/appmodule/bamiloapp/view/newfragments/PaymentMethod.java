@@ -9,7 +9,7 @@ import java.util.Map;
 public class PaymentMethod {
     private String id;
     private String title;
-    private ArrayList<String> imageUrls;
+    private String iconUrl;
     private String text;
 
     public void setId(String id)
@@ -30,15 +30,15 @@ public class PaymentMethod {
     {
         return this.title;
     }
-    public void setImageUrls(ArrayList<String> imageUrl)
-    {
-        this.imageUrls = imageUrl;
+
+    public String getIconUrl() {
+        return iconUrl;
     }
 
-    public ArrayList<String> getImageUrls()
-    {
-        return this.imageUrls;
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
+
     public void setText(String text)
     {
         this.text = text;
@@ -48,11 +48,6 @@ public class PaymentMethod {
         return this.text.trim();
     }
 
-    public String getImageUrl()
-    {
-        if (imageUrls == null || imageUrls.size() == 0) return "";
-        return imageUrls.get(0);
-    }
 
     public void setMethod(Map.Entry<String, String> entry, HashMap<String, PaymentInfo> infoList)
     {
@@ -60,7 +55,7 @@ public class PaymentMethod {
         setTitle(entry.getValue());
         PaymentInfo info = infoList.get(title);
         setText(info.getText());
-        setImageUrls(info.getImages());
+        setIconUrl(info.getImage());
     }
 
 }

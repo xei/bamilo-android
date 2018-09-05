@@ -18,13 +18,13 @@ import java.util.ArrayList;
  */
 public class PaymentInfo implements Parcelable{
 	private String text;
-	private ArrayList<String> images;
+	private String image;
 	private String tooltip_text;
 	private String cvc_text;
 
 	public PaymentInfo() {
 		this.setText("");
-		this.setImages(new ArrayList<String>());
+		this.setImage("");
 		this.setTooltipText("");
 		this.setCvcText("");
 	}
@@ -35,16 +35,18 @@ public class PaymentInfo implements Parcelable{
 		this.text = mJSONObject.optString(RestConstants.TEXT);
 		this.tooltip_text = mJSONObject.optString(RestConstants.TOOLTIP_TEXT);
 		this.cvc_text = mJSONObject.optString(RestConstants.CVC_TEXT);
-		JSONArray mJSONArray = mJSONObject.optJSONArray(RestConstants.IMAGES);
-		if(mJSONArray != null && mJSONArray.length() > 0){
-			for (int i = 0; i < mJSONArray.length(); i++) {
-				try {
-					this.images.add(mJSONArray.getString(i));
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}	
-			}
+
+		try {
+			this.image = mJSONObject
+					.optJSONObject("icons")
+					.optJSONArray("enable")
+					.get(0)
+					.toString();
+
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
+
 		
 		
 		
@@ -66,7 +68,7 @@ public class PaymentInfo implements Parcelable{
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 	    dest.writeString(text);
-	    dest.writeList(images);
+	    dest.writeString(image);
 	    dest.writeString(tooltip_text);
 	    dest.writeString(cvc_text);
 	}
@@ -77,8 +79,7 @@ public class PaymentInfo implements Parcelable{
 	 */
 	private PaymentInfo(Parcel in) {
 		this.text = in.readString();
-		images = new ArrayList<String>();
-		in.readList(images, String.class.getClassLoader());
+		this.image = in.readString();
 		this.tooltip_text = in.readString();
 		this.cvc_text = in.readString();
 		
@@ -101,16 +102,16 @@ public class PaymentInfo implements Parcelable{
 	/**
 	 * @return the images
 	 */
-	public ArrayList<String> getImages() {
-		return images;
+	public String getImage() {
+		return image;
 	}
 
 
 	/**
 	 * @param images the images to set
 	 */
-	public void setImages(ArrayList<String> images) {
-		this.images = images;
+	public void setImage(String images) {
+		this.image = images;
 	}
 
 	/**
