@@ -235,7 +235,7 @@ object RetrofitHelper {
      *
      * TODO: remove this method while migrating to OAuth
      */
-    private fun decodeCookie(encodedCookieString: String): HttpCookie? {
+    private fun decodeCookie(encodedCookieString: String?): HttpCookie? {
         var cookie: HttpCookie? = null
         if (!TextUtils.isEmpty(encodedCookieString)) {
             val bytes = Base64.decode(encodedCookieString, Base64.DEFAULT)

@@ -7,7 +7,7 @@ import android.view.View
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.Reviews
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Reviews
 import com.bamilo.android.appmodule.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.android.appmodule.modernbamilo.util.getMorphNumberString
@@ -68,7 +68,12 @@ class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdv
     private fun showReviews() {
         visibleReviewViews()
 
-        holder.total.text = reviews.total.toString().persianizeDigitsInString()
+        holder.total.text = holder
+                .itemView
+                .context
+                .getString(R.string.comment_header_commentsCount, reviews.total.toString()
+                        .persianizeDigitsInString())
+
         holder.maxRate.text = holder.itemView.context.getString(R.string.of_number, 5).persianizeDigitsInString()
         holder.rate.text = getMorphNumberString(reviews.average).persianizeDigitsInString()
 

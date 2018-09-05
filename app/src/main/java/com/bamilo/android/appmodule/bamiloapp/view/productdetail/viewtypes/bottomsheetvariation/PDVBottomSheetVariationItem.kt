@@ -8,8 +8,8 @@ import com.bamilo.android.framework.components.ghostadapter.GhostAdapter
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.utils.OnItemClickListener
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.SimpleProduct
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.Variation
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.SimpleProduct
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Variation
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.variation.colors.OtherVariationsItem
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.variation.size.VariationsSizeItem
 

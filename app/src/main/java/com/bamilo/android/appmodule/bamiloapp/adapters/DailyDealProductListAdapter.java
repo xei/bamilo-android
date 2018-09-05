@@ -10,14 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.appmodule.bamiloapp.view.components.DailyDealViewComponent;
 import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -25,7 +23,9 @@ import java.util.Locale;
  * Created on 10/17/2017.
  */
 
-public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealProductListAdapter.ProductListViewHolder> {
+public class DailyDealProductListAdapter extends
+        RecyclerView.Adapter<DailyDealProductListAdapter.ProductListViewHolder> {
+
     private List<DailyDealViewComponent.Product> products;
     private OnDealProductItemClickListener onDealProductItemClickListener;
 
@@ -47,7 +47,8 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
 
         if (product.thumb != null) {
             try {
-                ImageManager.getInstance().loadImage(product.thumb, holder.imgProductThumb, null, R.drawable.no_image_large, false);
+                ImageManager.getInstance().loadImage(product.thumb, holder.imgProductThumb, null,
+                        R.drawable.no_image_large, false);
             } catch (Exception e) {
                 Print.d(e.getMessage());
             }
@@ -55,7 +56,8 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
 
         holder.tvProductName.setText(product.name);
         holder.tvProductBrand.setText(product.brand);
-        holder.tvProductPrice.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(product.price)));
+        holder.tvProductPrice.setText(StringExtKt
+                .persianizeDigitsInString(CurrencyFormatter.formatCurrency(product.price)));
         holder.viewOutOfStockCover.setVisibility(View.GONE);
         if (!product.hasStock) {
             holder.tvProductOldPrice.setVisibility(View.INVISIBLE);
@@ -66,23 +68,27 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
             holder.viewOutOfStockCover.setVisibility(View.VISIBLE);
         } else if (product.oldPrice > 0 && product.maxSavingPercentage > 0) {
             holder.tvProductOldPrice.setVisibility(View.VISIBLE);
-            holder.tvProductOldPrice.setPaintFlags(holder.tvProductOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tvProductOldPrice.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(product.oldPrice)));
+            holder.tvProductOldPrice.setPaintFlags(
+                    holder.tvProductOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.tvProductOldPrice.setText(StringExtKt
+                    .persianizeDigitsInString(CurrencyFormatter.formatCurrency(product.oldPrice)));
             holder.tvProductDiscountPercentage.setVisibility(View.VISIBLE);
             holder.tvProductDiscountPercentage.setBackgroundResource(R.drawable.gray_badge_bg);
-            holder.tvProductDiscountPercentage.setTextColor(ContextCompat.getColor(context, R.color.recommendation_grey));
-            holder.tvProductDiscountPercentage.setText(StringExtKt.persianizeDigitsInString(String.format(locale,
-                    context.getString(R.string.daily_deals_item_percentage_placeholder), product.maxSavingPercentage)));
+            holder.tvProductDiscountPercentage
+                    .setTextColor(ContextCompat.getColor(context, R.color.recommendation_grey));
+            holder.tvProductDiscountPercentage
+                    .setText(StringExtKt.persianizeDigitsInString(String.format(locale,
+                            context.getString(R.string.daily_deals_item_percentage_placeholder),
+                            product.maxSavingPercentage)));
         } else {
             holder.tvProductOldPrice.setVisibility(View.INVISIBLE);
             holder.tvProductDiscountPercentage.setVisibility(View.INVISIBLE);
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onDealProductItemClickListener != null) {
-                    onDealProductItemClickListener.onDealProductClicked(v, products.get(holder.getAdapterPosition()));
-                }
+        holder.itemView.setOnClickListener(v -> {
+            if (onDealProductItemClickListener != null) {
+                onDealProductItemClickListener
+                        .onDealProductClicked(v, products.get(holder.getAdapterPosition()),
+                                holder.getAdapterPosition());
             }
         });
     }
@@ -107,29 +113,33 @@ public class DailyDealProductListAdapter extends RecyclerView.Adapter<DailyDealP
         return onDealProductItemClickListener;
     }
 
-    public void setOnDealProductItemClickListener(OnDealProductItemClickListener onDealProductItemClickListener) {
+    public void setOnDealProductItemClickListener(
+            OnDealProductItemClickListener onDealProductItemClickListener) {
         this.onDealProductItemClickListener = onDealProductItemClickListener;
     }
 
-    public static class ProductListViewHolder extends RecyclerView.ViewHolder {
+    static class ProductListViewHolder extends RecyclerView.ViewHolder {
+
         TextView tvProductName, tvProductBrand, tvProductPrice,
                 tvProductOldPrice, tvProductDiscountPercentage;
         ImageView imgProductThumb;
         View viewOutOfStockCover;
 
-        public ProductListViewHolder(View itemView) {
+        ProductListViewHolder(View itemView) {
             super(itemView);
-            tvProductName = (TextView) itemView.findViewById(R.id.tvDealProductName);
-            tvProductBrand = (TextView) itemView.findViewById(R.id.tvDealProductBrand);
-            tvProductPrice = (TextView) itemView.findViewById(R.id.tvDealProductPrice);
-            tvProductOldPrice = (TextView) itemView.findViewById(R.id.tvDealProductOldPrice);
-            tvProductDiscountPercentage = (TextView) itemView.findViewById(R.id.tvDealProductDiscountPercentage);
-            imgProductThumb = (ImageView) itemView.findViewById(R.id.imgDealProductThumb);
+            tvProductName = itemView.findViewById(R.id.tvDealProductName);
+            tvProductBrand = itemView.findViewById(R.id.tvDealProductBrand);
+            tvProductPrice = itemView.findViewById(R.id.tvDealProductPrice);
+            tvProductOldPrice = itemView.findViewById(R.id.tvDealProductOldPrice);
+            tvProductDiscountPercentage = itemView
+                    .findViewById(R.id.tvDealProductDiscountPercentage);
+            imgProductThumb = itemView.findViewById(R.id.imgDealProductThumb);
             viewOutOfStockCover = itemView.findViewById(R.id.viewOutOfStockCover);
         }
     }
 
     public interface OnDealProductItemClickListener {
-        void onDealProductClicked(View v, DailyDealViewComponent.Product product);
+
+        void onDealProductClicked(View v, DailyDealViewComponent.Product product, int position);
     }
 }

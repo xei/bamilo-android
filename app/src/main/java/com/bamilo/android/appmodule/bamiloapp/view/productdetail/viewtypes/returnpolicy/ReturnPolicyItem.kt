@@ -4,7 +4,7 @@ import com.bamilo.android.framework.components.ghostadapter.BindItem
 import com.bamilo.android.framework.components.ghostadapter.Binder
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager
 import com.bamilo.android.R
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ReturnPolicy
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ReturnPolicy
 
 /**
  * Created by Farshid

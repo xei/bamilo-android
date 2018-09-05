@@ -1,9 +1,9 @@
 package com.bamilo.android.appmodule.bamiloapp.view.productdetail
 
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ProductDetail
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.Review
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.SimpleProduct
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Review
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.SimpleProduct
 
 /**
  * Created by Farshid

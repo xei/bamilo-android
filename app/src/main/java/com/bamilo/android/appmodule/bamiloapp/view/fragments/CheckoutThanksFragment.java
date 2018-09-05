@@ -6,16 +6,9 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.bamilo.android.appmodule.modernbamilo.userreview.UserReviewActivity;
-import com.emarsys.predict.RecommendedItem;
-import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
-import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
-import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
-import com.bamilo.android.framework.components.customfontviews.Button;
 import android.widget.TextView;
-import com.bamilo.android.framework.components.recycler.HorizontalListView;
-import com.bamilo.android.framework.components.recycler.VerticalSpaceItemDecoration;
+import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsCheckout;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.CategoryConstants;
@@ -29,6 +22,19 @@ import com.bamilo.android.appmodule.bamiloapp.helpers.cart.ClearShoppingCartHelp
 import com.bamilo.android.appmodule.bamiloapp.helpers.teasers.GetRichRelevanceHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
+import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
+import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
+import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
+import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
+import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
+import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
+import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RecommendationsCartHolder;
+import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RichRelevanceAdapter;
+import com.bamilo.android.appmodule.modernbamilo.userreview.UserReviewActivity;
+import com.bamilo.android.appmodule.modernbamilo.util.storage.SharedPreferencesHelperKt;
+import com.bamilo.android.framework.components.customfontviews.Button;
+import com.bamilo.android.framework.components.recycler.HorizontalListView;
+import com.bamilo.android.framework.components.recycler.VerticalSpaceItemDecoration;
 import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.objects.product.RichRelevance;
@@ -39,14 +45,7 @@ import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
 import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
-import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
-import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
-import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
-import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RecommendationsCartHolder;
-import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RichRelevanceAdapter;
-import com.bamilo.android.R;
-
+import com.emarsys.predict.RecommendedItem;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -54,7 +53,8 @@ import java.util.List;
 /**
  * @author sergiopereira
  */
-public class CheckoutThanksFragment extends BaseFragment implements TargetLink.OnAppendDataListener, IResponseCallback {
+public class CheckoutThanksFragment extends BaseFragment implements TargetLink.OnAppendDataListener,
+        IResponseCallback {
 
     private static final String TAG = CheckoutThanksFragment.class.getSimpleName();
 
@@ -114,6 +114,7 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
         recommendManager = new RecommendManager();
 
         TrackEvent();
+        trackHomePageItemPurchaseEvent();
     }
 
     private void TrackEvent() {
@@ -130,6 +131,20 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
             sem.value = (long) cart.getTotal();
         }
         TrackerManager.trackEvent(getContext(), EventConstants.CheckoutFinished, sem);
+    }
+
+    private void trackHomePageItemPurchaseEvent() {
+        for (String sku : BamiloApplication.INSTANCE.getHomepageTrackingItemsSkus()) {
+            SimpleEventModel sem = getSimpleEventModel();
+            sem.category = SharedPreferencesHelperKt.
+                    getHomePageItemsPurchaseTrackCategory(getContext());
+            sem.action = EventConstants.Purchased;
+            sem.label = SharedPreferencesHelperKt.
+                    getHomePageItemsPurchaseTrackLabel(getContext());
+            TrackerManager.trackEvent(getContext(), EventConstants.Purchased, sem);
+        }
+
+        BamiloApplication.INSTANCE.clearHomepageTrackingItemsSkus();
     }
 
     private SimpleEventModel getSimpleEventModel() {
@@ -209,7 +224,9 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
         // Track purchase
         PurchaseEntity cart = getCart();
 
-        TrackerDelegator.trackPurchaseInCheckoutThanks(cart, orderNumber, grandTotalValue, orderShipping, orderTax, paymentMethod);
+        TrackerDelegator
+                .trackPurchaseInCheckoutThanks(cart, orderNumber, grandTotalValue, orderShipping,
+                        orderTax, paymentMethod);
 
         ArrayList<PurchaseCartItem> carts = cart.getCartItems();
         StringBuilder categories = new StringBuilder();
@@ -220,8 +237,11 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
         }
 
         // Track Purchase
-        MainEventModel purchaseEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
-                MainEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), true));
+        MainEventModel purchaseEventModel = new MainEventModel(null, null, null,
+                SimpleEventModel.NO_VALUE,
+                MainEventModel.createPurchaseEventModelAttributes(categories.toString(),
+                        (long) cart.getTotal(), true));
+
         TrackerManager.trackEvent(getContext(), EventConstants.Purchase, purchaseEventModel);
 
         // Related Products
@@ -239,7 +259,6 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
 
         //Show Order Number
         showOrderNumber(view);
-
 
         // Update cart info
         getBaseActivity().updateCartInfo();
@@ -271,7 +290,8 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
             tvOrderNumber.setVisibility(View.GONE);
         } else {
             if (getContext() != null) {
-                tvOrderNumber.setText(getContext().getResources().getString(R.string.order_number, orderNumber));
+                tvOrderNumber.setText(
+                        getContext().getResources().getString(R.string.order_number, orderNumber));
             }
         }
     }
@@ -295,16 +315,20 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
             return;
         }
 
-        if (richRelevance != null && CollectionUtils.isNotEmpty(richRelevance.getRichRelevanceProducts())) {
+        if (richRelevance != null && CollectionUtils
+                .isNotEmpty(richRelevance.getRichRelevanceProducts())) {
             if (richRelevance != null && TextUtils.isNotEmpty(richRelevance.getTitle())) {
-                ((TextView) relatedProductsView.findViewById(R.id.pdv_related_title)).setText(richRelevance.getTitle());
+                ((TextView) relatedProductsView.findViewById(R.id.pdv_related_title))
+                        .setText(richRelevance.getTitle());
             }
-            HorizontalListView relatedGridView = relatedProductsView.findViewById(R.id.rich_relevance_listview);
+            HorizontalListView relatedGridView = relatedProductsView
+                    .findViewById(R.id.rich_relevance_listview);
             relatedGridView.enableRtlSupport(ShopSelector.isRtl());
             relatedGridView.addItemDecoration(new VerticalSpaceItemDecoration(ITEMS_MARGIN));
-            relatedGridView.setAdapter(new RichRelevanceAdapter(richRelevance.getRichRelevanceProducts(),
-                    this,
-                    false));
+            relatedGridView
+                    .setAdapter(new RichRelevanceAdapter(richRelevance.getRichRelevanceProducts(),
+                            this,
+                            false));
             relatedProductsView.setVisibility(View.VISIBLE);
         } else {
             hideRelatedItems();
@@ -351,8 +375,9 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
 
     @Override
     public void onAppendData(FragmentType next, String title, String id, Bundle data) {
-        if (TextUtils.isNotEmpty(relatedRichRelevanceHash))
+        if (TextUtils.isNotEmpty(relatedRichRelevanceHash)) {
             data.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, relatedRichRelevanceHash);
+        }
     }
 
     /**
@@ -367,7 +392,8 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
         String orderNumber = view.getTag() == null ? null : view.getTag().toString();
         if (!TextUtils.isEmpty(orderNumber)) {
             bundle.putString(ConstantsIntentExtra.ORDER_NUMBER, orderNumber);
-            getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -410,7 +436,8 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
      * @author paulo
      */
     private void onClickRetryButton() {
-        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -420,8 +447,10 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
      */
     private void onClickContinue() {
         // Goto home
-        if (BamiloApplication.CUSTOMER != null && BamiloApplication.CUSTOMER.getIdAsString() != null) {
-            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if (BamiloApplication.CUSTOMER != null
+                && BamiloApplication.CUSTOMER.getIdAsString() != null) {
+            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -433,7 +462,8 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
 
     @Override
     public boolean allowBackPressed() {
-        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+                FragmentController.ADD_TO_BACK_STACK);
         return true;
     }
 
@@ -465,10 +495,11 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
                 break;
         }
 
-
-        if(getContext() != null && notOpenYet) {
+        if (getContext() != null && notOpenYet) {
             final String userId = BamiloApplication.CUSTOMER.getIdAsString();
-            UserReviewActivity.start(getContext(), UserReviewActivity.getTYPE_USER_REVIEW_AFTER_PURCHASE(), userId, orderNumber);
+            UserReviewActivity
+                    .start(getContext(), UserReviewActivity.getTYPE_USER_REVIEW_AFTER_PURCHASE(),
+                            userId, orderNumber);
             notOpenYet = false;
         }
 
@@ -503,8 +534,9 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
         RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
             @Override
             public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
-                if (!isAdded())
+                if (!isAdded()) {
                     return;
+                }
 
                 if (data == null || data.size() == 0) {
                     //relatedProductsView.removeView(recommendationsHolder.itemView);
@@ -527,22 +559,28 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
                 try {
                     // Set view
                     relatedProductsView.removeView(recommendationsHolder.itemView);
-                    recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_cart, relatedProductsView, false), null);
+                    recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(),
+                            inflater.inflate(R.layout.recommendation_cart, relatedProductsView,
+                                    false), null);
 
                     recommendationsHolder.onBind(data);
                     // Add to container
 
-                    relatedProductsView.addView(recommendationsHolder.itemView, relatedProductsView.getChildCount() - 1);
+                    relatedProductsView.addView(recommendationsHolder.itemView,
+                            relatedProductsView.getChildCount() - 1);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         };
 
-        if (cart == null) return;
+        if (cart == null) {
+            return;
+        }
 
         if (cart.getCartCount() == 1) {
-            recommendManager.sendAlsoBoughtRecommend(null, cart.getCartItems().get(0).getSku(), 6, handler);
+            recommendManager
+                    .sendAlsoBoughtRecommend(null, cart.getCartItems().get(0).getSku(), 6, handler);
         } else {
             recommendManager.sendPersonalRecommend(6, handler);
         }

@@ -46,12 +46,12 @@
 
 ## MOBILE
 #### com.mobile.components
--keep interface com.mobile.components.RangeSeekBar$** { public *; }
--keep class com.mobile.components.RangeSeekBar { public *; }
--keep public interface com.mobile.components.absspinner.IcsAdapterView$** { public *; }
--keep,includedescriptorclasses class com.mobile.components.absspinner.IcsAdapterView { public *; }
--keep interface com.mobile.components.ScrollViewEx$** { public *; }
--keep interface com.mobile.components.androidslidingtabstrip.SlidingTabLayout$** { public *; }
+-keep interface com.bamilo.android.framework.components.RangeSeekBar$** { public *; }
+-keep class com.bamilo.android.framework.components.RangeSeekBar { public *; }
+-keep public interface com.bamilo.android.framework.components.absspinner.IcsAdapterView$** { public *; }
+-keep, includedescriptorclasses class com.bamilo.android.framework.components.absspinner.IcsAdapterView { public *; }
+-keep interface com.bamilo.android.framework.components.ScrollViewEx$** { public *; }
+-keep interface com.bamilo.android.framework.components.androidslidingtabstrip.SlidingTabLayout$** { public *; }
 
 #### com.bamilo.android.appmodule.bamiloapp.utils.
 -keep class com.bamilo.android.appmodule.bamiloapp.utils.MyProfileActionProvider { public *; }
@@ -64,11 +64,11 @@
 -keep public enum com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment$KeyboardState { public *; }
 
 #### com.mobile.service.rest
--keep class com.mobile.service.rest.** { *; }
--keep interface com.mobile.service.rest.** { *; }
+-keep class com.bamilo.android.framework.service.rest.** { *; }
+-keep interface com.bamilo.android.framework.service.rest.** { *; }
 
 ## JAVASCRIPTINTERFACE
--keepclassmembers class cocom.bamilo.android.appmodule.bamiloapp.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface { public *; }
+-keepclassmembers class com.bamilo.android.appmodule.bamiloapp.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface { public *; }
 -keepattributes JavascriptInterface
 
 ## PUSHWOOSH
@@ -94,10 +94,14 @@
 -dontwarn javax.annotation.**
 -dontwarn retrofit.appengine.UrlFetchClient
 
-## OKHTTP
+## OKHTTP3
 -keep class com.squareup.okhttp3.** {
 *;
 }
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+## okhttp
+-dontwarn com.squareup.okhttp.**
+-keep class com.squareup.okhttp.{*;}
 
 ## VOLLEY
 -keep class com.android.volley.** { *; }
@@ -133,5 +137,5 @@
 -keep interface org.apache.commons.** { *; }
 
 # Trackers
--keep interface com.mobile.interfaces.tracking.** { *; }
+-keep interface com.bamilo.android.appmodule.bamiloapp.interfaces.tracking.** { *; }
 -keep class com.bamilo.android.appmodule.bamiloapp.utils.tracking.** { *; }

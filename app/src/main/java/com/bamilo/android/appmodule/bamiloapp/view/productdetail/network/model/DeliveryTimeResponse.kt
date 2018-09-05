@@ -1,4 +1,4 @@
-package com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.response
+package com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model
 
 /**
  * Created by Farshid

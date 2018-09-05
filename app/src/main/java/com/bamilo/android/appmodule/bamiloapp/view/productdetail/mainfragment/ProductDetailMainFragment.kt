@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,10 +34,10 @@ import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory
 import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ImageSliderModel
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.PrimaryInfoModel
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ProductDetail
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.SimpleProduct
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ImageSliderModel
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.PrimaryInfoModel
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.SimpleProduct
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.breadcrumbs.BreadcrumbListItem
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.primaryinfo.PrimaryInfoItem
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.recommendation.RecommendationItem
@@ -48,6 +49,8 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.varia
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.android.databinding.FragmentPdvMainViewBinding
 import com.bamilo.android.framework.components.ghostadapter.GhostAdapter
+import com.bamilo.android.framework.service.database.BrandsTableHelper
+import com.bamilo.android.framework.service.database.LastViewedTableHelper
 import com.bamilo.android.framework.service.tracking.AdjustTracker
 import com.bamilo.android.framework.service.tracking.TrackingPage
 import com.emarsys.predict.RecommendedItem
@@ -265,7 +268,6 @@ class ProductDetailMainFragment : Fragment() {
         if (!isAdded || context == null) {
             return
         }
-
         items.clear()
         adapter.removeAll()
 
@@ -300,7 +302,6 @@ class ProductDetailMainFragment : Fragment() {
         val params = Bundle()
         params.putSerializable(AdjustTracker.PRODUCT, product)
         params.putString(AdjustTracker.TREE, product.breadcrumbs[0].target?.let { it.split("::")[1] })
-
         TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_DETAIL_LOADED, params)
     }
 
@@ -373,18 +374,23 @@ class ProductDetailMainFragment : Fragment() {
                 addBreadCrumbs()
                 addItemsToAdapter()
 
+                addProductToLastViewDatabase()
                 pdvMainView.onProductReceived(it)
-
-                pdvMainView.dismissProgressView()
 
                 getRecommendedProducts()
 
             } else if (context != null) {
-                pdvMainView.dismissProgressView()
                 pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
                         context!!.getString(R.string.error_occured))
             }
+
+            pdvMainView.dismissProgressView()
         })
+    }
+
+    private fun addProductToLastViewDatabase() {
+        LastViewedTableHelper.insertLastViewedProduct(product)
+        BrandsTableHelper.updateBrandCounter(product.brand)
     }
 
     private fun getRecommendedProducts() {

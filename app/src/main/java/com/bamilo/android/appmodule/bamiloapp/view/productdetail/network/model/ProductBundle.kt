@@ -1,4 +1,4 @@
-package com.bamilo.android.appmodule.bamiloapp.view.productdetail.model
+package com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model
 
 import java.io.Serializable
 

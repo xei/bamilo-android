@@ -36,7 +36,7 @@ import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.bamilo.android.appmodule.bamiloapp.utils.catalog.CatalogSort;
 import com.bamilo.android.R;
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ProductDetail;
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -506,10 +506,9 @@ public class TrackerDelegator {
             }
         }
 
-        // GA
-//        AnalyticsGoogle.get().trackPurchase(orderNr, cartValue, items);
+        AnalyticsGoogle.get().trackPurchase(orderNr, cartValue, items);
         //GA Banner Flow
-        trackBannerClick(items);
+        //trackBannerClick(items);
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
@@ -718,10 +717,10 @@ public class TrackerDelegator {
                 .gtmTrackAddToCart(sku, price, brand, EUR_CURRENCY, discount, rating, category,
                         subCategory, location);
         //GA Banner Flow
-        if (bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE) != null) {
-            BamiloApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle
-                    .getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE));
-        }
+//        if (bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE) != null) {
+//            BamiloApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle
+//                    .getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE));
+//        }
     }
 
     /**
@@ -1078,6 +1077,8 @@ public class TrackerDelegator {
     /**
      * validate if there's any product added from a banner when finished a success order
      */
+
+    /* farshid
     public static void trackBannerClick(final List<PurchaseItem> items) {
         final HashMap<String, String> skus = BamiloApplication.INSTANCE.getBannerFlowSkus();
         if (skus != null && skus.size() > 0 && !CollectionUtils.isEmpty(items)) {
@@ -1097,7 +1098,7 @@ public class TrackerDelegator {
                 }
             }).start();
         }
-    }
+    }*/
 
     /**
      * fires a GA event every time the user taps on one of the home teasers

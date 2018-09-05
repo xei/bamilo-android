@@ -37,6 +37,7 @@ private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
 class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mTitleTextView: TextView
+    private lateinit var mCartBadgeTextView: TextView
     private lateinit var mCloseButton: ImageButton
     private lateinit var mCartButton: AppCompatImageView
     private lateinit var mWebView: WebView
@@ -44,6 +45,8 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
     private lateinit var mWebApi: DescSpecWebApi
 
     private var mProductId: String? = null
+
+    private var mDefaultCartItemCount = 0
 
     companion object {
         /**
@@ -78,6 +81,12 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
         val rootView = inflater.inflate(R.layout.fragment_description_temp, container, false)
 
         findViews(rootView)
+
+        if (mDefaultCartItemCount > 0) {
+            mCartBadgeTextView.text = mDefaultCartItemCount.toString()
+            mCartBadgeTextView.visibility = View.VISIBLE
+        }
+
         mTitleTextView.text = resources.getString(R.string.decSpec_tab_description)
         initWebView()
         setOnClickListeners()
@@ -88,6 +97,7 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
 
     private fun findViews(rootView: View) {
         mTitleTextView = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_xeiTextView_title)
+        mCartBadgeTextView = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_xeiTextView_cartBadge)
         mCloseButton = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_imageButton_close)
         mCartButton = rootView.findViewById(R.id.layoutToolbar_appCompatImageView_whiteCart)
         mWebView = rootView.findViewById(R.id.fragmentDescription_webView_descriptionWebView)
@@ -109,7 +119,7 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
 
     private fun loadDescription() {
         val call = mWebApi.getDescription(mProductId!!)
-        call.enqueue(object: Callback<ResponseWrapper<GetDescriptionResponse>> {
+        call.enqueue(object : Callback<ResponseWrapper<GetDescriptionResponse>> {
 
             override fun onResponse(call: Call<ResponseWrapper<GetDescriptionResponse>>?, response: Response<ResponseWrapper<GetDescriptionResponse>>?) {
                 response?.body()?.metadata?.description.let {
@@ -132,9 +142,9 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
 
     private fun openCart() = startActivity(
             Intent(context, MainFragmentActivity::class.java).apply {
-            putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.SHOPPING_CART)
-            putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false)
-        })
+                putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.SHOPPING_CART)
+                putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false)
+            })
 
     override fun onClick(clickedView: View?) {
         when (clickedView?.id) {
@@ -143,4 +153,18 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    fun updateCartBadge(cartItemsCount: Int?) {
+        cartItemsCount?.let {
+            try {
+                if (cartItemsCount > 0) {
+                    mCartBadgeTextView.text = cartItemsCount.toString()
+                    mCartBadgeTextView.visibility = View.VISIBLE
+                } else {
+                    mCartBadgeTextView.visibility = View.GONE
+                }
+            } catch (e: Exception) {
+                mDefaultCartItemCount = cartItemsCount
+            }
+        }
+    }
 }

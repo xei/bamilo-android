@@ -14,7 +14,7 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils
 import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.PrimaryInfoModel
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.PrimaryInfoModel
 import com.bamilo.android.appmodule.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.android.appmodule.modernbamilo.util.getMorphNumberString
@@ -62,7 +62,7 @@ class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: Pri
         if (!BamiloApplication.isCustomerLoggedIn()) {
             pdvMainView.loginUser()
         } else {
-            startSubmitRateActivity(context, sku!!)
+            startSubmitRateActivity(context, sku)
 
         }
     }
@@ -90,7 +90,10 @@ class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: Pri
             discountPercentageRoot.visibility = View.VISIBLE
             discountLayout.visibility = View.VISIBLE
 
-            oldPrice.text = CurrencyFormatter.formatCurrency(primaryInfoModel.priceModel.oldPrice, false).persianizeDigitsInString()
+            oldPrice.text = CurrencyFormatter
+                    .formatCurrency(primaryInfoModel.priceModel.oldPrice, false)
+                    .persianizeDigitsInString() + " " + primaryInfoModel.priceModel.currency
+
             oldPrice.paintFlags = holder.oldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 
             currentPrice.text = CurrencyFormatter.formatCurrency(primaryInfoModel.priceModel.price, false).persianizeDigitsInString()
@@ -107,7 +110,6 @@ class PrimaryInfoItem(private var sku: String, private var primaryInfoModel: Pri
                 discountPercentage.text = primaryInfoModel.priceModel.discount_percentage?.persianizeDigitsInString() +
                         itemView.context.getString(R.string.percent_sign)
             }
-
             setPriceLayoutMargin(this, 0)
         }
     }

@@ -4,17 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.NonNull;
-
+import android.text.TextUtils;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.AigPersistentHttpCookie;
 import com.bamilo.android.core.service.model.JsonConstants;
-import com.bamilo.android.framework.service.utils.TextUtils;
 import com.bamilo.android.framework.service.utils.security.Base64;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
+import dagger.Module;
+import dagger.Provides;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,14 +25,10 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
-
-import dagger.Module;
-import dagger.Provides;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
@@ -58,8 +54,9 @@ public class ApiModule {
     @Singleton
     @Named("apiBaseUrl")
     public HttpUrl provideApiBaseUrl(Context context) {
-        String baseUrl = String.format("https://%s/%s/", context.getString(R.string.single_shop_country_url),
-                context.getString(R.string.global_api_version));
+        String baseUrl = String
+                .format("https://%s/%s/", context.getString(R.string.single_shop_country_url),
+                        context.getString(R.string.global_api_version));
         return HttpUrl.parse(baseUrl);
     }
 
@@ -72,24 +69,32 @@ public class ApiModule {
     @Provides
     @Singleton
     public HttpCookie provideHttpCookie(Context context) {
-        SharedPreferences mCookiePrefs = context.getSharedPreferences(PERSISTENT_COOKIES_FILE, Context.MODE_PRIVATE);
+        SharedPreferences mCookiePrefs = context
+                .getSharedPreferences(PERSISTENT_COOKIES_FILE, Context.MODE_PRIVATE);
         // Get stored encoded cookie
         String encodedCookie = mCookiePrefs.getString(COOKIE_TAG, null);
         // Decode
-        HttpCookie cookie = decodeCookie(encodedCookie);
-        return cookie;
+        return decodeCookie(encodedCookie);
     }
 
     @Provides
     @Named("cookieKey")
     public String provideCookieKey(HttpCookie cookie) {
-        return cookie.getName();
+        String cookieName = cookie.getName();
+        if (TextUtils.isEmpty(cookieName)) {
+            return "";
+        }
+        return cookieName;
     }
 
     @Provides
     @Named("cookieValue")
     public String provideCookieValue(HttpCookie cookie) {
-        return cookie.getValue();
+        String cookieValue = cookie.getValue();
+        if (TextUtils.isEmpty(cookieValue)) {
+            return "";
+        }
+        return cookieValue;
     }
 
     @Provides
@@ -101,8 +106,9 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor, JsonManipulatorInterceptor jsonManipulatorInterceptor,
-                                            @Named("cookieSharedPrefs") final SharedPreferences cookieSharedPrefs) {
+    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor,
+            JsonManipulatorInterceptor jsonManipulatorInterceptor,
+            @Named("cookieSharedPrefs") final SharedPreferences cookieSharedPrefs) {
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
@@ -120,15 +126,27 @@ public class ApiModule {
                         String encodedCookie = cookieSharedPrefs.getString(COOKIE_TAG, null);
                         // Decode
                         HttpCookie sharedCookie = decodeCookie(encodedCookie);
-                        Cookie cookie = new Cookie.Builder()
-                                .name(sharedCookie.getName())
-                                .value(sharedCookie.getValue())
+                        Cookie.Builder cookieBuilder = new Cookie.Builder()
                                 .httpOnly()
                                 .domain(httpUrl.topPrivateDomain())
-                                .path(httpUrl.encodedPath())
-                                .build();
+                                .path(httpUrl.encodedPath());
+
+                        if (sharedCookie == null) {
+                            cookieBuilder
+                                    .name("")
+                                    .value("");
+                        } else if (sharedCookie.getName() == null) {
+                            cookieBuilder
+                                    .name("")
+                                    .value("");
+                        } else {
+                            cookieBuilder
+                                    .name(sharedCookie.getName())
+                                    .value(sharedCookie.getValue());
+                        }
+
                         List<Cookie> cookies = new ArrayList<>();
-                        cookies.add(cookie);
+                        cookies.add(cookieBuilder.build());
                         return cookies;
                     }
                 });
@@ -244,7 +262,8 @@ public class ApiModule {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
             try {
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-                cookie = ((AigPersistentHttpCookie) objectInputStream.readObject()).getCookie();
+                cookie = ((AigPersistentHttpCookie) objectInputStream
+                        .readObject()).getCookie();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -256,6 +275,7 @@ public class ApiModule {
      * To manipulate type inconsistency
      */
     public static class JsonManipulatorInterceptor implements Interceptor {
+
         private Gson gson;
 
         private JsonManipulatorInterceptor(Gson gson) {
@@ -272,7 +292,8 @@ public class ApiModule {
                 bodyJson.add(JsonConstants.RestConstants.MESSAGES, null);
             }
             return response.newBuilder()
-                    .body(ResponseBody.create(response.body().contentType(), gson.toJson(bodyJson))).build();
+                    .body(ResponseBody.create(response.body().contentType(), gson.toJson(bodyJson)))
+                    .build();
         }
     }
 }

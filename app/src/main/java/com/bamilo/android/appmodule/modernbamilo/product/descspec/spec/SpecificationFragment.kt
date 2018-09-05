@@ -1,6 +1,5 @@
 package com.bamilo.android.appmodule.modernbamilo.product.descspec.spec
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -39,6 +38,7 @@ private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
 class SpecificationFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mTitleTextView: TextView
+    private lateinit var mCartBadgeTextView: TextView
     private lateinit var mCloseButton: ImageButton
     private lateinit var mSpecificationTableStickyHeadersListView: StickyListHeadersListView
     private lateinit var mCartButton: AppCompatImageView
@@ -47,6 +47,8 @@ class SpecificationFragment : Fragment(), View.OnClickListener {
 
     private var mProductId: String? = null
     private val mSpecificationRows = ArrayList<SpecificationRow>()
+
+    private var mDefaultCartItemCount: Int = 0
 
     companion object {
         /**
@@ -81,6 +83,12 @@ class SpecificationFragment : Fragment(), View.OnClickListener {
 
         val rootView = inflater.inflate(R.layout.fragment_specification, container, false)
         findViews(rootView)
+
+        if (mDefaultCartItemCount > 0) {
+            mCartBadgeTextView.text = mDefaultCartItemCount.toString()
+            mCartBadgeTextView.visibility = View.VISIBLE
+        }
+
         mTitleTextView.text = resources.getString(R.string.decSpec_tab_specification)
         setOnClickListeners()
         loadSpecification()
@@ -89,6 +97,7 @@ class SpecificationFragment : Fragment(), View.OnClickListener {
 
     private fun findViews(rootView: View) {
         mTitleTextView = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_xeiTextView_title)
+        mCartBadgeTextView = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_xeiTextView_cartBadge)
         mCloseButton = rootView.findViewById<View>(R.id.activitySellersList_toolbar_toolbar).findViewById(R.id.layoutToolbar_imageButton_close)
         mSpecificationTableStickyHeadersListView = rootView.findViewById(R.id.fragmentSpecification_stickyListHeadersListView_specificationTable)
         mCartButton = rootView.findViewById(R.id.layoutToolbar_appCompatImageView_whiteCart)
@@ -115,14 +124,12 @@ class SpecificationFragment : Fragment(), View.OnClickListener {
                         }
                     }
                 }
-
                 initStickyListHeadersListView()
             }
 
             override fun onFailure(call: Call<ResponseWrapper<GetSpecificationResponse>>?, t: Throwable?) {
                 Logger.log(t?.message.toString(), TAG_DEBUG, LogType.ERROR)
             }
-
         })
     }
 
@@ -146,4 +153,18 @@ class SpecificationFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    fun updateCartBadge(cartItemsCount: Int?) {
+        cartItemsCount?.let {
+            try {
+                if (cartItemsCount > 0) {
+                    mCartBadgeTextView.text = cartItemsCount.toString()
+                    mCartBadgeTextView.visibility = View.VISIBLE
+                } else {
+                    mCartBadgeTextView.visibility = View.GONE
+                }
+            } catch (e: Exception) {
+                mDefaultCartItemCount = cartItemsCount
+            }
+        }
+    }
 }

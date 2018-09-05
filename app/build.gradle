@@ -27,18 +27,20 @@ android {
         buildConfigField "Long", "WRITE_TIMEOUT_SECOND", WRITE_TIMEOUT_SECOND
 
         resValue "string", "fcm_sender_id", FCM_SENDER_ID
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    
+
+    dexOptions {
+        jumboMode = true
+        javaMaxHeapSize "4G"
+        maxProcessCount 4
+    }
+
     dataBinding {
         enabled = true
     }
 
     lintOptions {
         checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
         abortOnError false
     }
 
@@ -54,29 +56,28 @@ android {
     }
 
     buildTypes {
-
         debug {
-//            applicationIdSuffix '.debug'
             debuggable true
             minifyEnabled false
         }
 
         release {
+            signingConfig signingConfigs.release
             debuggable false
             minifyEnabled true
-            signingConfig signingConfigs.release
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-project-pro.txt',
                     'proguard-rules-ghostadapter.pro',
                     'proguard-rules-glide.pro',
                     'proguard-rules-logs.pro',
-                    'proguard-rules-retrofit.pro'
+                    'proguard-rules-retrofit.pro',
+                    'proguard-rules-pushwoosh.pro'
         }
     }
 
     flavorDimensions "default"
     productFlavors {
-
         staging {
             applicationIdSuffix '.staging'
             versionNameSuffix ' Staging'
@@ -90,7 +91,6 @@ android {
 
             resValue "string", "pushwoosh_app_id", PUSHWOOSH_APPID_LIVE
         }
-
     }
 
     compileOptions {
@@ -110,7 +110,6 @@ android {
                            'src/main/res/drawables/other', 'src/main/res/layouts/moderbamilo', 'src/main/res/layouts', 'src/main/res/layouts/modernbamilo/']
         }
     }
-
 }
 
 ext {

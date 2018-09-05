@@ -10,22 +10,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
-import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
-import com.bamilo.android.framework.components.infiniteviewpager.InfiniteCirclePageIndicator;
-import com.bamilo.android.framework.components.infiniteviewpager.InfinitePagerAdapter;
-import com.bamilo.android.framework.components.viewpager.PreviewViewPager;
+import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
+import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
-import com.bamilo.android.R;
-
+import com.bamilo.android.appmodule.modernbamilo.util.storage.SharedPreferencesHelperKt;
+import com.bamilo.android.framework.components.infiniteviewpager.InfiniteCirclePageIndicator;
+import com.bamilo.android.framework.components.infiniteviewpager.InfinitePagerAdapter;
+import com.bamilo.android.framework.components.viewpager.PreviewViewPager;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 public class SliderViewComponent extends BaseViewComponent<List<SliderViewComponent.Item>> {
+
     private static final float SLIDE_WIDTH_RATIO = 2.1375F;
     private List<Item> items;
     private OnSlideClickListener onSlideClickListener;
@@ -37,8 +37,9 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
     public View getView(Context context) {
         View rootView = View.inflate(context, R.layout.component_slider, null);
 
-        final PreviewViewPager vpSlider = (PreviewViewPager) rootView.findViewById(R.id.vpSlider);
-        final InfiniteCirclePageIndicator indicatorSlider = (InfiniteCirclePageIndicator) rootView.findViewById(R.id.indicatorSlider);
+        final PreviewViewPager vpSlider = rootView.findViewById(R.id.vpSlider);
+        final InfiniteCirclePageIndicator indicatorSlider = rootView
+                .findViewById(R.id.indicatorSlider);
 
         // reversing the list to make the user feel RTL
         Collections.reverse(items);
@@ -48,11 +49,18 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
             @Override
             public void onSlideClicked(View v, int position, Item item) {
                 if (mPage != null) {
-                    String category = String.format(Locale.US, "%s+%s_%d", mPage, BaseViewComponent.ComponentType.Slider.toString(), mInstanceIndex);
+                    String category = String.format(Locale.US, "%s+%s_%d_%d", mPage,
+                            BaseViewComponent.ComponentType.Slider.toString(), item.teaserId,
+                            position);
+
                     String action = EventActionKeys.TEASER_TAPPED;
                     String label = item.targetLink;
-                    SimpleEventModel sem = new SimpleEventModel(category, action, label, SimpleEventModel.NO_VALUE);
+                    SimpleEventModel sem = new SimpleEventModel(category, action, label,
+                            SimpleEventModel.NO_VALUE);
                     TrackerManager.trackEvent(v.getContext(), EventConstants.TeaserTapped, sem);
+
+                    SharedPreferencesHelperKt
+                            .setHomePageItemsPurchaseTrack(v.getContext(), category, label, true);
                 }
                 if (onSlideClickListener != null) {
                     onSlideClickListener.onSlideClicked(v, position, item);
@@ -73,9 +81,11 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
         infinitePagerAdapter.setOneItemMode();
         int slideWidth = calculatePageWidth(context, vpSlider);
         // 5 times : 1 for paddingBottom of constraintLayout, 2 for cardView compatPadding, 2 for cardView elevation
-        int slideContainerPadding = (int) context.getResources().getDimension(R.dimen.slider_slide_padding) * 5;
+        int slideContainerPadding =
+                (int) context.getResources().getDimension(R.dimen.slider_slide_padding) * 5;
         int slideHeight = (int) (slideWidth / SLIDE_WIDTH_RATIO) + slideContainerPadding;
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) vpSlider.getLayoutParams();
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) vpSlider
+                .getLayoutParams();
         params.height = slideHeight;
         vpSlider.setLayoutParams(params);
         return rootView;
@@ -85,7 +95,8 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
         int pagerSidePadding = vpSlider.getPaddingRight() + vpSlider.getPaddingRight();
         int pageMargins = vpSlider.getPageMargin() * 2;
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
         int screenWidth = displayMetrics.widthPixels;
         return screenWidth - (pageMargins + pagerSidePadding);
@@ -109,6 +120,7 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
     }
 
     public static class Item {
+
         public Item(String imageUrl, String targetLink) {
             this.imageUrl = imageUrl;
             this.targetLink = targetLink;
@@ -116,9 +128,11 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
 
         public String imageUrl;
         public String targetLink;
+        public int teaserId;
     }
 
     private static class SliderInfiniteAdapter extends InfinitePagerAdapter {
+
         SliderAdapter sliderAdapter;
 
         public SliderInfiniteAdapter(PagerAdapter adapter) {
@@ -134,6 +148,7 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
     }
 
     private static class SliderAdapter extends PagerAdapter {
+
         private Context mContext;
         private List<Item> items;
         private OnSlideClickListener onSlideClickListener;
@@ -146,8 +161,9 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             View rootView;
-            rootView = LayoutInflater.from(mContext).inflate(R.layout.component_slider_slide, container, false);
-            ImageView imgSlide = (ImageView) rootView.findViewById(R.id.imgSlide);
+            rootView = LayoutInflater.from(mContext)
+                    .inflate(R.layout.component_slider_slide, container, false);
+            ImageView imgSlide = rootView.findViewById(R.id.imgSlide);
             setImageToLoad(items.get(position).imageUrl, imgSlide);
             if (onSlideClickListener != null) {
                 imgSlide.setClickable(true);
@@ -164,7 +180,8 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
         }
 
         private void setImageToLoad(String imageUrl, ImageView imageView) {
-            ImageManager.getInstance().loadImage(imageUrl, imageView, null, R.drawable.no_image_slider, false);
+            ImageManager.getInstance()
+                    .loadImage(imageUrl, imageView, null, R.drawable.no_image_slider, false);
         }
 
         @Override
@@ -187,6 +204,7 @@ public class SliderViewComponent extends BaseViewComponent<List<SliderViewCompon
     }
 
     public interface OnSlideClickListener {
+
         void onSlideClicked(View v, int position, Item item);
     }
 }

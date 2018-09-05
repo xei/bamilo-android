@@ -1,6 +1,4 @@
-package com.bamilo.android.appmodule.bamiloapp.view.productdetail.model
-
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.Image
+package com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model
 
 /**
  * Created by Farshid

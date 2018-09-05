@@ -5,4 +5,4 @@ data class Messages(
         @SerializedName("success") val success: MessageItem?,
         @SerializedName("error") val error: MessageItem?,
         @SerializedName("validate") val validate: MessageItem?
-): BaseModel()
+)

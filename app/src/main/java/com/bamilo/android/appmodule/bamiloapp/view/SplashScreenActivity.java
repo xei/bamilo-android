@@ -1,11 +1,13 @@
 package com.bamilo.android.appmodule.bamiloapp.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,7 +16,6 @@ import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-
 import com.adjust.sdk.Adjust;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
@@ -46,12 +47,15 @@ import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.crashlytics.android.Crashlytics;
 import com.pushwoosh.Pushwoosh;
 import com.pushwoosh.exception.PushwooshException;
-
+import com.pushwoosh.exception.RegisterForPushNotificationsException;
+import com.pushwoosh.function.Callback;
+import com.pushwoosh.function.Result;
 import java.util.Locale;
 
 /**
- * <p> This class creates a splash screen. It also initializes hockey and the backend </p> <p/> <p> Copyright (C) 2012 Rocket Internet - All Rights Reserved
- * </p> <p/> <p> Unauthorized copying of this file, via any medium is strictly prohibited Proprietary and confidential. </p>
+ * <p> This class creates a splash screen. It also initializes hockey and the backend </p> <p/> <p>
+ * Copyright (C) 2012 Rocket Internet - All Rights Reserved </p> <p/> <p> Unauthorized copying of
+ * this file, via any medium is strictly prohibited Proprietary and confidential. </p>
  *
  * @author Michael Kröz
  * @version 1.01
@@ -60,7 +64,8 @@ import java.util.Locale;
  * @date 25/04/2013
  * @description
  */
-public class SplashScreenActivity extends FragmentActivity implements IResponseCallback, OnClickListener {
+public class SplashScreenActivity extends FragmentActivity implements IResponseCallback,
+        OnClickListener {
 
     private final static String TAG = SplashScreenActivity.class.getSimpleName();
 
@@ -190,6 +195,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     }
 
 
+    @SuppressLint("HandlerLeak")
     Handler initializationHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             BaseResponse baseResponse = (BaseResponse) msg.obj;
@@ -209,11 +215,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     protected Class<?> getActivityClassForDevice() {
-        return !getResources().getBoolean(R.bool.isTablet) ? MainFragmentActivity.class : MainFragmentTabletActivity.class;
+        return !getResources().getBoolean(R.bool.isTablet) ? MainFragmentActivity.class
+                : MainFragmentTabletActivity.class;
     }
 
     /**
-     * Starts the Activity depending whether the app is started by the user, or by the push notification.
+     * Starts the Activity depending whether the app is started by the user, or by the push
+     * notification.
      */
     public void selectActivity() {
         Print.i(TAG, "START ANIMATION ACTIVITY");
@@ -266,7 +274,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Case dev
         if (BamiloApplication.INSTANCE.isDebuggable()) {
             String name = getString(getApplicationInfo().labelRes);
-            String text = getString(R.string.first_new_line_second_placeholder, name, AigRestContract.REQUEST_HOST);
+            String text = getString(R.string.first_new_line_second_placeholder, name,
+                    AigRestContract.REQUEST_HOST);
             ((XeiTextView) findViewById(R.id.dev_text)).setText(text);
         }
     }
@@ -293,7 +302,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mLastSuccessResponse = response;
 
         EventType eventType = response.getEventType();
-        int errorCode = response.getError() != null ? response.getError().getCode() : ErrorCode.NO_ERROR;
+        int errorCode =
+                response.getError() != null ? response.getError().getCode() : ErrorCode.NO_ERROR;
         Print.i(TAG, "ON SUCCESS RESPONSE: " + eventType);
 
         // Case event
@@ -321,7 +331,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     protected void attachBaseContext(Context newBase) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            super.attachBaseContext(ConfigurationWrapper.wrapLocale(newBase, new Locale("fa", "ir")));
+            super.attachBaseContext(
+                    ConfigurationWrapper.wrapLocale(newBase, new Locale("fa", "ir")));
         } else {
             super.attachBaseContext(newBase);
         }
@@ -344,20 +355,25 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessGlobalConfigsEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON PROCESS: GLOBAL CONFIGS");
-        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = getApplicationContext()
+                .getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         if (sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null) == null) {
             Print.i(TAG, "SELECTED COUNTRY ID IS NULL");
-            if (BamiloApplication.INSTANCE.countriesAvailable != null && BamiloApplication.INSTANCE.countriesAvailable.size() > 0) {
+            if (BamiloApplication.INSTANCE.countriesAvailable != null
+                    && BamiloApplication.INSTANCE.countriesAvailable.size() > 0) {
                 // Validate if there is any country from deeplink when starting the app from clean slate
-                if (!DeepLinkManager.validateCountryDeepLink(getApplicationContext(), getIntent(), initializationHandler)) {
-                    LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
+                if (!DeepLinkManager.validateCountryDeepLink(getApplicationContext(), getIntent(),
+                        initializationHandler)) {
+                    LocationHelper.getInstance()
+                            .autoCountrySelection(getApplicationContext(), initializationHandler);
                 }
             } else {
                 onRequestError(baseResponse);
             }
         } else {
             Print.i(TAG, "SELECTED COUNTRY ID IS NOT NULL");
-            if (BamiloApplication.INSTANCE.countriesAvailable != null && BamiloApplication.INSTANCE.countriesAvailable.size() > 0) {
+            if (BamiloApplication.INSTANCE.countriesAvailable != null
+                    && BamiloApplication.INSTANCE.countriesAvailable.size() > 0) {
                 BamiloApplication.INSTANCE.init(initializationHandler);
             } else {
                 onRequestError(baseResponse);
@@ -403,7 +419,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessAutoCountrySelection() {
         Print.i(TAG, "ON PROCESS AUTO_COUNTRY_SELECTION");
-        LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
+        LocationHelper.getInstance()
+                .autoCountrySelection(getApplicationContext(), initializationHandler);
     }
 
     /**
@@ -448,7 +465,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessApiEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON PROCESS API EVENT");
-        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct) baseResponse.getContentData();
+        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct) baseResponse
+                .getContentData();
         // Validate out dated sections
         if (apiInformation.isSectionNameConfigurations()) {
             Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
@@ -458,7 +476,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             triggerGetCountryConfigs();
         }
         // Goes to saved redirect page otherwise continue
-        else if (!hasRedirectPage(CountryPersistentConfigs.getRedirectPage(getApplicationContext()))) {
+        else if (!hasRedirectPage(
+                CountryPersistentConfigs.getRedirectPage(getApplicationContext()))) {
             Print.i(TAG, "START MAIN ACTIVITY");
             selectActivity();
         }
@@ -614,7 +633,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         showErrorLayout(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
     }
 
-    protected void showErrorLayout(@ErrorLayoutFactory.LayoutErrorType int type, OnClickListener onClickListener) {
+    protected void showErrorLayout(@ErrorLayoutFactory.LayoutErrorType int type,
+            OnClickListener onClickListener) {
         // Show no network
         if (mErrorFallBackStub instanceof ViewStub) {
             mErrorFallBackStub = ((ViewStub) mErrorFallBackStub).inflate();
@@ -681,7 +701,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onClickRetryNoNetwork() {
         retryRequest();
-        Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
+        Animation animation = AnimationUtils
+                .loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
         findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
     }
 
@@ -693,7 +714,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onClickErrorButton() {
         retryRequest();
         try {
-            Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
+            Animation animation = AnimationUtils
+                    .loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
             findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
@@ -747,20 +769,22 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @return true case valid redirect page
      */
     private boolean hasRedirectPage(RedirectPage redirect) {
-        return CountryConfigs.isValidRedirectPage(redirect) && ActivitiesWorkFlow.showRedirectInfoActivity(this, redirect);
+        return CountryConfigs.isValidRedirectPage(redirect) && ActivitiesWorkFlow
+                .showRedirectInfoActivity(this, redirect);
     }
 
     private void initPushwoosh() {
-        Pushwoosh.getInstance().registerForPushNotifications(result -> {
-            if (result.isSuccess()) {
-                String token = result.getData();
-                Adjust.setPushToken(token);
-                Crashlytics.setUserIdentifier(Pushwoosh.getInstance().getHwid());
-            } else {
-                PushwooshException exception = result.getException();
-                // handle registration error
-            }
-        });
+        Pushwoosh.getInstance().registerForPushNotifications(
+                result -> {
+                    if (result.isSuccess()) {
+                        String token = result.getData();
+                        Adjust.setPushToken(token, SplashScreenActivity.this);
+                        Crashlytics.setUserIdentifier(Pushwoosh.getInstance().getHwid());
+                    } else {
+                        PushwooshException exception = result.getException();
+                        // handle registration error
+                    }
+                });
     }
 
 }

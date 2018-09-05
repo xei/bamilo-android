@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import android.widget.TextView;
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.service.objects.orders.Order;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
@@ -67,7 +68,7 @@ public class OrdersAdapter extends BaseAdapter {
         if (loadMoreProgressEnabled && position == getCount() - 1) {
             if (convertView == null || convertView.getTag() != null) {
                 convertView = LayoutInflater.from(context).inflate(R.layout.catalog_fragment_footer, parent, false);
-                android.widget.TextView tvLoadMore = (android.widget.TextView) convertView.findViewById(R.id.tvLoadMore);
+                android.widget.TextView tvLoadMore = convertView.findViewById(R.id.tvLoadMore);
                 tvLoadMore.setText(R.string.loading_more_orders);
             }
             return convertView;
@@ -93,16 +94,11 @@ public class OrdersAdapter extends BaseAdapter {
 
         PersianDateTimeConverter pd = PersianDateTimeConverter.valueOf(new GregorianCalendar(year, month, day, 0, 0, 0));
 
-        TextView tvPrice = (TextView) convertView.findViewById(R.id.order_item_price);
-        tvPrice.setText(String.format(context.getResources().getString(R.string.order_total), CurrencyFormatter.formatCurrency(order.getTotal())));
+        TextView tvPrice = convertView.findViewById(R.id.order_item_price);
+        tvPrice.setText(StringExtKt.persianizeDigitsInString(String.format(context.getResources().getString(R.string.order_total), CurrencyFormatter.formatCurrency(order.getTotal()))));
 
-        // TODO: 8/28/18 farshid
-//        tvPrice.setFontStyle(tvPrice.getFontFamily(), HoloFontLoader.TEXT_STYLE_BOLD);
-
-        ((TextView) convertView.findViewById(R.id.order_item_number)).setText(String.format(context.getResources().getString(R.string.order_number), String.valueOf(order.getNumber())));
+        ((TextView) convertView.findViewById(R.id.order_item_number)).setText(StringExtKt.persianizeDigitsInString(String.format(context.getResources().getString(R.string.order_number), String.valueOf(order.getNumber()))));
         ((TextView) convertView.findViewById(R.id.order_item_date)).setText(String.format(context.getResources().getString(R.string.order_date), pd.toString()));// JalaliCalendar.gregorianToJalali(new JalaliCalendar.YearMonthDate(order.getDate()) ).toString()));
-        // Show item as selected
-        //convertView.findViewById(R.id.order_item_container).setActivated(position == selectedPosition);
         return convertView;
     }
 

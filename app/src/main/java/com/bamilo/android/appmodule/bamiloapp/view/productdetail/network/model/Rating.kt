@@ -1,6 +1,5 @@
-package com.bamilo.android.appmodule.bamiloapp.view.productdetail.model
+package com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model
 
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.Star
 import java.io.Serializable
 
 class Rating : Serializable {

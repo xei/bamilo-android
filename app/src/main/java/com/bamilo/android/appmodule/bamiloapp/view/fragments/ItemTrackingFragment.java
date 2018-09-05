@@ -164,19 +164,6 @@ public class ItemTrackingFragment extends BaseFragment implements ItemTrackingVi
     }
 
     @Override
-    public void onReviewButtonClicked(View v, PackageItem item) {
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, item.getSku());
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, String.format("%s %s", item.getBrand(), item.getName()));
-        bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, false);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, getString(TrackingPage.ORDER_DETAIL.getName()));
-        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
-        bundle.putBoolean(ConstantsIntentExtra.REDIRECT_TO_REVIEWS, true);
-        // Goto review fragment
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, false);
-    }
-
-    @Override
     public void onProductThumbClickListener(View v, PackageItem item) {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, item.getSku());

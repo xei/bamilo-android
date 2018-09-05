@@ -5,11 +5,12 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
+import android.util.Log
 import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager
 import com.bamilo.android.framework.service.tracking.TrackingPage
 import com.bamilo.android.R
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.model.ProductDetail
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.ProductWebApi
