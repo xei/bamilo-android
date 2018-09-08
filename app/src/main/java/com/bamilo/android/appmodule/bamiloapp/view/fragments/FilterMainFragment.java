@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -12,36 +13,16 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
 import android.widget.ListView;
-
-import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
 import android.widget.TextView;
+import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
-import com.bamilo.android.appmodule.bamiloapp.helpers.categories.GetSubCategoriesHelper;
-import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
-import com.bamilo.android.framework.service.objects.catalog.filters.CatalogCheckFilter;
-import com.bamilo.android.framework.service.objects.catalog.filters.CatalogColorFilterOption;
-import com.bamilo.android.framework.service.objects.catalog.filters.CatalogFilter;
-import com.bamilo.android.framework.service.objects.catalog.filters.CatalogFilters;
-import com.bamilo.android.framework.service.objects.catalog.filters.CatalogPriceFilter;
-import com.bamilo.android.framework.service.objects.catalog.filters.CatalogRatingFilter;
-import com.bamilo.android.framework.service.objects.catalog.filters.FilterOptionInterface;
-import com.bamilo.android.framework.service.objects.catalog.filters.FilterSelectionController;
-import com.bamilo.android.framework.service.objects.category.Categories;
-import com.bamilo.android.framework.service.pojo.BaseResponse;
-import com.bamilo.android.framework.service.pojo.IntConstants;
-import com.bamilo.android.framework.service.pojo.RestConstants;
-import com.bamilo.android.framework.service.tracking.TrackingPage;
-import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
+import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.catalog.CatalogSort;
@@ -51,28 +32,36 @@ import com.bamilo.android.appmodule.bamiloapp.utils.catalog.filters.FilterColorF
 import com.bamilo.android.appmodule.bamiloapp.utils.catalog.filters.FilterFragment;
 import com.bamilo.android.appmodule.bamiloapp.utils.catalog.filters.FilterPriceFragment;
 import com.bamilo.android.appmodule.bamiloapp.utils.catalog.filters.FilterRatingFragment;
-import com.bamilo.android.R;
-import com.bamilo.android.appmodule.bamiloapp.view.newfragments.SubCategoryFilterFragment;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.bamilo.android.framework.service.objects.catalog.filters.CatalogCheckFilter;
+import com.bamilo.android.framework.service.objects.catalog.filters.CatalogColorFilterOption;
+import com.bamilo.android.framework.service.objects.catalog.filters.CatalogFilter;
+import com.bamilo.android.framework.service.objects.catalog.filters.CatalogFilters;
+import com.bamilo.android.framework.service.objects.catalog.filters.CatalogPriceFilter;
+import com.bamilo.android.framework.service.objects.catalog.filters.CatalogRatingFilter;
+import com.bamilo.android.framework.service.objects.catalog.filters.FilterOptionInterface;
+import com.bamilo.android.framework.service.objects.catalog.filters.FilterSelectionController;
+import com.bamilo.android.framework.service.objects.catalog.filters.SubCategory;
+import com.bamilo.android.framework.service.objects.category.Categories;
+import com.bamilo.android.framework.service.pojo.IntConstants;
+import com.bamilo.android.framework.service.pojo.RestConstants;
+import com.bamilo.android.framework.service.tracking.TrackingPage;
+import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
+import com.bamilo.android.framework.service.utils.output.Print;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
- * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
- * <p>
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved <p> Unauthorized copying of this
+ * file, via any medium is strictly prohibited Proprietary and confidential.
  *
  * @author ricardosoares
  * @version 1.0
  * @date 2015/09/07
  */
-public class FilterMainFragment extends BaseFragment implements IResponseCallback, View.OnClickListener {
+public class FilterMainFragment extends BaseFragment implements View.OnClickListener {
 
     private static final String TAG = FilterMainFragment.class.getSimpleName();
 
@@ -98,16 +87,8 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
 
     public final static String INITIAL_FILTER_VALUES = "initial_filter_values";
 
-    TextView mSubCatFilter;
-    private View mSubCategoryLayout;
-
     private TextView mTxFilterTitle;
     private Categories mCategories;
-    private String mCategoryKey;
-
-    private String mCategoryTree;
-
-    private String mMainCategory;
 
     private ContentValues mQueryValues = new ContentValues();
 
@@ -120,6 +101,8 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     private ContentValues mInitialSelectedFilterValues;
     private FragmentType mTargetType;
     private Bundle argumentsBundle;
+
+    private ArrayList<SubCategory> mSubCategories;
 
 
     /**
@@ -142,47 +125,51 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         if (savedInstanceState != null) {
             mFilters = savedInstanceState.getParcelableArrayList(FILTER_TAG);
             currentFilterPosition = savedInstanceState.getInt(FILTER_POSITION_TAG);
-            Parcelable[] filterOptions = savedInstanceState.getParcelableArray(INITIAL_FILTER_VALUES);
-            filterSelectionController = filterOptions instanceof FilterOptionInterface[] ? new FilterSelectionController(mFilters, (FilterOptionInterface[]) filterOptions) : new FilterSelectionController(mFilters);
+            Parcelable[] filterOptions = savedInstanceState
+                    .getParcelableArray(INITIAL_FILTER_VALUES);
+            filterSelectionController = filterOptions instanceof FilterOptionInterface[]
+                    ? new FilterSelectionController(mFilters,
+                    (FilterOptionInterface[]) filterOptions)
+                    : new FilterSelectionController(mFilters);
             mInitialSelectedFilterValues = filterSelectionController.getValues();
-            mCategoryKey = savedInstanceState.getString("category_url");
-            mTargetType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
+            mTargetType = (FragmentType) savedInstanceState
+                    .getSerializable(ConstantsIntentExtra.TARGET_TYPE);
+            mSubCategories = savedInstanceState
+                    .getParcelableArrayList(RestConstants.SUB_CATEGORIES);
         }
         // Received arguments
         else {
-            mTargetType = (FragmentType) argumentsBundle.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
+            mTargetType = (FragmentType) argumentsBundle
+                    .getSerializable(ConstantsIntentExtra.TARGET_TYPE);
             try {
-                mFilters = new CatalogFilters(new JSONObject(argumentsBundle.getString(FILTER_TAG)));
+                mFilters = new CatalogFilters(
+                        new JSONObject(argumentsBundle.getString(FILTER_TAG)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             currentFilterPosition = IntConstants.DEFAULT_POSITION;
             filterSelectionController = new FilterSelectionController(mFilters);
             mInitialSelectedFilterValues = filterSelectionController.getValues();
-            mCategoryKey = argumentsBundle.getString(ConstantsIntentExtra.CATEGORY_URL);
             mKey = argumentsBundle.getString(ConstantsIntentExtra.CONTENT_ID);
             // Get title
             mTitle = argumentsBundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            // Get catalog type (Hash|Seller|Brand|Category|DeepLink)
-            //mQueryValues = UICatalogUtils.saveCatalogType(argumentsBundle, mQueryValues, mKey);
-            // Default catalog values
-            //mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
-            // In case of searching by keyword
+
             UICatalogUtils.saveSearchQuery(argumentsBundle, mQueryValues);
             // Verify if catalog page was open via navigation drawer
-            mCategoryTree = argumentsBundle.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
+            String categoryTree = argumentsBundle
+                    .getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
             //Get category content/main category
-            mMainCategory = argumentsBundle.getString(RestConstants.MAIN_CATEGORY);
-            mSelectedSort = CatalogSort.values()[argumentsBundle.getInt(ConstantsIntentExtra.CATALOG_SORT)];
-
+            String mainCategory = argumentsBundle.getString(RestConstants.MAIN_CATEGORY);
+            mSelectedSort = CatalogSort.values()[argumentsBundle
+                    .getInt(ConstantsIntentExtra.CATALOG_SORT)];
+            mSubCategories = argumentsBundle.getParcelableArrayList(RestConstants.SUB_CATEGORIES);
         }
         //
         toCancelFilters = true;
-        //TODO: add category url_key
-        triggerGetCategories(mCategoryKey);
-
         // Track screen
-        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.FILTER_VIEW.getName()), getString(R.string.gaScreen), "", getLoadTime());
+        BaseScreenModel screenModel = new BaseScreenModel(
+                getString(TrackingPage.FILTER_VIEW.getName()), getString(R.string.gaScreen), "",
+                getLoadTime());
         TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
@@ -190,19 +177,14 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        filtersKey = (ListView) view.findViewById(R.id.filters_key);
-        mTxFilterTitle = (TextView) view.findViewById(R.id.filter_title);
-        mDiscountBox = (SwitchCompat) view.findViewById(R.id.dialog_filter_check_discount);
-        mSubCategoryLayout = view.findViewById(R.id.subcateories_layout);
+        filtersKey = view.findViewById(R.id.filters_key);
+        mTxFilterTitle = view.findViewById(R.id.filter_title);
+        mDiscountBox = view.findViewById(R.id.dialog_filter_check_discount);
         filtersKey.setAdapter(new FiltersArrayAdapter(this.getActivity(), mFilters));
         filtersKey.setSelection(currentFilterPosition);
         loadFilterFragment(currentFilterPosition);
-        filtersKey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                onFiltersKeyItemClick(position);
-            }
-        });
+        filtersKey.setOnItemClickListener(
+                (parent, view1, position, id) -> onFiltersKeyItemClick(position));
 
         int y = 0;
         for (CatalogFilter x : mFilters) {
@@ -212,30 +194,44 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
             y++;
         }
 
-
         if (((CatalogPriceFilter) mFilters.get(y)).getOption().getCheckBoxOption() != null) {
             mDiscountBox.setVisibility(View.VISIBLE);
-           /* mDiscountBox.setText(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption().getLabel());*/
-            mDiscountBox.setChecked(((CatalogPriceFilter) mFilters.get(y)).getOption().getCheckBoxOption().isSelected());
+            /* mDiscountBox.setText(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption().getLabel());*/
+            mDiscountBox.setChecked(
+                    ((CatalogPriceFilter) mFilters.get(y)).getOption().getCheckBoxOption()
+                            .isSelected());
             final int finalY = y;
-            mDiscountBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    ((CatalogPriceFilter) mFilters.get(finalY)).getOption().getCheckBoxOption().setSelected(isChecked);
-                }
-            });
+            mDiscountBox.setOnCheckedChangeListener(
+                    (buttonView, isChecked) -> ((CatalogPriceFilter) mFilters.get(finalY))
+                            .getOption().getCheckBoxOption()
+                            .setSelected(isChecked));
         }
 
         view.findViewById(R.id.dialog_filter_button_cancel).setOnClickListener(this);
         view.findViewById(R.id.dialog_filter_button_done).setOnClickListener(this);
-        mSubCatFilter = (TextView) view.findViewById(R.id.subcateories_text);
-        mSubCatFilter.setOnClickListener(this);
+
+        initSubCatFilter(view);
+    }
+
+    private void initSubCatFilter(View view) {
+        View subCategoryLayout = view.findViewById(R.id.subcateories_layout);
+        view.findViewById(R.id.subcateories_text).setOnClickListener(this);
+
+        if (mSubCategories != null && mSubCategories.size() > 0) {
+            subCategoryLayout.setVisibility(View.VISIBLE);
+            for (SubCategory subCategory : mSubCategories) {
+                subCategory.setSelected(false);
+            }
+        } else {
+            subCategoryLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE");
-        outState.putParcelableArray(INITIAL_FILTER_VALUES, filterSelectionController.getInitialValues());
+        outState.putParcelableArray(INITIAL_FILTER_VALUES,
+                filterSelectionController.getInitialValues());
         outState.putParcelableArrayList(FILTER_TAG, filterSelectionController.getCatalogFilters());
         outState.putSerializable(ConstantsIntentExtra.TARGET_TYPE, mTargetType);
         outState.putInt(FILTER_POSITION_TAG, currentFilterPosition);
@@ -276,31 +272,35 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
             filterSelectionController.addToInitialValues(position);
             mTxFilterTitle.setText(catalogFilter.getName());
             ((BaseAdapter) filtersKey.getAdapter()).notifyDataSetChanged();
-            fragmentChildManagerTransition(R.id.dialog_filter_container, currentFragment, true, true);
+            fragmentChildManagerTransition(R.id.dialog_filter_container, currentFragment, true,
+                    true);
         }
     }
 
-    public void fragmentChildManagerTransition(int container, Fragment fragment, final boolean animated, boolean addToBackStack) {
-        final FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+    public void fragmentChildManagerTransition(int container, Fragment fragment,
+            final boolean animated, boolean addToBackStack) {
+        final FragmentTransaction fragmentTransaction = getChildFragmentManager()
+                .beginTransaction();
 
-        /**
-         * FIXME: Excluded piece of code due to crash on API = 18.
-         * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
+        /*
+          FIXME: Excluded piece of code due to crash on API = 18.
+          Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
          */
-        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
-            @Override
-            public void run() {
-                // Animations
-                if (animated)
-                    fragmentTransaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left, R.anim.slide_from_left, R.anim.slide_to_right);
+        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(() -> {
+            // Animations
+            if (animated) {
+                fragmentTransaction
+                        .setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left,
+                                R.anim.slide_from_left, R.anim.slide_to_right);
             }
         });
 
         // Replace
         fragmentTransaction.replace(container, fragment);
         // Back stack
-        if (addToBackStack)
+        if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
+        }
         // Commit
         fragmentTransaction.commitAllowingStateLoss();
     }
@@ -322,15 +322,10 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     }
 
     private void processOnSubCategoryClick() {
-
-/*        ArrayList<MultiFilterOptionInterface> lst = new ArrayList<>();
-        for (Category cat: mCategories) {
-        }*/
-
-
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(SubCategoryFilterFragment.SUBCATEGORIES, mCategories);
-        getBaseActivity().onSwitchFragment(FragmentType.Sub_CATEGORY_FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        bundle.putParcelableArrayList(RestConstants.SUB_CATEGORIES, mSubCategories);
+        getBaseActivity().onSwitchFragment(FragmentType.Sub_CATEGORY_FILTERS, bundle,
+                false);
     }
 
     /**
@@ -358,8 +353,7 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
     }
 
     /**
-     * Process the click on save button.
-     * Create a content values and send it to parent
+     * Process the click on save button. Create a content values and send it to parent
      *
      * @author sergiopereira
      */
@@ -369,7 +363,8 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         String parentCatalogBackStackTag = FragmentController.getParentBackStackTag(this);
 
         // in case selected filters isn't changed
-        if (mInitialSelectedFilterValues != null && mInitialSelectedFilterValues.equals(filterSelectionController.getValues())) {
+        if (mInitialSelectedFilterValues != null && mInitialSelectedFilterValues
+                .equals(filterSelectionController.getValues())) {
             getBaseActivity().onBackPressed();
             return;
         }
@@ -383,42 +378,44 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         argumentsBundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         argumentsBundle.putString(ConstantsIntentExtra.CONTENT_ID, mKey);
         argumentsBundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
-        argumentsBundle.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
+        argumentsBundle.putInt(ConstantsIntentExtra.CATALOG_SORT,
+                mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
 
         argumentsBundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
-//        getBaseActivity().onBackPressed();
-        getBaseActivity().onSwitchFragment(mTargetType, argumentsBundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(mTargetType, argumentsBundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
 
     private class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {
 
-        /**
-         * Constructor
-         */
-        public FiltersArrayAdapter(Context context, List<CatalogFilter> objects) {
+        FiltersArrayAdapter(Context context, List<CatalogFilter> objects) {
             super(context, R.layout.list_sub_item_1, objects);
         }
 
-        /*
-         * (non-Javadoc)
-         * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-         */
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             // Get Filter
             CatalogFilter filter = getItem(position);
             // Validate current view
-            if (convertView == null)
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_sub_item_1, null);
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext())
+                        .inflate(R.layout.list_sub_item_1, null);
+            }
 
-            TextView filterTitleTextView = ((TextView) convertView.findViewById(R.id.dialog_item_title));
-            TextView filtersNumberTextView = ((TextView) convertView.findViewById(R.id.dialog_item_count));
+            TextView filterTitleTextView = convertView
+                    .findViewById(R.id.dialog_item_title);
+            TextView filtersNumberTextView = convertView
+                    .findViewById(R.id.dialog_item_count);
 
             if (filter.hasAppliedFilters()) {
                 //filterTitleTextView.setTypeface(null, Typeface.BOLD);
                 if (!(filter instanceof CatalogPriceFilter)) {
-                    filtersNumberTextView.setText(convertView.getResources().getString(R.string.parenthesis_placeholder, ((CatalogCheckFilter) filter).getSelectedFilterOptions().size()));
+                    filtersNumberTextView.setText(convertView.getResources()
+                            .getString(R.string.parenthesis_placeholder,
+                                    ((CatalogCheckFilter) filter).getSelectedFilterOptions()
+                                            .size()));
                     filtersNumberTextView.setVisibility(View.VISIBLE);
                 }
             } else {
@@ -429,7 +426,8 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
             filterTitleTextView.setText(filter.getName());
 
             if (position == FilterMainFragment.this.currentFilterPosition) {
-                convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black_400));
+                convertView.setBackgroundColor(
+                        ContextCompat.getColor(getContext(), R.color.black_400));
 
             } else {
                 convertView.setBackgroundColor(Color.WHITE);
@@ -446,60 +444,4 @@ public class FilterMainFragment extends BaseFragment implements IResponseCallbac
         }
         return super.allowBackPressed();
     }
-
-    private void triggerGetCategories(String name) {
-        // Trigger
-        triggerContentEventProgress(new GetSubCategoriesHelper(), GetSubCategoriesHelper.createBundle(name), this);
-    }
-
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        // Validate fragment state
-        if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-        super.handleSuccessEvent(baseResponse);
-        // Hide dialog progress
-        hideActivityProgress();
-        // Validate event type
-        switch (eventType) {
-            case GET_SUBCATEGORIES_EVENT:
-                // Get categories
-                mCategories = (Categories) baseResponse.getContentData();
-
-                if (!mCategories.get(1).hasChildren()) {
-                    mSubCategoryLayout.setVisibility(View.GONE);
-                } else {
-                    mSubCategoryLayout.setVisibility(View.VISIBLE);
-                }
-
-
-                break;
-        }
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR");
-        // Get error code
-        EventType eventType = baseResponse.getEventType();
-        // Validate fragment state
-        if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-        // Validate event type
-        switch (eventType) {
-            case GET_SUBCATEGORIES_EVENT:
-                hideActivityProgress();
-                mSubCategoryLayout.setVisibility(View.GONE);
-
-                break;
-
-        }
-    }
-
 }

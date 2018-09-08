@@ -5,21 +5,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import android.support.annotation.StringRes;
-
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.controllers.ActivitiesWorkFlow;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
+import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
+import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
+import com.bamilo.android.appmodule.bamiloapp.view.fragments.CampaignsFragment;
 import com.bamilo.android.framework.service.objects.home.TeaserCampaign;
 import com.bamilo.android.framework.service.objects.home.group.BaseTeaserGroupType;
 import com.bamilo.android.framework.service.objects.home.object.BaseTeaserObject;
 import com.bamilo.android.framework.service.objects.home.type.TeaserGroupType;
 import com.bamilo.android.framework.service.utils.TextUtils;
 import com.bamilo.android.framework.service.utils.output.Print;
-import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
-import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
-import com.bamilo.android.appmodule.bamiloapp.view.fragments.CampaignsFragment;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -44,14 +42,18 @@ public class TargetLink {
     public static final String UNKNOWN = "unknown";
     private boolean isSubCategoryFilter = false;
 
-    @StringDef({PDV, CATALOG, CATALOG_CATEGORY, CATALOG_BRAND, CATALOG_SELLER, CAMPAIGN, STATIC_PAGE, SHOP_IN_SHOP, UNKNOWN})
+    @StringDef({PDV, CATALOG, CATALOG_CATEGORY, CATALOG_BRAND, CATALOG_SELLER, CAMPAIGN,
+            STATIC_PAGE, SHOP_IN_SHOP, UNKNOWN})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Type {}
+    public @interface Type {
+
+    }
 
     /**
      * Interface used to append some data.
      */
     public interface OnAppendDataListener {
+
         void onAppendData(FragmentType next, String title, String id, Bundle data);
     }
 
@@ -59,7 +61,9 @@ public class TargetLink {
      * Interface used to intercept the campaign link.
      */
     public interface OnCampaignListener {
-        @NonNull Bundle onTargetCampaign(String title, String id, TeaserGroupType mOrigin);
+
+        @NonNull
+        Bundle onTargetCampaign(String title, String id, TeaserGroupType mOrigin);
     }
 
     private static final String TAG = TargetLink.class.getSimpleName();
@@ -83,7 +87,8 @@ public class TargetLink {
     /**
      * Constructor
      */
-    public TargetLink(@NonNull WeakReference<BaseActivity> activity, @Type @Nullable String target) {
+    public TargetLink(@NonNull WeakReference<BaseActivity> activity,
+            @Type @Nullable String target) {
         this.mActivity = activity;
         this.mTarget = target;
     }
@@ -180,8 +185,7 @@ public class TargetLink {
         } else {
             bundle = createBundle(mTitle, id, mOrigin);
         }
-        if (isSubCategoryFilter)
-        {
+        if (isSubCategoryFilter) {
             bundle.putBoolean(ConstantsIntentExtra.SUB_CATEGORY_FILTER, true);
         }
         Print.i(TAG, "TARGET LINK: TYPE:" + nextFragmentType + " TITLE:" + mTitle + " ID:" + id);
@@ -191,7 +195,8 @@ public class TargetLink {
         }
         // ##### Switch fragment
         if (mActivity.get() != null) {
-            mActivity.get().onSwitchFragment(nextFragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
+            mActivity.get().onSwitchFragment(nextFragmentType, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
         // Success
         return true;
@@ -201,7 +206,7 @@ public class TargetLink {
      * Method used to show the generic warning message.
      */
     private void showWarningErrorMessage() {
-        if(isToShowWarningError) {
+        if (isToShowWarningError) {
             try {
                 mActivity.get().showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
             } catch (NullPointerException e) {
@@ -272,7 +277,8 @@ public class TargetLink {
      * Create a bundle for campaigns, from listener(multi campaigns) or normal (single campaign).
      */
     @NonNull
-    private Bundle createCampaignBundle(OnCampaignListener listener, String title, String id, TeaserGroupType origin) {
+    private Bundle createCampaignBundle(OnCampaignListener listener, String title, String id,
+            TeaserGroupType origin) {
         Bundle bundle;
         // Case listener
         if (listener != null) {
@@ -282,7 +288,8 @@ public class TargetLink {
         else {
             bundle = new Bundle();
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, origin);
-            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, createCampaignList(title, id));
+            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG,
+                    createCampaignList(title, id));
         }
         return bundle;
     }
@@ -296,7 +303,8 @@ public class TargetLink {
      */
     @NonNull
     private static String[] splitLink(@Nullable String link) {
-        return TextUtils.isEmpty(link) ? new String[]{} : TextUtils.split(link, TARGET_LINK_DELIMITER);
+        return TextUtils.isEmpty(link) ? new String[]{}
+                : TextUtils.split(link, TARGET_LINK_DELIMITER);
     }
 
     /**
@@ -324,21 +332,23 @@ public class TargetLink {
      * Create an array with multi campaigns(HOME).
      */
     @NonNull
-    public static ArrayList<TeaserCampaign> createCampaignList(@NonNull BaseTeaserGroupType campaignGroup) {
+    public static ArrayList<TeaserCampaign> createCampaignList(
+            @NonNull BaseTeaserGroupType campaignGroup) {
         ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
         for (BaseTeaserObject teaser : campaignGroup.getData()) {
-            campaigns.add(new TeaserCampaign(teaser.getTitle(), TargetLink.getIdFromTargetLink(teaser.getTargetLink())));
+            campaigns.add(new TeaserCampaign(teaser.getTitle(),
+                    TargetLink.getIdFromTargetLink(teaser.getTargetLink())));
         }
         return campaigns;
     }
 
     @Nullable
-    public static String getSkuFromSimple(@Nullable String simple){
-        return TextUtils.isNotEmpty(simple) ? TextUtils.split(simple, SIMPLE_SKU_DELIMITER)[0] : null;
+    public static String getSkuFromSimple(@Nullable String simple) {
+        return TextUtils.isNotEmpty(simple) ? TextUtils.split(simple, SIMPLE_SKU_DELIMITER)[0]
+                : null;
     }
 
-    public TargetLink setIsSubCategoryFilter()
-    {
+    public TargetLink setIsSubCategoryFilter() {
         isSubCategoryFilter = true;
         return this;
     }

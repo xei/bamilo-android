@@ -28,7 +28,6 @@ import com.bamilo.android.appmodule.bamiloapp.pojo.DynamicForm;
 import com.bamilo.android.core.view.BaseView;
 import com.bamilo.android.core.service.model.ServerResponse;
 
-
 import android.widget.TextView;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsCheckout;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
@@ -72,7 +71,8 @@ import java.util.Set;
 /**
  * @author sergiopereira
  */
-public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction, OnClickListener,
+public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction,
+        OnClickListener,
         ViewStub.OnInflateListener, BaseView {
 
     protected static final String TAG = BaseFragment.class.getSimpleName();
@@ -119,9 +119,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public static final int NO_ADJUST_CONTENT = 0;
     public static final int ADJUST_CONTENT = 1;
+
     @IntDef({NO_ADJUST_CONTENT, ADJUST_CONTENT})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface KeyboardState{}
+    public @interface KeyboardState {
+
+    }
 
     @KeyboardState
     private int adjustState = ADJUST_CONTENT;
@@ -137,7 +140,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action,
+            @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -159,7 +163,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int  adjustState, @ConstantsCheckout.CheckoutType int titleCheckout) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action,
+            @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState,
+            @ConstantsCheckout.CheckoutType int titleCheckout) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -175,13 +181,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Create and return a new instance.
      */
-    public static BaseFragment newInstance(@NonNull Context context, @NonNull Class<? extends BaseFragment> fragment, @Nullable Bundle arguments) {
+    public static BaseFragment newInstance(@NonNull Context context,
+            @NonNull Class<? extends BaseFragment> fragment, @Nullable Bundle arguments) {
         return (BaseFragment) Fragment.instantiate(context, fragment.getName(), arguments);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
     @Override
@@ -190,35 +197,33 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mainActivity = (BaseActivity) activity;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        if(arguments != null){
-            mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE);
-            mDeepLinkOrigin = arguments.getInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, DeepLinkManager.FROM_UNKNOWN);
+        if (arguments != null) {
+            mGroupType = (TeaserGroupType) arguments
+                    .getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE);
+            mDeepLinkOrigin = arguments
+                    .getInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, DeepLinkManager.FROM_UNKNOWN);
         }
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
      * android.view.ViewGroup, android.os.Bundle)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         // Get current time
         mLoadTime = System.currentTimeMillis();
         if (hasLayoutToInflate()) {
             Print.i(TAG, "ON CREATE VIEW: HAS LAYOUT TO INFLATE");
             View view = inflater.inflate(R.layout.fragment_root_layout, container, false);
-            ViewStub contentContainer = (ViewStub) view.findViewById(R.id.content_container);
+            ViewStub contentContainer = view.findViewById(R.id.content_container);
             contentContainer.setLayoutResource(mInflateLayoutResId);
             this.mContentView = contentContainer.inflate();
             return view;
@@ -230,7 +235,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
@@ -238,28 +243,31 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         super.onViewCreated(view, savedInstanceState);
         Print.d(TAG, "ON VIEW CREATED");
         // Get current time
-        if(mLoadTime == 0) mLoadTime = System.currentTimeMillis();
+        if (mLoadTime == 0) {
+            mLoadTime = System.currentTimeMillis();
+        }
         // Set flag for requests
         isOnStoppingProcess = false;
         // Get loading layout
-        mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
+        mLoadingView = view.findViewById(R.id.fragment_stub_loading);
         mLoadingView.setOnInflateListener(this);
 
         isOrderSummaryPresent = view.findViewById(ORDER_SUMMARY_CONTAINER) != null;
 
         // Get retry layout
-        mErrorView =  view.findViewById(R.id.fragment_stub_retry);
+        mErrorView = view.findViewById(R.id.fragment_stub_retry);
         ((ViewStub) mErrorView).setOnInflateListener(this);
         // Get fall back layout
-        mFallBackView = (ViewStub) view.findViewById(R.id.fragment_stub_home_fall_back);
+        mFallBackView = view.findViewById(R.id.fragment_stub_home_fall_back);
         mFallBackView.setOnInflateListener(this);
         // Get maintenance layout
-        mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
+        mMaintenanceView = view.findViewById(R.id.fragment_stub_maintenance);
         mMaintenanceView.setOnInflateListener(this);
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems + " " + action);
-            getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
+            getBaseActivity()
+                    .updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
             // Method used to set a bottom margin
             // UITabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
         }
@@ -277,7 +285,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.app.Activity#onResume()
      */
     @Override
@@ -301,7 +309,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onPause()
      */
     @Override
@@ -311,7 +319,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStop()
      */
     @Override
@@ -323,7 +331,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onDestroyView()
      */
     @Override
@@ -335,7 +343,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onDestroy()
      */
     @Override
@@ -344,23 +352,26 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * Show the summary order if the view is present
-     * On rotate, tries use the old fragment from ChildFragmentManager.
+     * Show the summary order if the view is present On rotate, tries use the old fragment from
+     * ChildFragmentManager.
+     *
      * @author sergiopereira
      */
     public void showOrderSummaryIfPresent(int checkoutStep, PurchaseEntity orderSummary) {
         // Get order summary
         if (isOrderSummaryPresent) {
             Print.i(TAG, "ORDER SUMMARY IS PRESENT");
-            CheckoutSummaryFragment fragment = (CheckoutSummaryFragment) getChildFragmentManager().findFragmentByTag(CheckoutSummaryFragment.TAG + "_" + checkoutStep);
-            if(fragment == null) {
+            CheckoutSummaryFragment fragment = (CheckoutSummaryFragment) getChildFragmentManager()
+                    .findFragmentByTag(CheckoutSummaryFragment.TAG + "_" + checkoutStep);
+            if (fragment == null) {
                 fragment = CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary);
             } else {
                 // Used to update when is applied a voucher
                 fragment.onUpdate(checkoutStep, orderSummary);
             }
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            ft.replace(ORDER_SUMMARY_CONTAINER, fragment, CheckoutSummaryFragment.TAG + "_" + checkoutStep);
+            ft.replace(ORDER_SUMMARY_CONTAINER, fragment,
+                    CheckoutSummaryFragment.TAG + "_" + checkoutStep);
             ft.commit();
         } else {
             Print.i(TAG, "ORDER SUMMARY IS NOT PRESENT");
@@ -376,12 +387,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         final BaseActivity activity = getBaseActivity();
         // wait 500ms before switching to HOME, to be sure all fragments ended any visual processing pending
         if (activity != null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                }
-            }, RESTART_FRAGMENTS_DELAY);
+            new Handler().postDelayed(
+                    () -> activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+                            FragmentController.ADD_TO_BACK_STACK), RESTART_FRAGMENTS_DELAY);
         } else {
             Print.w(TAG, "RESTART ALL FRAGMENTS - ERROR : Activity is NULL");
         }
@@ -389,7 +397,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onLowMemory()
      */
     @Override
@@ -402,11 +410,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * #### BACK PRESSED ####
      */
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see <com.bamilo.android.framework.components.com.bamilo.android.appmodule.bamiloapp.utils.BaseActivity.OnActivityFragmentInteraction#allowBackPressed()
-     */
     @Override
     public boolean allowBackPressed() {
         if (mDeepLinkOrigin == DeepLinkManager.FROM_URI && getBaseActivity() != null) {
@@ -424,7 +427,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Send request showing the loading
      */
-    protected final void triggerContentEvent(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+    protected final void triggerContentEvent(final SuperBaseHelper helper, Bundle args,
+            final IResponseCallback responseCallback) {
         // Show loading
         showFragmentLoading();
         // Request
@@ -434,7 +438,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Send request and show progress view
      */
-    protected final void triggerContentEventProgress(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+    protected final void triggerContentEventProgress(final SuperBaseHelper helper, Bundle args,
+            final IResponseCallback responseCallback) {
         // Show progress
         showActivityProgress();
         // Request
@@ -444,7 +449,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Send request
      */
-    protected final void triggerContentEventNoLoading(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+    protected final void triggerContentEventNoLoading(final SuperBaseHelper helper, Bundle args,
+            final IResponseCallback responseCallback) {
         // Request
         BamiloApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
@@ -482,10 +488,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Set screen response to keyboard request
      *
-     * @param newAdjustState
-     *            <code>KeyboardState</code> indicating if the layout will suffer any adjustment
-     * @param force
-     *            if <code>true</code> the adjustState is replaced by <code>newAdjustState</code>
+     * @param newAdjustState <code>KeyboardState</code> indicating if the layout will suffer any
+     * adjustment
+     * @param force if <code>true</code> the adjustState is replaced by <code>newAdjustState</code>
      * @author Andre Lopes
      */
     private void updateAdjustState(@KeyboardState int newAdjustState, boolean force) {
@@ -497,11 +502,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 switch (newAdjustState) {
                     case NO_ADJUST_CONTENT:
                         stateString = "NO_ADJUST_CONTENT";
-                        getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+                        getBaseActivity().getWindow()
+                                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
                         break;
                     case ADJUST_CONTENT:
                         stateString = "ADJUST_CONTENT";
-                        getBaseActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                        getBaseActivity().getWindow().setSoftInputMode(
+                                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                         break;
                 }
                 Print.d(TAG, "UPDATE ADJUST STATE: " + stateString);
@@ -515,6 +522,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Validate if is to inflate a fragment layout into root layout
+     *
      * @return true/false
      * @author sergiopereira
      */
@@ -527,12 +535,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showFragmentContentContainer() {
         UIUtils.showOrHideViews(View.VISIBLE, mContentView);
-        UIUtils.showOrHideViews(View.GONE, mLoadingView, mErrorView, mFallBackView, mMaintenanceView);
+        UIUtils.showOrHideViews(View.GONE, mLoadingView, mErrorView, mFallBackView,
+                mMaintenanceView);
     }
 
     /**
-     * This method is used to set the fragment content invisible to recalculate the view and trigger the view listener<br>
-     * Used by CreateAddressFragment
+     * This method is used to set the fragment content invisible to recalculate the view and trigger
+     * the view listener<br> Used by CreateAddressFragment
      */
     protected void showGhostFragmentContentContainer() {
         UIUtils.showOrHideViews(View.INVISIBLE, mContentView);
@@ -540,6 +549,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Show the retry view from the root layout
+     *
      * @author sergiopereira
      */
     protected void showFragmentNoNetworkRetry() {
@@ -548,6 +558,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Show the retry view from the root layout
+     *
      * @author sergiopereira
      */
     protected void showFragmentServerMaintenanceRetry() {
@@ -570,6 +581,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Show continue with listener for going back.
+     *
      * @author sergiopereira
      */
     protected void showContinueShopping() {
@@ -579,6 +591,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Show the retry view from the root layout
+     *
      * @author sergiopereira
      */
     protected void showFragmentSSLError() {
@@ -587,6 +600,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Show the layout to call to order info
+     *
      * @author sergiopereira
      */
     protected void showFragmentUnknownCheckoutStepError() {
@@ -595,6 +609,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Show the retry view from the root layout
+     *
      * @author sergiopereira
      */
     protected void showFragmentErrorRetry() {
@@ -604,8 +619,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Show error layout based on type. if the view is not inflated, it will be in first place.
      */
-    protected final void showErrorFragment(@ErrorLayoutFactory.LayoutErrorType int type, OnClickListener listener){
-        if(mErrorView instanceof ViewStub){
+    protected final void showErrorFragment(@ErrorLayoutFactory.LayoutErrorType int type,
+            OnClickListener listener) {
+        if (mErrorView instanceof ViewStub) {
             // If not inflated yet
             mErrorView.setTag(mErrorView.getId(), type);
             mErrorView.setTag(R.id.stub_listener, listener);
@@ -637,7 +653,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Show BaseActivity progress loading
      */
     protected void showActivityProgress() {
-        if(getBaseActivity() != null) {
+        if (getBaseActivity() != null) {
             getBaseActivity().showProgress();
         }
     }
@@ -646,27 +662,30 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Hide BaseActivity progress loading
      */
     protected void hideActivityProgress() {
-        if(getBaseActivity() != null) {
+        if (getBaseActivity() != null) {
             getBaseActivity().dismissProgress();
         }
     }
 
 
     protected void showNoNetworkWarning() {
-        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getString(R.string.no_internet_access_warning_title));
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE,
+                getBaseActivity().getString(R.string.no_internet_access_warning_title));
         hideActivityProgress();
         showFragmentContentContainer();
     }
 
     protected void showServerMaintenanceWarning() {
-        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getString(R.string.server_in_maintenance_warning));
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE,
+                getBaseActivity().getString(R.string.server_in_maintenance_warning));
         hideActivityProgress();
         showFragmentContentContainer();
     }
 
 
     protected void showTimeoutErrorWarning() {
-        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getString(R.string.network_timeout_error));
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE,
+                getBaseActivity().getString(R.string.network_timeout_error));
         hideActivityProgress();
         showFragmentContentContainer();
     }
@@ -686,8 +705,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     public void showWarningSuccessMessage(@Nullable String message, int fallback) {
-        if(getBaseActivity() != null) {
-            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
+        if (getBaseActivity() != null) {
+            String text =
+                    TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
             getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
         }
     }
@@ -701,12 +721,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     private void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact,
-                                    @Nullable String message,
-                                    @Nullable EventType eventType) {
-        if(TextUtils.isNotEmpty(message)) {
+            @Nullable String message,
+            @Nullable EventType eventType) {
+        if (TextUtils.isNotEmpty(message)) {
             getBaseActivity().showWarningMessage(warningFact, message);
-        }
-        else  {
+        } else {
             int id = MessagesUtils.getMessageId(eventType, true);
             if (id > 0) {
                 getBaseActivity().showWarningMessage(warningFact, getBaseActivity().getString(id));
@@ -717,8 +736,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Method used to show validation messages for a form submission.
      */
-    public void showFormValidateMessages(@Nullable DynamicForm dynamicForm, @NonNull BaseResponse response, @NonNull EventType type) {
-        if(dynamicForm != null) {
+    public void showFormValidateMessages(@Nullable DynamicForm dynamicForm,
+            @NonNull BaseResponse response, @NonNull EventType type) {
+        if (dynamicForm != null) {
             dynamicForm.showValidateMessages(response.getValidateMessages());
         } else {
             showWarningErrorMessage(response.getValidateMessage(), type);
@@ -728,6 +748,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Set the inflated stub
+     *
      * @param stub The view stub
      * @param inflated The inflated view
      */
@@ -736,19 +757,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get stub id
         int id = stub.getId();
         // Case home fall back
-        if(id == R.id.fragment_stub_home_fall_back)  {
+        if (id == R.id.fragment_stub_home_fall_back) {
             onInflateHomeFallBack(inflated);
         }
         // Case loading
-        else if(id == R.id.fragment_stub_loading) {
+        else if (id == R.id.fragment_stub_loading) {
             onInflateLoading(inflated);
         }
         // Case no network
-        else if(id == R.id.fragment_stub_retry) {
+        else if (id == R.id.fragment_stub_retry) {
             onInflateErrorLayout(stub, inflated);
         }
         // Case maintenance
-        else if(id == R.id.fragment_stub_maintenance) {
+        else if (id == R.id.fragment_stub_maintenance) {
             onInflateMaintenance(inflated);
         }
         // Case unknown
@@ -764,20 +785,22 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         Print.i(TAG, "ON INFLATE STUB: FALL BACK");
         try {
             boolean isSingleShop = getResources().getBoolean(R.bool.is_single_shop_country);
-            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, getBaseActivity().getString(R.string.app_name));
-            TextView fallbackBest = (TextView) inflated.findViewById(R.id.fallback_best);
-            TextView fallbackCountry = (TextView) inflated.findViewById(R.id.fallback_country);
+            SharedPreferences sharedPrefs = getActivity()
+                    .getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME,
+                    getBaseActivity().getString(R.string.app_name));
+            TextView fallbackBest = inflated.findViewById(R.id.fallback_best);
+            TextView fallbackCountry = inflated.findViewById(R.id.fallback_country);
             View countryD = inflated.findViewById(R.id.fallback_country_double);
-            TextView bottomCountry = (TextView) inflated.findViewById(R.id.fallback_country_bottom);
-            TextView topCountry = (TextView) inflated.findViewById(R.id.fallback_country_top);
+            TextView bottomCountry = inflated.findViewById(R.id.fallback_country_bottom);
+            TextView topCountry = inflated.findViewById(R.id.fallback_country_top);
             fallbackBest.setText(R.string.fallback_best);
             if (country.split(" ").length == 1) {
                 fallbackCountry.setText(country.toUpperCase());
                 fallbackCountry.setVisibility(View.VISIBLE);
                 countryD.setVisibility(View.GONE);
                 fallbackCountry.setText(isSingleShop ? "" : country.toUpperCase());
-                if(ShopSelector.isRtlShop()){
+                if (ShopSelector.isRtlShop()) {
                     inflated.findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
                 }
             } else {
@@ -792,7 +815,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             e.printStackTrace();
         }
         // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mErrorView, mMaintenanceView, mLoadingView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mErrorView, mMaintenanceView,
+                mLoadingView);
     }
 
     /**
@@ -801,24 +825,27 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onInflateLoading(View inflated) {
         Print.i(TAG, "ON INFLATE STUB: LOADING");
         // Hide other stubs
-        UIUtils.showOrHideViews(View.GONE, mContentView, mErrorView, mFallBackView, mMaintenanceView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mErrorView, mFallBackView,
+                mMaintenanceView);
     }
 
     /**
      * Set no network view.
+     *
      * @param inflated The inflated view
      */
     protected void onInflateErrorLayout(ViewStub viewStub, View inflated) {
         Print.i(TAG, "ON INFLATE STUB: ERROR LAYOUT");
         mErrorView = inflated;
         // Init error factory
-        mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup)inflated);
+        mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup) inflated);
         @ErrorLayoutFactory.LayoutErrorType int type = (int) viewStub.getTag(viewStub.getId());
         showErrorFragment(type, (OnClickListener) viewStub.getTag(R.id.stub_listener));
     }
 
     /**
      * Set maintenance view.
+     *
      * @param inflated The inflated view
      */
     private void onInflateMaintenance(View inflated) {
@@ -852,6 +879,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Handle success response
+     *
      * @param baseResponse The success response
      * @return intercept or not
      */
@@ -878,7 +906,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case ADD_VOUCHER:
             case REMOVE_VOUCHER:
             case SUBMIT_FORM:
-                handleSuccessTaskEvent(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), eventType);
+                handleSuccessTaskEvent(baseResponse.getSuccessMessage(),
+                        baseResponse.getEventTask(), eventType);
                 return true;
             default:
                 break;
@@ -888,6 +917,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Handle error response.
+     *
      * @param response The error bundle
      * @return intercept or not
      */
@@ -928,7 +958,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 return true;
             default:
                 // Show warning messages
-                handleErrorTaskEvent(response.getErrorMessage(), response.getEventTask(), response.getEventType());
+                handleErrorTaskEvent(response.getErrorMessage(), response.getEventTask(),
+                        response.getEventType());
                 return false;
         }
     }
@@ -976,7 +1007,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Handle task events.
      */
-    public void handleErrorTaskEvent(final String errorMessage, final EventTask eventTask, final EventType eventType) {
+    public void handleErrorTaskEvent(final String errorMessage, final EventTask eventTask,
+            final EventType eventType) {
         if (eventTask == EventTask.ACTION_TASK) {
             switch (eventType) {
                 // Case form submission
@@ -993,8 +1025,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 case SET_MULTI_STEP_PAYMENT:
                 case SUBMIT_FORM:
                     // If the error message is empty used the showFormValidateMessages(form)
-                    if(TextUtils.isEmpty(errorMessage)) break;
-                // Case other tasks
+                    if (TextUtils.isEmpty(errorMessage)) {
+                        break;
+                    }
+                    // Case other tasks
                 default:
                     showWarningErrorMessage(errorMessage, eventType);
                     break;
@@ -1002,21 +1036,22 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    public void handleSuccessTaskEvent(final String successMessage, final EventTask eventTask, final EventType eventType) {
-        if(eventTask == EventTask.ACTION_TASK){
+    public void handleSuccessTaskEvent(final String successMessage, final EventTask eventTask,
+            final EventType eventType) {
+        if (eventTask == EventTask.ACTION_TASK) {
             showWarningSuccessMessage(successMessage, eventType);
         }
     }
 
     /**
-     * Request login.
-     * TODO : Find a generic solution for login
+     * Request login. TODO : Find a generic solution for login
      */
     protected void onLoginRequired() {
         // Clean all customer data
         LogOut.cleanCustomerData(getBaseActivity());
         // Goto login
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
     /*
@@ -1025,22 +1060,22 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
     public void onClick(View view) {
         int id = view.getId();
         // Case error button
-        if (id == R.id.fragment_root_error_button){
+        if (id == R.id.fragment_root_error_button) {
             checkErrorButtonBehavior(view);
         }
         // Case retry button in maintenance page
-        else if(id == R.id.fragment_root_retry_maintenance) {
+        else if (id == R.id.fragment_root_retry_maintenance) {
             onClickRetryMaintenance(view);
         }
         // Case choose country button in maintenance page
-        else if(id == R.id.fragment_root_cc_maintenance) {
+        else if (id == R.id.fragment_root_cc_maintenance) {
             onClickMaintenanceChooseCountry();
         }
         // Case unknown
@@ -1053,7 +1088,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (view.getId() == R.id.fragment_root_error_button) {
             int error = (int) view.getTag(R.id.fragment_root_error_button);
 
-            if (error == ErrorLayoutFactory.NO_NETWORK_LAYOUT || error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT
+            if (error == ErrorLayoutFactory.NO_NETWORK_LAYOUT
+                    || error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT
                     || error == ErrorLayoutFactory.NETWORK_ERROR_LAYOUT) {
                 // Case retry button from network
                 // Case retry button from error
@@ -1067,13 +1103,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Process the click on retry button in unexpected error and no network.
+     *
      * @param view The clicked view
      */
     protected void onClickRetryError(View view) {
         try {
             View retrySpinning = view.findViewById(R.id.fragment_root_error_spinning);
-            if(retrySpinning.getVisibility() == View.VISIBLE) {
-                Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
+            if (retrySpinning.getVisibility() == View.VISIBLE) {
+                Animation animation = AnimationUtils
+                        .loadAnimation(getBaseActivity(), R.anim.anim_rotate);
                 retrySpinning.clearAnimation();
                 retrySpinning.setAnimation(animation);
             }
@@ -1087,6 +1125,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Process the click on retry button in maintenance page.
+     *
      * @param view The clicked view
      */
     protected void onClickRetryMaintenance(View view) {
@@ -1096,6 +1135,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Process the click in continue shopping
+     *
      * @param view The clicked view
      * @author sergiopereira
      */
@@ -1109,7 +1149,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected void onClickContinueButton() {
-        if(getBaseActivity() != null) {
+        if (getBaseActivity() != null) {
             getBaseActivity().onBackPressed();
         }
     }
@@ -1120,10 +1160,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     private void onClickMaintenanceChooseCountry() {
-        if(getBaseActivity() != null) {
+        if (getBaseActivity() != null) {
             // Show Change country
             getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-            getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity()
+                    .onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE,
+                            FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -1148,7 +1190,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     @Override
-    public void showMessage(com.bamilo.android.core.service.model.EventType eventType, String message) {
+    public void showMessage(com.bamilo.android.core.service.model.EventType eventType,
+            String message) {
         showWarningErrorMessage(message);
     }
 
@@ -1163,17 +1206,20 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     @Override
-    public void showServerError(com.bamilo.android.core.service.model.EventType eventType, ServerResponse response) {
+    public void showServerError(com.bamilo.android.core.service.model.EventType eventType,
+            ServerResponse response) {
         if (response != null && response.getMessages() != null &&
                 CollectionUtils.isNotEmpty(response.getMessages().getErrors())) {
-            if (response.getMessages().getErrors().get(0).getErrorCode() == ErrorCode.CUSTOMER_NOT_LOGGED_IN) {
+            if (response.getMessages().getErrors().get(0).getErrorCode()
+                    == ErrorCode.CUSTOMER_NOT_LOGGED_IN) {
                 onLoginRequired();
             }
         }
     }
 
     @Override
-    public void toggleProgress(com.bamilo.android.core.service.model.EventType eventType, boolean show) {
+    public void toggleProgress(com.bamilo.android.core.service.model.EventType eventType,
+            boolean show) {
         if (show) {
             showFragmentLoading();
         } else {

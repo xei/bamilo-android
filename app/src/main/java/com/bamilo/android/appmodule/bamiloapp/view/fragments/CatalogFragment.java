@@ -202,15 +202,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if(arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)){
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
                 sortChanged = true;
-                if (mSelectedSort.equals(CatalogSort.POPULARITY)) {
-                    sortChanged = false;
-                }
-
             }
-
-
             showNoResult = false;
-
         }
 
         // Get data from saved instance
@@ -549,12 +542,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Set title
         UICatalogUtils.setCatalogTitle(getBaseActivity(), mTitle);
         // Show layout
-        showErrorFragment(stringId, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Print.d(TAG, "ON CLICK: FILTER BUTTON");
-                onClickFilterErrorButton();
-            }
+        showErrorFragment(stringId, v -> {
+            Print.d(TAG, "ON CLICK: FILTER BUTTON");
+            onClickFilterErrorButton();
         });
     }
 
@@ -747,6 +737,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             CatalogFilters filters = (CatalogFilters) mCatalogPage.getFilters();
             bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
             bundle.putString(FILTER_TAG, filters.toJSON().toString());
+            bundle.putParcelableArrayList(RestConstants.SUB_CATEGORIES, mCatalogPage.getSubCategories());
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
             getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, false);
         } catch (Exception e) {
@@ -1334,10 +1325,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private void sendRecommend(CatalogPage catalogPage) {
         RecommendManager recommendManager = new RecommendManager();
-        RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
-            @Override
-            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
-            }
+        RecommendListCompletionHandler handler = (category, data) -> {
         };
 
         ArrayList<String> categories = catalogPage.getBreadcrumb();

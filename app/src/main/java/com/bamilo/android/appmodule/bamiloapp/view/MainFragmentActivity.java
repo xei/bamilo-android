@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 
 import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.view.subcategory.SubCategoryFilterFragment;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.factories.EmarsysEventFactory;
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
@@ -29,7 +30,6 @@ import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.DeepLinkManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
-import com.bamilo.android.appmodule.bamiloapp.utils.tracking.PushWooshTracker;
 import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTracker;
 import com.bamilo.android.appmodule.bamiloapp.utils.tracking.ga.GATracker;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment;
@@ -84,7 +84,6 @@ import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewCheckoutPayme
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewMyAccountAddressesFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewSessionLoginMainFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewShoppingCartFragment;
-import com.bamilo.android.appmodule.bamiloapp.view.newfragments.SubCategoryFilterFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity;
 import com.bamilo.android.appmodule.bamiloapp.view.relatedproducts.RecommendProductsFragment;
 

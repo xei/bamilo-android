@@ -47,8 +47,6 @@
     <!-- CATALOG -->
     <item name="catalog_fragment_main"                  type="layout">@layout/_v8_catalog_fragment_main</item>
     <item name="catalog_fragment_tool_bar"              type="layout">@layout/_v8_catalog_fragment_tool_bar</item>
-    <item name="catalog_fragment_no_result"             type="layout">@layout/_v8_catalog_fragment_no_result</item>
-    <item name="filters_main"                           type="layout">@layout/_v8_filters_main</item>
     <item name="filter_bottom_buttons"                  type="layout">@layout/_v8_filter_bottom_buttons</item>
     <item name="list_sub_item_1"                        type="layout">@layout/_v8_list_sub_item_1</item>
     <item name="list_sub_item_2"                        type="layout">@layout/_v8_list_sub_item_2</item>

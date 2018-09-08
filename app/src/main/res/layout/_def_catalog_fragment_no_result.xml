@@ -16,6 +16,7 @@
             android:id="@+id/no_results_search_error_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="asljaslkdj aslkdj "
             android:layout_marginBottom="@dimen/dimen_0dp"
             android:layout_marginEnd="@dimen/margin_veryhuge"
             android:layout_marginLeft="@dimen/margin_veryhuge"
@@ -29,11 +30,13 @@
             android:textColor="@color/grey_dark"
             android:textSize="11sp"
             android:visibility="visible" />
+
         <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
             android:id="@+id/no_results_search_error_message_guide"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:text="asljaslkdj aslkdj "
             android:layout_marginEnd="@dimen/margin_veryhuge"
             android:layout_marginLeft="@dimen/margin_veryhuge"
             android:layout_marginRight="@dimen/margin_veryhuge"
@@ -65,6 +68,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center|bottom"
                 android:orientation="vertical" >
+
                 <com.bamilo.android.appmodule.bamiloapp.view.ExpandableHeightListView
                     android:dividerHeight="@dimen/dimen_1dp"
                     android:divider="#D6D6D6"
@@ -84,7 +88,6 @@
                     android:layout_marginTop="@dimen/dimen_50dp"
                     android:background="@color/black_300"
                     android:orientation="horizontal" />
-
 
                 </LinearLayout>
 

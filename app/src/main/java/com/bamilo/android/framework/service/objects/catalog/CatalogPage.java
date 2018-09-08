@@ -2,24 +2,23 @@ package com.bamilo.android.framework.service.objects.catalog;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.bamilo.android.framework.service.objects.IJSONSerializable;
 import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.objects.catalog.filters.CatalogFilter;
 import com.bamilo.android.framework.service.objects.catalog.filters.CatalogFilters;
+import com.bamilo.android.framework.service.objects.catalog.filters.SubCategory;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductRegular;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
-
+import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 /**
  * Class used to represent a catalog page.<br>
+ *
  * @author sergiopereira
  */
 public class CatalogPage implements IJSONSerializable, Parcelable {
@@ -47,11 +46,11 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     private String mSort;
 
     private ArrayList<CatalogFilter> filters;
+    private ArrayList<SubCategory> mSubCategories;
 
     public ArrayList<String> getBreadcrumb() {
         return breadcrumb;
     }
-
 
 
     private ArrayList<String> breadcrumb;
@@ -118,6 +117,17 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             breadcrumb.add(breadObject.getString("title"));
         }
 
+        JSONArray subCategories = metadataObject.optJSONArray(RestConstants.SUB_CATEGORIES);
+        if (subCategories != null && subCategories.length() > 0) {
+            mSubCategories = new ArrayList<>();
+            for (int i = 0; i < subCategories.length(); i++) {
+                SubCategory subCategory = new SubCategory();
+                if (subCategory.initialize(subCategories.optJSONObject(i))) {
+                    mSubCategories.add(subCategory);
+                }
+            }
+        }
+
         return true;
     }
 
@@ -136,14 +146,17 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     /**
      * Calculate the max request per page.
+     *
      * @return number or pages
      */
     private int calcMaxPages() {
-        return (mTotal / IntConstants.MAX_ITEMS_PER_PAGE) + ((mTotal % IntConstants.MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
+        return (mTotal / IntConstants.MAX_ITEMS_PER_PAGE) + (
+                (mTotal % IntConstants.MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
     }
 
     /**
      * The current catalog page
+     *
      * @return int
      */
     public int getPage() {
@@ -152,6 +165,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     /**
      * Set the current page
+     *
      * @param page - the new page number
      */
     public void setPage(int page) {
@@ -159,8 +173,9 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * Update the current catalog with the new catalog data.<br>
-     *     Case first page replace all content.
+     * Update the current catalog with the new catalog data.<br> Case first page replace all
+     * content.
+     *
      * @param catalog - the new catalog
      */
     public void update(CatalogPage catalog) {
@@ -171,13 +186,18 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         // Update the max pages that application can request
         mMaxPages = calcMaxPages();
         // Case replace data
-        if(mPage == IntConstants.FIRST_PAGE) mProducts = catalog.getProducts();
+        if (mPage == IntConstants.FIRST_PAGE) {
+            mProducts = catalog.getProducts();
+        }
         // Case append data
-        else CollectionUtils.addAll(mProducts, catalog.getProducts());
+        else {
+            CollectionUtils.addAll(mProducts, catalog.getProducts());
+        }
     }
 
     /**
      * Get products
+     *
      * @return a list of products
      */
     public ArrayList<ProductRegular> getProducts() {
@@ -186,6 +206,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     /**
      * Get max pages
+     *
      * @return the max number of pages to request
      */
     public int getMaxPages() {
@@ -194,6 +215,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     /**
      * Validate if the current catalog has more pages to load
+     *
      * @return true or false
      */
     public boolean hasMorePagesToLoad() {
@@ -223,6 +245,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     /**
      * Validate products is empty or not.
+     *
      * @return true or false
      */
     public boolean hasProducts() {
@@ -231,9 +254,10 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     /**
      * Get name
+     *
      * @return String
      */
-    public String getName(){
+    public String getName() {
         return mName;
     }
 
@@ -243,32 +267,35 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     /**
      * Get search term
+     *
      * @return String
      */
-    public String getSearchTerm(){
+    public String getSearchTerm() {
         return mSearchTerm;
     }
 
     /**
      * Get id
+     *
      * @return String
      */
-    public String getCategoryId(){
+    public String getCategoryId() {
         return mCategoryId;
     }
 
     /**
      * Get brand id
+     *
      * @return String
      */
-    public String getBrandId(){
+    public String getBrandId() {
         return mBrandId;
     }
 
     /**
      * Get Applied Sort
      */
-    public String getSort(){
+    public String getSort() {
         return mSort;
     }
 
@@ -299,6 +326,9 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             filters = null;
         }
         mSort = in.readString();
+
+        mSubCategories = new ArrayList<>();
+        in.readList(mSubCategories, SubCategory.class.getClassLoader());
     }
 
     @Override
@@ -330,6 +360,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         }
 
         dest.writeString(mSort);
+        dest.writeList(mSubCategories);
     }
 
     @SuppressWarnings("unused")
@@ -345,4 +376,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         }
     };
 
+    public ArrayList<SubCategory> getSubCategories() {
+        return mSubCategories;
+    }
 }
