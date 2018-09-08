@@ -597,7 +597,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (postal_spinner.getVisibility() == View.VISIBLE && (postal_spinner.getSelectedItem() == null || postal_spinner.getSelectedItem().equals(getString(R.string.delivery_neighbourhood)))) {
             address_postal_region_error.setVisibility(View.VISIBLE);
             address_postal_region_error.setText(R.string.error_isrequired);
-            flag = false;
+            flag = true;
         }
         if (BamiloApplication.CUSTOMER.getGender().isEmpty()) {
             if (gender_spinner.getSelectedItem() == null || gender_spinner.getSelectedItem().equals(getString(R.string.gender))) {
