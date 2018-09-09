@@ -99,7 +99,7 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <com.bamilo.android.framework.components.customfontviews.EditText
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
                         android:id="@+id/voucher_codename"
                         style="@style/FormTextField"
                         android:layout_width="match_parent"

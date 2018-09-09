@@ -74,7 +74,6 @@ public final class ImageManager {
                 .load(imageUrl)
                 .placeholder(placeHolderImageId)
                 .listener(listener)
-                .dontTransform()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
 
         if (isThumbnail) {

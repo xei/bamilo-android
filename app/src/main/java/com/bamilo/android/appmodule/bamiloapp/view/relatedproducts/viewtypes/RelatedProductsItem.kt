@@ -9,6 +9,7 @@ import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.view.relatedproducts.OnItemClickListener
+import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 
 /**
  * Created by Farshid
@@ -17,12 +18,12 @@ import com.bamilo.android.appmodule.bamiloapp.view.relatedproducts.OnItemClickLi
  */
 @BindItem(layout = R.layout.content_related_products, holder = RelatedProductsHolder::class)
 class RelatedProductsItem(private var mRecommendedItem: RecommendedItem) {
-    lateinit var mOnItemClickListener: OnItemClickListener
+    private lateinit var mOnItemClickListener: OnItemClickListener
 
     init {
     }
 
-    public fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
         mOnItemClickListener = onItemClickListener
     }
 
@@ -48,12 +49,12 @@ class RelatedProductsItem(private var mRecommendedItem: RecommendedItem) {
         val price: Double = data["price"] as Double
 
         if (price != special) {
-            holder.productPrice.text = CurrencyFormatter.formatCurrency(price)
-            holder.productOldPrice.text = CurrencyFormatter.formatCurrency(special)
+            holder.productPrice.text = CurrencyFormatter.formatCurrency(price).persianizeDigitsInString()
+            holder.productOldPrice.text = CurrencyFormatter.formatCurrency(special).persianizeDigitsInString()
             holder.productOldPrice.paintFlags = holder.productOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             holder.productOldPrice.visibility = View.VISIBLE
         } else {
-            holder.productPrice.text = CurrencyFormatter.formatCurrency(price)
+            holder.productPrice.text = CurrencyFormatter.formatCurrency(price).persianizeDigitsInString()
             holder.productOldPrice.visibility = View.INVISIBLE
         }
     }

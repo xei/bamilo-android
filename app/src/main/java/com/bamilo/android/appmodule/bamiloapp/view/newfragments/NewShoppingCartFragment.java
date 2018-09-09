@@ -347,12 +347,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      * showNoItems update the layout when basket has no items
      */
     public void showNoItems() {
-        showErrorFragment(ErrorLayoutFactory.CART_EMPTY_LAYOUT, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
-        });
+        showErrorFragment(ErrorLayoutFactory.CART_EMPTY_LAYOUT,
+                v -> getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK));
         getBaseActivity().hideKeyboard();
     }
 
@@ -909,16 +905,13 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                     getString(R.string.remove_item_from_cart_question),
                     getString(R.string.no_label),
                     getString(R.string.yes_label),
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (v.getId() == R.id.button2) {
-                                int position = (int)view.getTag(R.id.item_position);
-                                PurchaseCartItem item = items.get(position);
-                                triggerRemoveItem(item);
-                            }
-                            dialogLogout.dismiss();
+                    v -> {
+                        if (v.getId() == R.id.button2) {
+                            int position = (int)view.getTag(R.id.item_position);
+                            PurchaseCartItem item = items.get(position);
+                            triggerRemoveItem(item);
                         }
+                        dialogLogout.dismiss();
                     });
             dialogLogout.show(getBaseActivity().getSupportFragmentManager(), null);
 

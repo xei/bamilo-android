@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
 import com.bamilo.android.framework.service.objects.checkout.CartPackage;
 import com.bamilo.android.framework.service.utils.TextUtils;
@@ -74,7 +75,8 @@ public class CheckoutPackagesListAdapter extends RecyclerView.Adapter<CheckoutPa
             if (cartPackage.getDeliveryType() != null
                     && cartPackage.getDeliveryType().getDropShipDescription() != null
                     && cartPackage.getDeliveryType().getDropShipDescription().length() != 0) {
-                holder.dropShipDescriptionTextView.setText(cartPackage.getDeliveryType().getDropShipDescription());
+                holder.dropShipDescriptionTextView.setText(
+                        StringExtKt.persianizeDigitsInString(cartPackage.getDeliveryType().getDropShipDescription()));
                 holder.dropShipDescriptionTextView.setVisibility(View.VISIBLE);
             } else {
                 holder.dropShipDescriptionTextView.setVisibility(View.GONE);
@@ -85,11 +87,11 @@ public class CheckoutPackagesListAdapter extends RecyclerView.Adapter<CheckoutPa
             PurchaseCartItem cartItem = indexedItems.get(position);
             holder.brand.setText(cartItem.getBrand() != null ? cartItem.getBrand().getName() : "");
             if (Double.isNaN(cartItem.getSpecialPrice())) {
-                holder.price.setText(CurrencyFormatter.formatCurrency(cartItem.getPrice()));
+                holder.price.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(cartItem.getPrice())));
             } else {
-                holder.price.setText(CurrencyFormatter.formatCurrency(cartItem.getSpecialPrice()));
+                holder.price.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(cartItem.getSpecialPrice())));
             }
-            holder.count.setText(String.format(mLocale, "%s: %d", context.getString(R.string.quantity_label), cartItem.getQuantity()));
+            holder.count.setText(StringExtKt.persianizeDigitsInString(String.format(mLocale, "%s: %d", context.getString(R.string.quantity_label), cartItem.getQuantity())));
             holder.product.setText(cartItem.getName());
             ImageManager.getInstance().loadImage(cartItem.getImageUrl().replace("-cart.jpg", "-catalog_grid_3.jpg"), holder.img, null, R.drawable.no_image_large, false);
         }

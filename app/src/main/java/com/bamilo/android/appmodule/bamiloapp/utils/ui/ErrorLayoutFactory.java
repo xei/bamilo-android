@@ -453,32 +453,29 @@ public class ErrorLayoutFactory {
 
     private void sendRecommend(final Context context, String type) {
 
-        RecommendListCompletionHandler recommendListCompletionHandler = new RecommendListCompletionHandler() {
-            @Override
-            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
-                if (data == null || data.size() == 0) {
-                    View recommendations = mErrorLayout.findViewById(R.id.recommendation_view);
-                    recommendations.setVisibility(View.GONE);
-                    return;
+        RecommendListCompletionHandler recommendListCompletionHandler = (category, data) -> {
+            if (data == null || data.size() == 0) {
+                View recommendations = mErrorLayout.findViewById(R.id.recommendation_view);
+                recommendations.setVisibility(View.GONE);
+                return;
+            }
+            try {
+                if (recommendationsTeaserHolder != null) {
+                    ((ViewGroup) mErrorLayout).removeView(recommendationsTeaserHolder.itemView);
                 }
-                try {
-                    if (recommendationsTeaserHolder != null) {
-                        ((ViewGroup) mErrorLayout).removeView(recommendationsTeaserHolder.itemView);
-                    }
-                    recommendationsTeaserHolder = new RecommendationsCartHolder(context,
-                            mErrorLayout
-                                    .findViewById(R.id.recommendation_view), null);
+                recommendationsTeaserHolder = new RecommendationsCartHolder(context,
+                        mErrorLayout
+                                .findViewById(R.id.recommendation_view), null);
 
-                    recommendationsTeaserHolder.onBind(data);
+                recommendationsTeaserHolder.onBind(data);
 
-                    ((ViewGroup) mErrorLayout).addView(recommendationsTeaserHolder.itemView,
-                            ((ViewGroup) mErrorLayout).getChildCount() - 1);
+                ((ViewGroup) mErrorLayout).addView(recommendationsTeaserHolder.itemView,
+                        ((ViewGroup) mErrorLayout).getChildCount() - 1);
 
-                } catch (Exception ignored) {
-
-                }
+            } catch (Exception ignored) {
 
             }
+
         };
 
         RecommendManager recommendManager = new RecommendManager();

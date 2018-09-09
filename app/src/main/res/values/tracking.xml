@@ -2,11 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
 
     <!-- Begin of GA Tracking Parameters -->
-    <bool name="ga_autoActivityTracking">false</bool>
-    <bool name="ga_reportUncaughtExceptions">false</bool>
     <bool name="ga_debug_mode">false</bool>
-    <bool name="ga_enable">false</bool>
     <bool name="ga_advertisingIDCollection">true</bool>
+
+    <!-- Google tracking -->
+    <bool name="ga_enable">true</bool>
+    <bool name="ga_autoActivityTracking">true</bool>
+    <bool name="ga_reportUncaughtExceptions">true</bool>
 
     <string name="ga_trackingId"/>
 
