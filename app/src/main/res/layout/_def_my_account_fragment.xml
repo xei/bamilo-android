@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- ACCOUNT SETTINGS -->
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/middle_myaccount_list"
+            style="@style/MyAccountSection">
+
+      <!--      <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                style="@style/MyAccountHeaderStyle"
+                android:textColor="@color/red_1" />-->
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <!-- NOTIFICATION SETTINGS -->
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/notification_list"
+            style="@style/MyAccountSection">
+
+<!--            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                style="@style/MyAccountHeaderStyle"/>-->
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <!-- LANGUAGE SETTINGS -->
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/language_list"
+            style="@style/MyAccountSection">
+
+<!--
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                style="@style/MyAccountHeaderStyle"
+                />
+-->
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <!-- MORE SETTINGS -->
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/more_info_container"
+            style="@style/MyAccountSection">
+
+        <!--    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                style="@style/MyAccountHeaderStyle"
+                android:text="@string/more" />-->
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <!-- SHARE SETTINGS -->
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/middle_app_sharing_list"
+            style="@style/MyAccountSection">
+
+            <!--<com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView-->
+                <!--style="@style/MyAccountHeaderStyle"         />-->
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+</ScrollView>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ViewGroupCompat.Vertical.MiddleDivider"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--SCROLLABLE CONTAINER-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--TITLE-->
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/order_return_main_title"
+                style="@style/HeaderStyle.Multiline"
+                tools:text="@string/order_return_conditions_title" />
+
+            <!--CONTENT-->
+            <FrameLayout
+                android:id="@+id/order_return_main_inflate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:padding="@dimen/margin_padding_xl" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!--BUTTON-->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_return_main_button_ok"
+        style="@style/Button_1.Shop"
+        android:layout_margin="@dimen/margin_padding_xl"
+        tools:text="@string/ok_got_it" />
+
+</android.support.v7.widget.LinearLayoutCompat>

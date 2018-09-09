@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="single_shop_country_url">www.bamilo.com</string>
-    <string name="global_restbase_path">mobapi</string>
-    <string name="global_api_version">mobapi/v2.9</string>
-</resources>

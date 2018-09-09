@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margin_large" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:layout_marginRight="@dimen/margin_huge"
+                android:layout_marginTop="@dimen/margin_huge"
+                android:gravity="center_vertical|right"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/review_ratings_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                </LinearLayout>
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/review_item_title"
+                    style="@style/text_title"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="32dp"
+                    android:gravity="right"
+                    android:text="" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_mid"
+                    android:gravity="center_vertical|right" >
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/review_date"
+                        style="@style/text_normal"
+                        tools:text="Date"
+                        android:textSize="@dimen/text_s" />
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/review_username"
+                        style="@style/text_normal"
+                        android:layout_marginRight="@dimen/rounded_margin_small"
+                        tools:text="User"
+                        android:textSize="@dimen/text_s" />
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/posted_by"
+                        style="@style/text_normal"
+                        android:layout_marginRight="@dimen/rounded_margin_small"
+                        android:text="@string/posted_by"
+                        android:textSize="@dimen/text_s" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                style="@style/DividerHorizontal.Black_400"
+                android:layout_marginTop="@dimen/margin_huge" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:layout_marginRight="@dimen/margin_huge"
+                android:layout_marginTop="@dimen/margin_huge"
+                android:gravity="center_vertical|right"
+                android:orientation="vertical" >
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/review_comment"
+                    style="@style/text_normal"
+                    android:ellipsize="none"
+                    android:singleLine="false"
+                    tools:text="This is a really interesting comment." />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

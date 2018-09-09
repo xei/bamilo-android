@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:layoutDirection="rtl">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/subcategory_recyclerView_subCatList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/subcategory_textView_confirm"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/subcategory_textView_confirm"
+        style="@style/DialogFilterButtonSubmit"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@color/button_secondary_color"/>
+
+</RelativeLayout>

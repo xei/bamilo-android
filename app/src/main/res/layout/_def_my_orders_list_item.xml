@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/order_item_container"
+    style="@style/SingleLineGroupStyle"
+    android:background="@drawable/_gen_selector_group_selected"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/margin_padding_xl"
+    android:paddingRight="@dimen/margin_padding_xl"
+    tools:layout_height="48dp"
+    tools:layout_width="match_parent">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- ORDER -->
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/order_item_number"
+            style="@style/TextBase.List.Black"
+            tools:text="Title" />
+
+        <!-- DATE -->
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/order_item_date"
+            style="@style/TextBase.Body.Black_800"
+            tools:text="Sub title" />
+
+    </LinearLayout>
+
+    <!-- PRICE -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/order_item_price"
+        style="@style/TextBase.Body.Black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="N 3569" />
+
+</LinearLayout>

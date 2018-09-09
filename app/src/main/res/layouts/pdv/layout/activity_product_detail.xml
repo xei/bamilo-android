@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/pdv_frameLayout_fragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <include
+                android:id="@+id/productDetail_linearLayout_notifyMe"
+                layout="@layout/pdv_notify_me"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/productDetail_linearLayout_addToCart"
+                layout="@layout/pdv_add_to_cart"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"/>
+
+            <include
+                android:id="@+id/productDetail_relativeLayout_warningLayout"
+                layout="@layout/warning"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/productDetail_transparentBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:alpha="0.0"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/chooseVariation_relativeLayout_layout"
+            layout="@layout/bottom_sheet_choose_variations"
+            tools:visibility="invisible"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

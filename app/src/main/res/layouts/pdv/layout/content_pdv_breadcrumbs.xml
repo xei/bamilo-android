@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:layout_marginBottom="@dimen/dimen_8dp"
+    android:layout_gravity="center"
+    android:gravity="center">
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/breadcrumbs_textView_title"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:paddingTop="@dimen/dimen_8dp"
+        android:paddingBottom="@dimen/dimen_8dp"
+        android:paddingLeft="@dimen/dimen_16dp"
+        android:paddingRight="@dimen/dimen_16dp"
+        android:background="@drawable/round_8eae_16"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/primary_text_color"
+        android:textSize="@dimen/dimen_12sp"
+        app:fontFamily="@string/bamilo_bold_font"
+        tools:text="بولیز و شومیز زنانه"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/breadcrumbs_appImageView_chevron"
+        android:layout_width="@dimen/dimen_18dp"
+        android:layout_height="18dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_chevron_left_blue"/>
+
+</LinearLayout>

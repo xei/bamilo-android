@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginBottom="0dp" >
+
+    <!-- TITLE mandatoryControl -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/checkout_payment_methods_title"
+        style="@style/HeaderStyle"
+        android:layout_alignParentRight="true"
+        android:gravity="right|center_vertical"
+        android:text="@string/payment" />
+
+    <!-- PAYMENT METHODS -->
+
+    <LinearLayout
+        android:id="@+id/checkout_payment_methods_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/checkout_payment_methods_title"
+        android:orientation="vertical" />
+
+</RelativeLayout>

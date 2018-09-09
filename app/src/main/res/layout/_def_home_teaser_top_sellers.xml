@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/home_teaser_top_seller_section_title"
+        style="@style/HeaderTeaserStyle"
+        android:text="@string/top_sellers" />
+
+    <com.bamilo.android.framework.components.recycler.HorizontalListView
+        android:id="@+id/home_teaser_top_sellers_horizontal_list"
+        style="@style/HorizontalListStyle"
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/margin_padding_xs"
+        android:layout_height="@dimen/dimen_220dp" />
+
+</LinearLayout>

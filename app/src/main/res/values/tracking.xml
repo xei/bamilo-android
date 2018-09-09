@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
+
+    <!-- Begin of GA Tracking Parameters -->
+    <bool name="ga_debug_mode">false</bool>
+    <bool name="ga_advertisingIDCollection">true</bool>
+
+    <!-- Google tracking -->
+    <bool name="ga_enable">true</bool>
+    <bool name="ga_autoActivityTracking">true</bool>
+    <bool name="ga_reportUncaughtExceptions">true</bool>
+
+    <string name="ga_trackingId"/>
+
+    <!-- PageView Names -->
+    <string name="gnavigation">LeftMenu</string>
+    <string name="ghomepage">Home</string>
+    <string name="gMyBamilo">MyBamilo</string>
+    <string name="gcategories">ShopCategories</string>
+    <string name="gbrands">ShopBrands</string>
+    <string name="gproductlist">Catalog</string>
+    <string name="gCampaign">Campaign</string>
+    <string name="gCampaignPage">CampaignPage</string>
+    <string name="gStaticPage">StaticPage</string>
+    <string name="gshoppingcart">Cart</string>
+    <string name="gCategories">Categories</string>
+    <string name="gCategoryMenu">CategoryMenu</string>
+    <string name="gMyAddresses">MyAddresses</string>
+    <string name="gCheckoutAddresses">CheckoutAddresses</string>
+    <string name="gUserLogin">SignIn</string>
+    <string name="gUserSignup">SignUp</string>
+    <string name="gHomePage">HomePage</string>
+    <string name="gEditAddress">EditAddress</string>
+    <string name="gForgotPassword">ForgetPassword</string>
+    <string name="gUserProfile">ProfileView</string>
+    <string name="gRecentlyviewedPage">RecentlyViewed</string>
+    <string name="gWriteReview">WriteRatingScreen</string>
+    <string name="gWishList">WishList</string>
+    <string name="gCheckoutConfirmation">CheckoutConfirmation</string>
+    <string name="gCheckoutPaymentFailure">CheckoutPaymentFail</string>
+    <string name="gCheckoutFinish">CheckoutFinish</string>
+    <string name="gCheckoutPaymentMethod">CheckoutPayment</string>
+    <string name="gcartwithitems">CartWithItem</string>
+    <string name="gcartempty">CartEmpty</string>
+    <string name="gproductreviews">ShopProductReviews</string>
+    <string name="gproductreviewscreate">ShopProductReviewsCreate</string>
+    <string name="gcheckoutbegin">CheckoutViaWebview</string>
+    <string name="gcheckoutfinal">CheckoutResult</string>
+    <string name="gcustomeraccount">CustomerAccount</string>
+    <string name="gaccount">Account</string>
+    <string name="glogin">Login</string>
+    <string name="gregister">Register</string>
+    <string name="gMyOrders">MyOrders</string>
+    <string name="gOrderList">OrderListView</string>
+    <string name="gOrderDetail">OrderDetailView</string>
+    <string name="gProfileCreateAddress">AddAddress</string>
+    <string name="gPDV">PDVView</string>
+    <string name="gproductdetail">PDVView</string>
+    <string name="grateproduct">RateProduct</string>
+    <string name="gcampaignpage">Campaign</string>
+    <string name="gnewslettersubs">NewsletterSubscription</string>
+    <string name="gfavourites">Favourites</string>
+    <string name="grecentsearches">RecentSearches</string>
+    <string name="grecentlyviewed">RecentlyViewed</string>
+    <string name="goverflowmenu">ActionOverflow</string>
+    <string name="gabout">About</string>
+    <string name="gtrackorder">TrackOrder</string>
+    <string name="gtrackconfirmorder">ConfirmationOrder</string>
+    <string name="gtrackpayment">Payment</string>
+    <string name="gtracknewaddress">NewAddress</string>
+    <string name="gtrackaddaddress">AddAddress</string>
+    <string name="gtrackaddress">Addresses</string>
+    <string name="gtrackmyorders">MyOrders</string>
+    <string name="gtrackfaq">FAQ</string>
+
+    <!-- prefixes for page string encoding -->
+    <string name="gbrand_prefix">brand</string>
+    <string name="gcategory_prefix">cat</string>
+    <string name="gteaser_prefix">teaser</string>
+    <string name="gteaserprod_prefix">teaser_prd</string>
+    <string name="gteaserrecentlyviewed_prefix">teaser_recently_viewed</string>
+    <string name="gsearch_prefix">search</string>
+    <string name="gpush_prefix">push</string>
+    <string name="gcart_prefix">cart</string>
+    <string name="grelateditem_prefix">related_item</string>
+
+    <!-- Event Categories -->
+    <string name="gcatalog">Catalog</string>
+    <string name="gFilterView">FilterView</string>
+    <string name="gsearchresult">SearchResults</string>
+    <string name="gcheckout">Checkout</string>
+    <string name="gcampaign">Campaign</string>
+    <string name="grelateditem">RelatedItem</string>
+    <string name="gexternallink">ExternalLink</string>
+
+    <!-- HOME TEASERS -->
+    <string name="gmainbanner">Main_Teaser</string>
+    <string name="gsmallbanner">Small_Teaser</string>
+    <string name="gcampaignsbanner">Campaigns_Teaser</string>
+    <string name="gshopbanner">Shop_Teaser</string>
+    <string name="gbrandbanner">Brand_Teaser</string>
+    <string name="gshopweekbanner">Shops_Week</string>
+    <string name="gfeaturebanner">Feature_Stores</string>
+    <string name="gtopsellerbanner">Top_Sellers</string>
+    <string name="gunknown">Unknown</string>
+
+    <!-- Action -->
+    <string name="gpdv">pdv</string>
+    <string name="gsearch">Search</string>
+    <string name="gaddtocart">AddtoCart</string>
+    <string name="gloginsuccess">LoginSuccess</string>
+    <string name="gfacebookloginsuccess">FacebookLoginSuccess</string>
+    <string name="gfacebooksignupsuccess">FacebookSignupSuccess</string>
+    <string name="gsignupsuccess">SignupSuccess</string>
+    <string name="gloginfailed">LoginFailed</string>
+    <string name="glogoutsuccess">LogoutSuccess</string>
+    <string name="glogoutfailed">LogoutFailed</string>
+    <string name="gautologinsuccess">AutoLoginSuccess</string>
+    <string name="gautologinfailed">AutoLoginFailed</string>
+    <string name="gcreatesuccess">CreateSuccess</string>
+    <string name="gcreatefailed">CreateFailed</string>
+    <string name="glogout">Logout</string>
+    <string name="gstarted">Started</string>
+    <string name="gfinished">Finished</string>
+    <string name="gcontinueshopping">ContinueShopping</string>
+    <string name="gsocialshare">SocialShare</string>
+    <string name="gcheckoutstart">CheckoutStart</string>
+    <string name="gcheckoutcontinueshopping">ContinueShopping</string>
+    <string name="gfilters">Filters</string>
+    <string name="gsubscribenewsletter">SubscribeNewsletter</string>
+    <string name="gunsubscribenewsletter">UnsubscribeNewsletter</string>
+    <string name="gsearchsuggestions">SearchSuggestions</string>
+    <string name="gaddtofavorites">AddtoWishlist</string>
+    <string name="gremovefromfavorites">RemoveFromWishlist</string>
+    <string name="gsignin">SignIn</string>
+    <string name="gcatalogswitchlayout">ChangeCatalogView</string>
+    <string name="gCatalogSortBestRating">SortBestRating</string>
+    <string name="gCatalogSortPopularity">SortPopularity</string>
+    <string name="gCatalogSortNewIn">SortNewIn</string>
+    <string name="gCatalogSortPriceUp">SortPriceUp</string>
+    <string name="gCatalogSortPriceDown">SortPriceDown</string>
+    <string name="gCatalogSortName">SortName</string>
+    <string name="gCatalogSortBrand">SortName</string>
+    <string name="gRelatedProduct">RelatedItem</string>
+    <string name="gAddBundleToCart">BundleAddToCart</string>
+    <string name="gAddSellerToCart">SellerAddToCart</string>
+    <string name="gShareApp">ShareApp</string>
+    <string name="gAccountCreateAddress">AccountCreateAddress</string>
+    <string name="gPurchase">Purchase</string>
+    <string name="gBannerClick">BannerClick</string>
+
+    <!-- Checkout Steps -->
+    <string name="gNativeCheckout">NativeCheckout</string>
+    <string name="gNativeCheckoutError">NativeCheckoutError</string>
+    <string name="gPaymentMethod">PaymentMethod</string>
+    <string name="gcheckoutAboutYou">CheckoutAboutYou</string>
+    <string name="gcheckoutCreateAddress">CheckoutCreateAddress</string>
+    <string name="gcheckoutEditAddress">CheckoutEditAddress</string>
+    <string name="gcheckoutExternalPayment">CheckoutExternalPayment</string>
+    <string name="gcheckoutMyAddresses">CheckoutMyAddresses</string>
+    <string name="gcheckoutMyOrder">CheckoutMyOrder</string>
+    <string name="gcheckoutPaymentMethods">CheckoutPaymentMethods</string>
+    <string name="gcheckoutPollQuestion">CheckoutPollQuestion</string>
+    <string name="gcheckoutShippingMethods">CheckoutShippingMethods</string>
+    <string name="gsignup">CustomerSignUp</string>
+    <!-- Label -->
+    <string name="gcustomerid">CustomerId</string>
+    <string name="gsimplesku">Simple-SKU</string>
+    <string name="gorderid">OrderID</string>
+    <string name="gcategoriestree">CategoriesTree</string>
+
+    <!-- For load timing only -->
+
+    <string name="gload">PageLoad</string>
+
+    <!-- End of GA Tracking Parameters -->
+
+    <!-- New GA Parameters -->
+    <string name="gaScreen">Screen</string>
+    <string name="gaProductDetail">Product Detail</string>
+    <string name="gaShoppingCart">Shopping Cart</string>
+    <string name="gaRemoveItemFromShoppingCart">Remove Item From Shopping Cart</string>
+    <string name="gaSearchSuggestions">Search Suggestions</string>
+    <string name="gaMyOrders">My Orders</string>
+    <string name="gaChangeItemQuantityInShoppingCart">Change Item Quantity In Shopping Cart</string>
+    <string name="gaHome">Home</string>
+    <string name="gaCheckoutConfirmation">Checkout Confirmation</string>
+    <string name="gaStaticPage">Static Page</string>
+    <string name="gaCampaignPage">Campaign Page</string>
+    <string name="gaCatalog">Catalog</string>
+    <string name="gaLogin">Login</string>
+    <string name="gaRegister">Register</string>
+    <string name="gaAddress">Address</string>
+
+    <!--GA Fix Labels-->
+    <string name="gaMyProfileLabel">MyProfile</string>
+    <string name="gaCheckoutLabel">Checkout</string>
+
+    <!-- FB AUDIENCE -->
+    <string name="adjust_token_fb_home" translatable="false">w2x1sf</string>
+    <string name="adjust_token_fb_search" translatable="false">ezkcbl</string>
+    <string name="adjust_token_fb_view_wishlist" translatable="false">qthb20</string>
+    <string name="adjust_token_fb_view_cart" translatable="false">ekrf6p</string>
+
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- HEADER -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/pdv_specs_title"
+        style="@style/HeaderStyle" />
+
+    <!-- CONTENT -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/pdv_specs_multi_line"
+        style="@style/MultiLineStyle"
+        android:maxLines="@integer/details_max_lines" />
+
+    <!-- SEPARATOR -->
+
+    <View
+        style="@style/DividerHorizontal.Black_400"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl" />
+
+    <!-- MORE BUTTON -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/pdv_specs_button"
+        style="@style/Button_Link.SectionItem"
+        tools:text="More Specs" />
+
+</LinearLayout>

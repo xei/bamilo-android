@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:background="@android:color/white"
+              android:orientation="vertical"
+              >
+
+    <com.bamilo.android.framework.components.AnimatedExpandableListView
+        android:id="@+id/nav_sub_categories_grid2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:groupIndicator="@null"
+        android:visibility="gone"
+        android:listSelector="@android:color/transparent" />
+
+    <pl.openrnd.multilevellistview.MultiLevelListView
+        android:id="@+id/nav_sub_categories_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:groupIndicator="@null"
+        android:listSelector="@android:color/transparent"/>
+
+    <com.bamilo.android.framework.components.customfontviews.Button
+        android:id="@+id/partial_error_button"
+        style="@style/Button_1.Secondary.Text_Black_800.Border_400"
+        android:layout_width="match_parent"
+        android:text="@string/try_again_retry"
+        android:visibility="gone"
+        tools:text="Retry"
+        tools:visibility="visible"/>
+
+</LinearLayout>

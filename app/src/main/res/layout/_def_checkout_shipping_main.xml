@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- SCROLLABLE CONTAINER -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/checkout_shipping_methods_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_padding_l"
+            android:orientation="vertical">
+
+            <!-- TITLE -->
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                style="@style/HeaderStyle"
+                android:text="@string/shipping" />
+
+            <!-- FORM (code) -->
+
+            <!-- FULFILMENT (code) -->
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- NEXT BUTTON -->
+
+    <include layout="@layout/checkout_total_layout" />
+
+</android.support.v7.widget.LinearLayoutCompat>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingBottom="@dimen/dimen_mat_8px"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="false"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/dimen_5dp"
+    android:paddingLeft="@dimen/margin_padding_xs"
+    android:paddingRight="@dimen/margin_padding_xs">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/home_teaser_campaign_container"
+        style="@style/CardViewFlatStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_campaign_teaser_height"
+        android:layout_gravity="center">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <FrameLayout
+                android:id="@+id/home_teaser_campaign_image_container"
+                android:layout_width="@dimen/dimen_mat_123px"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center_vertical">
+
+                <include layout="@layout/home_teaser_image_loadable" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/home_teaser_campaign_image_container"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/home_teaser_campaign_title"
+                    style="@style/TextBase.SubHead"
+                    android:layout_marginBottom="@dimen/dimen_mat_8px"
+                    android:gravity="center" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/home_teaser_campaign_timer"
+                    style="@style/TextBase.Timer"
+                    android:text="22sp"
+                    android:fontFamily="@string/bamilo_font"
+                    android:layout_marginBottom="@dimen/dimen_mat_8px"
+                    android:gravity="center" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/home_teaser_campaign_subtitle"
+                    style="@style/TextBase.Caption"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/home_teaser_campaign_more"
+        style="@style/ButtonFlat"
+        android:layout_marginTop="@dimen/margin_padding_xs"
+        android:text="@string/see_more_offers" />
+
+</LinearLayout>
+
+
+

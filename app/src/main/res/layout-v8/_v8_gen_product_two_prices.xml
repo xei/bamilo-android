@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:layoutDirection="ltr"
+    android:orientation="horizontal"
+    tools:ignore="UnusedAttribute">
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/item_price"
+        style="@style/TextBase.Body.Black_800"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="5000 €" />
+
+    <Space
+        android:layout_width="@dimen/dimen_4dp"
+        android:layout_height="wrap_content" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/item_discount"
+        style="@style/TextBase.Body.Black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="100 €" />
+
+</LinearLayout>
+

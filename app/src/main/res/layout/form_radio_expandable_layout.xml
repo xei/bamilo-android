@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bamilo.android.appmodule.bamiloapp.utils.RadioGroupExpandable xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/radio_group_vertical_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:divider="@null"/>
+    

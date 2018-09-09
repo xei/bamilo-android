@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/layout_item_height"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <Space
+        android:id="@+id/anchor"
+        android:layout_width="@dimen/dimen_12dp"
+        android:layout_height="0dp"
+        android:layout_alignParentRight="true" />
+
+    <ImageView
+        android:id="@+id/pdv_brand_image"
+        android:layout_width="54dp"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/margin_padding_xs"
+        android:layout_marginRight="@dimen/margin_padding_m"
+        android:layout_marginTop="@dimen/margin_padding_xs"
+        android:layout_toLeftOf="@id/anchor"
+        android:scaleType="fitCenter"
+        tools:src="@drawable/ic_stat_notifications"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/pdv_brand_text"
+        style="@style/TextBase.Body.Blue_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin_padding_m"
+        android:layout_toLeftOf="@id/pdv_brand_image"
+        tools:text="Visit"/>
+
+</RelativeLayout>
+

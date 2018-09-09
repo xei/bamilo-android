@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Global Country Configuration -->
+
+    
+    <!-- Share App -->
+
+
+
+    <!-- Share App -->
+    <string name="share_app_link" translatable="false">https://play.google.com/store/apps/details?id=com.bamilo.android&amp;hl=en</string>
+    <!-- Single country (country.xml) -->
+    <string name="global_shopname" translatable="false"/>
+    <string name="global_server" translatable="false"/>
+    <string name="countries_url" translatable="false"/>
+</resources>

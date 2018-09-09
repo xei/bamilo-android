@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_button_description" translatable="false">Login Button</string>
+    <string name="terms_and_conditions_description" translatable="false">Terms and Conditions</string>
+    <string name="register_button_description" translatable="false">Register Button</string>
+    <string name="register_submit_description" translatable="false">Submit Register Form</string>
+    <string name="register_birthday_description" translatable="false">Birthday</string>
+    <string name="search_field_description" translatable="false">Search Field</string>
+    <string name="search_input_description" translatable="false">Search input</string>
+    <string name="myaccount_save_description" translatable="false">Save</string>
+    <string name="myaccount_newpass_description" translatable="false">New Password</string>
+    <string name="myaccount_repeatpass_description" translatable="false">New Repeated Password</string>
+    <string name="productdetail_addcart_description" translatable="false">Add to Cart</string>
+    <string name="productdetail_addbundlecart_description" translatable="false">Add Bundle to Cart</string>
+    <string name="productdetail_gotocart_description" translatable="false">Go to Cart</string>
+    <string name="productdetail_order_button_description" translatable="false">Call to order</string>
+    <string name="shopping_cart_button_description" translatable="false">Proceed to checkout</string>
+    <string name="checkout_continue_button_description" translatable="false">Continue Shopping</string>
+    <string name="clear_recently_viewed_button_description" translatable="false">Clear ecently viewed</string>
+</resources>

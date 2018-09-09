@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F0F0"
+
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/shoppingcart_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/total_container"
+                android:layout_alignParentTop="true" />
+
+
+            <LinearLayout
+                android:id="@+id/discount_container_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_above="@+id/discount_container"
+                android:background="@drawable/new_shadow_gradiant"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/discount_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/total_container"
+                android:background="@color/white_transparent"
+                android:orientation="vertical" />
+
+            <include
+                android:id="@+id/total_container"
+                layout="@layout/new_shopping_basket_total_element"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/checkout_totalbar_height"
+                android:layout_above="@+id/checkout_button"
+                android:visibility="gone" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/checkout_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/checkout_footer_height"
+                android:layout_alignParentBottom="true"
+                android:background="@color/button_primary_color"
+                android:gravity="center"
+                android:text="@string/basket_confirm_button"
+                android:textColor="@color/white"
+                android:textSize="@dimen/checkout_footer_font_size" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--WISH LIST-->
+
+    <com.bamilo.android.appmodule.bamiloapp.utils.catalog.HeaderFooterGridView
+        android:id="@+id/wish_list_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="@drawable/selector_list_item_highlight"
+        android:numColumns="@integer/favourite_num_columns"
+        />
+    <!--LOADING MORE-->
+
+    <include
+        android:id="@+id/wish_list_loading_more"
+        layout="@layout/fragment_loading_more"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_30dp"
+        android:layout_alignBottom="@id/wish_list_grid" />
+
+</RelativeLayout>

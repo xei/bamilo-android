@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/campaign_item_stock_timer_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_marginTop="@dimen/dimen_10dp"
+    >
+
+    <!-- TIMER TITLE -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        style="@style/TextBase.Body"
+        android:id="@+id/campaign_item_stock_timer_label"
+        android:layout_width="wrap_content"
+        android:textAllCaps="true"
+        android:text="@string/campaign_timer_end"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        />
+
+    <!-- TIMER -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/campaign_item_stock_timer"
+        style="@style/TextBase.Body"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/campaign_item_stock_timer_label"
+        android:layout_toEndOf="@id/campaign_item_stock_timer_label"
+        android:textColor="@color/red_basic"
+        />
+    <!-- </LinearLayout> -->
+
+</RelativeLayout>

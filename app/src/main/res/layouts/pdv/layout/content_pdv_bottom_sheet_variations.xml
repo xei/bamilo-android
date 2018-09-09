@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dimen_8dp"
+    android:layout_marginLeft="@dimen/dimen_8dp"
+    android:layout_marginRight="@dimen/dimen_8dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/pdvVariations_linearLayout_sizeRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/pdvVariations_textView_sizeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dimen_12dp"
+                android:layout_alignParentRight="true"
+                android:text="@string/choose_size"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="12sp"
+                tools:ignore="RelativeOverlap,SmallSp"/>
+
+            <LinearLayout
+                android:id="@+id/pdvVariations_linearLayout_sizeHelp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:visibility="gone"
+                android:layout_marginEnd="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_alignParentLeft="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center">
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_4dp"
+                    android:text="@string/Size_guid"
+                    android:textColor="@color/blue_link"
+                    android:textSize="12sp"/>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/ic_chevron_left_blue"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/pdvVariations_recyclerView_size"
+            android:layout_width="match_parent"
+            android:layout_height="31dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pdvVariations_linearLayout_othersRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/pdvVariations_textView_colorTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="@dimen/dimen_12dp"
+            android:text="@string/other_variations"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="12sp"
+            tools:ignore="SmallSp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/pdvVariations_recyclerView_colors"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_70dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="@dimen/dimen_24dp"
+            android:layout_marginLeft="@dimen/dimen_12dp"
+            android:layout_marginRight="@dimen/dimen_12dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

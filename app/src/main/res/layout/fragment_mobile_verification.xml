@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="48dp"
+            android:gravity="center"
+            android:text="@string/verification_code_sent_to_you"
+            android:textColor="@color/gray_2" />
+
+        <TextView
+            android:id="@+id/tvPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:textColor="@color/gray_1"
+            android:textSize="24sp"
+            tools:text="۰۹۱۹۴۵۳۹۵۲۱" />
+
+        <com.bamilo.android.appmodule.bamiloapp.view.widget.PinEntryInput
+            android:id="@+id/etPin"
+            android:layout_width="220sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="64dp"
+            android:cursorVisible="false"
+            android:digits="1234567890"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textColor="@color/gray_2"
+            android:textIsSelectable="false"
+            android:textSize="20sp"
+            app:pinAnimationType="fromBottom"
+            app:pinCharacterSpacing="4dp"
+            app:pinLineColors="@color/gray_4" />
+
+        <com.bamilo.android.framework.components.customfontviews.Button
+            android:id="@+id/btnSubmitToken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="36dp"
+            android:enabled="false"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:text="@string/send_token_btn_label"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/dark_green_2" />
+
+        <TextView
+            android:id="@+id/tvResendTokenNotice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/verification_token_receive_notice"
+            android:textColor="@color/gray_2" />
+
+        <TextView
+            android:id="@+id/tvResendToken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingBottom="4dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="4dp"
+            android:text="@string/verification_resend_token"
+            android:textColor="@color/dark_green_2"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

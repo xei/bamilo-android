@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.bamilo.android.framework.components.customfontviews.CheckBox
+        android:id="@+id/checkbox_terms"
+        style="@style/FormFieldCheckBoxStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/form_check_padding"
+        android:paddingStart="@dimen/form_check_padding"
+        android:textColor="@color/grey_middle"
+        android:textSize="@dimen/text_form" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/textview_terms"
+        style="@style/text_form"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textColor="@color/blue_basic" />
+</LinearLayout>

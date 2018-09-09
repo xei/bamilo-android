@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Emarsys_ApplicationID" translatable="false">82449-6B792</string>
+    <string name="Emarsys_ApplicationCode" translatable="false">82449-6B792</string>
+    <string name="Emarsys_ApplicationPassword" translatable="false">oKjusj5sk9ebqCYgi38XdM/PtPCPqLTl</string>
+    <!-- <string name="Emarsys_ContactFieldID">4819</string> -->
+    <string name="Emarsys_ContactFieldID" translatable="false">3</string>
+</resources>

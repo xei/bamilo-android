@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- CONTAINER -->
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_padding_l" >
+
+        <com.bamilo.android.appmodule.bamiloapp.utils.photoview.PhotoView
+            android:id="@+id/product_size_guide_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/no_image_large" />
+    </RelativeLayout>
+
+    <!-- WIZARD -->
+
+    <ViewStub
+        android:id="@+id/product_size_wizard_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/product_size_wizard_stub_inflate"
+        android:layout="@layout/product_size_guide_wizard" />
+
+</RelativeLayout>

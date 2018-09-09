@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/success_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:src="@drawable/ic_success_checkout" />
+
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                style="@style/TextBase.Display_1"
+                android:layout_marginLeft="@dimen/margin_60px"
+                android:layout_marginRight="@dimen/margin_60px"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:gravity="center_horizontal"
+                android:singleLine="false"
+                android:text="@string/thank_you_order_title"
+                android:textColor="@color/green_1" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                style="@style/TextBase.Body"
+                android:layout_marginLeft="@dimen/margin_60px"
+                android:layout_marginRight="@dimen/margin_60px"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/dimen_16dp"
+                android:singleLine="false"
+                android:text="@string/order_success"
+                android:textColor="@color/black_800" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/order_number_text"
+                style="@style/TextBase.Body"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin_60px"
+                android:layout_marginRight="@dimen/margin_60px"
+                android:layout_marginBottom="@dimen/margin_10px"
+                android:gravity="center_horizontal"
+                android:singleLine="false"
+                android:text="@string/order_number"
+                android:textColor="@color/black_800" />
+
+            <com.bamilo.android.framework.components.customfontviews.Button
+                android:id="@+id/order_status_text"
+                style="@style/Button_1.Secondary.Text_Black_800.Border_400"
+                android:layout_width="@dimen/dimen_328dp"
+                android:layout_marginLeft="@dimen/margin_60px"
+                android:layout_marginRight="@dimen/margin_60px"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:text="@string/my_order_details_label" />
+
+            <!-- BUTTON -->
+
+            <com.bamilo.android.framework.components.customfontviews.Button
+                android:id="@+id/btn_checkout_continue"
+                style="@style/Button_1.Shop"
+                android:layout_width="@dimen/dimen_328dp"
+                android:layout_marginLeft="@dimen/margin_60px"
+                android:layout_marginRight="@dimen/margin_60px"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:contentDescription="@string/checkout_continue_button_description"
+                android:text="@string/continue_shopping"
+                android:visibility="gone" />
+
+            <!-- RELATED ITEMS -->
+            <include
+                android:id="@+id/related_container"
+                layout="@layout/checkout_success_fragment_related"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

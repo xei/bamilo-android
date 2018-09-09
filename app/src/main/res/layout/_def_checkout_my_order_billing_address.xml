@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <!-- TITLE -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        style="@style/HeaderStyle"
+        android:text="@string/address_billing_label" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/checkout_my_order_billing_address_btn_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/dimen_20dp"
+            android:layout_marginRight="@dimen/dimen_20dp"
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:src="@drawable/selector_btn_edit"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp" />
+
+        <!-- ADDRESS -->
+
+        <LinearLayout
+            android:id="@+id/checkout_my_order_billing_address_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!-- SAME ADDRESS -->
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/checkout_my_order_billing_address_is_same"
+            style="@style/SubListItemStyle"
+            android:layout_marginLeft="@dimen/dimen_20dp"
+            android:layout_marginStart="@dimen/dimen_20dp"
+            android:gravity="center_vertical"
+            android:text="@string/my_order_is_same" />
+    </RelativeLayout>
+
+
+</LinearLayout>

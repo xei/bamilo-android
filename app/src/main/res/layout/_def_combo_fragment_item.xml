@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_padding_xl">
+
+    <!-- IMAGE -->
+
+    <include
+        android:id="@+id/item_image_loadable"
+        layout="@layout/_def_gen_image_loadable"
+        android:layout_width="82dp"
+        android:layout_height="103dp" />
+
+    <!-- INFO -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginStart="@dimen/margin_padding_xl"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <!-- BRAND -->
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/item_brand"
+            style="@style/TextBase.Body.Black_800"
+            tools:text="Brand" />
+
+        <!-- TITLE -->
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/item_title"
+            style="@style/TextBase.Title.Black"
+            tools:text="Title" />
+
+        <!-- PRICE -->
+        <include
+            android:id="@+id/item_prices"
+            layout="@layout/gen_product_two_prices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- VARIATION -->
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/item_variation"
+            style="@style/FormButtonSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="M" />
+
+        <!-- CHECKBOX -->
+        <com.bamilo.android.framework.components.customfontviews.CheckBox
+            android:id="@+id/item_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:clickable="false" />
+
+    </LinearLayout>
+
+</LinearLayout>

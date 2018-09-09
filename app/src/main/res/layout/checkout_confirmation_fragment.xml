@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/checkout_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/checkout_confirmation_btn">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/new_checkout_header"
+                android:layout_width="match_parent"
+                android:layout_height="70dp" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/tvDeliveryNotice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pink_10"
+                android:padding="16dp"
+                android:textColor="@color/pink_3"
+                android:textSize="13sp"
+                android:visibility="gone"
+                tools:text="This is a test message"
+                tools:visibility="visible" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray_9"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:paddingLeft="@dimen/dimen_16dp"
+                android:paddingRight="@dimen/dimen_16dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:text="@string/checkout_sum_header"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dimen_5dp"
+                android:paddingLeft="@dimen/dimen_15dp"
+                android:paddingRight="@dimen/dimen_15dp"
+                android:paddingTop="@dimen/dimen_5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/voucher_switch"
+                        android:gravity="right"
+                        android:padding="@dimen/dimen_10dp"
+                        android:text="@string/checkout_voucher_title"
+                        android:textColor="@color/black_73"
+                        android:textSize="15sp" />
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/voucher_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/dimen_5dp"
+                        android:paddingRight="@dimen/dimen_5dp" />
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/view"
+                    style="@style/Divider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_1dp"
+                    android:paddingTop="@dimen/dimen_5dp" />
+
+                <LinearLayout
+                    android:id="@+id/voucher_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                        android:id="@+id/voucher_codename"
+                        style="@style/FormTextField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/checkout_voucher_title"
+                        app:locale="fa_IR"
+                        android:inputType="text"
+                        android:textSize="13sp" />
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/error_message_mandatory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/red_basic"
+                        android:visibility="gone"
+                        tools:text="کد تخفیف را وارد کنید" />
+
+                    <com.bamilo.android.framework.components.customfontviews.Button
+                        android:id="@+id/checkout_button_enter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/checkout_submit_voucher"
+                        android:textColor="@color/black_47" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view5"
+                style="@style/Divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/dimen_3dp"
+                android:layout_marginTop="@dimen/dimen_3dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="@dimen/dimen_10dp">
+
+                <View
+                    android:id="@+id/centerHorizontalView"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_centerHorizontal="true" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_order_count_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@+id/centerHorizontalView"
+                    android:gravity="right"
+                    android:text="@string/order_summary_total_items"
+                    android:textColor="@color/black_73"
+                    android:textStyle="normal|bold" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_order_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/centerHorizontalView"
+                    android:gravity="left"
+                    android:textColor="@color/black_73"
+                    android:textStyle="normal|bold" />
+
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_order_all_discount_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/checkout_order_count_title"
+                    android:layout_toRightOf="@+id/centerHorizontalView"
+                    android:gravity="right"
+                    android:text="@string/order_summary_total_discount"
+                    android:textColor="@color/black_73" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_order_all_discount"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/checkout_order_price"
+                    android:layout_toLeftOf="@+id/centerHorizontalView"
+                    android:gravity="left"
+                    android:textColor="@color/black_73"
+                    android:textSize="13sp" />
+
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_order_voucher_price_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/checkout_order_all_discount"
+                    android:layout_toRightOf="@+id/centerHorizontalView"
+                    android:gravity="right"
+                    android:textColor="@color/black_73"
+                    tools:text="کد تخفیف" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_order_voucher_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/checkout_order_all_discount"
+                    android:layout_toLeftOf="@+id/centerHorizontalView"
+                    android:gravity="left"
+                    android:textColor="@color/black_73"
+                    android:textSize="13sp"
+                    tools:text="7s8fd5sdfsdf56sdf5" />
+
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_order_ship_price_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/checkout_order_voucher_price"
+                    android:layout_toRightOf="@+id/centerHorizontalView"
+                    android:gravity="right"
+                    android:text="@string/order_summary_shipping_fee"
+                    android:textColor="@color/black_73" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_order_ship_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/checkout_order_voucher_price"
+                    android:layout_toLeftOf="@+id/centerHorizontalView"
+                    android:gravity="left"
+                    android:textColor="@color/black_73"
+                    android:textSize="13sp"
+                    tools:text="7000 Rials" />
+
+
+                <View
+                    android:id="@+id/viewDivider1"
+                    style="@style/Divider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_below="@+id/checkout_order_ship_price"
+                    android:layout_marginBottom="@dimen/dimen_3dp"
+                    android:layout_marginTop="@dimen/dimen_3dp" />
+
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/all_price_total_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/viewDivider1"
+                    android:layout_toRightOf="@+id/centerHorizontalView"
+                    android:gravity="right"
+                    android:textColor="@color/black_73"
+                    android:textStyle="normal|bold"
+                    tools:text="all price" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_order_all_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/viewDivider1"
+                    android:layout_toLeftOf="@+id/centerHorizontalView"
+                    android:gravity="left"
+                    android:textColor="@color/black_73"
+                    android:textStyle="normal|bold"
+                    tools:text="45000 Rials" />
+
+            </RelativeLayout>
+            <!--   <include layout="@layout/_def_checkout_confirmation_product"></include>-->
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray_9"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:paddingLeft="@dimen/dimen_16dp"
+                android:paddingRight="@dimen/dimen_16dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:text="@string/order_summary_label"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/cheackout_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/textView16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black_400"
+                android:gravity="right"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:paddingLeft="@dimen/dimen_16dp"
+                android:paddingRight="@dimen/dimen_16dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:text="@string/checkout_delivery_address"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen_10dp">
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_user_reciver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:paddingLeft="@dimen/dimen_16dp"
+                    android:paddingRight="@dimen/dimen_16dp"
+                    android:text=""
+                    android:textColor="@color/black_47"
+                    android:textStyle="normal|bold" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:paddingBottom="@dimen/dimen_5dp"
+                    android:paddingLeft="@dimen/dimen_16dp"
+                    android:paddingRight="@dimen/dimen_16dp"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:textColor="@color/black_73"
+                    tools:text="آدرس" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:id="@+id/checkout_telephone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:paddingBottom="@dimen/dimen_5dp"
+                    android:paddingLeft="@dimen/dimen_16dp"
+                    android:paddingRight="@dimen/dimen_16dp"
+                    android:paddingTop="@dimen/dimen_5dp"
+                    android:textColor="@color/black_73"
+                    tools:text="تلفن" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/checkout_confirmation_btn"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="@color/button_primary_color"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="@string/checkout_confirmation_next_step"
+        android:textSize="16sp"
+        android:visibility="visible" />
+</RelativeLayout>

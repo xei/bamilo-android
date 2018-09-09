@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sellerScore_constraint_rootView"
+    android:layout_width="match_parent"
+    android:layoutDirection="rtl"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/dimen_8dp"
+    android:paddingRight="@dimen/dimen_8dp"
+    android:visibility="visible"
+    tools:visibility="visible">
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/sellerScore_textView_successfulSupplyRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="@dimen/dimen_8dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SmallSp"
+        tools:text="۴.۷ از ۵"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fullfilment"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/sellerScore_textView_successfulSupplyRate"
+        app:layout_constraintStart_toStartOf="@+id/sellerScore_progressBar_successfulSupply"
+        app:layout_constraintTop_toTopOf="@+id/sellerScore_textView_successfulSupplyRate"
+        tools:ignore="SmallSp"/>
+
+    <ProgressBar
+        android:id="@+id/sellerScore_progressBar_successfulSupply"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="12dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="8dp"
+        android:max="50"
+        android:progress="20"
+        android:progressDrawable="@drawable/ratings_progress_blue"
+        android:rotation="180"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_textView_successfulSupplyRate"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/sellerScore_textView_salesWithoutReturnRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="@dimen/dimen_8dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_progressBar_successfulSupply"
+        tools:ignore="SmallSp"
+        tools:text="۴.۷ از ۵"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/sellerScore_textView_salesWithoutReturnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/selle_not_returned"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/sellerScore_progressBar_salesWithoutReturn"
+        app:layout_constraintStart_toStartOf="@+id/sellerScore_progressBar_salesWithoutReturn"
+        app:layout_constraintTop_toTopOf="@+id/sellerScore_textView_salesWithoutReturnRate"
+        tools:ignore="SmallSp"/>
+
+    <ProgressBar
+        android:id="@+id/sellerScore_progressBar_salesWithoutReturn"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="12dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="8dp"
+        android:max="50"
+        android:progress="20"
+        android:progressDrawable="@drawable/ratings_progress_blue"
+        android:rotation="180"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_textView_salesWithoutReturnRate"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/sellerScore_textView_sendOnTimeRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="@dimen/dimen_8dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_progressBar_salesWithoutReturn"
+        tools:ignore="SmallSp"
+        tools:text="۴.۷ از ۵"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/sellerScore_textView_sendOnTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sla_reached"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/sellerScore_progressBar_sendOnTime"
+        app:layout_constraintStart_toStartOf="@+id/sellerScore_progressBar_sendOnTime"
+        app:layout_constraintTop_toTopOf="@+id/sellerScore_textView_sendOnTimeRate"
+        tools:ignore="SmallSp"/>
+
+    <ProgressBar
+        android:id="@+id/sellerScore_progressBar_sendOnTime"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:max="50"
+        android:progress="20"
+        android:progressDrawable="@drawable/ratings_progress_blue"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_textView_sendOnTimeRate"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/sellerScore_textView_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="@dimen/dimen_8dp"
+        android:paddingRight="@dimen/dimen_8dp"
+        android:layout_marginLeft="@dimen/dimen_24dp"
+        android:textColor="@color/green"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sellerScore_progressBar_successfulSupply"
+        tools:text="۴/۵"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/sellerScore_textView_maxValueOfScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:alpha="0.5"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@+id/sellerScore_textView_score"
+        app:layout_constraintStart_toStartOf="@+id/sellerScore_textView_score"
+        app:layout_constraintTop_toBottomOf="@+id/sellerScore_textView_score"
+        tools:ignore="SmallSp"
+        tools:text="از ۵ امتیاز"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
+
+</android.support.constraint.ConstraintLayout>

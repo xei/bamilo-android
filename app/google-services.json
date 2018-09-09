@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "459777214540",
+    "firebase_url": "https://bamilo-app.firebaseio.com",
+    "project_id": "bamilo-app",
+    "storage_bucket": "bamilo-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459777214540:android:bfc4d646cc0ca564",
+        "android_client_info": {
+          "package_name": "com.bamilo.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459777214540-hgd6ij6pq4h0najar55tra5kh5ed5qv7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsuDy3w-ucorWTAzY1QuptuRUZPF8QvzQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459777214540:android:9e9923c2d37d79e7",
+        "android_client_info": {
+          "package_name": "com.bamilo.android.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459777214540-hgd6ij6pq4h0najar55tra5kh5ed5qv7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsuDy3w-ucorWTAzY1QuptuRUZPF8QvzQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

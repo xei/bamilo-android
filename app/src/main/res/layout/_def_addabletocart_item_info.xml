@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- DELETE BUTTON -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/button_delete"
+        android:layout_width="@dimen/delete_button_size"
+        android:layout_height="@dimen/delete_button_size"
+        android:layout_alignBottom="@+id/item_brand"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_filter_clear"
+        android:contentDescription="@string/delete_label" />
+
+    <!-- BRAND -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/item_brand"
+        style="@style/TextBase.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical|left|start"
+        android:lines="1"
+        android:paddingTop="@dimen/margin_padding_l"
+        tools:text="BRAND"
+        android:textColor="@color/black_800" />
+
+    <!-- NAME -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/item_name"
+        style="@style/TextBase.Display_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_brand"
+        android:gravity="center_vertical|left|start"
+        android:lines="1"
+        tools:text="Name"
+        android:textColor="@color/black" />
+
+    <!-- PRICE -->
+
+    <include
+        android:id="@+id/price_section"
+        layout="@layout/addable_small_price_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_name"
+        android:layout_alignStart="@id/item_name"
+        android:layout_below="@id/item_name"
+        android:gravity="left|center_vertical|start" />
+
+    <!-- VARIATION BUTTON -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/button_variant"
+        style="@style/FormButtonSpinner"
+        android:layout_width="@dimen/product_item_addtocart_variation_width"
+        android:layout_height="@dimen/product_item_button_height"
+        android:layout_alignBottom="@+id/button_shop"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/price_section"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/product_variant_placeholder" />
+
+
+    <!-- PERCENTAGE -->
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/item_percentage"
+        style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/price_section"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right|end"
+        android:visibility="visible" />
+
+    <!-- ADD BUTTON -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/button_shop"
+        style="@style/Button_1.Shop"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/price_section"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/button_variant"
+        android:layout_toRightOf="@+id/button_variant"
+        android:contentDescription="@string/productdetail_addcart_description"
+        android:text="@string/buy_now"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

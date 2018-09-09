@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@color/primary"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="@dimen/dimen_24dp"
+        android:layout_height="@dimen/dimen_24dp"
+        app:srcCompat="@drawable/ic_notifications_outline_white"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dimen_8dp"
+        android:text="@string/notify_me_when_exist"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:fontFamily="@string/bamilo_bold_font"/>
+
+</LinearLayout>

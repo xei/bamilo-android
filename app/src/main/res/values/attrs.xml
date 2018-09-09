@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Bamilo Framework -->
+	<attr name="actionCustomSpinnerDropDownStyle" format="reference" />
+
+    <declare-styleable name="LoadingBarView">
+        <attr name="gifResource" format="reference"></attr>
+    </declare-styleable>
+
+    <!-- ANDROID SLIDING TABS STRIP -->
+    <declare-styleable name="SlidingTabLayout">
+        <attr name="stsDividerThickness" format="dimension" />
+        <attr name="stsDividerColor" format="color" />
+        <attr name="stsIndicatorThickness" format="dimension" />
+        <attr name="stsIndicatorColor" format="color" />
+        <attr name="stsBottomBorderThickness" format="dimension" />
+        <attr name="stsBottomBorderColor" format="color" />
+    </declare-styleable>
+    
+
+    <declare-styleable name="TextAppearance">
+        <attr name="android:fontFamily" />
+        <attr name="android:textAllCaps" />
+        <attr name="android:textColor" />
+        <attr name="android:textColorHighlight" />
+        <attr name="android:textColorHint" />
+        <attr name="android:textColorLink" />
+        <attr name="android:textSize" />
+        <attr name="android:textStyle" />
+        <attr name="android:typeface" />
+    </declare-styleable>
+    <declare-styleable name="TextView">
+        <attr name="android:textAppearance" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomSpinner">
+        <attr name="android:prompt" />
+        <attr name="android:dropDownSelector" />
+        <attr name="android:popupBackground" />
+        <attr name="android:dropDownVerticalOffset" />
+        <attr name="android:dropDownHorizontalOffset" />
+        <attr name="android:dropDownWidth" />
+        <attr name="android:gravity" />
+    </declare-styleable>
+    
+    
+    <declare-styleable name="CustomFontType">
+        <attr name="fontType" format="integer">
+            <enum name="burmese_regular" value="0" />
+            <enum name="roboto_bold" value="1" />
+            <enum name="roboto_light" value="4" />
+            <enum name="roboto_medium" value="5" />
+        </attr>
+        <attr name="strikeThrough" format="boolean" />
+        <attr name="autoFitText" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="PreviewViewPagerStyleable">
+        <attr name="previewOffset" format="dimension"/>
+        <attr name="transformer" format="enum">
+            <enum name="none" value="0" />
+            <enum name="fade" value="1" />
+        </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="ExpandedGridViewStyleable">
+        <attr name="expand" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SingleLineWithIconStyleable">
+        <attr name="layoutType" format="enum">
+            <enum name="oneIcon" value="0" />
+            <enum name="twoIcons" value="1" />
+            <enum name="checkBox" value="2" />
+        </attr>
+        <attr name="backgroundSelector" format="reference" />
+        <attr name="useSelector" format="boolean" />
+        <attr name="showDivider" format="boolean" />
+        <attr name="imageStart" format="reference" />
+        <attr name="imageEnd" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="LoginHeaderComponentStyleable">
+        <attr name="loginHeaderType" format="enum">
+            <enum name="checkEmail" value="0" />
+            <enum name="login" value="1" />
+            <enum name="createAccount" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="MaterialEditText">
+        <!-- The base color of the line and the texts. Default is black. -->
+        <attr name="met_baseColor" format="color" />
+        <!-- The highlight color of the line, and the floating label if the highlightFloatingLabel is true. -->
+        <attr name="met_primaryColor" format="color" />
+        <!-- How the floating label should be shown. Default is none -->
+        <attr name="met_floatingLabel">
+            <enum name="none" value="0" />
+            <enum name="normal" value="1" />
+            <enum name="highlight" value="2" />
+        </attr>
+        <!-- The color for when something is wrong.(e.g. exceeding max characters) -->
+        <attr name="met_errorColor" format="color" />
+        <!-- Min characters count limit. 0 means no limit. -->
+        <attr name="met_minCharacters" format="integer" />
+        <!-- max Characters count limit. 0 means no limit. -->
+        <attr name="met_maxCharacters" format="integer" />
+        <!-- Whether to show the bottom ellipsis in singleLine mode -->
+        <attr name="met_singleLineEllipsis" format="boolean" />
+        <!-- Reserved bottom text lines count, no matter if there is some helper/error text. -->
+        <attr name="met_minBottomTextLines" format="integer" />
+        <!-- Helper text at the bottom -->
+        <attr name="met_helperText" format="string" />
+        <!-- Helper text color -->
+        <attr name="met_helperTextColor" format="color" />
+        <!-- Font of the paint used to draw accent texts -->
+        <attr name="met_accentTypeface" format="string" />
+        <!-- Font used on view -->
+        <attr name="met_typeface" format="string" />
+        <!-- Custom float label text -->
+        <attr name="met_floatingLabelText" format="string" />
+        <!-- spacing between the main text and the floating label -->
+        <attr name="met_floatingLabelPadding" format="dimension" />
+        <!-- floating label padding -->
+        <attr name="met_floatingLabelSidePadding" format="dimension" />
+        <!-- Hide underline -->
+        <attr name="met_hideUnderline" format="boolean" />
+        <!-- Underline's color -->
+        <attr name="met_underlineColor" format="color" />
+        <!-- Auto validate -->
+        <attr name="met_autoValidate" format="boolean" />
+        <!-- Left icon -->
+        <attr name="met_iconLeft" format="reference" />
+        <!-- Right icon -->
+        <attr name="met_iconRight" format="reference" />
+        <!-- Padding between icon(s) and the main area. 8dp by default. -->
+        <attr name="met_iconPadding" format="dimension" />
+        <!-- Clear button -->
+        <attr name="met_clearButton" format="boolean" />
+        <!-- The floating label's text size. 12sp by default. -->
+        <attr name="met_floatingLabelTextSize" format="dimension" />
+        <!-- The floating label's text color. -1 by default. -->
+        <attr name="met_floatingLabelTextColor" format="color" />
+        <!-- The bottom texts' size. 12sp by default. -->
+        <attr name="met_bottomTextSize" format="dimension" />
+        <!-- Always show the floating label, instead of animating it in/out. False by default. -->
+        <attr name="met_floatingLabelAlwaysShown" format="boolean" />
+        <!-- Always show the helper text, no matter if the edit text is focused. False by default. -->
+        <attr name="met_helperTextAlwaysShown" format="boolean" />
+        <!-- Whether use animation to show/hide the floating label. True by default. -->
+        <attr name="met_floatingLabelAnimating" format="boolean"/>
+        <!-- Text color -->
+        <attr name="met_textColor" format="color" />
+        <!-- Hint Text Color -->
+        <attr name="met_textColorHint" format="color" />
+        <!-- Auto validate on focus lost. False by default. -->
+        <attr name="met_validateOnFocusLost" format="boolean"/>
+        <!-- Whether check the characters count at the beginning it's shown. True by default. -->
+        <attr name="met_checkCharactersCountAtBeginning" format="boolean"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="sparkbutton">
+        <attr name="sparkbutton_iconSize" format="dimension|reference" />
+        <attr name="sparkbutton_activeImage" format="reference" />
+        <attr name="sparkbutton_inActiveImage" format="reference" />
+        <attr name="sparkbutton_primaryColor" format="reference" />
+        <attr name="sparkbutton_secondaryColor" format="reference" />
+        <attr name="sparkbutton_pressOnTouch" format="boolean" />
+        <attr name="sparkbutton_animationSpeed" format="float" />
+        <attr name="sparkbutton_activeImageTint" format="reference" />
+        <attr name="sparkbutton_inActiveImageTint" format="reference" />
+    </declare-styleable>
+
+
+    <!-- Modern bamilo -->
+
+    <declare-styleable name="XeiLocaledView">
+        <attr name="locale" format="enum">
+            <enum name="auto" value="0" />
+            <enum name="en_US" value="1" />
+            <enum name="fa_IR" value="2" />
+            <enum name="hybrid" value="3" />
+        </attr>
+        <attr name="style">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="PriceView">
+        <attr name="strike" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="RateBarView">
+        <attr name="rating" format="integer" />
+        <attr name="percentage" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="ExpandableTextView">
+        <attr name="maxCollapsedLines" format="integer"/>
+        <attr name="animDuration" format="integer"/>
+        <attr name="animAlphaStart" format="float"/>
+        <attr name="expandIndicator" format="reference"/>
+        <attr name="collapseIndicator" format="reference"/>
+        <attr name="expandToggleType" format="enum">
+            <enum name="ImageButton" value="0"/>
+            <enum name="TextView" value="1"/>
+        </attr>
+        <attr name="expandableTextId" format="reference"/>
+        <attr name="expandCollapseToggleId" format="reference"/>
+        <attr name="expandToggleOnTextClick" format="boolean"/>
+    </declare-styleable>
+
+
+    <!-- Bamio App-->
+    <string-array name="myaccount_array">
+        <item>@string/myaccount_userdata</item>
+        <item>@string/my_addresses</item>
+    </string-array>
+
+    <!-- NAVIGATION MENU ITEMS -->
+    <string-array name="navigation_items">
+        <item>/shop/</item>
+    </string-array>
+
+    <!-- RATING -->
+    <plurals name="numberOfRatings">
+        <item quantity="zero">@string/plurals_rating</item>
+        <item quantity="one">@string/plurals_rating</item>
+        <item quantity="other">@string/plurals_ratings</item>
+    </plurals>
+
+    <!-- ITEM -->
+    <plurals name="numberOfItems">
+        <item quantity="zero">@string/plurals_item</item>
+        <item quantity="one">@string/plurals_item</item>
+        <item quantity="other">@string/plurals_items</item>
+    </plurals>
+
+    <!-- CATALOG SORT -->
+    <string-array name="products_picker">
+        <item>@string/products_sort_bestrated</item>
+        <item>@string/products_sort_popularity</item>
+        <item>@string/products_sort_newin</item>
+        <item>@string/products_sort_priceup</item>
+        <item>@string/products_sort_pricedown</item>
+        <item>@string/products_sort_name</item>
+        <item>@string/products_sort_brand</item>
+    </string-array>
+
+    <!-- SHARE -->
+    <string-array name="app_sharing_array">
+        <!--Share item removed in order to meet Cafebazaar policies-->
+        <!--<item>@string/share_the_app</item>-->
+        <item>@string/rate_the_app</item>
+    </string-array>
+
+    <!-- SHARE -->
+    <string-array name="app_notification_array">
+        <item>@string/notifications</item>
+        <item>@string/newsletter_label</item>
+    </string-array>
+
+    <!--
+        THIS DEFINES WHETHER A CHECKBOX SHOULD APPEAR NEXT TO RESPECTIVE ITEM IN "app_notification_array"
+    -->
+    <integer-array name="app_notification_array_checkboxes">
+        <item>1</item>
+        <item>0</item>
+    </integer-array>
+
+    <!-- ARTICLES -->
+    <plurals name="numberOfArticles">
+        <item quantity="zero">@string/plurals_article</item>
+        <item quantity="one">@string/plurals_article</item>
+        <item quantity="other">@string/plurals_articles</item>
+    </plurals>
+
+    <!-- REVIEW -->
+    <plurals name="reviews_array">
+        <item quantity="one">@string/review_plural</item>
+        <item quantity="other">@string/reviews_plural</item>
+    </plurals>
+
+    <!-- Jalali Month Names -->
+    <string-array name="jalali_month_names">
+        <item>فروردین</item>
+        <item>اردیبهشت</item>
+        <item>خرداد</item>
+        <item>تیر</item>
+        <item>مرداد</item>
+        <item>شهریور</item>
+        <item>مهر</item>
+        <item>آبان</item>
+        <item>آذر</item>
+        <item>دی</item>
+        <item>بهمن</item>
+        <item>اسفند</item>
+    </string-array>
+
+    <declare-styleable name="PinEntryInput">
+        <attr name="pinAnimationType" format="enum">
+            <enum name="popIn" value="0" />
+            <enum name="fromBottom" value="1" />
+            <enum name="none" value="-1" />
+        </attr>
+        <attr name="pinCharacterMask" format="string" />
+        <attr name="pinRepeatedHint" format="string" />
+        <attr name="pinLineStroke" format="dimension" />
+        <attr name="pinLineStrokeSelected" format="dimension" />
+        <attr name="pinCharacterSpacing" format="dimension" />
+        <attr name="pinTextBottomPadding" format="dimension" />
+        <attr name="pinLineColors" format="color" />
+        <attr name="pinBackgroundDrawable" format="reference" />
+        <attr name="pinBackgroundIsSquare" format="boolean" />
+    </declare-styleable>
+
+    <color name="pin_normal">#6B767E</color>
+
+</resources>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/return_button_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/order_tracking_header"
+                layout="@layout/new_order_tracking_header"/>
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/order_status_detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin_padding_xl"
+                android:paddingRight="@dimen/margin_padding_xl"
+                android:background="#f0f0f0"
+                android:textColor="#444444"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="@string/order_details"
+                />
+
+            <LinearLayout
+                android:id="@+id/order_status_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_number_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                        android:gravity="right"
+                        android:text="@string/order_status_number_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_number_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/address_separator" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_date_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                        android:gravity="right"
+                        android:text="@string/order_status_date_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_date_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                         />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/address_separator" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_total_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                        android:gravity="right"
+                        android:text="@string/order_status_total_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_total_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                         />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/address_separator" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_quantity_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                        android:gravity="right"
+                        android:text="@string/order_status_quantity_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_quantity_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                         />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/address_separator" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_payment_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                        android:gravity="right"
+                        android:text="@string/order_status_payment_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_payment_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                         />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/address_separator" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_address_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                        android:gravity="right"
+                        android:text="@string/order_status_address_title"
+                        />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/address_separator" />
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                        android:id="@+id/order_status_address_value"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/order_status_fontsize"
+                        android:textColor="@color/order_status_textcolor"
+                        android:gravity="left"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="@dimen/margin_padding_xl"
+                        android:paddingRight="@dimen/margin_padding_xl"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/order_status_items_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin_padding_xl"
+                android:paddingRight="@dimen/margin_padding_xl"
+                android:background="#f0f0f0"
+                android:textColor="#444444"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="@string/order_items"
+                />
+
+            <LinearLayout
+                android:id="@+id/order_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

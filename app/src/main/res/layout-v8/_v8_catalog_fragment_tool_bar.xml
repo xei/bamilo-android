@@ -1,0 +1,167 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/_gen_background_bottom_border_black_400"
+    android:gravity="center"
+    android:layoutDirection="ltr"
+    android:orientation="horizontal"
+    tools:ignore="UnusedAttribute"
+    tools:layout_height="48dp">
+
+    <!-- COLUMNS -->
+
+    <ImageButton
+        android:id="@+id/catalog_bar_button_columns"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@null"
+        android:contentDescription="@string/gproductlist"
+        android:scaleType="centerInside"
+        android:src="@drawable/selector_catalog_list" />
+
+    <!-- DIVIDER -->
+
+    <View style="@style/FilterTabBarDivider" />
+
+    <!-- SORT -->
+
+    <LinearLayout
+        android:id="@+id/catalog_sort_button"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".4"
+        android:addStatesFromChildren="true"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
+
+
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="0.8"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+
+            <View
+                android:id="@+id/sort_center"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"/>
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/catalog_bar_button_sort"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="start|left|center_vertical"
+                android:layout_above="@+id/sort_center"
+                android:textSize="12sp"
+                android:textColor="@drawable/selector_catalog_filter_color"
+                android:text="@string/sort_label" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/catalog_bar_description_sort"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="start|left|center_vertical"
+                android:layout_below="@+id/sort_center"
+                android:textSize="9sp"
+                android:textColor="@drawable/selector_catalog_filter_description_color"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="0.2"
+            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+            <ImageView
+                android:id="@+id/catalog_bar_sort"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_catalog_sort"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- DIVIDER -->
+
+    <View style="@style/FilterTabBarDivider"
+        android:paddingRight="4dp"
+        android:paddingLeft="4dp"/>
+
+    <!-- FILTER -->
+
+    <LinearLayout
+        android:id="@+id/catalog_filter_button"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".4"
+        android:addStatesFromChildren="true"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
+
+
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="0.8"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+
+            <View
+                android:id="@+id/center"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"/>
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/catalog_bar_button_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="start|left|center_vertical"
+                android:layout_above="@+id/center"
+                android:textSize="12sp"
+                android:textColor="@drawable/selector_catalog_filter_color"
+                android:text="@string/filters_label" />
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/catalog_bar_description_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="start|left|center_vertical"
+                android:layout_below="@+id/center"
+                android:textSize="9sp"
+                android:textColor="@drawable/selector_catalog_filter_description_color"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="0.2"
+            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+            <ImageView
+                android:id="@+id/catalog_bar_filter"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_catalog_filter"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

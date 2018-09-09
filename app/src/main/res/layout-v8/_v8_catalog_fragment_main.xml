@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- CATALOG TOOL BAR -->
+
+    <include layout="@layout/_v8_catalog_fragment_tool_bar" />
+
+    <!-- GRID VIEW -->
+    <com.bamilo.android.appmodule.bamiloapp.utils.catalog.HeaderFooterGridView
+        android:id="@+id/catalog_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        tools:layout_marginTop="48dp" />
+
+    <!-- FLOAT BUTTON -->
+
+    <ImageView
+        android:id="@+id/catalog_button_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/margin_30px"
+        android:background="@drawable/selector_btn_toplist"
+        android:contentDescription="@string/gproductlist"
+        android:visibility="invisible" />
+
+    <!-- NO RESULTS VIEW -->
+
+    <ViewStub
+        android:id="@+id/catalog_no_result_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/catalog_no_result_stub_inflate"
+        android:layout="@layout/catalog_fragment_no_result" />
+
+</RelativeLayout>

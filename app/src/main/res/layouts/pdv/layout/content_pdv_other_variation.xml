@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pdvColor_cardView_rootLayout"
+    android:layout_width="@dimen/dimen_50dp"
+    android:layout_height="66dp"
+    android:layout_marginTop="@dimen/dimen_2dp"
+    android:layout_marginBottom="@dimen/dimen_2dp"
+    android:layout_marginLeft="@dimen/dimen_6dp"
+    android:layout_marginRight="@dimen/dimen_6dp"
+    android:background="@drawable/round_stroke_orange_4"
+    app:cardCornerRadius="@dimen/dimen_4dp"
+    app:cardElevation="@dimen/dimen_4dp">
+
+    <RelativeLayout
+        android:layout_margin="@dimen/dimen_2dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/pdvColor_appImageView_Image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ProgressBar
+            android:id="@+id/pdvColor_progressBar"
+            android:layout_width="@dimen/progress_bar_dim"
+            android:layout_height="@dimen/progress_bar_dim"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

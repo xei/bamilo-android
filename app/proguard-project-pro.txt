@@ -1,0 +1,141 @@
+## BEGIN OBFUSCATE PACKAGE NAMES
+-repackageclasses ''
+-allowaccessmodification
+
+## IGNORE WARN/NOTE CLASSES
+-dontnote android.support.**
+-dontwarn com.google.android.**
+-dontnote com.google.ads.**
+-dontnote com.google.vending.licensing.ILicensingService
+-dontnote com.android.vending.licensing.ILicensingService
+
+## GENERIC CLASSES
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.preference.Preference
+-keep public class * extends android.support.v4.view.ActionProvider
+-keep public class * extends android.support.v4.app.Fragment
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+## GOOGLE
+-keep class com.google.android.** { *; }
+
+## ADJUST
+-keep class com.adjust.sdk.** { *; }
+-keep class com.google.android.gms.common.** { *; }
+-keep class com.google.android.gms.ads.identifier.** { *; }
+-dontnote com.adjust.**
+
+## APPTIMIZE
+-keep class android.support.v4.view.ViewPager
+-keepclassmembers class android.support.v4.view.ViewPager$LayoutParams { *; }
+-keep class android.support.v4.app.Fragment { *; }
+-keep class com.google.android.gms.analytics.Tracker { *; }
+
+#### FOR APPCOMPAT 23.1.1:
+-keep class !android.support.v7.view.menu.*MenuBuilder*, android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
+
+## MOBILE
+#### com.mobile.components
+-keep interface com.bamilo.android.framework.components.RangeSeekBar$** { public *; }
+-keep class com.bamilo.android.framework.components.RangeSeekBar { public *; }
+-keep public interface com.bamilo.android.framework.components.absspinner.IcsAdapterView$** { public *; }
+-keep, includedescriptorclasses class com.bamilo.android.framework.components.absspinner.IcsAdapterView { public *; }
+-keep interface com.bamilo.android.framework.components.ScrollViewEx$** { public *; }
+-keep interface com.bamilo.android.framework.components.androidslidingtabstrip.SlidingTabLayout$** { public *; }
+
+#### com.bamilo.android.appmodule.bamiloapp.utils.
+-keep class com.bamilo.android.appmodule.bamiloapp.utils.MyProfileActionProvider { public *; }
+-keep class com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction { public *; }
+-keep class com.bamilo.android.appmodule.bamiloapp.view.CustomSearchActionView { public *; }
+-keep class com.bamilo.android.appmodule.bamiloapp.utils.photoview.PhotoViewAttacher { public *; }
+-keep interface com.bamilo.android.appmodule.bamiloapp.utils.photoview.PhotoViewAttacher$** { *; }
+
+#### com.mobile.view
+-keep public enum com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment$KeyboardState { public *; }
+
+#### com.mobile.service.rest
+-keep class com.bamilo.android.framework.service.rest.** { *; }
+-keep interface com.bamilo.android.framework.service.rest.** { *; }
+
+## JAVASCRIPTINTERFACE
+-keepclassmembers class com.bamilo.android.appmodule.bamiloapp.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface { public *; }
+-keepattributes JavascriptInterface
+
+## PUSHWOOSH
+-keep class com.pushwoosh.** { *; }
+-keep class com.arellomobile.** { *; }
+-dontwarn com.pushwoosh.**
+-dontwarn com.arellomobile.**
+
+## RETROFIT
+-keep class retrofit.** { *; }
+-dontwarn okio.**
+-dontwarn retrofit.**
+-dontwarn rx.**
+
+-keepclasseswithmembers class * {
+    @retrofit.http.* <methods>;
+}
+
+# If in your rest service interface you use methods with Callback argument.
+-keepattributes Exceptions
+
+-dontwarn rx.**
+-dontwarn javax.annotation.**
+-dontwarn retrofit.appengine.UrlFetchClient
+
+## OKHTTP3
+-keep class com.squareup.okhttp3.** {
+*;
+}
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+## okhttp
+-dontwarn com.squareup.okhttp.**
+-keep class com.squareup.okhttp.{*;}
+
+## VOLLEY
+-keep class com.android.volley.** { *; }
+-keep interface com.android.volley.** { *; }
+
+## PAGE INDICATOR
+-keep class com.viewpagerindicator.** { *; }
+-keep interface com.viewpagerindicator.** { *; }
+
+-keepnames class * { @icepick.State *;}
+
+-dontwarn retrofit2.Platform$Java8
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn sun.misc.**
+
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+   long producerIndex;
+   long consumerIndex;
+}
+
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+
+-dontwarn com.google.errorprone.annotations.**
+
+# apache commons
+-keep class org.apache.commons.** { *; }
+-keep interface org.apache.commons.** { *; }
+
+# Trackers
+-keep interface com.bamilo.android.appmodule.bamiloapp.interfaces.tracking.** { *; }
+-keep class com.bamilo.android.appmodule.bamiloapp.utils.tracking.** { *; }

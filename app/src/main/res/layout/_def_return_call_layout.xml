@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/return_call_header"
+        style="@style/HeaderStyle"
+        android:text="@string/call_return_label"
+        />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/return_call_title"
+        style="@style/TextBase.Display_2.Black"
+        android:layout_width="wrap_content"
+        android:text="@string/call_return_label"
+        android:singleLine="false"
+        android:paddingLeft="@dimen/margin_padding_xl"
+        android:paddingRight="@dimen/margin_padding_xl"
+        android:layout_marginTop="@dimen/margin_padding_xxl"
+        />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/return_call_order_number"
+        style="@style/TextBase.Body.Black"
+        android:layout_width="wrap_content"
+        tools:text="@string/call_return_label"
+        android:layout_marginTop="@dimen/margin_padding_xl"
+        android:padding="@dimen/margin_padding_s"
+        android:background="@drawable/_gen_background_border_yellow"
+        />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/return_call_body1"
+        style="@style/TextBase.Body.Black_800"
+        android:layout_width="wrap_content"
+        tools:text="@string/call_return_label"
+        android:singleLine="false"
+        android:gravity="center_horizontal"
+        android:paddingLeft="@dimen/margin_padding_xl"
+        android:paddingRight="@dimen/margin_padding_xl"
+        android:layout_marginTop="@dimen/margin_padding_xl"
+        />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/return_call_body2"
+        style="@style/TextBase.Body.Black"
+        android:layout_width="wrap_content"
+        android:singleLine="false"
+        android:gravity="center_horizontal"
+        android:paddingLeft="@dimen/margin_padding_xl"
+        android:paddingRight="@dimen/margin_padding_xl"
+        tools:text="@string/call_return_label"
+        android:layout_marginTop="@dimen/margin_padding_xs"
+        />
+
+    <!-- BUTTON -->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/btn_call_now"
+        style="@style/Button_1.Shop"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:layout_marginRight="@dimen/margin_60px"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:contentDescription="@string/call_now_label"
+        android:text="@string/call_now_label" />
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/btn_continue_shopping"
+        style="@style/Button_1.Secondary.Text_Black_800.Border_400"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:layout_marginRight="@dimen/margin_60px"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:text="@string/continue_shopping"
+        />
+
+</LinearLayout>

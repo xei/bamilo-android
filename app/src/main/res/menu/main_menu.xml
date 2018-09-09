@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- SEARCH VIEW -->
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/selector_search_edit_icon"
+        android:title="@string/search_label"
+        android:visible="false"
+        app:actionViewClass="com.bamilo.android.appmodule.bamiloapp.view.CustomSearchActionView"
+        app:showAsAction="always|collapseActionView" />
+
+    <!-- CART -->
+    <item
+        android:id="@+id/menu_basket"
+        android:title="@string/action_label_basket"
+        android:visible="false"
+        app:actionLayout="@layout/action_bar_cart_item"
+        app:showAsAction="always" />
+
+    <!-- CART INDICATOR -->
+    <item
+        android:id="@+id/menu_basket_indicator"
+        android:title="@string/action_label_basket"
+        android:visible="false"
+        android:enabled="false"
+        app:actionLayout="@layout/action_bar_cart_item"
+        app:showAsAction="always" />
+
+    <!-- MY PROFILE PROVIDER -->
+    <item
+        android:id="@+id/menu_myprofile"
+        android:icon="@drawable/selector_navigation_overflow"
+        android:title="@string/my_profile"
+        android:visible="false"
+        app:actionProviderClass="com.bamilo.android.appmodule.bamiloapp.utils.MyProfileActionProvider"
+        app:showAsAction="ifRoom" />
+
+    <!--
+    SHARE VIEW
+    <item
+        android:id="@+id/menu_share"
+        android:title="Share"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:showAsAction="always"/>
+    -->
+
+</menu>

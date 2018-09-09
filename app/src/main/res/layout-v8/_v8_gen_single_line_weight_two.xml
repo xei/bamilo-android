@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="2"
+    android:gravity="center"
+    android:layoutDirection="ltr"
+    android:minHeight="@dimen/dimen_30dp"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/margin_padding_xs"
+    android:paddingTop="@dimen/margin_padding_xs"
+    tools:ignore="UnusedAttribute">
+
+    <!--VALUE-->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/specs_item_value"
+        style="@style/MultiLineStyle.Space_XS"
+        android:layout_width="0dp"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_weight="1"
+        android:padding="0dp"
+        tools:text="Android Nexus 5" />
+
+    <!--SPEC-->
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/specs_item_key"
+        style="@style/TextBase.Body.Black"
+        android:layout_width="0dp"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        android:layout_weight="1"
+        tools:text="Model Name" />
+
+</android.support.v7.widget.LinearLayoutCompat>

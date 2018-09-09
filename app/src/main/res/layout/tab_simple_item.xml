@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tab"
+    style="@style/SlidingTabStyle"
+    tools:layout_height="48dp"
+    tools:layout_width="wrap_content"
+    tools:text="Tab" />

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="3"
+    android:baselineAligned="false">
+
+    <RelativeLayout
+        android:id="@+id/element_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/selector_list_item_highlight" >
+
+        <ImageView
+            android:id="@+id/img_1"
+            android:layout_width="97.02dp"
+            android:layout_height="69dp"
+            android:layout_centerHorizontal="true" />
+
+        <ProgressBar
+            android:id="@+id/progress_1"
+            android:layout_width="30dp"
+            android:layout_height="69dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/name_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_1"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="6.6dp"
+            android:lines="2"
+            android:maxLines="2"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/price_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6.6dp"
+            android:paddingBottom="6.6dp"
+            android:textColor="@color/red_1"
+            android:textSize="@dimen/text_xs" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/element_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/selector_list_item_highlight" >
+
+        <ImageView
+            android:id="@+id/img_2"
+            android:layout_width="97.02dp"
+            android:layout_height="69dp"
+            android:layout_centerHorizontal="true" />
+
+        <ProgressBar
+            android:id="@+id/progress_2"
+            android:layout_width="30dp"
+            android:layout_height="69dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/name_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_2"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="6.6dp"
+            android:lines="2"
+            android:maxLines="2"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/price_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_2"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="6.6dp"
+            android:textColor="@color/red_1"
+            android:textSize="@dimen/text_xs" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/element_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/selector_list_item_highlight" >
+
+        <ImageView
+            android:id="@+id/img_3"
+            android:layout_width="97.02dp"
+            android:layout_height="69dp"
+            android:layout_centerHorizontal="true" />
+
+        <ProgressBar
+            android:id="@+id/progress_3"
+            android:layout_width="30dp"
+            android:layout_height="69dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/name_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_3"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="6.6dp"
+            android:lines="2"
+            android:maxLines="2"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/price_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_3"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="6.6dp"
+            android:textColor="@color/red_1"
+            android:textSize="@dimen/text_xs" />
+    </RelativeLayout>
+
+</LinearLayout>

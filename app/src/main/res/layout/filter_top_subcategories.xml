@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp">
+
+    <ImageView
+        android:id="@+id/subcategories_icon"
+        android:layout_width="@dimen/dimen_48dp"
+        android:layout_height="@dimen/dimen_48dp"
+        android:padding="5dp"
+        android:layout_margin="5dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_subcategory"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/subcateories_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_toEndOf="@+id/subcategories_icon"
+        android:layout_toRightOf="@+id/subcategories_icon"
+        android:layout_marginRight="5dp"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:text="@string/sub_categories"/>
+
+    <ImageView
+        android:id="@+id/go_icon"
+        android:layout_width="@dimen/dimen_40dp"
+        android:layout_height="@dimen/dimen_40dp"
+        android:padding="5dp"
+        android:layout_margin="5dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/black_arrow_right_rtl"/>
+
+
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_alignParentBottom="true"
+        style="@style/DividerHorizontal.Black_400" />
+
+</RelativeLayout>
