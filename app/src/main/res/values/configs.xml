@@ -31,8 +31,6 @@
     <item name="default_led" type="bool">true</item>
     <item name="default_sound" type="bool">true</item>
 
-    <string name="adjust_default_tracker"/>
-
 
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool">true</item>
