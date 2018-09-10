@@ -3,82 +3,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bamilo.android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
-        android:required="false" />
+        android:required="false"/>
 
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
 
     <!-- badge permissions -->
     <!-- for Samsung -->
-    <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
-    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" />
+    <uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
 
     <!--for htc-->
-    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT" />
+    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT"/>
 
     <!--for sony-->
-    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
-    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE" />
+    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
+    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE"/>
 
     <!--for apex-->
-    <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT" />
+    <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT"/>
 
     <!--for solid-->
-    <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE" />
+    <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE"/>
 
     <!--for huawei-->
-    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
-    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS"/>
 
     <!--for ZUK-->
-    <uses-permission android:name="android.permission.READ_APP_BADGE" />
+    <uses-permission android:name="android.permission.READ_APP_BADGE"/>
 
     <!--for OPPO-->
-    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS"/>
     <!-- </badges> -->
 
     <!-- For rescheduling local notification and restarting location tracking after reboot -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <uses-feature
         android:name="android.hardware.location"
-        android:required="false" />
+        android:required="false"/>
     <uses-feature
         android:name="android.hardware.location.network"
-        android:required="false" />
+        android:required="false"/>
     <uses-feature
         android:name="android.hardware.location.gps"
-        android:required="false" />
+        android:required="false"/>
     <uses-feature
         android:name="android.hardware.screen.portrait"
-        android:required="false" />
+        android:required="false"/>
     <uses-feature
         android:name="android.hardware.touchscreen"
-        android:required="false" />
+        android:required="false"/>
     <uses-feature
         android:name="android.hardware.wifi"
-        android:required="false" />
+        android:required="false"/>
 
     <application
-        android:name=".appmodule.bamiloapp.app.BamiloApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
+        android:name=".appmodule.bamiloapp.app.BamiloApplication"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Custom">
+        android:theme="@style/Theme.Custom"
+        tools:replace="android:allowBackup">
 
         <activity
             android:name=".appmodule.bamiloapp.view.SplashScreenActivity"
@@ -105,6 +107,7 @@
         </activity>
         <activity
             android:exported="true"
+            android:launchMode="singleTop"
             android:name=".appmodule.bamiloapp.view.MainFragmentActivity"
             android:resizeableActivity="false"
             android:screenOrientation="portrait"
@@ -159,24 +162,31 @@
         </activity>
 
         <activity
+            android:launchMode="singleTop"
             android:name=".appmodule.bamiloapp.view.productdetail.ProductDetailActivity"
+            android:resizeableActivity="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"/>
 
         <activity
             android:name=".appmodule.bamiloapp.view.productdetail.gallery.GalleryActivity"
+            android:resizeableActivity="false"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".appmodule.modernbamilo.userreview.UserReviewActivity"
-            android:screenOrientation="portrait" />
+        <activity
+            android:name=".appmodule.modernbamilo.userreview.UserReviewActivity"
+            android:resizeableActivity="false"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".appmodule.modernbamilo.product.comment.submit.SubmitRateActivity"
+        <activity
+            android:name=".appmodule.modernbamilo.product.comment.submit.SubmitRateActivity"
+            android:resizeableActivity="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"/>
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="false" />
+            android:value="false"/>
 
         <!-- pushwoosh -->
 
@@ -185,22 +195,26 @@
             android:value="com.bamilo.android.appmodule.bamiloapp.extlibraries.pushwoosh.PushwooshNotificationServiceExtension"/>
 
 
-        <meta-data android:name="com.pushwoosh.appid" android:value="@string/pushwoosh_app_id" />
-        <meta-data android:name="com.pushwoosh.senderid" android:value="@string/fcm_sender_id" />
+        <meta-data
+            android:name="com.pushwoosh.appid"
+            android:value="@string/pushwoosh_app_id"/>
+        <meta-data
+            android:name="com.pushwoosh.senderid"
+            android:value="@string/fcm_sender_id"/>
 
 
         <!--<meta-data-->
-            <!--android:name="PW_NOTIFICATION_RECEIVER"-->
-            <!--android:value="com.mobile.libraries.emarsys.NotificationReceiver"/>-->
+        <!--android:name="PW_NOTIFICATION_RECEIVER"-->
+        <!--android:value="com.mobile.libraries.emarsys.NotificationReceiver"/>-->
         <!--<meta-data-->
-            <!--android:name="PW_APPID"-->
-            <!--android:value="@string/PW_APPID"/>-->
+        <!--android:name="PW_APPID"-->
+        <!--android:value="@string/PW_APPID"/>-->
         <!--<meta-data-->
-            <!--android:name="PW_PROJECT_ID"-->
-            <!--android:value="@string/PW_PROJECT_ID"/>-->
+        <!--android:name="PW_PROJECT_ID"-->
+        <!--android:value="@string/PW_PROJECT_ID"/>-->
         <!--<meta-data-->
-            <!--android:name="com.google.android.gms.version"-->
-            <!--android:value="@integer/google_play_services_version"/>-->
+        <!--android:name="com.google.android.gms.version"-->
+        <!--android:value="@integer/google_play_services_version"/>-->
 
         <!--<service android:name="com.pushwoosh.inapp.InAppRetrieverService"/>-->
 
@@ -245,8 +259,8 @@
         </receiver>
 
         <!--<meta-data-->
-            <!--android:name="io.fabric.ApiKey"-->
-            <!--android:value="${crashlyticsApiKey}"/>-->
+        <!--android:name="io.fabric.ApiKey"-->
+        <!--android:value="${crashlyticsApiKey}"/>-->
 
         <receiver
             android:enabled="true"
@@ -254,11 +268,11 @@
 
         <!-- Emarsys Engage -->
         <!--<service-->
-            <!--android:name="com.emarsys.mobileengage.service.MobileEngageMessagingService"-->
-            <!--tools:ignore="ExportedService">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.google.firebase.MESSAGING_EVENT"/>-->
-            <!--</intent-filter>-->
+        <!--android:name="com.emarsys.mobileengage.service.MobileEngageMessagingService"-->
+        <!--tools:ignore="ExportedService">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="com.google.firebase.MESSAGING_EVENT"/>-->
+        <!--</intent-filter>-->
         <!--</service>-->
 
         <service
