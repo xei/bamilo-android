@@ -97,6 +97,18 @@ android {
             resValue "string", "adjust_default_tracker", "u4t9izr"
         }
 
+        myket {
+            initWith buildTypes.release
+            versionNameSuffix " - Myket"
+            resValue "string", "adjust_default_tracker", "ghb0pwx"
+        }
+
+        avvalmarket {
+            initWith buildTypes.release
+            versionNameSuffix " - AvvalMarket"
+            resValue "string", "adjust_default_tracker", "4ao5tdc"
+        }
+
         // Marketing Campaigns Build Variants:
         campaign_adventure_1 {
             initWith buildTypes.release
