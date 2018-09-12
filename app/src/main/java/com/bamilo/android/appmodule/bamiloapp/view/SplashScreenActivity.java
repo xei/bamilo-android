@@ -92,24 +92,22 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private ErrorLayoutFactory mErrorLayoutFactory;
 
-    private boolean waitingForForceUpdateResponse = true;
+    Call<ResponseWrapper<GetStartupConfigsResponse>> call;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkForUpdate();
     }
 
     private void checkForUpdate() {
         LaunchWebApi webApi = RetrofitHelper.makeWebApi(this, LaunchWebApi.class);
-        Call<ResponseWrapper<GetStartupConfigsResponse>> call = webApi
-                .getStartupConfigs("android", BuildConfig.VERSION_CODE);
+        call = null;
+        call = webApi.getStartupConfigs("android", BuildConfig.VERSION_CODE);
 
         call.enqueue(new retrofit2.Callback<ResponseWrapper<GetStartupConfigsResponse>>() {
             @Override
             public void onResponse(@NonNull Call<ResponseWrapper<GetStartupConfigsResponse>> call,
                     @NonNull Response<ResponseWrapper<GetStartupConfigsResponse>> response) {
-                waitingForForceUpdateResponse = true;
                 try {
                     switch (response.body().getMetadata().getVersionStatus().getState()) {
                         case GetStartupConfigsResponseKt.STATE_OPTIONAL_UPDATE:
@@ -120,13 +118,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                             );
                             break;
                         case GetStartupConfigsResponseKt.STATE_FORCED_UPDATE:
-                            waitingForForceUpdateResponse = false;
-                            showForceUpdateDialog();
-                            // TODO: call farshid
+                            showForceUpdateDialog(response.body().getMetadata().getVersionStatus());
                             break;
                     }
                 } catch (Exception e) {
-                    waitingForForceUpdateResponse = false;
                     initialBamilo();
                 }
             }
@@ -134,7 +129,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             @Override
             public void onFailure(@NonNull Call<ResponseWrapper<GetStartupConfigsResponse>> call,
                     @NonNull Throwable t) {
-                waitingForForceUpdateResponse = false;
                 initialBamilo();
             }
         });
@@ -164,15 +158,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     }
 
-    private void showForceUpdateDialog() {
-
+    private void showForceUpdateDialog(VersionStatus versionStatus) {
+        ForceUpdateBottomSheet.Companion.newInstance(versionStatus.getTitle(),
+                versionStatus.getMessage(),
+                versionStatus.getLatestApkUrl())
+                .show(getSupportFragmentManager(), "ForceUpdateBottomSheet");
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onStart()
-     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -181,64 +173,38 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         shouldHandleEvent = true;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onResume()
-     */
     @Override
     protected void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
 
-        // Initialize application
         BamiloApplication.INSTANCE.init(initializationHandler);
-        // Intercept event
+
         shouldHandleEvent = true;
-        // Show animated map
+
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(SPLASH_DURATION_IN);
+
         mMainMapImage.clearAnimation();
         mMainMapImage.startAnimation(animationFadeIn);
+
+        checkForUpdate();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onPause()
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Print.i(TAG, "ON PAUSE");
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onStop()
-     */
     @Override
     protected void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
         // Intercept event
         shouldHandleEvent = false;
+        call.cancel();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onDestroy()
-     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
-        // Intercept event
+        call.cancel();
+
         shouldHandleEvent = false;
 
-        // deallocate objects
         mMainMapImage = null;
         mMainFallBackStub = null;
         mErrorFallBackStub = null;
@@ -246,13 +212,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mErrorLayoutFactory = null;
     }
 
-
     @SuppressLint("HandlerLeak")
     Handler initializationHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             BaseResponse baseResponse = (BaseResponse) msg.obj;
             EventType eventType = baseResponse.getEventType();
-            //Print.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
             if (eventType == EventType.INITIALIZE) {
                 showDevInfo();
             }
@@ -542,12 +506,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         BamiloApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
-     */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR RESPONSE");
@@ -558,14 +516,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         int errorCode = baseResponse.getError().getCode();
 
         Print.i(TAG, "ERROR CODE: " + errorCode);
-        // Validate error code
+
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode);
-        // Case network error
+
         if (ErrorCode.isNetworkError(errorCode)) {
             handleNetworkError(errorCode);
-        }
-        // Case request error
-        else {
+        } else {
             handleRequestError(errorCode);
         }
     }
@@ -635,27 +591,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         showErrorLayout(ErrorLayoutFactory.MAINTENANCE_LAYOUT, this);
     }
 
-    /*
-     * ########### MAINTENANCE ###########
-     */
-
     /**
      * Show maintenance page.
      */
     private void setLayoutMaintenance(EventType eventType) {
-        // Inflate maintenance
         mMainFallBackStub.setVisibility(View.VISIBLE);
-        // Show maintenance page
         if (ShopSelector.isRtl()) {
             MaintenancePage.setMaintenancePageBamilo(getWindow().getDecorView(), this);
-        } else {
-            //MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, this);
         }
     }
-
-    /*
-     * ########### RETRY ###########
-     */
 
     /**
      * Show the retry view from the root layout
@@ -705,14 +649,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
     }
 
-    /*
-     * ########### LISTENERS ###########
-     */
-
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
     @Override
     public void onClick(View view) {
         // Get id
@@ -728,10 +664,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Case choose country
         else if (id == R.id.fragment_root_cc_maintenance) {
             onClickMaintenanceChooseCountry();
-        }
-        // Case unknown
-        else {
-            Print.w(TAG, "WARNING: UNEXPECTED CLICK ENVENT");
         }
     }
 
@@ -794,13 +726,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onClickMaintenanceChooseCountry() {
-        // Show Change country
         Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
         intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
         intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
-        // Start activity
+
         startActivity(intent);
         finish();
     }

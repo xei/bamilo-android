@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_marginTop="@dimen/dimen_64dp"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/ic_update_bamilo"/>
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/updateDialog_textView_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="24dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:gravity="center"
+            android:textColor="@color/primary_text_color"
+            android:textSize="16sp"
+            app:locale="fa_IR"
+            app:style="bold"
+            tools:text="اپلیکیشن بامیلو بروزرسانی شد!"/>
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/updateDialog_textView_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center"
+            android:textColor="@color/secondary_text_color"
+            android:visibility="gone"
+            app:locale="fa_IR"
+            tools:text=" شسیشسیشسیشسی شوپسیادش سنمتیاشس نتا"
+            tools:visibility="visible"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="@dimen/dimen_24dp"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiButton
+                android:id="@+id/updateDialog_button_update"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@drawable/gradient_primary_round_16"
+                android:text="@string/update_now"
+                android:textColor="@color/white"
+                android:textSize="17sp"/>
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/updateDialog_textView_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:layout_gravity="center"
+                android:padding="@dimen/dimen_8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="@string/not_now"
+                android:textColor="@color/blue_link"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

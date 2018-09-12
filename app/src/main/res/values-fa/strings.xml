@@ -319,7 +319,7 @@
     <string name="password">کلمه عبور</string>
     <string name="more">بیشتر</string>
     <string name="app_version">نسخه برنامه</string>
-    <string name="update_now">بروزرسانی</string>\
+    <string name="update">بروزرسانی</string>\
     <string name="informational_text">کالا به سبد خرید شما اضافه شد.</string>
     <string name="cart_total_price">قیمت کل سبد کالای شما ‎%s‎ است.</string>
     <string name="cta_button_view_cart">مشاهده سبد کالا</string>
@@ -676,5 +676,7 @@
     <string name="be_first_to_comment">اولین نفری باشید که نظر می دهید</string>
     <string name="see_all_related_products">مشاهده همه کالاهای مشابه</string>
     <string name="deliver_time_by_this_seller">زمان تقریبی تحویل کالای این تامین کننده</string>
+    <string name="not_now">فعلا نه</string>
+    <string name="update_now">همین الان بروزرسانی کن!</string>
 
 </resources>

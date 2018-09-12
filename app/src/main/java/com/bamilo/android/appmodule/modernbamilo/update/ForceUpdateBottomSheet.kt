@@ -1,17 +1,20 @@
 package com.bamilo.android.appmodule.modernbamilo.update
 
+import android.app.Dialog
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
+import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.BottomSheetDialogFragment
+import android.support.design.widget.CoordinatorLayout
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bamilo.android.R
-import com.bamilo.android.databinding.DialogForceUpdateBinding
-import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.CoordinatorLayout
-
+import com.bamilo.android.appmodule.modernbamilo.util.openStorePage
+import com.bamilo.android.databinding.BottomsheetForceUpdateBinding
 
 
 /**
@@ -21,30 +24,65 @@ import android.support.design.widget.CoordinatorLayout
  */
 class ForceUpdateBottomSheet : BottomSheetDialogFragment() {
 
-    private lateinit var binding: DialogForceUpdateBinding
-    private lateinit var onDialogDismissListener: OnDialogDismissListener
+    private lateinit var binding: BottomsheetForceUpdateBinding
 
-    public fun newInstance(title: String, message: String): ForceUpdateBottomSheet {
-        val forceUpdateBottomSheet = ForceUpdateBottomSheet()
-        val bundle = Bundle()
-        bundle.putString("title", title)
-        bundle.putString("message", message)
-        forceUpdateBottomSheet.arguments = bundle
-        return forceUpdateBottomSheet
+    private var title: String? = ""
+    private var message: String? = ""
+    private var storeUrl: String? = ""
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+
+    companion object {
+        fun newInstance(title: String, message: String, storeUrl: String): ForceUpdateBottomSheet {
+            val forceUpdateBottomSheet = ForceUpdateBottomSheet()
+            val bundle = Bundle()
+
+            bundle.putString("title", title)
+            bundle.putString("message", message)
+            bundle.putString("storeUrl", storeUrl)
+
+            forceUpdateBottomSheet.arguments = bundle
+            return forceUpdateBottomSheet
+        }
     }
 
-    fun setOnDialogDismissListener(onDialogDismissListener: OnDialogDismissListener) {
-        this.onDialogDismissListener = onDialogDismissListener
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        bottomSheetDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        return bottomSheetDialog
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.bottomsheet_force_update, container, false)
 
+        title = arguments?.getString("title", "")
+        message = arguments?.getString("message", "")
+        storeUrl = arguments?.getString("storeUrl", "")
+
         setTitleAndMessageText()
-        setupDialogAccordingToUpdateStatus()
         bindButtonsClickListener()
 
+        disableDragging()
+
         return binding.root
+    }
+
+    private fun disableDragging() {
+        try {
+            val mBehaviorField = bottomSheetDialog.javaClass.getDeclaredField("mBehavior")
+            mBehaviorField.isAccessible = true
+            val behavior = mBehaviorField.get(bottomSheetDialog) as BottomSheetBehavior<*>
+            behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                }
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+            })
+        } catch (e: NoSuchFieldException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        }
     }
 
     override fun onStart() {
@@ -69,33 +107,21 @@ class ForceUpdateBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setTitleAndMessageText() {
-//        if (!TextUtils.isEmpty(title)) {
-//            binding.updateDialogTextViewTitle.text = title
-//        }
-//
-//        if (!TextUtils.isEmpty(message)) {
-//            binding.updateDialogTextViewMessage.text = message
-//        }
-    }
+        if (!TextUtils.isEmpty(title)) {
+            binding.updateDialogTextViewTitle.text = title
+        }
 
-    private fun setupDialogAccordingToUpdateStatus() {
-//        if (updateStatus == STATE_OPTIONAL_UPDATE) {
-//            binding.updateDialogButtonCancel.visibility = View.VISIBLE
-//            setCanceledOnTouchOutside(true)
-//            setCancelable(true)
-//        } else if (updateStatus == STATE_FORCED_UPDATE) {
-//            binding.updateDialogButtonCancel.visibility = View.GONE
-//            setCanceledOnTouchOutside(false)
-//            setCancelable(false)
-//        }
+        if (!TextUtils.isEmpty(message)) {
+            binding.updateDialogTextViewMessage.text = message
+        }
     }
 
     private fun bindButtonsClickListener() {
-//        binding.updateDialogButtonCancel.setOnClickListener { dismiss() }
-//        binding.updateDialogButtonUpdate.setOnClickListener { gotoStore() }
+        binding.updateDialogTextViewCancel.setOnClickListener { activity?.finish() }
+        binding.updateDialogButtonUpdate.setOnClickListener { gotoStore() }
     }
 
     private fun gotoStore() {
-//        openStorePage(context, storeUrl)
+        openStorePage(context, storeUrl!!)
     }
 }
