@@ -41,7 +41,6 @@ import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStar
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.LaunchWebApi;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.VersionStatus;
 import com.bamilo.android.appmodule.modernbamilo.update.ForceUpdateBottomSheet;
-import com.bamilo.android.appmodule.modernbamilo.update.OnDialogDismissListener;
 import com.bamilo.android.appmodule.modernbamilo.update.OptionalUpdateBottomSheet;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper;
@@ -120,7 +119,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                             showUpdateBottomSheet(
                                     response.body().getMetadata().getVersionStatus().getTitle(),
                                     response.body().getMetadata().getVersionStatus().getMessage(),
-                                    response.body().getMetadata().getVersionStatus().getLatestApkUrl()
+                                    response.body().getMetadata().getVersionStatus()
+                                            .getLatestApkUrl()
                             );
                             break;
                         case GetStartupConfigsResponseKt.STATE_FORCED_UPDATE:
@@ -143,6 +143,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     }
 
     private void initialBamilo() {
+        waitForForceUpdate = false;
         initPushwoosh();
 
         DeviceInfoHelper.setOrientationForHandsetDevices(this);
