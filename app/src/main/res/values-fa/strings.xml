@@ -678,5 +678,7 @@
     <string name="deliver_time_by_this_seller">زمان تقریبی تحویل کالای این تامین کننده</string>
     <string name="not_now">فعلا نه</string>
     <string name="update_now">همین الان بروزرسانی کن!</string>
+    <string name="cancel_btn">انصراف</string>
+    <string name="getLatestApk">دریافت به‌روز رسانی</string>
 
 </resources>

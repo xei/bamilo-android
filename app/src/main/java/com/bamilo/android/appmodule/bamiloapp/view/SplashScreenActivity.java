@@ -41,6 +41,8 @@ import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStar
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.LaunchWebApi;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.VersionStatus;
 import com.bamilo.android.appmodule.modernbamilo.update.ForceUpdateBottomSheet;
+import com.bamilo.android.appmodule.modernbamilo.update.OnDialogDismissListener;
+import com.bamilo.android.appmodule.modernbamilo.update.OptionalUpdateBottomSheet;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper;
 import com.bamilo.android.framework.service.Darwin;
@@ -115,10 +117,14 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 try {
                     switch (response.body().getMetadata().getVersionStatus().getState()) {
                         case GetStartupConfigsResponseKt.STATE_OPTIONAL_UPDATE:
-                            showForceUpdateDialog(response.body().getMetadata().getVersionStatus());
+                            showUpdateBottomSheet(
+                                    response.body().getMetadata().getVersionStatus().getTitle(),
+                                    response.body().getMetadata().getVersionStatus().getMessage(),
+                                    response.body().getMetadata().getVersionStatus().getLatestApkUrl()
+                            );
                             break;
                         case GetStartupConfigsResponseKt.STATE_FORCED_UPDATE:
-                            showOptionalForceUpdate();
+                            showForceUpdateDialog(response.body().getMetadata().getVersionStatus());
                             break;
                     }
                 } catch (Exception e) {
@@ -154,8 +160,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mMainMapImage.startAnimation(animationFadeIn);
     }
 
-    private void showOptionalForceUpdate() {
-        waitForForceUpdate = false;
+    private void showUpdateBottomSheet(String title, String description, String latestApkUrl) {
+        new OptionalUpdateBottomSheet()
+                .setUpdateInfo(title, description, latestApkUrl)
+                .setDismissListener(this::initialBamilo)
+                .show(getSupportFragmentManager(), "UpdateBottomSheet");
     }
 
     private void showForceUpdateDialog(VersionStatus versionStatus) {
