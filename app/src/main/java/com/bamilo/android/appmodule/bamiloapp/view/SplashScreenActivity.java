@@ -8,7 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -50,7 +52,6 @@ import com.bamilo.android.framework.service.rest.errors.ErrorCode;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.crashlytics.android.Crashlytics;
 import com.pushwoosh.Pushwoosh;
@@ -94,9 +95,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     Call<ResponseWrapper<GetStartupConfigsResponse>> call;
 
+    boolean waitForForceUpdate = true;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.splash_screen);
     }
 
     private void checkForUpdate() {
@@ -115,10 +119,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                             break;
                         case GetStartupConfigsResponseKt.STATE_FORCED_UPDATE:
                             showOptionalForceUpdate();
-                            // TODO: call farshid
                             break;
                     }
                 } catch (Exception e) {
+                    waitForForceUpdate = false;
                     initialBamilo();
                 }
             }
@@ -126,6 +130,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             @Override
             public void onFailure(@NonNull Call<ResponseWrapper<GetStartupConfigsResponse>> call,
                     @NonNull Throwable t) {
+                waitForForceUpdate = false;
                 initialBamilo();
             }
         });
@@ -133,57 +138,61 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private void initialBamilo() {
         initPushwoosh();
-        Print.i(TAG, "ON CREATE");
 
         DeviceInfoHelper.setOrientationForHandsetDevices(this);
-        setContentView(R.layout.splash_screen);
-
         mMainMapImage = findViewById(R.id.splashMap);
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         mErrorFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
         shouldHandleEvent = true;
-    }
-
-    private void showOptionalForceUpdate() {
-
-    }
-
-    private void showForceUpdateDialog(VersionStatus versionStatus) {
-        ForceUpdateBottomSheet.Companion.newInstance(versionStatus.getTitle(),
-                versionStatus.getMessage(),
-                versionStatus.getLatestApkUrl())
-                .show(getSupportFragmentManager(), "ForceUpdateBottomSheet");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Print.i(TAG, "ON START");
-        // Intercept event
-        shouldHandleEvent = true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         BamiloApplication.INSTANCE.init(initializationHandler);
-
-        shouldHandleEvent = true;
 
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(SPLASH_DURATION_IN);
 
         mMainMapImage.clearAnimation();
         mMainMapImage.startAnimation(animationFadeIn);
+    }
 
+    private void showOptionalForceUpdate() {
+        waitForForceUpdate = false;
+    }
+
+    private void showForceUpdateDialog(VersionStatus versionStatus) {
+        waitForForceUpdate = true;
+        Fragment forceUpdateBottomSheet =
+                ForceUpdateBottomSheet.
+                        Companion.newInstance(
+                        versionStatus.getTitle(),
+                        versionStatus.getMessage(),
+                        versionStatus.getLatestApkUrl());
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        ft.setCustomAnimations(R.anim.slide_down,
+                R.anim.slide_up);
+
+        ft.replace(R.id.splashScreen_frameLayout_container, forceUpdateBottomSheet,
+                forceUpdateBottomSheet.getClass().getSimpleName());
+        ft.commit();
+        findViewById(R.id.splashScreen_frameLayout_container).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        shouldHandleEvent = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         checkForUpdate();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        // Intercept event
         shouldHandleEvent = false;
         call.cancel();
     }
@@ -230,7 +239,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * notification.
      */
     public void selectActivity() {
-        Print.i(TAG, "START ANIMATION ACTIVITY");
         mMainMapImage.clearAnimation();
         Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setDuration(SPLASH_DURATION_OUT);
@@ -238,19 +246,20 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
             @Override
             public void onAnimationStart(Animation animation) {
-                Print.i(TAG, "ON ANIMATION START");
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                Print.i(TAG, "ON ANIMATION REPEAT");
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Print.i(TAG, "ON ANIMATION END");
                 mMainMapImage.setVisibility(View.GONE);
-                // Validate deep link bundle
+
+                if (waitForForceUpdate) {
+                    return;
+                }
+
                 startMainActivity();
                 overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
                 finish();
@@ -265,7 +274,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void startMainActivity() {
-        Print.d(TAG, "START MAIN FRAGMENT ACTIVITY");
         // Clone the current intent, but only the relevant parts for Deep Link (URI or GCM)
         Intent intent = (Intent) getIntent().clone();
         intent.setClass(getApplicationContext(), getActivityClassForDevice());
@@ -286,21 +294,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
     }
 
-    /**
-     * ######## RESPONSES ########
-     */
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle
-     * )
-     */
     @Override
     public void onRequestComplete(BaseResponse response) {
         if (!shouldHandleEvent) {
-            Print.e(TAG, "shouldHandleEvent: " + shouldHandleEvent);
             return;
         }
 
@@ -310,7 +306,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         EventType eventType = response.getEventType();
         int errorCode =
                 response.getError() != null ? response.getError().getCode() : ErrorCode.NO_ERROR;
-        Print.i(TAG, "ON SUCCESS RESPONSE: " + eventType);
 
         // Case event
         if (eventType == EventType.INITIALIZE) {
@@ -350,7 +345,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessInitialize() {
-        Print.i(TAG, "ON PROCESS: INITIALIZE");
         BamiloApplication.INSTANCE.sendRequest(new GetApiInfoHelper(), null, this);
     }
 
@@ -360,11 +354,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessGlobalConfigsEvent(BaseResponse baseResponse) {
-        Print.i(TAG, "ON PROCESS: GLOBAL CONFIGS");
         SharedPreferences sharedPrefs = getApplicationContext()
                 .getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         if (sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null) == null) {
-            Print.i(TAG, "SELECTED COUNTRY ID IS NULL");
             if (BamiloApplication.INSTANCE.countriesAvailable != null
                     && BamiloApplication.INSTANCE.countriesAvailable.size() > 0) {
                 // Validate if there is any country from deeplink when starting the app from clean slate
@@ -377,7 +369,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 onRequestError(baseResponse);
             }
         } else {
-            Print.i(TAG, "SELECTED COUNTRY ID IS NOT NULL");
             if (BamiloApplication.INSTANCE.countriesAvailable != null
                     && BamiloApplication.INSTANCE.countriesAvailable.size() > 0) {
                 BamiloApplication.INSTANCE.init(initializationHandler);
@@ -391,7 +382,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * Process the country configs event
      */
     private void onProcessCountryConfigsEvent(BaseResponse response) {
-        Print.i(TAG, "ON PROCESS COUNTRY CONFIGS");
         // Goes to saved redirect page otherwise continue
         if (!hasRedirectPage(((CountryConfigs) response.getContentData()).getRedirectPage())) {
             BamiloApplication.INSTANCE.init(initializationHandler);
@@ -404,7 +394,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessNoCountryConfigsError() {
-        Print.i(TAG, "ON PROCESS NO COUNTRY CONFIGS");
         BamiloApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
     }
 
@@ -414,7 +403,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessNoCountriesConfigsError() {
-        Print.i(TAG, "ON PROCESS NO COUNTRIES CONFIGS");
         BamiloApplication.INSTANCE.sendRequest(new GetAvailableCountriesHelper(), null, this);
     }
 
@@ -424,7 +412,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessAutoCountrySelection() {
-        Print.i(TAG, "ON PROCESS AUTO_COUNTRY_SELECTION");
         LocationHelper.getInstance()
                 .autoCountrySelection(getApplicationContext(), initializationHandler);
     }
@@ -450,8 +437,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                if (waitForForceUpdate) {
+                    return;
+                }
+
                 mMainMapImage.setVisibility(View.GONE);
-                Print.i(TAG, "ON PROCESS REQUIRES USER INTERACTION");
                 // Show Change country
                 Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -470,21 +460,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * Process the api md5 event
      */
     private void onProcessApiEvent(BaseResponse baseResponse) {
-        Print.i(TAG, "ON PROCESS API EVENT");
         GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct) baseResponse
                 .getContentData();
         // Validate out dated sections
         if (apiInformation.isSectionNameConfigurations()) {
-            Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
         } else if (!CountryPersistentConfigs.checkCountryRequirements(getApplicationContext())) {
-            Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
         }
         // Goes to saved redirect page otherwise continue
         else if (!hasRedirectPage(
                 CountryPersistentConfigs.getRedirectPage(getApplicationContext()))) {
-            Print.i(TAG, "START MAIN ACTIVITY");
             selectActivity();
         }
     }
@@ -498,16 +484,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR RESPONSE");
         if (!shouldHandleEvent) {
-            Print.e(TAG, "shouldHandleEvent: " + shouldHandleEvent);
             return;
         }
         int errorCode = baseResponse.getError().getCode();
-
-        Print.i(TAG, "ERROR CODE: " + errorCode);
-
-        Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode);
 
         if (ErrorCode.isNetworkError(errorCode)) {
             handleNetworkError(errorCode);
@@ -634,8 +614,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             View retryButton = findViewById(R.id.fragment_root_error_button);
             retryButton.setOnClickListener(onClickListener);
             retryButton.setTag(R.id.fragment_root_error_button, type);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+        } catch (NullPointerException ignored) {
         }
     }
 
@@ -691,8 +670,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             Animation animation = AnimationUtils
                     .loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
             findViewById(R.id.fragment_root_error_spinning).setAnimation(animation);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
+        } catch (NullPointerException ignored) {
         }
     }
 
@@ -716,6 +694,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onClickMaintenanceChooseCountry() {
+        if (waitForForceUpdate) {
+            return;
+        }
+
         Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
