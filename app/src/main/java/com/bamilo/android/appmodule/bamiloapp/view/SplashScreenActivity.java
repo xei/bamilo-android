@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import com.adjust.sdk.Adjust;
+import com.bamilo.android.BuildConfig;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
@@ -33,6 +34,12 @@ import com.bamilo.android.appmodule.bamiloapp.utils.location.LocationHelper;
 import com.bamilo.android.appmodule.bamiloapp.utils.maintenance.MaintenancePage;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.ErrorLayoutFactory;
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
+import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStartupConfigsResponse;
+import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStartupConfigsResponseKt;
+import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.LaunchWebApi;
+import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.VersionStatus;
+import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper;
+import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper;
 import com.bamilo.android.framework.service.Darwin;
 import com.bamilo.android.framework.service.objects.configs.CountryConfigs;
 import com.bamilo.android.framework.service.objects.configs.RedirectPage;
@@ -51,6 +58,9 @@ import com.pushwoosh.exception.RegisterForPushNotificationsException;
 import com.pushwoosh.function.Callback;
 import com.pushwoosh.function.Result;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * <p> This class creates a splash screen. It also initializes hockey and the backend </p> <p/> <p>
@@ -85,6 +95,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private ErrorLayoutFactory mErrorLayoutFactory;
 
+    private LaunchWebApi mWebApi;
+
     /*
      * (non-Javadoc)
      *
@@ -93,6 +105,31 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mWebApi = RetrofitHelper.makeWebApi(this, LaunchWebApi.class);
+        Call<ResponseWrapper<GetStartupConfigsResponse>> call = mWebApi.getStartupConfigs("android", BuildConfig.VERSION_CODE);
+        call.enqueue(new retrofit2.Callback<ResponseWrapper<GetStartupConfigsResponse>>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper<GetStartupConfigsResponse>> call, Response<ResponseWrapper<GetStartupConfigsResponse>> response) {
+                switch (response.body().getMetadata().getVersionStatus().getState()) {
+                    case GetStartupConfigsResponseKt.STATE_VALID_VERSION:
+                        break;
+
+                    case GetStartupConfigsResponseKt.STATE_OPTIONAL_UPDATE:
+                        break;
+
+                    case GetStartupConfigsResponseKt.STATE_FORCED_UPDATE:
+                        break;
+
+                    default:
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper<GetStartupConfigsResponse>> call, Throwable t) {
+
+            }
+        });
 
         initPushwoosh();
         //Fabric.with(this, new Crashlytics());
