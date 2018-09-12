@@ -124,7 +124,7 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     private fun bindAddToCartClickListener() {
-        binding.productDetailLinearLayoutAddToCart!!.setOnClickListener {
+        binding.productDetailLinearLayoutAddToCart?.setOnClickListener {
             if (!canAddToCart()) {
                 productDetailPresenter.showBottomSheet()
                 return@setOnClickListener
