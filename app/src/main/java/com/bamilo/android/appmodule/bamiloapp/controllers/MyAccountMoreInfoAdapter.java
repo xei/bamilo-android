@@ -82,7 +82,7 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
             appVersionLabel.setText(DeviceInfoHelper.getVersionName(view.getContext()));
 
             if(CheckVersion.needsToShowDialog()) {
-                updateLabel.setText(R.string.update_now);
+                updateLabel.setText(R.string.update);
                 view.setEnabled(true);
             } else {
                 updateLabel.setText(R.string.up_to_date);

@@ -179,7 +179,7 @@ android {
                            'src/main/res/drawables/selectors',
                            'src/main/res/drawables/icon',
                            'src/main/res/drawables/background',
-                           'src/main/res/drawables/other', 'src/main/res/layouts/moderbamilo', 'src/main/res/layouts', 'src/main/res/layouts/modernbamilo/']
+                           'src/main/res/drawables/other', 'src/main/res/layouts/moderbamilo', 'src/main/res/layouts', 'src/main/res/layouts/modernbamilo/', 'src/main/res/layouts/update/']
         }
     }
 }
