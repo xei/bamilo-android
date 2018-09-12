@@ -112,16 +112,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             @Override
             public void onResponse(Call<ResponseWrapper<GetStartupConfigsResponse>> call, Response<ResponseWrapper<GetStartupConfigsResponse>> response) {
                 switch (response.body().getMetadata().getVersionStatus().getState()) {
-                    case GetStartupConfigsResponseKt.STATE_VALID_VERSION:
-                        break;
 
                     case GetStartupConfigsResponseKt.STATE_OPTIONAL_UPDATE:
-                        break;
-
                     case GetStartupConfigsResponseKt.STATE_FORCED_UPDATE:
+                        // TODO: call farshid
                         break;
-
-                    default:
                 }
             }
 
