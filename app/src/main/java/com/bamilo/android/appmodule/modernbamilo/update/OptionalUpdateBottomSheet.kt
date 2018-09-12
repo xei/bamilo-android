@@ -5,6 +5,7 @@ import android.support.design.widget.BottomSheetDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bamilo.android.R
 
 /**
  * Created by Farshid
@@ -13,7 +14,19 @@ import android.view.ViewGroup
  */
 class OptionalUpdateBottomSheet : BottomSheetDialogFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+    private lateinit var mOnDialogDismissListener: OnDialogDismissListener
+
+    fun setDismissListener(onDialogDismissListener: OnDialogDismissListener): OptionalUpdateBottomSheet {
+        this.mOnDialogDismissListener = onDialogDismissListener
+        return this
     }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = LayoutInflater.from(context).inflate(R.layout.bottomsheet_update, container, false)
+
+
+
+        return view
+    }
+
 }
