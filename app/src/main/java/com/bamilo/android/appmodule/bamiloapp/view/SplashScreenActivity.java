@@ -37,7 +37,6 @@ import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStartupConfigsResponse;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStartupConfigsResponseKt;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.LaunchWebApi;
-import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.VersionStatus;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper;
 import com.bamilo.android.framework.service.Darwin;
@@ -54,11 +53,7 @@ import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.crashlytics.android.Crashlytics;
 import com.pushwoosh.Pushwoosh;
 import com.pushwoosh.exception.PushwooshException;
-import com.pushwoosh.exception.RegisterForPushNotificationsException;
-import com.pushwoosh.function.Callback;
-import com.pushwoosh.function.Result;
 import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -95,57 +90,69 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private ErrorLayoutFactory mErrorLayoutFactory;
 
-    private LaunchWebApi mWebApi;
+    private boolean waitingForForceUpdateResponse = true;
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.app.Activity#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkForUpdate();
+    }
 
-        mWebApi = RetrofitHelper.makeWebApi(this, LaunchWebApi.class);
-        Call<ResponseWrapper<GetStartupConfigsResponse>> call = mWebApi.getStartupConfigs("android", BuildConfig.VERSION_CODE);
+    private void checkForUpdate() {
+        LaunchWebApi webApi = RetrofitHelper.makeWebApi(this, LaunchWebApi.class);
+        Call<ResponseWrapper<GetStartupConfigsResponse>> call = webApi
+                .getStartupConfigs("android", BuildConfig.VERSION_CODE);
+
         call.enqueue(new retrofit2.Callback<ResponseWrapper<GetStartupConfigsResponse>>() {
             @Override
-            public void onResponse(Call<ResponseWrapper<GetStartupConfigsResponse>> call, Response<ResponseWrapper<GetStartupConfigsResponse>> response) {
-                switch (response.body().getMetadata().getVersionStatus().getState()) {
-
-                    case GetStartupConfigsResponseKt.STATE_OPTIONAL_UPDATE:
-                    case GetStartupConfigsResponseKt.STATE_FORCED_UPDATE:
-                        // TODO: call farshid
-                        break;
+            public void onResponse(@NonNull Call<ResponseWrapper<GetStartupConfigsResponse>> call,
+                    @NonNull Response<ResponseWrapper<GetStartupConfigsResponse>> response) {
+                waitingForForceUpdateResponse = true;
+                try {
+                    switch (response.body().getMetadata().getVersionStatus().getState()) {
+                        case GetStartupConfigsResponseKt.STATE_OPTIONAL_UPDATE:
+                            showForceUpdateDialog();
+                            break;
+                        case GetStartupConfigsResponseKt.STATE_FORCED_UPDATE:
+                            waitingForForceUpdateResponse = false;
+                            showOptionalForceUpdate();
+                            // TODO: call farshid
+                            break;
+                    }
+                } catch (Exception e) {
+                    waitingForForceUpdateResponse = false;
+                    initialBamilo();
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseWrapper<GetStartupConfigsResponse>> call, Throwable t) {
-
+            public void onFailure(@NonNull Call<ResponseWrapper<GetStartupConfigsResponse>> call,
+                    @NonNull Throwable t) {
+                waitingForForceUpdateResponse = false;
+                initialBamilo();
             }
         });
+    }
 
+    private void initialBamilo() {
         initPushwoosh();
-        //Fabric.with(this, new Crashlytics());
         Print.i(TAG, "ON CREATE");
-        // Set Font
-        // TODO: 8/28/18 farshid
-//        HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
-        // Validate if is phone and force orientation
-        DeviceInfoHelper.setOrientationForHandsetDevices(this);
-        // Set view
-        setContentView(R.layout.splash_screen);
-        // Get map
-        mMainMapImage = findViewById(R.id.splashMap);
-        // Get fall back layout
-        mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
-        // Get retry layout
-        mErrorFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
-        // Intercept event
-        shouldHandleEvent = true;
 
-        // throw new RuntimeException("This is a crash");
+        DeviceInfoHelper.setOrientationForHandsetDevices(this);
+        setContentView(R.layout.splash_screen);
+
+        mMainMapImage = findViewById(R.id.splashMap);
+        mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
+        mErrorFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
+        shouldHandleEvent = true;
+    }
+
+    private void showOptionalForceUpdate() {
+
+    }
+
+    private void showForceUpdateDialog() {
+
     }
 
     /*
@@ -818,5 +825,4 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                     }
                 });
     }
-
 }

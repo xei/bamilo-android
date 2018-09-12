@@ -1,19 +1,21 @@
 package com.bamilo.android.appmodule.modernbamilo.util
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 private const val TAG_DEBUG = "HelperFunctions"
 
@@ -74,7 +76,7 @@ fun getCurrentDateTime(): String {
  * This helper function interpolate from a color to another one and create n relevant color.
  *
  */
-fun getInterpolatedColors(startColor: Int, endColor: Int, n: Int) : IntArray{
+fun getInterpolatedColors(startColor: Int, endColor: Int, n: Int): IntArray {
     val t = 0.2
 
     val colors = IntArray(n + 2)
@@ -108,4 +110,12 @@ public fun getMorphNumberString(value: Float): String {
     }
 
     return result
+}
+
+fun openStorePage(context: Context, storeUrl: String) {
+    try {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(storeUrl)))
+    } catch (e: ActivityNotFoundException) {
+        Log.e("DIGIKALA", "AppStore not found", e)
+    }
 }
