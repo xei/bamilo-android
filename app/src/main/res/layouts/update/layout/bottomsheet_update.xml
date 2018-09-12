@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content" >
 
     <ImageView
         android:id="@+id/bottomsheetUpdate_imageView_close"
@@ -64,24 +64,30 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:text="دریافت به‌روز رسانی"
-        android:background="@drawable/background_btn_gradient"
+        android:text="@string/getLatestApk"
+        app:locale="fa_IR"
+        app:style="bold"
+        android:background="@drawable/gradient_primary_round_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bottomsheetUpdate_xeiTextView_description" />
 
     <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
-        android:id="@+id/xeiTextView4"
+        android:id="@+id/bottomsheetUpdate_xeiTextView_cancelFlatButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:text="com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView"
+        android:text="@string/cancel_btn"
+        android:textColor="@color/pantone2995cp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottomsheetUpdate_xeiButton_update" />
+        app:layout_constraintTop_toBottomOf="@+id/bottomsheetUpdate_xeiButton_update"
+        app:locale="fa_IR" />
 
 </android.support.constraint.ConstraintLayout>

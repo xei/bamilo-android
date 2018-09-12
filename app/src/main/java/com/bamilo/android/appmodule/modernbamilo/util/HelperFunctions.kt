@@ -116,6 +116,6 @@ fun openStorePage(context: Context?, storeUrl: String) {
     try {
         context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(storeUrl)))
     } catch (e: ActivityNotFoundException) {
-        Log.e("DIGIKALA", "AppStore not found", e)
+        Log.e(TAG_DEBUG, "AppStore not found", e)
     }
 }

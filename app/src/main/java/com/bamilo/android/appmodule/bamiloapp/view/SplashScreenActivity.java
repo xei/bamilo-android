@@ -37,6 +37,8 @@ import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStartupConfigsResponse;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStartupConfigsResponseKt;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.LaunchWebApi;
+import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.VersionStatus;
+import com.bamilo.android.appmodule.modernbamilo.update.ForceUpdateBottomSheet;
 import com.bamilo.android.appmodule.modernbamilo.update.OnDialogDismissListener;
 import com.bamilo.android.appmodule.modernbamilo.update.OptionalUpdateBottomSheet;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper;
@@ -148,14 +150,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     }
 
     private void showUpdateBottomSheet(String title, String description, String latestApkUrl) {
-        new OptionalUpdateBottomSheet().setDismissListener(new OnDialogDismissListener() {
-
-            @Override
-            public void onDismiss() {
-                // TODO: handle cancellation.
-            }
-        }).show(getSupportFragmentManager(), "");
-
+        new OptionalUpdateBottomSheet()
+                .setUpdateInfo(title, description, latestApkUrl)
+                .setDismissListener(this::initialBamilo)
+                .show(getSupportFragmentManager(), "UpdateBottomSheet");
     }
 
     private void showForceUpdateDialog(VersionStatus versionStatus) {
