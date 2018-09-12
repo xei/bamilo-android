@@ -37,6 +37,8 @@ import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStartupConfigsResponse;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStartupConfigsResponseKt;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.LaunchWebApi;
+import com.bamilo.android.appmodule.modernbamilo.update.OnDialogDismissListener;
+import com.bamilo.android.appmodule.modernbamilo.update.OptionalUpdateBottomSheet;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper;
 import com.bamilo.android.framework.service.Darwin;
@@ -111,11 +113,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 try {
                     switch (response.body().getMetadata().getVersionStatus().getState()) {
                         case GetStartupConfigsResponseKt.STATE_OPTIONAL_UPDATE:
-                            showForceUpdateDialog();
+                            showUpdateBottomSheet(
+                                    response.body().getMetadata().getVersionStatus().getTitle(),
+                                    response.body().getMetadata().getVersionStatus().getMessage(),
+                                    response.body().getMetadata().getVersionStatus().getLatestApkUrl()
+                            );
                             break;
                         case GetStartupConfigsResponseKt.STATE_FORCED_UPDATE:
                             waitingForForceUpdateResponse = false;
-                            showOptionalForceUpdate();
+                            showForceUpdateDialog();
                             // TODO: call farshid
                             break;
                     }
@@ -147,7 +153,14 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         shouldHandleEvent = true;
     }
 
-    private void showOptionalForceUpdate() {
+    private void showUpdateBottomSheet(String title, String description, String latestApkUrl) {
+        new OptionalUpdateBottomSheet().setDismissListener(new OnDialogDismissListener() {
+
+            @Override
+            public void onDismiss() {
+                // TODO: handle cancellation.
+            }
+        }).show(getSupportFragmentManager(), "");
 
     }
 
