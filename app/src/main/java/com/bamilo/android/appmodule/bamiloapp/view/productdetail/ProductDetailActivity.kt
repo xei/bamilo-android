@@ -132,7 +132,9 @@ class ProductDetailActivity : BaseActivity(),
             if (productHasSizeVariation() && !TextUtils.isEmpty(sizeVariation.simple_sku)) {
                 addProductToCart(sizeVariation.simple_sku!!)
             } else {
-                addProductToCart(productDetail.simple_sku!!)
+                productDetail.simple_sku?.let { simpleSku ->
+                    addProductToCart(simpleSku)
+                }
             }
         }
     }
@@ -564,8 +566,11 @@ class ProductDetailActivity : BaseActivity(),
         sizeVariation.simple_sku = null
 
         if (TextUtils.isEmpty(productDetail.sku)) {
+            binding.productDetailLinearLayoutAddToCart?.visibility = View.GONE
             return
         }
+
+        binding.productDetailLinearLayoutAddToCart?.visibility = View.VISIBLE
 
         productDetailPresenter.fillChooseVariationBottomSheet(productDetail)
 
