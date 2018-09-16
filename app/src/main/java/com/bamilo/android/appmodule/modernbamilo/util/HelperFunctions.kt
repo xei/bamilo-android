@@ -112,7 +112,7 @@ public fun getMorphNumberString(value: Float): String {
     return result
 }
 
-fun openStorePage(context: Context?, storeUrl: String) {
+fun openStorePage(context: Context?, storeUrl: String?) {
     try {
         context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(storeUrl)))
     } catch (e: ActivityNotFoundException) {

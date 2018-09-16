@@ -27,7 +27,7 @@ class ForceUpdateBottomSheet : Fragment() {
     var rootView: View? = null
 
     companion object {
-        fun newInstance(title: String, message: String, storeUrl: String): ForceUpdateBottomSheet {
+        fun newInstance(title: String?, message: String?, storeUrl: String?): ForceUpdateBottomSheet {
             val forceUpdateBottomSheet = ForceUpdateBottomSheet()
             val bundle = Bundle()
 
@@ -69,6 +69,6 @@ class ForceUpdateBottomSheet : Fragment() {
     }
 
     private fun gotoStore() {
-        openStorePage(context, storeUrl!!)
+        openStorePage(context, storeUrl)
     }
 }

@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.modernbamilo.update
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.modernbamilo.util.openStorePage
+import com.bamilo.android.framework.service.utils.TextUtils
 
 /**
  * Created by Farshid
@@ -18,12 +20,12 @@ import com.bamilo.android.appmodule.modernbamilo.util.openStorePage
  */
 class OptionalUpdateBottomSheet : BottomSheetDialogFragment() {
 
-    private lateinit var mTitle: String
-    private lateinit var mDescription: String
-    private lateinit var mLatestApkUrl: String
+    private var mTitle: String? = null
+    private var mDescription: String? = null
+    private var mLatestApkUrl: String? = null
     private lateinit var mOnDialogDismissListener: OnDialogDismissListener
 
-    fun setUpdateInfo(title: String, description: String, latestApkUrl: String): OptionalUpdateBottomSheet {
+    fun setUpdateInfo(title: String?, description: String?, latestApkUrl: String?): OptionalUpdateBottomSheet {
         mTitle = title
         mDescription = description
         mLatestApkUrl = latestApkUrl
@@ -33,15 +35,18 @@ class OptionalUpdateBottomSheet : BottomSheetDialogFragment() {
 
     fun setDismissListener(onDialogDismissListener: OnDialogDismissListener): OptionalUpdateBottomSheet {
         this.mOnDialogDismissListener = onDialogDismissListener
-
         return this
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.bottomsheet_update, container, false).apply {
 
-            findViewById<TextView>(R.id.bottomsheetUpdate_xeiTextView_title).text = mTitle
-            findViewById<TextView>(R.id.bottomsheetUpdate_xeiTextView_description).text = mDescription
+            if (!TextUtils.isEmpty(mTitle)) {
+                findViewById<TextView>(R.id.bottomsheetUpdate_xeiTextView_title).text = mTitle
+            }
+            if (!TextUtils.isEmpty(mDescription)) {
+                findViewById<TextView>(R.id.bottomsheetUpdate_xeiTextView_description).text = mDescription
+            }
 
             findViewById<Button>(R.id.bottomsheetUpdate_xeiButton_update).setOnClickListener {
                 openStorePage(context, mLatestApkUrl)
@@ -55,7 +60,15 @@ class OptionalUpdateBottomSheet : BottomSheetDialogFragment() {
                 dismiss()
             }
         }
-
     }
 
+    override fun dismiss() {
+        mOnDialogDismissListener.onDismiss()
+        super.dismiss()
+    }
+
+    override fun onCancel(dialog: DialogInterface?) {
+        mOnDialogDismissListener.onDismiss()
+        super.onCancel(dialog)
+    }
 }

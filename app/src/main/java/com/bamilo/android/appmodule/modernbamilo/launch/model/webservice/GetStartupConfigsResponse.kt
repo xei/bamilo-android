@@ -17,7 +17,7 @@ const val STATE_FORCED_UPDATE = 2
 
 data class VersionStatus(
         @SerializedName("status") val state: Int,
-        @SerializedName("title") val title: String,
-        @SerializedName("message") val message: String,
-        @SerializedName("store_url") val latestApkUrl: String
+        @SerializedName("title") val title: String?,
+        @SerializedName("message") val message: String?,
+        @SerializedName("store_url") val latestApkUrl: String?
 ): BaseModel()

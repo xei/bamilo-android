@@ -97,6 +97,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     Call<ResponseWrapper<GetStartupConfigsResponse>> call;
 
     boolean waitForForceUpdate = true;
+    private OptionalUpdateBottomSheet mOptionalUpdateBottomSheet;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,6 +126,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                             break;
                         case GetStartupConfigsResponseKt.STATE_FORCED_UPDATE:
                             showForceUpdateDialog(response.body().getMetadata().getVersionStatus());
+                            break;
+                        default:
+                            waitForForceUpdate = false;
+                            initialBamilo();
                             break;
                     }
                 } catch (Exception e) {
@@ -162,15 +167,16 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     }
 
     private void showUpdateBottomSheet(String title, String description, String latestApkUrl) {
-        new OptionalUpdateBottomSheet()
+        mOptionalUpdateBottomSheet = new OptionalUpdateBottomSheet()
                 .setUpdateInfo(title, description, latestApkUrl)
-                .setDismissListener(this::initialBamilo)
-                .show(getSupportFragmentManager(), "UpdateBottomSheet");
+                .setDismissListener(this::initialBamilo);
+
+        mOptionalUpdateBottomSheet.show(getSupportFragmentManager(), "UpdateBottomSheet");
     }
 
     private void showForceUpdateDialog(VersionStatus versionStatus) {
         waitForForceUpdate = true;
-        Fragment forceUpdateBottomSheet =
+        Fragment fragment =
                 ForceUpdateBottomSheet.
                         Companion.newInstance(
                         versionStatus.getTitle(),
@@ -179,13 +185,25 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        ft.setCustomAnimations(R.anim.slide_down,
-                R.anim.slide_up);
+        ft.setCustomAnimations(R.anim.fragment_slide_up, 0, 0, R.anim.slide_down);
 
-        ft.replace(R.id.splashScreen_frameLayout_container, forceUpdateBottomSheet,
-                forceUpdateBottomSheet.getClass().getSimpleName());
+        ft.replace(R.id.splashScreen_frameLayout_container, fragment,
+                ForceUpdateBottomSheet.class.getSimpleName());
+
         ft.commit();
         findViewById(R.id.splashScreen_frameLayout_container).setVisibility(View.VISIBLE);
+    }
+
+    private boolean isForceUpdateFragmentVisible() {
+        ForceUpdateBottomSheet forceUpdateBottomSheet =
+                (ForceUpdateBottomSheet) getSupportFragmentManager()
+                        .findFragmentByTag(ForceUpdateBottomSheet.class.getSimpleName());
+
+        return forceUpdateBottomSheet != null && forceUpdateBottomSheet.isVisible();
+    }
+
+    private boolean isOptionalUpdateFragmentVisible() {
+        return mOptionalUpdateBottomSheet != null && mOptionalUpdateBottomSheet.isVisible();
     }
 
     @Override
@@ -197,7 +215,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     protected void onResume() {
         super.onResume();
-        checkForUpdate();
+        if (!isForceUpdateFragmentVisible() && !isOptionalUpdateFragmentVisible()) {
+            checkForUpdate();
+        }
     }
 
     @Override
