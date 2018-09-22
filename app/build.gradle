@@ -153,13 +153,13 @@ android {
         staging {
             applicationIdSuffix '.staging'
             versionNameSuffix ' Staging'
-            buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_STAGING}v${VERSION_WEBAPI}/\""
+            buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_STAGING}v${STAGING_VERSION_WEBAPI}/\""
 
             resValue "string", "pushwoosh_app_id", PUSHWOOSH_APPID_STAGING
         }
 
         live {
-            buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_PRODUCTION}v${VERSION_WEBAPI}/\""
+            buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_PRODUCTION}v${LIVE_VERSION_WEBAPI}/\""
 
             resValue "string", "pushwoosh_app_id", PUSHWOOSH_APPID_LIVE
         }
@@ -179,7 +179,7 @@ android {
                            'src/main/res/drawables/selectors',
                            'src/main/res/drawables/icon',
                            'src/main/res/drawables/background',
-                           'src/main/res/drawables/other', 'src/main/res/layouts/moderbamilo', 'src/main/res/layouts', 'src/main/res/layouts/modernbamilo/']
+                           'src/main/res/drawables/other', 'src/main/res/layouts/moderbamilo', 'src/main/res/layouts', 'src/main/res/layouts/modernbamilo/', 'src/main/res/layouts/update/']
         }
     }
 }

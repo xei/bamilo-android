@@ -2,6 +2,6 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <translate
         android:duration="@integer/config_add_cart_anim_duration"
-        android:fromYDelta="-100%"
+        android:fromYDelta="100%"
         android:toYDelta="0%"/>
 </set>

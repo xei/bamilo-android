@@ -22,6 +22,7 @@ import com.bamilo.android.appmodule.bamiloapp.helpers.cart.ClearShoppingCartHelp
 import com.bamilo.android.appmodule.bamiloapp.helpers.teasers.GetRichRelevanceHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
+import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
 import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
@@ -40,6 +41,7 @@ import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.objects.product.RichRelevance;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.RestConstants;
+import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
@@ -115,6 +117,12 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
 
         TrackEvent();
         trackHomePageItemPurchaseEvent();
+
+        // Track screen
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CHECKOUT_FINISH.getName()), getString(R.string.gaScreen),
+                "",
+                getLoadTime());
+        TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
     private void TrackEvent() {

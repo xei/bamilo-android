@@ -353,7 +353,7 @@
     <string name="password">Password</string>
     <string name="more">More</string>
     <string name="app_version">App version</string>
-    <string name="update_now">Update Now</string>
+    <string name="update">Update Now</string>
     <string name="informational_text">Item added to Cart</string>
     <string name="cart_total_price">Your Cart total is %s</string>
     <string name="cta_button_view_cart">View Cart</string>
@@ -728,6 +728,10 @@
     <string name="be_first_to_comment">اولین نفری باشید که نظر می دهید</string>
     <string name="see_all_related_products">مشاهده همه کالاهای مشابه</string>
     <string name="deliver_time_by_this_seller">زمان تقریبی تحویل کالای این تامین کننده</string>
+    <string name="not_now">فعلا نه</string>
+    <string name="update_now">همین الان بروزرسانی کن!</string>
+    <string name="cancel_btn">انصراف</string>
+    <string name="getLatestApk">دریافت به‌روز رسانی</string>
 
 
 </resources>

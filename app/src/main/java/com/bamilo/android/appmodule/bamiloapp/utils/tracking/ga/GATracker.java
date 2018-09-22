@@ -3,6 +3,8 @@ package com.bamilo.android.appmodule.bamiloapp.utils.tracking.ga;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.bamilo.android.appmodule.modernbamilo.util.logging.LogType;
+import com.bamilo.android.appmodule.modernbamilo.util.logging.Logger;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -298,6 +300,8 @@ public final class GATracker implements IEventTracker, IScreenTracker {
                 .setCustomDimension(CustomDimensions.SIM_OPERATOR_ID, simOperatorId);
 
         tracker.send(builder.build());
+
+        Logger.Companion.log(screenModel.screenName,  "GA_TRACK_SCREEN", LogType.INFO);
     }
 
     private void trackScreenTiming(Tracker tracker, BaseScreenModel screenModel, boolean preInstallId, String simOperatorId) {
