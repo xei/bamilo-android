@@ -1794,10 +1794,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             triggerAutoLogin();
         } else {
             // Track auto login failed if hasn't saved credentials
-            MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
-                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-                    MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
-            TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
+//            MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+//                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+//                    MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+//            TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
         }
         // Validate the user credentials
         if (BamiloApplication.SHOP_ID != null && BamiloApplication.INSTANCE.getCart() == null) {
