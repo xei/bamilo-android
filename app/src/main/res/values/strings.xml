@@ -732,6 +732,8 @@
     <string name="update_now">همین الان بروزرسانی کن!</string>
     <string name="cancel_btn">انصراف</string>
     <string name="getLatestApk">دریافت به‌روز رسانی</string>
+    <string name="buy_it_now">همین الان بخر</string>
+    <string name="product_added_to_cart">محصول با موفقیت به سبد خرید اضافه شد</string>
 
 
 </resources>

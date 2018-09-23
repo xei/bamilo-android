@@ -104,7 +104,10 @@
             layout="@layout/pdv_add_to_cart"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginTop="@dimen/dimen_32dp"/>
+            android:layout_marginTop="@dimen/dimen_32dp"
+            android:layout_marginBottom="@dimen/dimen_8dp"
+            android:layout_marginLeft="@dimen/dimen_8dp"
+            android:layout_marginRight="@dimen/dimen_8dp"/>
 
     </LinearLayout>
 </layout>
