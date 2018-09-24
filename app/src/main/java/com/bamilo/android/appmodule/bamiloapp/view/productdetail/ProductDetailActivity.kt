@@ -322,11 +322,10 @@ class ProductDetailActivity : BaseActivity(),
         productDetail.variations.let {
             for (variation in it) {
                 if (variation.type == "size") {
-                    return true
+                    return variation.products.size > 0
                 }
             }
         }
-
         return false
     }
 
