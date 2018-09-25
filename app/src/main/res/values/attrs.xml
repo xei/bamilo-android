@@ -214,6 +214,11 @@
         <attr name="expandToggleOnTextClick" format="boolean"/>
     </declare-styleable>
 
+    <declare-styleable name="BamiloActionButton">
+        <attr name="text" format="string" />
+        <attr name="iconDrawable" format="integer" />
+    </declare-styleable>
+
 
     <!-- Bamio App-->
     <string-array name="myaccount_array">
