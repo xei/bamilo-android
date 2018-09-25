@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.TextUtils
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,6 +61,7 @@ class ForceUpdateBottomSheet : Fragment() {
 
         if (!TextUtils.isEmpty(message)) {
             binding.updateDialogTextViewMessage.text = message
+            binding.updateDialogTextViewMessage.movementMethod = ScrollingMovementMethod()
         }
     }
 
