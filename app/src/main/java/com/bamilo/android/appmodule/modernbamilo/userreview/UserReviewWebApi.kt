@@ -43,6 +43,7 @@ interface UserReviewWebApi {
      * Ignore the survey
      */
     @POST("survey/user/{userId}")
+    @FormUrlEncoded
     fun cancelSurvey(@Path("userId") userId: String,
                      @Field (value="device", encoded = false) device: String = "mobile_app",
                      @Field (value="status", encoded = false) status: String? = "ignore",
