@@ -10,10 +10,10 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
@@ -131,16 +131,12 @@ class ProductDetailMainFragment : Fragment() {
     }
 
     private fun onCartClicked() {
-        val intent = Intent(context, MainFragmentActivity::class.java)
-        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.SHOPPING_CART)
-        intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false)
-
-        startActivity(intent)
+        pdvMainView.onCartClicked()
     }
 
     override fun onResume() {
         super.onResume()
-        updateCartBadge()
+        updateCartBadge(false)
         pdvMainView.onProductReceived(product)
         pdvMainView.onSizeVariationClicked(sizeVariation)
     }
@@ -465,7 +461,7 @@ class ProductDetailMainFragment : Fragment() {
         binding.pdvAppImageViewWhiteBack.setOnClickListener { _ -> pdvMainView.onBackButtonClicked() }
     }
 
-    fun updateCartBadge() {
+    fun updateCartBadge(setTextAnimation: Boolean) {
         val cart = BamiloApplication.INSTANCE.cart
         when {
             cart == null -> binding.pdvAppImageViewCartBadge.visibility = View.GONE
@@ -474,6 +470,9 @@ class ProductDetailMainFragment : Fragment() {
                 binding.pdvAppImageViewCartBadge.visibility = View.VISIBLE
                 binding.pdvAppImageViewCartBadge.visibility = View.VISIBLE
                 binding.pdvAppImageViewCartBadge.text = cart.cartCount.toString().persianizeDigitsInString()
+                if(setTextAnimation){
+                    binding.pdvAppImageViewCartBadge.startAnimation(AnimationUtils.loadAnimation(context, R.anim.bounce_revert))
+                }
             }
         }
     }

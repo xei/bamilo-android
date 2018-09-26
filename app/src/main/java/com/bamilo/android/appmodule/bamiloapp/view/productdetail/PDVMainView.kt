@@ -31,4 +31,6 @@ interface PDVMainView {
     fun loginUser()
     fun trackRemoveFromWishList()
     fun trackAddFromWishList()
+    fun onBuyNowClicked()
+    fun onCartClicked()
 }

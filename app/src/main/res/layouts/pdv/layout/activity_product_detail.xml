@@ -26,17 +26,32 @@
             <include
                 android:id="@+id/productDetail_linearLayout_addToCart"
                 layout="@layout/pdv_add_to_cart"
-                android:background="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_marginBottom="@dimen/dimen_8dp"
+                android:layout_marginLeft="@dimen/dimen_8dp"
+                android:layout_marginRight="@dimen/dimen_8dp"
+                android:layout_alignParentBottom="true"
+                android:background="?android:attr/selectableItemBackground"/>
+
+            <include
+                android:id="@+id/productDetail_linearLayout_gotoCardAfterAdded"
+                layout="@layout/pdv_goto_cart_after_add_to_cart"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="@dimen/dimen_8dp"
+                android:layout_marginLeft="@dimen/dimen_8dp"
+                android:layout_marginRight="@dimen/dimen_8dp"
+                android:layout_alignParentBottom="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/productDetail_relativeLayout_warningLayout"
                 layout="@layout/warning"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
         </RelativeLayout>
 
@@ -44,10 +59,10 @@
             android:id="@+id/productDetail_transparentBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:alpha="0.0"
             android:background="#80000000"
             android:clickable="true"
             android:focusable="true"
-            android:alpha="0.0"
             android:visibility="gone"/>
 
         <include
