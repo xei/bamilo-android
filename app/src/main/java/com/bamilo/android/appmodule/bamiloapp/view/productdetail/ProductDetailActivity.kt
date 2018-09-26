@@ -369,7 +369,7 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun onAddToCartButtonClicked(sku: String) {
-        addProductToCart(sku)
+        TODO("go and purchase")
     }
 
     override fun onOtherVariationClicked(product: SimpleProduct) {

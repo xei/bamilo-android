@@ -88,7 +88,7 @@
 
     <!-- ADD BUTTON -->
 
-    <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiButton
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/button_shop"
         android:layout_width="wrap_content"
@@ -98,9 +98,12 @@
         android:layout_marginTop="5dp"
         android:layout_toLeftOf="@+id/button_variant"
         android:contentDescription="@string/productdetail_addcart_description"
-        app:text="@string/buy_now"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
+        android:text="@string/add_to_shopping_cart"
+        android:gravity="center"
+        android:background="@drawable/background_btn_sellerslist_addtocart"
+        android:textColor="@color/sellersList_row_addToCartButtonText"
+        app:locale="auto"
+        app:style="bold"/>
 
 
 </RelativeLayout>
