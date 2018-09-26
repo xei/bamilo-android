@@ -431,7 +431,7 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun onAddToCartButtonClicked(sku: String) {
-        TODO("go and purchase")
+        addProductToCartAndBuyNow(sku)
     }
 
     override fun onOtherVariationClicked(product: SimpleProduct) {

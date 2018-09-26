@@ -155,7 +155,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:background="@drawable/background_btn_sellerslist_addtocart"
-        android:text="افرودن به سبد"
+        android:text="@string/buy_it_now"
         android:textColor="@color/sellersList_row_addToCartButtonText"
         app:locale="auto"
         app:style="bold"
