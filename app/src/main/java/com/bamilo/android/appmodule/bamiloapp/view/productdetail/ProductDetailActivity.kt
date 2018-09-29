@@ -109,8 +109,12 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     private fun setupAddToCard() {
-        binding.productDetailLinearLayoutAddToCart!!.visibility = View.GONE
+        binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.GONE
+        binding.productDetailLinearLayoutGotoCardAfterAdded?.root?.visibility = View.GONE
+
         bindAddToCartClickListener()
+        bindBuyNowClickListener()
+        bindGotoCartAfterAddedClickListener()
     }
 
     private fun fetchExtraIntentData() {
@@ -124,7 +128,7 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     private fun bindAddToCartClickListener() {
-        binding.productDetailLinearLayoutAddToCart?.setOnClickListener {
+        binding.productDetailLinearLayoutAddToCart?.addToCartLinearLayoutAddToBasket?.setOnClickListener {
             if (!canAddToCart()) {
                 productDetailPresenter.showBottomSheet()
                 return@setOnClickListener
@@ -139,6 +143,39 @@ class ProductDetailActivity : BaseActivity(),
         }
     }
 
+    private fun bindBuyNowClickListener() {
+        binding.productDetailLinearLayoutAddToCart?.addToCartLinearLayoutBuyNow?.setOnClickListener {
+            if (!canAddToCart()) {
+                productDetailPresenter.showBottomSheet()
+                return@setOnClickListener
+            }
+            if (productHasSizeVariation() && !TextUtils.isEmpty(sizeVariation.simple_sku)) {
+                addProductToCartAndBuyNow(sizeVariation.simple_sku!!)
+            } else {
+                productDetail.simple_sku?.let { simpleSku ->
+                    addProductToCartAndBuyNow(simpleSku)
+                }
+            }
+        }
+    }
+
+    private fun bindGotoCartAfterAddedClickListener() {
+        binding.productDetailLinearLayoutGotoCardAfterAdded?.gotoCardAfterAddedLinearLayoutParent?.setOnClickListener {
+            gotoCartFragment()
+
+            binding.productDetailLinearLayoutGotoCardAfterAdded?.root?.visibility = View.GONE
+            binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.VISIBLE
+        }
+    }
+
+    private fun gotoCartFragment() {
+        val intent = Intent(this, MainFragmentActivity::class.java)
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.SHOPPING_CART)
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false)
+
+        startActivity(intent)
+    }
+
     private fun canAddToCart(): Boolean {
         if (productHasSizeVariation() && TextUtils.isEmpty(sizeVariation.simple_sku)) {
             return false
@@ -146,27 +183,42 @@ class ProductDetailActivity : BaseActivity(),
         return true
     }
 
+    private fun addProductToCartAndBuyNow(sku: String) {
+        addProductToCart(sku, object : IResponseCallback {
+            override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
+                onProductAddedToCart()
+                gotoCartFragment()
+            }
+
+            override fun onRequestError(baseResponse: BaseResponse<*>?) {
+                onAddedToCartError(baseResponse)
+            }
+        })
+    }
+
+    private fun addProductToCart(sku: String, responseCallBack: IResponseCallback) {
+        showProgress()
+        productDetailPresenter.addToCart(sku, responseCallBack)
+    }
+
     private fun addProductToCart(sku: String) {
         showProgress()
         productDetailPresenter.addToCart(sku, object : IResponseCallback {
             override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
-                dismissProgressDialog()
-                trackAddToCartEvent()
                 onProductAddedToCart()
-
-                if (isHomePageItemsPurchaseCanBeTrack &&
-                        !TextUtils.isEmpty(
-                                getHomePageItemsPurchaseTrackCategory(
-                                        this@ProductDetailActivity))) {
-                    BamiloApplication.INSTANCE.addSkuToHomepageTrackingItemsSkus(sku)
-                }
+                binding.productDetailLinearLayoutGotoCardAfterAdded?.root?.visibility = View.VISIBLE
+                binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.VISIBLE
             }
 
             override fun onRequestError(baseResponse: BaseResponse<*>?) {
-                dismissProgressDialog()
-                warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, baseResponse?.errorMessage)
+                onAddedToCartError(baseResponse)
             }
         })
+    }
+
+    private fun onAddedToCartError(baseResponse: BaseResponse<*>?) {
+        dismissProgressDialog()
+        warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, baseResponse?.errorMessage)
     }
 
     private fun showProgress() {
@@ -193,13 +245,17 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     fun onProductAddedToCart() {
+        dismissProgressDialog()
+        trackAddToCartEvent()
+        productDetailPresenter.hideBottomSheet()
+
         try {
             when (getCurrentFragment()) {
                 is ProductDetailMainFragment -> {
                     val productDetailMainFragment = supportFragmentManager
                             .findFragmentByTag(ProductDetailMainFragment::class.java.simpleName)
                             as ProductDetailMainFragment
-                    productDetailMainFragment.updateCartBadge()
+                    productDetailMainFragment.updateCartBadge(true)
                 }
                 is SellersListFragment -> updateSellerFragmentCartItemsCountBadge()
                 is SpecificationFragment -> updateSpecificationFragmentCartItemsCountBadge()
@@ -208,6 +264,13 @@ class ProductDetailActivity : BaseActivity(),
 
         } catch (ignored: Exception) {
 
+        }
+
+        if (isHomePageItemsPurchaseCanBeTrack &&
+                !TextUtils.isEmpty(
+                        getHomePageItemsPurchaseTrackCategory(
+                                this@ProductDetailActivity))) {
+            BamiloApplication.INSTANCE.addSkuToHomepageTrackingItemsSkus(sku)
         }
     }
 
@@ -259,11 +322,10 @@ class ProductDetailActivity : BaseActivity(),
         productDetail.variations.let {
             for (variation in it) {
                 if (variation.type == "size") {
-                    return true
+                    return variation.products.size > 0
                 }
             }
         }
-
         return false
     }
 
@@ -369,7 +431,7 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun onAddToCartButtonClicked(sku: String) {
-        addProductToCart(sku)
+        addProductToCartAndBuyNow(sku)
     }
 
     override fun onOtherVariationClicked(product: SimpleProduct) {
@@ -397,7 +459,7 @@ class ProductDetailActivity : BaseActivity(),
         TrackerManager.trackEvent(this, EventConstants.OTHER_SELLERS_TAPPED, viewOtherSellerModel)
 
         displaySelectedScreen(FragmentTag.OTHER_SELLERS)
-        binding.productDetailLinearLayoutAddToCart!!.visibility = View.GONE
+        binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.GONE
     }
 
     override fun onShowDesAndSpecPage() {
@@ -437,7 +499,7 @@ class ProductDetailActivity : BaseActivity(),
                     stars[3].count.toFloat(),
                     stars[4].count.toFloat()))
         }
-        binding.productDetailLinearLayoutAddToCart!!.visibility = View.GONE
+        binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.GONE
     }
 
     override fun onShowSpecificComment(review: Review) {
@@ -456,7 +518,7 @@ class ProductDetailActivity : BaseActivity(),
                             review.is_bought_by_user, review.rate!!.toFloat(), review.comment!!,
                             review.like, review.dislike))))
         }
-        binding.productDetailLinearLayoutAddToCart!!.visibility = View.GONE
+        binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.GONE
     }
 
     override fun onSubmitCommentButtonClicked() {
@@ -486,7 +548,7 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun showOutOfStock() {
-        binding.productDetailLinearLayoutAddToCart!!.visibility = View.GONE
+        binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.GONE
         binding.productDetailLinearLayoutNotifyMe!!.visibility = View.VISIBLE
     }
 
@@ -504,13 +566,26 @@ class ProductDetailActivity : BaseActivity(),
         }
     }
 
+    override fun onBuyNowClicked() {
+        if (!canAddToCart()) {
+            return
+        }
+
+        if (productHasSizeVariation() && !TextUtils.isEmpty(sizeVariation.simple_sku)) {
+            addProductToCartAndBuyNow(sizeVariation.simple_sku!!)
+        } else {
+            productDetail.simple_sku?.let { simpleSku ->
+                addProductToCartAndBuyNow(simpleSku)
+            }
+        }
+    }
+
     override fun onAddToCartClicked() {
         if (!canAddToCart()) {
             return
         }
 
         addProductToCart(sizeVariation.simple_sku!!)
-        productDetailPresenter.hideBottomSheet()
     }
 
     override fun onSizeVariationClicked(sizeVariation: SimpleProduct) {
@@ -540,7 +615,7 @@ class ProductDetailActivity : BaseActivity(),
 
     override fun onBackPressed() {
         if (getCurrentFragment().tag == CommentsFragment::class.java.simpleName || getCurrentFragment().tag == SellersListFragment::class.java.simpleName) {
-            binding.productDetailLinearLayoutAddToCart!!.visibility = View.VISIBLE
+            binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.VISIBLE
         }
 
         if (productDetailPresenter.isBottomSheetShown()) {
@@ -558,7 +633,7 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun onProductReceived(product: ProductDetail) {
-        binding.productDetailLinearLayoutAddToCart!!.visibility = View.VISIBLE
+        binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.VISIBLE
         binding.productDetailLinearLayoutNotifyMe!!.visibility = View.GONE
 
         this.sku = product.sku
@@ -566,11 +641,11 @@ class ProductDetailActivity : BaseActivity(),
         sizeVariation.simple_sku = null
 
         if (TextUtils.isEmpty(productDetail.sku)) {
-            binding.productDetailLinearLayoutAddToCart?.visibility = View.GONE
+            binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.GONE
             return
         }
 
-        binding.productDetailLinearLayoutAddToCart?.visibility = View.VISIBLE
+        binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.VISIBLE
 
         productDetailPresenter.fillChooseVariationBottomSheet(productDetail)
 
@@ -581,6 +656,12 @@ class ProductDetailActivity : BaseActivity(),
                 MainEventModel.createViewProductEventModelAttributes("category uri key",
                         product.price.price.replace(",", "").toLong()))
         TrackerManager.trackEvent(this, EventConstants.ViewProduct, viewProductEventModel)
+    }
+
+    override fun onCartClicked() {
+        gotoCartFragment()
+        binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.VISIBLE
+        binding.productDetailLinearLayoutGotoCardAfterAdded?.root?.visibility = View.GONE
     }
 
     enum class FragmentTag {

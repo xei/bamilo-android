@@ -1,60 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/addToCart_linearLayout_parent"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:background="@color/accent"
-    android:gravity="center"
-    android:orientation="horizontal">
-
-    <android.support.v7.widget.AppCompatImageView
-        android:layout_width="@dimen/dimen_24dp"
-        android:layout_height="@dimen/dimen_24dp"
-        android:layout_marginRight="12dp"
-        app:srcCompat="@drawable/ic_cart_white"/>
-
-    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/dimen_8dp"
-        android:fontFamily="@string/bamilo_bold_font"
-        android:text="@string/add_to_shopping_cart"
-        android:textColor="@color/white"
-        android:textSize="14sp"/>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginLeft="16dp"
-        android:gravity="left"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:id="@+id/addToCart_linearLayout_parent"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="@dimen/dimen_8dp"
+        android:layout_marginLeft="@dimen/dimen_8dp"
+        android:layout_marginRight="@dimen/dimen_8dp"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/remain_"
-            android:textColor="@color/white"
-            android:textSize="11sp"
-            tools:ignore="SmallSp"/>
+        <LinearLayout
+            android:id="@+id/addToCart_linearLayout_addToBasket"
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/add_to_basket_background"
+            android:gravity="center">
 
-        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dimen_4dp"
-            android:paddingTop="@dimen/dimen_1dp"
-            android:paddingBottom="@dimen/dimen_1dp"
-            android:paddingLeft="@dimen/dimen_8dp"
-            android:paddingRight="@dimen/dimen_8dp"
-            android:background="@drawable/round_white_12dp"
-            android:textColor="@color/accent"
-            android:textSize="12sp"
-            tools:text="۴ عدد"/>
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_cart_add"/>
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_8dp"
+                android:layout_marginRight="@dimen/dimen_8dp"
+                android:layout_gravity="center"
+                android:text="@string/add_to_shopping_cart"
+                android:textSize="14sp"
+                app:locale="fa_IR"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/addToCart_linearLayout_buyNow"
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/buy_now_btn_background"
+            android:gravity="center">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_buy_now"/>
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_8dp"
+                android:layout_marginRight="@dimen/dimen_8dp"
+                android:layout_gravity="center"
+                android:text="@string/buy_it_now"
+                android:textSize="14sp"
+                app:locale="fa_IR"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</layout>

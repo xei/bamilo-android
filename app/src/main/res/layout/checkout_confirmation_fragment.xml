@@ -359,15 +359,13 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+    <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
         android:id="@+id/checkout_confirmation_btn"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/button_primary_color"
-        android:foreground="?attr/selectableItemBackground"
         android:gravity="center|center_horizontal|center_vertical"
-        android:text="@string/checkout_confirmation_next_step"
-        android:textSize="16sp"
+        app:text="@string/checkout_confirmation_next_step"
         android:visibility="visible" />
 </RelativeLayout>

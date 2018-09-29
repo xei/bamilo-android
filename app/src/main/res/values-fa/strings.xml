@@ -683,5 +683,7 @@
     <string name="login_to_account">ورود به حساب کاربری</string>
     <string name="email_or_phone">ایمیل یا شمارهٔ موبایل</string>
     <string name="forget_password">فراموشی رمز عبور</string>
+    <string name="buy_it_now">همین الان بخر</string>
+    <string name="product_added_to_cart">محصول با موفقیت به سبد خرید اضافه شد</string>
 
 </resources>

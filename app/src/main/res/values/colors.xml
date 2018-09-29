@@ -250,6 +250,10 @@
     <color name="colorPrimaryDark">@color/pantone534c</color>
     <color name="colorAccent">@color/pantone1585c</color>
 
+
+    <color name="background_btn_grad_light">@color/pantone1375c</color>
+    <color name="background_btn_grad_dark">@color/pantone1585c</color>
+
     <!-- User Review Screen -->
     <color name="userReview_title">#FFF</color>
     <color name="userReview_stepper_empty">#F1F1F1</color>

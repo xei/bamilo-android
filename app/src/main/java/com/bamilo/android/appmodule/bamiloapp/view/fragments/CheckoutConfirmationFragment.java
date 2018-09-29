@@ -29,6 +29,7 @@ import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewBaseFragment;
+import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton;
 import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.components.customfontviews.Button;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
@@ -48,7 +49,9 @@ import java.util.Locale;
 public class CheckoutConfirmationFragment extends NewBaseFragment implements View.OnClickListener,
         IResponseCallback {
 
-    TextView next, address, telephone, user, order_count_title, order_price,
+    BamiloActionButton next;
+
+    TextView address, telephone, user, order_count_title, order_price,
             ship_price, voucher_price, all_price, all_voucher, voucher_error, all_price_title;
     NestedScrollView svCheckoutConfirmation;
     TextView tvDeliveryNotice;

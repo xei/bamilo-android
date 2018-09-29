@@ -15,6 +15,7 @@ import com.bamilo.android.databinding.ActivityProductDetailBinding
 import com.bamilo.android.framework.components.ghostadapter.GhostAdapter
 import java.util.*
 
+
 /**
  * Created by Farshid
  * since 7/1/2018.
@@ -39,10 +40,17 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
         setupBottomSheetStateListener()
         setupOutSideTouchListener()
         bindAddToCartClickListener()
+        bindBuyNowBtnClickListener()
+    }
+
+    private fun bindBuyNowBtnClickListener() {
+        binding.chooseVariationRelativeLayoutLayout?.root?.findViewById<View>(R.id.addToCart_linearLayout_buyNow)?.setOnClickListener {
+            pdvMainView.onBuyNowClicked()
+        }
     }
 
     private fun bindAddToCartClickListener() {
-        binding.chooseVariationRelativeLayoutLayout!!.pdvChooseVariationLinearLayoutAddToCart!!.setOnClickListener {
+        binding.chooseVariationRelativeLayoutLayout?.root?.findViewById<View>(R.id.addToCart_linearLayout_addToBasket)?.setOnClickListener {
             pdvMainView.onAddToCartClicked()
         }
     }

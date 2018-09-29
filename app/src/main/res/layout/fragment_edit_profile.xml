@@ -315,13 +315,12 @@
     </android.support.v4.widget.NestedScrollView>
 
 
-    <com.bamilo.android.framework.components.customfontviews.Button
+    <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/btnSubmitProfile"
-        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/dark_green_2"
-        android:text="@string/submit_profile"
-        android:textColor="@color/white" />
+        app:text="@string/submit_profile"/>
 </RelativeLayout>
