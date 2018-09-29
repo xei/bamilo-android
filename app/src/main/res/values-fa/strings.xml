@@ -680,5 +680,8 @@
     <string name="update_now">همین الان بروزرسانی کن!</string>
     <string name="cancel_btn">انصراف</string>
     <string name="getLatestApk">دریافت به‌روز رسانی</string>
+    <string name="login_to_account">ورود به حساب کاربری</string>
+    <string name="email_or_phone">ایمیل یا شمارهٔ موبایل</string>
+    <string name="forget_password">فراموشی رمز عبور</string>
 
 </resources>
