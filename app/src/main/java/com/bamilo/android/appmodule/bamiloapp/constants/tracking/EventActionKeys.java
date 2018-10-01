@@ -17,6 +17,7 @@ public final class EventActionKeys {
     public static final String ADD_TO_WISHLIST = "AddToWishList";
     public static final String REMOVE_FROM_WISHLIST = "RemoveFromWishList";
     public static final String ADD_TO_CART = "AddToCart";
+    public static final String BUY_NOW = "BuyNow";
     public static final String REMOVE_FROM_CART = "RemoveFromCart";
     public static final String VIEW_PRODUCT = "ViewProduct";
     public static final String TEASER_TAPPED = "TeaserTapped";

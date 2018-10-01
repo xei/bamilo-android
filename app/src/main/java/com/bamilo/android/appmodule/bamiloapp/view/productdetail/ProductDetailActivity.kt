@@ -186,7 +186,7 @@ class ProductDetailActivity : BaseActivity(),
     private fun addProductToCartAndBuyNow(sku: String) {
         addProductToCart(sku, object : IResponseCallback {
             override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
-                onProductAddedToCart()
+                onProductAddedToCart(true)
                 gotoCartFragment()
             }
 
@@ -205,7 +205,7 @@ class ProductDetailActivity : BaseActivity(),
         showProgress()
         productDetailPresenter.addToCart(sku, object : IResponseCallback {
             override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
-                onProductAddedToCart()
+                onProductAddedToCart(false)
                 binding.productDetailLinearLayoutGotoCardAfterAdded?.root?.visibility = View.VISIBLE
                 binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.VISIBLE
             }
@@ -244,9 +244,9 @@ class ProductDetailActivity : BaseActivity(),
         }
     }
 
-    fun onProductAddedToCart() {
+    fun onProductAddedToCart(addedFromBuyNowButton: Boolean) {
         dismissProgressDialog()
-        trackAddToCartEvent()
+        trackAddToCartEvent(addedFromBuyNowButton)
         productDetailPresenter.hideBottomSheet()
 
         try {
@@ -329,12 +329,10 @@ class ProductDetailActivity : BaseActivity(),
         return false
     }
 
-    private fun trackAddToCartEvent() {
+    private fun trackAddToCartEvent(addedFromBuyNowButton: Boolean) {
         TrackerDelegator.trackProductAddedToCart(productDetail)
 
-        val addToCartEventModel = MainEventModel(getString(TrackingPage.PDV.getName()), EventActionKeys.ADD_TO_CART,
-                productDetail.sku, productDetail.price.price.toLong(), null)
-
+        val addToCartEventModel: MainEventModel = getAddToCartEventModel(addedFromBuyNowButton)
         val cart = BamiloApplication.INSTANCE.cart
 
         if (cart != null) {
@@ -345,7 +343,21 @@ class ProductDetailActivity : BaseActivity(),
                     0, true)
         }
 
-        TrackerManager.trackEvent(this, EventConstants.AddToCart, addToCartEventModel)
+        if (addedFromBuyNowButton) {
+            TrackerManager.trackEvent(this, EventConstants.BuyNow, addToCartEventModel)
+        } else {
+            TrackerManager.trackEvent(this, EventConstants.AddToCart, addToCartEventModel)
+        }
+    }
+
+    private fun getAddToCartEventModel(addedFromBuyNowButton: Boolean): MainEventModel {
+        if (addedFromBuyNowButton) {
+            return MainEventModel(getString(TrackingPage.PDV.getName()), EventActionKeys.BUY_NOW,
+                    productDetail.sku, productDetail.price.price.toLong(), null)
+        }
+
+        return MainEventModel(getString(TrackingPage.PDV.getName()), EventActionKeys.ADD_TO_CART,
+                productDetail.sku, productDetail.price.price.toLong(), null)
     }
 
     private fun getCurrentFragment(): Fragment {
