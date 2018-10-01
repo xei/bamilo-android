@@ -49,15 +49,15 @@
                 android:layout_above="@+id/checkout_button"
                 android:visibility="gone" />
 
-            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_margin="8dp"
                 android:id="@+id/checkout_button"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/checkout_footer_height"
+                android:layout_height="48dp"
                 android:layout_alignParentBottom="true"
-                android:background="@color/button_primary_color"
                 android:gravity="center"
-                android:text="@string/basket_confirm_button"
-                android:textColor="@color/white"
+                app:text="@string/basket_confirm_button"
                 android:textSize="@dimen/checkout_footer_font_size" />
         </RelativeLayout>
     </ScrollView>

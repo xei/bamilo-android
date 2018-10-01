@@ -63,15 +63,12 @@
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_add_white_48dp" />
 
-        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
             android:id="@+id/address_continue"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/checkout_footer_height"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
             android:layout_alignParentBottom="true"
-            android:textSize="@dimen/checkout_footer_font_size"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@color/button_primary_color"
-            android:text="@string/address_next_button"/>
+            app:text="@string/address_next_button"/>
 
 </RelativeLayout>

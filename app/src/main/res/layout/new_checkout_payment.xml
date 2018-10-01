@@ -54,15 +54,12 @@
         android:layout_height="@dimen/checkout_totalbar_height"
         android:layout_above="@+id/payment_continue"
         />
-        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
             android:id="@+id/payment_continue"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/checkout_footer_height"
-            android:textSize="@dimen/checkout_footer_font_size"
-            android:textColor="@color/white"
-            android:gravity="center"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/button_primary_color"
-            android:text="@string/payment_next_button"/>
+            android:layout_margin="8dp"
+            app:text="@string/payment_next_button"/>
 
 </RelativeLayout>

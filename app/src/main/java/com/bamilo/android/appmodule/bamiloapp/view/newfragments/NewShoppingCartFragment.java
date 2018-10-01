@@ -578,6 +578,17 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 displayShoppingCart(defPurchaseEntity);
                 break;
         }
+
+        if(items != null && items.size() > 0) {
+            mCartRecycler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mCartRecycler.scrollToPosition(items.size());
+                }
+            });
+        }
+
+
     }
 
 
@@ -598,6 +609,15 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         getBaseActivity().updateCartInfo();
         if (BamiloApplication.INSTANCE.getCart() != null) {
             displayShoppingCart(BamiloApplication.INSTANCE.getCart());
+        }
+
+        if(items != null && items.size() > 0) {
+            mCartRecycler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mCartRecycler.scrollToPosition(items.size());
+                }
+            });
         }
     }
 

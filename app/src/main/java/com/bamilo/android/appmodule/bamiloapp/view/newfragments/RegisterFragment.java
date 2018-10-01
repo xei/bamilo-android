@@ -20,6 +20,7 @@ import com.bamilo.android.appmodule.bamiloapp.helpers.session.RegisterHelper;
 import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
 import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
+import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton;
 import com.bamilo.android.framework.components.customfontviews.Button;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsCheckout;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
@@ -153,7 +154,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         etNationalId = (EditText) view.findViewById(R.id.etNationalId);
         etPassword = (EditText) view.findViewById(R.id.etPassword);
 
-        Button btnRegister = (Button) view.findViewById(R.id.btnRegister);
+        BamiloActionButton btnRegister = (BamiloActionButton) view.findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(this);
 
         CheckBox cbShowHiderPassword = (CheckBox) view.findViewById(R.id.cbShowHidePassword);
