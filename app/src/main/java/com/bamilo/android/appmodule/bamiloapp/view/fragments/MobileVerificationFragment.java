@@ -2,27 +2,27 @@ package com.bamilo.android.appmodule.bamiloapp.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsSharedPrefs;
 import com.bamilo.android.appmodule.bamiloapp.helpers.session.MobileVerificationHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
+import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
+import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
+import com.bamilo.android.appmodule.bamiloapp.view.widget.PinEntryInput;
+import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton;
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
-import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.R;
-import com.bamilo.android.appmodule.bamiloapp.view.widget.PinEntryInput;
 
 import java.util.EnumSet;
 import java.util.Locale;
@@ -92,9 +92,10 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
 //        HoloFontLoader.applyDefaultFont(view);
 
         TextView tvPhoneNumber = view.findViewById(R.id.tvPhoneNumber);
-        tvPhoneNumber.setText(TextUtils.makeDigitsFarsi(phoneNumber));
 
-        final Button btnSubmitToken = view.findViewById(R.id.btnSubmitToken);
+        tvPhoneNumber.setText( getString(R.string.verifyPhoneNoScreen_subtitle, StringExtKt.persianizeNumberString(phoneNumber)));
+
+        final BamiloActionButton btnSubmitToken = view.findViewById(R.id.btnSubmitToken);
 
         final PinEntryInput etPin = view.findViewById(R.id.etPin);
 

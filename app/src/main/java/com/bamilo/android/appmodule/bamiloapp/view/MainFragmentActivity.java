@@ -12,20 +12,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 
 import com.bamilo.android.R;
-import com.bamilo.android.appmodule.bamiloapp.view.subcategory.SubCategoryFilterFragment;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
-import com.bamilo.android.appmodule.bamiloapp.factories.EmarsysEventFactory;
-import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
-import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
+import com.bamilo.android.appmodule.bamiloapp.factories.EmarsysEventFactory;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
-import com.bamilo.android.framework.service.pojo.IntConstants;
-import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
+import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
+import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.DeepLinkManager;
@@ -86,10 +81,16 @@ import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewSessionLoginM
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewShoppingCartFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity;
 import com.bamilo.android.appmodule.bamiloapp.view.relatedproducts.RecommendProductsFragment;
+import com.bamilo.android.appmodule.bamiloapp.view.subcategory.SubCategoryFilterFragment;
+import com.bamilo.android.framework.service.pojo.IntConstants;
+import com.bamilo.android.framework.service.utils.CollectionUtils;
+import com.bamilo.android.framework.service.utils.TextUtils;
+import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+
 import me.toptas.fancyshowcase.FancyShowCaseView;
 
 import static com.bamilo.android.appmodule.bamiloapp.view.fragments.FilterMainFragment.FILTER_TAG;
@@ -588,6 +589,7 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
                 break;
             case REGISTER:
                 fragment = newFragmentInstance(SessionRegisterFragment.class, bundle);
+//                new RegisterModalBottomSheet().show(getSupportFragmentManager(), "register");
                 break;
             case MOBILE_VERIFICATION:
                 fragment = newFragmentInstance(MobileVerificationFragment.class, bundle);

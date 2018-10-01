@@ -31,6 +31,7 @@ import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RecommendationsCartHolder;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RichRelevanceAdapter;
+import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton;
 import com.bamilo.android.appmodule.modernbamilo.userreview.UserReviewActivity;
 import com.bamilo.android.appmodule.modernbamilo.util.storage.SharedPreferencesHelperKt;
 import com.bamilo.android.framework.components.customfontviews.Button;
@@ -82,7 +83,7 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
     RecommendationsCartHolder recommendationsHolder;
 
     private PurchaseEntity oldCart = null;
-    private Button btnContinueShopping;
+    private BamiloActionButton btnContinueShopping;
 
     private Boolean notOpenYet = true;
 
