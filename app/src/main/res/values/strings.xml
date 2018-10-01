@@ -735,5 +735,18 @@
     <string name="buy_it_now">همین الان بخر</string>
     <string name="product_added_to_cart">محصول با موفقیت به سبد خرید اضافه شد</string>
 
+    <!-- Register Screen -->
+    <string name="registerScreen_title">ثبت‌نام در بامیلو</string>
+    <string name="registerScreen_hint_userId">آدرس ایمیل</string>
+    <string name="registerScreen_hint_password">گذرواژه</string>
+    <string name="registerScreen_hint_mobile">شماره تلفن همراه</string>
+    <string name="registerScreen_hint_nationalId">کد ملی</string>
+    <string name="registerScreen_btn_register">ثبت‌نام</string>
+    <string name="registerScreen_btn_goToLogin">حساب کاربری دارم</string>
+    <string name="verifyPhoneNoScreen_title">کد بازیابی را ارسال کنید</string>
+    <string name="verifyPhoneNoScreen_subtitle">کد تایید برای %s ارسال شده است</string>
+    <string name="verifyPhoneNoScreen_btn_resend">ارسال مجدد کد</string>
+    <string name="verifyPhoneNoScreen_btn_next">مرحله بعد</string>
+
 
 </resources>

@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import com.bamilo.android.R
+import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
 import com.bamilo.android.appmodule.modernbamilo.userreview.fragment.ReviewPageBaseFragment
 import com.bamilo.android.appmodule.modernbamilo.userreview.fragment.ReviewPageTypeEssayFragment
 import com.bamilo.android.appmodule.modernbamilo.userreview.pojo.SubmitSurveyResponse
@@ -35,7 +36,7 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mCloseBtnImageButton: ImageButton
     private lateinit var mSurveyTitleTextView: TextView
     private lateinit var mStepperView: StepperView
-    private lateinit var mNextButton: Button
+    private lateinit var mNextButton: BamiloActionButton
 
     private lateinit var mSurvey: Survey
     private val mPagesFragmentList = ArrayList<ReviewPageBaseFragment>()
@@ -169,7 +170,7 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
                         mStepperView.setCurrentPage(++mPageNo)
                         // TODO: submit first
                         replaceFragmentInActivityWithAnim(mPagesFragmentList[mPageNo], R.id.activityUserReview_frameLayout_reviewPage)
-                        mNextButton.text = "پایان"
+                        mNextButton.setText("پایان")
                     }
                     else -> {
                         mStepperView.setCurrentPage(++mPageNo)
@@ -229,7 +230,7 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
 
         when (mPageNo) {
             mPagesFragmentList.size - 1 -> {
-                mNextButton.text = "بعدی"
+                mNextButton.setText("بعدی")
                 mStepperView.setCurrentPage(--mPageNo)
             }
             else -> {

@@ -23,6 +23,7 @@
             android:layout_marginRight="8dp"
             android:gravity="center"
             android:visibility="gone"
+            android:textColor="@color/light2"
             app:locale="fa_IR"
             app:style="bold"
             tools:text="افزودن به سبد خرید"
