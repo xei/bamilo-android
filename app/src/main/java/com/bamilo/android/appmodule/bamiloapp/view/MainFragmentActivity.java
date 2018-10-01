@@ -65,7 +65,6 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.ReviewFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.ReviewWriteFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.ReviewsFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.SessionForgotPasswordFragment;
-import com.bamilo.android.appmodule.bamiloapp.view.fragments.SessionLoginEmailFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.SessionRegisterFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.StaticPageFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.StaticWebViewPageFragment;
@@ -580,16 +579,10 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
                 fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);
                 break;
             case LOGIN:
-                new LoginDialogBottomSheet()
-                        .show(getSupportFragmentManager(), "LoginDialogBottomSheet");
-
 //                fragment = newFragmentInstance(NewSessionLoginMainFragment.class, bundle);
-                return;
-            case LOGIN_EMAIL:
+//                break;
                 new LoginDialogBottomSheet()
                         .show(getSupportFragmentManager(), "LoginDialogBottomSheet");
-
-//                fragment = newFragmentInstance(SessionLoginEmailFragment.class, bundle);
                 return;
             case REGISTER:
                 fragment = newFragmentInstance(SessionRegisterFragment.class, bundle);

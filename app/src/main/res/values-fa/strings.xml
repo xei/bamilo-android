@@ -685,5 +685,7 @@
     <string name="forget_password">فراموشی رمز عبور</string>
     <string name="buy_it_now">همین الان بخر</string>
     <string name="product_added_to_cart">محصول با موفقیت به سبد خرید اضافه شد</string>
+    <string name="insert_email_or_phone_number">ایمیل یا شماره موبایل را وارد کنید</string>
+    <string name="insert_password">رمز عبور را وارد کنید</string>
 
 </resources>

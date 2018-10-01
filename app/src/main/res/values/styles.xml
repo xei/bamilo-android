@@ -365,8 +365,8 @@
 
     <style name="authenticationEditTextStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlNormal">@color/gray_3</item>
-        <item name="colorControlActivated">@color/blue_1</item>
-        <item name="colorControlHighlight">@color/blue_1</item>
+        <item name="colorControlActivated">@color/gray_4</item>
+        <item name="colorControlHighlight">@color/gray_4</item>
     </style>
 
     <style name="error_appearance" parent="@android:style/TextAppearance">

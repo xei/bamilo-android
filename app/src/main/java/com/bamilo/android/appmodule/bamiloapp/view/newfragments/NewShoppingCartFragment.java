@@ -383,10 +383,9 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 
             SimpleEventModel sem = SimpleEventModelFactory.createModelForCheckoutStart(items);
             TrackerManager.trackEvent(getContext(), EventConstants.CheckoutStart, sem);
-
             Bundle bundle = new Bundle();
-            bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+//            bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
         // Case invalid cart
         else {

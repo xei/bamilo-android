@@ -318,9 +318,9 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
     private void processOnClickMyAddresses() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, FragmentType.MY_ACCOUNT);
-        bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+//        bundle.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, FragmentType.MY_ACCOUNT);
+//        bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
+        getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_MY_ADDRESSES, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -374,8 +374,8 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
      */
     private void processOnClickUserData(){
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+//        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
+        getBaseActivity().onSwitchFragment(FragmentType.MY_USER_DATA, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**

@@ -1,6 +1,7 @@
 package com.bamilo.android.appmodule.modernbamilo.util
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -25,6 +27,16 @@ private const val TAG_DEBUG = "HelperFunctions"
 fun dpToPx(context: Context, dp: Float): Int {
     val scale = context.resources.displayMetrics.density
     return Math.round(dp * scale)
+}
+
+fun screenHeight(context: Activity?): Int {
+    if (context == null) {
+        return -1
+    }
+
+    val displayMetrics = DisplayMetrics()
+    context.windowManager.defaultDisplay.getMetrics(displayMetrics)
+    return displayMetrics.heightPixels
 }
 
 fun showRtlSnackbar(parent: View, alertText: String, actionText: String, actionColor: Int, actionClickListener: View.OnClickListener) {
@@ -66,7 +78,6 @@ fun getAppVersionName(context: Context): String? {
 
 }
 
-
 @SuppressLint("SimpleDateFormat")
 fun getCurrentDateTime(): String {
     return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(Date())
@@ -96,7 +107,7 @@ fun getInterpolatedColors(startColor: Int, endColor: Int, n: Int): IntArray {
  * This helper function convert . to / also
  * also remove .0 from end of float numbers
  * */
-public fun getMorphNumberString(value: Float): String {
+fun getMorphNumberString(value: Float): String {
     @SuppressLint("DefaultLocale")
     var result = String.format("%.1f", value)
 

@@ -737,6 +737,8 @@
     <string name="login_to_account">ورود به حساب کاربری</string>
     <string name="email_or_phone">ایمیل یا شمارهٔ موبایل</string>
     <string name="forget_password">فراموشی رمز عبور</string>
+    <string name="insert_email_or_phone_number">ایمیل یا شماره موبایل را وارد کنید</string>
+    <string name="insert_password">رمز عبور را وارد کنید</string>
 
 
 </resources>
