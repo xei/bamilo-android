@@ -1,6 +1,7 @@
 package com.bamilo.android.appmodule.bamiloapp.controllers.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.output.Print;
@@ -320,6 +322,10 @@ public class FragmentController {
         int size = getBackStackSize();
         Print.i("BACK STACK SIZE: " + size);
         Print.i("THE CURRENT BACK STACK ENTRIES: " + mBackStack);
+
+        if (getLastEntry().equals(FragmentType.CHECKOUT_THANKS.toString())) {
+            activity.startActivity(new Intent(activity, MainFragmentActivity.class));
+        }
 
         Iterator<String> it = mBackStack.descendingIterator();
         if(it.hasNext()){
