@@ -7,13 +7,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
-import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
-import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
-import com.bamilo.android.framework.components.absspinner.PromptSpinnerAdapter;
-import com.bamilo.android.framework.components.customfontviews.Button;
-import com.bamilo.android.framework.components.customfontviews.EditText;
 import android.widget.TextView;
+
+import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsCheckout;
 import com.bamilo.android.appmodule.bamiloapp.helpers.address.CreateAddressHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.address.GetCitiesHelper;
@@ -21,6 +18,12 @@ import com.bamilo.android.appmodule.bamiloapp.helpers.address.GetPostalCodeHelpe
 import com.bamilo.android.appmodule.bamiloapp.helpers.address.GetRegionsHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
+import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
+import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
+import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
+import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton;
+import com.bamilo.android.framework.components.absspinner.PromptSpinnerAdapter;
+import com.bamilo.android.framework.components.customfontviews.EditText;
 import com.bamilo.android.framework.service.objects.addresses.AddressCity;
 import com.bamilo.android.framework.service.objects.addresses.AddressPostalCode;
 import com.bamilo.android.framework.service.objects.addresses.AddressRegion;
@@ -34,9 +37,6 @@ import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
 import com.bamilo.android.framework.service.utils.output.Print;
-import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
-import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.R;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -72,7 +72,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     EditText postal_code;
     String gender_lable = "";
     EditText cellphone;
-    private Button add;
+    private BamiloActionButton add;
     String getCityApi = ApiConstants.GET_CITIES_API_PATH,
             getPostalApi = ApiConstants.GET_ADDRESS_POST_CODES_API_PATH,
             getRegionApi = ApiConstants.GET_REGIONS_API_PATH;
@@ -147,7 +147,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         city_spinner = (Spinner) view.findViewById(R.id.address_city);
         postal_spinner = (Spinner) view.findViewById(R.id.address_postal_region);
         postal_code = (EditText) view.findViewById(R.id.address_postal_code);
-        add = (Button) view.findViewById(R.id.add_address_btn);
+        add = (BamiloActionButton) view.findViewById(R.id.add_address_btn);
 
         name_error = (TextView) view.findViewById(R.id.address_name_error);
         family_error = (TextView) view.findViewById(R.id.address_last_name_error);
