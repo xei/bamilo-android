@@ -86,11 +86,12 @@
     </android.support.v4.widget.NestedScrollView>
 
 
-    <com.bamilo.android.framework.components.customfontviews.Button
+    <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
         android:id="@+id/btnSubmitCancellation"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/btn_primary_selector"
         android:text="@string/submit_cancellation_request_button_label"

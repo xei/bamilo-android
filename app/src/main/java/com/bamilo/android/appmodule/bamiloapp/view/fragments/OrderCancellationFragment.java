@@ -4,10 +4,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.adapters.OrderCancellationListAdapter;
+import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
+import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
+import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
+import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
+import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
+import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton;
 import com.bamilo.android.core.modules.OrderCancellationModule;
 import com.bamilo.android.core.presentation.OrderCancellationPresenter;
 import com.bamilo.android.core.service.model.EventType;
@@ -15,17 +22,10 @@ import com.bamilo.android.core.service.model.ServerResponse;
 import com.bamilo.android.core.service.model.data.itemtracking.CompleteOrder;
 import com.bamilo.android.core.service.model.data.ordercancellation.CancellationRequestBody;
 import com.bamilo.android.core.view.OrderCancellationView;
-import com.google.gson.Gson;
-import com.bamilo.android.appmodule.bamiloapp.adapters.OrderCancellationListAdapter;
-import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
-import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
-import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.NetworkConnectivity;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
-import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.R;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -103,7 +103,7 @@ public class OrderCancellationFragment extends BaseFragment implements OrderCanc
         // TODO: 8/28/18 farshid
 //        HoloFontLoader.applyDefaultFont(etDescription);
 
-        Button btnSubmit = (Button) view.findViewById(R.id.btnSubmitCancellation);
+        BamiloActionButton btnSubmit = view.findViewById(R.id.btnSubmitCancellation);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

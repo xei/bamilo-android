@@ -4,9 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.modernbamilo.app.BaseActivity
+import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeNumberString
 import com.bamilo.android.appmodule.modernbamilo.util.logging.LogType
 import com.bamilo.android.appmodule.modernbamilo.util.logging.Logger
@@ -39,7 +43,7 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mRateTextView: TextView
     private lateinit var mCommentTitleEditText: EditText
     private lateinit var mCommentContentEditText: EditText
-    private lateinit var mSubmitRateButton: Button
+    private lateinit var mSubmitRateButton: BamiloActionButton
     private lateinit var mSubmitRateProgressBar: MaterialProgressBar
     private lateinit var mMessageBox: View
 
