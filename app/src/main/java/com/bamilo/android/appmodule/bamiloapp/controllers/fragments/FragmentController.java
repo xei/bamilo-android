@@ -13,14 +13,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
-
+import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.utils.WorkerThread;
+import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
+import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.output.Print;
-import com.bamilo.android.appmodule.bamiloapp.utils.WorkerThread;
-import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
-import com.bamilo.android.R;
-import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -307,9 +306,17 @@ public class FragmentController {
         startTransition(activity, container, fragment, fragmentType, addToBackStack, FADE);
     }
 
-    /**
-     * ##################### POP #####################
-     */
+    public void gotoPdv(BaseActivity activity) {
+        Iterator<String> it = mBackStack.descendingIterator();
+        while (it.hasNext()) {
+            it.next();
+            if (it.hasNext() && it.next().equals("pdv")) {
+                popBackStack(activity);
+                activity.finish();
+            }
+            popBackStack(activity);
+        }
+    }
 
     /**
      * Method used to perform a back stack using fragments
@@ -322,7 +329,7 @@ public class FragmentController {
         Print.i("THE CURRENT BACK STACK ENTRIES: " + mBackStack);
 
         Iterator<String> it = mBackStack.descendingIterator();
-        if(it.hasNext()){
+        if (it.hasNext()) {
             it.next();
             if (it.hasNext() && it.next().equals("pdv")) {
                 popBackStack(activity);

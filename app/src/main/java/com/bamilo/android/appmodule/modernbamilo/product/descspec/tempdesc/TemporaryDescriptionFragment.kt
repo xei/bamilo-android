@@ -2,13 +2,16 @@ package com.bamilo.android.appmodule.modernbamilo.product.descspec.tempdesc
 
 
 import android.content.Intent
+import android.net.http.SslError
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.AppCompatImageView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.SslErrorHandler
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.ImageButton
 import android.widget.TextView
 import com.bamilo.android.R
@@ -115,6 +118,8 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
             builtInZoomControls = true
             displayZoomControls = false
         }
+
+        mWebView.webViewClient = webViewClient
     }
 
     private fun loadDescription() {
@@ -165,6 +170,12 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
             } catch (e: Exception) {
                 mDefaultCartItemCount = cartItemsCount
             }
+        }
+    }
+
+    private var webViewClient: WebViewClient = object : WebViewClient() {
+        override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+            handler.proceed()
         }
     }
 }

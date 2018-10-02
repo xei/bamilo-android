@@ -471,9 +471,10 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
 
     @Override
     public boolean allowBackPressed() {
-        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
-                FragmentController.ADD_TO_BACK_STACK);
-        return true;
+        FragmentController.getInstance().gotoPdv(getBaseActivity());
+//        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+//                FragmentController.ADD_TO_BACK_STACK);
+        return false;
     }
 
     /**
