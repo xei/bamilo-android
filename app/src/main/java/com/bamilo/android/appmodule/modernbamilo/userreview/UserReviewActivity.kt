@@ -51,6 +51,7 @@ class UserReviewActivity : AppCompatActivity(), View.OnClickListener {
 
         @JvmStatic
         fun start(invokerContext: Context, reviewType: Int, userId: String?, orderId: String?) {
+            return
             val intent = Intent(invokerContext, UserReviewActivity::class.java)
             intent.putExtra(KEY_EXTRA_REVIEW_TYPE, reviewType)
             intent.putExtra(KEY_EXTRA_USER_ID, userId)

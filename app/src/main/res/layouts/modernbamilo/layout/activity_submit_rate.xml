@@ -186,8 +186,7 @@
             android:layout_margin="8dp"
             android:background="@color/submitRate_submitBtn_background"
             android:gravity="center"
-            android:text="@string/submitRate_submitBtn"
-            android:textColor="@color/submitRate_submitBtn_text"
+            app:text="@string/submitRate_submitBtn"
             app:locale="auto"
             app:style="bold"/>
 
