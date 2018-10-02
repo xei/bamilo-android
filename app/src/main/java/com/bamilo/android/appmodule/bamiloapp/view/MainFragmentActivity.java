@@ -77,11 +77,11 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.order.OrderReturnSt
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewCheckoutAddressesFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewCheckoutPaymentMethodsFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewMyAccountAddressesFragment;
-import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewSessionLoginMainFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewShoppingCartFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity;
 import com.bamilo.android.appmodule.bamiloapp.view.relatedproducts.RecommendProductsFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.subcategory.SubCategoryFilterFragment;
+import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
@@ -582,8 +582,10 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
                 fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);
                 break;
             case LOGIN:
-                fragment = newFragmentInstance(NewSessionLoginMainFragment.class, bundle);
-                break;
+                new RegisterModalBottomSheet().show(getSupportFragmentManager(), "register");
+                return;
+//                fragment = newFragmentInstance(NewSessionLoginMainFragment.class, bundle);
+
             case LOGIN_EMAIL:
                 fragment = newFragmentInstance(SessionLoginEmailFragment.class, bundle);
                 break;

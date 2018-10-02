@@ -46,6 +46,8 @@
             android:id="@+id/fragmentDialogBottomsheetRegister_textInputLayout_userId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textAlignment="gravity"
             android:layout_marginRight="24dp"
             android:layout_marginLeft="24dp"
             android:layout_below="@+id/fragmentDialogBottomsheetRegister_textView_title"
@@ -116,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/registerScreen_hint_nationalId"
-                android:inputType="numberDecimal"
+                android:inputType="phone"
                 android:lines="1"
                 android:maxLength="10"
                 app:locale="fa_IR" />
