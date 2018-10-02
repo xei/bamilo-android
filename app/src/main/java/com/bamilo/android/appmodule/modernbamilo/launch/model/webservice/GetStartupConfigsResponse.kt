@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class GetStartupConfigsResponse(
         @SerializedName("currency_symbol") val currency: String,
-        @SerializedName("ga_android_id") val googleAnalyticsID: String,
+        @SerializedName("ga_id") val googleAnalyticsID: String,
         @SerializedName("phone_number") val bamiloPhoneNo: String,
         @SerializedName("cs_email") val bamiloEmailAddress: String,
         @SerializedName("version") val versionStatus: VersionStatus
