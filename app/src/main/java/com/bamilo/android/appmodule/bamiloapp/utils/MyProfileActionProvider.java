@@ -131,7 +131,7 @@ public class MyProfileActionProvider extends ActionProvider {
         ArrayList<Integer> list = (ArrayList<Integer>) getDropdownList();
         // Case Home or Cart
         if (list.indexOf(action) != -1) {
-            list.remove(action);
+            list.remove(list.indexOf(action));
         }
     }
 
