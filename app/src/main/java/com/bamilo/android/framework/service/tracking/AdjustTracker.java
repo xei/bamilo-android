@@ -20,6 +20,7 @@ import com.adjust.sdk.AdjustEvent;
 import com.adjust.sdk.LogLevel;
 import com.adjust.sdk.OnAttributionChangedListener;
 import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail;
 import com.bamilo.android.framework.service.Darwin;
 import com.bamilo.android.framework.service.objects.checkout.PurchaseItem;
 import com.bamilo.android.framework.service.objects.customer.Customer;
@@ -266,26 +267,18 @@ public class AdjustTracker extends AbcBaseTracker {
                 addBaseParameters(eventPDVScreen, bundle);
                 addCustomerGenderParameters(eventPDVScreen, bundle.getParcelable(CUSTOMER));
 
-                ProductComplete product = bundle.getParcelable(PRODUCT);
+                ProductDetail product = (ProductDetail) bundle.getSerializable(PRODUCT);
+
                 if (product != null) {
                     eventPDVScreen.addCallbackParameter(AdjustKeys.PRODUCT, product.getSku());
                     eventPDVScreen.addPartnerParameter(AdjustKeys.PRODUCT, product.getSku());
-                    eventPDVScreen.addCallbackParameter(AdjustKeys.CATEGORY_ID, product.getCategoryId());
-                    eventPDVScreen.addPartnerParameter(AdjustKeys.CATEGORY_ID, product.getCategoryId());
-                    if (product.getBrandId() != 0) {
-                        eventPDVScreen.addCallbackParameter(BRAND_ID, String.valueOf(product.getBrandId()));
-                        eventPDVScreen.addPartnerParameter(BRAND_ID, String.valueOf(product.getBrandId()));
-                    }
 
                     // FB - View Product
                     AdjustEvent eventPDVScreenFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_product));
                     // format sku as array
                     String fbSkuList = convertParameterToStringArray(product.getSku());
                     //format price with 2 c.d.
-                    String formattedPrice = formatPriceForTracking(product.getPriceForTracking(), PRICE_DECIMAL_FORMAT);
                     eventPDVScreenFB = getFBTrackerBaseParameters(eventPDVScreenFB, bundle);
-                    eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
-                    eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
                     eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_CONTENT_ID, fbSkuList);
                     eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, fbSkuList);
                     // Tracking event
