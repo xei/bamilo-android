@@ -34,7 +34,6 @@ import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.CustomerUtils;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.LoginHeaderComponent;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -88,14 +87,12 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
         mGABeginRequestMillis = System.currentTimeMillis();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Saved form state
         mFormSavedState = savedInstanceState;
         // Get arguments
@@ -116,7 +113,6 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON CREATE VIEW");
         // Get info
         String text = String.format(getString(R.string.register_info), getString(R.string.app_name));
         final LoginHeaderComponent loginHeaderComponent = (LoginHeaderComponent) view.findViewById(R.id.login_component);
@@ -135,7 +131,6 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
         // Validate the current state
         onValidateState();
     }
@@ -143,12 +138,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Print.i(TAG, "ON SAVE INSTANCE STATE");
         super.onSaveInstanceState(outState);
         // Case rotation save state
         if (mDynamicForm != null) {
@@ -164,7 +157,6 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
         // Case goes to back stack save the state
         if(mDynamicForm != null) {
             Bundle bundle = new Bundle();
@@ -176,19 +168,16 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
         mForm = null;
         mDynamicForm = null;
     }
@@ -316,14 +305,12 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Call super
         super.handleSuccessEvent(baseResponse);
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "ON SUCCESS: " + eventType);
         switch (eventType) {
             case REGISTER_ACCOUNT_EVENT:
                 // Notify user
@@ -359,14 +346,12 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Super
         if (super.handleErrorEvent(baseResponse)) return;
         // Validate
         EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "ON ERROR: " + eventType);
         switch (eventType) {
             case GET_REGISTRATION_FORM_EVENT:
                 showUnexpectedErrorWarning();

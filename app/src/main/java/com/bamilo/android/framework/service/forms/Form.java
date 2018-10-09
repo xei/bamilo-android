@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.bamilo.android.framework.service.objects.IJSONSerializable;
 import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.pojo.RestConstants;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,7 +105,6 @@ public class Form implements IJSONSerializable, Parcelable {
                 }
             }
         } catch (JSONException e) {
-            Print.d("initialize: error parsing jsonobject" + e);
             return false;
         }
         return true;
@@ -130,7 +128,6 @@ public class Form implements IJSONSerializable, Parcelable {
             }
             jsonObject.put(RestConstants.FIELDS, fieldArray);
         } catch (JSONException e) {
-            Print.d("trying to create json objects failed" + e);
         }
         return jsonObject;
     }

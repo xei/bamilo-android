@@ -46,7 +46,6 @@ import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.emarsys.predict.RecommendedItem;
 import java.util.ArrayList;
@@ -102,14 +101,12 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         OldProductDetailsFragment.clearSelectedRegionCityId();
-        Print.i(TAG, "ON CREATE");
 
         // Get values
         getBundleValues(savedInstanceState);
@@ -182,20 +179,17 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         prepareLayout(view);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     @Override
@@ -211,19 +205,16 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     /**
@@ -366,7 +357,6 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
     }
 
     private void triggerClearCart() {
-        Print.i(TAG, "TRIGGER: CLEAR CART FINISH");
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
     }
 
@@ -414,7 +404,6 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        Print.d(TAG, "VIEW ID: " + view.getId());
 
         switch (view.getId()) {
             case R.id.btn_checkout_continue:
@@ -486,14 +475,12 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Hide dialog progress
         hideActivityProgress();
         // Validate event
         super.handleSuccessEvent(baseResponse);
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_RICH_RELEVANCE_EVENT:
                 richRelevance = (RichRelevance) baseResponse.getContentData();
@@ -523,12 +510,10 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case GET_RICH_RELEVANCE_EVENT:
                 hideRelatedItems();
@@ -541,46 +526,43 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
 
     private void sendRecommend(PurchaseEntity cart) {
 
-        RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
-            @Override
-            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
-                if (!isAdded()) {
-                    return;
-                }
+        RecommendListCompletionHandler handler = (category, data) -> {
+            if (!isAdded()) {
+                return;
+            }
 
-                if (data == null || data.size() == 0) {
-                    //relatedProductsView.removeView(recommendationsHolder.itemView);
-                    // recommendations.setVisibility(View.GONE);
-                    relatedProductsView.setVisibility(View.GONE);
-                    btnContinueShopping.setVisibility(View.VISIBLE);
-                    return;
-                }
-                btnContinueShopping.setVisibility(View.GONE);
-                relatedProductsView.setVisibility(View.VISIBLE);
-                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+            if (data == null || data.size() == 0) {
+                //relatedProductsView.removeView(recommendationsHolder.itemView);
+                // recommendations.setVisibility(View.GONE);
+                relatedProductsView.setVisibility(View.GONE);
+                btnContinueShopping.setVisibility(View.VISIBLE);
+                return;
+            }
+            btnContinueShopping.setVisibility(View.GONE);
+            relatedProductsView.setVisibility(View.VISIBLE);
+            LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
-                if (recommendationsHolder == null) {
-                    recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(),
-                            inflater.inflate(R.layout.recommendation_cart,
-                                    relatedProductsView,
-                                    false),
-                            null);
-                }
-                try {
-                    // Set view
-                    relatedProductsView.removeView(recommendationsHolder.itemView);
-                    recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(),
-                            inflater.inflate(R.layout.recommendation_cart, relatedProductsView,
-                                    false), null);
+            if (recommendationsHolder == null) {
+                recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(),
+                        inflater.inflate(R.layout.recommendation_cart,
+                                relatedProductsView,
+                                false),
+                        null);
+            }
+            try {
+                // Set view
+                relatedProductsView.removeView(recommendationsHolder.itemView);
+                recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(),
+                        inflater.inflate(R.layout.recommendation_cart, relatedProductsView,
+                                false), null);
 
-                    recommendationsHolder.onBind(data);
-                    // Add to container
+                recommendationsHolder.onBind(data);
+                // Add to container
 
-                    relatedProductsView.addView(recommendationsHolder.itemView,
-                            relatedProductsView.getChildCount() - 1);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                relatedProductsView.addView(recommendationsHolder.itemView,
+                        relatedProductsView.getChildCount() - 1);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         };
 

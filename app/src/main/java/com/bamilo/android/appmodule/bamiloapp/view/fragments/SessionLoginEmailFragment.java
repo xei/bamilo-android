@@ -36,7 +36,6 @@ import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.CustomerUtils;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.LoginHeaderComponent;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -80,7 +79,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -91,7 +89,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get email
         String mCustomerEmail = null;
         // Get arguments
@@ -126,12 +123,11 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Show authentication info
         AuthInfo authInfo = CountryPersistentConfigs.getAuthInfo(getContext());
         ((LoginHeaderComponent) view.findViewById(R.id.login_component)).showAuthInfo(LoginHeaderComponent.LOGIN, authInfo, null);
         // Get form container
-        mFormContainer = (ViewGroup) view.findViewById(R.id.login_email_form_container);
+        mFormContainer = view.findViewById(R.id.login_email_form_container);
         // Get forgot password
         view.findViewById(R.id.login_email_button_password).setOnClickListener(this);
         // Get continue button
@@ -148,7 +144,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         super.onStart();
         // Validate state
         onValidateState();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -159,7 +154,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -170,7 +164,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE STATE");
         // Case rotation save state
         if (mDynamicForm != null) {
             mDynamicForm.saveFormState(outState);
@@ -188,7 +181,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
         // Case goes to back stack save the state
         if(mDynamicForm != null) {
             mFormSavedState = new Bundle();
@@ -204,7 +196,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -213,7 +204,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
      */
     @Override
     public void onDestroyView() {
-        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
 
@@ -224,7 +214,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /*
@@ -337,14 +326,12 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Call super
         super.handleSuccessEvent(baseResponse);
         // Validate
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS: " + eventType.action);
         switch (eventType) {
             case LOGIN_EVENT:
                 // Get customer
@@ -376,7 +363,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Super
@@ -386,7 +372,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         // Validate messageItem
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Case login form
         if (eventType == EventType.GET_LOGIN_FORM_EVENT) {
             showFragmentErrorRetry();

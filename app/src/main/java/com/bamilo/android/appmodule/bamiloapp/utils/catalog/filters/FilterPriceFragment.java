@@ -2,20 +2,19 @@ package com.bamilo.android.appmodule.bamiloapp.utils.catalog.filters;
 
 import android.os.Bundle;
 import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bamilo.android.framework.components.RangeSeekBar;
 import com.bamilo.android.framework.components.RangeSeekBar.OnRangeSeekBarChangeListener;
-import com.bamilo.android.framework.components.customfontviews.CheckBox;
 import com.bamilo.android.framework.components.customfontviews.EditText;
 import android.widget.TextView;
 import com.bamilo.android.framework.service.objects.catalog.filters.CatalogPriceFilter;
 import com.bamilo.android.framework.service.objects.catalog.filters.CatalogPriceFilterOption;
 import com.bamilo.android.framework.service.utils.NumberTextWatcher;
 import com.bamilo.android.framework.service.utils.convertor.PersinConvertor;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.FilterMainFragment;
@@ -47,22 +46,12 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
 
     private CatalogPriceFilter mFilter;
 
-    /**
-     *
-     * @param bundle
-     * @return
-     */
     public static FilterPriceFragment newInstance(Bundle bundle) {
-        Print.d(TAG, "NEW INSTANCE: BRAND");
         FilterPriceFragment frag = new FilterPriceFragment();
         frag.setArguments(bundle);
         return frag;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,22 +59,14 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         mCatalogFilter = bundle.getParcelable(FilterMainFragment.FILTER_TAG);
         mFilter = (CatalogPriceFilter)mCatalogFilter;
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-     */
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.filter_fragment_price, container, false);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
-     */
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Get data from filter
         CatalogPriceFilterOption filterOption = mFilter.getOption();
@@ -95,85 +76,72 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         mMax = filterOption.getMax();
         mCurrMaxValue = filterOption.getRangeMax();
         mInterval = filterOption.getInterval();
-        Print.d(TAG, "FILTER RANGE: " + mMin + " " + mMax + " " + mInterval);
 
         // Get check box
-        mMinValueTxt = (EditText) view.findViewById(R.id.min);
-        mMaxValueTxt = (EditText) view.findViewById(R.id.max);
+        mMinValueTxt = view.findViewById(R.id.min);
+        mMaxValueTxt = view.findViewById(R.id.max);
 
         mMinValueTxt.addTextChangedListener(new NumberTextWatcher(mMinValueTxt));
         mMaxValueTxt.addTextChangedListener(new NumberTextWatcher(mMaxValueTxt));
 
+        mMaxValueTxt.setOnFocusChangeListener((v, hasFocus) -> {
+            Long mymin= Long.parseLong(PersinConvertor.toEnglishNumber(mMinValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
+            Long mymax= Long.parseLong(PersinConvertor.toEnglishNumber(mMaxValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
+            if(!hasFocus){
+                if(mymax>mymin){
 
-        mMaxValueTxt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Long mymin= Long.parseLong(PersinConvertor.toEnglishNumber(mMinValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
-                Long mymax= Long.parseLong(PersinConvertor.toEnglishNumber(mMaxValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
-                if(!hasFocus){
-                    if(mymax>mymin){
+                if (mymax<=mMaxRang &&Integer.MAX_VALUE>mymax) {
 
+                    setIntervalText(mCurrMaxValue,(int) mymax.longValue());
+                    mRangeBar.setSelectedMaxValue(getMaxIntervalValue((int) mymax.longValue()));
+                    mCurrMaxValue =mymax.intValue() ;
+                    mFilter.getOption().setRangeMin(mCurrMinValue);
+                    mFilter.getOption().setRangeMax(mCurrMaxValue);
+                }
+                else {
+                    mCurrMaxValue = mMax;
+                    mFilter.getOption().setRangeMin(mCurrMinValue);
+                    mFilter.getOption().setRangeMax(mCurrMaxValue);
+                }
+            }
+                else{
+                    mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
+                    mMaxValueTxt.setText(String.valueOf(mCurrMaxValue));
+                    mFilter.getOption().setRangeMin(mCurrMinValue);
+                    mFilter.getOption().setRangeMax(mCurrMaxValue);
+                }
+        }});
 
-                    if (mymax<=mMaxRang &&Integer.MAX_VALUE>mymax) {
-
-                        //mMaxValueTxt.setText(PersinConvertor.toPersianNumber(mMaxValueTxt.getText().toString()).toString());
-                        setIntervalText(mCurrMaxValue,(int) mymax.longValue());
-                        mRangeBar.setSelectedMaxValue(getMaxIntervalValue((int) mymax.longValue()));
-                        mCurrMaxValue =mymax.intValue() ;
+        mMinValueTxt.setOnFocusChangeListener((v, hasFocus) -> {
+            Long mymin;
+            mymin = Long.parseLong(PersinConvertor.toEnglishNumber(mMinValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
+            Long mymax= Long.parseLong(PersinConvertor.toEnglishNumber(mMaxValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
+            if(!hasFocus){
+                if(mymax>mymin) {
+                    if (mymin <= mMaxRang && Integer.MAX_VALUE > mymin) {
+                        setIntervalText((int) mymin.longValue(), mCurrMaxValue);
+                        mRangeBar.setSelectedMinValue(getMaxIntervalValue((int) mymin.longValue()));
+                        mCurrMinValue = mymin.intValue();
                         mFilter.getOption().setRangeMin(mCurrMinValue);
                         mFilter.getOption().setRangeMax(mCurrMaxValue);
-                    }
-                    else {
-                        mCurrMaxValue = mMax;
+                    } else {
+                        mCurrMinValue = mMin;
                         mFilter.getOption().setRangeMin(mCurrMinValue);
                         mFilter.getOption().setRangeMax(mCurrMaxValue);
                     }
                 }
-                    else{
-                        mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mCurrMaxValue));
-                        mMaxValueTxt.setText(mCurrMaxValue+"");
-                        mFilter.getOption().setRangeMin(mCurrMinValue);
-                        mFilter.getOption().setRangeMax(mCurrMaxValue);
-                    }
-            }
-            }
-        });
-
-        mMinValueTxt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Long mymin;
-                mymin = Long.parseLong(PersinConvertor.toEnglishNumber(mMinValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
-                Long mymax= Long.parseLong(PersinConvertor.toEnglishNumber(mMaxValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
-                if(!hasFocus){
-                    if(mymax>mymin) {
-                        if (mymin <= mMaxRang && Integer.MAX_VALUE > mymin) {
-                            setIntervalText((int) mymin.longValue(), mCurrMaxValue);
-                            mRangeBar.setSelectedMinValue(getMaxIntervalValue((int) mymin.longValue()));
-                            mCurrMinValue = mymin.intValue();
-                            mFilter.getOption().setRangeMin(mCurrMinValue);
-                            mFilter.getOption().setRangeMax(mCurrMaxValue);
-                        } else {
-                            mCurrMinValue = mMin;
-                            mFilter.getOption().setRangeMin(mCurrMinValue);
-                            mFilter.getOption().setRangeMax(mCurrMaxValue);
-                        }
-                    }
-                    else
-                    {
-                        mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
-                        mFilter.getOption().setRangeMin(mCurrMinValue);
-                        mFilter.getOption().setRangeMax(mCurrMaxValue);
-                        mMinValueTxt.setText(mCurrMinValue+"");
-
-                    }
+                else
+                {
+                    mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
+                    mFilter.getOption().setRangeMin(mCurrMinValue);
+                    mFilter.getOption().setRangeMax(mCurrMaxValue);
+                    mMinValueTxt.setText(String.valueOf(mCurrMinValue));
                 }
-
             }
         });
 
         // Get range text
-        mRangeValues = (TextView) view.findViewById(R.id.dialog_filter_range_text);
+        mRangeValues = view.findViewById(R.id.dialog_filter_range_text);
         
         // Get range bar
         mRangeBar = new RangeSeekBar<>(getMinIntervalValue(mMin), getMaxIntervalValue(mMax), getActivity());
@@ -182,7 +150,6 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         ((ViewGroup) view.findViewById(R.id.dialog_filter_range_bar)).addView(mRangeBar);
         
         // Get range values from pre selection
-//        if(mFilter.hasRangeValues()) {
         mMinRang = filterOption.getMin();
         mMaxRang = filterOption.getMax();
         mCurrMinValue = filterOption.getRangeMin();
@@ -197,40 +164,17 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         // Set current range
         setIntervalText(mCurrMinValue, mCurrMaxValue);
         // Set discount box
-//        mDiscountBox.setChecked(mFilter.isRangeWithDiscount());
-        
-        Print.d(TAG, "FILTER CURRENT RANGE: " + mCurrMinValue + " " + mCurrMaxValue);
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.components.RangeSeekBar.OnRangeSeekBarChangeListener#onRangeSeekBarValuesChanged(com.mobile.components.RangeSeekBar, java.lang.Object, java.lang.Object)
-     */
+
     @Override
     public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
         mCurrMinValue = getMinRealValue(minValue);
         mCurrMaxValue = getMaxRealValue(maxValue);
         setIntervalText(mCurrMinValue, mCurrMaxValue);
-        mMinValueTxt.setText(mCurrMinValue+"");
-        mMaxValueTxt.setText(mCurrMaxValue+"");
+        mMinValueTxt.setText(String.valueOf(mCurrMinValue));
+        mMaxValueTxt.setText(String.valueOf(mCurrMaxValue));
         processOnClickDone();
     }
-
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-//    @Override
-//    public void onClick(View view) {
-//         Get view id
-//        int id = view.getId();
-        // Back && Cancel
-//        if(id == mBackButtonId || id == mCancelButtonId) mParent.allowBackPressed();
-//        // Clean
-//        else if(id == mClearButtonId) processOnClickClean();
-//        // Save
-//        else if(id == mDoneButtonId) processOnClickDone();
-//    }
     
     /**
      * Process the click on clean button
@@ -248,8 +192,6 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
 
         // Clean saved values
         mFilter.cleanFilter();
-//        mFilter.setRangeWithDiscount(false);
-        Print.d(TAG, "FILTER: CLEAN " + mMin + " " + mMax + " " + mCurrMinValue + " " + mCurrMaxValue);
     }
 
     /**
@@ -257,7 +199,6 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
      * @author sergiopereira
      */
     private void processOnClickDone() {
-        Print.d(TAG, "FILTER: DONE " + mCurrMinValue + " " + mCurrMaxValue);
         // Validate current values
         if(getMinIntervalValue(mCurrMinValue) == getMinIntervalValue(mMin) && getMaxIntervalValue(mCurrMaxValue) == getMaxIntervalValue(mMax)) {
             // Clean saved values

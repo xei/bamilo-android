@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.bamiloapp.utils;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import com.bamilo.android.framework.service.forms.PaymentInfo;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.pojo.DynamicForm;
 import com.bamilo.android.R;
 
@@ -77,7 +77,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
             }
         }
         // set and show items
-        setItems(new ArrayList<>(items.values()), new HashMap<String, Form>(), null, defaultSelect);
+        setItems(new ArrayList<>(items.values()), new HashMap<>(), null, defaultSelect);
     }
 
     public void enableRightStyle() {
@@ -85,7 +85,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     }
 
     public void setItems(ArrayList<String> items, HashMap<String, Form> map, HashMap<String, PaymentInfo> paymentInfoMap, int defaultSelected) {
-        Print.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = " + defaultSelected);
         mItems = items;
         formsMap = map;
         mPaymentInfo = paymentInfoMap;
@@ -93,6 +92,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         updateRadioGroup();
     }
 
+    @SuppressLint("UseSparseArrays")
     private void updateRadioGroup() {
         try {
             mGroup.removeAllViews();
@@ -133,13 +133,10 @@ public class RadioGroupLayoutVertical extends RadioGroup {
      * The runnable is a hack for Android Marshmallow (API 23)
      */
     private void checkDefaultOption(final int mDefaultSelected) {
-        post(new Runnable() {
-            @Override
-            public void run() {
-                View child = getChildAt(mDefaultSelected);
-                if (child != null) {
-                    check(child.getId());
-                }
+        post(() -> {
+            View child = getChildAt(mDefaultSelected);
+            if (child != null) {
+                check(child.getId());
             }
         });
     }
@@ -161,7 +158,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
             DynamicForm formGenerator = FormFactory.create(FormConstants.PAYMENT_DETAILS_FORM, mContext, formsMap.get(mItems.get(idx)));
             generatedForms.put(idx, formGenerator);
             extras.addView(formGenerator.getContainer());
-            Print.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
         }
 
         // Hide first divider
@@ -187,21 +183,18 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.checkout_shipping_item_height));
         layoutParams.setMargins(0, 0, getResources().getDimensionPixelSize(R.dimen.form_radiobutton_shipping_margin), 0);
         button.setText(mItems.get(idx));
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (button.isChecked()) {
-                        extras.setVisibility(View.VISIBLE);
-                    } else {
-                        extras.setVisibility(View.GONE);
-                    }
-                } catch (StackOverflowError e) {
-                    e.printStackTrace();
+        button.setOnClickListener(v -> {
+            try {
+                if (button.isChecked()) {
+                    extras.setVisibility(View.VISIBLE);
+                } else {
+                    extras.setVisibility(View.GONE);
                 }
-                setSelection(container.getId());
-                mGroup.check(container.getId());
+            } catch (StackOverflowError e) {
+                e.printStackTrace();
             }
+            setSelection(container.getId());
+            mGroup.check(container.getId());
         });
 
         // Set default

@@ -3,6 +3,7 @@ package com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -16,7 +17,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import android.widget.TextView;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.R;
 
 import java.lang.ref.WeakReference;
@@ -72,9 +72,8 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 	 * Called from Shopping cart.
 	 */
 	public static DialogSortListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, ArrayList<String> items, int initialPosition) {
-	    Print.d(TAG, "NEW INSTANCE");
 	    DialogSortListFragment dialogListFragment = new DialogSortListFragment();
-	    dialogListFragment.mActivity = new WeakReference<Activity>(fragment.getActivity());
+	    dialogListFragment.mActivity = new WeakReference(fragment.getActivity());
 	    dialogListFragment.mSelectListener = listener;
 	    dialogListFragment.mTitle = title;
 	    dialogListFragment.mItems = items;
@@ -82,30 +81,18 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 	    return dialogListFragment;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see android.support.v4.app.DialogFragment#onCreate(android.os.Bundle)
-	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-	 */
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	    return inflater.inflate(R.layout.dialog_list_content, container);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
-	 */
+
 	@Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Validate current activity
@@ -117,11 +104,11 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
         View button = view.findViewById(R.id.dialog_list_size_guide_button);
         button.setVisibility(View.GONE);
         // Set title
-        TextView titleView = (TextView) view.findViewById(R.id.dialog_list_title);
+        TextView titleView = view.findViewById(R.id.dialog_list_title);
         titleView.setText(mTitle);
 
         // Get list
-        ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
+        ListView list = view.findViewById(R.id.dialog_list_view);
         // Set Max list size
         setListSize(list, mItems.size());
 
@@ -140,21 +127,13 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
         this.mActivity.get().getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
 
     }
-	
-	/*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onPause()
-     */
+
     @Override
     public void onPause() {
         super.onPause();
         dismissAllowingStateLoss();
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.DialogFragment#onDestroyView()
-     */
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -180,56 +159,35 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
             super.show(manager,tag);
             // Trying fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/143/crash_reasons/38911893?type=crashes
             // Or try this solution http://dimitar.me/android-displaying-dialogs-from-background-threads/
-        } catch (IllegalStateException | WindowManager.BadTokenException ex){
-            Print.e(TAG, "Error showing Dialog", ex);
+        } catch (IllegalStateException | WindowManager.BadTokenException ignored){
         }
     }
 
-    /*
-     * ########### LISTENERS ###########
-     */
-    
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
     @Override
     public void onClick(final View view) {
-        view.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Validate listener
-                if(mClickListener != null) {
-                    dismissAllowingStateLoss();
-                    mClickListener.onClick(view);
-                }
+        view.postDelayed(() -> {
+            // Validate listener
+            if(mClickListener != null) {
+                dismissAllowingStateLoss();
+                mClickListener.onClick(view);
             }
         }, DELAY_DISMISS);
 
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
-     */
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
         if(mItemsAvailable == null || mItemsAvailable.contains(mItems.get(position))){
             mAdapter.setCheckedPosition(position);
             mAdapter.notifyDataSetChanged();
 
-            view.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    dismissAllowingStateLoss();
-                    if (mSelectListener != null) {
-                        mSelectListener.onDialogListItemSelect(position, mItems.get(position));
-                    }
-
+            view.postDelayed(() -> {
+                dismissAllowingStateLoss();
+                if (mSelectListener != null) {
+                    mSelectListener.onDialogListItemSelect(position, mItems.get(position));
                 }
+
             }, DELAY_DISMISS);
         }
     }
-
 }

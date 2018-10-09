@@ -12,10 +12,8 @@ import com.bamilo.android.framework.components.customfontviews.EditText;
 import android.widget.TextView;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsCheckout;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.appmodule.bamiloapp.utils.ui.ErrorLayoutFactory;
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment;
@@ -87,12 +85,12 @@ public abstract class NewBaseFragment extends BaseFragment {
 
 
     protected void setCheckoutStep(View view, int step) {
-        TextView tvStep1 = (TextView) view.findViewById(R.id.step1);
-        TextView tvStep2 = (TextView) view.findViewById(R.id.step2);
-        TextView tvStep3 = (TextView) view.findViewById(R.id.step3);
-        TextView tvStep1_title = (TextView) view.findViewById(R.id.step1_title);
-        TextView tvStep2_title = (TextView) view.findViewById(R.id.step2_title);
-        TextView tvStep3_title = (TextView) view.findViewById(R.id.step3_title);
+        TextView tvStep1 = view.findViewById(R.id.step1);
+        TextView tvStep2 = view.findViewById(R.id.step2);
+        TextView tvStep3 = view.findViewById(R.id.step3);
+        TextView tvStep1_title = view.findViewById(R.id.step1_title);
+        TextView tvStep2_title = view.findViewById(R.id.step2_title);
+        TextView tvStep3_title = view.findViewById(R.id.step3_title);
         tvStep1.setText("1");
         tvStep2.setText("2");
         tvStep3.setText("3");
@@ -134,7 +132,7 @@ public abstract class NewBaseFragment extends BaseFragment {
 
     public boolean validateStringToPattern(Context context, String label, EditText editText, String text, boolean isRequired, int min, int max, String regex, String errorMessage, int textViewId) {
         boolean result = true;
-        TextView textView = (TextView) ((Activity) context).findViewById(textViewId);
+        TextView textView = ((Activity) context).findViewById(textViewId);
         textView.setVisibility(View.GONE);
         String space = " ";
         // Case empty

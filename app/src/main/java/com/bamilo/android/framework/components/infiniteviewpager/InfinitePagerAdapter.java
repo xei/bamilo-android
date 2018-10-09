@@ -5,7 +5,6 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bamilo.android.framework.service.utils.output.Print;
 
 /**
  * A PagerAdapter that wraps around another PagerAdapter to handle paging
@@ -126,7 +125,6 @@ public class InfinitePagerAdapter extends PagerAdapter {
 
     private void debug(String message) {
         if (DEBUG) {
-            Print.d(TAG, message);
         }
     }
 }

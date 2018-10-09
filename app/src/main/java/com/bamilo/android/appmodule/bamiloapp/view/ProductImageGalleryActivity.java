@@ -14,7 +14,6 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.GalleryPagerAdapter;
 import com.bamilo.android.framework.service.objects.product.ImageUrls;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.OldProductDetailsFragment;
 
 import java.util.ArrayList;
@@ -36,7 +35,6 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         setContentView(R.layout.product_gallery_full_activity);
 
         // control whether to allow the activity to rotate or not
@@ -61,7 +59,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
      * set activity content
      */
     private void setContent(){
-        mViewPager = (JumiaViewPagerWithZoom) findViewById(R.id.pdv_view_pager);
+        mViewPager = findViewById(R.id.pdv_view_pager);
         // Close button
         View closeView = findViewById(R.id.gallery_button_close);
         // Set view pager
@@ -71,55 +69,15 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Print.i(TAG, "ON START");
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onResume()
-     */
-    @Override
     protected void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         if(mViewPager != null) mViewPager.setCurrentItem(OldProductDetailsFragment.sSharedSelectedPosition);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onPause()
-     */
     @Override
     protected void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
         OldProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onStop()
-     */
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Print.i(TAG, "ON STOP");
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onDestroy()
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -164,7 +122,6 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE");
         outState.putParcelableArrayList(ConstantsIntentExtra.IMAGE_LIST, mImagesList);
     }
 
@@ -173,9 +130,8 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
         // Get id
         int id = v.getId();
         // Case close button
-        if (id == R.id.gallery_button_close) onClickCloseButton();
-        // Case unknown
-        else Print.w(TAG, "WARNING: UNEXPECTED CLICK EVENT");
+        if (id == R.id.gallery_button_close)
+            onClickCloseButton();
     }
 
     /**
@@ -183,7 +139,6 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
      * @author sergiopereira
      */
     private void onClickCloseButton() {
-        Print.i(TAG, "ON CLICK CLOSE BUTTON");
         OldProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
         finish();
     }
@@ -199,10 +154,8 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
                     ? ((InfinitePagerAdapter) mViewPager.getAdapter()).getVirtualPosition(mViewPager.getCurrentItem())
                     : mViewPager.getCurrentItem();
         } catch (NullPointerException e) {
-            Print.i(TAG, "WARNING: NPE ON GET CURRENT PAGER POSITION");
             return 0;
         } catch (ClassCastException e) {
-            Print.i(TAG, "WARNING: CCE ON GET CURRENT PAGER POSITION");
             return 0;
         }
     }

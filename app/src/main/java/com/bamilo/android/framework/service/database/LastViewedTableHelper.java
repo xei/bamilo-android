@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteException;
 
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductComplete;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.ArrayList;
 
@@ -119,13 +118,11 @@ public class LastViewedTableHelper extends BaseTable {
         boolean result = false;
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         String query = "SELECT count(*) FROM " + TABLE_NAME + " WHERE " + _PRODUCT_SKU + " = ?";
-        Print.i(TAG, "SQL RESULT query :  " + query);
         Cursor cursor = db.rawQuery(query, new String[]{sku});
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             result = cursor.getInt(0) >= 1;
             // Log result
-            Print.i(TAG, "SQL RESULT: " + cursor.getInt(0) + " result is : " + result);
         }
         // Validate cursor
         if (cursor != null) {
@@ -147,7 +144,6 @@ public class LastViewedTableHelper extends BaseTable {
             cursor.moveToFirst();
             result = cursor.getInt(0);
             // Log result
-            Print.i(TAG, "SQL RESULT: " + result);
         }
         // Validate cursor
         if (cursor != null) {
@@ -165,7 +161,6 @@ public class LastViewedTableHelper extends BaseTable {
         ArrayList<String> listLastViewed = new ArrayList<>();
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
         String query = "SELECT " + _PRODUCT_SKU + " FROM " + TABLE_NAME + " ORDER BY " + _ID + " DESC";
-        Print.i(TAG, "SQL RESULT query :  " + query);
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
@@ -186,8 +181,6 @@ public class LastViewedTableHelper extends BaseTable {
     public static void removeLastViewed(String sku) {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         String query = "DELETE FROM " + TABLE_NAME + " WHERE " + _PRODUCT_SKU + " = ?";
-        Print.i(TAG, "REMOVING PRODUCT SKU :  " + sku);
-        Print.i(TAG, "SQL RESULT query :  " + query);
         db.execSQL(query, new String[]{sku});
         db.close();
     }
@@ -201,7 +194,6 @@ public class LastViewedTableHelper extends BaseTable {
                         "( SELECT " + _ID + " FROM " + TABLE_NAME +
                         " ORDER BY " + _ID + " ASC LIMIT 1 )";
 
-        Print.i(TAG,"QUERY:"+query);
         db.execSQL(query);
         db.close();
     }

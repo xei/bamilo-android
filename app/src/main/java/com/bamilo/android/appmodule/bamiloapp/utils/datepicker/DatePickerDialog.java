@@ -17,8 +17,10 @@
 package com.bamilo.android.appmodule.bamiloapp.utils.datepicker;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -32,7 +34,6 @@ import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.datepicker.SimpleMonthAdapter.CalendarDay;
 import com.bamilo.android.R;
 
@@ -71,12 +72,14 @@ public class DatePickerDialog extends DialogFragment implements
     private static final int ANIMATION_DURATION = 300;
     private static final int ANIMATION_DELAY = 500;
 
+    @SuppressLint("ConstantLocale")
     private static final SimpleDateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy", Locale.getDefault());
+    @SuppressLint("ConstantLocale")
     private static final SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("dd", Locale.getDefault());
 
     private final Calendar mCalendar = Calendar.getInstance();
     private OnDateSetListener mCallBack;
-    private final HashSet<OnDateChangedListener> mListeners = new HashSet<OnDateChangedListener>();
+    private final HashSet<OnDateChangedListener> mListeners = new HashSet<>();
 
     private AccessibleDateAnimator mAnimator;
 
@@ -177,7 +180,7 @@ public class DatePickerDialog extends DialogFragment implements
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_SELECTED_YEAR, mCalendar.get(Calendar.YEAR));
         outState.putInt(KEY_SELECTED_MONTH, mCalendar.get(Calendar.MONTH));
@@ -207,17 +210,18 @@ public class DatePickerDialog extends DialogFragment implements
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
+        @SuppressLint("InflateParams")
         View view = inflater.inflate(R.layout.date_picker_dialog, null);
 
-        mMonthAndDayView = (LinearLayout) view.findViewById(R.id.date_picker_month_and_day);
+        mMonthAndDayView = view.findViewById(R.id.date_picker_month_and_day);
         mMonthAndDayView.setOnClickListener(this);
-        mSelectedMonthTextView = (TextView) view.findViewById(R.id.date_picker_month);
-        mSelectedDayTextView = (TextView) view.findViewById(R.id.date_picker_day);
-        mYearView = (TextView) view.findViewById(R.id.date_picker_year);
+        mSelectedMonthTextView = view.findViewById(R.id.date_picker_month);
+        mSelectedDayTextView = view.findViewById(R.id.date_picker_day);
+        mYearView = view.findViewById(R.id.date_picker_year);
         mYearView.setOnClickListener(this);
 
         int listPosition = -1;
@@ -236,7 +240,7 @@ public class DatePickerDialog extends DialogFragment implements
         mDayPickerView = new DayPickerView(activity, this);
         mYearPickerView = new YearPickerView(activity, this);
 
-        mAnimator = (AccessibleDateAnimator) view.findViewById(R.id.animator);
+        mAnimator = view.findViewById(R.id.animator);
         mAnimator.addView(mDayPickerView);
         mAnimator.addView(mYearPickerView);
         mAnimator.setDateMillis(mCalendar.getTimeInMillis());
@@ -382,7 +386,6 @@ public class DatePickerDialog extends DialogFragment implements
 
     @Override
     public void onYearSelected(int year) {
-        Print.i(TAG,"onYearSelected");
         adjustDayInMonthIfNeeded(mCalendar.get(Calendar.MONTH), year);
         mCalendar.set(Calendar.YEAR, year);
         updatePickers();
@@ -392,7 +395,6 @@ public class DatePickerDialog extends DialogFragment implements
 
     @Override
     public void onDayOfMonthSelected(int year, int month, int day) {
-        Print.i(TAG,"onDayOfMonthSelected year:"+year+" month:"+month+" day:"+day);
         mCalendar.set(Calendar.YEAR, year);
         mCalendar.set(Calendar.MONTH, month);
         mCalendar.set(Calendar.DAY_OF_MONTH, day);
@@ -440,18 +442,11 @@ public class DatePickerDialog extends DialogFragment implements
     OnClickListener doneListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            Print.i(TAG,"onClick DONE");
-            Print.i(TAG,"onClick DONE callback:"+mCallBack);
             if (mCallBack != null) {
-                Print.i(TAG,"onClick DONE callback not null");
-                Print.i(TAG,"onClick year:"+mCalendar.get(Calendar.YEAR)+" month:"+ mCalendar.get(Calendar.MONTH)+" day:"+mCalendar.get(Calendar.DAY_OF_MONTH));
 
                 mCallBack.onDateSet(DatePickerDialog.this, mCalendar.get(Calendar.YEAR),
                         mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
             }
-            // commented and added to the fragment side in order to be able to control when its dismissed or not.
-    //                dismiss();
         }
     };
-
 }

@@ -3,16 +3,15 @@ package com.bamilo.android.appmodule.bamiloapp.view;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
-import com.bamilo.android.framework.components.webview.SuperWebView;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.controllers.ActivitiesWorkFlow;
+import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.SSLErrorAlertDialog;
+import com.bamilo.android.framework.components.webview.SuperWebView;
 import com.bamilo.android.framework.service.objects.configs.RedirectPage;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.rest.RestUrlUtils;
@@ -44,12 +43,10 @@ public class RedirectInfoActivity extends AppCompatActivity {
         // Load html
         webView.loadData(redirect.getHtml());
         // Set button link
-        findViewById(R.id.redirect_info_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivitiesWorkFlow.startMarketActivity(RedirectInfoActivity.this, RestUrlUtils.getQueryValue(redirect.getLink(), RestConstants.ID), redirect.getLink());
-            }
-        });
+        findViewById(R.id.redirect_info_button).setOnClickListener(
+                v -> ActivitiesWorkFlow.startMarketActivity(RedirectInfoActivity.this,
+                        RestUrlUtils.getQueryValue(redirect.getLink(), RestConstants.ID),
+                        redirect.getLink()));
     }
 
     @Override
@@ -64,8 +61,10 @@ public class RedirectInfoActivity extends AppCompatActivity {
     WebViewClient webViewClient = new WebViewClient() {
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            //super.onReceivedSslError(view, handler, error);
-            handler.proceed();
+            new SSLErrorAlertDialog(RedirectInfoActivity.this)
+                    .show(getString(R.string.ssl_error_handler_title),
+                            getString(R.string.ssl_error_handler_message), v -> handler.proceed(),
+                            v -> handler.cancel());
         }
     };
 }

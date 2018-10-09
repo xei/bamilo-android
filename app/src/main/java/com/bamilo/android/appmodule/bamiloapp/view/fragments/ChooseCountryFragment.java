@@ -28,7 +28,6 @@ import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -77,7 +76,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -88,7 +86,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         context = getActivity().getApplicationContext();
     }
 
@@ -99,7 +96,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // List view
         mCountryListView = (ListView) view.findViewById(R.id.change_country_list);
         // Validate the current shop
@@ -131,7 +127,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -142,7 +137,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -153,7 +147,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -164,7 +157,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -175,7 +167,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     /*
@@ -184,7 +175,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     @Override
     public void onDestroy() {
-        Print.i(TAG, "ON DESTROY");
         super.onDestroy();
         // Clean memory
         countryAdapter = null;
@@ -223,8 +213,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         } 
         
         int countriesAvailable = BamiloApplication.INSTANCE.countriesAvailable.size();
-        Print.d(TAG, "COUNTRIES SIZE: " + countriesAvailable);
-        
+
         int count = 0;
         String[] countries = new String[countriesAvailable];
         String[] flagsList = new String[countriesAvailable];
@@ -264,12 +253,9 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             final CountryObject countryObject = BamiloApplication.INSTANCE.countriesAvailable.get(position);
             final Languages languages = ChooseLanguageController.getCurrentLanguages(this.getActivity(), countryObject);
 
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    isChangeCountry = true;
-                    setCountry(position);
-                }
+            Runnable runnable = () -> {
+                isChangeCountry = true;
+                setCountry(position);
             };
 
             // If the dialog didn't load means that has no more than one country
@@ -363,7 +349,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @author sergiopereira
      */
     private void onClickRetryButton(){
-        Print.d(TAG, "ON CLICK: RETRY BUTTON");
         triggerGetAvailableCountries();
     }
     
@@ -377,10 +362,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED SUCCESS EVENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get event type
@@ -388,7 +371,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         // Validate event type
         switch (eventType) {
             case GET_GLOBAL_CONFIGURATIONS:
-                Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
                 // Get countries
                 BamiloApplication.INSTANCE.countriesAvailable = (AvailableCountries) baseResponse.getContentData();
                 // Show countries
@@ -396,7 +378,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                 showFragmentContentContainer();
                 break;
             default:
-                Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
                 break;
         }
     }
@@ -409,25 +390,21 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED ERROR EVENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get event type and error type
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-        
+
         if(super.handleErrorEvent(baseResponse)) return;
         
         // Validate event type
         switch (eventType) {
             case GET_GLOBAL_CONFIGURATIONS:
-                Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
                 // Show retry view
                 showFragmentErrorRetry();
                 break;
             default:
-                Print.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
                 break;
         }
     }

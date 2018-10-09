@@ -17,7 +17,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.order.ReturnItemReasonViewHolder;
 import com.bamilo.android.appmodule.bamiloapp.utils.order.ReturnItemViewHolder;
 import com.bamilo.android.appmodule.bamiloapp.utils.order.UIOrderUtils;
@@ -60,7 +59,6 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i("ON VIEW CREATED");
         // Validate state
         if (hasSubmittedValuesToFinish()) {
             // Load and show
@@ -94,7 +92,7 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
         // refund
         setRefundSection(group);
         // Items
-        setReturnItems((ViewGroup) group.findViewById(R.id.order_return_finish_items), mItems, showItemsWithReason);
+        setReturnItems(group.findViewById(R.id.order_return_finish_items), mItems, showItemsWithReason);
         // Add
         container.addView(group);
     }

@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.bamilo.android.framework.service.rest.cookies.ISessionCookie;
 import com.bamilo.android.framework.service.utils.CustomerUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.security.ObscuredSharedPreferences;
 
 import java.net.URISyntaxException;
@@ -119,7 +118,6 @@ public class PersistentSessionStore extends CustomerUtils {
                 // Remove the saved cookie
                 values.remove(SESSION_COOKIE_TAG);
             } catch (NullPointerException | URISyntaxException e) {
-                Print.w(TAG, "WARNING: EXCEPTION ON ADD ENCODED COOKIE", e);
                 clearCredentials();
             }
         }

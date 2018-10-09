@@ -19,7 +19,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.pojo.DynamicForm;
 import com.bamilo.android.appmodule.bamiloapp.utils.RadioGroupExpandable;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
@@ -67,12 +66,11 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i("ON VIEW CREATED");
         View.inflate(getBaseActivity(), R.layout._def_order_return_step2_method, mContainer);
-        mReturnFormContainer = (ViewGroup) mContainer.findViewById(R.id.form_container);
-        mReturnItemsContainer = (ViewGroup) mContainer.findViewById(R.id.items_container);
+        mReturnFormContainer = mContainer.findViewById(R.id.form_container);
+        mReturnItemsContainer = mContainer.findViewById(R.id.items_container);
         // Get button
-        TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
+        TextView button = view.findViewById(R.id.order_return_main_button_ok);
         button.setOnClickListener(this);
         triggerReturnMethodForm();
 
@@ -82,7 +80,6 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
      * Load the dynamic form
      */
     protected void loadReturnMethodForm(Form form) {
-        Print.i(TAG, "LOAD EDIT ADDRESS FORM: ");
         if(mReturnFormContainer != null){
             // Return Method form
             mReturnFormGenerator = FormFactory.create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
@@ -203,10 +200,8 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     protected void onSuccessResponse(BaseResponse response) {
 
         EventType eventType = response.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         if(isOnStoppingProcess || eventType == null){
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -241,7 +236,6 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
             String label = ((RadioGroupExpandable) view).getSelectedLabel();
             result.put(RestConstants.METHOD, label);
         } catch (NullPointerException e) {
-            Print.w("WARNING: NPE ON GET LABEL");
         }
     }
 

@@ -19,7 +19,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.pojo.DynamicForm;
 import com.bamilo.android.appmodule.bamiloapp.pojo.DynamicFormItem;
 import com.bamilo.android.appmodule.bamiloapp.pojo.ICustomFormField;
@@ -71,7 +70,6 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i("ON VIEW CREATED");
         // Validate order items
         if (CollectionUtils.isNotEmpty(mItems)) {
             triggerGetReasonForm(mItems.size());
@@ -301,7 +299,6 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
             label = ((ListNumberField) form.getItemByKey(RestConstants.QUANTITY)).getValueFromCustomView();
             result.put(RestConstants.QUANTITY + sku, label);
         } catch (NullPointerException e) {
-            Print.w("WARNING: NPE ON GET LABEL");
         }
     }
 

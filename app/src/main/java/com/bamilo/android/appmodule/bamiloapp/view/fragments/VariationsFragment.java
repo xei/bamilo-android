@@ -11,7 +11,6 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
 import com.bamilo.android.appmodule.bamiloapp.interfaces.OnProductViewHolderClickListener;
 import com.bamilo.android.framework.service.objects.product.Variation;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductComplete;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.VariationProductsGridAdapter;
@@ -46,11 +45,9 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Print.i(TAG, "ARGUMENTS: " + arguments);
             mProductComplete = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
         }
 
@@ -65,8 +62,7 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
-        VariationProductsGridView mGridVariations = (VariationProductsGridView) view.findViewById(R.id.gridVariations);
+        VariationProductsGridView mGridVariations = view.findViewById(R.id.gridVariations);
         VariationProductsGridAdapter mAdapter = new VariationProductsGridAdapter(mProductComplete.getProductVariations());
         mAdapter.setOnViewHolderClickListener(this);
         mGridVariations.setAdapter(mAdapter);

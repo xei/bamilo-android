@@ -21,7 +21,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.rest.errors.ErrorCode;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.preferences.ShopPreferences;
 
 import java.lang.ref.WeakReference;
@@ -87,7 +86,6 @@ public class LocationHelper implements LocationListener {
             // From dialog
             sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
         } catch (NullPointerException e) {
-            Print.w("WARNING: NPE ON AUTO COUNTRY SELECTION");
             sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
         }
     }
@@ -102,11 +100,9 @@ public class LocationHelper implements LocationListener {
     private boolean getCountryFromNetwork(TelephonyManager deviceManager) {
         String networkCountry = deviceManager.getNetworkCountryIso();
         if (isCountryAvailable(networkCountry)) {
-            Print.i(TAG, "MATCH COUNTRY FROM NETWORK: " + networkCountry);
             sendInitializeMessage();
             return true;
         }
-        Print.i(TAG, "NO MATCH COUNTRY FROM NETWORK: " + networkCountry);
         return false;
     }
 
@@ -116,11 +112,9 @@ public class LocationHelper implements LocationListener {
     private boolean getCountryFromSim(TelephonyManager deviceManager) {
         String simCountry = deviceManager.getSimCountryIso();
         if (isCountryAvailable(simCountry)) {
-            Print.i(TAG, "MATCH COUNTRY FROM SIM: " + simCountry);
             sendInitializeMessage();
             return true;
         }
-        Print.i(TAG, "NO MATCH COUNTRY FROM SIM: " + simCountry);
         return false;
     }
 
@@ -132,7 +126,6 @@ public class LocationHelper implements LocationListener {
             
             String bestProvider = getBestLocationProvider(locationManager);
             if(bestProvider == null) {
-                Print.i(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: BEST PROVIDER IS NULL");
                 return false;
             }
             
@@ -141,15 +134,12 @@ public class LocationHelper implements LocationListener {
             double lng = lastKnownLocation.getLongitude();
             String geoCountry = getCountryCodeFomGeoCoder(lat, lng);
             if(isCountryAvailable(geoCountry)) {
-                Print.i(TAG, "MATCH COUNTRY FROM LASTLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
                 sendInitializeMessage();
                 return true;
             }
-            Print.i(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
             return false;
 
         } catch (Exception e) {
-            Print.w(TAG, "NO MATCH COUNTRY FROM LASTLOCATION: LAST KNOWN LOCATION IS NULL " + e.getMessage());
             return false;
         }
         
@@ -161,18 +151,15 @@ public class LocationHelper implements LocationListener {
     private boolean getCountryFromCurrentLocation(LocationManager locationManager) {
         try {
             
-            Print.i(TAG, "GET COUNTRY FROM CURRENT GEOLOCATION");
             String bestProvider = getBestLocationProvider(locationManager);
             if(bestProvider != null) {
                 locationManager.requestLocationUpdates(bestProvider, 0, 0, this);
                 timeoutHandle.postDelayed(timeoutRunnable, TIMEOUT);
                 return true;
             }
-            Print.i(TAG, "NO MATCH COUNTRY FROM CURRENT LOCATION");
             return false;
             
         } catch (Exception e) {
-            Print.w(TAG, "NO MATCH COUNTRY FROM CURRENT LOCATION", e);
             return false;
         }
         
@@ -182,12 +169,6 @@ public class LocationHelper implements LocationListener {
      * Get the best location provider GPS or Network 
      */
     private String getBestLocationProvider(LocationManager locationManager){
-//        Criteria criteria = new Criteria();
-//        // criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-//        //String bestProvider = (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) ? LocationManager.NETWORK_PROVIDER : LocationManager.GPS_PROVIDER;
-//        String bestProvider = locationManager.getBestProvider(criteria, false);
-//        Log.i(TAG, "BEST PROVIDER: " + bestProvider);
-//        return (checkConnection() && locationManager.isProviderEnabled(bestProvider)) ? bestProvider : null;
 
         // Get the best provider
         String bestProvider = null;
@@ -198,8 +179,6 @@ public class LocationHelper implements LocationListener {
         if(bestProvider == null && checkConnection() && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
             bestProvider = LocationManager.GPS_PROVIDER;
         
-        // Return provider
-        Print.i(TAG, "SELECTED PROVIDER: " + bestProvider);
         return bestProvider;
     }
     
@@ -221,7 +200,6 @@ public class LocationHelper implements LocationListener {
     Runnable timeoutRunnable = new Runnable() {
         @Override
         public void run() {
-            Print.i(TAG, "ON TIMEOUT RUNNABLE: " + locationReceived);
             // Validate flag
             if(!locationReceived) {
                 // Remove the listener previously added
@@ -254,7 +232,6 @@ public class LocationHelper implements LocationListener {
                 CountryObject countryObject = BamiloApplication.INSTANCE.countriesAvailable.get(i);
                 String supportedCountry = countryObject.getCountryIso();
                 if (TextUtils.equalsIgnoreCase(supportedCountry, countryCode)) {
-                    Print.i(TAG, "MATCH: SHOP ID " + i);
                     ChooseLanguageController.setLanguageBasedOnDevice(countryObject.getLanguages(), countryCode);
                     ShopPreferences.setShopId(context, i);
                     return SELECTED;
@@ -264,17 +241,8 @@ public class LocationHelper implements LocationListener {
         return NO_SELECTED;
     }
 
-    /**
-     * ################## LOCATION LISTENER ################## 
-     */
-    
-    /*
-     * (non-Javadoc)
-     * @see android.location.LocationListener#onLocationChanged(android.location.Location)
-     */
     @Override
     public void onLocationChanged(Location location) {
-        Print.i(TAG, "ON LOCATION CHANGED");
         // Set the flag
         locationReceived = true;
         if(timeoutHandle != null) timeoutHandle.removeCallbacks(timeoutRunnable);
@@ -287,21 +255,14 @@ public class LocationHelper implements LocationListener {
         String geoCountry = getCountryCodeFomGeoCoder(lat, lng);
         // Validate country
         if(isCountryAvailable(geoCountry)) {
-        	Print.i(TAG, "MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
         	sendInitializeMessage();
         } else {
-        	Print.i(TAG, "NO MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
         	sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.location.LocationListener#onProviderDisabled(java.lang.String)
-     */
     @Override
     public void onProviderDisabled(String provider) { 
-        Print.d(TAG, "ON PROVIDER DISABLED: " + provider);
         // Requires user interaction
         sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
         // Remove the listener you previously added
@@ -309,27 +270,14 @@ public class LocationHelper implements LocationListener {
         locationManager.removeUpdates(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.location.LocationListener#onProviderEnabled(java.lang.String)
-     */
     @Override
     public void onProviderEnabled(String provider) { 
-        Print.d(TAG, "ON PROVIDER ENABLED: " + provider);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.location.LocationListener#onStatusChanged(java.lang.String, int, android.os.Bundle)
-     */
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) { 
-        Print.d(TAG, "ON STATUS CHANGED");
     }
-    
-    /**
-     * ################## GEO CODER ################## 
-     */
+
     
     /**
      * Method used to revert the GEO location
@@ -342,23 +290,15 @@ public class LocationHelper implements LocationListener {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
             Address address = addresses.get(0);
             countryCode =  address.getCountryCode();
-            Print.d(TAG, "GET COUNTRY FROM GEOCODER: " + countryCode);
-        } catch (Exception e) {
-            Print.w(TAG, "GET ADDRESS EXCEPTION: " + e.getMessage());
+        } catch (Exception ignored) {
         }
         return countryCode;
     }
 
-    
-    /**
-     * ################## MESSAGE ################## 
-     */
-    
     /**
      * Send the message REQUIRES_USER_INTERACTION to callback
      */
     private void sendUserInteractionMessage(EventType eventType, @ErrorCode.Code int errorType){
-        Print.d(TAG, "SEND MESSAGE: " + eventType + " " + errorType);
         Message msg = new Message();
         msg.obj = new BaseResponse<>(eventType, errorType);
         callback.get().sendMessage(msg);
@@ -368,7 +308,6 @@ public class LocationHelper implements LocationListener {
      * Send the INITIALIZE message to BamiloApplication
      */
     public void sendInitializeMessage(){
-        Print.d(TAG, "SEND MESSAGE: INITIALIZE");
         BamiloApplication.INSTANCE.init(callback.get());
     }
 

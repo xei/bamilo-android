@@ -682,5 +682,7 @@
     <string name="getLatestApk">دریافت به‌روز رسانی</string>
     <string name="buy_it_now">همین الان بخر</string>
     <string name="product_added_to_cart">محصول با موفقیت به سبد خرید اضافه شد</string>
+    <string name="ssl_error_handler_message">به دلیل قدیمی بودن نسخه اندروید شما، بامیلو به اجازه شما برای نمایش این صفحه نیازمند است</string>
+    <string name="ssl_error_handler_title">خطا در نمایش محتوا</string>
 
 </resources>

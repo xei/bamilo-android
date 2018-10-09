@@ -10,7 +10,6 @@ import com.bamilo.android.framework.service.rest.cookies.AigCookieManager;
 import com.bamilo.android.framework.service.rest.cookies.ISessionCookie;
 import com.bamilo.android.framework.service.rest.errors.NoConnectivityException;
 import com.bamilo.android.framework.service.utils.NetworkConnectivity;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -287,14 +286,12 @@ public class AigHttpClient extends OkClient {
     private static void setCookies(OkHttpClient okHttpClient, Context context) {
         // Case not in test mode
         if (context != null) {
-            Print.i(TAG, "ENABLED AIG COOKIE MANAGER RELEASE MODE");
             AigCookieManager cookieManager = new AigCookieManager(context);
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             CookieHandler.setDefault(cookieManager);
         }
         // Case in test mode
         else {
-            Print.w(TAG, "WARNING: ENABLED THE COOKIE MANAGER TEST MODE");
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             CookieHandler.setDefault(cookieManager);
@@ -329,18 +326,12 @@ public class AigHttpClient extends OkClient {
                     // retry the request
                     response = chain.proceed(recoveryRequest);
                 }
-                Print.w(TAG, "############ OK HTTP: REDIRECT RESPONSE INTERCEPTOR ############");
-                Print.w(TAG, "Network response:   " + response.networkResponse());
-                Print.w(TAG, "> Request:          " + response.request());
-                Print.w(TAG, "> Method:           " + chain.request().method());
-                Print.w(TAG, "######################################################\n");
             }
             return response;
         }
     }
 
     public static void clearCache(Context context) throws IOException {
-        Print.d(TAG, "Clearing cache");
         if (context != null) {
             Cache cache = new Cache(getCache(context), AigConfigurations.CACHE_MAX_SIZE);
             cache.delete();
@@ -358,16 +349,7 @@ public class AigHttpClient extends OkClient {
 
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Print.d(AigHttpClient.TAG, "############ OK HTTP: REQUEST INTERCEPTOR ############");
             Request request = chain.request();
-            Print.d(AigHttpClient.TAG, "Headers:      \n" + request.headers());
-            Print.d(AigHttpClient.TAG, "Url:            " + request.url());
-            Print.d(AigHttpClient.TAG, "UrI:            " + request.uri());
-            Print.d(AigHttpClient.TAG, "Https:          " + request.isHttps());
-            Print.d(AigHttpClient.TAG, "Method:         " + request.method());
-            Print.d(AigHttpClient.TAG, "Body:           " + request.body());
-            Print.d(AigHttpClient.TAG, "Cache:          " + request.cacheControl());
-            Print.d(AigHttpClient.TAG, "####################################################\n");
             return chain.proceed(request);
         }
     }
@@ -377,16 +359,7 @@ public class AigHttpClient extends OkClient {
 
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Print.d(AigHttpClient.TAG, "############ OK HTTP: RESPONSE INTERCEPTOR ############");
             Response response = chain.proceed(chain.request());
-            Print.d(AigHttpClient.TAG, "Headers:          \n" + response.headers());
-            Print.d(AigHttpClient.TAG, "Message:            " + response.message());
-            Print.d(AigHttpClient.TAG, "Redirect:           " + response.isRedirect());
-            Print.d(AigHttpClient.TAG, "Cache response:     " + response.cacheResponse());
-            Print.d(AigHttpClient.TAG, "Network response:   " + response.networkResponse());
-            Print.d(AigHttpClient.TAG, "> Request:          " + response.request());
-            Print.d(AigHttpClient.TAG, "> Method:           " + chain.request().method());
-            Print.d(AigHttpClient.TAG, "######################################################\n");
             return response;
         }
     }

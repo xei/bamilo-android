@@ -23,7 +23,6 @@ import com.bamilo.android.framework.service.forms.IFormField;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment;
@@ -185,7 +184,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         // Add fields
         for (IFormField entry : form.getFields()) {
             entry.setFormType(form.getType());
-            Print.i(TAG, "FORM ITEM KEY:" + entry.getKey() + " TYPE:" + entry.getInputType());
             this.addControl(DynamicFormItem.newInstance(this, base.getContext(), entry));
         }
         // Add footer
@@ -298,7 +296,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
 
     /**
      * Get the error message of the first element.
-     * @return
      */
     public String getErrorMessage() {
         String errorMessage = "";
@@ -344,11 +341,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Iterable#iterator()
-     */
+    @NonNull
     @Override
     public Iterator<DynamicFormItem> iterator() {
         return controls.values().iterator();
@@ -423,11 +416,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         }
     }
 
-    /*
-     * ########## BASE ACTIVITY ##########
-     */
-
-    public DynamicForm addParentActivity(BaseActivity activity) {
+     public DynamicForm addParentActivity(BaseActivity activity) {
         mFragmentActivity = new WeakReference<>(activity);
         return this;
     }
@@ -439,10 +428,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     public boolean hasParentActivity() {
         return  mFragmentActivity != null && mFragmentActivity.get() != null;
     }
-
-    /*
-     * ########## BASE FRAGMENT ##########
-     */
 
     public DynamicForm addParentFragment(BaseFragment fragment) {
         mParentFragment = new WeakReference<>(fragment);
@@ -471,10 +456,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         }
     }
 
-    /*
-     * ########## CLICK LISTENER ##########
-     */
-
     public DynamicForm addOnClickListener(View.OnClickListener listener) {
         mClickListener = new WeakReference<>(listener);
         return this;
@@ -490,10 +471,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         return mClickListener;
     }
 
-    /*
-     * ########## CHECKED CHANGE LISTENER ##########
-     */
-
     public DynamicForm addCheckedChangeListener(@NonNull CompoundButton.OnCheckedChangeListener listener) {
         mCheckedChangeListener = new WeakReference<>(listener);
         return this;
@@ -504,10 +481,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             mCheckedChangeListener.get().onCheckedChanged(buttonView, isChecked);
         }
     }
-
-    /*
-     * ########## RESPONSE CALLBACK ##########
-     */
 
     public DynamicForm addRequestCallBack(IResponseCallback requestCallBack) {
         mRequestCallBack = new WeakReference<>(requestCallBack);
@@ -525,10 +498,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             mRequestCallBack.get().onRequestError(baseResponse);
         }
     }
-
-    /*
-     * ########## NEWSLETTER FORM ##########
-     */
 
     /**
      * Show all views performing the click or not
@@ -550,5 +519,4 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             item.getControl().setVisibility(View.GONE);
         }
     }
-
 }

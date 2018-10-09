@@ -16,7 +16,6 @@ import com.bamilo.android.framework.service.forms.Form;
 import com.bamilo.android.framework.service.forms.IFormField;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.pojo.DynamicForm;
 import com.bamilo.android.appmodule.bamiloapp.pojo.DynamicFormItem;
 import com.bamilo.android.appmodule.bamiloapp.pojo.IDynamicFormItemField;
@@ -130,7 +129,6 @@ public class ScreenRadioField extends DynamicFormItem implements IDynamicFormIte
 
     @Override
     public void onClick(View view) {
-        Print.d("SHOW DIALOG");
         // Get view id
         int id = view.getId();
         // Case button

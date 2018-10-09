@@ -19,7 +19,6 @@ import com.bamilo.android.framework.service.objects.product.BundleList;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductBundle;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.RestConstants;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.ComboGridView;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
@@ -67,11 +66,9 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get data from arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Print.i(TAG, "ARGUMENTS: " + arguments);
             mBundleList = arguments.getParcelable(RestConstants.BUNDLE_PRODUCTS);
             mProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
         }
@@ -84,7 +81,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         //update total price
         mTotalPrice = view.findViewById(R.id.pdv_combo_price);
         mTotalPrice.setText(CurrencyFormatter.formatCurrency(mBundleList.getPrice()));
@@ -106,12 +102,10 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        Print.i(TAG, "ON CLICK VIEW");
         // Get id
         int id = view.getId();
         // Case sort button
         if (id == R.id.combo_button_buy) {
-            Print.i(TAG, "ADD CART CLICKED");
             addComboToCart();
         }
     }
@@ -130,7 +124,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             }
         }
         // Add bundle to cart
-        Print.i(TAG,"ADD BUNDLE TO CART");
         triggerContentEventProgress(new GetShoppingCartAddBundleHelper(), GetShoppingCartAddBundleHelper.createBundle(mBundleList), this);
         mIsToAddBundleToCart = false;
     }
@@ -150,7 +143,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      * show dialog to choose the variation simples
      */
     private void onClickSimpleVariationsButton(String title) {
-        Print.i(TAG, "ON CLICK TO SHOW SIMPLE VARIATIONS");
         try {
             DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
                     getBaseActivity(),
@@ -159,7 +151,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                     this);
             dialog.show(getFragmentManager(), null);
         } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
         }
     }
 
@@ -168,7 +159,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      */
     @Override
     public void onDialogListItemSelect(int position) {
-        Print.i(TAG, "ON CLICK VARIATION LIST ITEM");
         // Update the Combo adapter
         updateComboContainer();
         if(mIsToAddBundleToCart)
@@ -233,15 +223,12 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             mIsToAddBundleToCart = false;
             try {
                 int positions = (int) view.getTag(R.id.position);
-                Print.i(TAG,"POSITION:"+position);
-                Print.i(TAG,"POSITIONS:"+positions);
                 ProductBundle product = ((ComboGridAdapter) adapter).getItem(positions);
                 if(product != null){
                     mBundleWithMultiple = product;
                     onClickSimpleVariationsButton(getString(R.string.product_variance_choose));
                 }
             } catch (NullPointerException e) {
-                Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
             }
         }
     }
@@ -257,10 +244,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "ON SUCCESS EVENT: ");
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Hide dialog progress
@@ -271,10 +256,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Hide dialog progress

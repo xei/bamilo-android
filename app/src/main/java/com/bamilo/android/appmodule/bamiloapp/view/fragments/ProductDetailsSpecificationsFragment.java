@@ -23,7 +23,6 @@ import com.bamilo.android.framework.service.rest.errors.ErrorCode;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
 import com.bamilo.android.R;
 
@@ -72,7 +71,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -83,7 +81,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Retain this fragment across configuration changes.
         Bundle arguments = getArguments();
         if(arguments != null) {
@@ -102,7 +99,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Validate saved instance
         if(savedInstanceState != null){
             mCompleteProductSku = savedInstanceState.getString(GetProductHelper.SKU_TAG);
@@ -120,7 +116,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
         inflater = LayoutInflater.from(getBaseActivity());
     }
 
@@ -132,7 +127,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
 
         /**
          * Validate product
@@ -160,12 +154,10 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Print.i(TAG, "ON SAVE INSTANCE STATE");
         outState.putString(GetProductHelper.SKU_TAG, mCompleteProductSku);
         super.onSaveInstanceState(outState);
 
@@ -180,7 +172,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -191,7 +182,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     /*
@@ -201,7 +191,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
         mainView = null;
         mCompleteProduct = null;
     }
@@ -252,16 +241,13 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
         super.handleSuccessEvent(baseResponse);
         EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
             case GET_PRODUCT_DETAIL:
                 if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
@@ -292,10 +278,8 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -305,7 +289,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
 
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "onErrorEvent: type = " + eventType + " code = "+ errorCode);
         switch (eventType) {
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {

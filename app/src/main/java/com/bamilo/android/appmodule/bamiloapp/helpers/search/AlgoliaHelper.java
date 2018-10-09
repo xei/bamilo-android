@@ -17,7 +17,6 @@ import com.bamilo.android.framework.service.objects.search.Suggestions;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.bamilo.android.appmodule.bamiloapp.preferences.CountryPersistentConfigs;
 import com.bamilo.android.R;
@@ -65,7 +64,6 @@ public class AlgoliaHelper {
 
     public void getSuggestions(@NonNull final String searchQuery){
         if(getAlgoliaClient() == null){
-            Print.i(TAG , "ERROR: mAlgoliaAPIClient is null");
             return;
         }
 
@@ -78,7 +76,7 @@ public class AlgoliaHelper {
         ArrayList<String> facets = new ArrayList<>();
         facets.add(RestConstants.FACET_CATEGORY);
 
-        List<IndexQuery> queries = new ArrayList<IndexQuery>();
+        List<IndexQuery> queries = new ArrayList<>();
 
         Query queryProductsPopular = new Query(searchQuery)
                 .setHitsPerPage(HITS_PER_PAGE)
@@ -113,7 +111,7 @@ public class AlgoliaHelper {
             @Override
             public void APIError(APIClient client, TaskParams.Client context, AlgoliaException e) {
                 BaseResponse response = new BaseResponse();
-                ArrayList<Suggestion> suggestions = new ArrayList<Suggestion>();
+                ArrayList<Suggestion> suggestions = new ArrayList<>();
                 try {
                     suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
                 } catch (InterruptedException e1) {
@@ -150,7 +148,7 @@ public class AlgoliaHelper {
             Query q = new Query()
                     .setAttributesToRetrieve(attributesToRetrieve)
                     .setFacetFilters(ffacetsFilter);
-            List<IndexQuery> queries = new ArrayList<IndexQuery>();
+            List<IndexQuery> queries = new ArrayList<>();
 
             IndexQuery iq = new IndexQuery(mNamespacePrefix+_CATEGORIES, q);
             queries.add(iq);
@@ -180,11 +178,6 @@ public class AlgoliaHelper {
 
     }
 
-    /**
-     *
-     * @param response
-     * @return
-     */
     private Suggestions getProductsAndShopSuggestions(JSONObject response, final String query){
         final Suggestions suggestions = new Suggestions();
         try {
@@ -225,11 +218,6 @@ public class AlgoliaHelper {
         return suggestions;
     }
 
-    /**
-     *
-     * @param response
-     * @return
-     */
     private Suggestions getCategoriesSuggestions(JSONObject response, final String searchTerm){
         final Suggestions suggestions = new Suggestions();
         try {

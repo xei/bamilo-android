@@ -2,6 +2,7 @@ package com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -14,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import android.widget.TextView;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.R;
 
 /**
@@ -52,7 +52,6 @@ public class DialogGenericFragment extends DialogFragment {
             String button1_title,
             String button2_title,
             OnClickListener click) {
-        Print.d(TAG, "NEW INSTANCE: 2 Buttons");
         DialogGenericFragment dialogGenericFragment = new DialogGenericFragment();
         dialogGenericFragment.mainText = main_text;
         dialogGenericFragment.secondaryText = secondary_text;
@@ -76,7 +75,6 @@ public class DialogGenericFragment extends DialogFragment {
             String button2_title,
             String button3_title,
             OnClickListener click) {
-        Print.d(TAG, "NEW INSTANCE: 3 Buttons");
         DialogGenericFragment dialogGenericFragment = new DialogGenericFragment();
         dialogGenericFragment.mainText = main_text;
         dialogGenericFragment.secondaryText = secondary_text;
@@ -93,30 +91,16 @@ public class DialogGenericFragment extends DialogFragment {
      * Empty constructor
      */
     public DialogGenericFragment() {
-        // ...
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.DialogFragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_Custom_Dialog_NoTitle);
-        Print.i(TAG, "ON CREATE");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Print.i(TAG, "ON CREATE VIEW");
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
         if (buttonTitle3 == null) {
             view = inflater.inflate(R.layout.dialog_generic, container);
@@ -128,22 +112,7 @@ public class DialogGenericFragment extends DialogFragment {
         return view;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.DialogFragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle arg0) {
-        /**
-         * Fix: https://rink.hockeyapp.net/manage/apps/85532/app_versions/31/crash_reasons/21454355?type=crashes
-         */
-        //super.onSaveInstanceState(arg0);
-    }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onPause()
-     */
     @Override
     public void onPause() {
         super.onPause();
@@ -154,10 +123,7 @@ public class DialogGenericFragment extends DialogFragment {
     public void show(FragmentManager manager, String tag) {
         try {
             super.show(manager, tag);
-            // Trying fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/143/crash_reasons/38911893?type=crashes
-            // Or try this solution http://dimitar.me/android-displaying-dialogs-from-background-threads/
-        } catch (IllegalStateException | WindowManager.BadTokenException ex) {
-            Print.e(TAG, "Error showing Dialog", ex);
+        } catch (IllegalStateException | WindowManager.BadTokenException ignored) {
         }
     }
 
@@ -249,7 +215,6 @@ public class DialogGenericFragment extends DialogFragment {
             final Activity activity,
             final OnClickListener retryClickListener,
             final boolean finishActivity) {
-        Print.d(TAG, "CREATE ERROR DIALOG");
         final DialogGenericFragment dialog = DialogGenericFragment.newInstance(
                 true,
                 false,
@@ -258,19 +223,16 @@ public class DialogGenericFragment extends DialogFragment {
                 activity.getString(R.string.cancel_label),
                 activity.getString(R.string.try_again),
                 null);
-        dialog.clickListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int id = v.getId();
-                if (id == R.id.button1) {
-                    if (finishActivity) {
-                        activity.finish();
-                    } else {
-                        dialog.dismissAllowingStateLoss();
-                    }
-                } else if (id == R.id.button2) {
-                    retryClickListener.onClick(v);
+        dialog.clickListener = v -> {
+            int id = v.getId();
+            if (id == R.id.button1) {
+                if (finishActivity) {
+                    activity.finish();
+                } else {
+                    dialog.dismissAllowingStateLoss();
                 }
+            } else if (id == R.id.button2) {
+                retryClickListener.onClick(v);
             }
         };
         return dialog;
@@ -289,12 +251,7 @@ public class DialogGenericFragment extends DialogFragment {
                 button,
                 null, null);
 
-        dialog.clickListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismissAllowingStateLoss();
-            }
-        };
+        dialog.clickListener = v -> dialog.dismissAllowingStateLoss();
 
         return dialog;
     }

@@ -38,7 +38,6 @@ import com.bamilo.android.framework.service.rest.errors.ErrorCode;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
@@ -110,7 +109,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -122,7 +120,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        TrackerDelegator.trackPage(TrackingPage.WRITE_REVIEW, getLoadTime(), false);
-        Print.i(TAG, "ON CREATE");
         // Validate the saved state
         if (savedInstanceState != null) {
             ratingForm = BamiloApplication.INSTANCE.ratingForm;
@@ -143,7 +140,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         ratingContainer = view.findViewById(R.id.form_rating_container);
         mainContainer = view.findViewById(R.id.product_rating_container);
     }
@@ -156,7 +152,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /**
@@ -178,7 +173,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         init();
     }
 
@@ -190,7 +184,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
         // Save the form state
         Bundle bundle = new Bundle();
         if(mDynamicForm != null) {
@@ -201,7 +194,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Print.i(TAG, "ON SAVE INSTANCE STATE");
         super.onSaveInstanceState(outState);
         // Retain the old state
         if(mSavedState != null) {
@@ -225,7 +217,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
         //duplicated here and on onSaveInstance because when this fragment is removed from the Reviews Landscape it doesn't pass on the onSaveInstance method
         BamiloApplication.INSTANCE.ratingForm = ratingForm;
         BamiloApplication.INSTANCE.reviewForm = reviewForm;
@@ -239,7 +230,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -562,20 +552,16 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
 
-        Print.i(TAG, "ON SUCCESS EVENT");
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "onSuccessEvent eventType : " + eventType);
         switch (eventType) {
             case REVIEW_RATING_PRODUCT_EVENT:
 
-                Print.d(TAG, "review product completed: success");
                 // Clean options after success
                 Bundle params = new Bundle();
                 params.putParcelable(TrackerDelegator.PRODUCT_KEY, completeProduct);
@@ -595,7 +581,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 break;
 
             case GET_FORM_RATING_EVENT:
-                Print.i(TAG, "GET_FORM_RATING_EVENT");
                 ratingForm = (Form) baseResponse.getContentData();
                 setRatingLayout(ratingForm);
                 if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
@@ -607,7 +592,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 break;
 
             case GET_FORM_REVIEW_EVENT:
-                Print.i(TAG, "GET_FORM_REVIEW_EVENT");
                 reviewForm = (Form) baseResponse.getContentData();
                 if(ratingForm == null)
                     setRatingLayout(reviewForm);
@@ -615,7 +599,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 break;
 
             case GET_PRODUCT_DETAIL:
-                Print.d(TAG, "GOT GET_PRODUCT_EVENT");
                 if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
                     getActivity().onBackPressed();
                     showWarningErrorMessage(getString(R.string.product_could_not_retrieved));
@@ -641,11 +624,9 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onRequestError(BaseResponse baseResponse) {
 
-        Print.d(TAG, "ON ERROR EVENT");
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -658,7 +639,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "onErrorEvent: type = " + eventType + " code= "+errorCode);
 
         switch (eventType) {
             case GET_FORM_RATING_EVENT:

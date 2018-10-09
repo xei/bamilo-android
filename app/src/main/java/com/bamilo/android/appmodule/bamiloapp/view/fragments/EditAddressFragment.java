@@ -39,7 +39,6 @@ import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.ApiConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -101,7 +100,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        TrackerDelegator.trackPage(TrackingPage.EDIT_ADDRESS, getLoadTime(), false);
-        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments() != null ? getArguments() : savedInstanceState;
         if (arguments != null) {
@@ -122,23 +120,22 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
-        name = (EditText) view.findViewById(R.id.address_name);
-        family = (EditText) view.findViewById(R.id.address_family);
-        cellphone = (EditText) view.findViewById(R.id.address_cell);
-        address = (EditText) view.findViewById(R.id.address_direction);
-        address_spinner = (Spinner) view.findViewById(R.id.address_state);
-        city_spinner = (Spinner) view.findViewById(R.id.address_city);
-        postal_spinner = (Spinner) view.findViewById(R.id.address_postal_region);
-        postal_code = (EditText) view.findViewById(R.id.address_postal_code);
+        name = view.findViewById(R.id.address_name);
+        family = view.findViewById(R.id.address_family);
+        cellphone = view.findViewById(R.id.address_cell);
+        address = view.findViewById(R.id.address_direction);
+        address_spinner = view.findViewById(R.id.address_state);
+        city_spinner = view.findViewById(R.id.address_city);
+        postal_spinner = view.findViewById(R.id.address_postal_region);
+        postal_code = view.findViewById(R.id.address_postal_code);
         add = view.findViewById(R.id.edit_address_btn);
         add.setOnClickListener(this);
 
-        name_error = (TextView) view.findViewById(R.id.address_name_error);
-        family_error = (TextView) view.findViewById(R.id.address_last_name_error);
-        cellphone_error = (TextView) view.findViewById(R.id.address_cellphone_error);
-        address_error = (TextView) view.findViewById(R.id.address_text_error);
-        address_postal_code_error = (TextView) view.findViewById(R.id.address_postal_code_error);
+        name_error = view.findViewById(R.id.address_name_error);
+        family_error = view.findViewById(R.id.address_last_name_error);
+        cellphone_error = view.findViewById(R.id.address_cellphone_error);
+        address_error = view.findViewById(R.id.address_text_error);
+        address_postal_code_error = view.findViewById(R.id.address_postal_code_error);
         triggerGetAddress(mAddressId);
     }
 
@@ -160,7 +157,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -171,7 +167,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -181,7 +176,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.d(TAG, "ON SAVE SATE");
     }
 
 
@@ -196,7 +190,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         }
         // Unknown view
         else {
-            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
         }
     }
 
@@ -283,10 +276,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     }
 
     private void onClickCreateAddressButton() {
-        Print.i(TAG, "ON CLICK: CREATE");
         // Validate
         if (!formValidated()) {
-            Print.i(TAG, "SAME FORM: INVALID");
         } else {
 
             ContentValues values = new ContentValues();
@@ -321,7 +312,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
 
     }
 
@@ -333,7 +323,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -342,7 +331,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     @Override
     public void onDestroyView() {
-        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
 
@@ -353,7 +341,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
         mRegions = null;
     }
 
@@ -369,7 +356,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Method used to set the regions on the respective form
      */
     private void setRegions(ArrayList<AddressRegion> regions) {
-        Print.d(TAG, "SET REGIONS REGIONS: ");
 
         // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
@@ -520,7 +506,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Print.d(TAG, "ON ITEM SELECTED");
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
             region = ((AddressRegion) object).getValue();
@@ -544,7 +529,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Trigger to edit an address
      */
     private void triggerEditAddress(String action, ContentValues values) {
-        Print.i(TAG, "TRIGGER: EDIT ADDRESS");
         triggerContentEvent(new EditAddressHelper(), EditAddressHelper.createBundle(action, values), this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
@@ -594,10 +578,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -608,31 +590,26 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 triggerGetRegions();
                 break;
             case GET_REGIONS_EVENT:
-                Print.d(TAG, "RECEIVED GET_REGIONS_EVENT");
                 mRegions = (AddressRegions) baseResponse.getContentData();
                 if (CollectionUtils.isNotEmpty(mRegions)) {
                     setRegions(mRegions);
                 } else {
-                    Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
                     super.showFragmentErrorRetry();
 
                 }
                 //hideActivityProgress();
                 break;
             case GET_CITIES_EVENT:
-                Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
                 ArrayList<AddressCity> cities = (GetCitiesHelper.AddressCitiesStruct)baseResponse.getContentData();
                 setCities(cities);
                 break;
             case GET_POSTAL_CODE_EVENT:
-                Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
                 ArrayList<AddressPostalCode> postalCodes = (AddressPostalCodes)baseResponse.getContentData();
                 setPostalCodes(postalCodes);
                 // Show
                 showFragmentContentContainer();
                 break;
             case EDIT_ADDRESS_EVENT:
-                Print.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.edit_address_success));
                 getBaseActivity().onBackPressed();
                 break;
@@ -651,17 +628,14 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         errorType = baseResponse.getEventType();
         // Validate
         if (isOnStoppingProcess || errorType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.i(TAG, "SUPER HANDLE ERROR EVENT");
             return;
         }
         // Validate
         int errorCode = baseResponse.getError().getCode();
-        Print.i(TAG, "ON ERROR EVENT: " + errorType + " " + errorCode);
         switch (errorType) {
             case GET_EDIT_ADDRESS_FORM_EVENT:
                 onGetEditAddressFormErrorEvent(baseResponse);
@@ -684,23 +658,19 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     }
 
     protected void onGetEditAddressFormErrorEvent(BaseResponse baseResponse) {
-        Print.w(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
     }
 
     protected void onGetRegionsErrorEvent(BaseResponse baseResponse) {
-        Print.w(TAG, "RECEIVED GET_REGIONS_EVENT");
     }
 
     protected void onGetCitiesErrorEvent(BaseResponse baseResponse) {
-        Print.w(TAG, "RECEIVED GET_CITIES_EVENT");
     }
 
     protected void onGetPostalCodesErrorEvent() {
-        Print.w(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
+
     }
 
     protected void onEditAddressErrorEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
     }
 
 }

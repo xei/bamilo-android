@@ -21,7 +21,6 @@ import android.widget.ListView;
 
 import android.widget.TextView;
 import com.bamilo.android.framework.service.pojo.IntConstants;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.R;
 
 import java.lang.ref.WeakReference;
@@ -54,14 +53,12 @@ public class DialogQuantityListFragment extends BottomSheet implements OnItemCli
      * Empty constructor
      */
     public DialogQuantityListFragment() {
-        // ...
     }
 
     /**
      * Called from Shopping cart.
      */
     public static DialogQuantityListFragment newInstance(@NonNull WeakReference<? extends FragmentActivity> weakActivity, @StringRes int title, int max, int initial) {
-        Print.d(TAG, "NEW INSTANCE");
         DialogQuantityListFragment dialogListFragment = new DialogQuantityListFragment();
         dialogListFragment.mActivity = weakActivity;
         dialogListFragment.mTitle = title;
@@ -88,30 +85,18 @@ public class DialogQuantityListFragment extends BottomSheet implements OnItemCli
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.DialogFragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.dialog_list_content, container);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
-     */
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Validate current activity
         if (this.mActivity == null || this.mActivity.get() == null) {
@@ -123,7 +108,7 @@ public class DialogQuantityListFragment extends BottomSheet implements OnItemCli
         // Set size guide
         setSizeGuide(view);
         // Get list
-        ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
+        ListView list = view.findViewById(R.id.dialog_list_view);
         // Set Max list size with size guide
         setListSize(list, mMax);
         // Validate adapter
@@ -188,38 +173,22 @@ public class DialogQuantityListFragment extends BottomSheet implements OnItemCli
             super.show(manager, tag);
             // Trying fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/143/crash_reasons/38911893?type=crashes
             // Or try this solution http://dimitar.me/android-displaying-dialogs-from-background-threads/
-        } catch (IllegalStateException | WindowManager.BadTokenException ex) {
-            Print.e(TAG, "Error showing Dialog", ex);
+        } catch (IllegalStateException | WindowManager.BadTokenException ignored) {
         }
     }
 
-    /*
-     * ########### LISTENERS ###########
-     */
-
-    /*
-     * (non-Javadoc)
-     * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
-     */
     @Override
     public void onItemClick(final AdapterView<?> adapterView, final View view, final int position, final long id) {
         DialogQuantityListAdapter adapter = (DialogQuantityListAdapter) adapterView.getAdapter();
         adapter.setCheckedPosition(adapter.getItem(position));
         adapter.notifyDataSetChanged();
-        view.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dismissAllowingStateLoss();
-                if (mSelectListener != null) {
-                    mSelectListener.onDialogListItemSelect(adapterView, view, position, id);
-                }
+        view.postDelayed(() -> {
+            dismissAllowingStateLoss();
+            if (mSelectListener != null) {
+                mSelectListener.onDialogListItemSelect(adapterView, view, position, id);
             }
         }, IntConstants.DIALOG_DELAY_DISMISS);
     }
-
-    /*
-     * ########### ADAPTER ###########
-     */
 
     /**
      * Adapter that shows a list of generic items for a dialg
@@ -238,19 +207,11 @@ public class DialogQuantityListFragment extends BottomSheet implements OnItemCli
             this.mInflater = LayoutInflater.from(context);
         }
 
-        /*
-         * (non-Javadoc)
-         * @see android.widget.Adapter#getCount()
-         */
         @Override
         public int getCount() {
             return mMax;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see android.widget.Adapter#getItem(int)
-         */
         @Override
         public Integer getItem(int position) {
             return position + 1;
@@ -264,26 +225,20 @@ public class DialogQuantityListFragment extends BottomSheet implements OnItemCli
             initial = position;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
-         */
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             View view;
             if (convertView == null) {
                 view = mInflater.inflate(R.layout.dialog_list_item, parent, false);
             } else {
                 view = convertView;
             }
-            TextView textView = (TextView) view.findViewById(R.id.item_text);
-            CheckBox checkBox = (CheckBox) view.findViewById(R.id.dialog_item_checkbox);
+            TextView textView = view.findViewById(R.id.item_text);
+            CheckBox checkBox = view.findViewById(R.id.dialog_item_checkbox);
             textView.setText(String.valueOf(getItem(position)));
             checkBox.setChecked(getItem(position) == getInitial());
             return view;
         }
-
     }
-
-
 }

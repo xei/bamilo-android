@@ -13,7 +13,6 @@ import com.bamilo.android.appmodule.bamiloapp.helpers.configs.GetStaticPageHelpe
 import com.bamilo.android.framework.service.objects.statics.StaticPage;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.R;
@@ -65,13 +64,12 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i("ON VIEW CREATED");
         // Set title
         ((TextView) view.findViewById(R.id.order_return_main_title)).setText(R.string.order_return_conditions_title);
         // Get container
-        mContainer = (ViewGroup) view.findViewById(R.id.order_return_main_inflate);
+        mContainer = view.findViewById(R.id.order_return_main_inflate);
         // Get button
-        TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
+        TextView button = view.findViewById(R.id.order_return_main_button_ok);
         button.setText(R.string.ok_got_it);
         button.setOnClickListener(this);
         // Validate content static page

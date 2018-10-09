@@ -7,7 +7,6 @@ import com.bamilo.android.R;
 import com.bamilo.android.framework.service.Darwin;
 import com.bamilo.android.framework.service.utils.DarwinRegex;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 
 import java.net.MalformedURLException;
@@ -48,7 +47,6 @@ public class AigRestContract {
     }
 
     public static void init(Context context, String selectedId) {
-        Print.i(TAG, "Initializing RestContract : " + selectedId);
         SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(sharedPrefs);
         setRestScheme(context, sharedPrefs);
@@ -56,12 +54,10 @@ public class AigRestContract {
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
         setUserLanguageCode(sharedPrefs);
-        Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
     // NO_COUNTRIES_CONFIGS
     public static void init(Context context) {
-        Print.i(TAG, "Initializing RestContract");
         SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(context, R.string.global_server_host);
         setRestScheme(context, sharedPrefs);
@@ -69,12 +65,10 @@ public class AigRestContract {
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
         setUserLanguageCode(sharedPrefs);
-        Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
     // NO_COUNTRY_CONFIGS_AVAILABLE        KEY_SELECTED_COUNTRY_URL
     public static void init(Context context, String requestHost, String basePath) {
-        Print.i(TAG, "Initializing RestContract");
         SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(requestHost);
         setRestScheme(context, sharedPrefs);
@@ -82,7 +76,6 @@ public class AigRestContract {
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
         setUserLanguageCode(sharedPrefs);
-        Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
     /*
@@ -98,7 +91,6 @@ public class AigRestContract {
     }
 
     private static void setRestHost(String requestHost) {
-        Print.i(TAG, "REQUEST HOST :" + REQUEST_HOST);
         REQUEST_HOST = requestHost;
         if (TextUtils.isEmpty(REQUEST_HOST)) {
             throw new RuntimeException("The rest host has to be set and not being empty!");
@@ -152,7 +144,6 @@ public class AigRestContract {
      * @return String
      */
     public static String getShopDomain() {
-        Print.i(TAG, "COOKIE SHOP DOMAIN: " + COOKIE_SHOP_DOMAIN);
         return COOKIE_SHOP_DOMAIN;
     }
 
@@ -162,7 +153,6 @@ public class AigRestContract {
      * @return String
      */
     public static String getShopUri() {
-        Print.i(TAG, "COOKIE SHOP URI: " + COOKIE_SHOP_URI);
         return COOKIE_SHOP_URI;
     }
 
@@ -171,7 +161,6 @@ public class AigRestContract {
      */
     public static URL buildCompleteUrl(String apiServicePath) throws MalformedURLException {
         URL url = new URL("https", REQUEST_HOST + "/" + REST_BASE_PATH, apiServicePath);
-        Print.i(TAG, "CREATED URI: " + url);
         return url;
     }
 

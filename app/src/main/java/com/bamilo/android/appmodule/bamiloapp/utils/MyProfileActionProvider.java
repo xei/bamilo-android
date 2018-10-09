@@ -2,6 +2,7 @@ package com.bamilo.android.appmodule.bamiloapp.utils;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.framework.components.widget.DismissibleSpinner;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.bamilo.android.R;
 
@@ -50,24 +50,16 @@ public class MyProfileActionProvider extends ActionProvider {
         getDropdownList();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.view.ActionProvider#onCreateActionView(android.view.MenuItem)
-     */
     @Override
     public View onCreateActionView(MenuItem forItem) {
         return onCreateActionView();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.view.ActionProvider#onCreateActionView()
-     */
     @Override
     public View onCreateActionView() {
         //
         View spinnerContainer = LayoutInflater.from(getContext()).inflate(R.layout.action_bar_myprofile_layout, null);
-        mSpinner = (DismissibleSpinner) spinnerContainer.findViewById(R.id.spinner_myprofile);
+        mSpinner = spinnerContainer.findViewById(R.id.spinner_myprofile);
         // Case in Bamilo and API 17 set spinner as gone
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN_MR1 && ShopSelector.isRtlShop())
             mSpinner.setVisibility(View.GONE);
@@ -131,7 +123,6 @@ public class MyProfileActionProvider extends ActionProvider {
      * Change selection on Spinner to force a dismiss
      */
     public void dismissSpinner() {
-        Print.d(TAG, "dismissSpinner");
         mSpinner.dismiss();
     }
 
@@ -139,20 +130,9 @@ public class MyProfileActionProvider extends ActionProvider {
         // Get current list
         ArrayList<Integer> list = (ArrayList<Integer>) getDropdownList();
         // Case Home or Cart
-        /*if (action == NavigationAction.HOME || action == NavigationAction.BASKET || action == NavigationAction.SAVED) {
-            // Remove home from array
-            if(NavigationAction.SAVED == list.get(2)) list.remove(2);
-            if(NavigationAction.HOME == list.get(0)) list.remove(0);
-        }
-        // Case others
-        else if (NavigationAction.HOME != list.get(0)) {
-            list.add(0, NavigationAction.HOME);
-            list.add(2, NavigationAction.SAVED);
-        }*/
         if (list.indexOf(action) != -1) {
-            list.remove(list.indexOf(action));
+            list.remove(action);
         }
-
     }
 
     /**
@@ -182,8 +162,9 @@ public class MyProfileActionProvider extends ActionProvider {
         /**
          * Spinner is invisible
          */
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             View view = convertView;
             if (view == null) {
                 view = LayoutInflater.from(getContext()).inflate(R.layout.gen_single_line_with_icon, parent, false);
@@ -192,7 +173,7 @@ public class MyProfileActionProvider extends ActionProvider {
         }
 
         @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
             View view = convertView;
             if (view == null) {
                 view = LayoutInflater.from(getContext()).inflate(R.layout.gen_single_line_with_icon, parent, false);
@@ -248,10 +229,6 @@ public class MyProfileActionProvider extends ActionProvider {
                 case NavigationAction.ABOUT:
                     title.setText(R.string.about_us_label);
                     icon.setImageResource(R.drawable.ico_dropdown_contact_us);
-
-                    break;
-                default:
-                    Print.w(TAG, "WARNING GETDROPDOWNVIEW UNKNOWN VIEW");
                     break;
             }
             return view;
@@ -261,6 +238,5 @@ public class MyProfileActionProvider extends ActionProvider {
         public long getItemId(int position) {
             return 0;
         }
-
     }
 }

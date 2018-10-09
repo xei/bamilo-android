@@ -13,7 +13,6 @@ import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.preferences.CountryPersistentConfigs;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -52,11 +51,9 @@ public class OrderReturnCallFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Print.i(TAG, "ARGUMENTS: " + arguments);
             mOrderItem = arguments.getParcelable(ConstantsIntentExtra.DATA);
             orderNumber = arguments.getString(ConstantsIntentExtra.ARG_1);
 
@@ -72,13 +69,12 @@ public class OrderReturnCallFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
 
-        mTitleView = (TextView) view.findViewById(R.id.return_call_title);
-        mOrderNumberView = (TextView) view.findViewById(R.id.return_call_order_number);
-        mBody1View = (TextView) view.findViewById(R.id.return_call_body1);
-        mBody2View = (TextView) view.findViewById(R.id.return_call_body2);
-        TextView callView = (TextView) view.findViewById(R.id.btn_call_now);
+        mTitleView = view.findViewById(R.id.return_call_title);
+        mOrderNumberView = view.findViewById(R.id.return_call_order_number);
+        mBody1View = view.findViewById(R.id.return_call_body1);
+        mBody2View = view.findViewById(R.id.return_call_body2);
+        TextView callView = view.findViewById(R.id.btn_call_now);
         View soppingView = view.findViewById(R.id.btn_continue_shopping);
 
         if(DeviceInfoHelper.hasTelephony(getBaseActivity())){

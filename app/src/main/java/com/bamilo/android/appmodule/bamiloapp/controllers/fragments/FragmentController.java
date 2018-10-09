@@ -19,7 +19,6 @@ import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -63,10 +62,6 @@ public class FragmentController {
     protected WorkerThread mWorkerThread;
 
     /**
-     * ##################### CONSTRUCTOR #####################
-     */
-
-    /**
      * Method used to get the instance of FragmentController
      *
      * @return {@link FragmentController}
@@ -77,21 +72,13 @@ public class FragmentController {
                 : sFragmentController;
     }
 
-    /**
-     * Empty constructor
-     */
     public FragmentController() {
-        //...
     }
 
 
     public void init() {
         this.mBackStack.clear();
     }
-
-    /**
-     * ##################### GETTERS AND SETTERS #####################
-     */
 
     /**
      * Get the back stack size
@@ -118,7 +105,6 @@ public class FragmentController {
      * @param tag The fragment tag
      */
     public void addToBackStack(String tag) {
-        Print.i("ADD TO BACK STACK: " + tag);
         this.mBackStack.addLast(tag);
     }
 
@@ -160,7 +146,6 @@ public class FragmentController {
                 lastElement = this.mBackStack.getLast();
             }
         } catch (NoSuchElementException e) {
-            Print.i("GET LAST ENTRY: ERROR list empty");
             lastElement = "";
         }
         return lastElement;
@@ -172,7 +157,6 @@ public class FragmentController {
      * @param tag The fragment tag
      */
     public void removeAllEntriesWithTag(String tag) {
-        Print.i("REMOVE OLD ENTRIES: " + tag);
         Iterator<String> iterator = mBackStack.iterator();
         while (iterator.hasNext()) {
             if (iterator.next().equals(tag)) {
@@ -185,12 +169,9 @@ public class FragmentController {
      * Remove all old entries. Warning: Async operation.
      */
     public void removeAllEntriesWithTag(final String... tags) {
-        WorkerThread.executeRunnable(getSingletonThread(), new Runnable() {
-            @Override
-            public void run() {
-                for (String tag : tags) {
-                    removeAllEntriesWithTag(tag);
-                }
+        WorkerThread.executeRunnable(getSingletonThread(), () -> {
+            for (String tag : tags) {
+                removeAllEntriesWithTag(tag);
             }
         });
     }
@@ -206,7 +187,6 @@ public class FragmentController {
                 entries.append(" ").append(aBackStack);
             }
         }
-        Print.d("ENTRY: " + entries);
     }
 
     /**
@@ -234,8 +214,6 @@ public class FragmentController {
      * @param tag The fragment tag
      */
     public void removeEntriesUntilTag(final String tag) {
-        Print.i("POP ENTRIES UNTIL: " + tag);
-
         WorkerThread.executeRunnable(getSingletonThread(), new Runnable() {
             @Override
             public String toString() {
@@ -248,8 +226,6 @@ public class FragmentController {
                 Iterator<String> iterator = mBackStack.descendingIterator();
                 while (iterator.hasNext()) {
                     String currentTag = iterator.next();
-                    Print.i("POP TAG: " + currentTag + " UNTIL TAG: " + tag + " STACK SIZE: "
-                            + mBackStack.size());
                     // Case HOME
                     if (currentTag.equals(FragmentType.HOME.toString())) {
                         break;
@@ -263,20 +239,14 @@ public class FragmentController {
                         iterator.remove();
                     }
                 }
-                Print.i("AFTER POP UNTIL TAG: " + tag + " STACK SIZE: " + mBackStack.size());
             }
         });
-
     }
 
-    /**
-     * ##################### PUSH #####################
-     */
     /**
      * Add the tag to the back stack removing duplicates. Warning: Async operation.
      */
     public void addEntryToBackStack(final String tag) {
-        Print.d("ADD ENTRY TO BACK STACK");
         WorkerThread.executeRunnable(getSingletonThread(), new Runnable() {
             @Override
             public String toString() {
@@ -325,8 +295,6 @@ public class FragmentController {
      */
     public void fragmentBackPressed(BaseActivity activity) {
         int size = getBackStackSize();
-        Print.i("BACK STACK SIZE: " + size);
-        Print.i("THE CURRENT BACK STACK ENTRIES: " + mBackStack);
 
         Iterator<String> it = mBackStack.descendingIterator();
         if (it.hasNext()) {
@@ -347,7 +315,6 @@ public class FragmentController {
                 if (getLastEntry().equals(FragmentType.HOME.toString())) {
                     activity.doubleBackPressToExit();
                 } else {
-                    Print.i("WARNING: THE FIRST ENTRY IS NOT HOME, GOTO HOME");
                     init();
                     popAllBackStack(activity, null);
                     activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
@@ -355,7 +322,6 @@ public class FragmentController {
                 }
                 break;
             case 0:
-                Print.i("WARNING: NO ENTRIES, GOTO HOME");
                 activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
                         FragmentController.ADD_TO_BACK_STACK);
                 break;
@@ -370,7 +336,6 @@ public class FragmentController {
      * @param activity The current activity
      */
     private void popBackStack(BaseActivity activity) {
-        Print.i("POP BACK STACK");
         // Pop the last fragment
         popLastEntry();
         // Get the new last fragment
@@ -378,23 +343,16 @@ public class FragmentController {
         // Case invisible fragment
         if (!TextUtils.isEmpty(lastTag) && lastTag.equals(FragmentType.UNKNOWN.toString())
                 && getBackStackSize() > 0) {
-            Print.i("ON POP BACK STACK: INVISIBLE TAG " + lastTag);
             popBackStack(activity);
         }
         // Case visible fragment
         else if (!TextUtils.isEmpty(lastTag)) {
-            Print.i("ON POP BACK STACK: TAG " + lastTag);
             // Pop stack until fragment tag
             try {
                 activity.getSupportFragmentManager()
                         .popBackStackImmediate(lastTag, POP_BACK_STACK_NO_INCLUSIVE);
-            } catch (IllegalStateException | NullPointerException e) {
-                Print.w("WARNING ON POP BACK STACK", e);
+            } catch (IllegalStateException | NullPointerException ignored) {
             }
-        }
-        // Case visible fragment
-        else {
-            Print.w("WARNING ON POP BACK STACK: TAG IS EMPTY " + getBackStackSize());
         }
     }
 
@@ -402,8 +360,6 @@ public class FragmentController {
      * Pop all back stack
      */
     public void popAllBackStack(BaseActivity activity) {
-        Print.d("POP ALL BACK STACK: " + getBackStackSize() + " MANAGER:" + activity
-                .getSupportFragmentManager().getBackStackEntryCount());
         // Pop all our back stack
         cleanBackStack();
         // Pop all back stack
@@ -411,7 +367,6 @@ public class FragmentController {
             activity.getSupportFragmentManager()
                     .popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         } catch (IllegalStateException | NullPointerException e) {
-            Print.d("POP ALL ENTRIES: ERROR IllegalStateException");
             e.printStackTrace();
         }
     }
@@ -423,7 +378,6 @@ public class FragmentController {
      * @param tag The fragment tag
      */
     public void popAllEntriesUntil(BaseActivity activity, String tag) {
-        Print.d("POP ALL ENTRIES UNTIL: " + tag + " " + getBackStackSize());
         // Get the new last fragment
         removeEntriesUntilTag(tag);
         try {
@@ -431,14 +385,9 @@ public class FragmentController {
             activity.getSupportFragmentManager()
                     .popBackStackImmediate(tag, POP_BACK_STACK_NO_INCLUSIVE);
         } catch (IllegalStateException | NullPointerException e) {
-            Print.d("POP ALL ENTRIES UNTIL: ERROR IllegalStateException");
             e.printStackTrace();
         }
     }
-
-    /**
-     * ##################### SWITCH #####################
-     */
 
     /**
      * Method used to switch fragment on UI with back stack support
@@ -449,7 +398,6 @@ public class FragmentController {
      */
     private void startTransition(BaseActivity activity, int container, Fragment fragment,
             FragmentType fType, Boolean stack, @AnimationType int aType) {
-        Print.d("START TRANSITION: " + fType.toString() + " " + stack);
         // Case isn't add to back stack then add with an UNKNOWN tag
         fType = !stack ? FragmentType.UNKNOWN : fType;
         // Get transaction
@@ -468,10 +416,6 @@ public class FragmentController {
     }
 
     /**
-     * ##################### OLD METHODS #####################
-     */
-
-    /**
      * @param activity The current activity
      * @param tag The fragment tag
      */
@@ -487,11 +431,9 @@ public class FragmentController {
      * @param fragments The list of current opened fragments
      */
     private void restoreBackstack(BaseActivity activity, List<Fragment> fragments) {
-        Print.i("ON RESTORE BACKSTACK:");
         for (Fragment fragment : fragments) {
             if (null != fragment && null != fragment.getTag() && !mBackStack
                     .contains(fragment.getTag())) {
-                Print.i("RESTORE: " + fragment.getTag());
                 // Add to backstack
                 addToBackStack(fragment.getTag());
                 // Set activity
@@ -512,21 +454,15 @@ public class FragmentController {
             List<Fragment> originalFragments) {
         // Validate the current back stack size
         if (getBackStackSize() > 0) {
-            Print.i("FRAGMENT CONTROLLER: HAS BACKSTACK!");
             return;
         }
-
-        Print.i("FRAGMENT CONTROLLER: TRY RECOVER BACKSTACK!");
 
         List<Fragment> orderedFragments = new ArrayList<>();
         if (originalFragments.size() > 0 && backstackTypes.size() > 0) {
             for (int i = 0; i < backstackTypes.size(); i++) {
                 for (int j = 0; j < originalFragments.size(); j++) {
                     if (originalFragments.get(j) != null && backstackTypes.get(i)
-                            .equalsIgnoreCase(originalFragments.get(j).getTag()))
-                    //validating that none of the checkout steps are entered in the new backstack because it will have an empty shopping cart
-                    //and will redirected to the shopping cart fragment, making it the top one
-                    {
+                            .equalsIgnoreCase(originalFragments.get(j).getTag())) {
                         if (
                                 !backstackTypes.get(i)
                                         .equalsIgnoreCase(FragmentType.LOGIN.toString()) &&
@@ -559,11 +495,7 @@ public class FragmentController {
                     }
                 }
             }
-
-//            //setting specific cases of behavior when we don't want to recover the back stack and set it starting from home screen
-//            if(!currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHOOSE_COUNTRY.toString()))
             restoreBackstack(activity, orderedFragments);
-
         }
     }
 
@@ -579,11 +511,6 @@ public class FragmentController {
         }
         return mWorkerThread;
     }
-
-
-    /*
-     * ########### FRAGMENTS WITH CHILD FRAGMENTS ###########
-     */
 
     /**
      * Add a child fragment to parent fragment using ChildFragmentManager.

@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.IntDef;
 
 import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -109,7 +108,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         for (BaseTable table : mTables) {
-            Print.i(TAG, "ON CREATE TABLE: " + table.getName());
             db.execSQL(String.format(table.create(), table.getName()));
         }
     }
@@ -141,7 +139,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
      * @author sergiopereira
      */
     private void onUpgradeFreezeTable(BaseTable table){
-        Print.i(TAG, "NOT UPGRADE TABLE: " + table.getName());
     }
     
     /**
@@ -151,7 +148,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     private void onUpgradeCacheTable(SQLiteDatabase db, BaseTable table) {
         // Get table name
         String tableName = table.getName();
-        Print.i(TAG, "ON UPGRADE CACHE TABLE: " + tableName);
         // Drop table
         db.execSQL(String.format(DROP_TABLE, tableName));
         // Create table
@@ -165,7 +161,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     private void onUpgradePersistTable(SQLiteDatabase db, int newVersion, BaseTable table) {
         // Get table name
         String currentTableName = table.getName();
-        Print.i(TAG, "ON UPGRADE PERSIST TABLE: " + currentTableName);
         // Get temporary table name
         String tempTableName = currentTableName + "_temp_" + newVersion;
         // Create temporary table
@@ -193,9 +188,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
             // Insert content from table2 to table1
             db.execSQL(String.format(COPY_TABLE, table1, columns, table2));
         } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON COPY CONTENT FROM " + table2 + " FOR " + table1, e);
         } catch (SQLException e) {
-            Print.w(TAG, "WARNING: SQLE ON COPY CONTENT FROM " + table2 + " FOR " + table1, e);
         }
     }
     

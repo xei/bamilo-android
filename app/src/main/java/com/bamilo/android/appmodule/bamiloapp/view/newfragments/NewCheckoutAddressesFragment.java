@@ -22,7 +22,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.rest.errors.ErrorCode;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.R;
@@ -59,7 +58,6 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         /*Toolbar toolbar = (Toolbar) getBaseActivity().findViewById(R.id.toolbar);  // or however you need to do it for your code
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         params.setScrollFlags(0);*/
@@ -85,14 +83,13 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
-        mAddressView = (RecyclerView) view.findViewById(R.id.address_recycler_view);
+        mAddressView = view.findViewById(R.id.address_recycler_view);
         mAddressView.setHasFixedSize(true);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         mAddressView.setLayoutManager(llm);
         mCheckoutTotalBar = view.findViewById(R.id.address_continue);
-        fabNewAddress = (FloatingActionButton) view.findViewById(R.id.fab_new_address);
+        fabNewAddress = view.findViewById(R.id.fab_new_address);
 
         getBaseActivity().updateBaseComponents(EnumSet.of(MyMenuItem.UP_BUTTON_BACK), NavigationAction.CHECKOUT, R.string.checkout_label, ConstantsCheckout.CHECKOUT_BILLING);
         mCheckoutTotalBar.setOnClickListener(onClickSubmitAddressesButton);
@@ -122,14 +119,12 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
         getBaseActivity().setActionBarTitle(R.string.checkout_choose_address_step);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         // Get addresses
         triggerGetForm();
     }
@@ -137,35 +132,29 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
 
     View.OnClickListener onClickSubmitAddressesButton = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Print.i(TAG, "ON CLICK: SUBMIT");
             // Validate the is same check box
             int selectedId = ((AddressAdapter) mAddressView.getAdapter()).getSelectedId();
-            Print.i(TAG, "ON CLICK: SUBMIT " + selectedId);
             triggerSetMultiStepAddresses(selectedId, selectedId);
         }
 
@@ -197,7 +186,6 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
      */
 
     private void triggerSetMultiStepAddresses(int billing, int shipping) {
-        Print.d(TAG, "TRIGGER SET BILLING");
         triggerContentEventProgress(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
     }
 
@@ -212,7 +200,6 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
             return;
         }*/
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_MULTI_STEP_ADDRESSES:
                 fabNewAddress.show();
@@ -260,17 +247,14 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     public void onRequestError(BaseResponse baseResponse) {
         hideActivityProgress();
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
         }
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         switch (eventType) {
             case GET_MULTI_STEP_ADDRESSES:
 

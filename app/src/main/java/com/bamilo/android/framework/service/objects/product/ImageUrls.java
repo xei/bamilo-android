@@ -7,7 +7,6 @@ import com.bamilo.android.framework.service.objects.IJSONSerializable;
 import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +41,6 @@ public class ImageUrls  implements Parcelable, IJSONSerializable {
                 setHasZoom(true);
 
         }catch(Exception e){
-            Print.e(TAG, "Error initializing the complete product", e);
             return false;
         }
 

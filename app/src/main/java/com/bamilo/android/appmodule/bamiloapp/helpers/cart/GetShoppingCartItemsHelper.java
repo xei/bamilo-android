@@ -8,7 +8,6 @@ import com.bamilo.android.framework.service.requests.BaseRequest;
 import com.bamilo.android.framework.service.requests.RequestBundle;
 import com.bamilo.android.framework.service.rest.interfaces.AigApiInterface;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 /**
  * Get Shopping Cart Items helper
@@ -35,7 +34,5 @@ public class GetShoppingCartItemsHelper extends SuperBaseHelper {
         super.postSuccess(baseResponse);
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
         BamiloApplication.INSTANCE.setCart(cart);
-        Print.d(TAG, "ADD CART: " + cart.getTotal());
     }
-
 }

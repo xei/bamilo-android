@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.bamilo.android.framework.service.Darwin;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.security.ObscuredSharedPreferences;
 
 import java.util.Map.Entry;
@@ -52,7 +51,6 @@ public class CustomerUtils {
 				}
 			}
 		} catch (RuntimeException e) {
-			Print.e(TAG, "CUST.ACCOUNT : ERROR in ObscuredPrefs.");
 			e.printStackTrace();
 		}
 		return cv;
@@ -84,13 +82,11 @@ public class CustomerUtils {
 	 * @param values
 	 */
 	public void storeCredentials(ContentValues values) {
-		Print.i(TAG, "STORE CREDENTIALS");
 		Editor editor = obscuredPreferences.edit();
 		for (Entry<String, ?> entry : values.valueSet()) {
 			if (entry.getKey() != null && entry.getValue() != null && entry.getValue().toString() != null) {
 				editor.putString(entry.getKey(), entry.getValue().toString());
 			} else {
-				Print.e(TAG, "MISSING PARAMETERS FROM API!");
 			}
 		}
 		// Put logged flag
@@ -104,7 +100,6 @@ public class CustomerUtils {
 	 * @modified sergiopereira
 	 */
 	public void clearCredentials() {
-		Print.i(TAG, "CLEAR CREDENTIALS");
 		try {
 			Editor editor = obscuredPreferences.edit();
 			for (Entry<String, ?> entry : obscuredPreferences.getAll().entrySet()) {
@@ -115,7 +110,6 @@ public class CustomerUtils {
 			}
 			editor.commit();
 		} catch (RuntimeException e) {
-			Print.e(TAG, "CUST.ACCOUNT : ERROR in ObscuredPrefs.");
 			obscuredPreferences.edit().clear().commit();
 		}
 	}
@@ -128,7 +122,6 @@ public class CustomerUtils {
 	 */
 	public boolean userNeverLoggedIn() {
 		boolean loggedOnce = getCredentials().containsKey(USER_LOGGED_ONCE_FLAG);
-		Print.i(TAG, "USER LOGGED ONCE: " + loggedOnce);
 		return !loggedOnce;
 	}
 	

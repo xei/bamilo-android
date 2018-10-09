@@ -12,7 +12,6 @@ import com.bamilo.android.framework.service.rest.interfaces.AigApiInterface;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventTask;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.ArrayList;
 
@@ -40,18 +39,15 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     @Override
     public void postSuccess(BaseResponse baseResponse) {
-        //TODO move to observable
         super.postSuccess(baseResponse);
         BamiloApplication.INSTANCE.setCart(null);
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
         BamiloApplication.INSTANCE.setCart(cart);
-        Print.d(TAG, "ADD CART: " + cart.getTotal());
 
         AddMultipleStruct addMultipleStruct = new AddMultipleStruct();
         addMultipleStruct.setPurchaseEntity(cart);
         baseResponse.getMetadata().setData(addMultipleStruct);
     }
-
 
     /**
      * Method used to create a request bundle.
@@ -63,14 +59,10 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
         return bundle;
     }
 
-
-
-
     public class AddMultipleStruct {
         private PurchaseEntity purchaseEntity;
         private ArrayList<String> successMessages;
         private ArrayList<String> errorMessages;
-
 
         public PurchaseEntity getPurchaseEntity() {
             return purchaseEntity;
@@ -96,5 +88,4 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
             this.errorMessages = errorMessages;
         }
     }
-
 }

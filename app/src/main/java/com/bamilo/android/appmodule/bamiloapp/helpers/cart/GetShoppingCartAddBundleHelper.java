@@ -21,7 +21,6 @@ import com.bamilo.android.framework.service.rest.interfaces.AigApiInterface;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventTask;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.ArrayList;
 
@@ -54,11 +53,9 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        Print.i(TAG,"ADD BUNDLE POST SUCCESS");
         BamiloApplication.INSTANCE.setCart(null);
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
         BamiloApplication.INSTANCE.setCart(cart);
-        Print.d(TAG, "ADD CART: " + cart.getTotal());
 
         AddedItemStructure addItemStruct = new AddedItemStructure();
         addItemStruct.setPurchaseEntity(cart);

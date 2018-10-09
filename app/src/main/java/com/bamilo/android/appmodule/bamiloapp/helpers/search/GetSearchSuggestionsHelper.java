@@ -18,7 +18,6 @@ import com.bamilo.android.framework.service.rest.interfaces.AigApiInterface;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -37,10 +36,6 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
     public static final String SEARCH_PARAM = "searchParam";
 
     private String mQuery;
-
-    /*
-     * ############# SEARCH SUGGESTIONS COMPONENT ####################
-     */
 
     public GetSearchSuggestionsHelper() {
         super();
@@ -84,11 +79,9 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
             if(TextUtils.isEmpty(mQuery) ) {
                 recentQueries = SearchRecentQueriesTableHelper.getAllRecentQueries();
             }
-        } catch (SQLiteException e) {
-            Print.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
-        } catch (InterruptedException e) {
-            Print.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
+        } catch (Exception ignored) {
         }
+
         //
         Suggestions searchSuggestions = (Suggestions) baseResponse.getContentData();
         //add the recent searches in database to the suggestions
@@ -114,12 +107,8 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
             } else {
                 suggestions = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
             }
-        } catch (SQLiteException e) {
-            Print.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
-        } catch (InterruptedException e) {
-            Print.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
+        } catch (Exception ignored) {
         }
-        Print.d(TAG, "SUGGESTION: " + suggestions.size());
 
         SuggestionsStruct suggestionsStruct = new SuggestionsStruct();
         suggestionsStruct.setRecentSuggestions(suggestions);
@@ -135,7 +124,6 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
      * Constructor used to get only the recent queries
      */
     public GetSearchSuggestionsHelper(IResponseCallback requester) {
-        Print.d(TAG, "ON CONSTRUCTOR");
         // Get all items on database
         getSearchSuggestionList(requester);
     }
@@ -144,13 +132,10 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
      * Get all recent queries and deliver them to the <code>requester</code>
      */
     private void getSearchSuggestionList(IResponseCallback requester) {
-        Print.d(TAG, "ON GET_SEARCH_SUGGESTIONS_EVENT");
-
         ArrayList<Suggestion> suggestions = new ArrayList<>();
         try {
             suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
-        } catch (InterruptedException e) {
-            Print.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
+        } catch (InterruptedException ignored) {
         }
 
         BaseResponse baseResponse = new BaseResponse();
@@ -166,22 +151,10 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
      * Save the recent query on the database
      */
     public static void saveSearchQuery(final Suggestion suggestion){
-        Print.d(TAG, "SAVE SEARCH QUERY: " + suggestion.getResult());
-        /*RecommendManager recommendManager = new RecommendManager();
-        recommendManager.sendSearchRecommend(suggestion.getQuery(), new RecommendListCompletionHandler() {
-            @Override
-            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
-
-            }
-        });*/
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    SearchRecentQueriesTableHelper.insertQuery(suggestion);
-                } catch (Exception e){
-                    // ...
-                }
+        new Thread(() -> {
+            try {
+                SearchRecentQueriesTableHelper.insertQuery(suggestion);
+            } catch (Exception ignored){
             }
         }).start();
     }

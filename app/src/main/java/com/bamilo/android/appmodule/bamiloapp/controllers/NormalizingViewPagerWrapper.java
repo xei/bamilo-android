@@ -1,17 +1,16 @@
 package com.bamilo.android.appmodule.bamiloapp.controllers;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.bamilo.android.framework.components.viewpagerindicator.IconPagerAdapter;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerAdapter {
     private final static String TAG = NormalizingViewPagerWrapper.class.getSimpleName();
     public static final int MAX_REAL_ITEMS = 100;
-    private static int OFFSCREEN_PAGE_LIMIT = 1;
 
     private ViewPager mViewPager;
     private NormalizingPagerAdapter mNormPagerAdapter;
@@ -24,6 +23,7 @@ public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerA
             OnPageChangeListener pageListener) {
         super(context);
         mViewPager = viewPager;
+        int OFFSCREEN_PAGE_LIMIT = 1;
         mViewPager.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
         if ( mViewPager.getCurrentItem() == 0) {
             int position = calcStartPosition(adapter);
@@ -84,18 +84,13 @@ public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerA
         }
             
         int delta = item - aux;
-        int nextItem = currentItem + delta;
-
-        // Log.d(TAG, "calcNextItem: nextItem = " + nextItem);
-        return nextItem;
+        return currentItem + delta;
     }
 
     @Override
     public void setOnPageChangeListener(OnPageChangeListener listener) {
         mViewPager.setOnPageChangeListener(new NormalizingOnPageChangeListener(listener));
     }
-    
-
 
     @Override
     public int getIconResId(int index) {
@@ -120,7 +115,7 @@ public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerA
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return mAdapter.isViewFromObject(view, object);
         }
         
@@ -134,15 +129,15 @@ public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerA
     }
 
     public interface IPagerAdapter {
-        public int getRealCount();
+        int getRealCount();
 
-        public int MAX_REAL_ITEMS = NormalizingViewPagerWrapper.MAX_REAL_ITEMS;
+        int MAX_REAL_ITEMS = NormalizingViewPagerWrapper.MAX_REAL_ITEMS;
 
-        public int getCount();
+        int getCount();
 
-        public int getStartVirtualPosition();
+        int getStartVirtualPosition();
 
-        public boolean isViewFromObject(View view, Object object);
+        boolean isViewFromObject(View view, Object object);
     }
 
     private class NormalizingOnPageChangeListener implements OnPageChangeListener {
@@ -168,8 +163,6 @@ public class NormalizingViewPagerWrapper extends ViewPager implements IconPagerA
         @Override
         public void onPageSelected(int position) {
             int virtualPosition = calcVirtualPosition(position);
-            Print.d(TAG, "onPageSelected: position = " + position + " virtualPosition = "
-                    + virtualPosition);
             if (mListener != null)
                 mListener.onPageSelected(virtualPosition);
         }

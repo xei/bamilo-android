@@ -32,7 +32,6 @@ import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.objects.configs.CountryObject;
 import com.bamilo.android.framework.service.objects.configs.VersionInfo;
 import com.bamilo.android.framework.service.objects.customer.Customer;
-import com.bamilo.android.framework.service.objects.home.type.TeaserGroupType;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.rest.AigHttpClient;
 import com.bamilo.android.framework.service.rest.cookies.ISessionCookie;
@@ -43,7 +42,6 @@ import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.ImageResolutionHelper;
 import com.bamilo.android.framework.service.utils.SingletonMap;
 import com.bamilo.android.framework.service.utils.cache.WishListCache;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.crashlytics.android.Crashlytics;
 import com.emarsys.mobileengage.MobileEngage;
@@ -53,7 +51,6 @@ import com.emarsys.predict.Session;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -62,7 +59,8 @@ public class BamiloApplication extends Application {
 
     private static final String TAG = BamiloApplication.class.getSimpleName();
     // Components
-    private static final SingletonMap<ApplicationComponent> COMPONENTS = new SingletonMap<ApplicationComponent>(new DarwinComponent());
+    private static final SingletonMap<ApplicationComponent> COMPONENTS = new SingletonMap<>(
+            new DarwinComponent());
     // Application
     public static BamiloApplication INSTANCE;
     // Shop
@@ -113,8 +111,6 @@ public class BamiloApplication extends Application {
 
         initFirebaseCrashlytics();
 
-        // ON APPLICATION CREATE
-        Print.i(TAG, "ON APPLICATION CREATE");
         // Save instance
         INSTANCE = this;
         // Init image loader
@@ -147,7 +143,6 @@ public class BamiloApplication extends Application {
          * https://rink.hockeyapp.net/manage/apps/33641/app_versions/109/crash_reasons/17098450
          * @author sergiopereira
          */
-        Print.i(TAG, "INIT CURRENCY");
         String currencyCode = ShopPreferences.getShopCountryCurrencyIso(getApplicationContext());
         if (!TextUtils.isEmpty(SHOP_ID) && !TextUtils.isEmpty(currencyCode)) {
             Darwin.initialize(getApplicationContext(), SHOP_ID);
@@ -177,7 +172,6 @@ public class BamiloApplication extends Application {
     }
 
     public synchronized void init(Handler initializationHandler) {
-        Print.d(TAG, "ON INIT");
         // isInitializing = true;
         AnalyticsGoogle.clearCheckoutStarted();
 
@@ -207,8 +201,6 @@ public class BamiloApplication extends Application {
     }
 
     public synchronized void handleEvent(@ErrorCode.Code int errorType, EventType eventType, Handler initializationHandler) {
-        Print.d(TAG, "ON HANDLE");
-        Print.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = new BaseResponse<>(eventType, errorType);
         // Send result message
@@ -223,19 +215,12 @@ public class BamiloApplication extends Application {
         return false;
     }
 
-    /*
-    ###########################
-     */
-
     /**
      * Triggers the request for a new api call
      */
     public void sendRequest(final SuperBaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
         helper.sendRequest(args, responseCallback);
     }
-    /*
-    #################################
-     */
 
     /**
      * @return the mMobApiVersionInfo
@@ -309,8 +294,7 @@ public class BamiloApplication extends Application {
     public void cleanAllPreviousLanguageValues() {
         try {
             AigHttpClient.clearCache(this);
-        } catch (IOException e) {
-            Print.e(TAG, "Error clearing requests cache", e);
+        } catch (IOException ignored) {
         }
     }
 

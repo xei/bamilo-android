@@ -18,7 +18,6 @@ import com.bamilo.android.framework.service.utils.CustomerUtils;
 import com.bamilo.android.framework.service.utils.EventTask;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.cache.WishListCache;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 /**
  * Helper used to login a guest user
@@ -53,7 +52,6 @@ public class LoginGuestHelper extends SuperBaseHelper {
             mParameters.put(CustomerUtils.INTERNAL_EMAIL_VALUE, "");
             mParameters.put(CustomerUtils.INTERNAL_SIGN_UP_FLAG, true);
             BamiloApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
-            Print.i("GET CUSTOMER CREDENTIALS: " + BamiloApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save customer
         CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getContentData();

@@ -3,7 +3,6 @@ package com.bamilo.android.framework.service;
 import android.content.Context;
 
 import com.bamilo.android.framework.service.database.DarwinDatabaseHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 
 /**
@@ -111,10 +110,8 @@ public class Darwin {
 	 *         intialized
 	 */
 	public static boolean initialize(Context ctx, String shopId) {
-		Print.d(TAG, "Initializing Darwin with id " + shopId);
 		context = ctx.getApplicationContext();
 		if (SHOP_ID != null && SHOP_ID.equalsIgnoreCase(shopId)) {
-			Print.d(TAG, "Already initialized for id " + shopId);
 			ShopSelector.updateLocale(ctx, shopId);
 			return true;
 		}
@@ -122,14 +119,12 @@ public class Darwin {
 		DarwinDatabaseHelper.init(context);
 		// Shop
 		ShopSelector.init(context, shopId);
-		Print.i(TAG, "Darwin is initialized with id " + shopId);
 		SHOP_ID = shopId;
 		return true;
 	}
 
 	// FROM GET AVAILABLE COUNTRIES
 	public static boolean initialize(Context ctx) {
-		Print.d(TAG, "Initializing Darwin to get global ");
 		context = ctx.getApplicationContext();
 		// Init darwin database
 		DarwinDatabaseHelper.init(context);
@@ -140,7 +135,6 @@ public class Darwin {
 	
 	// FOR NO_COUNTRY_CONFIGS_AVAILABLE
 	public static boolean initialize(Context ctx, String requestHost, String basePath) {
-		Print.d(TAG, "Initializing Darwin to get global ");
 		context = ctx.getApplicationContext();
 		// Init darwin database
 		DarwinDatabaseHelper.init(context);

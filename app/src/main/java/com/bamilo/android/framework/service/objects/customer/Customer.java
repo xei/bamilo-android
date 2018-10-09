@@ -7,7 +7,6 @@ import com.bamilo.android.framework.service.objects.IJSONSerializable;
 import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,7 +78,6 @@ public class Customer implements IJSONSerializable, Parcelable {
                 return false;
             }
         } catch (JSONException e) {
-            Print.e(TAG, "ERROR: JSE ON PARSING CUSTOMER", e);
             return false;
         }
         return true;

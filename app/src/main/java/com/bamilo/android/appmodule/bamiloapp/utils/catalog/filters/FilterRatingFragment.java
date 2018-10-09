@@ -14,7 +14,6 @@ import com.bamilo.android.framework.service.objects.catalog.filters.CatalogCheck
 import com.bamilo.android.framework.service.objects.catalog.filters.CatalogRatingFilter;
 import com.bamilo.android.framework.service.objects.catalog.filters.CatalogRatingFilterOption;
 import com.bamilo.android.framework.service.objects.catalog.filters.MultiFilterOptionInterface;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.R;
 
 /**
@@ -37,7 +36,6 @@ public class FilterRatingFragment extends FilterCheckFragment {
      * New instance
      */
     public static FilterRatingFragment newInstance(Bundle bundle) {
-        Print.d(TAG, "NEW INSTANCE: BRAND");
         FilterRatingFragment frag = new FilterRatingFragment();
         frag.setArguments(bundle);
         return frag;
@@ -59,12 +57,12 @@ public class FilterRatingFragment extends FilterCheckFragment {
             if (option instanceof CatalogRatingFilterOption) {
                 // Validate current view
                 if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_sub_item_rating, null);
-                RatingBar ratingBar = ((RatingBar) convertView.findViewById(R.id.dialog_item_rating));
+                RatingBar ratingBar = convertView.findViewById(R.id.dialog_item_rating);
                 ratingBar.setNumStars(((CatalogRatingFilter) mFilter).getMax());
                 ratingBar.setRating(((CatalogRatingFilterOption) option).getAverage());
                 // Set check box
-                setProductsCount((TextView) convertView.findViewById(R.id.dialog_products_count), option);
-                setCheckboxBehavior(((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)), option);
+                setProductsCount(convertView.findViewById(R.id.dialog_products_count), option);
+                setCheckboxBehavior(convertView.findViewById(R.id.dialog_item_checkbox), option);
             }
             return convertView;
         }

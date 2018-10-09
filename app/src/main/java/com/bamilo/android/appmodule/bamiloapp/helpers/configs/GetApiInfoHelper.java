@@ -18,7 +18,6 @@ import com.bamilo.android.framework.service.requests.RequestBundle;
 import com.bamilo.android.framework.service.rest.interfaces.AigApiInterface;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +49,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
         // Get api info
         ApiInformationStruct apiInformation = new ApiInformationStruct((ApiInformation) baseResponse.getMetadata().getData());
         baseResponse.getMetadata().setData(apiInformation);
-        //TODO move to observable
         // Save mob api version
         BamiloApplication.INSTANCE.setMobApiVersionInfo(apiInformation.getVersionInfo());
         // Get md5 sections
@@ -71,7 +69,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
      * Clears the database of outdated sections
      */
     private void clearOutDatedMainSections(List<Section> sections, ApiInformationStruct apiInformationStruct) {
-        Print.d(TAG, "ON CLEAR OUT DATED SECTIONS");
         // Update each outdated section
         for (Section section : sections) {
             // Case teasers
@@ -97,7 +94,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
      * updated
      */
     public ArrayList<Section> checkSections(List<Section> oldSections, List<Section> newSections) {
-        Print.i(TAG, "ON CHECK SECTIONS");
         ArrayList<Section> outdatedSections = new ArrayList<>();
         // Case is first time
         if (CollectionUtils.isEmpty(oldSections)) {
@@ -111,20 +107,14 @@ public class GetApiInfoHelper extends SuperBaseHelper {
                 Section savedSection = getSection(newSection.getName(), oldSections);
                 // Case MD5 is different
                 if (savedSection != null && !savedSection.getMd5().equals(newSection.getMd5())) {
-                    Print.i(TAG, "SECTION IS OUT DATED: " + newSection.getName() + " " + newSection.getMd5());
                     outdatedSections.add(newSection);
                 }
                 // Case section is not present
                 else if (savedSection == null) {
-                    Print.i(TAG, "NEW SECTION IS NOT PRESENT: " + newSection.getName() + " " + newSection.getMd5());
                     ArrayList<Section> temp = new ArrayList<>();
                     temp.add(newSection);
                     SectionsTablesHelper.saveSections(temp);
                     outdatedSections.add(newSection);
-                }
-                // Case section MD5 is the same
-                else {
-                    Print.i(TAG, "SECTION IS DATED: " + newSection.getName() + " " + newSection.getMd5());
                 }
             }
         }

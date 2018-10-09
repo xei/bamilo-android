@@ -9,7 +9,6 @@ import android.view.View.OnClickListener;
 
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.R;
 
 /**
@@ -46,7 +45,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -57,7 +55,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         mSavedStateType = savedInstanceState != null ? (FragmentType) savedInstanceState.getSerializable(TAG) : null;
     }
     
@@ -68,17 +65,14 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
 
         if (mSavedStateType == null) {
-            Print.d(TAG, "SAVED IS NULL");
             addListItems();
         }
 
     }
 
     private void addListItems() {
-        Print.i(TAG,"ADD LIST ITEMS");
         onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, new Bundle());
     }
     
@@ -89,7 +83,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -100,7 +93,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
     
     /*
@@ -110,7 +102,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE");
         outState.putSerializable(TAG, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
     }
 
@@ -122,7 +113,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -133,7 +123,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
     
     /*
@@ -143,7 +132,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     /*
@@ -153,7 +141,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
     
     /**
@@ -165,14 +152,12 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @author sergiopereira
      */
     public void onSwitchChildFragment(FragmentType filterType, Bundle bundle) {
-        Print.i(TAG, "ON SWITCH CHILD FRAG: " + filterType);
         switch (filterType) {
         case NAVIGATION_CATEGORIES_ROOT_LEVEL:
             getBaseActivity().mDrawerFragment = new DrawerFragment();// NavigationCategoryFragment.getInstance(bundle);
             fragmentChildManagerTransition(R.id.navigation_container_list, filterType, getBaseActivity().mDrawerFragment , false, true);
             break;
         default:
-            Print.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
             break;
         }
     }
@@ -189,13 +174,10 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
          * FIXME: Excluded piece of code due to crash on API = 18.
          * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
          */
-        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
-            @Override
-            public void run() {
-                // Animations
-                if (animated)
-                    fragmentTransaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left, R.anim.slide_from_left, R.anim.slide_to_right);
-            }
+        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(() -> {
+            // Animations
+            if (animated)
+                fragmentTransaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left, R.anim.slide_from_left, R.anim.slide_to_right);
         });
 
         // Replace

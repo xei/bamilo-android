@@ -18,7 +18,6 @@ import com.bamilo.android.framework.service.rest.interfaces.AigApiInterface;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.R;
 
 import java.util.ArrayList;
@@ -49,19 +48,15 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
         super.postSuccess(baseResponse);
         AvailableCountries availableCountries = (AvailableCountries) baseResponse.getContentData();
 
-        //TODO move to observable
         // Gets the previous Countries list
         BamiloApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
-        Print.i(TAG, "COUNTRIES SIZE IN MEM: " + BamiloApplication.INSTANCE.countriesAvailable.size());
         // deletes the old entries
         CountriesConfigsTableHelper.deleteAllCountriesConfigs();
         // Validate available countries
         if (CollectionUtils.isNotEmpty(availableCountries)) {
             BamiloApplication.INSTANCE.countriesAvailable = availableCountries;
             CountriesConfigsTableHelper.insertCountriesConfigs(availableCountries);
-            Print.i(TAG, "INSERT INTO DB FROM JSON");
         } else if (CollectionUtils.isNotEmpty(BamiloApplication.INSTANCE.countriesAvailable)) {
-            Print.i(TAG, "INSERT INTO DB FROM MEM");
             CountriesConfigsTableHelper.insertCountriesConfigs(BamiloApplication.INSTANCE.countriesAvailable);
         }
 
@@ -77,7 +72,6 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
     public void postError(BaseResponse baseResponse) {
         super.postError(baseResponse);
 
-        //TODO move to observable
         BamiloApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         ArrayList<CountryObject> mCountries = BamiloApplication.INSTANCE.countriesAvailable;
         if(CollectionUtils.isNotEmpty(mCountries)){
@@ -92,5 +86,4 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
     public EventType getEventType() {
         return EventType.GET_GLOBAL_CONFIGURATIONS;
     }
-
 }

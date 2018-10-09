@@ -1,7 +1,6 @@
 package com.bamilo.android.appmodule.bamiloapp.view.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -17,13 +16,17 @@ import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
+import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.helpers.account.GetCustomerHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
+import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
+import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
+import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
+import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.SSLErrorAlertDialog;
 import com.bamilo.android.framework.service.forms.PaymentMethodForm;
 import com.bamilo.android.framework.service.objects.customer.Customer;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
@@ -31,20 +34,13 @@ import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.rest.AigHttpClient;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
-import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
-import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
-import com.bamilo.android.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.net.HttpCookie;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -72,6 +68,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     private PaymentMethodForm mPaymentSubmitted;
 
     String ResNum = null;
+
     /**
      * Empty constructor
      */
@@ -90,24 +87,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     /*
      * (non-Javadoc)
      *
-     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
-     */
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
-
-    }
-
-    /*
-     * (non-Javadoc)
-     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -124,21 +108,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
-        webview = (WebView) view.findViewById(R.id.webview);
+        webview = view.findViewById(R.id.webview);
         // TODO VALIDATE IF THIS TRIGGER IS NECESSARY
         triggerGetCustomer();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onStart()
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -149,44 +121,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         webview.requestFocus();
         prepareCookieStore();
         setupWebView();
         startCheckout();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.view.fragments.MyFragment#onPause()
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        Print.i(TAG, "ON PAUSE");
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.view.fragments.MyFragment#onStop()
-     */
-    @Override
-    public void onStop() {
-        super.onStop();
-        Print.i(TAG, "ON STOP");
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onDestroyView()
-     */
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Print.i(TAG, "ON DESTROY");
     }
 
     @Override
@@ -207,11 +145,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     @Override
     public boolean allowBackPressed() {
-        if (webview == null) {
-            Print.d(TAG, "onBackPressed");
-        } else {
-            Print.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
-        }
         boolean result = false;
         if (webview != null && webview.canGoBack() && webview.hasFocus()) {
             webview.goBack();
@@ -223,7 +156,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        Print.e(getTag(), "LOW MEM");
         System.gc();
     }
 
@@ -249,13 +181,15 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
             super.showFragmentErrorRetry();
             return;
         }
-        Print.d(TAG, "Loading Url: " + paymentUrl);
         // Track
-        String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "";
+        String userId =
+                BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString()
+                        : "";
         String email = BamiloApplication.INSTANCE.getCustomerUtils().getEmail();
         String payment = mPaymentSubmitted.getName();
 
-        if (mPaymentSubmitted.getContentValues() != null && mPaymentSubmitted.getMethod() == PaymentMethodForm.POST) {
+        if (mPaymentSubmitted.getContentValues() != null
+                && mPaymentSubmitted.getMethod() == PaymentMethodForm.POST) {
             Set<Entry<String, Object>> mValues = mPaymentSubmitted.getContentValues().valueSet();
             ResNum = (String) mPaymentSubmitted.getContentValues().get("ResNum");
            /* for (Entry<String, Object> entry : mValues) {
@@ -266,21 +200,16 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 }
             }*/
 
-
-
-
-            Print.d(TAG, "Loading Url complete: " + ResNum + "  " );
-
-            String uri = Uri.parse("http://" + getResources().getString(R.string.single_shop_country_url).concat("/androidpayment/sep/"))
+            String uri = Uri
+                    .parse("http://" + getResources().getString(R.string.single_shop_country_url)
+                            .concat("/androidpayment/sep/"))
                     .buildUpon()
                     .appendQueryParameter("ResNum", ResNum)
                     .appendQueryParameter("setDevice", "mobile")
                     .build().toString();
 
-
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.valueOf(uri)));
             startActivity(browserIntent);
-
 
 
         } /*else if (mPaymentSubmitted.getContentValues() != null) {
@@ -349,8 +278,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
         @SuppressWarnings("deprecation")
         @Override
-        public void onReceivedError(WebView view, int errorCode, String description, final String failingUrl) {
-            Print.e(TAG, "Received error: " + errorCode + " " + description + " " + failingUrl);
+        public void onReceivedError(WebView view, int errorCode, String description,
+                final String failingUrl) {
             failedPageRequest = failingUrl;
             webview.stopLoading();
             webview.clearView();
@@ -362,9 +291,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         }
 
         @Override
-        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host,
+                String realm) {
             super.onReceivedHttpAuthRequest(view, handler, host, realm);
-            Print.i(TAG, "ON RECEIVED HTTP AUTH REQUEST");
         }
 
         /*
@@ -377,13 +306,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             //Print.i(TAG, "code1payment : onPageFinished");
-            Print.d(TAG, "onPageFinished: url = " + url);
             if (wasLoadingErrorPage) {
-                Print.d(TAG, "onPageFinished: resetting error page information");
                 wasLoadingErrorPage = false;
                 failedPageRequest = null;
             } else if (url.equals(failedPageRequest)) {
-                Print.d(TAG, "onPageFinished: page was saved failed page");
                 wasLoadingErrorPage = true;
                 getBaseActivity().removeAllNativeCheckoutFromBackStack();
                 showFragmentSSLError();
@@ -400,7 +326,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                  *
                  * @see http://code.google.com/p/android/issues/detail?id=12987
                  */
-                Print.d(TAG, "LOAD URL: JAVASCRIPT PROCESS");
                 view.loadUrl(JAVASCRIPT_PROCESS);
             }
         }
@@ -414,13 +339,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         @Override
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
-            //Print.i(TAG, "code1payment : onLoadResource");
-            try {
-                Print.d(TAG, "onLoadResource: url = " + url);
-            } catch (OutOfMemoryError e) {
-                Print.d(TAG, "onLoadResource: url = OOF");
-                e.printStackTrace();
-            }
         }
 
         /*
@@ -433,7 +351,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             //Print.i(TAG, "code1payment : onPageStarted : " + url);
-            Print.d(TAG, "onPageStarted: url = " + url);
             if (url.equals(failedPageRequest)) {
                 return;
             }
@@ -446,29 +363,28 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
             }
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see android.webkit.WebViewClient#onReceivedSslError(android.webkit.WebView ,
-         * android.webkit.SslErrorHandler, android.net.http.SslError)
-         */
         @Override
-        public void onReceivedSslError(WebView view, @NonNull SslErrorHandler handler, SslError error) {
-            //Print.i(TAG, "code1payment : onReceivedSslError : " + error);
-            Print.w(TAG, "Received ssl error: " + error);
+        public void onReceivedSslError(WebView view, @NonNull SslErrorHandler handler,
+                SslError error) {
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
                 showWarningErrorMessage(getString(R.string.ssl_error_host_mismatch));
             } else {
                 showWarningErrorMessage(getString(R.string.ssl_error_generic));
             }
-            // Case in dev continue
-            if (BamiloApplication.INSTANCE.isDebuggable()) {
-                handler.proceed();
-            } else {
-                String url = view.getUrl();
-                onReceivedError(view, error.getPrimaryError(), error.toString(), url);
-                handler.cancel();
-            }
+
+            new SSLErrorAlertDialog(getContext())
+                    .show(getString(R.string.ssl_error_handler_title),
+                            getString(R.string.ssl_error_handler_message), v -> {
+                                if (BamiloApplication.INSTANCE.isDebuggable()) {
+                                    handler.proceed();
+                                }
+                            }
+                            , v -> {
+                                String url = view.getUrl();
+                                onReceivedError(view, error.getPrimaryError(), error.toString(),
+                                        url);
+                                handler.cancel();
+                            });
         }
     }
 
@@ -478,7 +394,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         @JavascriptInterface
         public void processContent(String content) {
             try {
-                Print.d(TAG, "Got checkout response: " + content);
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
                     // TODO VALIDATE IF THIS TRIGGER IS NECESSARY
@@ -501,7 +416,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
                     // Create bundle for last checkout step
                     final Bundle bundle;
-                    if(getArguments() == null){
+                    if (getArguments() == null) {
                         bundle = new Bundle();
                     } else {
                         bundle = getArguments();
@@ -511,12 +426,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                     getBaseActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle,
+                                    FragmentController.ADD_TO_BACK_STACK);
                         }
                     });
                 }
             } catch (JSONException e) {
-                Print.e(TAG, "json parse exception:", e);
             }
         }
     }
@@ -535,7 +450,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_CUSTOMER:
-                customer = (Customer)baseResponse.getContentData();
+                customer = (Customer) baseResponse.getContentData();
                 BamiloApplication.CUSTOMER = customer;
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:
@@ -554,10 +469,13 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
         if (null != BamiloApplication.CUSTOMER) {
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
+                    FragmentType.SHOPPING_CART);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
         } else {
-            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     }
 

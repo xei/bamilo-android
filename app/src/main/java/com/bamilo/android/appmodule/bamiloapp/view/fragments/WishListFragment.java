@@ -34,7 +34,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
@@ -204,7 +203,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * - Case restore saved state<br>
      */
     private void onValidateDataState() {
-        Print.i(TAG, "ON VALIDATE DATA STATE");
         // Validate customer is logged in
         if (!BamiloApplication.isCustomerLoggedIn()) {
             onLoginRequired();
@@ -227,7 +225,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * @author sergiopereira
      */
     protected void showContent(WishList wishList) {
-        Print.i(TAG, "ON SHOW CONTENT");
         // Case empty
         if (wishList == null || !wishList.hasProducts()) {
             showWishListError(mWishList);
@@ -341,7 +338,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * @author sergiopereira
      */
     protected void onClickSizeGuide(View view) {
-        Print.i(TAG, "ON CLICK SIZE GUIDE");
         try {
             // Get size guide url
             String url = (String) view.getTag();
@@ -350,9 +346,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.SIZE_GUIDE_URL, url);
                 getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_SIZE_GUIDE, bundle, FragmentController.ADD_TO_BACK_STACK);
-            } else Print.w(TAG, "WARNING: SIZE GUIDE URL IS EMPTY");
+            }
         } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON CLICK SIZE GUIDE");
         }
     }
 
@@ -360,7 +355,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Process the click on variation button.
      */
     public void onClickVariation(View view) {
-        Print.i(TAG, "ON CLICK TO SHOW VARIATION LIST");
         try {
             int position = (int) view.getTag(R.id.target_position);
             ProductMultiple product = ((WishListGridAdapter) mListView.getAdapter()).getItem(position);
@@ -371,13 +365,11 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                     this);
             dialog.show(getFragmentManager(), null);
         } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
         }
     }
 
     @Override
     public void onDialogListItemSelect(int position) {
-        Print.i(TAG, "ON CLICK VARIATION LIST ITEM");
         // Update the recently adapter
         updateWishListContainer();
         // Case from sendPurchaseRecommend button
@@ -406,7 +398,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Process the click on item
      */
     public void onItemClick(View view) {
-        Print.i(TAG, "ON ITEM CLICK");
         String sku = (String) view.getTag(R.id.target_sku);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
@@ -417,7 +408,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Process the click on delete button
      */
     public void onClickDeleteItem(View view) {
-        Print.i(TAG, "ON CLICK DELETE ITEM");
         try {
             // Get position
             mSelectedPositionToDelete = (int) view.getTag(R.id.target_position);
@@ -444,7 +434,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Process the click on add button
      */
     public void onClickAddToCart(View view) {
-        Print.i(TAG, "ON CLICK ADD ITEM TO CART");
         // Get position
         int position = (int) view.getTag(R.id.target_position);
         // Get item
@@ -598,7 +587,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
 
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            // ...
         }
 
         @Override

@@ -23,8 +23,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.BaseAdapter;
 
-import com.bamilo.android.framework.service.utils.output.Print;
-
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -159,7 +157,7 @@ public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.O
             v.setOnDayClickListener(this);
         }
         if (drawingParams == null) {
-            drawingParams = new HashMap<String, Integer>();
+            drawingParams = new HashMap<>();
         }
         drawingParams.clear();
 
@@ -171,8 +169,6 @@ public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.O
             selectedDay = mSelectedDay.day;
         }
 
-        // Invokes requestLayout() to ensure that the recycled view is set with the appropriate
-        // height/number of weeks before being displayed.
         v.reuse();
 
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_DAY, selectedDay);
@@ -190,7 +186,6 @@ public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.O
 
     @Override
     public void onDayClick(SimpleMonthView view, CalendarDay day) {
-        Print.i(TAG, "onDayClick year:"+day.year+" month:" +day.month+ " day:"+day.day);
         if (day != null) {
             onDayTapped(day);
         }
@@ -203,7 +198,6 @@ public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.O
      *            The day that was tapped
      */
     protected void onDayTapped(CalendarDay day) {
-        Print.i(TAG, "onDayTapped year:"+day.year+" month:" +day.month+ " day:"+day.day);
         mController.onDayOfMonthSelected(day.year, day.month, day.day);
         setSelectedDay(day);
     }

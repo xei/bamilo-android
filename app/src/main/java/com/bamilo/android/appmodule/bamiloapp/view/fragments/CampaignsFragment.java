@@ -16,7 +16,6 @@ import android.view.View;
 
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.framework.service.objects.home.TeaserCampaign;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.R;
@@ -48,36 +47,9 @@ public class CampaignsFragment extends BaseFragment {
                 NO_ADJUST_CONTENT);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
-     */
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
-     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get campaigns from arguments
         ArrayList<TeaserCampaign> mCampaigns = getArguments().getParcelableArrayList(CAMPAIGNS_TAG);
         // Get pre selection 
@@ -119,78 +91,7 @@ public class CampaignsFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             tabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
-        // TODO: 8/28/18 farshid
-//        HoloFontLoader.applyDefaultFont(tabLayout);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onStart()
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-        Print.i(TAG, "ON START");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onResume()
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        Print.i(TAG, "ON RESUME");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onPause()
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        Print.i(TAG, "ON PAUSE");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onStop()
-     */
-    @Override
-    public void onStop() {
-        super.onStop();
-        Print.i(TAG, "ON STOP");
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onDestroyView()
-     */
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onDestroy()
-     */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
-    }
-  
-    
-    /**
-     * ########### DIALOGS ###########  
-     */    
-
     
     /**
      * Class used as an simple pager adapter that represents each campaign fragment

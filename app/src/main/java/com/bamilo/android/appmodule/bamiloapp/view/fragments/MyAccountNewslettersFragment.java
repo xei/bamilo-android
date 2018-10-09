@@ -18,7 +18,6 @@ import com.bamilo.android.framework.service.forms.Form;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils;
@@ -61,7 +60,6 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i("ON ATTACH");
     }
 
     /*
@@ -72,7 +70,6 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i("ON CREATE");
         // Validate the saved state
         if (savedInstanceState != null) {
             mSavedState = savedInstanceState;
@@ -88,7 +85,6 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i("ON VIEW CREATED");
         // Get container
         mNewsletterScroll = (ScrollView) view.findViewById(R.id.email_notifications_scroll);
         // Get save button
@@ -106,7 +102,6 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
     @Override
     public void onResume() {
         super.onResume();
-        Print.i("ON RESUME");
     }
 
     /*
@@ -117,7 +112,6 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i("ON SAVE INSTANCE STATE: NEWSLETTER FORM");
         if (mDynamicForm != null) {
             mDynamicForm.saveFormState(outState);
         }
@@ -127,7 +121,6 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
      * Validate the current state
      */
     public void onValidateState() {
-        Print.i("ON VALIDATE STATE");
         // Case first time
         if (mNewslettersForm == null) {
             triggerGetNewslettersForm();
@@ -188,7 +181,6 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
         // Next button
         if (id == R.id.email_notifications_save) onClickSaveButton();
         // Unknown view
-        else Print.i("ON CLICK: UNKNOWN VIEW");
     }
 
     @Override
@@ -203,7 +195,6 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
      * @author sergiopereira
      */
     private void onClickSaveButton() {
-        Print.i("ON CLICK: SAVE");
         // Validate and save form
         if (mDynamicForm.validate()) {
             triggerSubmitForm(mDynamicForm.getForm().getAction(), mDynamicForm.save());
@@ -215,12 +206,10 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
      */
 
     private void triggerGetNewslettersForm() {
-        Print.i("TRIGGER: GET NEWSLETTER FORM");
         triggerContentEvent(new GetNewslettersFormHelper(), null, this);
     }
 
     private void triggerSubmitForm(String action, ContentValues values) {
-        Print.i("TRIGGER: GET NEWSLETTER FORM");
         triggerContentEvent(new SubmitFormHelper(), SubmitFormHelper.createBundle(action, values), this);
     }
 
@@ -233,18 +222,15 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i("ON SUCCESS EVENT");
         // Get type
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
-            Print.w("RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Super
         super.handleSuccessEvent(baseResponse);
         // Validate type
-        Print.i("ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_NEWSLETTER_PREFERENCES_FORM_EVENT:
                 // Save the form
@@ -266,22 +252,18 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
      */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.i("ON ERROR EVENT");
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
-            Print.w("RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.d("BASE FRAGMENT HANDLE ERROR EVENT");
             return;
         }
         // Show container
         showFragmentContentContainer();
         // Validate type
-        Print.i("ON ERROR EVENT: " + eventType);
         switch (eventType) {
         case GET_NEWSLETTER_PREFERENCES_FORM_EVENT:
             goBackWarningUser();

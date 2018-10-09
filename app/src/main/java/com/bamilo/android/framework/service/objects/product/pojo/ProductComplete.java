@@ -12,7 +12,6 @@ import com.bamilo.android.framework.service.objects.product.Variation;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -149,7 +148,6 @@ public class ProductComplete extends ProductMultiple {
             isPreOrder = Boolean.parseBoolean(jsonObject.optString(RestConstants.PRE_ORDER));
 
         } catch (JSONException e) {
-            Print.e(TAG, "Error initializing the complete product", e);
             return false;
         }
         return true;

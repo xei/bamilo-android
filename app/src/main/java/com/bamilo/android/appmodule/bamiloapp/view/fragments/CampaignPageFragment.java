@@ -55,7 +55,6 @@ import com.bamilo.android.framework.service.tracking.gtm.GTMValues;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -131,19 +130,16 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
         long GABeginRequestMillis = System.currentTimeMillis();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get campaigns from arguments
         mTeaserCampaign = getArguments().getParcelable(TAG);
         // Validate the saved state
         if (savedInstanceState != null) {
-            Print.i(TAG, "ON GET SAVED STATE");
             if (savedInstanceState.containsKey(TAG)) {
                 mCampaign = savedInstanceState.getParcelable(TAG);
             }
@@ -173,7 +169,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get grid view
         mGridView = view.findViewById(R.id.campaign_grid);
         mGridView.setGridLayoutManager(
@@ -185,43 +180,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         mGridView.setHasFixedSize(true);
         // Validate the current state
         getAndShowCampaign();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Print.i(TAG, "ON START");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Print.i(TAG, "ON RESUME");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Print.i(TAG, "ON PAUSE");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Print.i(TAG, "ON STOP");
-    }
-
-    @Override
-    public void onDestroyView() {
-        Print.i(TAG, "ON DESTROY VIEW");
-        super.onDestroyView();
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     @Override
@@ -241,7 +199,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
     @Override
     protected void onClickRetryButton(View view) {
-        Print.i(TAG, "ON CLICK ERROR BUTTON");
         super.onClickRetryButton(view);
         getAndShowCampaign();
     }
@@ -249,7 +206,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE STATE: CAMPAIGN");
         outState.putParcelable(TAG, mCampaign);
         outState.putLong(COUNTER_START_TIME, mStartTimeInMilliseconds);
         outState.putSerializable(BANNER_STATE, bannerState);
@@ -261,7 +217,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
      * @author sergiopereira
      */
     private void getAndShowCampaign() {
-        Print.i(TAG, "VALIDATE CAMPAIGN STATE");
         // Get the campaign id
         String id = (mTeaserCampaign != null) ? mTeaserCampaign.getId() : null;
         // Validate the current state
@@ -278,8 +233,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
      * @author sergiopereira
      */
     private void showCampaign() {
-        Print.i(TAG, "LOAD CAMPAIGN");
-
         // Get banner and show items
         getBannerView();
     }
@@ -391,7 +344,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     private void addItemToCart(CampaignItem campaignItem) {
         // Validate the current selection
         if (campaignItem.getSelectedSimple() == null) {
-            Print.w("WARNING: SIMPLE IS EMPTY");
             return;
         }
         //
@@ -402,7 +354,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         String brand = campaignItem.getBrandName();
         double price = campaignItem.getPriceForTracking();
         int discount = campaignItem.getMaxSavingPercentage();
-        Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
         // Validate the remain stock
         if (!hasStock) {
             showWarningErrorMessage(getString(R.string.campaign_stock_alert));
@@ -416,7 +367,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         }
     }
 
-
     protected void showVariantsDialog(CampaignItem item) {
 
         try {
@@ -426,10 +376,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                     item,
                     this);
             dialog.show(getFragmentManager(), null);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
+        } catch (NullPointerException ignored) {
         }
-
     }
 
     /**
@@ -472,7 +420,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     private void onClickProduct(View view) {
         String size = (String) view.getTag(SIZE);
         String sku = (String) view.getTag(SKU);
-        Print.d(TAG, "ON CLICK PRODUCT " + sku + " " + size);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
@@ -491,14 +438,9 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
      * @author sergiopereira
      */
     private void triggerGetCampaign(String id) {
-        Print.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
         // Create request
         triggerContentEvent(new GetCampaignHelper(), GetCampaignHelper.createBundle(id), this);
     }
-
-    /*
-      ############# REQUESTS #############
-     */
 
     /**
      * Trigger to add item to cart
@@ -506,14 +448,9 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
      * @author sergiopereira
      */
     private void triggerAddToCart(String sku) {
-        Print.i(TAG, "TRIGGER ADD TO CART");
         triggerContentEventProgress(new ShoppingCartAddItemHelper(),
                 ShoppingCartAddItemHelper.createBundle(sku), this);
     }
-
-    /*
-      ############# RESPONSE #############
-     */
 
     /**
      * Filter the success response
@@ -521,10 +458,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Update cart info
@@ -532,7 +467,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         // Validate type
         switch (eventType) {
             case GET_CAMPAIGN_EVENT:
-                Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
                 // Get and show campaign
                 mCampaign = (Campaign) baseResponse.getContentData();
                 /*--
@@ -552,7 +486,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                Print.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
                 isAddingProductToCart = false;
                 hideActivityProgress();
                 if (addToCartEventModel != null) {
@@ -582,11 +515,9 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public void onRequestError(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic errors
@@ -596,7 +527,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         // Validate type
         switch (eventType) {
             case GET_CAMPAIGN_EVENT:
-                Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
                 // Show campaign not available screen
                 showCampaignUnavailable();
                 break;
@@ -749,7 +679,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                     image.setAlpha(1F);
                     // show "Offer Ended" and disable product
                 } else {
-                    Print.d(TAG, "Product expired!");
                     showOfferEnded(timerContainer, buttonBuy, offerEnded, timer, name, image,
                             imageContainer);
                 }
@@ -957,12 +886,10 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             String parentPosition = parent.getTag().toString();
             CampaignItem campaignItem = getItem(Integer.valueOf(parentPosition));
             campaignItem.setSelectedSimplePosition(position);
-            Print.d(TAG, "selected simple");
         }
 
         @Override
         public void onNothingSelected(IcsAdapterView<?> parent) {
-            // ...
         }
 
         /*

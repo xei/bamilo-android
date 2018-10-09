@@ -2,12 +2,9 @@ package com.mobile.app;
 
 import android.content.Context;
 import android.support.multidex.MultiDex;
-
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
-import com.bamilo.android.framework.service.rest.AigHttpClient;
 import com.bamilo.android.framework.service.rest.AigRestAdapter;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 
 public class DebugApplication extends BamiloApplication {
@@ -25,7 +22,6 @@ public class DebugApplication extends BamiloApplication {
         super.onCreate();
 
         if (this.isDebuggable()) {
-            Print.initializeAndroidMode(this);
 
             //Leakcanary
             /*if (LeakCanary.isInAnalyzerProcess(this)) {

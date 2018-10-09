@@ -2,6 +2,7 @@ package com.bamilo.android.appmodule.bamiloapp.adapters;
 
 import android.graphics.Paint;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 
 import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.Item;
 import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.R;
@@ -33,8 +33,9 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
         this.onRecommendItemClickListener = onRecommendItemClickListener;
     }
 
+    @NonNull
     @Override
-    public RecommendViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecommendViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         @LayoutRes int layoutId = R.layout.cell_recommend_item;
         if (viewType == TYPE_CATEGORIES_DROP_DOWN) {
             layoutId = R.layout.row_my_bamilo_category_selection;
@@ -43,7 +44,7 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
     }
 
     @Override
-    public void onBindViewHolder(final RecommendViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecommendViewHolder holder, int position) {
         if (position == 0) {
             if (categoryDropdownTitle == null) {
                 holder.mCategoryDropdownTitle.setText(R.string.all_categories);
@@ -58,8 +59,7 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
             if (imageUrl != null) {
                 try {
                     ImageManager.getInstance().loadImage(imageUrl, holder.mImage, holder.mProgress, R.drawable.no_image_large, false);
-                } catch (Exception e) {
-                    Print.d(e.getMessage());
+                } catch (Exception ignored) {
                 }
             }
             holder.mBrand.setText(item.getBrand());
@@ -75,13 +75,10 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
                 holder.mOldPrice.setVisibility(View.INVISIBLE);
             }
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onRecommendItemClickListener != null) {
-                        onRecommendItemClickListener.onRecommendItemClicked(v,
-                                items.get(holder.getAdapterPosition() - 1), holder.getAdapterPosition() - 1);
-                    }
+            holder.itemView.setOnClickListener(v -> {
+                if (onRecommendItemClickListener != null) {
+                    onRecommendItemClickListener.onRecommendItemClicked(v,
+                            items.get(holder.getAdapterPosition() - 1), holder.getAdapterPosition() - 1);
                 }
             });
         }
@@ -144,16 +141,16 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
 
         public RecommendViewHolder(View view) {
             super(view);
-            mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
+            mImage = view.findViewById(R.id.home_teaser_item_image);
             mProgress = view.findViewById(R.id.home_teaser_item_progress);
-            mBrand = (TextView) view.findViewById(R.id.brand);
-            mName = (TextView) view.findViewById(R.id.name);
-            mPrice = (TextView) view.findViewById(R.id.price);
-            mOldPrice = (TextView) view.findViewById(R.id.old_price);
+            mBrand = view.findViewById(R.id.brand);
+            mName = view.findViewById(R.id.name);
+            mPrice = view.findViewById(R.id.price);
+            mOldPrice = view.findViewById(R.id.old_price);
 
-            mCategoryDropdownTitle = (TextView) view.findViewById(R.id.tvCategoryDropdownTitle);
-            cvCategoryDropDown = (CardView) view.findViewById(R.id.cvCategoryDropDown);
-            llCategoryDropDownParent = (LinearLayout) view.findViewById(R.id.llCategoryDropDownParent);
+            mCategoryDropdownTitle = view.findViewById(R.id.tvCategoryDropdownTitle);
+            cvCategoryDropDown = view.findViewById(R.id.cvCategoryDropDown);
+            llCategoryDropDownParent = view.findViewById(R.id.llCategoryDropDownParent);
         }
     }
 

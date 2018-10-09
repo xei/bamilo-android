@@ -17,7 +17,6 @@ import com.bamilo.android.framework.service.objects.home.group.BaseTeaserGroupTy
 import com.bamilo.android.framework.service.objects.home.object.BaseTeaserObject;
 import com.bamilo.android.framework.service.objects.home.type.TeaserGroupType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -173,7 +172,6 @@ public class TargetLink {
         // ##### Get fragment type
         FragmentType nextFragmentType = getFragmentType(type);
         if (nextFragmentType == FragmentType.UNKNOWN) {
-            Print.w(TAG, "WARNING: UNKNOWN TARGET LINK: " + mTarget);
             showWarningErrorMessage();
             return false;
         }
@@ -188,7 +186,6 @@ public class TargetLink {
         if (isSubCategoryFilter) {
             bundle.putBoolean(ConstantsIntentExtra.SUB_CATEGORY_FILTER, true);
         }
-        Print.i(TAG, "TARGET LINK: TYPE:" + nextFragmentType + " TITLE:" + mTitle + " ID:" + id);
         // ##### Append data
         if (mAppendDataListener != null) {
             mAppendDataListener.onAppendData(nextFragmentType, mTitle, id, bundle);
@@ -209,8 +206,7 @@ public class TargetLink {
         if (isToShowWarningError) {
             try {
                 mActivity.get().showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
-            } catch (NullPointerException e) {
-                Print.w("TARGET LINK WARNING: NPE ON SHOW ERROR MESSAGE");
+            } catch (NullPointerException ignored) {
             }
         }
     }

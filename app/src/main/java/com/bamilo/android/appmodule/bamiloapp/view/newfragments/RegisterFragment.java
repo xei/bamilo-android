@@ -21,7 +21,6 @@ import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
 import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton;
-import com.bamilo.android.framework.components.customfontviews.Button;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsCheckout;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsSharedPrefs;
@@ -40,7 +39,6 @@ import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.CustomerUtils;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
@@ -77,7 +75,6 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = savedInstanceState == null ? getArguments() : savedInstanceState;
         if (arguments != null) {
@@ -298,7 +295,6 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        Print.i(TAG, "ON CLICK RETRY BUTTON");
         onResume();
     }
 
@@ -306,14 +302,12 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
     public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Call super
         super.handleSuccessEvent(baseResponse);
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
 
             case REGISTER_ACCOUNT_EVENT:
@@ -371,7 +365,6 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Validate error o super
@@ -380,7 +373,6 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
         }
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
 
             case REGISTER_ACCOUNT_EVENT:

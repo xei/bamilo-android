@@ -25,7 +25,6 @@ import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventTask;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -93,7 +92,6 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get data
         savedInstanceState = savedInstanceState == null ? getArguments() : savedInstanceState;
         if (savedInstanceState != null) {
@@ -110,31 +108,10 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
-        // Set title view
-        //((TextView) view.findViewById(R.id.order_status_title_nr2)).setText(getString(R.string.order_number, mOrderNumber));
-        //if (mOrderDate != null) ((TextView) view.findViewById(R.id.order_status_title_date2)).setText(mOrderDate);
 
-        mHeaderView = (ViewGroup) view.findViewById(R.id.order_tracking_header);
-        mInfoView = (ViewGroup) view.findViewById(R.id.order_status_info);
-        mOrderItems = (ViewGroup) view.findViewById(R.id.order_details);
-
-        /*
-        // Get info view
-        mInfoView = (ViewGroup) view.findViewById(R.id.order_status_info);
-        // Get payment container
-        mPaymentView = (ViewGroup) view.findViewById(R.id.order_status_payment);
-        // Get shipping address container
-        mShippingView = (ViewGroup) view.findViewById(R.id.order_status_address_shipping);
-        // Get billing address container
-        mBillingView = (ViewGroup) view.findViewById(R.id.order_status_address_billing);
-        // Get order items container
-        mOrderItems = (ViewGroup) view.findViewById(R.id.order_status_items);*/
-
-        /*// Get return items container
-        mReturnItemsButton = view.findViewById(R.id.return_selected_button);
-        mReturnItemsContainer = view.findViewById(R.id.return_button_container);
-        mReturnItemsButton.setOnClickListener(this);*/
+        mHeaderView = view.findViewById(R.id.order_tracking_header);
+        mInfoView = view.findViewById(R.id.order_status_info);
+        mOrderItems = view.findViewById(R.id.order_details);
 
         // Validate state
         onValidateState();
@@ -152,13 +129,11 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE SATE");
         outState.putString(ConstantsIntentExtra.ARG_1, mOrderNumber);
         outState.putString(ConstantsIntentExtra.ARG_2, mOrderDate);
         outState.putParcelable(ConstantsIntentExtra.DATA, mOrder);
@@ -168,19 +143,16 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /*
@@ -192,12 +164,6 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         // Set info
         showOrderInfo(mInfoView, orderStatus);
         // Set payment
-       /* showPayment(mPaymentView, orderStatus);
-        // Set shipping
-        showAddress(mShippingView, getString(R.string.shipping), orderStatus.getShippingAddress());
-        // Set billing
-        showAddress(mBillingView, getString(R.string.billing), orderStatus.getBillingAddress());
-        // Set items*/
         showOrderItems(mOrderItems, orderStatus.getItems());
         // Show container
         showFragmentContentContainer();
@@ -261,7 +227,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
             ((TextView) view.findViewById(R.id.order_status_address_item_street)).setText(address.getAddress());
             ((TextView) view.findViewById(R.id.order_status_address_item_region)).setText(address.getCity());
             if (TextUtils.isNotEmpty(address.getPostcode())) {
-                TextView postCode = (TextView) view.findViewById(R.id.order_status_address_item_postcode);
+                TextView postCode = view.findViewById(R.id.order_status_address_item_postcode);
                 postCode.setText(address.getPostcode());
                 postCode.setVisibility(View.VISIBLE);
             }
@@ -286,7 +252,8 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                 ((TextView) view.findViewById(R.id.order_item_name)).setText(item.getName());
                 ((TextView) view.findViewById(R.id.order_item_quantity)).setText("تعداد: " + item.getQuantity());
                 ((TextView) view.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(item.getPrice()));
-                ImageManager.getInstance().loadImage(item.getImageUrl(), (ImageView) view.findViewById(R.id.order_item_image), null, R.drawable.no_image_large, false);
+                ImageManager.getInstance().loadImage(item.getImageUrl(),
+                        view.findViewById(R.id.order_item_image), null, R.drawable.no_image_large, false);
                 // Add to parent
                 group.addView(view);
             }
@@ -482,13 +449,11 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Handle success
         super.handleSuccessEvent(baseResponse);
         // Validate
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 hideActivityProgress();
@@ -512,7 +477,6 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Validate generic errors
@@ -520,7 +484,6 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
             return;
         }
         // Validate event type
-        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 hideActivityProgress();

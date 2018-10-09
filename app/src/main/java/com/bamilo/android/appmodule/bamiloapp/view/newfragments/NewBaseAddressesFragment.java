@@ -16,7 +16,6 @@ import com.bamilo.android.framework.service.objects.addresses.Address;
 import com.bamilo.android.framework.service.objects.addresses.Addresses;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogGenericFragment;
@@ -53,13 +52,11 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
 
     }
 
@@ -67,31 +64,26 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /*
@@ -111,7 +103,7 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
         // Save addresses
         mAddresses = addresses;
         Address tmp = new Address();
-        ArrayList<Address> addressList = new ArrayList<Address>();
+        ArrayList<Address> addressList = new ArrayList<>();
         tmp = addresses.getShippingAddress();
         tmp.setDefault(true);
         addressList.add(tmp);
@@ -208,7 +200,6 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
         hideActivityProgress();
 
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT_: " + eventType);
         switch (eventType) {
             case SET_DEFAULT_SHIPPING_ADDRESS:
                 showAddresses((Addresses) baseResponse.getContentData(), -1);

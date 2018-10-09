@@ -3,7 +3,6 @@ package com.bamilo.android.framework.components._unused_.dialogs;
 
 import android.content.Context;
 
-import com.bamilo.android.framework.service.utils.output.Print;
 
 @SuppressWarnings("unused")
 public class WizardFactory {
@@ -32,7 +31,6 @@ public class WizardFactory {
             WizardGenericFragment.getInstance(type, R.layout.wizard_navigation_categories, R.id.wizard_nav_button).show(fragmentManager, tag);*/
             break;
         default:
-            Print.w(TAG, "WARNING ON SHOW WIZARD: UNKNOWN TYPE");
             break;
         }
     }

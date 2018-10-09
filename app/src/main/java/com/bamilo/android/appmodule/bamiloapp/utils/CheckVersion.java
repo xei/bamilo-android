@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.bamiloapp.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,7 +18,6 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.ActivitiesWorkFlow;
 import com.bamilo.android.framework.service.objects.configs.Version;
 import com.bamilo.android.framework.service.objects.configs.VersionInfo;
 import com.bamilo.android.framework.service.utils.Constants;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogGenericFragment;
 import com.bamilo.android.R;
 
@@ -51,6 +51,7 @@ public class CheckVersion {
 
     private static final int NO_VERSION_UNWANTED = -1;
 
+    @SuppressLint("StaticFieldLeak")
     private static Context sContext;
 
     private static int unwantedVersion = NO_VERSION_UNWANTED;
@@ -66,17 +67,15 @@ public class CheckVersion {
         isEnabled  = context.getResources().getBoolean(R.bool.check_version_enabled);
         // Validate flag
         if(isEnabled) {
-            Print.i(TAG, "CHECK VERSION: ENABLED");
             sLastUpdate = 0;
             runEvents();
-        } else Print.i(TAG, "CHECK VERSION: DISABLED");
+        }
     }
 
     public static boolean run(Context context) {
         // Validate check version
         if(!isEnabled) return false;
-        else Print.i(TAG, "RUN CHECK VERSION");
-        
+
         sContext = context;
         if (runEvents())
             return false;
@@ -122,17 +121,10 @@ public class CheckVersion {
             // Validate activity state
             if(!activity.isFinishing()){
                 // Show dialog
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialogFragment.show(fm, null);
-                    }
-                }, 1000L);
+                new Handler().postDelayed(() -> dialogFragment.show(fm, null), 1000L);
             }
-        } catch (IllegalStateException e) {
-            Print.w(TAG, "WARNING: ISE ON SHOW VERSION DIALOG", e);
-        } 
-        
+        } catch (IllegalStateException ignored) {
+        }
     }
     
     public static void clearDialogSeenInLaunch(Context context) {
@@ -144,9 +136,7 @@ public class CheckVersion {
 
     private static boolean runEvents() {
         long now = System.currentTimeMillis();
-        Print.d(TAG, "runEvents: lastUpdate = " + sLastUpdate + " passed = " + (now - sLastUpdate) + " intervall = " + UPDATE_INTERVAL_MILLIS);
         if (sLastUpdate == 0 || (now - sLastUpdate) > UPDATE_INTERVAL_MILLIS) {
-            Print.d(TAG, "runEvents: init or intervall passed - triggering");
             sLastUpdate = now;
             return true;
         }
@@ -182,14 +172,12 @@ public class CheckVersion {
         try {
             packageInfo = sContext.getPackageManager().getPackageInfo(sContext.getPackageName(), 0);
         } catch (NameNotFoundException e) {
-            Print.e(TAG, "No package name for the current package. This should not occur");
             return false;
         }
         int crrAppVersion = packageInfo.versionCode;
 
         Version infoVersion = getVersion(sContext);
         if (infoVersion == null) {
-            Print.w(TAG, "No version info available - terminating version check");
             return false;
         }
 
@@ -205,10 +193,6 @@ public class CheckVersion {
             checkResult = NOT_AVAILABLE;
         }
 
-        Print.d(TAG, "checkVersionInfo: appVersion = " + crrAppVersion);
-        Print.d(TAG, "provided minimumVersion = " + infoVersion.getMinimumVersion() + " currentVersion = " + infoVersion.getCurrentVersion());
-        Print.d(TAG, "customer preference: " + (unwantedVersion == infoVersion.getCurrentVersion() ? "Ignore" : "Accept"));
-        Print.d(TAG, "checkResult = " + checkResult);
         return true;
     }
 

@@ -19,7 +19,6 @@ import com.bamilo.android.framework.service.objects.product.pojo.ProductOffer;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.catalog.HeaderFooterGridView;
@@ -74,7 +73,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -85,7 +83,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
 
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         // Get data
@@ -104,11 +101,10 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get views
-        mProductName = (TextView) view.findViewById(R.id.offer_product_name);
-        mProductBrand = (TextView) view.findViewById(R.id.offer_product_brand);
-        mOffersList = (HeaderFooterGridView) view.findViewById(R.id.offers_list);
+        mProductName = view.findViewById(R.id.offer_product_name);
+        mProductBrand = view.findViewById(R.id.offer_product_brand);
+        mOffersList = view.findViewById(R.id.offers_list);
         mOffersList.setNestedScrollingEnabled(false);
         mOffersList.setHasFixedSize(true);
         mOffersList.setGridLayoutManager(getResources().getInteger(R.integer.favourite_num_columns));
@@ -123,7 +119,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -134,7 +129,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         if (productOffers == null && mCompleteProductSku != null) {
             triggerGetProductOffers(mCompleteProductSku);
         } else {
@@ -164,7 +158,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -175,7 +168,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
     
     /*
@@ -185,7 +177,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
     
     /*
@@ -195,7 +186,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
     
     /*
@@ -231,7 +221,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
      */
     private void triggerAddItemToCart(String sku, double price) {
         // GA OFFER TRACKING
-        Print.d(TAG, "SIMLPE SKU:" + sku + " PRICE:" + price);
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
 //        TrackerDelegator.trackAddOfferToCart(sku, price);
     }
@@ -243,11 +232,9 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         
@@ -276,7 +263,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Hide progress
@@ -285,7 +271,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         if (super.handleErrorEvent(baseResponse)) return;
         // Validate type
         EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
             showFragmentContentContainer();
@@ -302,7 +287,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Print.d(TAG, "ON ITEM CLICK");
         ProductOffer offer = productOffers.getOffers().get(position);
         if(offer.getSeller() != null){
             Bundle bundle = new Bundle();
@@ -332,7 +316,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
 
     @Override
     public void onClickVariation(ProductOffer offer) {
-        Print.i(TAG, "ON CLICK TO SHOW VARIATION LIST");
         try {
             DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
                     getBaseActivity(),
@@ -341,7 +324,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
                     this);
             dialog.show(getFragmentManager(), null);
         } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
         }
     }
 

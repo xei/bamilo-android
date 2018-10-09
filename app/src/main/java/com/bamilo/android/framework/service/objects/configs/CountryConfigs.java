@@ -11,7 +11,6 @@ import com.bamilo.android.framework.service.objects.statics.MobileAbout;
 import com.bamilo.android.framework.service.objects.statics.TargetHelper;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -168,7 +167,6 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         try {
             mobileAbout = new MobileAbout(jsonObject);
         } catch (JSONException ex) {
-            Print.w("WARNING: JSE ON PARSE MOBILE ABOUT");
         }
 
         hasCartPopup = jsonObject.optBoolean(RestConstants.HAS_CART_POPUP);

@@ -16,7 +16,6 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentCont
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils;
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
@@ -48,7 +47,6 @@ public class CheckoutStepManager {
      * @return {@link FragmentType}
      */
     public static FragmentType getNextFragment(@Nullable String nextStep) {
-        Print.i(TAG, "NEXT STEP STRING: " + nextStep);
         // Default case
         FragmentType fragmentType = FragmentType.UNKNOWN;
         // Case not valid next step (null or empty)
@@ -64,7 +62,6 @@ public class CheckoutStepManager {
         // Order step
         else if (nextStep.equalsIgnoreCase(ORDER_STEP)) fragmentType = FragmentType.CHECKOUT_FINISH;
         // Return next fragment type
-        Print.i(TAG, "NEXT STEP FRAGMENT: " + fragmentType.toString());
         return fragmentType;
     }
 
@@ -109,7 +106,7 @@ public class CheckoutStepManager {
         // Hide total view
         view.findViewById(R.id.checkout_total_label).setVisibility(View.GONE);
         // Set next label
-        TextView textView = (TextView) view.findViewById(R.id.checkout_button_enter);
+        TextView textView = view.findViewById(R.id.checkout_button_enter);
         textView.setText(view.getContext().getResources().getString(R.string.save_label));
         float weight = ((LinearLayout.LayoutParams) textView.getLayoutParams()).weight;
         // Set the view group with the same text weight
@@ -125,7 +122,7 @@ public class CheckoutStepManager {
      */
     public static void setTotalBar(@NonNull View view, @Nullable PurchaseEntity purchaseEntity) {
         // Get view
-        final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
+        final AutoResizeTextView titleTextView = view.findViewById(R.id.checkout_total_label);
         // Show full button
         if (purchaseEntity == null) {
             setTotalBarWithFullButton(view);
@@ -139,12 +136,9 @@ public class CheckoutStepManager {
             final int color2 = ContextCompat.getColor(context, R.color.black_800);
             titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
             titleTextView.setText(UIUtils.setSpan(title + " ", finalValue, color1, color2));
-            titleTextView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES) {
-                        titleTextView.setText(UIUtils.setSpan(title + "\n", finalValue, color1, color2));
-                    }
+            titleTextView.post(() -> {
+                if (titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES) {
+                    titleTextView.setText(UIUtils.setSpan(title + "\n", finalValue, color1, color2));
                 }
             });
         }
@@ -195,11 +189,9 @@ public class CheckoutStepManager {
         // Validate the next step
         if (nextStepFromParent != null && nextStepFromParent != FragmentType.UNKNOWN
                 && nextStepFromParent != FragmentType.WRITE_REVIEW) {
-            Print.i(TAG, "NEXT STEP FROM PARENT: " + nextStepFromParent.toString());
             FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
             activity.onSwitchFragment(nextStepFromParent,arguments, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            Print.i(TAG, "NEXT STEP FROM PARENT: BACK");
             activity.onBackPressed();
         }
     }
@@ -210,11 +202,9 @@ public class CheckoutStepManager {
     private static void goToCheckoutNextStepFromApi(BaseActivity activity, FragmentType mParentFragmentType, FragmentType nextStepType) {
         // Get next step
         if (nextStepType == null || nextStepType == FragmentType.UNKNOWN) {
-            Print.w(TAG, "NEXT STEP FROM API IS NULL");
             //super.showFragmentErrorRetry();
             activity.onBackPressed();
         } else {
-            Print.i(TAG, "NEXT STEP FROM API: " + nextStepType.toString());
             // Case comes from MY_ACCOUNT
             if(mParentFragmentType == FragmentType.MY_ACCOUNT) {
                 if(nextStepType == FragmentType.CHECKOUT_CREATE_ADDRESS) nextStepType = FragmentType.MY_ACCOUNT_CREATE_ADDRESS;
@@ -226,6 +216,4 @@ public class CheckoutStepManager {
             activity.onSwitchFragment(nextStepType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
-
-
 }

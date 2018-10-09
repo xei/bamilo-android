@@ -32,7 +32,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -96,7 +95,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -107,8 +105,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
-        // Validate the saved values 
+        // Validate the saved values
         if(savedInstanceState != null){
             mSavedState = savedInstanceState;
             mVoucherCode = savedInstanceState.getString(ConstantsIntentExtra.ARG_1);
@@ -123,10 +120,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get containers
-        mPaymentContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
-        mScrollView = (ScrollView) view.findViewById(R.id.payment_scroll);
+        mPaymentContainer = view.findViewById(R.id.checkout_payment_methods_container);
+        mScrollView = view.findViewById(R.id.payment_scroll);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
         // Voucher
@@ -146,7 +142,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -157,7 +152,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
 //        TrackerDelegator.trackPage(TrackingPage.PAYMENT_SCREEN, getLoadTime(), true);
     }
     
@@ -169,7 +163,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -197,7 +190,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -206,7 +198,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      */
     @Override
     public void onDestroyView() {
-        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
     
@@ -217,7 +208,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -240,7 +230,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         }
         // Case Unknown
         else {
-            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
         }
     }
     
@@ -265,7 +254,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      * Load the dynamic form
      */
     private void loadForm(Form form) {
-        Print.i(TAG, "LOAD FORM");
         mDynamicForm = FormFactory.create(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
         mPaymentContainer.removeAllViews();
         mPaymentContainer.addView(mDynamicForm.getContainer());
@@ -310,12 +298,12 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     }
 
     private void prepareCouponView() {
-        mVoucherView = (EditText) mVoucherContainer.findViewById(R.id.voucher_name);
+        mVoucherView = mVoucherContainer.findViewById(R.id.voucher_name);
         if (!TextUtils.isEmpty(mVoucherCode)) {
             mVoucherView.setText(mVoucherCode);
         }
         UIUtils.scrollToViewByClick(mScrollView, mVoucherView);
-        couponButton = (TextView) mVoucherContainer.findViewById(R.id.voucher_btn);
+        couponButton = mVoucherContainer.findViewById(R.id.voucher_btn);
         if (removeVoucher) {
             couponButton.setText(getString(R.string.remove_label));
         }
@@ -342,7 +330,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     }
     
     private void onClickSubmitPaymentButton() {
-        Print.i(TAG, "ON CLICK: Submit Payment Method");
         if(mDynamicForm != null){
             if(mDynamicForm.validate()){
                 ContentValues values = mDynamicForm.save();
@@ -386,16 +373,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        
+
         switch (eventType) {
         case GET_MULTI_STEP_PAYMENT:
-            Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             // Get order summary
             MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();
             // Form
@@ -404,7 +388,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             setOrderInfo(responseData.getOrderSummary());
             break;
         case SET_MULTI_STEP_PAYMENT:
-            Print.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
             // Get next step
             NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
             FragmentType nextFragment = nextStepStruct.getFragmentType();
@@ -438,25 +421,20 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
     	// Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
         }
         // Get event type and error
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Validate event type
         switch (eventType) {
         case GET_MULTI_STEP_PAYMENT:
-            Print.i(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             break;
         case SET_MULTI_STEP_PAYMENT:
-            Print.i(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
 //            TrackerDelegator.trackFailedPayment(paymentName, BamiloApplication.INSTANCE.getCart());
             showWarningErrorMessage(baseResponse.getValidateMessage());
             showFragmentContentContainer();

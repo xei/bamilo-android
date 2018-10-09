@@ -5,7 +5,6 @@ import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.bamilo.android.framework.service.utils.output.Print;
 
 /**
  * Category table helper.
@@ -74,7 +73,6 @@ public class CategoriesTableHelper extends BaseTable {
             // Create query
             String query = new StringBuilder("select ").append(Columns.VIEW_COUNT).append(" from ").append(TABLE_NAME)
                     .append(" where ").append(Columns.URL_KEY).append(" = ?").toString();
-            Print.i(TAG, "SQL RESULT query :  " + query);
             Cursor cursor = db.rawQuery(query, new String[]{"'"+id+"'"});
 
             int count = 0;
@@ -95,9 +93,7 @@ public class CategoriesTableHelper extends BaseTable {
                     .toString();
             // Execute
             db.execSQL(insertOrReplace, new String[]{DatabaseUtils.sqlEscapeString(categoryName), DatabaseUtils.sqlEscapeString(id)});
-            Print.i(TAG, "ON INCREASE COUNTER: " + categoryName);
         } catch (SQLException e) {
-            Print.w(TAG, "WARNING: SQE ON INCREASE COUNTER", e);
         } finally {
             db.close();
         }
@@ -136,12 +132,10 @@ public class CategoriesTableHelper extends BaseTable {
             if (cursor != null) cursor.close();
 
         } catch (SQLException e) {
-            Print.w(TAG, "WARNING: SQE ON GET TOP VIEWED CATEGORY", e);
         } finally {
             db.close();
         }
         //DarwinDatabaseSemaphore.getInstance().releaseLock();
-        Print.i(TAG, "TOP CATEGORY: " + category + " " + counter);
         // Return name
         return category;
     }
@@ -150,7 +144,6 @@ public class CategoriesTableHelper extends BaseTable {
      * Remove all rows
      */
     public static void clearCategories() {
-        Print.d(TAG, "ON CLEAN TABLE");
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
         db.delete(TABLE_NAME, null, null);
     }

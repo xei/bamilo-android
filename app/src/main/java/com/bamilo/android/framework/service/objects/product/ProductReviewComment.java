@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.bamilo.android.framework.service.objects.IJSONSerializable;
 import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.pojo.RestConstants;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,7 +59,6 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
             JSONArray stars = jsonObject.optJSONArray(RestConstants.STARS);
             if (stars != null) {
                 int size = stars.length();
-                Print.d("STAR " + size);
                 rating = 0;
                 for (int i = 0; i < size; i++) {
                     RatingStar option = new RatingStar();
@@ -70,7 +68,6 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
                 }
                 rating /= size;
                 //rating = rating * 5 / 100;
-                Print.d("RATING" + rating);
             }
 
         } catch (JSONException e) {
@@ -170,7 +167,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
 		 date = in.readString();
 		 rating = in.readDouble();
 		 optionTitle = in.readString();
-		 ratingStars = new ArrayList<RatingStar>();
+		 ratingStars = new ArrayList<>();
 		 in.readList(ratingStars, RatingStar.class.getClassLoader());
 		 average = in.readInt();
 	}

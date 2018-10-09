@@ -14,7 +14,6 @@ import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.appmodule.bamiloapp.view.components.DailyDealViewComponent;
 import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -50,7 +49,6 @@ public class DailyDealProductListAdapter extends
                 ImageManager.getInstance().loadImage(product.thumb, holder.imgProductThumb, null,
                         R.drawable.no_image_large, false);
             } catch (Exception e) {
-                Print.d(e.getMessage());
             }
         }
 

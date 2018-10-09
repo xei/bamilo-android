@@ -10,7 +10,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.framework.service.objects.product.RatingStar;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -50,7 +49,6 @@ public class ReviewFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -61,7 +59,6 @@ public class ReviewFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
     }
 
     /*
@@ -73,7 +70,6 @@ public class ReviewFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         inflater = LayoutInflater.from(getActivity());
         setAppContentLayout(view);
     }
@@ -86,7 +82,6 @@ public class ReviewFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -97,7 +92,6 @@ public class ReviewFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -108,7 +102,6 @@ public class ReviewFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -119,7 +112,6 @@ public class ReviewFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -130,7 +122,6 @@ public class ReviewFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY");
     }
     
     
@@ -139,15 +130,15 @@ public class ReviewFragment extends BaseFragment {
      */
     public void setAppContentLayout(View view) {
         Bundle b = getArguments();
-        TextView comment = (TextView) view.findViewById(R.id.review_comment);
+        TextView comment = view.findViewById(R.id.review_comment);
         comment.setText(b.getString(ConstantsIntentExtra.REVIEW_COMMENT));
-        TextView userName = (TextView) view.findViewById(R.id.review_username);
+        TextView userName = view.findViewById(R.id.review_username);
         userName.setText(b.getString(ConstantsIntentExtra.REVIEW_NAME) + ",");
-        TextView date = (TextView) view.findViewById(R.id.review_date);
+        TextView date = view.findViewById(R.id.review_date);
         date.setText(b.getString(ConstantsIntentExtra.REVIEW_DATE));
-        TextView title = (TextView) view.findViewById(R.id.review_item_title);
+        TextView title = view.findViewById(R.id.review_item_title);
         title.setText(b.getString(ConstantsIntentExtra.REVIEW_TITLE));
-        LinearLayout ratingsContainer = (LinearLayout) view.findViewById(R.id.review_ratings_container);
+        LinearLayout ratingsContainer = view.findViewById(R.id.review_ratings_container);
         if (ratingsContainer.getChildCount() > 0) {
             ratingsContainer.removeAllViews();
         }
@@ -188,8 +179,8 @@ public class ReviewFragment extends BaseFragment {
                     if(j < ratingOptionArray.size()){
                         final View rateTypeView = inflater.inflate(starsLayout, null, false);
                         rateTypeView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
-                        final TextView ratingTitle = (TextView) rateTypeView.findViewById(R.id.title_type);
-                        final RatingBar userRating = (RatingBar) rateTypeView.findViewById(R.id.rating_value);
+                        final TextView ratingTitle = rateTypeView.findViewById(R.id.title_type);
+                        final RatingBar userRating = rateTypeView.findViewById(R.id.rating_value);
                         userRating.setRating((float) ratingOptionArray.get(j).getRating());
                         ratingTitle.setText(ratingOptionArray.get(j).getTitle());
                         typeLine.addView(rateTypeView);
@@ -205,8 +196,8 @@ public class ReviewFragment extends BaseFragment {
             typeLine.setOrientation(LinearLayout.HORIZONTAL);
             View rateTypeView = inflater.inflate(starsLayout, null, false);
             rateTypeView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
-            final TextView ratingTitle = (TextView) rateTypeView.findViewById(R.id.title_type);
-            final RatingBar userRating = (RatingBar) rateTypeView.findViewById(R.id.rating_value);
+            final TextView ratingTitle = rateTypeView.findViewById(R.id.title_type);
+            final RatingBar userRating = rateTypeView.findViewById(R.id.rating_value);
             userRating.setRating(ratingValue);
             ratingTitle.setVisibility(View.GONE);
             typeLine.addView(rateTypeView);

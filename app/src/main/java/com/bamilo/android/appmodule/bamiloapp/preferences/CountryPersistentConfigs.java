@@ -22,7 +22,6 @@ import com.bamilo.android.framework.service.objects.statics.TargetHelper;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,9 +144,7 @@ public class CountryPersistentConfigs {
      */
     public static String getCountryPhoneNumber(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null);
-        Print.i("SHOP COUNTRY PHONE NUMBER: " + mPhone2Call);
-        return mPhone2Call;
+        return sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null);
     }
 
     /**
@@ -156,9 +153,7 @@ public class CountryPersistentConfigs {
      */
     public static String getCountryEmail(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String mEmail = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, null);
-        Print.i("SHOP COUNTRY EMAIL: " + mEmail);
-        return mEmail;
+        return sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, null);
     }
 
     /**

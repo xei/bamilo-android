@@ -9,7 +9,6 @@ import com.bamilo.android.framework.service.objects.home.group.BaseTeaserGroupTy
 import com.bamilo.android.framework.service.objects.home.type.TeaserGroupType;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -132,10 +131,8 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
             if (type != TeaserGroupType.UNKNOWN) {
                 teaserGroup = new BaseTeaserGroupType(type, json);
             } else {
-                Print.w(TAG, "WARNING: RECEIVED UNKNOWN GROUP OF TEASERS");
             }
         } catch (JSONException e) {
-            Print.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
         }
         // Return the group or null
         return teaserGroup;

@@ -22,7 +22,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.R;
@@ -66,7 +65,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -79,7 +77,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
         super.onCreate(savedInstanceState);
 //        TrackerDelegator.trackPage(TrackingPage.FORGOT_PASSWORD, getLoadTime(), false);
 
-        Print.i(TAG, "ON CREATE");
         mDynamicForm = null;
 
         // Track screen
@@ -104,7 +101,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -115,7 +111,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         if (formResponse != null) displayForm(formResponse);
         else triggerForgotForm();
         setAppContentLayout();
@@ -143,7 +138,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -154,7 +148,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
         if (container != null) {
             try {
                 container.removeAllViews();
@@ -199,7 +192,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
      * 
      */
     private void displayForm(Form form) {
-        Print.d(TAG, "DISPLAY FORM");
         mDynamicForm = FormFactory.create(FormConstants.FORGET_PASSWORD_FORM, getActivity(), form);
         DynamicFormItem item = mDynamicForm.getItemByKey(RestConstants.EMAIL);
         if (item == null)
@@ -208,7 +200,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
             ((EditText) item.getDataControl()).setHint(getString(R.string.forgotten_password_examplemail));
         }
         if (getView() == null) {
-            Print.e(TAG, "NO VIEW - SWITCHING TO HOME");
             restartAllFragments();
             return;
         }
@@ -249,10 +240,8 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Print.d(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Call super
@@ -261,10 +250,8 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
         showFragmentContentContainer();
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "onSuccessEvent eventType : " + eventType);
         switch (eventType) {
             case GET_FORGET_PASSWORD_FORM_EVENT:
-                Print.d(TAG, "FORGET_PASSWORD_FORM");
                 Form form = (Form) baseResponse.getContentData();
                 if (null != form) {
                     this.formResponse = form;
@@ -284,7 +271,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Call super
@@ -294,7 +280,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
         // Validate type
         showFragmentContentContainer();
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         if (eventType == EventType.FORGET_PASSWORD_EVENT) {
             showFormValidateMessages(mDynamicForm, baseResponse, eventType);
         }

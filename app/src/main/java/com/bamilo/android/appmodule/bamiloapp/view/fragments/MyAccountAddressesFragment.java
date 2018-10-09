@@ -12,7 +12,6 @@ import com.bamilo.android.appmodule.bamiloapp.helpers.address.GetMyAddressesHelp
 import com.bamilo.android.framework.service.objects.addresses.Addresses;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils;
@@ -46,20 +45,17 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
         mGABeginRequestMillis = System.currentTimeMillis();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Hide some checkout views
         // TODO: 8/28/18 farshid
 //        UIUtils.showOrHideViews(View.GONE, view.findViewById(R.id.checkout_total_bar), view.findViewById(ORDER_SUMMARY_CONTAINER));
@@ -68,37 +64,31 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /*
@@ -122,7 +112,6 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
     protected void onClickEditAddressButton(View view) {
         // Get tag that contains the address id
         int addressId = (int) view.getTag();
-        Print.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
         // Goto edit address
         Bundle bundle = new Bundle();
         bundle.putInt(ConstantsIntentExtra.ARG_1, addressId);
@@ -149,11 +138,9 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
     public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_CUSTOMER_ADDRESSES_EVENT:
                 super.showAddresses((Addresses) baseResponse.getContentData());
@@ -170,18 +157,15 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
         }
         // Validate type
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         switch (eventType) {
             case GET_CUSTOMER_ADDRESSES_EVENT:
                 showContinueShopping();
@@ -190,5 +174,4 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
                 break;
         }
     }
-
 }

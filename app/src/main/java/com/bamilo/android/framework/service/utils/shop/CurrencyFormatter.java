@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import com.bamilo.android.framework.service.Darwin;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -70,9 +69,6 @@ public class CurrencyFormatter {
         Currency currency = Currency.getInstance(currCode);
         formatter = getNumberFormatter();
 
-        Print.i(TAG,
-                "CURRENCY: currency code = " + currency.getCurrencyCode() + " fraction digits = "
-                        + currency.getDefaultFractionDigits());
     }
 
     /**
@@ -98,7 +94,6 @@ public class CurrencyFormatter {
             return formatCurrencyPattern(formatter.format(value));
         } catch (NumberFormatException e) {
             //In case of bad formatting, return the parsed value with no currency sign
-            Print.e(TAG, "bad formatting for value = " + value, e);
             return value + "";
         }
     }
@@ -138,9 +133,7 @@ public class CurrencyFormatter {
                 return formatCurrencyPattern(formatter.format(valueDouble));
             } catch (NumberFormatException e) {
                 //In case of bad formatting, return the parsed value with no currency sign
-                Print.e(TAG, "bad formatting for value = " + value, e);
-            } catch (ParseException e) {
-                Print.d(TAG, "parse exception: cannot parse value = " + value, e);
+            } catch (ParseException ignored) {
             }
         }
         return value;

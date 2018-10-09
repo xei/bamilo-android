@@ -43,7 +43,6 @@ import com.bamilo.android.appmodule.modernbamilo.util.typography.TypeFaceHelper
 import com.bamilo.android.framework.service.pojo.BaseResponse
 import com.bamilo.android.framework.service.rest.errors.ErrorCode
 import com.bamilo.android.framework.service.utils.*
-import com.bamilo.android.framework.service.utils.output.Print
 import java.util.regex.Pattern
 
 private const val INITIAL_HEIGHT = 2064
@@ -228,13 +227,11 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
         override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
             // Validate fragment visibility
             if (isOnStoppingProcess || activity == null) {
-                Print.w("NewBaseFragment.TAG", "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!")
                 return
             }
             handleSuccessEvent(baseResponse)
             // Validate event
             val eventType = baseResponse?.eventType
-            Print.i("NewBaseFragment.TAG", "ON SUCCESS EVENT: $eventType")
             when (eventType) {
 
                 EventType.REGISTER_ACCOUNT_EVENT -> {
@@ -282,7 +279,6 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
             }
             // Validate fragment visibility
             if (isOnStoppingProcess) {
-                Print.w("NewBaseFragment.TAG", "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!")
                 return
             }
             // Validate error o super
@@ -291,7 +287,6 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
             }
             // Validate event
             val eventType = baseResponse?.eventType
-            Print.i("NewBaseFragment.TAG", "ON ERROR EVENT: $eventType")
             when (eventType) {
 
                 EventType.REGISTER_ACCOUNT_EVENT -> {
@@ -318,13 +313,11 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
     })
 
     fun handleSuccessEvent(baseResponse: BaseResponse<*>?): Boolean {
-        Print.i("TAG", "ON HANDLE SUCCESS EVENT")
         // Validate event
         val eventType = baseResponse?.eventType
 
         when (eventType) {
             EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT, EventType.ADD_PRODUCT_BUNDLE -> {
-//                UIProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType)
                 (activity as BaseActivity).updateCartInfo()
                 return true
             }
@@ -345,7 +338,6 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
     }
 
     fun handleErrorEvent(response: BaseResponse<*>?): Boolean {
-        Print.i("TAG", "ON HANDLE ERROR EVENT")
         // Validate priority
         if (!response!!.isPriority) {
             return false
@@ -356,7 +348,6 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
         }
         // Validate error code
         val errorCode = response.error.code
-        Print.i("TAG", "ON HANDLE ERROR EVENT: $errorCode")
         // Case network error
         return if (ErrorCode.isNetworkError(errorCode)) {
             handleNetworkError(errorCode, response.eventTask)
