@@ -304,7 +304,7 @@ public class TrackerDelegator {
         bundle.putString(AdjustTracker.USER_ID, userId);
         bundle.putBoolean(AdjustTracker.DEVICE,
                 sContext.getResources().getBoolean(R.bool.isTablet));
-        AdjustTracker.get().trackEvent(TrackingEvent.SHARE, bundle);
+        AdjustTracker.get().trackEvent(TrackingEvent.SHARE_APP, bundle);
         //GTM
     }
 

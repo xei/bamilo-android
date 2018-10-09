@@ -25,7 +25,6 @@ import com.bamilo.android.framework.service.Darwin;
 import com.bamilo.android.framework.service.objects.checkout.PurchaseItem;
 import com.bamilo.android.framework.service.objects.customer.Customer;
 import com.bamilo.android.framework.service.objects.customer.CustomerGender;
-import com.bamilo.android.framework.service.objects.product.pojo.ProductComplete;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductRegular;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.tracking.gtm.GTMKeys;
@@ -572,6 +571,12 @@ public class AdjustTracker extends AbcBaseTracker {
                 addBaseParameters(eventShare, bundle);
                 addProductSkuParameters(eventShare, bundle);
                 Adjust.trackEvent(eventShare);
+                break;
+
+            case SHARE_APP:
+                AdjustEvent eventShareApp = new AdjustEvent(mContext.getString(R.string.adjust_token_app_share));
+                addBaseParameters(eventShareApp, bundle);
+                Adjust.trackEvent(eventShareApp);
                 break;
 
             case CALL:
