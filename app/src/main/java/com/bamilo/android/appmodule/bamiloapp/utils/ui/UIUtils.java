@@ -29,14 +29,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bamilo.android.BuildConfig;
+import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.utils.Toast;
+import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
 import com.bamilo.android.framework.components.customfontviews.CheckBox;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
-import com.bamilo.android.appmodule.bamiloapp.utils.Toast;
-import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
-import com.bamilo.android.R;
 
 /**
  * A general Class with UI utils such as set the font <p/><br> <p> Copyright (C) 2012 Rocket
@@ -465,5 +465,7 @@ public class UIUtils {
         shareIntent
                 .putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.share_link));
         context.startActivity(Intent.createChooser(shareIntent, "Share link using"));
+
+        TrackerDelegator.trackAppShared();
     }
 }

@@ -8,8 +8,12 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+
+import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
+import com.bamilo.android.appmodule.bamiloapp.utils.catalog.CatalogSort;
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail;
 import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.objects.catalog.CatalogPage;
@@ -34,17 +38,15 @@ import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
-import com.bamilo.android.appmodule.bamiloapp.utils.catalog.CatalogSort;
-import com.bamilo.android.R;
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class TrackerDelegator {
 
@@ -288,6 +290,22 @@ public class TrackerDelegator {
         AdjustTracker.get().trackEvent(TrackingEvent.SHARE, bundle);
         //GTM
         GTMManager.get().gtmTrackShare("", sku, category);
+    }
+
+    public static void trackAppShared() {
+        String userId = "";
+        if (BamiloApplication.CUSTOMER != null
+                && BamiloApplication.CUSTOMER.getIdAsString() != null) {
+            userId = BamiloApplication.CUSTOMER.getIdAsString();
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putString(AdjustTracker.COUNTRY_ISO, BamiloApplication.SHOP_ID);
+        bundle.putString(AdjustTracker.USER_ID, userId);
+        bundle.putBoolean(AdjustTracker.DEVICE,
+                sContext.getResources().getBoolean(R.bool.isTablet));
+        AdjustTracker.get().trackEvent(TrackingEvent.SHARE, bundle);
+        //GTM
     }
 
     public static void trackItemReview(Bundle params) {
