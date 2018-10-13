@@ -1,6 +1,5 @@
 package com.bamilo.android.appmodule.bamiloapp.view.newfragments;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,15 +37,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
-import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
-import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
-import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTracker;
-import com.bamilo.android.R;
-import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment;
-
-import com.bamilo.android.framework.service.utils.output.Print;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;

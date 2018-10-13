@@ -15,15 +15,23 @@ import android.util.Log;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
+import com.bamilo.android.appmodule.bamiloapp.constants.tracking.CategoryConstants;
+import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.factories.EmarsysEventFactory;
+import com.bamilo.android.appmodule.bamiloapp.helpers.EmailHelper;
+import com.bamilo.android.appmodule.bamiloapp.helpers.NextStepStruct;
+import com.bamilo.android.appmodule.bamiloapp.helpers.session.LoginAutoHelper;
+import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
 import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
+import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
+import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.DeepLinkManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
 import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTracker;
@@ -65,6 +73,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.ReviewFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.ReviewWriteFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.ReviewsFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.SessionForgotPasswordFragment;
+import com.bamilo.android.appmodule.bamiloapp.view.fragments.SessionLoginEmailFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.SessionRegisterFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.StaticPageFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.StaticWebViewPageFragment;
@@ -77,25 +86,21 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.order.OrderReturnSt
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewCheckoutAddressesFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewCheckoutPaymentMethodsFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewMyAccountAddressesFragment;
-import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewSessionLoginMainFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.newfragments.NewShoppingCartFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity;
 import com.bamilo.android.appmodule.bamiloapp.view.relatedproducts.RecommendProductsFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.subcategory.SubCategoryFilterFragment;
 import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet;
+import com.bamilo.android.framework.service.objects.checkout.CheckoutStepLogin;
+import com.bamilo.android.framework.service.objects.customer.Customer;
+import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
+import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
-import com.bamilo.android.appmodule.bamiloapp.view.subcategory.SubCategoryFilterFragment;
-import com.bamilo.android.framework.service.pojo.IntConstants;
-import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.TextUtils;
-
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-
 import me.toptas.fancyshowcase.FancyShowCaseView;
 
 /**
@@ -119,6 +124,7 @@ public class MainFragmentActivity extends BaseActivity {
         super(NavigationAction.UNKNOWN, EnumSet.noneOf(MyMenuItem.class),
                 IntConstants.ACTION_BAR_NO_TITLE);
     }
+
     private void showMessage(String message) {
         Log.i("AndroidBash", message);
     }
@@ -132,7 +138,6 @@ public class MainFragmentActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         if (checkIntentsFromPDV()) {
             return;
@@ -411,8 +416,10 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);
                 break;
             case LOGIN:
-                fragment = newFragmentInstance(NewSessionLoginMainFragment.class, bundle);
-                break;
+                triggerAutoLogin(bundle);
+//                new LoginDialogBottomSheet().show(getSupportFragmentManager(), "login");
+//                fragment = newFragmentInstance(NewSessionLoginMainFragment.class, bundle);
+                return;
             case LOGIN_EMAIL:
                 fragment = newFragmentInstance(SessionLoginEmailFragment.class, bundle);
                 break;
@@ -535,6 +542,75 @@ public class MainFragmentActivity extends BaseActivity {
 
         fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
 
+    }
+
+    private void triggerAutoLogin(Bundle bundle) {
+        if (!BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+            LoginDialogBottomSheet.Companion.show(getSupportFragmentManager(), bundle);
+            return;
+        }
+
+        showProgress();
+        BamiloApplication.INSTANCE.sendRequest(new LoginAutoHelper(this),
+                LoginAutoHelper.createAutoLoginBundle(), new IResponseCallback() {
+                    @Override
+                    public void onRequestComplete(BaseResponse baseResponse) {
+                        dismissProgress();
+                        NextStepStruct nextStepStruct = (NextStepStruct) baseResponse
+                                .getContentData();
+                        FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
+                        // Case valid next step
+                        if (nextStepFromApi != FragmentType.UNKNOWN) {
+                            Customer customer = ((CheckoutStepLogin) nextStepStruct
+                                    .getCheckoutStepObject())
+                                    .getCustomer();
+                            // Tracking
+                            TrackerDelegator.trackLoginSuccessful(customer, true, false);
+
+                            // Global Tracker
+                            MainEventModel authEventModel = new MainEventModel(
+                                    CategoryConstants.ACCOUNT,
+                                    EventActionKeys.LOGIN_SUCCESS,
+                                    Constants.LOGIN_METHOD_EMAIL, customer.getId(),
+                                    MainEventModel
+                                            .createAuthEventModelAttributes(
+                                                    Constants.LOGIN_METHOD_EMAIL,
+                                                    EmailHelper.getHost(customer.getEmail()),
+                                                    true));
+                            TrackerManager
+                                    .trackEvent(MainFragmentActivity.this, EventConstants.Login,
+                                            authEventModel);
+
+                            EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(
+                                    getResources().getString(R.string.Emarsys_ContactFieldID)),
+                                    BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER
+                                            .getEmail() : null);
+
+                            // Validate the next step
+                            FragmentType mParentFragmentType = (FragmentType) bundle
+                                    .getSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE);
+                            FragmentType mNextStepFromParent = (FragmentType) bundle
+                                    .getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
+                            boolean isInCheckoutProcess = bundle
+                                    .getBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API);
+
+                            CheckoutStepManager
+                                    .validateLoggedNextStep(MainFragmentActivity.this,
+                                            isInCheckoutProcess,
+                                            mParentFragmentType, mNextStepFromParent,
+                                            nextStepFromApi,
+                                            bundle);
+                        } else {
+                            setupDrawerNavigation();
+                        }
+                    }
+
+                    @Override
+                    public void onRequestError(BaseResponse baseResponse) {
+                        dismissProgress();
+                        LoginDialogBottomSheet.Companion.show(getSupportFragmentManager(), bundle);
+                    }
+                });
     }
 
     /**

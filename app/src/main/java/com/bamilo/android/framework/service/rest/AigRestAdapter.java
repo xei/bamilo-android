@@ -10,6 +10,7 @@ import com.bamilo.android.framework.service.utils.TextUtils;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.RestAdapter.LogLevel;
 
 /**
  * Class used to create a request entity with:<br/>
@@ -41,7 +42,7 @@ public class AigRestAdapter {
     public static RestAdapter getRestAdapter(Request request) {
         // Create a rest adapter
         RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setLogLevel(isDebuggable ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
+                .setLogLevel(isDebuggable ? RestAdapter.LogLevel.FULL : LogLevel.FULL)
                 .setClient(AigHttpClient.getInstance())
                 .setEndpoint(request.getEndPoint())
                 .setRequestInterceptor(new HttpHeaderRequestInterceptor(request.getCache()));
