@@ -15,7 +15,6 @@ import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventTask;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -77,22 +76,22 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     @NonNull
     private String getQueryPath(Bundle args) {
         // Get query path
-        String path = "";
+        StringBuilder path = new StringBuilder();
         if (CollectionUtils.isNotEmpty(args)) {
             ContentValues pathValues = args.getParcelable(Constants.BUNDLE_PATH_KEY);
             if (CollectionUtils.isNotEmpty(pathValues)) {
                 for (Map.Entry<String, Object> entry : pathValues.valueSet()) {
-                    path += entry.getKey() + "/" + entry.getValue() + "/";
+                    path.append(entry.getKey()).append("/").append(entry.getValue()).append("/");
                 }
             }
         }
-        return path;
+        return path.toString();
     }
 
     @Nullable
     protected Map<String, String> getRequestData(Bundle args) {
         if (args != null && args.containsKey(Constants.BUNDLE_DATA_KEY)){
-            appendParameters((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY));
+            appendParameters(args.getParcelable(Constants.BUNDLE_DATA_KEY));
         }
         return CollectionUtils.isNotEmpty(mParameters) ? CollectionUtils.convertContentValuesToMap(mParameters): null;
     }
@@ -164,23 +163,17 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     @Override
     public final void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
         postSuccess(baseResponse);
         if(mRequester != null) {
             mRequester.onRequestComplete(baseResponse);
-        } else {
-            Print.w(TAG, "WARNING: REQUESTER IS NULL ON REQUEST COMPLETE FOR " + mEventType);
         }
     }
 
     @Override
     public final void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getErrorMessages());
         postError(baseResponse);
         if(mRequester != null) {
             mRequester.onRequestError(baseResponse);
-        } else {
-            Print.w(TAG, "WARNING: REQUESTER IS NULL ON REQUEST ERROR FOR " + mEventType);
         }
     }
 
@@ -192,5 +185,4 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
             this.mParameters.putAll(parameters);
         }
     }
-
 }

@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.bamilo.android.framework.components.infiniteviewpager.InfiniteViewPager;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 public class JumiaViewPagerWithZoom extends InfiniteViewPager {
     private boolean isPagingEnabled = true;
@@ -26,7 +25,6 @@ public class JumiaViewPagerWithZoom extends InfiniteViewPager {
             try {
                 return super.onTouchEvent(event);
             } catch (IllegalArgumentException e) {
-                Print.e(TAG, "catched IllegalArgumentException JumiaViewPagerWithZoom onTouchEvent");
             }
         }
 
@@ -40,7 +38,6 @@ public class JumiaViewPagerWithZoom extends InfiniteViewPager {
             try {
                 return super.onInterceptTouchEvent(event);
             } catch (IllegalArgumentException e) {
-                Print.e(TAG, "catched IllegalArgumentException JumiaViewPagerWithZoom onInterceptTouchEvent");
             }
         }
 

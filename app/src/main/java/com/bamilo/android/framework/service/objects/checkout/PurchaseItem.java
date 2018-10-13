@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +43,6 @@ public class PurchaseItem implements Parcelable {
                     item.parseItem(itemsJson.getJSONObject(i));
                     items.add(item);
                 } catch (JSONException e) {
-                    Print.w(TAG, "WARNING: JSE ON PARSING PURCHASE ITEM", e);
                 }
             }
         }

@@ -32,20 +32,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
-import android.widget.TextView.OnEditorActionListener;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
@@ -92,8 +89,6 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment.Keyboa
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.DrawerFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.OldProductDetailsFragment;
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
-import android.widget.TextView;
-
 import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.appmodule.modernbamilo.util.typography.TypeFaceHelper;
 import com.bamilo.android.framework.components.recycler.HorizontalSpaceItemDecoration;
@@ -110,25 +105,24 @@ import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.CustomerUtils;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
-
 import me.toptas.fancyshowcase.FancyShowCaseView;
 
 /**
- * All activities extend this activity, in order to access methods that are shared and used in all activities.
+ * All activities extend this activity, in order to access methods that are shared and used in all
+ * activities.
  * <p/>
  * <br>
  * <p/>
  * Copyright (C) 2012 Rocket Internet - All Rights Reserved
  * <p/>
  * <p/>
- * Unauthorized copying of this file, via any medium is strictly prohibited <br> Proprietary and confidential.
+ * Unauthorized copying of this file, via any medium is strictly prohibited <br> Proprietary and
+ * confidential.
  *
  * @author Paulo Carvalho
  * @version 2.0
@@ -137,7 +131,8 @@ import me.toptas.fancyshowcase.FancyShowCaseView;
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
-public abstract class BaseActivity extends BaseTrackerActivity implements TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
+public abstract class BaseActivity extends BaseTrackerActivity implements
+        TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
     private static final int RESULT_SPEECH = 1993;
@@ -171,7 +166,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private boolean backPressedOnce = false;
     /**
      * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
-     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this -action-after-onsaveinstancestate-h
+     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this
+     * -action-after-onsaveinstancestate-h
      */
     private Intent mOnActivityResultIntent = null;
     private XeiTextView mActionCartCount, mActionCartIndicatorCount;
@@ -201,61 +197,39 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
      */
-    public BaseActivity(@NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, int titleResId) {
+    public BaseActivity(@NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems,
+            int titleResId) {
         this(R.layout.main, action, enabledMenuItems, titleResId);
     }
 
     /**
      * Constructor
      */
-    private BaseActivity(int activityLayoutId, @NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, int titleResId) {
+    private BaseActivity(int activityLayoutId, @NavigationAction.Type int action,
+            Set<MyMenuItem> enabledMenuItems, int titleResId) {
         this.activityLayoutId = activityLayoutId;
         this.action = action;
         this.menuItems = enabledMenuItems;
         this.titleResId = titleResId;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.triggerContentEventProgressapp.FragmentActivity#onStart()
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Print.i(TAG, "ON START");
-    }
-
     @Override
     protected void attachBaseContext(Context newBase) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            super.attachBaseContext(ConfigurationWrapper.wrapLocale(newBase, new Locale("fa", "ir")));
+            super.attachBaseContext(
+                    ConfigurationWrapper.wrapLocale(newBase, new Locale("fa", "ir")));
         } else {
             super.attachBaseContext(newBase);
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         ScrollerCompat nestedScrollerCompat = ScrollerCompat.create(this);
-        /*
-         * In case of rotation the activity is restarted and the locale too.<br>
-         * These method forces the right locale used before the rotation.
-         * @author spereira
-         */
+
         ShopSelector.setLocaleOnOrientationChanged(getApplicationContext());
         // In case app is killed in background needs to restore font type
-
-        // TODO: 8/28/18 farshid
-//        HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
-        // Get fragment controller
         mFragmentController = FragmentController.getInstance();
         // Set content
         setContentView(activityLayoutId);
@@ -270,7 +244,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Set title in AB or TitleBar
         setTitle(titleResId);
 
-
         // perform showcase on drawer hamburger icon
         View actionView = getToolbarNavigationIcon(toolbar);
         if (actionView != null) {
@@ -284,8 +257,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                     FancyShowCaseView.hideCurrent(BaseActivity.this);
                 }
             });
-            ShowcasePerformer.createSimpleCircleShowcase(this, HAMBURGER_ICON_ITEM_TRACKING_SHOWCASE,
-                    actionView, getString(R.string.showcase_hamburger_icon_item_tracking), getString(R.string.showcase_got_it), SHOWCASE_DELAY)
+            ShowcasePerformer
+                    .createSimpleCircleShowcase(this, HAMBURGER_ICON_ITEM_TRACKING_SHOWCASE,
+                            actionView, getString(R.string.showcase_hamburger_icon_item_tracking),
+                            getString(R.string.showcase_got_it), SHOWCASE_DELAY)
                     .show();
         }
 
@@ -293,30 +268,35 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     public static View getToolbarNavigationIcon(Toolbar toolbar) {
         //check if contentDescription previously was set
-        boolean hadContentDescription = TextUtils.isEmpty(toolbar.getNavigationContentDescription());
-        String contentDescription = !hadContentDescription ? toolbar.getNavigationContentDescription().toString() : "navigationIcon";
+        boolean hadContentDescription = TextUtils
+                .isEmpty(toolbar.getNavigationContentDescription());
+        String contentDescription =
+                !hadContentDescription ? toolbar.getNavigationContentDescription().toString()
+                        : "navigationIcon";
         toolbar.setNavigationContentDescription(contentDescription);
         ArrayList<View> potentialViews = new ArrayList<>();
         //find the view based on it's content description, set programatically or with android:contentDescription
-        toolbar.findViewsWithText(potentialViews, contentDescription, View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
+        toolbar.findViewsWithText(potentialViews, contentDescription,
+                View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
         //Nav icon is always instantiated at this point because calling setNavigationContentDescription ensures its existence
         View navIcon = null;
         if (potentialViews.size() > 0) {
             navIcon = potentialViews.get(0); //navigation icon is ImageButton
         }
         //Clear content description if not previously present
-        if (hadContentDescription)
+        if (hadContentDescription) {
             toolbar.setNavigationContentDescription(null);
+        }
         return navIcon;
     }
 
     /**
-     * Using the ActionBarDrawerToggle, you must call it during onPostCreate() and onConfigurationChanged()...
+     * Using the ActionBarDrawerToggle, you must call it during onPostCreate() and
+     * onConfigurationChanged()...
      */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        Print.i(TAG, "ON POST CREATE: DRAWER");
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
@@ -324,12 +304,12 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         // Check version, disabled for Samsung (check_version_enabled)
         CheckVersion.run(getApplicationContext());
 
         if (mOnActivityResultIntent != null && getIntent().getExtras() != null) {
-            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            initialCountry = getIntent().getExtras()
+                    .getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
         }
 
@@ -350,7 +330,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Print.i(TAG, "ON CONFIGURATION CHANGED");
         // Pass any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
@@ -358,26 +337,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
         // Hide search component
         hideSearchComponent();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Print.i(TAG, "ON STOP");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
-    }
-
     /**
      * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
-     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception -can-not-perform-this -action-after-onsaveinstancestate-h
+     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
+     * -can-not-perform-this -action-after-onsaveinstancestate-h
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -412,8 +379,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     /**
      * Method used to update the sliding menu and items on action bar. Called from BaseFragment
      */
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int newNavAction, int actionBarTitleResId, int checkoutStep) {
-        Print.i(TAG, "ON UPDATE BASE COMPONENTS");
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems,
+            @NavigationAction.Type int newNavAction, int actionBarTitleResId, int checkoutStep) {
         // Update options menu and search bar
         this.menuItems = enabledMenuItems;
         // Update the current nav action
@@ -454,7 +421,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void enableSearchBar(final boolean autoHide, final View... views) {
         searchBarEnabled = true;
         final View searchBar = findViewById(R.id.searchBar);
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) searchBar.getLayoutParams();
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) searchBar
+                .getLayoutParams();
         params.setMargins(params.leftMargin, 0, params.rightMargin, params.bottomMargin);
         searchBar.setLayoutParams(params);
         searchBar.setOnClickListener(v -> mSearchMenuItem.expandActionView());
@@ -462,7 +430,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         searchBar.post(() -> {
             if (views != null) {
                 for (View v : views) {
-                    v.setPadding(v.getPaddingLeft(), (int) getResources().getDimension(R.dimen.search_bar_height),
+                    v.setPadding(v.getPaddingLeft(),
+                            (int) getResources().getDimension(R.dimen.search_bar_height),
                             v.getPaddingRight(), v.getPaddingBottom());
                 }
             }
@@ -473,21 +442,22 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
             if (autoHide && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 searchBarAutoHide = new TopViewAutoHideUtil(-searchBar.getHeight(), 0, searchBar);
-                searchBarAutoHide.setOnViewShowHideListener(new TopViewAutoHideUtil.OnViewShowHideListener() {
-                    @Override
-                    public void onViewHid() {
-                        if (searchBarEnabled) {
-                            mSearchMenuItem.setVisible(true);
-                        }
-                    }
+                searchBarAutoHide.setOnViewShowHideListener(
+                        new TopViewAutoHideUtil.OnViewShowHideListener() {
+                            @Override
+                            public void onViewHid() {
+                                if (searchBarEnabled) {
+                                    mSearchMenuItem.setVisible(true);
+                                }
+                            }
 
-                    @Override
-                    public void onViewShowed() {
-                        if (searchBarEnabled) {
-                            mSearchMenuItem.setVisible(false);
-                        }
-                    }
-                });
+                            @Override
+                            public void onViewShowed() {
+                                if (searchBarEnabled) {
+                                    mSearchMenuItem.setVisible(false);
+                                }
+                            }
+                        });
             }
         });
     }
@@ -518,7 +488,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         actionBarAutoHideEnabled = false;
         if (!searchBarEnabled) {
             actionBarAutoHideEnabled = true;
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) toolbar.getLayoutParams();
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) toolbar
+                    .getLayoutParams();
             params.topMargin = 0;
             toolbar.setLayoutParams(params);
 
@@ -554,7 +525,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * ############## CONTENT VIEWS ##############
      */
 
-    private void setAppBarLayout(@NavigationAction.Type int oldNavAction, @NavigationAction.Type int newNavAction) {
+    private void setAppBarLayout(@NavigationAction.Type int oldNavAction,
+            @NavigationAction.Type int newNavAction) {
         try {
             // Case enable/disable actionbar auto-hide
             if (!UITabLayoutUtils.isNavigationActionbarAutoHide(newNavAction)) {
@@ -610,17 +582,20 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void setupDrawerNavigation() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open,
+                R.string.close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 hideKeyboard();
                 if (mDrawerFragment != null) {
-                    mDrawerFragment.performShowcase(BaseActivity.this, R.string.drawer_order_tracking);
+                    mDrawerFragment
+                            .performShowcase(BaseActivity.this, R.string.drawer_order_tracking);
                 }
             }
         };
-        mDrawerToggle.setDrawerArrowDrawable(new FixedDrawerDrawable(this, R.drawable.ic_action_hamburger));
+        mDrawerToggle.setDrawerArrowDrawable(
+                new FixedDrawerDrawable(this, R.drawable.ic_action_hamburger));
         mDrawerToggle.setHomeAsUpIndicator(R.drawable.back_action_selector);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
@@ -645,14 +620,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     private void setupContentViews() {
-        Print.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
         // Warning layout
         try {
             warningFactory = new WarningFactory(findViewById(R.id.warning));
             //view for configurable confirmation message when adding to carte, in case of hasCartPopup = true
-            mConfirmationCartMessageView = new ConfirmationCartMessageView(findViewById(R.id.configurableCartView), this);
-        } catch (IllegalStateException ex) {
-            Print.e(TAG, ex.getLocalizedMessage(), ex);
+            mConfirmationCartMessageView = new ConfirmationCartMessageView(
+                    findViewById(R.id.configurableCartView), this);
+        } catch (IllegalStateException ignored) {
         }
     }
 
@@ -668,7 +642,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
          *           -can-not-perform -this-action-after-onsaveinstancestate-h
          */
         if (getIntent().getExtras() != null) {
-            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            initialCountry = getIntent().getExtras()
+                    .getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
         }
 
@@ -689,7 +664,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     /**
-     * Method used to validate if is to show the initial country selection or is in maintenance.<br>
+     * Method used to validate if is to show the initial country selection or is in
+     * maintenance.<br>
      *
      * @return true or false
      * @author sergiopereira
@@ -700,7 +676,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Print.d(TAG, "ON OPTIONS MENU: CREATE");
         getMenuInflater().inflate(R.menu.main_menu, menu);
         // Save the current menu
         mCurrentMenu = menu;
@@ -748,14 +723,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     /**
-     * When a user selects an option of the menu that is on the action bar. The centralization of this in this activity, prevents all the activities to have to
-     * handle this events
+     * When a user selects an option of the menu that is on the action bar. The centralization of
+     * this in this activity, prevents all the activities to have to handle this events
      *
      * @param item The menu item that was pressed
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Print.d(TAG, "ON OPTION ITEM SELECTED: " + item.getTitle());
         // Get item id
         int itemId = item.getItemId();
         // CASE BACK ARROW
@@ -771,7 +745,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // CASE CART ACTION
         else if (itemId == R.id.menu_basket) {
             // Goto cart
-            onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
+                    FragmentController.ADD_TO_BACK_STACK);
             return true;
         }
         // DEFAULT:
@@ -793,7 +768,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void setActionBarVisibility(int showActionBar) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar == null) {
-            Print.w(TAG, "WARNING: AB IS NULL");
             return;
         }
         // Validate flag
@@ -803,8 +777,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             }
         } else if (showActionBar == View.GONE) {
             actionBar.hide();
-        } else {
-            Print.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
         }
     }
 
@@ -820,27 +792,22 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     private void setActionBarUpButton() {
         if (isCloseButtonEnabled) {
-            Print.i(TAG, "SHOW CLOSE BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(false);
             mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_action_close_white);
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         } else if (isBackButtonEnabled) {
-            Print.i(TAG, "SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(false);
             mDrawerToggle.setHomeAsUpIndicator(R.drawable.back_action_selector);
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         } else {
-            Print.i(TAG, "NO SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(true);
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
-        // TODO: 7/29/2017 Cleanup
         mDrawerToggle.syncState();
     }
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-        // ...
     }
 
     /**
@@ -888,10 +855,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         UITabLayoutUtils.tabSelected(this, tab, action);
     }
 
-    /*
-     * ############### SEARCH COMPONENT #################
-     */
-
     /**
      * Method used to set the search bar in the Action bar.
      *
@@ -899,7 +862,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * @modified sergiopereira
      */
     private void setActionSearch(Menu menu) {
-        Print.i(TAG, "ON OPTIONS MENU: CREATE SEARCH VIEW");
         // Get search menu item
         mSearchMenuItem = menu.findItem(R.id.menu_search);
         // Get search action view
@@ -908,8 +870,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mSearchView.setVoiceSearchClickListener(v -> {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-//                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, new Locale("fa"));
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fa-IR");
             intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.search_hint));
 
@@ -924,7 +886,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mSearchOverlay = findViewById(R.id.search_overlay);
         mSearchListView = mSearchOverlay.findViewById(R.id.search_overlay_listview);
         mSearchListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        mSearchListView.addItemDecoration(new HorizontalSpaceItemDecoration(getApplicationContext(), R.drawable._gen_divider_horizontal_black_400));
+        mSearchListView.addItemDecoration(new HorizontalSpaceItemDecoration(getApplicationContext(),
+                R.drawable._gen_divider_horizontal_black_400));
 
         // Initial state
         MenuItemCompat.collapseActionView(mSearchMenuItem);
@@ -948,9 +911,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * Set the search component
      */
     public void setActionBarSearchBehavior(final MenuItem mSearchMenuItem) {
-        Print.d(TAG, "SEARCH MODE: NEW BEHAVIOUR");
         if (mSearchView == null) {
-            Print.w(TAG, "SEARCH COMPONENT IS NULL");
             return;
         }
 
@@ -986,7 +947,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mSearchView.setOnEditorActionListener((textView, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
                 String searchTerm = textView.getText().toString();
-                Print.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
                 if (TextUtils.isEmpty(searchTerm)) {
                     getSuggestions();
                     return false;
@@ -1023,7 +983,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 }
                 toolbar.setBackgroundColor(Color.WHITE);
                 findViewById(R.id.searchBar).setVisibility(View.GONE);
-                Print.d(TAG, "SEARCH ON EXPAND");
                 closeNavigationDrawer();
                 isSearchComponentOpened = true;
                 setActionMenuItemsVisibility(false);
@@ -1034,7 +993,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 // Re-set the searched text if it exists
                 mSearchView.post(() -> {
                     String searchedTerm = BamiloApplication.INSTANCE.getSearchedTerm();
-                    mSearchView.setFocus((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE));
+                    mSearchView.setFocus(
+                            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE));
                     if (TextUtils.isNotEmpty(searchedTerm)) {
                         mSearchView.setText(searchedTerm);
                         mSearchView.setSelection(searchedTerm.length());
@@ -1053,11 +1013,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                     setScrollContentPadding(findViewById(R.id.rlScrollableContent));
                 }
                 isSearchComponentOpened = false;
-                toolbar.setBackgroundColor(ContextCompat.getColor(BaseActivity.this, R.color.appBar));
+                toolbar.setBackgroundColor(
+                        ContextCompat.getColor(BaseActivity.this, R.color.appBar));
                 if (searchBarEnabled) {
                     findViewById(R.id.searchBar).setVisibility(View.VISIBLE);
                 }
-                Print.d(TAG, "SEARCH ON COLLAPSE");
                 setActionMenuItemsVisibility(true);
                 setAppBarLayout(NavigationAction.UNKNOWN, action);
                 mSearchOverlay.setVisibility(View.GONE);
@@ -1072,7 +1032,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
          */
         mSearchView.setOnFieldFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                Print.i(TAG, "SEARCH ON FOCUS CHANGE");
                 if (!voiceTyping && isSearchComponentOpened) {
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
                     setActionMenuItemsVisibility(true);
@@ -1103,13 +1062,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      *
      * @author sergiopereira
      */
-    private final Runnable run = new Runnable() {
-        @Override
-        public void run() {
-            Print.i(TAG, "SEARCH: RUN GET SUGGESTIONS: " + mSearchView.getText());
-            getSuggestions();
-        }
-    };
+    private final Runnable run = this::getSuggestions;
 
     /**
      * Execute search
@@ -1117,7 +1070,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * @author sergiopereira
      */
     public void showSearchCategory(final Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST " + suggestion.getResult());
         // Tracking
         SimpleEventModel sem = new SimpleEventModel();
         sem.category = CategoryConstants.SEARCH_RESULTS;
@@ -1126,10 +1078,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         sem.value = SimpleEventModel.NO_VALUE;
         TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
 
-
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
-        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        boolean result = new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(suggestion.getResult()).run();
         // Case algolia
         if (!result) {
             Bundle bundle = new Bundle();
@@ -1138,7 +1090,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, suggestion.getQuery());
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-            onSwitchFragment(FragmentType.CATALOG_CATEGORY, bundle, FragmentController.ADD_TO_BACK_STACK);
+            onSwitchFragment(FragmentType.CATALOG_CATEGORY, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -1146,7 +1099,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * Execute search
      */
     public void showSearchOther(final Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO CATALOG " + suggestion.getResult());
         // Tracking
         SimpleEventModel sem = new SimpleEventModel();
         sem.category = CategoryConstants.SEARCH_RESULTS;
@@ -1167,7 +1119,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * Execute search for product
      */
     public void showSearchProduct(Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW " + suggestion.getResult());
         SimpleEventModel sem = new SimpleEventModel();
         sem.category = CategoryConstants.SEARCH_RESULTS;
         sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
@@ -1177,14 +1128,16 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
-        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        boolean result = new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(suggestion.getResult()).run();
         // Case algolia
         if (!result) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -1192,7 +1145,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * Execute search for shop in shop
      */
     public void showSearchShopsInShop(final Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP " + suggestion.getResult());
         SimpleEventModel sem = new SimpleEventModel();
         sem.category = CategoryConstants.SEARCH_RESULTS;
         sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
@@ -1202,8 +1154,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
-        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
-        Print.d(TAG, "SEARCH COMPONENT: mainDrawer " + result);
+        boolean result = new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(suggestion.getResult()).run();
         // Case algolia
         if (!result) {
             Bundle bundle = new Bundle();
@@ -1233,7 +1185,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * @author sergiopereira
      */
     public void hideSearchComponent() {
-        Print.d(TAG, "SEARCH COMPONENT: HIDE");
         try {
             // Validate if exist search icon and bar
             if (!voiceTyping && isSearchComponentOpened) {
@@ -1245,8 +1196,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                     setActionMenuItemsVisibility(true);
                 }
             }
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING NPE ON HIDE SEARCH COMPONENT");
+        } catch (NullPointerException ignored) {
         }
     }
 
@@ -1259,7 +1209,6 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         long beginInMillis = System.currentTimeMillis();
         mGABeginInMillis = System.currentTimeMillis();
         final String text = mSearchView.getText();
-        Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
         SearchSuggestionClient mSearchSuggestionClient = new SearchSuggestionClient();
         mSearchSuggestionClient.getSuggestions(getApplicationContext(), new IResponseCallback() {
             @Override
@@ -1274,42 +1223,26 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }, text, CountryPersistentConfigs.isUseAlgolia(getApplicationContext()));
     }
 
-    //    /**
-//     * Called to update the share intent
-//     *
-//     * @param shareIntent
-//     *            the intent to be stored
-//     */
-//    /*-public void setShareIntent(Intent shareIntent) {
-//        if (mShareActionProvider != null) {
-//            mShareActionProvider.setShareHistoryFileName(null);
-//            mShareActionProvider.setShareIntent(shareIntent);
-//        }
-//    }*/
-
     /**
      * Process the search messageItem event
      *
      * @author sergiopereira
      */
     private void processErrorSearchEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
-
         SuggestionsStruct suggestionsStruct = (SuggestionsStruct) baseResponse.getContentData();
 
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
-        Print.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
         // Validate current search component
         if (mSearchView != null && !mSearchView.getText().equals(requestQuery)) {
-            Print.w(TAG, "SEARCH ERROR: WAS DISCARDED FOR QUERY " + requestQuery);
             return;
         }
         if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible()) {
             return;
         }
         if (suggestionsStruct.size() > 0) {
-            SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
+            SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(
+                    getApplicationContext(), suggestionsStruct);
             searchSuggestionsAdapter.setOnViewHolderClickListener(this);
             mSearchListView.setAdapter(searchSuggestionsAdapter);
         }
@@ -1321,12 +1254,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * @author sergiopereira
      */
     private void processSuccessSearchEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
         SuggestionsStruct suggestionsStruct = (SuggestionsStruct) baseResponse.getContentData();
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
-        Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
 
         // Validate current objects
         if (menuItems == null || mCurrentMenu == null || mSearchView == null) {
@@ -1342,22 +1273,23 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
         // Validate current search
         if (!TextUtils.equals(mSearchView.getText(), requestQuery)) {
-            Print.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
             return;
         }
-        BaseScreenModel screenModel = new BaseScreenModel(getString(R.string.gaSearchSuggestions), getString(R.string.gaScreen), requestQuery, mGABeginInMillis);
+        BaseScreenModel screenModel = new BaseScreenModel(getString(R.string.gaSearchSuggestions),
+                getString(R.string.gaScreen), requestQuery, mGABeginInMillis);
         TrackerManager.trackScreenTiming(this, screenModel);
-        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
+        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(
+                getApplicationContext(), suggestionsStruct);
         searchSuggestionsAdapter.setOnViewHolderClickListener(this);
         mSearchListView.setAdapter(searchSuggestionsAdapter);
 
     }
 
     /**
-     * Displays the number of items that are currently on the shopping cart as well as its value. This information is displayed on the navigation list
+     * Displays the number of items that are currently on the shopping cart as well as its value.
+     * This information is displayed on the navigation list
      */
     public void updateCartInfo() {
-        Print.d(TAG, "ON UPDATE CART INFO");
         updateCartInfoInActionBar();
         updateCartIndicatorInfoInActionBar();
 
@@ -1369,9 +1301,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
 
     public void updateCartInfoInActionBar() {
-        Print.d(TAG, "ON UPDATE CART IN ACTION BAR");
         if (mActionCartCount == null) {
-            Print.w(TAG, "updateCartInfoInActionBar: cant find quantity in actionbar");
             return;
         }
 
@@ -1382,7 +1312,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mActionCartCount.post(() -> {
             if (quantity > 0) {
                 mActionCartCount.setVisibility(View.VISIBLE);
-                mActionCartCount.setText(StringExtKt.persianizeNumberString(String.valueOf(quantity)));
+                mActionCartCount
+                        .setText(StringExtKt.persianizeNumberString(String.valueOf(quantity)));
             } else {
                 mActionCartCount.setVisibility(View.INVISIBLE);
             }
@@ -1391,9 +1322,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     public void updateCartIndicatorInfoInActionBar() {
-        Print.d(TAG, "ON UPDATE CART IN ACTION BAR");
         if (mActionCartIndicatorCount == null) {
-            Print.w(TAG, "updateCartInfoInActionBar: cant find quantity in actionbar");
             return;
         }
 
@@ -1404,7 +1333,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mActionCartIndicatorCount.post(() -> {
             if (quantity > 0) {
                 mActionCartIndicatorCount.setVisibility(View.VISIBLE);
-                mActionCartIndicatorCount.setText(StringExtKt.persianizeNumberString(String.valueOf(quantity)));
+                mActionCartIndicatorCount
+                        .setText(StringExtKt.persianizeNumberString(String.valueOf(quantity)));
             } else {
                 mActionCartIndicatorCount.setVisibility(View.INVISIBLE);
             }
@@ -1438,7 +1368,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         if (myProfile != null) {
             myProfile.setVisible(true);
             myProfile.setEnabled(true);
-            myProfileActionProvider = (MyProfileActionProvider) MenuItemCompat.getActionProvider(myProfile);
+            myProfileActionProvider = (MyProfileActionProvider) MenuItemCompat
+                    .getActionProvider(myProfile);
             // commented next line because options menu is the same in all pages
             myProfileActionProvider.setFragmentNavigationAction(action);
             myProfileActionProvider.setAdapterOnClickListener(myProfileClickListener);
@@ -1482,7 +1413,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         break;
                     case NavigationAction.HOME:
 //                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_HOME);
-                        onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+                                FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.CATEGORIES:
                         onSwitchFragment(FragmentType.CATEGORIES, null, true);
@@ -1504,7 +1436,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                             dialogLogout.show(getSupportFragmentManager(), null);
                         } else {
 //                            TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
-                            onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                            onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE,
+                                    FragmentController.ADD_TO_BACK_STACK);
                         }
                         break;
                     case NavigationAction.SAVED:
@@ -1514,38 +1447,47 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         if (!BamiloApplication.isCustomerLoggedIn()) {
                             // Goto Login and next WishList
                             Bundle bundle = new Bundle();
-                            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
-                            onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+                            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
+                                    FragmentType.WISH_LIST);
+                            onSwitchFragment(FragmentType.LOGIN, bundle,
+                                    FragmentController.ADD_TO_BACK_STACK);
                         } else {
-                            onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                            onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE,
+                                    FragmentController.ADD_TO_BACK_STACK);
                         }
                         break;
                     case NavigationAction.RECENT_SEARCHES:
                         // RECENT SEARCHES
 //                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENT_SEARCHES);
-                        onSwitchFragment(FragmentType.RECENT_SEARCHES_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.RECENT_SEARCHES_LIST,
+                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.RECENTLY_VIEWED:
                         // RECENTLY VIEWED
 //                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENTLY_VIEW);
-                        onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST,
+                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.MY_ACCOUNT:
                         // MY ACCOUNT
 //                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
-                        onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE,
+                                FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.MY_ORDERS:
                         // TRACK ORDER
 //                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
-                        onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE,
+                                FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.COUNTRY:
-                        onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE,
+                                FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.FAQ:
                         // FAQ
-                        @TargetLink.Type String link = TargetLink.SHOP_IN_SHOP.concat("::help-android");
+                        @TargetLink.Type String link = TargetLink.SHOP_IN_SHOP
+                                .concat("::help-android");
                         new TargetLink(getWeakBaseActivity(), link)
                                 .addTitle(R.string.faq)
                                 .setOrigin(TeaserGroupType.MAIN_TEASERS)
@@ -1555,19 +1497,15 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                                 .enableWarningErrorMessage()
                                 .run();
                         //TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAQ);
-                        //onSwitchFragment(FragmentType.STATIC_PAGE, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     case NavigationAction.ABOUT:
                         // MY ABOUT
-//                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
-                        onSwitchFragment(FragmentType.ABOUT_US, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.ABOUT_US, FragmentController.NO_BUNDLE,
+                                FragmentController.ADD_TO_BACK_STACK);
                         break;
                     default:
-                        Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
                         break;
                 }
-            } else {
-                Print.d(TAG, "selected navAction is already being shown");
             }
             // only hide dropdown for Spinner if hideMyProfile flag is activated
             if (hideMyProfile && myProfileActionProvider != null) {
@@ -1585,9 +1523,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mSupportActionBar.setTitle(getString(actionBarTitleResId));
 
         ViewGroup customView = toolbar;
-        for(int i = 0 ; i < customView.getChildCount() ; i++) {
+        for (int i = 0; i < customView.getChildCount(); i++) {
             if (customView.getChildAt(i) instanceof TextView) {
-                ((TextView)customView.getChildAt(i)).setTypeface(TypeFaceHelper.getInstance(this).getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_REGULAR));
+                ((TextView) customView.getChildAt(i)).setTypeface(TypeFaceHelper.getInstance(this)
+                        .getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_REGULAR));
             }
         }
     }
@@ -1597,9 +1536,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mSupportActionBar.setTitle(title);
 
         ViewGroup customView = toolbar;
-        for(int i = 0 ; i < customView.getChildCount() ; i++) {
+        for (int i = 0; i < customView.getChildCount(); i++) {
             if (customView.getChildAt(i) instanceof TextView) {
-                ((TextView)customView.getChildAt(i)).setTypeface(TypeFaceHelper.getInstance(this).getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_REGULAR));
+                ((TextView) customView.getChildAt(i)).setTypeface(TypeFaceHelper.getInstance(this)
+                        .getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_REGULAR));
             }
         }
     }
@@ -1644,8 +1584,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     public void hideKeyboard() {
-        Print.i(TAG, "HIDE KEYBOARD");
-        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getApplicationContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
         View v = mDrawerLayout;
         if (v == null) {
             v = getWindow().getCurrentFocus();
@@ -1665,7 +1605,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
         // Global Tracker
         MainEventModel authEventModel =
-                new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGOUT, null, SimpleEventModel.NO_VALUE,
+                new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGOUT, null,
+                        SimpleEventModel.NO_VALUE,
                         MainEventModel.createAuthEventModelAttributes(null, null, true));
         TrackerManager.trackEvent(this, EventConstants.Logout, authEventModel);
 
@@ -1677,7 +1618,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
         // Goto Home
-        onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+                FragmentController.ADD_TO_BACK_STACK);
         // Hide progress
         dismissProgress();
         // Inform user
@@ -1692,20 +1634,25 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
 
     /**
-     * This method should be implemented by fragment activity to manage the work flow for fragments. Each fragment should call this method.
+     * This method should be implemented by fragment activity to manage the work flow for fragments.
+     * Each fragment should call this method.
      */
     public abstract void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack);
 
     /**
-     * This method should be implemented by fragment activity to manage the communications between fragments. Each fragment should call this method.
+     * This method should be implemented by fragment activity to manage the communications between
+     * fragments. Each fragment should call this method.
      */
-    public abstract boolean communicateBetweenFragments(@Nullable String tag, @Nullable Bundle bundle);
+    public abstract boolean communicateBetweenFragments(@Nullable String tag,
+            @Nullable Bundle bundle);
 
     /**
      * Method used to switch fragment on UI with/without back stack support
      */
-    public void fragmentManagerTransition(int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack) {
-        mFragmentController.startTransition(this, container, fragment, fragmentType, addToBackStack);
+    public void fragmentManagerTransition(int container, Fragment fragment,
+            FragmentType fragmentType, Boolean addToBackStack) {
+        mFragmentController
+                .startTransition(this, container, fragment, fragmentType, addToBackStack);
     }
 
     /**
@@ -1747,11 +1694,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * Method used to control the double back pressed
      *
      * @author sergiopereira
-     * @see <a href="http://stackoverflow.com/questions/7965135/what-is-the-duration-of-a-toast-length-long-and-length-short">Toast duration</a> <br>
-     * Toast.LENGTH_LONG is 3500 seconds. <br> Toast.LENGTH_SHORT is 2000 seconds.
+     * @see <a href="http://stackoverflow.com/questions/7965135/what-is-the-duration-of-a-toast-length-long-and-length-short">Toast
+     * duration</a> <br> Toast.LENGTH_LONG is 3500 seconds. <br> Toast.LENGTH_SHORT is 2000
+     * seconds.
      */
     public void doubleBackPressToExit() {
-        Print.d(TAG, "DOUBLE BACK PRESSED TO EXIT: " + backPressedOnce);
         // If was pressed once
         if (backPressedOnce) {
             mFragmentController.popLastEntry();
@@ -1760,7 +1707,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         }
         // First time show toast
         this.backPressedOnce = true;
-        CustomToastView.makeText(this, getString(R.string.exit_press_back_again), Toast.LENGTH_SHORT).show();
+        CustomToastView
+                .makeText(this, getString(R.string.exit_press_back_again), Toast.LENGTH_SHORT)
+                .show();
         new Handler().postDelayed(() -> backPressedOnce = false, TOAST_LENGTH_SHORT);
     }
 
@@ -1772,14 +1721,16 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     /**
-     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
-     * Note: This method must be updated in case of adding more screens to native checkout.
+     * Method used to remove all native checkout entries from the back stack on the Fragment
+     * Controller Note: This method must be updated in case of adding more screens to native
+     * checkout.
      *
      * @author ricardosoares
      */
     public void removeAllNativeCheckoutFromBackStack() {
         // Remove all native checkout tags
-        FragmentController.getInstance().removeAllEntriesWithTag(CheckoutStepManager.getAllNativeCheckout());
+        FragmentController.getInstance()
+                .removeAllEntriesWithTag(CheckoutStepManager.getAllNativeCheckout());
     }
 
     /**
@@ -1788,16 +1739,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * @author sergiopereira
      */
     private void recoverUserDataFromBackground() {
-        Print.i(TAG, "ON TRIGGER: INITIALIZE USER DATA");
         // Validate the user credentials
-        if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials() && !BamiloApplication.isCustomerLoggedIn()) {
+        if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials() && !BamiloApplication
+                .isCustomerLoggedIn()) {
             triggerAutoLogin();
-        } else {
-            // Track auto login failed if hasn't saved credentials
-//            MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
-//                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-//                    MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
-//            TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
         }
         // Validate the user credentials
         if (BamiloApplication.SHOP_ID != null && BamiloApplication.INSTANCE.getCart() == null) {
@@ -1809,76 +1754,79 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      * Get cart
      */
     public void triggerGetShoppingCartItemsHelper() {
-        Print.i(TAG, "TRIGGER SHOPPING CART ITEMS");
         Bundle bundle = new Bundle();
-        //bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
-        BamiloApplication.INSTANCE.sendRequest(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
-            @Override
-            public void onRequestError(BaseResponse baseResponse) {
-                Print.i(TAG, "ON REQUEST ERROR: CART");
-                //...
-            }
+        BamiloApplication.INSTANCE
+                .sendRequest(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
+                    @Override
+                    public void onRequestError(BaseResponse baseResponse) {
+                    }
 
-            @Override
-            public void onRequestComplete(BaseResponse baseResponse) {
-                Print.i(TAG, "ON REQUEST COMPLETE: CART");
-                updateCartInfo();
-            }
-        });
+                    @Override
+                    public void onRequestComplete(BaseResponse baseResponse) {
+                        updateCartInfo();
+                    }
+                });
     }
-
-    /*
-     * ##### REQUESTS TO RECOVER #####
-     */
 
     /**
      * Auto login
      */
     private void triggerAutoLogin() {
-        Print.i(TAG, "ON TRIGGER: AUTO LOGIN");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, BamiloApplication.INSTANCE.getCustomerUtils().getCredentials());
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY,
+                BamiloApplication.INSTANCE.getCustomerUtils().getCredentials());
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
-        BamiloApplication.INSTANCE.sendRequest(new LoginHelper(this), bundle, new IResponseCallback() {
-            @Override
-            public void onRequestError(BaseResponse baseResponse) {
-                Print.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");
-                BamiloApplication.INSTANCE.getCustomerUtils().clearCredentials();
-            }
+        BamiloApplication.INSTANCE
+                .sendRequest(new LoginHelper(this), bundle, new IResponseCallback() {
+                    @Override
+                    public void onRequestError(BaseResponse baseResponse) {
+                        BamiloApplication.INSTANCE.getCustomerUtils().clearCredentials();
+                    }
 
-            @Override
-            public void onRequestComplete(BaseResponse baseResponse) {
-                Print.i(TAG, "ON REQUEST COMPLETE: AUTO LOGIN");
-                // Get customer
-                Customer customer = ((CheckoutStepLogin) ((NextStepStruct) baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
-                // Get origin
-                ContentValues credentialValues = BamiloApplication.INSTANCE.getCustomerUtils().getCredentials();
+                    @Override
+                    public void onRequestComplete(BaseResponse baseResponse) {
+                        // Get customer
+                        Customer customer = ((CheckoutStepLogin) ((NextStepStruct) baseResponse
+                                .getMetadata().getData()).getCheckoutStepObject()).getCustomer();
+                        // Get origin
+                        ContentValues credentialValues = BamiloApplication.INSTANCE
+                                .getCustomerUtils().getCredentials();
 
-                // Global Tracker
-                MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
-                        Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                        MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
-                                true));
-                TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login, authEventModel);
+                        // Global Tracker
+                        MainEventModel authEventModel = new MainEventModel(
+                                CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+                                Constants.LOGIN_METHOD_EMAIL, customer.getId(),
+                                MainEventModel.createAuthEventModelAttributes(
+                                        Constants.LOGIN_METHOD_EMAIL,
+                                        EmailHelper.getHost(customer.getEmail()),
+                                        true));
+                        TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login,
+                                authEventModel);
 
-                EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(BaseActivity.this.getResources().getString(R.string.Emarsys_ContactFieldID)), BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
+                        EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(
+                                BaseActivity.this.getResources()
+                                        .getString(R.string.Emarsys_ContactFieldID)),
+                                BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER
+                                        .getEmail() : null);
 
-                // Track
-                Bundle params = new Bundle();
-                params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
-                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, TrackerDelegator.IS_AUTO_LOGIN);
-                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
-                TrackerDelegator.trackLoginSuccessful(params);
-                setupDrawerNavigation();
-            }
-        });
+                        // Track
+                        Bundle params = new Bundle();
+                        params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
+                        params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY,
+                                TrackerDelegator.IS_AUTO_LOGIN);
+                        params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
+                        TrackerDelegator.trackLoginSuccessful(params);
+                        setupDrawerNavigation();
+                    }
+                });
     }
 
     public void showWarning(@WarningFactory.WarningErrorType final int warningFact) {
         warningFactory.showWarning(warningFact);
     }
 
-    public void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact, final String message) {
+    public void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact,
+            final String message) {
         warningFactory.showWarning(warningFact, message);
     }
 
@@ -1916,7 +1864,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     }
 
     private void injectExtraTabLayout() {
-        mExtraTabLayout = (TabLayout) getLayoutInflater().inflate(R.layout.extra_tab_layout, mAppBarLayout, false);
+        mExtraTabLayout = (TabLayout) getLayoutInflater()
+                .inflate(R.layout.extra_tab_layout, mAppBarLayout, false);
         if (mExtraTabLayoutHeight == -1) {
             mExtraTabLayoutHeight = getResources().getDimension(R.dimen.tab_layout_height);
         }
@@ -1935,9 +1884,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                 mExtraTabLayout = null;
                 mExtraTabLayoutHeight = -1;
                 final View scrollContainer = findViewById(R.id.rlScrollableContent);
-                mAppBarLayout.post(() -> scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
-                        toolbar.getHeight(),
-                        scrollContainer.getPaddingRight(), scrollContainer.getPaddingBottom()));
+                mAppBarLayout
+                        .post(() -> scrollContainer.setPadding(scrollContainer.getPaddingLeft(),
+                                toolbar.getHeight(),
+                                scrollContainer.getPaddingRight(),
+                                scrollContainer.getPaddingBottom()));
             }
         }
     }

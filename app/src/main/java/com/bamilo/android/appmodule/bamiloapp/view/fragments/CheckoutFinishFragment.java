@@ -34,7 +34,6 @@ import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
@@ -126,7 +125,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
         mGABeginRequestMillis = System.currentTimeMillis();
     }
 
@@ -138,7 +136,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if (arguments != null) {
@@ -161,48 +158,46 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get product items
-        mProductsContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_list);
+        mProductsContainer = view.findViewById(R.id.checkout_my_order_products_list);
         // Get sub total
-        mProductsNum = (TextView) view.findViewById(R.id.articles_count);
-        mSubTotal = (TextView) view.findViewById(R.id.price_total);
-        mExtraCosts = (TextView) view.findViewById(R.id.extra_costs_value);
-        mExtraCostsContainer = (RelativeLayout) view.findViewById(R.id.extra_costs_container);
-        mShipFeeView = (ViewGroup) view.findViewById(R.id.shipping_container);
-        mShipFeeValue = (TextView) view.findViewById(R.id.shipping_value);
-        mVoucherView = (ViewGroup) view.findViewById(R.id.voucher_info_container);
-        mVoucherValue = (TextView) view.findViewById(R.id.text_voucher);
-        mTotalValue = (TextView) view.findViewById(R.id.total_value);
+        mProductsNum = view.findViewById(R.id.articles_count);
+        mSubTotal = view.findViewById(R.id.price_total);
+        mExtraCosts = view.findViewById(R.id.extra_costs_value);
+        mExtraCostsContainer = view.findViewById(R.id.extra_costs_container);
+        mShipFeeView = view.findViewById(R.id.shipping_container);
+        mShipFeeValue = view.findViewById(R.id.shipping_value);
+        mVoucherView = view.findViewById(R.id.voucher_info_container);
+        mVoucherValue = view.findViewById(R.id.text_voucher);
+        mTotalValue = view.findViewById(R.id.total_value);
         // Get shipping address
-        mEditShippingAddress = (ImageView) view.findViewById(R.id.checkout_my_order_shipping_address_btn_edit);
+        mEditShippingAddress = view.findViewById(R.id.checkout_my_order_shipping_address_btn_edit);
         mEditShippingAddress.setOnClickListener(this);
-        mShippingAddressContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_shipping_address_list);
+        mShippingAddressContainer = view.findViewById(R.id.checkout_my_order_shipping_address_list);
         // Get billing address
-        mEditBillingAddress = (ImageView) view.findViewById(R.id.checkout_my_order_billing_address_btn_edit);
+        mEditBillingAddress = view.findViewById(R.id.checkout_my_order_billing_address_btn_edit);
         mEditBillingAddress.setOnClickListener(this);
-        mBillingAddressContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_billing_address_list);
+        mBillingAddressContainer = view.findViewById(R.id.checkout_my_order_billing_address_list);
         mBillingAddressIsSame = view.findViewById(R.id.checkout_my_order_billing_address_is_same);
         // Get shipping method
-        mEditShippingMethod = (ImageView) view.findViewById(R.id.checkout_my_order_shipping_method_btn_edit);
+        mEditShippingMethod = view.findViewById(R.id.checkout_my_order_shipping_method_btn_edit);
         mEditShippingMethod.setOnClickListener(this);
-        mShippingMethodName = (TextView) view.findViewById(R.id.checkout_my_order_shipping_method_name);
+        mShippingMethodName = view.findViewById(R.id.checkout_my_order_shipping_method_name);
         // Get payment options
-        mEditPaymentMethod = (ImageView) view.findViewById(R.id.checkout_my_order_payment_options_btn_edit);
+        mEditPaymentMethod = view.findViewById(R.id.checkout_my_order_payment_options_btn_edit);
         mEditPaymentMethod.setOnClickListener(this);
-        mPaymentName = (TextView) view.findViewById(R.id.checkout_my_order_payment_name);
-        mCoupon = (TextView) view.findViewById(R.id.checkout_my_order_payment_coupon);
+        mPaymentName = view.findViewById(R.id.checkout_my_order_payment_name);
+        mCoupon = view.findViewById(R.id.checkout_my_order_payment_coupon);
         // Get the next step button
         view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener(this);
         // Price rules
-        mPriceRulesContainer = (ViewGroup) view.findViewById(R.id.price_rules_container);
+        mPriceRulesContainer = view.findViewById(R.id.price_rules_container);
         // Hide or show edit buttons
         controlEditButtonsVisibility();
         // Validate order
         if (mOrderFinish != null) {
             showMyOrder();
         } else {
-            Print.w(TAG, "WARNING: ORDER IS NULL - SHOWS UNEXPECTED ERROR");
             triggerGetMultiStepFinish();
         }
     }
@@ -215,7 +210,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -226,7 +220,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -237,7 +230,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
@@ -255,7 +247,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -265,7 +256,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     @Override
     public void onDestroyView() {
-        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
 
@@ -277,7 +267,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /*
@@ -337,7 +326,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         // Next step button
         else if (id == R.id.checkout_my_order_button_enter) onClickNextStepButton();
         // Unknown view
-        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 
     /*
@@ -379,11 +367,11 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         for (PurchaseCartItem item : mOrderFinish.getCartItems()) {
             View prodInflateView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_my_order_product_item, mProductsContainer, false);
             // Image
-            ImageView imageView = (ImageView) prodInflateView.findViewById(R.id.image_view);
+            ImageView imageView = prodInflateView.findViewById(R.id.image_view);
             //RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_small);
             ImageManager.getInstance().loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_large, false);
             //shop first image
-            ImageView shopFirstImageView = (ImageView) prodInflateView.findViewById(R.id.shop_first_item);
+            ImageView shopFirstImageView = prodInflateView.findViewById(R.id.shop_first_item);
             UIProductUtils.setShopFirst(item, shopFirstImageView);
             UIProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
             // Brand
@@ -393,7 +381,8 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Quantity
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.qty_placeholder, String.valueOf(item.getQuantity())));
             // Price
-            UIProductUtils.setPriceRules(item, (TextView) prodInflateView.findViewById(R.id.my_order_item_price));
+            UIProductUtils.setPriceRules(item,
+                    prodInflateView.findViewById(R.id.my_order_item_price));
             // Variation
             String variation = item.getVariationValue();
             if (variation != null && variation.length() > 0 &&
@@ -436,8 +425,8 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         // Show price rules
         CheckoutStepManager.showPriceRules(getBaseActivity(), mPriceRulesContainer, mOrderFinish.getPriceRules());
         //show vat if configuration is enabled
-        TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
-        TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
+        TextView vatIncludedLabel = getView().findViewById(R.id.vat_included_label);
+        TextView vatValue = getView().findViewById(R.id.vat_value);
         UICartUtils.showVatInfo(mOrderFinish, vatIncludedLabel, vatValue);
     }
 
@@ -526,7 +515,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      * @author sergiopereira
      */
     private void onClickNextStepButton() {
-        Print.i(TAG, "ON CLICK: NextStep");
         // this validation is trigger when the user back presses from an external payment
         if (mCheckoutFinish != null) {
             switchToSubmittedPayment();
@@ -539,7 +527,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      * Process the click on the edit address button
      */
     private void onClickEditAddressesButton() {
-        Print.i(TAG, "ON CLICK: EditAddresses");
         if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_MY_ADDRESSES.toString())) {
             FragmentController.getInstance().popLastEntry(FragmentType.CHECKOUT_FINISH.toString());
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -550,7 +537,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      * Process the click on the edit shipping method button
      */
     private void onClickEditShippingMethodButton() {
-        Print.i(TAG, "ON CLICK: EditShippingMethod");
         if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_SHIPPING.toString())) {
             FragmentController.getInstance().popLastEntry(FragmentType.CHECKOUT_FINISH.toString());
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_SHIPPING, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -563,7 +549,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      * @author sergiopereira
      */
     private void onClickEditPaymentOptionsButton() {
-        Print.i(TAG, "ON CLICK: EditPaymentOptions");
         if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_PAYMENT.toString())) {
             FragmentController.getInstance().popLastEntry(FragmentType.CHECKOUT_FINISH.toString());
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_PAYMENT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -578,7 +563,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      * Trigger ti finish the checkout process
      */
     private void triggerCheckoutFinish() {
-        Print.i(TAG, "TRIGGER: CHECKOUT FINISH");
         triggerContentEvent(new SetStepFinishHelper(), SetStepFinishHelper.createBundle(getUserAgentAsExtraData()), this);
     }
 
@@ -600,7 +584,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      * Trigger to clear cart after checkout finish.
      */
     private void triggerClearCart() {
-        Print.i(TAG, "TRIGGER: CHECKOUT FINISH");
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
         triggerContentEventNoLoading(new RemoveVoucherHelper(), null, this);
     }
@@ -617,13 +600,11 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Call super
         super.handleSuccessEvent(baseResponse);
         // Validate the event
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_MULTI_STEP_FINISH:
                 mOrderFinish = (PurchaseEntity) baseResponse.getContentData();
@@ -697,16 +678,13 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return;
         }
         // Validate event
-        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case SET_MULTI_STEP_FINISH:
                 showFragmentContentContainer();

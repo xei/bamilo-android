@@ -6,10 +6,8 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
-import android.widget.TextView;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
 import com.bamilo.android.R;
@@ -83,17 +81,13 @@ public class ConfirmationCartMessageView implements View.OnClickListener {
             mTxCartTotalPrice.setText(message);
             isShowing = true;
             UIUtils.animateSlideDown(mCartViewBar);
-            mCartViewBar.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if(isShowing){
-                        UIUtils.animateSlideUp(mCartViewBar);
-                    }
-
+            mCartViewBar.postDelayed(() -> {
+                if(isShowing){
+                    UIUtils.animateSlideUp(mCartViewBar);
                 }
+
             }, WarningFactory._3_SECONDS);
-        } catch (Exception e) {
-            Print.e(TAG, "ERROR IN SHOW MESSAGE: " + e.getMessage());
+        } catch (Exception ignored) {
         }
     }
 

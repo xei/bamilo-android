@@ -101,20 +101,15 @@
             app:layout_constraintTop_toBottomOf="@+id/activityUserReview_toolbar_toolbar"
             app:layout_constraintVertical_bias="0.0" />
 
-        <com.bamilo.android.appmodule.modernbamilo.customview.XeiButton
+        <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
             android:id="@+id/activityUserReview_xeiButton_next"
             android:layout_width="0dp"
             android:layout_height="56dp"
-            android:background="@color/userReview_button_next"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:textColor="@color/userReview_buttonText_next"
-            android:text="بعدی"
-            android:textSize="18sp"
-            android:gravity="center"
+            android:layout_margin="8dp"
+            app:text="بعدی"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:locale="auto"/>
+            app:layout_constraintStart_toStartOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 

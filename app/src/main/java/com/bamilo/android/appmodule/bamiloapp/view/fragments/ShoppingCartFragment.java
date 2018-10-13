@@ -38,7 +38,6 @@ import com.bamilo.android.framework.service.utils.DarwinRegex;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
@@ -100,13 +99,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -133,14 +130,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();
         // Case deep link
@@ -152,7 +147,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
         if(mVoucherView != null) {
             mVoucherCode = mVoucherView.getText().toString();
         }
@@ -161,7 +155,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE STATE");
         // Save the voucher code
         if(mVoucherView != null) {
             mVoucherCode = mVoucherView.getText().toString();
@@ -172,21 +165,18 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
         releaseVars();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
         releaseVars();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     @Override
@@ -221,7 +211,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Show the use voucher layout
      */
     private void showUseVoucher() {
-        Print.d(TAG, "SHOWING USE VOUCHER");
         mVoucherView.setText(TextUtils.isNotEmpty(mVoucherCode) ? mVoucherCode : "");
         mVoucherView.setFocusable(true);
         mVoucherView.setFocusableInTouchMode(true);
@@ -233,7 +222,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Show the remove voucher layout
      */
     private void showRemoveVoucher() {
-        Print.d(TAG, "SHOWING REMOVE VOUCHER");
         mVoucherView.setText(mVoucherCode);
         mVoucherView.setFocusable(false);
         mVoucherView.setFocusableInTouchMode(false);
@@ -244,7 +232,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Set the total value
      */
     private void setTotal(@NonNull PurchaseEntity cart) {
-        Print.d(TAG, "SET THE TOTAL VALUE");
         // Get views
         TextView totalValue = mTotalContainer.findViewById(R.id.total_value);
         // Set views
@@ -258,12 +245,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * showNoItems update the layout when basket has no items
      */
     public void showNoItems() {
-        showErrorFragment(ErrorLayoutFactory.CART_EMPTY_LAYOUT, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
-        });
+        showErrorFragment(ErrorLayoutFactory.CART_EMPTY_LAYOUT,
+                v -> getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK));
         getBaseActivity().hideKeyboard();
     }
 
@@ -429,7 +412,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void addItemsToCart(String items) {
         String[] itemsToCart = items.split(DarwinRegex.SKU_DELIMITER);
-        Print.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
         // Create arguments to add all items to cart
         ArrayList<String> productBySku = new ArrayList<>();
         Collections.addAll(productBySku, itemsToCart);
@@ -447,7 +429,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -458,7 +439,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         EventType eventType = baseResponse.getEventType();
 
-        Print.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
             case ADD_VOUCHER:
                 PurchaseEntity addVoucherPurchaseEntity = (PurchaseEntity) baseResponse.getContentData();
@@ -516,7 +496,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -554,7 +533,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Display shopping cart info
      */
     private void displayShoppingCart(PurchaseEntity cart) {
-        Print.d(TAG, "displayShoppingCart");
         // Case invalid cart
         if (cart == null || CollectionUtils.isEmpty(cart.getCartItems())) {
             showNoItems();
@@ -684,7 +662,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 try {
                     goToProductDetails((String) v.getTag(R.id.target_sku));
                 } catch (NullPointerException e) {
-                    Print.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
                 }
             }
         });

@@ -1,7 +1,6 @@
 package com.bamilo.android.appmodule.bamiloapp.utils.catalog;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.bamilo.android.framework.service.objects.catalog.FeaturedItem;
 import com.bamilo.android.framework.service.objects.home.type.TeaserGroupType;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
 import java.util.ArrayList;
 
 
@@ -119,9 +117,6 @@ public class FeaturedBoxHelper {
     private static void onClickBackToHome() {
         // Get user id
         String userId = "";
-        if (BamiloApplication.CUSTOMER != null
-                && BamiloApplication.CUSTOMER.getIdAsString() != null) {
-        }
         // Goto home
         baseFragment.getBaseActivity()
                 .onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
@@ -170,7 +165,6 @@ public class FeaturedBoxHelper {
     }
 
     private static void onClickNoSearchItem(String Title, String Link, TeaserGroupType mGroupType) {
-        Print.i(TAG, "ON CLICK TEASER ITEM");
         // Get title
         // Get target link
         @TargetLink.Type String link = Link;
@@ -204,13 +198,10 @@ public class FeaturedBoxHelper {
             int partialSize) {
         // Feature box products: title
         String productsTitle = featuredBox.getProductsTitle();
-        if (!TextUtils.isEmpty(productsTitle)) {
-//            ((TextView) view.findViewById(R.id.featured_products_title)).setText(productsTitle);
-        }
+
         // Feature box products: view pager
         ArrayList<FeaturedItem> featureBoxProducts = featuredBox.getProducts();
         if (CollectionUtils.isNotEmpty(featureBoxProducts)) {
-//            view.findViewById(R.id.featured_products).setVisibility(View.VISIBLE);
             generateFeaturedProductsLayout(context, view, featureBoxProducts, partialSize);
         }
     }
@@ -222,13 +213,9 @@ public class FeaturedBoxHelper {
             int partialSize) {
         // Feature box brands: title
         String brandsTitle = featuredBox.getBrandsTitle();
-        if (!TextUtils.isEmpty(brandsTitle)) {
-//            ((TextView) view.findViewById(R.id.featured_brands_title)).setText(brandsTitle);
-        }
         // Feature box brands: view pager
         ArrayList<FeaturedItem> featureBoxBrands = featuredBox.getBrands();
         if (CollectionUtils.isNotEmpty(featureBoxBrands)) {
-//            view.findViewById(R.id.featured_brands).setVisibility(View.VISIBLE);
             generateFeaturedBrandsLayout(context, view, featureBoxBrands, partialSize);
         }
     }
@@ -238,9 +225,6 @@ public class FeaturedBoxHelper {
      */
     private static void showNoticeMessage(View view, FeaturedBox featuredBox) {
         String noticeMessage = featuredBox.getNoticeMessage();
-        if (!TextUtils.isEmpty(noticeMessage)) {
-            /*  ((TextView) view.findViewById(R.id.no_results_search_notice_message)).setText(noticeMessage);*/
-        }
     }
 
     /**
@@ -248,9 +232,6 @@ public class FeaturedBoxHelper {
      */
     private static void generateFeaturedProductsLayout(Context context, View view,
             ArrayList<FeaturedItem> featuredProducts, int partialSize) {
-//        View mLoadingFeaturedProducts = view.findViewById(R.id.loading_featured_products);
-//        ViewPager mFeaturedProductsViewPager = view
-//                .findViewById(R.id.featured_products_viewpager);
         // try to use portrait layout if there are less products than what the default layout would present
         if (featuredProducts.size() < partialSize) {
             partialSize = ITEMS_PER_PAGE_PORTRAIT;
@@ -258,9 +239,6 @@ public class FeaturedBoxHelper {
         // 
         FeaturedItemsAdapter mFeaturedProductsAdapter = new FeaturedItemsAdapter(context,
                 featuredProducts, LayoutInflater.from(context), partialSize);
-//        mFeaturedProductsViewPager.setAdapter(mFeaturedProductsAdapter);
-//        mFeaturedProductsViewPager.setVisibility(View.VISIBLE);
-//        mLoadingFeaturedProducts.setVisibility(View.GONE);
     }
 
     /**
@@ -268,9 +246,6 @@ public class FeaturedBoxHelper {
      */
     private static void generateFeaturedBrandsLayout(Context context, View view,
             ArrayList<FeaturedItem> featuredBrandsList, int partialSize) {
-//        View mLoadingFeaturedBrands = view.findViewById(R.id.loading_featured_brands);
-//        ViewPager mFeaturedBrandsViewPager = view
-//                .findViewById(R.id.featured_brands_viewpager);
         // try to use portrait layout if there are less brands than what the default layout would present
         if (featuredBrandsList.size() < partialSize) {
             partialSize = 3;
@@ -278,10 +253,5 @@ public class FeaturedBoxHelper {
         // 
         FeaturedItemsAdapter mFeaturedBrandsAdapter = new FeaturedItemsAdapter(context,
                 featuredBrandsList, LayoutInflater.from(context), partialSize);
-//        mFeaturedBrandsViewPager.setAdapter(mFeaturedBrandsAdapter);
-//        mFeaturedBrandsViewPager.setVisibility(View.VISIBLE);
-//        mLoadingFeaturedBrands.setVisibility(View.GONE);
     }
-
-
 }

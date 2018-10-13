@@ -16,7 +16,6 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.objects.home.type.TeaserGroupType;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogGenericFragment;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils;
@@ -66,7 +65,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -77,7 +75,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         mSavedStateType = savedInstanceState != null ? (FragmentType) savedInstanceState.getSerializable(TAG) : null;
     }
 
@@ -88,7 +85,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
 
         mDrawerRecycler = view.findViewById(R.id.drawer_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseActivity());
@@ -97,7 +93,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
         CreateDrawer();
 
         if (mSavedStateType == null) {
-            Print.d(TAG, "SAVED IS NULL");
             //addListItems();
         }
 
@@ -241,14 +236,14 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
             }
         }));
         mDrawerItems.add(new DrawerItem(true));
-        /*mDrawerItems.add(new DrawerItem(0, R.string.drawer_share, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
+        mDrawerItems.add(new DrawerItem(0, R.string.drawer_share, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
 
                 UIUtils.shareApp(getBaseActivity());
             }
-        }));*/
+        }));
         mDrawerItems.add(new DrawerItem(0, R.string.drawer_rateus, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,7 +285,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
     }
 
     private void addListItems() {
-        Print.i(TAG, "ADD LIST ITEMS");
         onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, new Bundle());
     }
 
@@ -301,7 +295,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -312,7 +305,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -322,7 +314,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE");
     }
 
     /*
@@ -333,7 +324,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -344,7 +334,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -354,7 +343,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     /*
@@ -364,7 +352,6 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -377,14 +364,12 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
      * @author sergiopereira
      */
     public void onSwitchChildFragment(FragmentType filterType, Bundle bundle) {
-        Print.i(TAG, "ON SWITCH CHILD FRAG: " + filterType);
         switch (filterType) {
             case NAVIGATION_CATEGORIES_ROOT_LEVEL:
                 DrawerFragment navigationCategoryFragment = new DrawerFragment();//.getInstance(bundle);
                 fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
                 break;
             default:
-                Print.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
                 break;
         }
     }
@@ -401,13 +386,10 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
          * FIXME: Excluded piece of code due to crash on API = 18.
          * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
          */
-        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
-            @Override
-            public void run() {
-                // Animations
-                if (animated)
-                    fragmentTransaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left, R.anim.slide_from_left, R.anim.slide_to_right);
-            }
+        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(() -> {
+            // Animations
+            if (animated)
+                fragmentTransaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left, R.anim.slide_from_left, R.anim.slide_to_right);
         });
 
         // Replace

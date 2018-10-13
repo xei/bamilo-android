@@ -19,7 +19,6 @@ import com.bamilo.android.framework.components._unused_.dialogs.WizardPreference
 import com.bamilo.android.framework.components._unused_.dialogs.WizardPreferences.WizardType;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.framework.service.utils.NetworkConnectivity;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
@@ -57,13 +56,11 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get size guide URL from arguments
         mSizeGuideUrl = getArguments().getString(ConstantsIntentExtra.SIZE_GUIDE_URL);
         // Get from saved instance
@@ -73,9 +70,8 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get views
-        mImageView = (PhotoView) view.findViewById(R.id.product_size_guide_image);
+        mImageView = view.findViewById(R.id.product_size_guide_image);
         mWizard = view.findViewById(R.id.product_size_wizard_stub);
         // Validate URL
         if(!TextUtils.isEmpty(mSizeGuideUrl)) {
@@ -89,44 +85,37 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON RESUME");
         outState.putString(ConstantsIntentExtra.SIZE_GUIDE_URL, mSizeGuideUrl);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
         mWizard = null;
         mImageView = null;
     }
@@ -137,7 +126,6 @@ public class ProductSizeGuideFragment extends BaseFragment {
      * @param url
      */
     private void showSizeGuide(PhotoView mImageView, String url) {
-        Print.i(TAG, "ON SHOW SIZE GUIDE");
         ImageManager.getInstance().loadImage(url, mImageView, null, R.drawable.no_image_large, false, new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model,
@@ -177,7 +165,6 @@ public class ProductSizeGuideFragment extends BaseFragment {
         try {
             getView().findViewById(R.id.wizard_product_size_button).setOnClickListener(this);
         } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
     }
 
@@ -189,7 +176,6 @@ public class ProductSizeGuideFragment extends BaseFragment {
         // Case wizard
         if (id == R.id.wizard_product_size_button) onClickWizardButton();
         // Case unknown
-        else Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
     }
 
     /**
@@ -203,7 +189,6 @@ public class ProductSizeGuideFragment extends BaseFragment {
             // Hide wizard
             mWizard.setVisibility(View.GONE);
         } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON HIDE WIZARD", e);
         }
     }
 

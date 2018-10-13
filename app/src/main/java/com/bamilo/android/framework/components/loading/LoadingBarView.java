@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bamilo.android.R;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.io.InputStream;
 
@@ -75,7 +74,6 @@ public class LoadingBarView extends ImageView {
 	@Override
 	protected void onAttachedToWindow() {
 		super.onAttachedToWindow();
-		Print.i(TAG, "ON ATTACH TO WINDOW: START RENDERING");
 		// TODO: Validate this approach
 		startRendering();
 	}
@@ -83,7 +81,6 @@ public class LoadingBarView extends ImageView {
 	@Override
 	protected void onDetachedFromWindow() {
 		super.onDetachedFromWindow();
-		Print.i(TAG, "ON DETACHED FROM WINDOW: STOP RENDERING");
 		// TODO: Validate this approach
 		stopRendering();
 	}
@@ -106,9 +103,7 @@ public class LoadingBarView extends ImageView {
 	 * Plays the an input stream
 	 */
 	public synchronized void startRendering() {
-		Print.d(TAG, "startRendering");
 		if (mThread != null && mThread.isAlive()) {
-			Print.d(TAG, "startRendering: thread already running");
 			return;
 		}
 
@@ -152,7 +147,6 @@ public class LoadingBarView extends ImageView {
 	 * Stops the rendering
 	 */
 	public synchronized void stopRendering() {
-		Print.d(TAG, "stopRendering");
 		if (mThread != null) {
 			mThread.interrupt();
 			mThread = null;

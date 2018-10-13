@@ -19,7 +19,6 @@ import com.bamilo.android.framework.service.database.SearchRecentQueriesTableHel
 import com.bamilo.android.framework.service.objects.search.Suggestion;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.ErrorLayoutFactory;
@@ -71,7 +70,6 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         setAppContentLayout(view);
         init();
     }
@@ -83,7 +81,6 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     /**
@@ -91,20 +88,18 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
      */
     
     private void init() {
-        Print.d(TAG, "INIT");
         mContext = getBaseActivity();
         // Get Recent Searches
-        Print.i(TAG, "LOAD RECENT SEARCHES");
         showFragmentLoading();
         new GetSearchSuggestionsHelper(this);
     }
 
 
     private void setAppContentLayout(View mainView) {
-        mRecentSearchesList = (RecyclerView) mainView.findViewById(R.id.recentsearch_list);
+        mRecentSearchesList = mainView.findViewById(R.id.recentsearch_list);
         mRecentSearchesList.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecentSearchesList.setNestedScrollingEnabled(false);
-        mClearAllButton = (TextView) mainView.findViewById(R.id.recentsearch_clear_all);
+        mClearAllButton = mainView.findViewById(R.id.recentsearch_clear_all);
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -121,7 +116,6 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
 
                 showEmpty();
                 mClearAllButton.setVisibility(View.GONE);
-                Print.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
                 mClearAllButton.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -155,17 +149,14 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Print.d(TAG, "ON RESPONSE COMPLETE:");
 
         if (isOnStoppingProcess) return;
 
         super.handleSuccessEvent(baseResponse);
         
         EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
         case GET_SEARCH_SUGGESTIONS_EVENT:
-            Print.d(TAG, "ON RESPONSE COMPLETE: GET_SEARCH_SUGGESTIONS_EVENT");
             ArrayList<Suggestion> response = (SuggestionsStruct)baseResponse.getContentData();
             if (response != null) {
                 mRecentSearches = response;
@@ -184,11 +175,9 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
                 showEmpty();
             }
 
-            Print.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
 
             break;
         default:
-            Print.d(TAG, "ON RESPONSE COMPLETE: UNKNOWN TYPE");
             break;
         }
     }    
@@ -199,18 +188,14 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
      */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.d(TAG, "ON RESPONSE ERROR:");
 
         if (isOnStoppingProcess) return;
         EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case GET_SEARCH_SUGGESTIONS_EVENT:
-            Print.d(TAG, "ON RESPONSE ERROR: GET_SEARCH_SUGGESTIONS_EVENT");
             showFragmentContentContainer();
             break;
         default:
-            Print.d(TAG, "ON RESPONSE ERROR: UNKNOWN TYPE");
             break;
         }
     }
@@ -222,7 +207,6 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
 
     @Override
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
-        Print.d(TAG, "SEARCH: CLICKED ITEM " + position);
         Suggestion selectedSuggestion = ((SearchDropDownAdapter) adapter).getItem(position);
         String text = selectedSuggestion.getResult();
         GetSearchSuggestionsHelper.saveSearchQuery(selectedSuggestion);

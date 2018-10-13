@@ -8,8 +8,6 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.bamilo.android.framework.service.utils.output.Print;
-
 import java.util.ArrayList;
 
 
@@ -75,11 +73,7 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
         child.setTag(tag);
         addView(child);
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.view.ViewGroup#addView(android.view.View)
-     */
+
     @Override
     public void addView(View parent) {
         // Get and save the radio button
@@ -104,15 +98,10 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
      * @author sergiopereira
      */
     public void clearCheckGroup(){
-        Print.d(TAG, "UNCHECK GROUP: " + getId());
         mCurrentCheckedButtonPos = -1;
         for (RadioButton radio : mRadioButtons) setChecked(radio, false);
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.view.ViewGroup#removeAllViews()
-     */
+
     @Override
     public void removeAllViews() {
         super.removeAllViews();
@@ -158,13 +147,8 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
         return radioButton;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.widget.RadioGroup#setOnCheckedChangeListener(android.widget.RadioGroup.OnCheckedChangeListener)
-     */
     @Override
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
-        Print.d(TAG, "SET LISTENER ON GROUP ID: " + getId());
         mOnCheckedChangeListener = listener;
     }
     
@@ -203,7 +187,6 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
         try {
             return mRadioButtons.get(mCurrentCheckedButtonPos).getTag();
         } catch (IndexOutOfBoundsException e) {
-            Print.w(TAG, "Get checked radio button tag!");
             return null;
         }
     }
@@ -213,12 +196,7 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
      * @author sergiopereira
      */
     private class CheckedStateTracker implements CompoundButton.OnCheckedChangeListener {
-        /*
-         * (non-Javadoc)
-         * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton, boolean)
-         */
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            Print.d(TAG, "ON CHECK CHANGE CHILD: " + buttonView.getTag());
             if(isChecked && getRadioChildCount() > 0 ) {
                 // Update the other buttons
                 checkRadioWithTag(buttonView.getTag().toString());
@@ -228,13 +206,8 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
     @Override
     public void onClick(View parent) {
-        Print.d(TAG, "CLICKED ON " + parent.getTag().toString());
         // Update the other buttons
         checkRadioWithTag(parent.getTag().toString());
         // Notify the listener that checked change
@@ -246,7 +219,6 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
      * @author sergiopereira
      */
     private void checkRadioWithTag(String checkedTag){
-        Print.d(TAG, "RADIO CHECKED: " + checkedTag);
         int size = mRadioButtons.size();
         for (int i = 0; i < size; i++) {
             RadioButton radioButton = mRadioButtons.get(i);
@@ -281,7 +253,6 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
      */
     private void notifyOnCheckedChangeListener(){
         if(mOnCheckedChangeListener != null) mOnCheckedChangeListener.onCheckedChanged(this, mCurrentCheckedButtonPos);
-        else Print.w(TAG, "CheckedChangeListener is null");
     }
     
     /**
@@ -297,8 +268,7 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
             if(mRadioButtons.size() == 0) mCurrentCheckedButtonPos = position;
             // Set after fill the parent
             else checkRadioWithTag(mRadioButtons.get(position).getTag().toString());
-        } catch (IndexOutOfBoundsException e) {
-            Print.w(TAG, "Radio buttons count: " + mRadioButtons.size() + " check position: " + position);
+        } catch (IndexOutOfBoundsException ignored) {
         }
     }
     
@@ -310,5 +280,4 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
     public boolean isValidateGroup(){
         return (mCurrentCheckedButtonPos != -1);
     }
-    
 }

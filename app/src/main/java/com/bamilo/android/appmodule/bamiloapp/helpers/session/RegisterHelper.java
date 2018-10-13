@@ -14,7 +14,6 @@ import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.CustomerUtils;
 import com.bamilo.android.framework.service.utils.EventTask;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
 
 /**
@@ -42,7 +41,6 @@ public class RegisterHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        Print.i("SAVE CUSTOMER CREDENTIALS");
         if (((Customer) baseResponse.getContentData()).getEmail() != null) {
             mParameters.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
             BamiloApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);

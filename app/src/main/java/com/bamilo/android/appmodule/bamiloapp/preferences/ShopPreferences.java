@@ -11,7 +11,6 @@ import com.bamilo.android.framework.service.database.CountriesConfigsTableHelper
 import com.bamilo.android.framework.service.database.LastViewedTableHelper;
 import com.bamilo.android.framework.service.objects.configs.CountryObject;
 import com.bamilo.android.framework.service.utils.Constants;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.R;
 
 import java.util.ArrayList;
@@ -33,9 +32,7 @@ public class ShopPreferences {
      */
     public static String getShopId(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, SHOP_NOT_SELECTED);
-        Print.d(TAG, "SHOP ID: " + shopId);
-        return shopId;
+        return sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, SHOP_NOT_SELECTED);
     }
 
     /**
@@ -45,9 +42,7 @@ public class ShopPreferences {
      */
     public static String getShopName(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String name = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
-        Print.i(TAG, "SHOP NAME: " + name);
-        return name;
+        return sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
     }
 
     /**
@@ -57,9 +52,7 @@ public class ShopPreferences {
      */
     public static String getShopCountryCurrencyIso(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String currency = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
-        Print.i(TAG, "SHOP COUNTRY CURRENCY ISO: " + currency);
-        return currency;
+        return sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
     }
 
     /**
@@ -67,9 +60,7 @@ public class ShopPreferences {
      */
     public static String getShopCountryISO(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String shopCountryISO = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, SHOP_NOT_SELECTED);
-        Print.d(TAG, "SHOP COUNTRY: " + shopCountryISO);
-        return shopCountryISO;
+        return sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, SHOP_NOT_SELECTED);
     }
     
     /**

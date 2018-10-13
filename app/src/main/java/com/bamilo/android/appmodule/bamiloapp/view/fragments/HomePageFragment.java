@@ -31,7 +31,6 @@ import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.TeaserViewFactory;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.BaseTeaserViewHolder;
@@ -98,7 +97,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
         mGABeginRequestMillis = System.currentTimeMillis();
     }
 
@@ -110,7 +108,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get saved scroll position
         if (savedInstanceState != null) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
@@ -144,7 +141,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get scroll view
         mScrollView = (NestedScrollView) view.findViewById(R.id.home_page_scroll);
         mScrollView.setClipToPadding(false);
@@ -174,7 +170,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -185,7 +180,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         // Track page
         trackPage(false);
 
@@ -197,7 +191,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * @author sergiopereira
      */
     public void onResumeExecution() {
-        Print.i(TAG, "ON RESUME EXECUTION");
         // Validate current state
         if (mHomePage != null && mHomePage.hasTeasers()) {
             validateDataState();
@@ -217,7 +210,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE");
         // Save the scroll state for rotation
         if (saveScrollState() && mScrollSavedPosition != null) {
             outState.putIntArray(SCROLL_STATE_KEY, mScrollSavedPosition);
@@ -247,7 +239,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
         // Save the scroll state
         saveScrollState();
     }
@@ -260,7 +251,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -271,7 +261,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
         // Remove parent from views
         TeaserViewFactory.onDetachedViewHolder(mViewHolders);
     }
@@ -284,7 +273,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
         // Clean data
         mHomePage = null;
         mViewHolders = null;
@@ -310,7 +298,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * detached view from parent.
      */
     private void rebuildHomePage(ArrayList<BaseTeaserViewHolder> mViewHolders) {
-        Print.i(TAG, "REBUILD HOME PAGE");
         // Update each view older
         for (BaseTeaserViewHolder viewHolder : mViewHolders) {
             // Update view
@@ -331,7 +318,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Create the home page
      */
     private void buildHomePage(HomePageObject homePage) {
-        Print.i(TAG, "BUILD HOME PAGE");
         LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers().values()) {
@@ -360,7 +346,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * @return int[]
      */
     private boolean saveScrollState() {
-        Print.i(TAG, "ON SAVE SCROLL STATE");
         // Validate view
         if (mScrollView != null) {
             mScrollSavedPosition = new int[]{mScrollView.getScrollX(), mScrollView.getScrollY()};
@@ -396,14 +381,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Process the click on teaser
      */
     private void onClickTeaserItem(View view) {
-        Print.i(TAG, "ON CLICK TEASER ITEM");
         // Get title
         String title = (String) view.getTag(R.id.target_title);
         // Get target link
         @TargetLink.Type String link = (String) view.getTag(R.id.target_link);
         // Get origin id
         int id = (int) view.getTag(R.id.target_teaser_origin);
-        Print.i(TAG, "CLICK TARGET: LINK:" + link + " TITLE:" + title + " ORIGIN:" + id);
         // Get teaser group type
         TeaserGroupType origin = TeaserGroupType.values()[id];
         if (view.getTag(R.id.target_list_position) != null) {
@@ -462,7 +445,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @NonNull
     private ArrayList<TeaserCampaign> createCampaignsData(@NonNull String title, @NonNull String id,
             TeaserGroupType group) {
-        Print.i(TAG, "GOTO CAMPAIGN PAGE: " + title + " " + id);
         // Object
         ArrayList<TeaserCampaign> campaigns;
         // Get group
@@ -505,7 +487,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * @author sergiopereira
      */
     private void triggerTeasers() {
-        Print.d(TAG, "ON TRIGGER: GET TEASERS");
         // Get teaser collection
         triggerContentEvent(new GetHomeHelper(), null, this);
     }
@@ -516,25 +497,20 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "ON SUCCESS");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_HOME_EVENT:
-                Print.i(TAG, "ON SUCCESS RESPONSE: GET_HOME_EVENT");
                 HomePageObject homePage = (HomePageObject) baseResponse.getContentData();
                 if (homePage != null && homePage.hasTeasers()) {
-                    Print.i(TAG, "SHOW HOME PAGE: " + homePage.hasTeasers());
                     // Save home page
                     mHomePage = homePage;
                     // Build home page
                     buildHomePage(homePage);
                 } else {
-                    Print.i(TAG, "SHOW FALL BAK");
                     showFragmentFallBack();
                 }
 
@@ -551,10 +527,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR RESPONSE");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Check base errors
@@ -565,7 +539,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_HOME_EVENT:
-                Print.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
                 showFragmentFallBack();
                 break;
             case SUBMIT_FORM:
@@ -606,40 +579,35 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 }
             }
         } catch (IllegalStateException e) {
-            Print.w(TAG, "WARNING: ISE ON TRACK PAGE ADJUST");
         }
     }
 
     private void sendRecommend() {
-        recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
-            @Override
-            public void onRecommendedRequestComplete(final String category,
-                    final List<RecommendedItem> data) {
-                if (data == null || data.size() == 0) {
-                    return;
-                }
-                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+        recommendManager.sendHomeRecommend((category, data) -> {
+            if (data == null || data.size() == 0) {
+                return;
+            }
+            LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
-                if (recommendationsTeaserHolder == null) {
+            if (recommendationsTeaserHolder == null) {
+                recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(),
+                        inflater.inflate(R.layout.recommendation, mContainer, false), null);
+            }
+            if (recommendationsTeaserHolder != null) {
+                try {
+                    // Set view
+                    mContainer.removeView(recommendationsTeaserHolder.itemView);
                     recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(),
                             inflater.inflate(R.layout.recommendation, mContainer, false), null);
+                    recommendationsTeaserHolder.onBind(data);
+                    //recommendationsTeaserHolder.itemView.
+                    mContainer.addView(recommendationsTeaserHolder.itemView,
+                            mContainer.getChildCount() - 1);
+                } catch (Exception ex) {
+                    int tmp = 1;
                 }
-                if (recommendationsTeaserHolder != null) {
-                    try {
-                        // Set view
-                        mContainer.removeView(recommendationsTeaserHolder.itemView);
-                        recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(),
-                                inflater.inflate(R.layout.recommendation, mContainer, false), null);
-                        recommendationsTeaserHolder.onBind(data);
-                        //recommendationsTeaserHolder.itemView.
-                        mContainer.addView(recommendationsTeaserHolder.itemView,
-                                mContainer.getChildCount() - 1);
-                    } catch (Exception ex) {
-                        int tmp = 1;
-                    }
 
-                    recommendationsTeaserHolderAdded = true;
-                }
+                recommendationsTeaserHolderAdded = true;
             }
         });
     }

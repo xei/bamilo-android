@@ -20,11 +20,11 @@ import com.adjust.sdk.AdjustEvent;
 import com.adjust.sdk.LogLevel;
 import com.adjust.sdk.OnAttributionChangedListener;
 import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail;
 import com.bamilo.android.framework.service.Darwin;
 import com.bamilo.android.framework.service.objects.checkout.PurchaseItem;
 import com.bamilo.android.framework.service.objects.customer.Customer;
 import com.bamilo.android.framework.service.objects.customer.CustomerGender;
-import com.bamilo.android.framework.service.objects.product.pojo.ProductComplete;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductRegular;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.tracking.gtm.GTMKeys;
@@ -32,7 +32,6 @@ import com.bamilo.android.framework.service.tracking.gtm.GTMManager;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -130,7 +129,6 @@ public class AdjustTracker extends AbcBaseTracker {
     }
 
     public static void startup(Context context) {
-        Print.d(TAG, "Adjust Startup");
         sInstance = new AdjustTracker(context);
     }
 
@@ -163,7 +161,6 @@ public class AdjustTracker extends AbcBaseTracker {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(ADJUST_FIRST_TIME_KEY, false);
         editor.apply();
-        Print.i(TAG, "ADJUST is APP_LAUNCH " + Adjust.isEnabled());
     }
 
     /**
@@ -222,10 +219,8 @@ public class AdjustTracker extends AbcBaseTracker {
     @Override
     public void debugMode(@NonNull Context context, boolean enable) {
         if (enable) {
-            Print.w(TAG, "WARNING: DEBUG MODE IS ENABLE");
             initializeAdjust(context, AdjustConfig.ENVIRONMENT_SANDBOX, LogLevel.VERBOSE);
         } else {
-            Print.w(TAG, "WARNING: DEBUG MODE IS DISABLE");
             initializeAdjust(context, AdjustConfig.ENVIRONMENT_SANDBOX, LogLevel.INFO);
         }
     }
@@ -252,46 +247,37 @@ public class AdjustTracker extends AbcBaseTracker {
         if (!isEnabled) {
             return;
         }
-        Print.i(TAG, " Tracked Screen --> " + screen);
         switch (screen) {
             case HOME:
                 //didn't used the baseParameters because some of the parameters aren't used on this event ,eg (SHOP_COUNTRY)
                 AdjustEvent eventHomeScreen = new AdjustEvent(mContext.getString(R.string.adjust_token_home));
-                addUserIdParameters(eventHomeScreen, (Customer) bundle.getParcelable(CUSTOMER), bundle.getString(USER_ID));
+                addUserIdParameters(eventHomeScreen, bundle.getParcelable(CUSTOMER), bundle.getString(USER_ID));
                 addAppVersionParameters(eventHomeScreen);
                 addDisplayParameters(eventHomeScreen);
                 addDeviceManufacturerParameters(eventHomeScreen);
                 addDeviceModelParameters(eventHomeScreen);
                 addDurationParameters(eventHomeScreen, bundle);
-                addCustomerGenderParameters(eventHomeScreen, (Customer) bundle.getParcelable(CUSTOMER));
+                addCustomerGenderParameters(eventHomeScreen, bundle.getParcelable(CUSTOMER));
                 Adjust.trackEvent(eventHomeScreen);
                 break;
 
             case PRODUCT_DETAIL_LOADED:
                 AdjustEvent eventPDVScreen = new AdjustEvent(mContext.getString(R.string.adjust_token_view_product));
                 addBaseParameters(eventPDVScreen, bundle);
-                addCustomerGenderParameters(eventPDVScreen, (Customer) bundle.getParcelable(CUSTOMER));
+                addCustomerGenderParameters(eventPDVScreen, bundle.getParcelable(CUSTOMER));
 
-                ProductComplete product = bundle.getParcelable(PRODUCT);
+                ProductDetail product = (ProductDetail) bundle.getSerializable(PRODUCT);
+
                 if (product != null) {
                     eventPDVScreen.addCallbackParameter(AdjustKeys.PRODUCT, product.getSku());
                     eventPDVScreen.addPartnerParameter(AdjustKeys.PRODUCT, product.getSku());
-                    eventPDVScreen.addCallbackParameter(AdjustKeys.CATEGORY_ID, product.getCategoryId());
-                    eventPDVScreen.addPartnerParameter(AdjustKeys.CATEGORY_ID, product.getCategoryId());
-                    if (product.getBrandId() != 0) {
-                        eventPDVScreen.addCallbackParameter(BRAND_ID, String.valueOf(product.getBrandId()));
-                        eventPDVScreen.addPartnerParameter(BRAND_ID, String.valueOf(product.getBrandId()));
-                    }
 
                     // FB - View Product
                     AdjustEvent eventPDVScreenFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_product));
                     // format sku as array
                     String fbSkuList = convertParameterToStringArray(product.getSku());
                     //format price with 2 c.d.
-                    String formattedPrice = formatPriceForTracking(product.getPriceForTracking(), PRICE_DECIMAL_FORMAT);
                     eventPDVScreenFB = getFBTrackerBaseParameters(eventPDVScreenFB, bundle);
-                    eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
-                    eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
                     eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_CONTENT_ID, fbSkuList);
                     eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, fbSkuList);
                     // Tracking event
@@ -302,11 +288,10 @@ public class AdjustTracker extends AbcBaseTracker {
                 break;
 
             case PRODUCT_LIST_SORTED:  //View Listing
-                Print.d("ADJUST", "PRODUCT_LIST_SORTED");
                 AdjustEvent eventCatalogSorted = new AdjustEvent(mContext.getString(R.string.adjust_token_view_listing));
                 addBaseParameters(eventCatalogSorted, bundle);
 
-                addCustomerGenderParameters(eventCatalogSorted, (Customer) bundle.getParcelable(CUSTOMER));
+                addCustomerGenderParameters(eventCatalogSorted, bundle.getParcelable(CUSTOMER));
 
 
                 if (bundle.containsKey(AdjustKeys.CATEGORY_ID)) {
@@ -359,7 +344,7 @@ public class AdjustTracker extends AbcBaseTracker {
                 AdjustEvent eventCartLoaded = new AdjustEvent(mContext.getString(R.string.adjust_token_view_cart));
                 addBaseParameters(eventCartLoaded, bundle);
 
-                addCustomerGenderParameters(eventCartLoaded, (Customer) bundle.getParcelable(CUSTOMER));
+                addCustomerGenderParameters(eventCartLoaded, bundle.getParcelable(CUSTOMER));
 
                 Adjust.trackEvent(eventCartLoaded);
                 break;
@@ -421,12 +406,10 @@ public class AdjustTracker extends AbcBaseTracker {
         if (!isEnabled) {
             return;
         }
-        Print.i(TAG, " Tracked Event --> " + eventTracked);
 
         switch (eventTracked) {
 
             case APP_OPEN:
-                Print.i(TAG, "APP_OPEN:" + Adjust.isEnabled());
                 AdjustEvent eventAppOpen = new AdjustEvent(mContext.getString(R.string.adjust_token_launch));
                 addAppVersionParameters(eventAppOpen);
                 addDisplayParameters(eventAppOpen);
@@ -463,7 +446,6 @@ public class AdjustTracker extends AbcBaseTracker {
                     String order = bundle.getString(TRANSACTION_ID);
                     String country = bundle.getString(AdjustTracker.COUNTRY_ISO, NOT_AVAILABLE);
 
-                    Print.d(TAG, " TRACK REVENEU --> " + bundle.getDouble(TRANSACTION_VALUE));
                     increaseTransactionCount();
 
                     if (bundle.getBoolean(IS_FIRST_CUSTOMER)) {
@@ -496,7 +478,7 @@ public class AdjustTracker extends AbcBaseTracker {
                     eventTransaction.addPartnerParameter(AdjustKeys.NEW_CUSTOMER, String.valueOf(bundle.getBoolean(IS_GUEST_CUSTOMER)));
 
 
-                    addCustomerGenderParameters(eventTransaction, (Customer) bundle.getParcelable(CUSTOMER));
+                    addCustomerGenderParameters(eventTransaction, bundle.getParcelable(CUSTOMER));
 
                     ArrayList<PurchaseItem> cartItems = bundle.getParcelableArrayList(CART);
                     JSONObject json;
@@ -535,7 +517,6 @@ public class AdjustTracker extends AbcBaseTracker {
 
                 } catch (Exception e) {
                     // ADJUST INTERNAL CRASH FATAL EXCEPTION: Adjust java.util.ConcurrentModificationException
-                    Print.w("WARNING: ON TRACKING CHECKOUT FINISHED");
                 }
                 break;
 
@@ -592,6 +573,12 @@ public class AdjustTracker extends AbcBaseTracker {
                 Adjust.trackEvent(eventShare);
                 break;
 
+            case SHARE_APP:
+                AdjustEvent eventShareApp = new AdjustEvent(mContext.getString(R.string.adjust_token_app_share));
+                addBaseParameters(eventShareApp, bundle);
+                Adjust.trackEvent(eventShareApp);
+                break;
+
             case CALL:
                 AdjustEvent eventCall = new AdjustEvent(mContext.getString(R.string.adjust_token_call));
                 addBaseParameters(eventCall, bundle);
@@ -611,7 +598,7 @@ public class AdjustTracker extends AbcBaseTracker {
                 eventSearch.addCallbackParameter(AdjustKeys.KEYWORDS, bundle.getString(SEARCH_TERM));
                 eventSearch.addPartnerParameter(AdjustKeys.KEYWORDS, bundle.getString(SEARCH_TERM));
 
-                addCustomerGenderParameters(eventSearch, (Customer) bundle.getParcelable(CUSTOMER));
+                addCustomerGenderParameters(eventSearch, bundle.getParcelable(CUSTOMER));
 
                 Adjust.trackEvent(eventSearch);
                 break;
@@ -628,7 +615,7 @@ public class AdjustTracker extends AbcBaseTracker {
 
     private void addBaseParameters(AdjustEvent event, Bundle bundle) {
         addCountryParameters(event, bundle);
-        addUserIdParameters(event, (Customer) bundle.getParcelable(CUSTOMER), bundle.getString(USER_ID));
+        addUserIdParameters(event, bundle.getParcelable(CUSTOMER), bundle.getString(USER_ID));
         addAppVersionParameters(event);
         addDisplayParameters(event);
         addDeviceManufacturerParameters(event);

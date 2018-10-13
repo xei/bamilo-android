@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.webkit.WebView;
 
-import com.bamilo.android.framework.service.utils.output.Print;
 
 /**
  * Class used to represent a web view
@@ -51,7 +50,6 @@ public class SuperWebView extends WebView {
             // Enable java script
             getSettings().setJavaScriptEnabled(true);
         } catch (NullPointerException e) {
-            Print.w("WARNING: NPE ON ENABLE JAVA SCRIPT");
         }
     }
 

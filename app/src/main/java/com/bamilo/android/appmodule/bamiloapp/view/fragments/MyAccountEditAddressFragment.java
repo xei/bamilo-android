@@ -2,25 +2,19 @@ package com.bamilo.android.appmodule.bamiloapp.view.fragments;
 
 import android.os.Bundle;
 import android.view.View;
-
+import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsCheckout;
-import com.bamilo.android.framework.service.pojo.BaseResponse;
-import com.bamilo.android.framework.service.rest.errors.ErrorCode;
-import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
-import com.bamilo.android.R;
-
+import com.bamilo.android.framework.service.pojo.BaseResponse;
 import java.util.EnumSet;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
  *
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential.
+ * Unauthorized copying of this file, via any medium is strictly prohibited Proprietary and
+ * confidential.
  *
  * @author ricardosoares
  * @version 1.0
@@ -31,7 +25,8 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
     private static final String TAG = MyAccountEditAddressFragment.class.getSimpleName();
 
     public MyAccountEditAddressFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET,
+                MyMenuItem.MY_PROFILE),
                 NavigationAction.MY_ACCOUNT,
                 R.string.edit_address,
                 ADJUST_CONTENT,
@@ -61,27 +56,28 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
 
     }
 
-    protected void onGetEditAddressFormErrorEvent(BaseResponse baseResponse){
+    protected void onGetEditAddressFormErrorEvent(BaseResponse baseResponse) {
         super.onGetEditAddressFormErrorEvent(baseResponse);
         onErrorOccurred();
     }
 
-    protected void onGetRegionsErrorEvent(BaseResponse baseResponse){
+    protected void onGetRegionsErrorEvent(BaseResponse baseResponse) {
         super.onGetRegionsErrorEvent(baseResponse);
         onErrorOccurred();
     }
 
-    protected void onGetCitiesErrorEvent(BaseResponse baseResponse){
+    protected void onGetCitiesErrorEvent(BaseResponse baseResponse) {
         super.onGetCitiesErrorEvent(baseResponse);
         onErrorOccurred();
     }
 
-    protected void onEditAddressErrorEvent(BaseResponse baseResponse){
+    protected void onEditAddressErrorEvent(BaseResponse baseResponse) {
         onErrorOccurred();
     }
 
-    private void onErrorOccurred(){
-        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
+    private void onErrorOccurred() {
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE,
+                getString(R.string.error_please_try_again));
         getBaseActivity().onBackPressed();
     }
 }

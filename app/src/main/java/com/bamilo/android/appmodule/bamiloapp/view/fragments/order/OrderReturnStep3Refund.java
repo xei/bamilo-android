@@ -18,7 +18,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.pojo.DynamicForm;
 import com.bamilo.android.appmodule.bamiloapp.utils.RadioGroupExpandable;
 import com.bamilo.android.appmodule.bamiloapp.utils.order.ReturnItemViewHolder;
@@ -70,7 +69,6 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i("ON VIEW CREATED");
         View.inflate(getBaseActivity(), R.layout._def_order_return_step2_method, mContainer);
         mReturnRefundFormContainer = mContainer.findViewById(R.id.form_container);
         mReturnRefundItemsContainer = mContainer.findViewById(R.id.items_container);
@@ -191,10 +189,8 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
     @Override
     protected void onSuccessResponse(BaseResponse response) {
         EventType eventType = response.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         if(isOnStoppingProcess || eventType == null){
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -229,7 +225,6 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
             String label = ((RadioGroupExpandable) view).getSelectedLabel();
             result.put(RestConstants.REFUND, label);
         } catch (NullPointerException e) {
-            Print.w("WARNING: NPE ON GET LABEL");
         }
     }
 

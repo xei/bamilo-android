@@ -35,7 +35,6 @@ import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -97,18 +96,12 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         TrackerManager.trackScreen(getContext(), screenModel, false);
     }
 
-    /**
-     * (non-Javadoc)
-     *
-     * @see com.mobile.view.fragments.BaseFragment#onViewCreated(View, Bundle)
-     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get category list view
 
-        mCategoryListNew = (MultiLevelListView) view.findViewById(R.id.nav_sub_categories_grid);
+        mCategoryListNew = view.findViewById(R.id.nav_sub_categories_grid);
         // AnimatedExpandableListView mCategoryList = (AnimatedExpandableListView) view.findViewById(R.id.nav_sub_categories_grid2);
         // Get Error view to retry categories load
         mPartialErrorView = view.findViewById(R.id.partial_error_button);
@@ -205,7 +198,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
     }*/
     private void showRootCategories(final ArrayList<Category> categories) {
         setCategoryLevel(categories, 0);
-        Print.i(TAG, "ON SHOW ROOT CATEGORIES " + categories.size());
         NewCategoriesListAdapter mCategoryAdapter = new NewCategoriesListAdapter(getBaseActivity());
         mCategoryListNew.setAdapter(mCategoryAdapter);
         mCategoryAdapter.setDataItems(categories);
@@ -260,7 +252,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
      * @author sergiopereira
      */
     private void showRetry() {
-        Print.i(TAG, "ON SHOW RETRY");
         if (CollectionUtils.isEmpty(mCategories)) {
             showFragmentErrorRetry();
         }
@@ -322,7 +313,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment state
         if (isOnStoppingProcess) return;
         EventType eventType = baseResponse.getEventType();
@@ -364,7 +354,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
      */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR EVENT");
 
         errorType = baseResponse.getEventType();
 
@@ -442,7 +431,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
     public boolean onGroupClick(ExpandableListView parent, View view, int groupPosition, long id) {
         CategoriesListAdapter adapter = (CategoriesListAdapter) parent.getExpandableListAdapter();
         Category category = (Category) adapter.getGroup(groupPosition);
-        Print.i(TAG, "ON GROUP CLICKED:" + category.getName());
         // Case has sub categories
         if (category.hasChildren()) {
             if (parent.isGroupExpanded(groupPosition)) {
@@ -453,7 +441,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         }
         // Case is not a section
         else if (!category.isSection()) {
-            Print.i(TAG, "PARENT GO TO CATALOG:" + category.getTargetLink());
             if (category.isExternalLinkType()) {
                 // Open External Link
                 try {

@@ -12,7 +12,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.pojo.DynamicFormItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils;
 import com.bamilo.android.R;
@@ -57,7 +56,6 @@ public class RadioGroupLayout extends LinearLayout {
     }
 
     public void setItems(ArrayList<?> items, int defaultSelected, ArrayList<?> itemsKeys) {
-        Print.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = " + defaultSelected);
         mItems = items;
         mDefaultSelected = defaultSelected;
         mItemsKeys = itemsKeys;

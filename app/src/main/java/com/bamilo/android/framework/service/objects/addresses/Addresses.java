@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.bamilo.android.framework.service.objects.IJSONSerializable;
 import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.pojo.RestConstants;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,7 +45,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        Print.d("INITIALIZE");
         // Get shipping address and save it
         JSONObject jsonShip = jsonObject.optJSONObject(RestConstants.SHIPPING);
         if (jsonShip != null) {
@@ -145,7 +143,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
      * @return true/false
      */
     public boolean hasDefaultShippingAndBillingAddress() {
-        Print.d("SHIPPING ID:" + shippingAddress.getId() + " BILLING ID:" + billingAddress.getId());
         return shippingAddress.getId() == billingAddress.getId();
     }
 
@@ -171,7 +168,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
             // Remove from others
             addresses.remove("" + selectedAddress.getId());
         } catch (IndexOutOfBoundsException e) {
-            Print.d("Exception on switch shipping address" + e);
         }
     }
 

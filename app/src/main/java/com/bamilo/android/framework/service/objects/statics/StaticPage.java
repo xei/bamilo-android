@@ -8,7 +8,6 @@ import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,7 +54,6 @@ public class StaticPage implements IJSONSerializable, Parcelable {
                     featuredBox.initialize(featuredBoxObject);
                     mFeaturedBoxes.add(featuredBox);
                 } catch (JSONException e) {
-                    Print.w(TAG, "WARNING PARSING FEATURED BOX: " + e.getMessage());
                 }
             }
         }

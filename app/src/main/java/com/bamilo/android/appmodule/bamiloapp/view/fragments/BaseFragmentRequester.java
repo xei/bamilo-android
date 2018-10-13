@@ -7,7 +7,6 @@ import android.support.annotation.StringRes;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsCheckout;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 
@@ -46,12 +45,10 @@ public abstract class BaseFragmentRequester extends BaseFragmentAutoState implem
     public final void onRequestComplete(BaseResponse response) {
         // Validate the current UI state
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w("RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Super handle
         if(onHandleSuccess(response)) {
-            Print.i("SUPER HANDLE SUCCESS RESPONSE");
             showFragmentContentContainer();
             return;
         }
@@ -66,12 +63,10 @@ public abstract class BaseFragmentRequester extends BaseFragmentAutoState implem
     public final void onRequestError(BaseResponse response) {
         // Validate the current UI state
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w("RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Super handle
         if(onHandleError(response)) {
-            Print.i("SUPER HANDLE ERROR RESPONSE");
             return;
         }
         // Delegate

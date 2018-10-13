@@ -28,7 +28,6 @@ import com.bamilo.android.core.service.model.data.itemtracking.PackageItem;
 import com.bamilo.android.core.service.model.data.itemtracking.Refund;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -261,7 +260,6 @@ public class ItemTrackingListAdapter extends
                             .loadImage(item.getImage(), holder.imgProductThumb, null,
                                     R.drawable.no_image_large, false);
                 } catch (Exception e) {
-                    Print.d(e.getMessage());
                 }
             }
             String propertyFormat = "%s : %s\n";

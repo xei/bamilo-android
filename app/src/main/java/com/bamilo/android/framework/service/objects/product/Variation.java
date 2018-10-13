@@ -7,7 +7,6 @@ import com.bamilo.android.framework.service.objects.IJSONSerializable;
 import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.ImageResolutionHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +42,6 @@ public class Variation implements IJSONSerializable, Parcelable {
             specialPrice = jsonObject.getDouble(RestConstants.SPECIAL_PRICE);
             shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST);
         } catch (JSONException e) {
-            Print.e(TAG, "Error initializing the variation ", e);
             return false;
         }
 
@@ -71,7 +69,6 @@ public class Variation implements IJSONSerializable, Parcelable {
             specialPrice = jsonObject.optDouble(RestConstants.SPECIAL_PRICE);
             shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST);
         } catch (JSONException e) {
-            Print.e(TAG, "Error initializing the variation ", e);
         }
         return true;
     }

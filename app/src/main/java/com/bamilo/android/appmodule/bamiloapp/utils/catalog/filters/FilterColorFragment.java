@@ -4,18 +4,17 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bamilo.android.framework.components.customfontviews.CheckBox;
 import android.widget.TextView;
 import com.bamilo.android.appmodule.bamiloapp.controllers.FilterOptionArrayAdapter;
 import com.bamilo.android.framework.service.objects.catalog.filters.CatalogCheckFilter;
 import com.bamilo.android.framework.service.objects.catalog.filters.CatalogColorFilterOption;
 import com.bamilo.android.framework.service.objects.catalog.filters.MultiFilterOptionInterface;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.R;
 
 /**
@@ -27,13 +26,7 @@ public class FilterColorFragment extends FilterCheckFragment {
     
     private static final String TAG = FilterColorFragment.class.getSimpleName();
 
-    /**
-     *
-     * @param bundle
-     * @return
-     */
     public static FilterColorFragment newInstance(Bundle bundle) {
-        Print.d(TAG, "NEW INSTANCE: BRAND");
         FilterColorFragment frag = new FilterColorFragment();
         frag.setArguments(bundle);
         return frag;
@@ -44,11 +37,6 @@ public class FilterColorFragment extends FilterCheckFragment {
         return new FilterColorOptionArrayAdapter(getActivity(), mFilter);
     }
 
-    /**
-     * 
-     * @author sergiopereira
-     *
-     */
      public static class FilterColorOptionArrayAdapter extends FilterOptionArrayAdapter {
             
         private static int layout = R.layout.list_sub_item_2;
@@ -57,10 +45,7 @@ public class FilterColorFragment extends FilterCheckFragment {
             super(context, catalogCheckFilter);
         }
 
-        /*
-         * (non-Javadoc)
-         * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-         */
+        @NonNull
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get Filter
@@ -89,18 +74,13 @@ public class FilterColorFragment extends FilterCheckFragment {
                 // Set title
                 ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
 
-                setProductsCount((TextView) convertView.findViewById(R.id.dialog_products_count), option);
+                setProductsCount(convertView.findViewById(R.id.dialog_products_count), option);
 
                 // Set check box
-                setCheckboxBehavior(((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)), option);
+                setCheckboxBehavior(convertView.findViewById(R.id.dialog_item_checkbox), option);
             }
-
             // Return the filter view
             return convertView;
         }
-
-
     }
-    
-    
 }

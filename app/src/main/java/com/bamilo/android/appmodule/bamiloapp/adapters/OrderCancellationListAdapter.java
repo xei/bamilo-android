@@ -17,7 +17,6 @@ import com.bamilo.android.core.service.model.data.itemtracking.Package;
 import com.bamilo.android.core.service.model.data.itemtracking.PackageItem;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.R;
 import java.util.ArrayList;
@@ -237,10 +236,8 @@ public class OrderCancellationListAdapter extends
                 ImageManager.getInstance().loadImage(item.getImage(), holder.imgProductThumb, null,
                         R.drawable.no_image_large, false);
             } catch (Exception e) {
-                Print.d(e.getMessage());
             }
         }
-
     }
 
     @Override

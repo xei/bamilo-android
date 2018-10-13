@@ -20,10 +20,8 @@ import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.objects.checkout.Fulfillment;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
-import com.bamilo.android.framework.service.tracking.TrackingEvent;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -69,7 +67,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -80,7 +77,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Validate the saved values
         mSavedState = savedInstanceState;
     }
@@ -92,9 +88,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get container
-        mShippingContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
+        mShippingContainer = view.findViewById(R.id.checkout_shipping_methods_container);
         // Get total bar
         mCheckoutTotalBar = view.findViewById(R.id.checkout_total_bar);
         // Buttons
@@ -110,7 +105,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -121,7 +115,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
     
     /*
@@ -131,7 +124,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE STATE");
         // Save state case rotation
         if (mFormResponse != null) {
             mFormResponse.saveState(outState);
@@ -146,7 +138,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
         // Save state case next step
         if (mFormResponse != null) {
             mSavedState = new Bundle();
@@ -162,7 +153,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
     
     /*
@@ -171,7 +161,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      */
     @Override
     public void onDestroyView() {
-        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
     
@@ -182,7 +171,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
     
     /*
@@ -198,7 +186,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * Load the dynamic form
      */
     private void loadForm(ShippingMethodFormBuilder form) {
-        Print.i(TAG, "LOAD FORM");
         // Save form response
         mFormResponse = form;
         // Create form layout
@@ -209,7 +196,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
 
 
     private void loadFulfillment(ArrayList<Fulfillment> fulfillmentList) {
-        Print.i(TAG, "LOAD FULFILLMENT");
         if(CollectionUtils.isNotEmpty(fulfillmentList)){
             FulfillmentUiBuilder.addToView(this.getActivity(), mShippingContainer, fulfillmentList);
         }
@@ -254,7 +240,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * @author sergiopereira
      */
     private void onClickSubmitShippingMethod() {
-        Print.i(TAG, "ON CLICK: SET SHIPPING METHOD");
         ContentValues values = mFormResponse.getValues();
         if(CollectionUtils.isNotEmpty(values)){
             triggerSubmitShippingMethod(mFormResponse.action, values);
@@ -272,12 +257,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
         case GET_MULTI_STEP_SHIPPING:
             onSuccessGetShippingMethods(baseResponse);
@@ -297,16 +280,13 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return;
         }
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
         case GET_MULTI_STEP_SHIPPING:
             showFragmentErrorRetry();
@@ -321,7 +301,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     }
 
     public void onSuccessGetShippingMethods(BaseResponse baseResponse){
-        Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
         //
         GetStepShippingHelper.ShippingMethodFormStruct shippingMethodsForm = (GetStepShippingHelper.ShippingMethodFormStruct) baseResponse.getContentData();
         // Get order summary
@@ -341,7 +320,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     }
 
     public void onSuccessSetShippingMethods(BaseResponse baseResponse){
-        Print.i(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
         // Get next step
         NextStepStruct methodStruct = (NextStepStruct) baseResponse.getContentData();
         FragmentType nextFragment = methodStruct.getFragmentType();
@@ -358,7 +336,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * @author sergiopereira
      */
     private void triggerSubmitShippingMethod(String endpoint, ContentValues values) {
-        Print.i(TAG, "TRIGGER: SET SHIPPING METHOD");
         triggerContentEvent(new SetStepShippingHelper(), SetStepShippingHelper.createBundle(endpoint, values), this);
     }
     
@@ -367,7 +344,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * @author sergiopereira
      */
     private void triggerGetShippingMethods(){
-        Print.i(TAG, "TRIGGER: GET SHIPPING METHODS");
         triggerContentEvent(new GetStepShippingHelper(), null, this);
     }
 

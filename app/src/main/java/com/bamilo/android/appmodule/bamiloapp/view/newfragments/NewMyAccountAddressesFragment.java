@@ -17,7 +17,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.rest.errors.ErrorCode;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.R;
@@ -51,7 +50,6 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
 
         // Track screen
         BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.MY_ADDRESSES.getName()), getString(R.string.gaScreen),
@@ -64,7 +62,6 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         mAddressView = (RecyclerView) view.findViewById(R.id.address_recycler_view);
         mAddressView.setHasFixedSize(true);
 
@@ -83,7 +80,6 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     @Override
@@ -96,25 +92,21 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
 
@@ -151,7 +143,6 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
         }*/
         hideActivityProgress();
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_CUSTOMER_ADDRESSES_EVENT:
                 super.showAddresses((Addresses) baseResponse.getContentData(), -1);
@@ -194,7 +185,6 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
         }*/
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         switch (eventType) {
             case GET_MULTI_STEP_ADDRESSES:
                 // Show retry

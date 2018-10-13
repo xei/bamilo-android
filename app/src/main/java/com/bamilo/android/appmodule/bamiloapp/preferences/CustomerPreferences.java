@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsSharedPrefs;
 import com.bamilo.android.framework.service.utils.Constants;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 /**
  * Class used to save the shared preferences for customer            
@@ -29,9 +28,7 @@ public class CustomerPreferences {
      */
     private static String load(Context context, String key) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String value = sharedPrefs.getString(key, null);
-        Print.i(TAG, "LOAD PREFERENCE: " + key + " = " + value);
-        return value;
+        return sharedPrefs.getString(key, null);
     }
     
     /**
@@ -43,13 +40,8 @@ public class CustomerPreferences {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(key, value);
         editor.apply();
-        Print.i(TAG, "SAVED PREFERENCE: " + key + " = " + value);
     }
-    
-    /*
-     * ############# PREFERENCES #############
-     */
-    
+
     /**
      * Function used to persist user email or empty that value after successfully login
      * 

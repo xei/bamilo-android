@@ -1,21 +1,10 @@
 package com.bamilo.android.appmodule.bamiloapp.view.fragments;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.View.OnClickListener;
-
-import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
-import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
-import com.bamilo.android.R;
 
 /**
  * Class used to show the cart info and a navigation container, menu or categories
+ *
  * @author sergiopereira
  */
 public class DrawerItem {
@@ -106,7 +95,8 @@ public class DrawerItem {
 
     private int id;
 
-    public DrawerItem(int icon, int name, boolean showBadge, int badge, int textColor, OnClickListener listener) {
+    public DrawerItem(int icon, int name, boolean showBadge, int badge, int textColor,
+            OnClickListener listener) {
         this.icon = icon;
         this.name = name;
         this.showBadge = showBadge;
@@ -169,9 +159,6 @@ public class DrawerItem {
     public void setBadge(int badge) {
         this.badge = badge;
     }
-
-
-
 
 
 }

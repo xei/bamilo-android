@@ -8,7 +8,9 @@ package com.bamilo.android.appmodule.modernbamilo.launch.model.webservice
 
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
 
 interface LaunchWebApi {
 
@@ -17,8 +19,8 @@ interface LaunchWebApi {
      */
     @POST("configurations/")
     @FormUrlEncoded
-    fun getStartupConfigs(@Field(value="platform", encoded = false) platform: String,
-               @Field(value="versionCode", encoded = false) versionCode: Int
+    fun getStartupConfigs(@Field("platform") platform: String,
+                          @Field("versionCode") versionCode: Int
     ) : Call<ResponseWrapper<GetStartupConfigsResponse>>
 
 }

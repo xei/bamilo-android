@@ -10,7 +10,6 @@ import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.rest.errors.AigError;
 import com.bamilo.android.framework.service.rest.errors.ErrorCode;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +38,6 @@ public class AigResponseConverter implements Converter {
      */
     @Override
     public Object fromBody(TypedInput body, Type type) throws ConversionException {
-        Print.i(TAG, "PARSE FROM BODY");
         try {
             String bodyJson = Okio.buffer(Okio.source(body.in())).readUtf8();
             return parseResponse(new JSONObject(bodyJson), type);
@@ -58,7 +56,6 @@ public class AigResponseConverter implements Converter {
      * Get object type
      */
     protected String getType(Object type){
-        Print.i(TAG, "GET OBJECT TYPE: " + type);
         if(type instanceof Class){
             return ((Class) type).getName();
         } else if(type instanceof ParameterizedType){
@@ -153,7 +150,6 @@ public class AigResponseConverter implements Converter {
      */
     private @Nullable IJSONSerializable getData(JSONObject responseJsonObject, Type dataType) throws NullPointerException, JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         String objectType = getType(dataType);
-        Print.i(TAG, "GET DATA: " + objectType);
         if(objectType != null && !objectType.equals(Void.class.getName())) {
             IJSONSerializable iJsonSerializable = new DeserializableFactory().createObject(objectType);
             if (iJsonSerializable != null) {
@@ -170,7 +166,6 @@ public class AigResponseConverter implements Converter {
      * -  metadata -> data</br>
      */
     private JSONObject getJsonToInitialize(JSONObject responseJsonObject, IJSONSerializable iJsonSerializable) throws JSONException {
-        Print.i(TAG, "GET DATA FROM JSON");
         int requiredJson = iJsonSerializable.getRequiredJson();
         // Get json from metadata
         if(requiredJson == RequiredJson.METADATA){

@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.bamilo.android.framework.service.objects.IJSONSerializable;
 import com.bamilo.android.framework.service.pojo.RestConstants;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +33,6 @@ public class AddressesEntity extends Addresses implements IJSONSerializable, Par
      */
     @Override
     public boolean initialize(JSONObject json) throws JSONException {
-        Print.d("INITIALIZE");
         JSONObject jsonObject = json.getJSONObject(RestConstants.CUSTOMER_ENTITY).getJSONObject(RestConstants.ADDRESS_LIST);
         return super.initialize(jsonObject);
     }

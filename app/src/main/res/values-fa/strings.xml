@@ -97,7 +97,7 @@
     <string name="loading_message">بارگذاری &#8230;</string>
     <string name="loading_more">بارگذاری کالاهای بیشتر &#8230;</string>
     <string name="login_label">ورود</string>
-    <string name="logout_text_question">آیا واقعا قصد خروج از برنامه را دارید؟</string>
+    <string name="logout_text_question">می‌خواهید از حساب کاربری خود خارج شوید؟</string>
     <string name="logout_title">تایید خروج از حساب کاربری</string>
     <string name="menu_label_uppercase">فهرست</string>
     <string name="my_account">حساب کاربری من ‎</string>
@@ -197,7 +197,7 @@
     <string name="delete_label">پاک کردن</string>
     <string name="quantity_label">تعداد</string>
     <string name="sign_in">ورود / ثبت نام</string>
-    <string name="sign_out">خروج</string>
+    <string name="sign_out">خروج از حساب کاربری</string>
     <string name="size_guide_label">راهنمای انتخاب سایز</string>
     <string name="size_label">اندازه</string>
     <string name="some_products_not_added">متاسفانه برخی از کالاها به سبد خرید اضافه نشدند.</string>
@@ -685,6 +685,8 @@
     <string name="forget_password">فراموشی رمز عبور</string>
     <string name="buy_it_now">همین الان بخر</string>
     <string name="product_added_to_cart">محصول با موفقیت به سبد خرید اضافه شد</string>
+    <string name="ssl_error_handler_message">به دلیل قدیمی بودن نسخه اندروید شما، بامیلو به اجازه شما برای نمایش این صفحه نیازمند است</string>
+    <string name="ssl_error_handler_title">خطا در نمایش محتوا</string>
     <string name="insert_email_or_phone_number">ایمیل یا شماره موبایل را وارد کنید</string>
     <string name="insert_password">رمز عبور را وارد کنید</string>
 

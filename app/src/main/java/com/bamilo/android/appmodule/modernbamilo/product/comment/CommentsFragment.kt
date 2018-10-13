@@ -8,10 +8,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import com.bamilo.android.R
+import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
 import com.bamilo.android.appmodule.modernbamilo.util.logging.LogType
 import com.bamilo.android.appmodule.modernbamilo.util.logging.Logger
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper
@@ -54,7 +54,7 @@ class CommentsFragment : Fragment(), View.OnClickListener {
     private lateinit var mCloseBtnImageButton: ImageButton
     private lateinit var mToolbarTitleTextView: TextView
     private lateinit var mCommentsListRecyclerView: RecyclerView
-    private lateinit var mSubmitCommentButton: Button
+    private lateinit var mSubmitCommentButton: BamiloActionButton
 
     private lateinit var mPaginationOnScrollListener: PaginationOnScrollListener
     private var mLoadedCommentsPage = 0

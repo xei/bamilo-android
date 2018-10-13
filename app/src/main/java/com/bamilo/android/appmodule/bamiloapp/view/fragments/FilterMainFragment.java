@@ -46,7 +46,6 @@ import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -119,7 +118,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         argumentsBundle = getArguments();
         // Saved state
         if (savedInstanceState != null) {
@@ -176,7 +174,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         filtersKey = view.findViewById(R.id.filters_key);
         mTxFilterTitle = view.findViewById(R.id.filter_title);
         mDiscountBox = view.findViewById(R.id.dialog_filter_check_discount);
@@ -229,7 +226,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        Print.i(TAG, "ON SAVE INSTANCE");
         outState.putParcelableArray(INITIAL_FILTER_VALUES,
                 filterSelectionController.getInitialValues());
         outState.putParcelableArrayList(FILTER_TAG, filterSelectionController.getCatalogFilters());
@@ -334,7 +330,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
      * @author sergiopereira
      */
     private void processOnClickClean() {
-        Print.d(TAG, "CLICKED ON: CLEAR");
         if (currentFragment instanceof FilterPriceFragment) {
             ((FilterPriceFragment) currentFragment).clearFilterValues();
         }
@@ -358,7 +353,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
      * @author sergiopereira
      */
     private void processOnClickDone() {
-        Print.d(TAG, "CLICKED ON: DONE");
         // Get parent unique tag
         String parentCatalogBackStackTag = FragmentController.getParentBackStackTag(this);
 

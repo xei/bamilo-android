@@ -87,22 +87,26 @@ import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
 import com.bamilo.android.framework.service.utils.output.Print;
+import com.bamilo.android.appmodule.bamiloapp.view.subcategory.SubCategoryFilterFragment;
+import com.bamilo.android.framework.service.pojo.IntConstants;
+import com.bamilo.android.framework.service.utils.CollectionUtils;
+import com.bamilo.android.framework.service.utils.TextUtils;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+
 import me.toptas.fancyshowcase.FancyShowCaseView;
 
 /**
  * @author sergiopereira
  */
-public class MainFragmentActivity extends BaseActivity /*implements PushEventListener */ {
+public class MainFragmentActivity extends BaseActivity {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
     private EmarsysEventFactory.OpenAppEventSourceType mAppOpenSource;
 
     private BaseFragment fragment;
-    //DROID-63 private NewBaseFragment newFragment;
-    //DROID-63 private boolean isNewFragment = false;
 
     private FragmentType mCurrentFragmentType;
 
@@ -115,95 +119,6 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
         super(NavigationAction.UNKNOWN, EnumSet.noneOf(MyMenuItem.class),
                 IntConstants.ACTION_BAR_NO_TITLE);
     }
-
-//    //Registration receiver
-//    BroadcastReceiver mBroadcastReceiver = new BaseRegistrationReceiver() {
-//        @Override
-//        public void onRegisterActionReceive(Context context, Intent intent) {
-//            checkMessage(intent);
-//        }
-//    };
-//
-//    //Push message receiver
-//    private BroadcastReceiver mReceiver = new BasePushMessageReceiver() {
-//        @Override
-//        protected void onMessageReceive(Intent intent) {
-//            //JSON_DATA_KEY contains JSON payload of push notification.
-//            checkMessage(intent);
-//            showMessage("push message is " + intent.getExtras().getString(JSON_DATA_KEY));
-//        }
-//    };
-
-//    //Registration of the receivers
-//    public void registerReceivers() {
-//        IntentFilter intentFilter = new IntentFilter(
-//                getPackageName() + ".action.PUSH_MESSAGE_RECEIVE");
-//        registerReceiver(mReceiver, intentFilter, getPackageName() + ".permission.C2D_MESSAGE",
-//                null);
-//        registerReceiver(mBroadcastReceiver,
-//                new IntentFilter(getPackageName() + "." + PushManager.REGISTER_BROAD_CAST_ACTION));
-//    }
-//
-//    public void unregisterReceivers() {
-////Unregister receivers on pause
-//        try {
-//            unregisterReceiver(mReceiver);
-//        } catch (Exception e) {
-//// pass.
-//        }
-//        try {
-//            unregisterReceiver(mBroadcastReceiver);
-//        } catch (Exception e) {
-////pass through
-//        }
-//    }
-
-//    private void checkMessage(Intent intent) {
-//        if (null != intent) {
-//            if (intent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
-//                showMessage("push message is " + intent.getExtras()
-//                        .getString(PushManager.PUSH_RECEIVE_EVENT));
-//                MainEventModel appOpenedEventModel = new MainEventModel(null, null, null,
-//                        SimpleEventModel.NO_VALUE,
-//                        MainEventModel.createAppOpenEventModelAttributes(
-//                                EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION
-//                                        .toString()));
-//                TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened,
-//                        appOpenedEventModel);
-//                mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION;
-//            } else if (intent.hasExtra(PushManager.REGISTER_EVENT)) {
-//                showMessage("register");
-//            } else if (intent.hasExtra(PushManager.UNREGISTER_EVENT)) {
-//                showMessage("unregister");
-//            } else if (intent.hasExtra(PushManager.REGISTER_ERROR_EVENT)) {
-//                showMessage("register error");
-//            } else if (intent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
-//                showMessage("unregister error");
-//            } else if (intent.hasExtra(PushManager.REGISTER_BROAD_CAST_ACTION)) {
-//                showMessage("REGISTER_BROAD_CAST_ACTION");
-//            }
-//            resetIntentValues();
-//        }
-//    }
-
-//    private void resetIntentValues() {
-//        Intent mainAppIntent = getIntent();
-//        if (mainAppIntent != null) {
-//            if (mainAppIntent.hasExtra(PushManager.PUSH_RECEIVE_EVENT)) {
-//                mainAppIntent.removeExtra(PushManager.PUSH_RECEIVE_EVENT);
-//            } else if (mainAppIntent.hasExtra(PushManager.REGISTER_EVENT)) {
-//                mainAppIntent.removeExtra(PushManager.REGISTER_EVENT);
-//            } else if (mainAppIntent.hasExtra(PushManager.UNREGISTER_EVENT)) {
-//                mainAppIntent.removeExtra(PushManager.UNREGISTER_EVENT);
-//            } else if (mainAppIntent.hasExtra(PushManager.REGISTER_ERROR_EVENT)) {
-//                mainAppIntent.removeExtra(PushManager.REGISTER_ERROR_EVENT);
-//            } else if (mainAppIntent.hasExtra(PushManager.UNREGISTER_ERROR_EVENT)) {
-//                mainAppIntent.removeExtra(PushManager.UNREGISTER_ERROR_EVENT);
-//            }
-//            setIntent(mainAppIntent);
-//        }
-//    }
-
     private void showMessage(String message) {
         Log.i("AndroidBash", message);
     }
@@ -212,33 +127,18 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-//        checkMessage(intent);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.d(TAG, "ON CREATE");
 
-        //Init Pushwoosh fragment
-//        PushFragment.init(this);
-//        registerReceivers();
-//        PushManager pushManager = PushManager.getInstance(this);
-
-//        try {
-//            pushManager.onStartup(this);
-//        } catch (Exception ignored) {
-//        }
-//
-//        pushManager.registerForPushNotifications();
-//        checkMessage(getIntent());
 
         if (checkIntentsFromPDV()) {
             return;
         }
 
         if (savedInstanceState == null) {
-            Print.d(TAG, "################### SAVED INSTANCE IS NULL");
             // Initialize fragment controller
             FragmentController.getInstance().init();
 
@@ -264,7 +164,6 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
         } else {
             mCurrentFragmentType = (FragmentType) savedInstanceState
                     .getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
-            Print.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType);
             fragment = (BaseFragment) getSupportFragmentManager()
                     .findFragmentByTag(mCurrentFragmentType.toString());
             if (null != fragment) {
@@ -277,14 +176,10 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
             if (!CollectionUtils.isEmpty(backStackTypes)) {
                 FragmentController.getInstance()
                         .validateCurrentState(this, backStackTypes, originalFragments);
-            } else {
-                Print.d(TAG, "COULDN'T RECOVER BACK STACK");
             }
         }
 
         TrackerManager.addTracker(EmarsysTracker.getInstance());
-//        TrackerManager.addTracker(PushWooshTracker.getInstance(this));
-        // TODO: 8/28/18 farshid
         TrackerManager.addTracker(GATracker.getInstance());
 
         /*
@@ -354,20 +249,9 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see <com.bamilo.android.framework.components.com.bamilo.android.appmodule.bamiloapp.utils.BaseActivity#onResume()
-     */
     @Override
     public void onResume() {
         super.onResume();
-
-        Print.d(TAG, "ON RESUME");
-//        registerReceivers();
-
-        //Clear application badge number
-//        PushManager.getInstance(BamiloApplication.INSTANCE).setBadgeNumber(0);
 
         if (mAppOpenSource
                 != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION
@@ -389,52 +273,10 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
                 BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see <com.bamilo.android.framework.components.com.bamilo.android.appmodule.bamiloapp.utils.BaseActivity#onPause()
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        Print.i(TAG, "ON PAUSE");
-        //PushWooshTracker.openApp(,true);
-//        unregisterReceivers();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.BaseActivity#onStop()
-     */
-    @Override
-    protected void onStop() {
-        Print.i(TAG, "ON STOP");
-        super.onStop();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see <com.bamilo.android.framework.components.com.bamilo.android.appmodule.bamiloapp.utils.BaseActivity#onDestroy()
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.slidingmenu.lib.app.SlidingFragmentActivity#onSaveInstanceState(android
-     * .os.Bundle)
-     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.d(TAG, "ON SAVED INSTANCE STATE: " + mCurrentFragmentType);
         ArrayList<String> frags = new ArrayList<>();
         try {
             String tag = getSupportFragmentManager()
@@ -442,11 +284,8 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
                     .getName();
             mCurrentFragmentType = FragmentType.getValue(tag);
             // Save the current back stack
-            for (String entry : FragmentController.getInstance().returnAllEntries()) {
-                frags.add(entry);
-            }
-        } catch (Exception e) {
-            Print.w(TAG, "ERROR ON GET CURRENT FRAGMENT TYPE", e);
+            frags.addAll(FragmentController.getInstance().returnAllEntries());
+        } catch (Exception ignored) {
         }
         // Save the current fragment type on orientation change
         outState.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, mCurrentFragmentType);
@@ -454,13 +293,6 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
         outState.putStringArrayList(ConstantsIntentExtra.BACK_STACK, frags);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * <com.bamilo.android.framework.components.com.bamilo.android.appmodule.bamiloapp.utils.BaseActivity#onSwitchFragment(com.mobile.view.fragments
-     * .FragmentType, android.os.Bundle, java.lang.Boolean)
-     */
     @Override
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
         // Hide confirmation message
@@ -579,11 +411,11 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
                 fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);
                 break;
             case LOGIN:
-//                fragment = newFragmentInstance(NewSessionLoginMainFragment.class, bundle);
-//                break;
-                new LoginDialogBottomSheet()
-                        .show(getSupportFragmentManager(), "LoginDialogBottomSheet");
-                return;
+                fragment = newFragmentInstance(NewSessionLoginMainFragment.class, bundle);
+                break;
+            case LOGIN_EMAIL:
+                fragment = newFragmentInstance(SessionLoginEmailFragment.class, bundle);
+                break;
             case REGISTER:
                 fragment = newFragmentInstance(SessionRegisterFragment.class, bundle);
                 break;
@@ -686,7 +518,6 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
                 fragment = newFragmentInstance(RecommendProductsFragment.class, bundle);
                 break;
             default:
-                Print.w(TAG, "INVALID FRAGMENT TYPE");
                 return;
         }
         // Clear search term
@@ -699,7 +530,6 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
             popBackStackEntriesUntilTag(FragmentType.HOME.toString());
         }
 
-        Print.i(TAG, "ON SWITCH FRAGMENT: " + type);
         // Save the current state
         mCurrentFragmentType = type;
 
@@ -731,14 +561,8 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see <com.bamilo.android.framework.components.com.bamilo.android.appmodule.bamiloapp.utils.MyActivity#onBackPressed()
-     */
     @Override
     public void onBackPressed() {
-        Print.i(TAG, "ON BACK PRESSED");
         if (FancyShowCaseView.isVisible(this)) {
             FancyShowCaseView.hideCurrent(this);
             return;
@@ -773,23 +597,16 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
             if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(
                     mDrawerLayout.getDrawerLockMode(mDrawerNavigation)
                             == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
-                Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
                 mDrawerLayout.closeDrawer(mDrawerNavigation);
             }
             // Case fragment not allow back pressed
             else if (fragment == null || !fragment.allowBackPressed()) {
-                Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
                 // Hide Keyboard
                 hideKeyboard();
                 // Back
                 fragmentManagerBackPressed();
             }
-            // Case fragment allow back pressed
-            else {
-                Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
-            }
         }
-
     }
 
     /**
@@ -799,14 +616,12 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
      */
     public Fragment getActiveFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            Print.i("BACKSTACK", "getBackStackEntryCount is 0");
             return null;
         }
         String tag = getSupportFragmentManager()
                 .getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1)
                 .getName();
-        Print.i("BACKSTACK", "getActiveFragment:" + tag);
-        return (Fragment) getSupportFragmentManager().findFragmentByTag(tag);
+        return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
     /**
@@ -824,29 +639,4 @@ public class MainFragmentActivity extends BaseActivity /*implements PushEventLis
     public boolean isInMaintenance() {
         return isInMaintenance;
     }
-
-//    @Override
-//    public void doOnRegistered(String registrationId) {
-//        Log.i(TAG, "Registered for pushes: " + registrationId);
-//    }
-//
-//    @Override
-//    public void doOnRegisteredError(String errorId) {
-//        Log.e(TAG, "Failed to register for pushes: " + errorId);
-//    }
-//
-//    @Override
-//    public void doOnMessageReceive(String message) {
-//        Log.i(TAG, "Notification opened: " + message);
-//    }
-//
-//    @Override
-//    public void doOnUnregistered(final String message) {
-//        Log.i(TAG, "Unregistered from pushes: " + message);
-//    }
-//
-//    @Override
-//    public void doOnUnregisteredError(String errorId) {
-//        Log.e(TAG, "Failed to unregister from pushes: " + errorId);
-//    }
 }

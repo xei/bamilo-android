@@ -1,6 +1,5 @@
 package com.bamilo.android.framework.service.rest.errors;
 
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import retrofit.ErrorHandler;
 import retrofit.RetrofitError;
@@ -35,24 +34,19 @@ public class AigErrorHandler implements ErrorHandler {
                 // Validate cause
                 int code = cause.getCause() instanceof NoConnectivityException ? ErrorCode.NO_CONNECTIVITY : ErrorCode.CONNECT_ERROR;
                 // handle an IOException occurred while communicating to the server.
-                Print.w(TAG, "NETWORK ERROR: " + cause.getMessage());
                 aigError.setCode(code);
                 break;
             case CONVERSION:
                 // An exception was thrown while (de)serializing a body.
-                Print.w(TAG, "JSON CONVERSION ERROR", cause.getCause());
                 aigError.setCode(ErrorCode.ERROR_PARSING_SERVER_DATA);
                 break;
             case HTTP:
                 // A non-200 HTTP status code was received from the server.
                 if(statusCode == ErrorCode.SERVER_IN_MAINTENANCE){
-                    Print.w(TAG, "HTTP SERVER IN MAINTENANCE ERROR: " + cause.getMessage());
                     aigError.setCode(ErrorCode.SERVER_IN_MAINTENANCE);
                 } else if(statusCode == ErrorCode.SERVER_OVERLOAD){
-                    Print.w(TAG, "HTTP SERVER OVERLOAD ERROR: " + cause.getMessage());
                     aigError.setCode(ErrorCode.SERVER_OVERLOAD);
                 } else if(statusCode < ERROR_CODE_NORMALIZER) {
-                    Print.w(TAG, "HTTP STATUS ERROR: " + cause.getMessage());
                     aigError.setCode(ErrorCode.HTTP_STATUS);
                 } else { // Case DebugMobileApiModel usage
                     aigError.setCode(statusCode - ERROR_CODE_NORMALIZER);
@@ -60,7 +54,6 @@ public class AigErrorHandler implements ErrorHandler {
                 break;
             case UNEXPECTED:
                 // An internal error occurred while attempting to runOnHandlerThread a request.
-                Print.w(TAG, "UNEXPECTED ERROR: " + cause.getMessage());
                 aigError.setCode(ErrorCode.UNKNOWN_ERROR);
                 break;
         }

@@ -23,7 +23,6 @@ import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.controllers.GalleryPagerAdapter;
 import com.bamilo.android.framework.service.objects.product.ImageUrls;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils;
@@ -66,13 +65,11 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if(arguments != null) {
@@ -85,7 +82,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get pager
         mViewPager = view.findViewById(R.id.pdv_view_pager);
         // Get Overlay
@@ -101,13 +97,11 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         // Show default
         onUpdateThumbnailIndicator(OldProductDetailsFragment.sSharedSelectedPosition);
         mViewPager.setCurrentItem(OldProductDetailsFragment.sSharedSelectedPosition, true);
@@ -116,7 +110,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE");
         outState.putParcelableArrayList(ConstantsIntentExtra.IMAGE_LIST, mImageList);
         outState.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, enabledInfiniteSlide);
         outState.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, mIsOutOfStock);
@@ -125,20 +118,17 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
         OldProductDetailsFragment.sSharedSelectedPosition = getViewPagerPosition();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
         // Remove listener
         if (mViewPager != null) {
             mViewPager.removeOnPageChangeListener(this);
@@ -148,7 +138,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
 
@@ -260,7 +249,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         // Case thumbnail indicator
         if (id == R.id.image_container) onClickThumbnailIndicator(view);
         // Unknown
-        else Print.w(TAG, "WARNING: UNEXPECTED CLICK EVENT");
     }
 
     /**
@@ -270,7 +258,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     private void onClickThumbnailIndicator(View view) {
         // Get real position
         int position = (int) view.getTag(R.id.target_position);
-        Print.i(TAG, "ON CLICK INDICATOR POS: " + position);
         int n = ((InfinitePagerAdapter) mViewPager.getAdapter()).getVirtualPosition(position);
         mViewPager.setCurrentItem(n, true);
     }
@@ -286,16 +273,13 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
                     ? ((InfinitePagerAdapter) mViewPager.getAdapter()).getVirtualPosition(mViewPager.getCurrentItem()) 
                     : mViewPager.getCurrentItem();            
         } catch (NullPointerException e) {
-            Print.i(TAG, "WARNING: NPE ON GET CURRENT PAGER POSITION");
             return 0;
         } catch (ClassCastException e) {
-            Print.i(TAG, "WARNING: CCE ON GET CURRENT PAGER POSITION");
             return 0;
         }
     }
 
     private void setThumbnailIndicatorForViewPager(int size) {
-        Print.i(TAG, "ON SHOW THUMBNAIL INDICATOR");
         // Validate the current size
         if (size > 1) {
             LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -324,7 +308,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
 
     @Override
     public void onPageSelected(int position) {
-        Print.i(TAG, "ON PAGE SELECTED: " + position);
         // Update indicator
         onUpdateThumbnailIndicator(position);
     }

@@ -14,7 +14,6 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentCont
 import com.bamilo.android.framework.service.objects.orders.OrderTrackerItem;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -84,9 +83,8 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i("ON VIEW CREATED");
         // Set tab
-        mTabLayout = (TabLayout) view.findViewById(R.id.order_return_main_tabs);
+        mTabLayout = view.findViewById(R.id.order_return_main_tabs);
         // Set tabs
         UITabLayoutUtils.fillReturnTabLayout(mTabLayout, this);
         // Validate state

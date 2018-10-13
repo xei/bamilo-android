@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.bamilo.android.framework.service.utils.output.Print;
 
 /**
  * Brands table helper.
@@ -71,7 +70,6 @@ public class BrandsTableHelper extends BaseTable {
             // Create query
             String query = new StringBuilder("select ").append(Columns.VIEW_COUNT).append(" from ").append(TABLE_NAME)
                     .append(" where ").append(Columns.NAME).append(" = ?").toString();
-            Print.i(TAG, "SQL RESULT query :  " + query);
             Cursor cursor = db.rawQuery(query, new String[]{brandName});
 
             int count = 0;
@@ -91,9 +89,7 @@ public class BrandsTableHelper extends BaseTable {
                     .toString();
             // Execute
             db.execSQL(insertOrReplace, new String[]{DatabaseUtils.sqlEscapeString(brandName)});
-            Print.i(TAG, "ON INCREASE COUNTER: " + brandName);
         } catch (IllegalArgumentException | IllegalStateException | SQLiteException e) {
-            Print.w(TAG, "WARNING: SQE ON INCREASE COUNTER", e);
         } finally {
             db.close();
         }
@@ -132,12 +128,10 @@ public class BrandsTableHelper extends BaseTable {
             if (cursor != null) cursor.close();
 
         } catch (SQLException e) {
-            Print.w(TAG, "WARNING: SQE ON GET TOP VIEWED BRAND", e);
         } finally {
             db.close();
         }
         //DarwinDatabaseSemaphore.getInstance().releaseLock();
-        Print.i(TAG, "TOP BRAND: " + brand + " " + counter);
         // Return name
         return brand;
     }
@@ -148,7 +142,6 @@ public class BrandsTableHelper extends BaseTable {
      * writeable database
      */
     public static void clearBrands() {
-        Print.d(TAG, "ON CLEAN TABLE");
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
         db.delete(TABLE_NAME, null, null);
     }

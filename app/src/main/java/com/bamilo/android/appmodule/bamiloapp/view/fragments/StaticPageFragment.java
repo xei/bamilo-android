@@ -15,7 +15,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.R;
@@ -56,7 +55,6 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
         mGABeginRequestMillis = System.currentTimeMillis();
     }
 
@@ -68,7 +66,6 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get static page key from arguments
         mStaticPageBundle = savedInstanceState != null ? savedInstanceState : getArguments();
         if (mStaticPageBundle != null) {
@@ -88,7 +85,6 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get title
         mTitle = TextUtils.isNotEmpty(mTitle) ? mTitle : getString(R.string.policy);
         // Title AB
@@ -113,7 +109,6 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -124,7 +119,6 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     @Override
@@ -143,7 +137,6 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -154,7 +147,6 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -165,14 +157,12 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY");
     }
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
 
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -196,7 +186,6 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         if(!super.handleErrorEvent(baseResponse)){

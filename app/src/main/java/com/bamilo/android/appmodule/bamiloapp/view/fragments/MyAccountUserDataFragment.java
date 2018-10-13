@@ -22,7 +22,6 @@ import com.bamilo.android.framework.service.forms.Form;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.utils.CustomerUtils;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.KeyboardUtils;
@@ -72,7 +71,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -83,7 +81,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Saved form state
         mFormSavedState = savedInstanceState;
         hideActivityProgress();
@@ -98,7 +95,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         if (null != BamiloApplication.CUSTOMER) {
             setAppContentLayout(view);
         }
@@ -112,7 +108,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
         if (null != BamiloApplication.CUSTOMER) {
             init();
         } else {
@@ -128,7 +123,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -139,7 +133,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
         // Case goes to back stack save the state
         Bundle bundle = new Bundle();
         if(mUserDataForm != null) {
@@ -154,7 +147,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Print.i(TAG, "ON SAVE INSTANCE STATE");
         if (mUserDataForm != null) {
             // save edited data in user data form
             mUserDataForm.saveFormState(outState);
@@ -178,7 +170,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -189,7 +180,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -320,11 +310,9 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Validate event type
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_CHANGE_PASSWORD_FORM_EVENT:
                 Form passwordForm = (Form)baseResponse.getContentData();
@@ -356,11 +344,9 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR EVENT");
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Call super

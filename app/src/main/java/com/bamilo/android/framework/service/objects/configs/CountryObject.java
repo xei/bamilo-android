@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.bamilo.android.framework.service.objects.IJSONSerializable;
 import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.pojo.RestConstants;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -210,7 +209,6 @@ public class CountryObject implements IJSONSerializable, Parcelable {
         try {
             languages = new Languages(jsonObject);
         }catch (JSONException ex){
-            Print.e(ex.getMessage());
         }
 
         return true;

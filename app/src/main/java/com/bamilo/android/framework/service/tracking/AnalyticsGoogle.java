@@ -16,7 +16,6 @@ import com.bamilo.android.framework.service.objects.checkout.PurchaseItem;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 
 import java.util.List;
@@ -120,7 +119,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         // Enable Display Advertising features
         enableAdvertisingCollection(context);
 
-        Print.i(TAG, "TRACKING SUCCESSFULLY SETUP");
     }
 
     /**
@@ -132,7 +130,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         if (!isEnabled) return;
         // Manually start a dispatch (Unnecessary if the tracker has a dispatch interval)
         GoogleAnalytics.getInstance(mContext).dispatchLocalHits();
-        Print.i(TAG, "TRACK DISPATCH LOCAL HITS MANUALLY");
     }
 
     /**
@@ -147,7 +144,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         // Load keys
         SharedPreferences mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         mCurrentKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
-        Print.d(TAG, "TRACK LOAD KEYS: mCurrentKey-> " + mCurrentKey);
     }
 
     /**
@@ -157,12 +153,10 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     private void updateTracker() {
         if (TextUtils.isEmpty(mCurrentKey)) {
             isEnabled = false;
-            Print.e("WARNING: NO TRACKING ID KEY " + mCurrentKey);
             return;
         }
         mTracker = mAnalytics.newTracker(mCurrentKey);
         mTracker.setAnonymizeIp(true);
-        Print.i(TAG, "UPDATED TRACKER WITH KEY: " + mCurrentKey);
     }
 
     /*
@@ -177,11 +171,9 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     @Override
     public void debugMode(@NonNull Context context, boolean enable) {
         if (enable) {
-            Print.w(TAG, "WARNING: DEBUG IS ENABLE");
             mAnalytics.setDryRun(true);
             mAnalytics.getLogger().setLogLevel(LogLevel.VERBOSE);
         } else {
-            Print.w(TAG, "WARNING: DEBUG IS DISABLE");
             mAnalytics.setDryRun(false);
             mAnalytics.getLogger().setLogLevel(LogLevel.INFO);
         }
@@ -196,7 +188,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
      * @author sergiopereira
      */
     private void trackPage(String path) {
-        Print.i(TAG, "TRACK PAGE: " + path);
         mTracker.setScreenName(path);
 
         HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
@@ -213,7 +204,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
      * @author sergiopereira
      */
     private void trackEvent(String category, String action, String label, long value) {
-        Print.i(TAG, "TRACK EVENT: category->" + category + " action->" + action + " label->" + label + " value->" + value);
 
         HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
                 .setCategory(category)
@@ -235,7 +225,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
      * @author sergiopereira
      */
     public void sendEvent(String category, String action, String label, long value) {
-        Print.i(TAG, "TRACK EVENT: category->" + category + " action->" + action + " label->" + label + " value->" + value);
 
         HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
                 .setCategory(category)
@@ -256,7 +245,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
      * @author sergiopereira
      */
     private void trackShare(String category, String action, String target) {
-        Print.i(TAG, "TRACK SHARE: category->" + category + " action->" + action + " target->" + target);
 
         HitBuilders.SocialBuilder builder = new HitBuilders.SocialBuilder()
                 .setNetwork(category)
@@ -275,7 +263,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
      * @author sergiopereira
      */
     private void trackTiming(String category, String name, long milliSeconds, String label) {
-        Print.i(TAG, "TRACK TIMING: category->" + category + " name->" + name + " ms->" + milliSeconds + " label->" + label);
 
         HitBuilders.TimingBuilder builder = new HitBuilders.TimingBuilder()
                 .setCategory(category)
@@ -294,7 +281,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
      * @author sergiopereira
      */
     private void trackTransaction(String order, long revenue, String currencyCode) {
-        Print.i(TAG, "TRACK TRANSACTION: id->" + order + " revenue->" + revenue + " currency->" + currencyCode);
 
         HitBuilders.TransactionBuilder builder = new HitBuilders.TransactionBuilder()
                 .setTransactionId(order)
@@ -313,7 +299,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
      * @author sergiopereira
      */
     private void trackTransactionItem(String order, String name, String sku, String category, long price, long quantity, String currencyCode) {
-        Print.i(TAG, "TRACK TRANSACTION ITEM: id->" + order + " nm->" + name + " sku->" + sku + " ct->" + category + " prc->" + price + " qt->" + quantity);
 
         HitBuilders.ItemBuilder builder = new HitBuilders.ItemBuilder()
                 .setTransactionId(order)
@@ -433,7 +418,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         // Data
         long milliseconds = System.currentTimeMillis();
         if ( milliseconds < beginMillis || beginMillis <= 0 ) {
-            Print.d(TAG, "trackTiming ERROR : start -> " + beginMillis);
             return;
         }
         milliseconds = milliseconds - beginMillis;
@@ -451,7 +435,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         // Data
         long milliseconds = System.currentTimeMillis();
         if ( milliseconds < beginMillis || beginMillis <= 0 ) {
-            Print.d(TAG, "trackTiming ERROR : start -> " + beginMillis);
             return;
         }
         milliseconds = milliseconds - beginMillis;
@@ -560,7 +543,6 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         // Get data
         String category = mContext.getString(R.string.gcatalog);
         String action = mContext.getString(R.string.gsocialshare);
-        Print.d(TAG, "TRACK SHARE EVENT: Cat " + category + ", Action " + action + ", Sku " + sku);
         trackShare(category, action, sku);
     }
 

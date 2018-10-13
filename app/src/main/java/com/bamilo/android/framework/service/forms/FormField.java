@@ -8,7 +8,6 @@ import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -186,7 +185,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     mInputType = FormInputType.radioExpandable;
                     break;
                 default:
-                    Print.d("FORM FIELD: NO TYPE MATCH!");
                     return false;
             }
 
@@ -207,7 +205,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             mPlaceHolder = jsonObject.optString(RestConstants.PLACE_HOLDER);
 
 
-            Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
 
             // Orientation
             isVerticalOrientation = TextUtils.equals(jsonObject.optString(RestConstants.DISPLAY), RestConstants.VERTICAL);
@@ -337,7 +334,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             }
 
         } catch (JSONException e) {
-            Print.d("Error parsing the json fields"+ e);
             result = false;
         }
 

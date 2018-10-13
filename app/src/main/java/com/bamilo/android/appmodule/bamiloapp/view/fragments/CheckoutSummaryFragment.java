@@ -27,7 +27,6 @@ import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.cart.UICartUtils;
@@ -107,7 +106,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -118,7 +116,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get Arguments
         Bundle savedState = savedInstanceState != null ? savedInstanceState : getArguments();
         if(savedState != null) {
@@ -135,7 +132,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Products
         mProductList = (ViewGroup) view.findViewById(R.id.checkout_summary_products_list);
         view.findViewById(R.id.checkout_summary_products_btn_edit).setOnClickListener(this);
@@ -173,7 +169,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -184,7 +179,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -195,13 +189,11 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE");
         if (mOrderSummary != null) {
             outState.putInt(ConstantsIntentExtra.ARG_1, mCheckoutStep);
             outState.putParcelable(ConstantsIntentExtra.DATA, mOrderSummary);
@@ -216,7 +208,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -226,7 +217,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     @Override
     public void onDestroyView() {
-        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
 
@@ -238,7 +228,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -247,7 +236,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     public void onUpdate(int checkoutStep, PurchaseEntity orderSummary) {
         // Validate fragment visibility
         if (isOnStoppingProcess && getBaseActivity() != null) {
-            Print.w(TAG, "RECEIVED UPDATE IN BACKGROUND WAS DISCARDED!");
             return;
         }
         mCheckoutStep = checkoutStep;
@@ -264,11 +252,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Validate current cart
         if (mOrderSummary == null || mOrderSummary.getCartItems().size() == 0) {
             showNoItems();
-            Print.w(TAG, "ORDER SUMMARY IS NULL");
             return;
         }
 
-        Print.i(TAG, "ORDER SUMMARY: " + mOrderSummary);
 
         // Validate the current checkout step
         switch (mCheckoutStep) {
@@ -356,7 +342,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * @author sergiopereira
      */
     private void showShippingAddress(Address shippingAddress) {
-        Print.d(TAG, "SHOW SHIPPING ADDRESS: " + shippingAddress.getAddress());
         mShippingAddressList.removeAllViews();
         View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, mShippingAddressList, false);
         String name = getString(R.string.first_space_second_placeholder, shippingAddress.getFirstName(), shippingAddress.getLastName());
@@ -394,7 +379,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * @author sergiopereira
      */
     private void showVoucher() {
-        Print.d(TAG, "ORDER VOUCHER: " + mOrderSummary.getCouponDiscount());
         if (mOrderSummary.hasCouponDiscount()) {
             mVoucherValue.setText(getString(R.string.placeholder_discount, CurrencyFormatter.formatCurrency(mOrderSummary.getCouponDiscount())));
             mVoucherView.setVisibility(View.VISIBLE);
@@ -457,7 +441,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             onClickRemoveItemButton(view);
         }
         // Unknown view
-        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 
     /*
@@ -491,7 +474,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * @author sergiopereira
      */
     private void onClickEditProdButton() {
-        Print.i(TAG, "ON CLICK: EDIT PROD");
         if (!getBaseActivity().popBackStackUntilTag(FragmentType.SHOPPING_CART.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
@@ -503,7 +485,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * @author sergiopereira
      */
     private void onClickEditAddessButton() {
-        Print.i(TAG, "ON CLICK: EDIT ADDRESS");
         if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_MY_ADDRESSES.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
@@ -513,7 +494,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * Process the click on edit method
      */
     private void onClickEditMethodButton() {
-        Print.i(TAG, "ON CLICK: EDIT METHOD");
         if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_SHIPPING.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_SHIPPING, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
@@ -528,11 +508,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         try {
             // Get sku from tag
             String sku = view.getTag().toString();
-            Print.i(TAG, "ON CLICK: REMOVE ITEM: " + sku);
             // Remove clicked item
             triggerRemoveItem(sku);
         } catch (NullPointerException e) {
-            Print.w(TAG, "ON DELETE CLICK", e);
         }
     }
 
@@ -545,7 +523,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * @author sergiopereira
      */
     private void triggerGetShoppingCart() {
-        Print.i(TAG, "TRIGGER: GET SHOPPING CART");
         triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
     }
 
@@ -573,22 +550,17 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return;
         }
-        Print.d(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 hideActivityProgress();
-                Print.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
                 break;
             default:
-                Print.d(TAG, "RECEIVED UNKNOWN EVENT");
                 break;
         }
     }
@@ -602,11 +574,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_SHOPPING_CART_ITEMS_EVENT:
                 mOrderSummary = (PurchaseEntity) baseResponse.getContentData();

@@ -5,25 +5,27 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.GeolocationPermissions;
 import android.webkit.SslErrorHandler;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ScrollView;
-
-import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import android.widget.TextView;
-import com.bamilo.android.framework.components.recycler.HorizontalListView;
-import com.bamilo.android.framework.components.webview.SuperWebView;
+import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.controllers.ActivitiesWorkFlow;
 import com.bamilo.android.appmodule.bamiloapp.helpers.configs.GetStaticPageHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
+import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
+import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
+import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
+import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.SSLErrorAlertDialog;
+import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.HomeTopSellersTeaserAdapter;
+import com.bamilo.android.framework.components.recycler.HorizontalListView;
+import com.bamilo.android.framework.components.webview.SuperWebView;
 import com.bamilo.android.framework.service.objects.home.type.TeaserGroupType;
 import com.bamilo.android.framework.service.objects.statics.StaticFeaturedBox;
 import com.bamilo.android.framework.service.objects.statics.StaticPage;
@@ -31,14 +33,7 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.tracking.AbcBaseTracker;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
-import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
-import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
-import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.HomeTopSellersTeaserAdapter;
-import com.bamilo.android.R;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.EnumSet;
@@ -73,7 +68,8 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * Empty constructor.
      */
     public InnerShopFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET,
+                MyMenuItem.MY_PROFILE),
                 NavigationAction.UNKNOWN,
                 R.layout.shop_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
@@ -87,14 +83,12 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get data from arguments
         mGABeginRequestMillis = System.currentTimeMillis();
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if (arguments != null) {
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mPageId = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
-            Print.i(TAG, "LOAD DATA: " + mTitle + " " + mPageId);
         }
     }
 
@@ -102,7 +96,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         ShopSelector.setLocaleOnOrientationChanged(BamiloApplication.INSTANCE);
         // Get scroll
         mScrollView = view.findViewById(R.id.shop_scroll);
@@ -125,19 +118,16 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVED INSTANCE STATE");
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         outState.putString(ConstantsIntentExtra.CONTENT_ID, mPageId);
     }
@@ -145,7 +135,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
         /*
          * Save the web view scroll position only for back workflow and not for rotation.
          * On rotation some devices need a different delay to scroll until the saved position.
@@ -156,7 +145,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     @Override
@@ -166,13 +154,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         mWebView.destroy();
 
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /*
@@ -194,7 +180,8 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     }
 
     /**
-     * Load the escaped html.<br> The method used to load is the loadDataWithBaseURL, because the loadData not works correctly for FROYO version.<br>
+     * Load the escaped html.<br> The method used to load is the loadDataWithBaseURL, because the
+     * loadData not works correctly for FROYO version.<br>
      *
      * @param staticPage The static page for inner shop
      * @see <a href="http://stackoverflow.com/questions/3961589/android-webview-and-loaddata?answertab=active#tab-top">http://stackoverflow.com/android-webview-and-loaddata</a>
@@ -212,14 +199,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             mWebView.requestFocus(View.FOCUS_DOWN);
             loadHtml(staticPage);
             // Show container after load delay
-            mScrollView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    // Restore the saved scroll position
-                    mScrollView.scrollTo(0, mWebViewScrollPosition);
-                    // Show container
-                    showFragmentContentContainer();
-                }
+            mScrollView.postDelayed(() -> {
+                // Restore the saved scroll position
+                mScrollView.scrollTo(0, mWebViewScrollPosition);
+                // Show container
+                showFragmentContentContainer();
             }, WEB_VIEW_LOAD_DELAY);
 
         } else {
@@ -253,12 +237,16 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             Context context = mMainContainer.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
             for (StaticFeaturedBox featuredBox : staticPage.getFeaturedBoxes()) {
-                View inflated = inflater.inflate(R.layout._def_shop_fragment_featured_box, mMainContainer, false);
-                ((TextView) inflated.findViewById(R.id.shop_featured_box_title)).setText(featuredBox.getTitle());
-                HorizontalListView horizontalListView = inflated.findViewById(R.id.shop_featured_box_horizontal_list);        // Validate orientation
+                View inflated = inflater
+                        .inflate(R.layout._def_shop_fragment_featured_box, mMainContainer, false);
+                ((TextView) inflated.findViewById(R.id.shop_featured_box_title))
+                        .setText(featuredBox.getTitle());
+                HorizontalListView horizontalListView = inflated.findViewById(
+                        R.id.shop_featured_box_horizontal_list);        // Validate orientation
                 horizontalListView.setHasFixedSize(true);
                 horizontalListView.enableRtlSupport(ShopSelector.isRtl());
-                horizontalListView.setAdapter(new HomeTopSellersTeaserAdapter(featuredBox.getItems(), this));
+                horizontalListView
+                        .setAdapter(new HomeTopSellersTeaserAdapter(featuredBox.getItems(), this));
                 mMainContainer.addView(inflated);
             }
         }
@@ -274,7 +262,8 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * @param page The shop service
      */
     private void triggerGetShop(String page) {
-        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(page), this);
+        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(page),
+                this);
     }
 
     /*
@@ -283,7 +272,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     @Override
     public void onClick(View view) {
-        Print.i(TAG, "ON CLICK");
         // Get featured box item type
         String sku = (String) view.getTag(R.id.target_link);
         // Validate target
@@ -306,30 +294,27 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     }
 
     /**
-     * The web client to intercept the clicks in the deep links to show the respective view:<br>
-     * - Case product: the link is pdv::http://...  <br>
-     * - Case catalog: the link is catalog::http://... <br>
-     * - Case campaign: the link is campaign::http://... <br>
+     * The web client to intercept the clicks in the deep links to show the respective view:<br> -
+     * Case product: the link is pdv::http://...  <br> - Case catalog: the link is
+     * catalog::http://... <br> - Case campaign: the link is campaign::http://... <br>
      */
     private final WebViewClient mInnerShopWebClient = new WebViewClient() {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Print.i(TAG, "ON PAGE STARTED: " + url);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Print.i(TAG, "ON PAGE FINISHED: " + url);
         }
 
         @SuppressWarnings("deprecation")
         @Override
-        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+        public void onReceivedError(WebView view, int errorCode, String description,
+                String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
-            Print.i(TAG, "ON PAGE RECEIVED ERROR: " + failingUrl);
             showContinueShopping();
         }
 
@@ -338,16 +323,15 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
          */
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Print.i("SHOULD OVERRIDE URL LOADING: " + url);
             try {
                 url = URLDecoder.decode(url, "utf-8");
             } catch (UnsupportedEncodingException e) {
-                Print.w("WARNING ON DECODE URL", e);
             }
             // Parse, validate and goto the deep link
             if (!processDeepLink(url)) {
                 // Or external link
-                ActivitiesWorkFlow.startExternalWebActivity(getBaseActivity(), url, AbcBaseTracker.NOT_AVAILABLE);
+                ActivitiesWorkFlow.startExternalWebActivity(getBaseActivity(), url,
+                        AbcBaseTracker.NOT_AVAILABLE);
             }
             // Return link processed
             return true;
@@ -355,12 +339,17 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            handler.proceed();
+            new SSLErrorAlertDialog(getContext())
+                    .show(getString(R.string.ssl_error_handler_title),
+                            getString(R.string.ssl_error_handler_message),
+                            v -> handler.proceed(),
+                            v -> handler.cancel());
         }
     };
 
     /**
-     * Process the deep link with this structure: TARGET::URL<br> Supported targets: pdv, catalog and campaign
+     * Process the deep link with this structure: TARGET::URL<br> Supported targets: pdv, catalog
+     * and campaign
      *
      * @param link The deep link
      */
@@ -400,10 +389,8 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "ON SUCCESS");
         // Validate fragment state
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Get static page
@@ -425,15 +412,12 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR");
         // Validate fragment state
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Case network errors
         if (super.handleErrorEvent(baseResponse)) {
-            Print.i(TAG, "RECEIVED NETWORK ERROR!");
         }
         // Case other errors
         else {

@@ -3,7 +3,6 @@ package com.bamilo.android.framework.service.objects.catalog.filters;
 import com.bamilo.android.framework.service.objects.IJSONSerializable;
 import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.pojo.RestConstants;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,11 +45,9 @@ public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSer
                         add(catalogFilter);
                     }
                 } catch (JSONException ex) {
-                    Print.w("WARNING: JSE ON PARSE CATALOG FILTER POSITION: " + i);
                 }
             }
         } else {
-            Print.w("WARNING: CATALOG FILTER IS EMPTY");
         }
         return true;
     }

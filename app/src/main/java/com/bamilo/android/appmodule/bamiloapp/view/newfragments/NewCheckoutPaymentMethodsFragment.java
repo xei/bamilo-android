@@ -39,7 +39,6 @@ import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -113,7 +112,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -183,7 +181,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
         getBaseActivity().setActionBarTitle(R.string.checkout_payment_method_step);
     }
 
@@ -195,7 +192,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
     
     /*
@@ -206,7 +202,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -217,7 +212,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -226,7 +220,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
      */
     @Override
     public void onDestroyView() {
-        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
     
@@ -237,7 +230,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /**
@@ -258,7 +250,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             }
         } else {
             // Case Unknown
-            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
         }
     }
     
@@ -375,7 +366,6 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         // Get event type and error
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Validate event type
         switch (eventType) {
             case SET_MULTI_STEP_PAYMENT:
@@ -423,14 +413,11 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             }
 
             paymentMethodAdapter = new PaymentMethodAdapter(methodList, -1);
-            paymentMethodAdapter.mFragmentBridge = new PaymentMethodAdapter.IPaymentMethodAdapter() {
-                @Override
-                public void paymentMethodSelected(int selectedId) {
-                    //int selectedId = ((PaymentMethodAdapter) mScrollView.getAdapter()).getSelectedId();
-                    ContentValues values = new ContentValues();
-                    values.put(PaymentFieldName, selectedId);
-                    setMultistepPayment(PaymentAction, values);
-                }
+            paymentMethodAdapter.mFragmentBridge = selectedId -> {
+                //int selectedId = ((PaymentMethodAdapter) mScrollView.getAdapter()).getSelectedId();
+                ContentValues values = new ContentValues();
+                values.put(PaymentFieldName, selectedId);
+                setMultistepPayment(PaymentAction, values);
             };
             mScrollView.setAdapter(paymentMethodAdapter);
         } catch (Exception ex) {

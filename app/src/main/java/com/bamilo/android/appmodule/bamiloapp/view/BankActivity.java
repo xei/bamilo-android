@@ -26,7 +26,6 @@ import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
 import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,29 +46,23 @@ public class BankActivity extends Activity {
 
         setContentView(R.layout.bank_layout);
 
-        Button btnOrderDetails = (Button) findViewById(R.id.btnOrderDetails);
-        Button btnReturn = (Button) findViewById(R.id.btnReturn);
-        ImageView checkout_image = (ImageView) findViewById(R.id.checkout_image);
-        TextView launchInfo = (TextView) findViewById(R.id.tvPaymentMessage);
-        TextView tvOrderInfo = (TextView) findViewById(R.id.tvOrderInfo);
-        btnOrderDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(BankActivity.this, MainFragmentActivity.class);
-                if (mOrderNumber != null) {
-                    myIntent.putExtra(ConstantsIntentExtra.ORDER_NUMBER, mOrderNumber);
-                }
-                startActivity(myIntent);
-                finish();
+        Button btnOrderDetails = findViewById(R.id.btnOrderDetails);
+        Button btnReturn = findViewById(R.id.btnReturn);
+        ImageView checkout_image = findViewById(R.id.checkout_image);
+        TextView launchInfo = findViewById(R.id.tvPaymentMessage);
+        TextView tvOrderInfo = findViewById(R.id.tvOrderInfo);
+        btnOrderDetails.setOnClickListener(v -> {
+            Intent myIntent = new Intent(BankActivity.this, MainFragmentActivity.class);
+            if (mOrderNumber != null) {
+                myIntent.putExtra(ConstantsIntentExtra.ORDER_NUMBER, mOrderNumber);
             }
+            startActivity(myIntent);
+            finish();
         });
-        btnReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(BankActivity.this, MainFragmentActivity.class);
-                startActivity(myIntent);
-                finish();
-            }
+        btnReturn.setOnClickListener(v -> {
+            Intent myIntent = new Intent(BankActivity.this, MainFragmentActivity.class);
+            startActivity(myIntent);
+            finish();
         });
         Intent bankIntent = getIntent();
         if (bankIntent != null && bankIntent.getAction().equals(LAUNCH_FROM_URL)) {
@@ -158,12 +151,10 @@ public class BankActivity extends Activity {
     }
 
     private void triggerClearCart() {
-        Print.i(TAG, "TRIGGER: CLEAR CART FINISH");
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, null);
     }
 
     protected final void triggerContentEventNoLoading(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        // Request
         BamiloApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,7 +23,6 @@ import com.bamilo.android.framework.service.objects.campaign.CampaignItem;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductMultiple;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductSimple;
 import com.bamilo.android.framework.service.pojo.IntConstants;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.R;
 
 import java.util.ArrayList;
@@ -70,7 +70,6 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
      * Create new instance
      */
     public static DialogSimpleListFragment newInstance(Context context, String title, ProductMultiple product, OnDialogListListener listListener) {
-        Print.d(TAG, "NEW INSTANCE");
         DialogSimpleListFragment dialogListFragment = new DialogSimpleListFragment();
         dialogListFragment.mContext = context;
         dialogListFragment.mListener = listListener;
@@ -83,7 +82,6 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
      * Create new instance for CampaignItem
      */
     public static DialogSimpleListFragment newInstance(Context context, String title, CampaignItem product, OnDialogListListener listListener) {
-        Print.d(TAG, "NEW INSTANCE");
         DialogSimpleListFragment dialogListFragment = new DialogSimpleListFragment();
         dialogListFragment.mContext = context;
         dialogListFragment.mListener = listListener;
@@ -93,30 +91,18 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         return dialogListFragment;
     }
 
-	/*
-	 * (non-Javadoc)
-	 * @see android.support.v4.app.DialogFragment#onCreate(android.os.Bundle)
-	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	}
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-     */
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	    return inflater.inflate(R.layout.dialog_list_content, container);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
-	 */
+
 	@Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Validate current activity
         if (this.mContext == null) {
@@ -124,12 +110,12 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
             return;
         }
         // Set title
-        TextView titleView = (TextView) view.findViewById(R.id.dialog_list_title);
+        TextView titleView = view.findViewById(R.id.dialog_list_title);
         titleView.setText(mTitle);
         // Set size guide
         setSizeGuide(view, mProduct.getSizeGuideUrl());
         // Get list
-        ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
+        ListView list = view.findViewById(R.id.dialog_list_view);
         // Set Max list size
         setListSize(list, mProduct.getSimples().size() + (TextUtils.isEmpty(mProduct.getSizeGuideUrl()) ? 0 : 1));
         // Validate adapter
@@ -145,8 +131,7 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
 	 * @author sergiopereira
 	 */
     private void setSizeGuide(View view, String url) {
-        Print.i(TAG, "SIZE GUIDE: " + url);
-        // Get views 
+        // Get views
         View button = view.findViewById(R.id.dialog_list_size_guide_button);
         // Set size guide button
         if (TextUtils.isEmpty(url)) {
@@ -194,38 +179,22 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
             super.show(manager,tag);
             // Trying fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/143/crash_reasons/38911893?type=crashes
             // Or try this solution http://dimitar.me/android-displaying-dialogs-from-background-threads/
-        } catch (IllegalStateException | WindowManager.BadTokenException ex){
-            Print.e(TAG, "Error showing Dialog", ex);
+        } catch (IllegalStateException | WindowManager.BadTokenException ignored){
         }
     }
 
-    /*
-     * ########### LISTENERS ###########
-     */
-
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
     @Override
     public void onClick(final View view) {
-        view.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Validate listener
-                if(mListener != null) {
-                    dismissAllowingStateLoss();
-                    mListener.onDialogListClickView(view);
-                }
+        view.postDelayed(() -> {
+            // Validate listener
+            if(mListener != null) {
+                dismissAllowingStateLoss();
+                mListener.onDialogListClickView(view);
             }
         }, IntConstants.DIALOG_DELAY_DISMISS);
 
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
-     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
         // Case not enabled is an OOS
@@ -241,15 +210,12 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         // Update content
         adapter.notifyDataSetChanged();
         // Dismiss and notify listener
-        view.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dismissAllowingStateLoss();
-                if (mListener != null && mCampaignItem != null) {
-                    mListener.onDialogSizeListClickView(position, mCampaignItem);
-                } else if(mListener != null){
-                    mListener.onDialogListItemSelect(position);
-                }
+        view.postDelayed(() -> {
+            dismissAllowingStateLoss();
+            if (mListener != null && mCampaignItem != null) {
+                mListener.onDialogSizeListClickView(position, mCampaignItem);
+            } else if(mListener != null){
+                mListener.onDialogListItemSelect(position);
             }
         }, IntConstants.DIALOG_DELAY_DISMISS);
     }
@@ -326,9 +292,9 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
 				view = convertView;
 			}
             // Get views
-            TextView textView = (TextView) view.findViewById(R.id.item_text);
-            TextView textViewUnAvailable = (TextView) view.findViewById(R.id.item_text_unavailable);
-            CheckBox checkBox = (CheckBox) view.findViewById(R.id.dialog_item_checkbox);
+            TextView textView = view.findViewById(R.id.item_text);
+            TextView textViewUnAvailable = view.findViewById(R.id.item_text_unavailable);
+            CheckBox checkBox = view.findViewById(R.id.dialog_item_checkbox);
             // Get simple
             ProductSimple simple = (ProductSimple) getItem(position);
             // Set text
@@ -362,7 +328,5 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
 	            super.unregisterDataSetObserver(observer);    
 	        }
 	    }
-
 	}
-
 }

@@ -41,7 +41,6 @@ import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.CustomerUtils;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -89,7 +88,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         super.onCreate(savedInstanceState);
 //        TrackerDelegator.trackPage(TrackingPage.USER_LOGIN, getLoadTime(), false);
 
-        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = savedInstanceState == null ? getArguments() : savedInstanceState;
         if (arguments != null) {
@@ -170,7 +168,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
     }
 
     protected void onClickCheckEmail() {
-        Print.i(TAG, "ON CLICK CHECK EMAIL");
         mGABeginRequestMillis = System.currentTimeMillis();
 
         // Get email
@@ -212,7 +209,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
     }
 
     private void triggerEmailCheck(String email) {
-        Print.i(TAG, "TRIGGER EMAIL CHECK");
         triggerContentEventProgress(new EmailCheckHelper(), EmailCheckHelper.createBundle(email), this);
     }
 
@@ -220,14 +216,12 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
     public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Call super
         super.handleSuccessEvent(baseResponse);
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case EMAIL_CHECK:
                 //DROID-10
@@ -343,7 +337,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Validate messageItem o super
@@ -352,7 +345,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
         }
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case EMAIL_CHECK:
                 // Show warning
@@ -411,7 +403,6 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        Print.i(TAG, "ON CLICK RETRY BUTTON");
         onResume();
     }
 }

@@ -38,6 +38,14 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventType;
+import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
+import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
+import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
+import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
+import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTracker;
+import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment;
+
 import com.bamilo.android.framework.service.utils.output.Print;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -82,15 +90,9 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
+        // Get arguments
         Bundle arguments = savedInstanceState == null ? getArguments() : savedInstanceState;
         if (arguments != null) {
             mParentFragmentType = (FragmentType) arguments
@@ -108,7 +110,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         viewInitiated = false;
         this.rootView = view;
         if (autoLoginFailed || (mNextStepFromParent == null && !isInCheckoutProcess)) {
@@ -151,15 +152,8 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Print.i(TAG, "ON START");
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
 
         // Case auto login
         if (BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
@@ -167,7 +161,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         }
         // Case show content
         else {
-            Print.i(TAG, "USER WITHOUT CREDENTIALS");
             if (!viewInitiated) {
                 initViews();
             }
@@ -196,19 +189,16 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
             currentTabPosition = viewPager.getCurrentItem();
         }
 
-        Print.i(TAG, "ON PAUSE");
         getBaseActivity().hideKeyboard();
     }
 
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        Print.i(TAG, "ON CLICK RETRY BUTTON");
         onResume();
     }
 
     private void triggerAutoLogin() {
-        Print.i(TAG, "TRIGGER AUTO LOGIN");
         triggerContentEvent(new LoginAutoHelper(getContext()),
                 LoginAutoHelper.createAutoLoginBundle(), this);
     }
@@ -217,14 +207,12 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
     public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Call super
         super.handleSuccessEvent(baseResponse);
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case AUTO_LOGIN_EVENT://Emarsys
                 // Get Customer
@@ -275,7 +263,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Validate messageItem o super
@@ -284,7 +271,6 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
         }
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
 
             case AUTO_LOGIN_EVENT:

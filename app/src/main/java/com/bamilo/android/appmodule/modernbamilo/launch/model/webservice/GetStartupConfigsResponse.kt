@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class GetStartupConfigsResponse(
         @SerializedName("currency_symbol") val currency: String,
-        @SerializedName("ga_android_id") val googleAnalyticsID: String,
+        @SerializedName("ga_id") val googleAnalyticsID: String,
         @SerializedName("phone_number") val bamiloPhoneNo: String,
         @SerializedName("cs_email") val bamiloEmailAddress: String,
         @SerializedName("version") val versionStatus: VersionStatus
@@ -17,7 +17,7 @@ const val STATE_FORCED_UPDATE = 2
 
 data class VersionStatus(
         @SerializedName("status") val state: Int,
-        @SerializedName("title") val title: String?,
-        @SerializedName("message") val message: String?,
+        @SerializedName("message_title") val title: String?,
+        @SerializedName("message_content") val message: String?,
         @SerializedName("store_url") val latestApkUrl: String?
 ): BaseModel()

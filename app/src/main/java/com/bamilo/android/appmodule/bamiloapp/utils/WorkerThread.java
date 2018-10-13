@@ -1,7 +1,5 @@
 package com.bamilo.android.appmodule.bamiloapp.utils;
 
-import com.bamilo.android.framework.service.utils.output.Print;
-
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -32,7 +30,7 @@ public class WorkerThread extends Thread{
      */
     public WorkerThread(ConcurrentLinkedQueue<Runnable> runnableQueue){
         mToStop = false;
-        mRunnableQueue = (runnableQueue != null) ? runnableQueue : new ConcurrentLinkedQueue<Runnable>();
+        mRunnableQueue = (runnableQueue != null) ? runnableQueue : new ConcurrentLinkedQueue<>();
         setName(TAG+"_"+getId());
     }
 
@@ -49,15 +47,11 @@ public class WorkerThread extends Thread{
                     synchronized (this){
                         wait();
                     }
-                } catch (InterruptedException e) {
-                    Print.e(TAG, "InterruptedException on worker thread: wait()");
-                } catch(IllegalMonitorStateException ex){
-                    Print.e(TAG, "IllegalMonitorStateException on worker thread: wait()");
+                } catch (InterruptedException ignored) {
+                } catch(IllegalMonitorStateException ignored){
                 }
 
             } else {
-//                print();
-                //If list is not empty, task will be removed from it and executed
                 Runnable runnable = mRunnableQueue.poll();
                 if(runnable != null){
                     runnable.run();
@@ -79,11 +73,10 @@ public class WorkerThread extends Thread{
      */
     private void printQueue() {
         Iterator<Runnable> itr= mRunnableQueue.iterator();
-        String string = "";
+        StringBuilder string = new StringBuilder();
         while(itr.hasNext()){
-            string += " " + itr.next().toString();
+            string.append(" ").append(itr.next().toString());
         }
-        Print.e(TAG, "Queue: " + string);
     }
 
     /**
@@ -96,8 +89,7 @@ public class WorkerThread extends Thread{
             synchronized (this) {
                 notify();
             }
-        }catch(IllegalMonitorStateException ex){
-            Print.e(TAG, "IllegalMonitorStateException: notify()");
+        }catch(IllegalMonitorStateException ignored){
         }
     }
 
@@ -134,9 +126,7 @@ public class WorkerThread extends Thread{
             synchronized (auxThread) {
                 auxThread.notify();
             }
-        }catch(IllegalMonitorStateException ex){
-            Print.e(TAG, "IllegalMonitorStateException: notify()");
+        }catch(IllegalMonitorStateException ignored){
         }
-
     }
 }

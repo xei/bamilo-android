@@ -12,7 +12,6 @@ import com.bamilo.android.framework.service.objects.home.type.TeaserGroupType;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductRegular;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.BaseTeaserViewHolder;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.HomeBrandTeaserHolder;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.HomeCampaignTeaserHolder;
@@ -95,7 +94,6 @@ public class TeaserViewFactory {
      * @param listener The callback
      */
     public static void setClickableView(View view, BaseTeaserObject teaser, View.OnClickListener listener, int position) {
-        Print.i(TAG,"ANY TEASER CLICK");
         if (listener != null) {
             view.setTag(R.id.target_title, teaser.getTitle());
             view.setTag(R.id.target_link, teaser.getTargetLink());
@@ -117,7 +115,6 @@ public class TeaserViewFactory {
      * @param listener The callback
      */
     public static void setRichRelevanceClickableView(View view, ProductRegular product, View.OnClickListener listener, int position, TeaserGroupType teaserGroupType) {
-        Print.i(TAG,"TOP SELLER RR");
         if (listener != null) {
             view.setTag(R.id.target_title, product.getName());
             view.setTag(R.id.target_link, product.getTarget());
@@ -128,7 +125,6 @@ public class TeaserViewFactory {
             // Set position of the clicked teaser, for tracking purpose
             view.setTag(R.id.target_list_position, position);
             view.setTag(R.id.target_rr_hash, product.getRichRelevanceClickHash());
-            Print.i(TAG,"TOP SELLER RR TEASER CLICK:"+product.getRichRelevanceClickHash());
             view.setOnClickListener(listener);
         }
     }

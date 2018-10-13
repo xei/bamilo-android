@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.bamilo.android.framework.service.objects.search.Suggestion;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,7 +80,6 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
     public static synchronized boolean insertQuery(Suggestion suggestion) throws InterruptedException, NullPointerException {
     	// Validate arguments
     	if(suggestion == null) return false;
-        Print.i(TAG, "INSERT INTO SEARCH RECENT: " + suggestion.getResult());
         // Insert
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         // Delete old entries
@@ -108,13 +106,11 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @throws InterruptedException 
      */
     public static synchronized ArrayList<Suggestion> getAllRecentQueries() throws InterruptedException{
-		Print.d(TAG, "GET LAST " + NUMBER_OF_SUGGESTIONS + " RECENT QUERIES");
 		// Select the best resolution
 		String query =	"SELECT DISTINCT * " +
 			    		"FROM " + TABLE_NAME + " " +
 						"ORDER BY " + _TIME_STAMP + " DESC " +
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
-		Print.i(TAG, "SQL QUERY: " + query);
 		// Return
 		return getRecentQueries(query, null);
     }
@@ -126,14 +122,12 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @throws InterruptedException 
      */
     public static synchronized ArrayList<Suggestion> getFilteredRecentQueries(String searchText) throws InterruptedException{
-		Print.d(TAG, "GET RECENT QUERIES FOR: " + searchText);
 		// Select the best resolution
 		String query =	"SELECT DISTINCT * " +
 			    		"FROM " + TABLE_NAME + " " +
 			    		"WHERE " + _QUERY + " LIKE ? " +
 						"ORDER BY " + _TIME_STAMP + " DESC " +
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
-		Print.i(TAG, "SQL QUERY: " + query);
 		// Return
         return getRecentQueries(query, new String[]{"%"+searchText+"%"});
     }
@@ -143,13 +137,11 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @author sergiopereira
      */
     public static synchronized boolean updateRecentQuery(String query) {
-    	Print.d(TAG, "UPDATE RECENT QUERIES FOR: " + query);
     	// Validate arguments
     	if(query == null) return false;
     	// Get current time stamp
     	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     	String timestamp = dateFormat.format(new Date());
-    	Print.d(TAG, "UPDATE RECENT TIMESTAMP: " + timestamp);
     	// Update
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -167,7 +159,6 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @throws InterruptedException 
      */
     private static synchronized ArrayList<Suggestion> getRecentQueries(String query, String[] queryParams) throws InterruptedException{
-    	Print.i(TAG, "SQL QUERY: " + query);
     	// Lock access
     	// DarwinDatabaseSemaphore.getInstance().getLock();
 		// Permission
@@ -177,7 +168,6 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
         try {
             Cursor cursor = db.rawQuery(query, queryParams);
             if (cursor != null && cursor.getCount() > 0) {
-                Print.d(TAG, "QUERY RESULT SIZE: " + cursor.getCount());
                 // Move to first position
                 cursor.moveToFirst();
                 // Get items
@@ -201,7 +191,6 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
             // Validate cursor
             if (cursor != null) cursor.close();
         } catch (IllegalStateException e) {
-            Print.w(TAG, "WARNING: ISE ON GET RECENT QUERIES", e);
         }
         // Unlock access
 		// DarwinDatabaseSemaphore.getInstance().releaseLock();
@@ -222,7 +211,6 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 	    cursor.moveToFirst();
 	    int count = cursor.getInt(0);
 		cursor.close();
-	    Print.d(TAG, "COUNT: " + count);
 	    return count;
 	}
     

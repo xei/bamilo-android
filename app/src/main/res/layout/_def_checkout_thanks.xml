@@ -66,15 +66,16 @@
 
             <!-- BUTTON -->
 
-            <com.bamilo.android.framework.components.customfontviews.Button
+            <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/btn_checkout_continue"
-                style="@style/Button_1.Shop"
                 android:layout_width="@dimen/dimen_328dp"
+                android:layout_height="48dp"
                 android:layout_marginLeft="@dimen/margin_60px"
                 android:layout_marginRight="@dimen/margin_60px"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:contentDescription="@string/checkout_continue_button_description"
-                android:text="@string/continue_shopping"
+                app:text="@string/continue_shopping"
                 android:visibility="gone" />
 
             <!-- RELATED ITEMS -->

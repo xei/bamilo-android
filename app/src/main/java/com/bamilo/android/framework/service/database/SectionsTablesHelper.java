@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.bamilo.android.framework.service.objects.configs.Section;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +84,6 @@ public class SectionsTablesHelper extends BaseTable {
     		}
 	    	db.setTransactionSuccessful();
     	} catch (SQLException e) {
-    		Print.e(e.getMessage());
     		e.printStackTrace();
     	}
     	finally {

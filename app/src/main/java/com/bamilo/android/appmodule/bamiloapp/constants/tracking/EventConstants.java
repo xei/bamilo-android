@@ -16,6 +16,7 @@ public class EventConstants {
     public static String TeaserPurchased = "TeaserPurchased";
     public static String TeaserTapped = "TeaserTapped";
     public static String AddToCart = "AddToCart";
+    public static String BuyNow = "BuyNow";
     public static String RemoveFromCart = "RemoveFromCart";
     public static String AddToWishList = "AddToWishList";
     public static String RemoveFromWishList = "RemoveFromWishList";

@@ -4,7 +4,6 @@ package com.bamilo.android.framework.service.objects.orders;
 import com.bamilo.android.framework.service.objects.IJSONSerializable;
 import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.pojo.RestConstants;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +43,6 @@ public class MyOrder implements IJSONSerializable {
             totalPages = paginationObject.optInt(RestConstants.TOTAL_PAGES, 0);
 
             int totalOrders = jsonObject.optInt(RestConstants.TOTAL_ORDERS, -1);
-            Print.d( "ORDERS TOTAL: " + totalOrders);
             orders = new ArrayList<>();
             // Get order history
             JSONArray ordersArray = jsonObject.optJSONArray(RestConstants.ORDERS);
@@ -55,7 +53,6 @@ public class MyOrder implements IJSONSerializable {
                 }
 
         } catch (JSONException e) {
-            Print.d("ERROR ON PARSE: " + e.getMessage());
 
         }
 

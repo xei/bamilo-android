@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.bamilo.android.framework.service.objects.RequiredJson;
 import com.bamilo.android.framework.service.objects.product.pojo.ProductRegular;
 import com.bamilo.android.framework.service.pojo.RestConstants;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +45,6 @@ public class PurchaseCartItem extends ProductRegular {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-        Print.d("ON INITIALIZE");
         try {
             super.initialize(jsonObject);
             mSimpleSku = jsonObject.getString(RestConstants.SIMPLE_SKU);

@@ -41,7 +41,6 @@ import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
 import com.bamilo.android.R;
@@ -99,7 +98,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -110,7 +108,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -124,7 +121,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
         }
         // Load saved state
         if (savedInstanceState != null) {
-            Print.i(TAG, "ON LOAD SAVED STATE");
             mProductSku = savedInstanceState.getString(RestConstants.URL);
             pageNumber = savedInstanceState.getInt(RestConstants.PAGE, 1);
             totalPages = savedInstanceState.getInt(RestConstants.TOTAL_PAGES, -1);
@@ -136,7 +132,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Scroll
         mScrollableView = (ScrollViewReachable) view.findViewById(R.id.reviews_scrollview_container);
         // Get rating header
@@ -163,7 +158,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
 
         inflater = LayoutInflater.from(getActivity());
         if (mProduct == null) {
@@ -194,7 +188,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -204,7 +197,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE STATE: ");
         outState.putString(RestConstants.URL, mProductSku);
         outState.putInt(RestConstants.PAGE, pageNumber);
         outState.putInt(RestConstants.TOTAL_PAGES, totalPages);
@@ -220,7 +212,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -231,7 +222,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -242,7 +232,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     /**
@@ -289,11 +278,9 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
 
     @Override
     public void onScrollBottomReached() {
-        Print.i(TAG, "onScrollBottomReached: isLoadingMore = " + isLoadingMore);
         if (!isLoadingMore && pageNumber < totalPages) {
             isLoadingMore = true;
             if (mProduct.getSku() != null) {
-                Print.d(TAG, "getMoreReviews: pageNumber = " + pageNumber);
                 pageNumber++;
                 triggerReviews(mProduct.getSku(), pageNumber);
             }
@@ -304,7 +291,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     private void displayReviews(ProductRatingPage productRatingPage, boolean isFromApi) {
         if (!isFromApi) {
             if (productRatingPage != null && mReviews != null) {
-                Print.d("POINT", "DO NOTHING");
             } else if (productRatingPage == null) {
                 mReviews = new ArrayList<>();
                 triggerReviews(mProduct.getSku(), 1);
@@ -375,7 +361,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
                         theInflatedView.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Print.d(TAG, "review clicked: username = " + userName.getText());
                                 goToReview(review);
                             }
                         });
@@ -603,13 +588,11 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT type= "+ eventType);
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             if(eventType == EventType.GET_PRODUCT_REVIEWS){
                 pageNumber--;
             }
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -658,11 +641,9 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.w(TAG, "ON ERROR EVENT");
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic errors
@@ -673,7 +654,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
 
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "onErrorEvent: type = " + eventType + " code = " + errorCode);
 
         if(eventType == EventType.GET_PRODUCT_REVIEWS){
             pageNumber--;

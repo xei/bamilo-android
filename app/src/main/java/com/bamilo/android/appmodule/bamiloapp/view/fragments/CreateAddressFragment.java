@@ -7,13 +7,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
-import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
-import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
-import com.bamilo.android.framework.components.absspinner.PromptSpinnerAdapter;
-import com.bamilo.android.framework.components.customfontviews.Button;
-import com.bamilo.android.framework.components.customfontviews.EditText;
 import android.widget.TextView;
+
+import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsCheckout;
 import com.bamilo.android.appmodule.bamiloapp.helpers.address.CreateAddressHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.address.GetCitiesHelper;
@@ -21,6 +18,12 @@ import com.bamilo.android.appmodule.bamiloapp.helpers.address.GetPostalCodeHelpe
 import com.bamilo.android.appmodule.bamiloapp.helpers.address.GetRegionsHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
+import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
+import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
+import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
+import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton;
+import com.bamilo.android.framework.components.absspinner.PromptSpinnerAdapter;
+import com.bamilo.android.framework.components.customfontviews.EditText;
 import com.bamilo.android.framework.service.objects.addresses.AddressCity;
 import com.bamilo.android.framework.service.objects.addresses.AddressPostalCode;
 import com.bamilo.android.framework.service.objects.addresses.AddressRegion;
@@ -33,10 +36,6 @@ import com.bamilo.android.framework.service.utils.ApiConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
-import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
-import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.R;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -72,7 +71,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     EditText postal_code;
     String gender_lable = "";
     EditText cellphone;
-    private Button add;
+    private BamiloActionButton add;
     String getCityApi = ApiConstants.GET_CITIES_API_PATH,
             getPostalApi = ApiConstants.GET_ADDRESS_POST_CODES_API_PATH,
             getRegionApi = ApiConstants.GET_REGIONS_API_PATH;
@@ -96,7 +95,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -107,7 +105,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
 
         // Track screen
         BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.ADD_ADDRESS.getName()), getString(R.string.gaScreen),
@@ -123,7 +120,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         triggerGetRegions(getRegionApi);
         /* region = (Spinner) view.findViewById(R.id.address_region);
         city = (Spinner) view.findViewById(R.id.address_city);*/
@@ -147,7 +143,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         city_spinner = (Spinner) view.findViewById(R.id.address_city);
         postal_spinner = (Spinner) view.findViewById(R.id.address_postal_region);
         postal_code = (EditText) view.findViewById(R.id.address_postal_code);
-        add = (Button) view.findViewById(R.id.add_address_btn);
+        add = (BamiloActionButton) view.findViewById(R.id.add_address_btn);
 
         name_error = (TextView) view.findViewById(R.id.address_name_error);
         family_error = (TextView) view.findViewById(R.id.address_last_name_error);
@@ -179,7 +175,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -192,7 +187,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         super.onResume();
         // Get order summary
         orderSummary = BamiloApplication.INSTANCE.getCart();
-        Print.i(TAG, "ON RESUME");
     }
 
     /*
@@ -202,7 +196,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.d(TAG, "ON SAVE SATE");
         try {
             // Validate check
             Bundle shippingSavedStateBundle = new Bundle();
@@ -211,9 +204,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             saveRegionsCitiesPositions(listPositions, shippingSavedStateBundle);
             outState.putBundle(REGION_CITIES_POSITIONS, listPositions);
         } catch (ClassCastException e) {
-            Print.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
         } catch (NullPointerException e) {
-            Print.w(TAG, "SOME VIEW IS NULL", e);
         }
 
     }
@@ -235,7 +226,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -246,7 +236,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -255,7 +244,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     @Override
     public void onDestroyView() {
-        Print.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
 
@@ -266,7 +254,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
         regions = null;
     }
 
@@ -436,7 +423,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
         // Unknown view
         else {
-            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
         }
     }
 
@@ -505,10 +491,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @author sergiopereira
      */
     private void onClickCreateAddressButton() {
-        Print.i(TAG, "ON CLICK: CREATE");
         // Validate
         if (!formValidated()) {
-            Print.i(TAG, "SAME FORM: INVALID");
         } else {
 
             ContentValues values = new ContentValues();
@@ -664,7 +648,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     protected void triggerCreateAddress(String action, ContentValues values) {
-        Print.i(TAG, "TRIGGER: CREATE ADDRESS");
         triggerContentEvent(new CreateAddressHelper(), CreateAddressHelper.createBundle(action, values), this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
@@ -674,7 +657,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Trigger to get regions
      */
     protected void triggerGetRegions(String url) {
-        Print.i(TAG, "TRIGGER: GET REGIONS: " + url);
         triggerContentEvent(new GetRegionsHelper(), GetRegionsHelper.createBundle(url), this);
     }
 
@@ -682,7 +664,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Trigger to get cities
      */
     protected void triggerGetCities(String url, int region, String tag) {
-        Print.i(TAG, "TRIGGER: GET CITIES: " + url + " " + tag);
         triggerContentEvent(new GetCitiesHelper(), GetCitiesHelper.createBundle(url, region, tag), this);
     }
 
@@ -690,7 +671,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Trigger to get postal codes
      */
     protected void triggerGetPostalCodes(String action, int city, String tag) {
-        Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + city + " " + tag);
         triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(action, city, tag), this);
     }
 
@@ -706,9 +686,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     public void onRequestComplete(BaseResponse baseResponse) {
         showFragmentContentContainer();
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         switch (eventType) {
@@ -732,7 +710,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     protected void onGetRegionsSuccessEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "RECEIVED GET_REGIONS_EVENT");
         regions = (AddressRegions) baseResponse.getContentData();
 
 
@@ -771,19 +748,15 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     protected void onGetCitiesSuccessEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
         ArrayList<AddressCity> citiesArray = (GetCitiesHelper.AddressCitiesStruct) baseResponse.getContentData();
         GetCitiesHelper.AddressCitiesStruct cities = (GetCitiesHelper.AddressCitiesStruct) citiesArray;
         String requestedRegionAndField = cities.getCustomTag();
-        Print.d(TAG, "REQUESTED REGION FROM FIELD: " + requestedRegionAndField);
 //        formValidated();
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
     }
 
     protected void onGetPostalCodesSuccessEvent(BaseResponse baseResponse) {
         GetPostalCodeHelper.AddressPostalCodesStruct postalCodesStruct = (GetPostalCodeHelper.AddressPostalCodesStruct) baseResponse.getContentData();
-        Print.d(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
-        Print.d(TAG, "REQUESTED CITY FROM FIELD: " + postalCodesStruct.getCustomTag());
         String requestedRegionAndField = postalCodesStruct.getCustomTag();
         setPostalCodesOnSelectedCity(requestedRegionAndField, postalCodesStruct);
 //        formValidated();
@@ -791,7 +764,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     protected void onCreateAddressSuccessEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
         if (TextUtils.isEmpty(BamiloApplication.CUSTOMER.getGender())) {
             BamiloApplication.CUSTOMER.setGender(gender_lable);
         }
@@ -805,12 +777,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         errorType = baseResponse.getEventType();
         // Validate
         if (isOnStoppingProcess || errorType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.i(TAG, "SUPER HANDLE ERROR EVENT");
             return;
         }
         // Validate type
@@ -837,22 +807,17 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     protected void onGetCreateAddressFormErrorEvent(BaseResponse baseResponse) {
-        Print.w(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
     }
 
     protected void onGetRegionsErrorEvent(BaseResponse baseResponse) {
-        Print.w(TAG, "RECEIVED GET_REGIONS_EVENT");
     }
 
     protected void onGetCitiesErrorEvent(BaseResponse baseResponse) {
-        Print.w(TAG, "RECEIVED GET_CITIES_EVENT");
     }
 
     protected void onGetPostalCodesErrorEvent() {
-        Print.w(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
     }
 
     protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
     }
 }

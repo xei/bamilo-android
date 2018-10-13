@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper;
 import com.bamilo.android.appmodule.modernbamilo.userreview.UserReviewActivity;
 import com.bamilo.android.appmodule.modernbamilo.userreview.UserReviewWebApi;
@@ -23,7 +24,6 @@ import com.bamilo.android.framework.service.utils.CustomerUtils;
 import com.bamilo.android.framework.service.utils.EventTask;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.cache.WishListCache;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,7 +77,6 @@ public class LoginHelper extends SuperBaseHelper {
         if (saveCredentials) {
             mParameters.put(CustomerUtils.INTERNAL_SIGN_UP_FLAG, false);
             BamiloApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
-            Print.i("GET CUSTOMER CREDENTIALS: " + BamiloApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save new wish list
         WishListCache.set(BamiloApplication.CUSTOMER.getWishListCache());
@@ -88,23 +87,21 @@ public class LoginHelper extends SuperBaseHelper {
         Call<ResponseWrapper<GetSurveyListResponse>> call = webApi.getSurveysList(userId);
         call.enqueue(new Callback<ResponseWrapper<GetSurveyListResponse>>() {
             @Override
-            public void onResponse(Call<ResponseWrapper<GetSurveyListResponse>> call, Response<ResponseWrapper<GetSurveyListResponse>> response) {
+            public void onResponse(@NonNull Call<ResponseWrapper<GetSurveyListResponse>> call, @NonNull Response<ResponseWrapper<GetSurveyListResponse>> response) {
                 try {
                     if (response.body().getSuccess()) {
                         UserReviewActivity.start(mContext, UserReviewActivity.getTYPE_USER_REVIEW_APP_INITIAL(), userId, null);
                     }
-                } catch (NullPointerException npe) {
+                } catch (NullPointerException ignored) {
 
                 }
-
             }
 
             @Override
-            public void onFailure(Call<ResponseWrapper<GetSurveyListResponse>> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseWrapper<GetSurveyListResponse>> call, @NonNull Throwable t) {
 
             }
         });
-
     }
 
     public static Bundle createLoginBundle(ContentValues values) {
@@ -115,5 +112,4 @@ public class LoginHelper extends SuperBaseHelper {
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         return bundle;
     }
-
 }

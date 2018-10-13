@@ -179,15 +179,14 @@
             app:mpb_progressStyle="horizontal"
             style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
 
-        <com.bamilo.android.appmodule.modernbamilo.customview.XeiButton
+        <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
             android:id="@+id/activitySubmitRate_xeiButton_submitRateBtn"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-
+            android:layout_margin="8dp"
             android:background="@color/submitRate_submitBtn_background"
             android:gravity="center"
-            android:text="@string/submitRate_submitBtn"
-            android:textColor="@color/submitRate_submitBtn_text"
+            app:text="@string/submitRate_submitBtn"
             app:locale="auto"
             app:style="bold"/>
 

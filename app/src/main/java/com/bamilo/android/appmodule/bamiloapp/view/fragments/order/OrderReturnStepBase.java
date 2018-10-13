@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 import com.bamilo.android.framework.service.objects.orders.OrderTrackerItem;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragmentRequester;
 
@@ -47,13 +46,12 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i("ON VIEW CREATED");
         // Set title
         ((TextView) view.findViewById(R.id.order_return_main_title)).setText(mTitle);
         // Get container
-        mContainer = (ViewGroup) view.findViewById(R.id.order_return_main_inflate);
+        mContainer = view.findViewById(R.id.order_return_main_inflate);
         // Set button
-        TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
+        TextView button = view.findViewById(R.id.order_return_main_button_ok);
         button.setText(mButton);
         button.setOnClickListener(this);
     }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.bamilo.android.framework.service.utils.output.Print;
 
 public class WizardPreferences {
     
@@ -30,10 +29,8 @@ public class WizardPreferences {
     public static void changeState(Context context, WizardType type) {
         // Validate context
         if(context == null){
-            Print.w(TAG, "WIZARD SAVE PREFS: CONTEXT IS NULL FOR TYPE: " + type.toString());
             return;
         }
-        Print.d(TAG, "WIZARD SAVE PREFS: TYPE " + type.toString());
         // Get shared prefs
         SharedPreferences sharedPreferences = context.getSharedPreferences(WIZARDS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Save
@@ -69,10 +66,8 @@ public class WizardPreferences {
     public static Boolean isFirstTime(Context context, WizardType type) {
         // Validate context
         if(context == null){
-            Print.w(TAG, "WIZARD GET PREFS: CONTEXT IS NULL FOR TYPE: " + type.toString());
             return false;
         }
-        Print.d(TAG, "WIZARD GET PREFS: TYPE " + type.toString());
         // Get prefs
         SharedPreferences sharedPreferences = context.getSharedPreferences(WIZARDS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Boolean value = true;

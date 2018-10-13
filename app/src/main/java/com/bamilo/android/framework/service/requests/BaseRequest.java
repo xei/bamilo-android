@@ -9,7 +9,6 @@ import com.bamilo.android.framework.service.rest.interfaces.AigApiInterface;
 import com.bamilo.android.framework.service.rest.interfaces.AigResponseCallback;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -65,10 +64,8 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
 
     @Override
     public void success(BaseResponse baseResponse, Response response) {
-        Print.d("BASE SUCCESS: " + response.getBody() + " " + baseResponse.hadSuccess());
         // Validate requester and discard flag
         if (mRequestBundle.discardResponse() || this.mRequester == null) {
-            Print.d("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
         }
         // Validate success response
         else if (baseResponse.hadSuccess()) {
@@ -82,10 +79,8 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
 
     @Override
     public void failure(RetrofitError error) {
-        Print.d("BASE ERROR CAUSE CODE: " + ((AigBaseException) error.getCause()).getError().getCode());
         // Validate requester and discard flag
         if (mRequestBundle.discardResponse() || this.mRequester == null) {
-            Print.d("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
         }
         // Error response
         else {

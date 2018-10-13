@@ -1,6 +1,5 @@
 package com.bamilo.android.appmodule.bamiloapp.view.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.NestedScrollView.OnScrollChangeListener;
@@ -38,7 +37,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import java.util.EnumSet;
 import java.util.Locale;
@@ -81,7 +79,6 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
 
         // Track screen
         BaseScreenModel screenModel = new BaseScreenModel(
@@ -98,12 +95,6 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         getBaseActivity().setActionBarTitle(R.string.checkout_confirmation_step);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
-    }
-
     private void triggerGetMultiStepFinish() {
         showGhostFragmentContentContainer();
         triggerContentEventProgress(new GetStepFinishHelper(), null, this);
@@ -111,7 +102,6 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Print.i(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
         super.setCheckoutStep(view, 2);
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -341,13 +331,11 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Call super
         super.handleSuccessEvent(baseResponse);
         // Validate the event
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case ADD_VOUCHER:
                 couponButton.setText(getString(R.string.remove_label));
@@ -414,19 +402,16 @@ public class CheckoutConfirmationFragment extends NewBaseFragment implements Vie
         hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             getBaseActivity().onBackPressed();
             return;
         }
         // Get event type and error
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Validate event type
         switch (eventType) {
             case ADD_VOUCHER:

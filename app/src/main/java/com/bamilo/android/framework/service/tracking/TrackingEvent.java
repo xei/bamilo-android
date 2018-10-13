@@ -49,6 +49,8 @@ public enum TrackingEvent {
 
 	SHARE(R.string.adjust_token_social_share, -1),
 
+	SHAREAPP(R.string.adjust_token_social_share, -1),
+
 	CALL(R.string.adjust_token_call, -1),
 
 	ADD_REVIEW(R.string.adjust_token_product_rate, -1),

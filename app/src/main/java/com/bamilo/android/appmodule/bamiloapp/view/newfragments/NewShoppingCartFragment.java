@@ -45,7 +45,6 @@ import com.bamilo.android.framework.service.utils.DarwinRegex;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -131,13 +130,11 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -219,13 +216,11 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         final Bundle args = getArguments();
         if(args != null) {
             if(args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)){
@@ -261,7 +256,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
 /* DROID-63
         if(mVoucherView != null) {
             mVoucherCode = mVoucherView.getText().toString();
@@ -272,7 +266,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE STATE");
 /* DROID-63
         // Save the voucher code
         if(mVoucherView != null) {
@@ -285,21 +278,18 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
         releaseVars();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
         releaseVars();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     @Override
@@ -330,7 +320,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      * Set the total value
      */
     private void setTotal(@NonNull PurchaseEntity cart) {
-        Print.d(TAG, "SET THE TOTAL VALUE");
         // Get views
         TextView totalValue = mTotalContainer.findViewById(R.id.total_value);
         TextView quantityValue = mTotalContainer.findViewById(R.id.total_quantity);
@@ -469,7 +458,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      */
     private void addItemsToCart(String items) {
         String[] itemsToCart = items.split(DarwinRegex.SKU_DELIMITER);
-        Print.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
         // Create arguments to add all items to cart
         ArrayList<String> productBySku = new ArrayList<>();
         Collections.addAll(productBySku, itemsToCart);
@@ -495,7 +483,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         // Validate fragment visibility
 /* DROID-63*/
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Update cart info
@@ -506,7 +493,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         Bundle params;
         EventType eventType = baseResponse.getEventType();
 
-        Print.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 hideActivityProgress();
@@ -628,7 +614,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     public void onRequestError(BaseResponse baseResponse) {
 
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -681,7 +666,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      * Display shopping cart info
      */
     private void displayShoppingCart(PurchaseEntity cart) {
-        Print.d(TAG, "displayShoppingCart");
         // Case invalid cart
         if (cart == null || CollectionUtils.isEmpty(cart.getCartItems())) {
             showNoItems();
@@ -824,7 +808,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 try {
                     goToProductDetails((String) v.getTag(R.id.target_sku));
                 } catch (NullPointerException e) {
-                    Print.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
                 }
             }
         });
@@ -890,29 +873,26 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     }
 
 
-    OnClickListener onQuantityChangeClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            //if (view.getTag() == null) return;
-            int max = (int)view.getTag(R.id.item_max);
-            int position = (int)view.getTag(R.id.item_position);
-            int quantity = (int)view.getTag(R.id.item_quantity);
-            int addValue = (int)view.getTag(R.id.item_change);
-            quantity += addValue;
-            if (quantity>max)
-            {
-                CustomToastView.makeText(getBaseActivity(), String.format(getResources().getString( R.string.reached_max_quantity), max), Toast.LENGTH_LONG).show();
-                return;
-            }
-            if (quantity == 0)
-            {
-                //Toast.makeText(getBaseActivity(), R.string.reached_min_quantity, Toast.LENGTH_LONG).show();
-                return;
-            }
-
-
-            triggerChangeItemQuantityInShoppingCart(position, quantity);
+    OnClickListener onQuantityChangeClickListener = view -> {
+        //if (view.getTag() == null) return;
+        int max = (int)view.getTag(R.id.item_max);
+        int position = (int)view.getTag(R.id.item_position);
+        int quantity = (int)view.getTag(R.id.item_quantity);
+        int addValue = (int)view.getTag(R.id.item_change);
+        quantity += addValue;
+        if (quantity>max)
+        {
+            CustomToastView.makeText(getBaseActivity(), String.format(getResources().getString( R.string.reached_max_quantity), max), Toast.LENGTH_LONG).show();
+            return;
         }
+        if (quantity == 0)
+        {
+            //Toast.makeText(getBaseActivity(), R.string.reached_min_quantity, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
+        triggerChangeItemQuantityInShoppingCart(position, quantity);
     };
 
     OnClickListener onRemoveItemClickListener = new OnClickListener() {

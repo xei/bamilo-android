@@ -11,7 +11,6 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentCont
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.helpers.NextStepStruct;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.R;
@@ -78,7 +77,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
         // Get next step
         FragmentType nextFragment = ((NextStepStruct) baseResponse.getMetadata().getData()).getFragmentType();
         if (nextFragment == null || nextFragment == FragmentType.UNKNOWN) {
-            Print.w(TAG, "NEXT STEP IS UNKNOWN OR NULL -> FALL BACK MY_ADDRESSES");
             nextFragment = FragmentType.CHECKOUT_MY_ADDRESSES;
         }
 

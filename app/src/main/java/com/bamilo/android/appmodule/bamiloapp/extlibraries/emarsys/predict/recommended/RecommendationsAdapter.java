@@ -14,7 +14,6 @@ import com.emarsys.predict.RecommendedItem;
 import android.widget.TextView;
 import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.RecommendationWidgetType;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.R;
@@ -85,7 +84,7 @@ public class RecommendationsAdapter extends RecyclerView.Adapter<Recommendations
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RecommendedItem item = mDataSet.get(position);
         String sku = "" + item.getData().get("item");
         holder.mName.setText("" + item.getData().get("title"));
@@ -95,8 +94,7 @@ public class RecommendationsAdapter extends RecyclerView.Adapter<Recommendations
         if(imageObject != null) {
             try {
                 ImageManager.getInstance().loadImage(imageObject.toString(), holder.mImage, holder.mProgress, R.drawable.no_image_large, false);
-            } catch (Exception e) {
-                Print.d(e.getMessage());
+            } catch (Exception ignored) {
             }
         }
 

@@ -85,7 +85,6 @@ import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.emarsys.predict.RecommendedItem;
@@ -169,7 +168,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         mGABeginRequestMillis = System.currentTimeMillis();
 
         // Get arguments
@@ -200,7 +198,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Print.d(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
         this.rootView = view;
         // Title
@@ -269,7 +266,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
     @Override
     public void onResume() {
         super.onResume();
-        Print.d(TAG, "ON RESUME");
         // Validate current data product
         onValidateDataState();
 
@@ -332,7 +328,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.d(TAG, "ON DESTROY VIEW");
         getBaseActivity().mConfirmationCartMessageView.hideMessage();
     }
 
@@ -344,7 +339,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.d(TAG, "ON DESTROY");
     }
 
     /*
@@ -453,7 +447,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
      * Case product not retrieved<br>
      */
     private void onValidateDataState() {
-        Print.d(TAG, "INIT");
         // Get arguments
         Bundle bundle = getArguments();
         // Validate deep link arguments
@@ -492,7 +485,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         mRichRelevanceHash = bundle.getString(ConstantsIntentExtra.RICH_RELEVANCE_HASH);
         // Validate
         if (sku != null) {
-            Print.i(TAG, "DEEP LINK GET PDV: " + sku + " " + deepLinkSimpleSize);
             mNavSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
             mNavPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
             triggerLoadProduct(sku, mRichRelevanceHash);
@@ -508,7 +500,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
      * @param product - Complete product
      */
     private void displayProduct(ProductComplete product) {
-        Print.d(TAG, "ON SHOW PRODUCT");
         // Save complete product
         mProduct = product;
         mCompleteProductSku = product.getSku();
@@ -567,7 +558,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
      * Set product price info
      */
     private void setProductPriceInfo() {
-        Print.d(TAG, "SHOW PRICE INFO: " + mProduct.getPrice() + " " + mProduct.getSpecialPrice());
         // Get views
         TextView special = mPriceContainer.findViewById(R.id.pdv_price_text_special);
         TextView price = mPriceContainer.findViewById(R.id.pdv_price_text_price);
@@ -775,7 +765,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
      * Set the variation container
      */
     private void setProductVariations() {
-        Print.i(TAG, "ON DISPLAY VARIATIONS");
         if (mProduct.hasVariations()) {
             // Title
             String title = getResources().getString(mProduct.isFashion() ? R.string.see_other_colors : R.string.see_other_variations);
@@ -791,7 +780,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
      * Load size component if has sizes
      */
     private void setProductSize() {
-        Print.i(TAG, "ON DISPLAY SIZE");
         // Validate simple variations
         if (mProduct.hasMultiSimpleVariations()) {
             // All Simple variations
@@ -815,12 +803,10 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
      * Load gallery and small images
      */
     private void setSlideShow() {
-        Print.i(TAG, "ON DISPLAY SLIDE SHOW");
         // Validate the ProductImageGalleryFragment
         BaseFragment fragment = (BaseFragment) getChildFragmentManager().findFragmentByTag(ProductImageGalleryFragment.TAG);
         // CASE CREATE
         if (fragment == null) {
-            Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
 
             ArrayList<ImageUrls> images;
             if (ShopSelector.isRtl() && CollectionUtils.isNotEmpty(mProduct.getImageList())) {
@@ -841,7 +827,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         }
         // CASE UPDATE
         else {
-            Print.i(TAG, "ON DISPLAY SLIDE SHOW: UPDATE");
             fragment.notifyFragment(null);
         }
     }
@@ -1113,7 +1098,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
             // Track share
             TrackerDelegator.trackItemShared(shareIntent, completeProduct.getCategories());
         } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON CLICK SHARE");
         }
     }
 
@@ -1131,7 +1115,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
                 getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_SIZE_GUIDE, bundle, FragmentController.ADD_TO_BACK_STACK);
             }
         } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON CLICK SIZE GUIDE");
         }
     }
 
@@ -1161,7 +1144,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
      * Process the click to show simples
      */
     private void onClickSimpleSizesButton() {
-        Print.i(TAG, "ON CLICK TO SHOW SIMPLE VARIATIONS");
         try {
             DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
                     getBaseActivity(),
@@ -1170,7 +1152,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
                     this);
             dialog.show(getFragmentManager(), null);
         } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
         }
     }
 
@@ -1265,11 +1246,9 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
 
@@ -1376,14 +1355,12 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
                 }
                 break;
             case GET_CITIES_EVENT:
-                Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
                 mCities = (GetCitiesHelper.AddressCitiesStruct) baseResponse.getContentData();
                 if (CollectionUtils.isNotEmpty(mCities)) {
                     setCities(mCities);
                 }
                 break;
             case GET_DELIVERY_TIME:
-                Print.d(TAG, "RECEIVED DELIVERY_TIME");
                 DeliveryTimeCollection deliveryTimeCollection = (DeliveryTimeCollection) baseResponse.getContentData();
                 DeliveryTime deliveryTime = deliveryTimeCollection.getDeliveryTimes().get(0);
                 String strDeliveryTime;
@@ -1412,11 +1389,9 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         EventType eventType = baseResponse.getEventType();
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Validate type
-        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case GET_PRODUCT_BUNDLE:
                 // do nothing
@@ -1613,7 +1588,6 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
      * Method used to set the regions on the respective form
      */
     private void setRegions(ArrayList<AddressRegion> regions) {
-        Print.d(TAG, "SET REGIONS REGIONS: ");
 
         rootView.findViewById(R.id.tvDeliveryTimeSectionTitle).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.pdv_delivery_address_container).setVisibility(View.VISIBLE);
@@ -1701,37 +1675,32 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
 
     private void sendRecommend() {
 
-        RecommendListCompletionHandler handler = new RecommendListCompletionHandler() {
-            @Override
-            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
-                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+        RecommendListCompletionHandler handler = (category, data) -> {
+            LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
 
-                if (recommendationsGridTeaserHolder == null) {
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
-                }
-                if (recommendationsGridTeaserHolder != null) {
-                    try {
-
-
-                        // Set view
-                        mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
-                        recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
-
-                        recommendationsGridTeaserHolder.onBind(data);
-                        // Add to container
-
-                        mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount() - 1);
-                    } catch (Exception ex) {
-
-                    }
-                    // Save
-                    //mViewHolders.add(holder);
-                    recommendationsTeaserHolderAdded = true;
-
-                }
+            if (recommendationsGridTeaserHolder == null) {
+                recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
             }
+            if (recommendationsGridTeaserHolder != null) {
+                try {
 
 
+                    // Set view
+                    mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
+                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
+
+                    recommendationsGridTeaserHolder.onBind(data);
+                    // Add to container
+
+                    mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount() - 1);
+                } catch (Exception ex) {
+
+                }
+                // Save
+                //mViewHolders.add(holder);
+                recommendationsTeaserHolderAdded = true;
+
+            }
         };
 
 

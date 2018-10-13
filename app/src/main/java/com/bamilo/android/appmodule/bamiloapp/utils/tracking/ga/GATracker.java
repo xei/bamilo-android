@@ -145,6 +145,11 @@ public final class GATracker implements IEventTracker, IScreenTracker {
     }
 
     @Override
+    public void trackEventBuyNow(Context context, BaseEventModel eventModel) {
+        trackEvent(context, eventModel);
+    }
+
+    @Override
     public void trackEventRemoveFromCart(Context context, BaseEventModel eventModel) {
         trackEvent(context, eventModel);
     }

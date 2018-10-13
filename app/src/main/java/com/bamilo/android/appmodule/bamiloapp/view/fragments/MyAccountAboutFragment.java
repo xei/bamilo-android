@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.bamilo.android.framework.service.objects.statics.MobileAbout;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils;
@@ -44,7 +43,6 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     @Override
@@ -60,7 +58,6 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
     }
 
     /*
@@ -70,34 +67,15 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
-        Button call_btn = (Button) getBaseActivity().findViewById(R.id.about_call_btn);
-        call_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtils.onClickCallToOrder(getBaseActivity());
-            }
-        });
-        Button email_btn = (Button) getBaseActivity().findViewById(R.id.about_email_btn);
-        email_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UIUtils.onClickEmailToCS(getBaseActivity());
-            }
-        });
+        Button call_btn = getBaseActivity().findViewById(R.id.about_call_btn);
+        call_btn.setOnClickListener(v -> UIUtils.onClickCallToOrder(getBaseActivity()));
+        Button email_btn = getBaseActivity().findViewById(R.id.about_email_btn);
+        email_btn.setOnClickListener(v -> UIUtils.onClickEmailToCS(getBaseActivity()));
     }
 
-
-
-    /*
-         * (non-Javadoc)
-         *
-         * @see android.support.v4.app.Fragment#onStart()
-         */
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -108,13 +86,11 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE");
     }
 
     /*
@@ -125,7 +101,6 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -136,7 +111,6 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*

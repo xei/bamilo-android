@@ -36,7 +36,6 @@ import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventTask;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.NetworkConnectivity;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -90,7 +89,6 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         injectDependencies();
-        Print.i(TAG, "ON CREATE");
         showDefaultProgress = true;
         if (savedInstanceState != null) {
             mOrdersList = savedInstanceState.getParcelableArrayList(RestConstants.ORDERS);
@@ -121,25 +119,20 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get views
-        mOrdersListView = (ListView) view.findViewById(R.id.orders_list);
-        srlOrderList = (SwipeRefreshLayout) view.findViewById(R.id.srlOrderList);
+        mOrdersListView = view.findViewById(R.id.orders_list);
+        srlOrderList = view.findViewById(R.id.srlOrderList);
         srlOrderList.setColorSchemeResources(R.color.appBar);
-        srlOrderList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mPageIndex = IntConstants.FIRST_PAGE;
-                showDefaultProgress = false;
-                triggerGetOrderList(mPageIndex);
-            }
+        srlOrderList.setOnRefreshListener(() -> {
+            mPageIndex = IntConstants.FIRST_PAGE;
+            showDefaultProgress = false;
+            triggerGetOrderList(mPageIndex);
         });
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
         // Validate the state
         onValidateDataState();
         mOrdersListView.setSelection(mScrollPosition);
@@ -148,13 +141,11 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE STATE");
         // Save the state
         outState.putParcelableArrayList(RestConstants.ORDERS, mOrdersList);
         outState.putInt(RestConstants.PAGE, mPageIndex);
@@ -167,25 +158,21 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
             mScrollPosition = mOrdersListView.getFirstVisiblePosition();
         }
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
     }
 
     /*
@@ -199,7 +186,6 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
      * - Case restore saved state<br>
      */
     private void onValidateDataState() {
-        Print.i(TAG, "ON VALIDATE DATA STATE");
         // Validate customer is logged in
         if (!BamiloApplication.isCustomerLoggedIn()) {
             onLoginRequired();
@@ -301,16 +287,13 @@ public class MyOrdersFragment extends BaseFragment implements AdapterView.OnItem
     }
 
     public void onRequestError(BaseResponse baseResponse) {
-        Print.d(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
         }
 
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_MY_ORDERS_LIST_EVENT:
-                Print.w("ORDER", "ERROR Visible");
                 isErrorOnLoadingMore = true;
                 if (isLoadingMore) {
                     // to stop scrolling

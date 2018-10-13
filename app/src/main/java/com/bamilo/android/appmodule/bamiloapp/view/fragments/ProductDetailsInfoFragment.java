@@ -21,7 +21,6 @@ import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -72,7 +71,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
     }
 
     /*
@@ -83,7 +81,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
         Bundle bundle = getArguments();
         if(bundle != null) {
             mPositionToStart = bundle.getInt(ConstantsIntentExtra.PRODUCT_INFO_POS);
@@ -104,7 +101,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Print.i(TAG, "ON VIEW CREATED");
         // Get view pager
         mProductInfoPager = (ViewPager) view.findViewById(R.id.product_info_pager);
         // Validate the current view
@@ -155,7 +151,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Print.i(TAG, "ON START");
     }
 
     /*
@@ -166,7 +161,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
         // Set action title
         getBaseActivity().setActionBarTitle("");
     }
@@ -179,7 +173,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -190,7 +183,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        Print.i(TAG, "ON STOP");
     }
 
     /*
@@ -201,7 +193,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY");
         // mPositionToStart = 0;
     }
 
@@ -303,7 +294,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Print.i(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
         outState.putInt(ConstantsIntentExtra.PRODUCT_INFO_POS, mPositionToStart);
 

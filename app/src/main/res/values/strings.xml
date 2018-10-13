@@ -569,7 +569,7 @@
     <string name="drawer_rateus">امتیازدهی به برنامه</string>
     <string name="call_center_number" translatable="false">tel:02141687000</string>
 
-    <string name="share_link" translatable="false">http://bml.re/app</string>
+    <string name="share_link" translatable="false">https://app.adjust.com/eq8uike</string>
     <string name="payment_successful" translatable="false">پرداخت شما با موفقیت انجام شد</string>
     <string name="payment_unsuccessful">پرداخت شما ناموفق بود</string>
     <string name="return_to_app" translatable="false">بازگشت به برنامه</string>
@@ -739,6 +739,21 @@
     <string name="forget_password">فراموشی رمز عبور</string>
     <string name="insert_email_or_phone_number">ایمیل یا شماره موبایل را وارد کنید</string>
     <string name="insert_password">رمز عبور را وارد کنید</string>
+
+    <!-- Register Screen -->
+    <string name="registerScreen_title">ثبت‌نام در بامیلو</string>
+    <string name="registerScreen_hint_userId">آدرس ایمیل</string>
+    <string name="registerScreen_hint_password">گذرواژه</string>
+    <string name="registerScreen_hint_mobile">شماره تلفن همراه</string>
+    <string name="registerScreen_hint_nationalId">کد ملی</string>
+    <string name="registerScreen_btn_register">ثبت‌نام</string>
+    <string name="registerScreen_btn_goToLogin">حساب کاربری دارم</string>
+    <string name="verifyPhoneNoScreen_title">کد بازیابی را ارسال کنید</string>
+    <string name="verifyPhoneNoScreen_subtitle">کد تایید برای %s ارسال شده است</string>
+    <string name="verifyPhoneNoScreen_btn_resend">ارسال مجدد کد</string>
+    <string name="verifyPhoneNoScreen_btn_next">مرحله بعد</string>
+    <string name="ssl_error_handler_message">به دلیل قدیمی بودن نسخه اندروید شما، بامیلو به اجازه شما برای نمایش این صفحه نیازمند است</string>
+    <string name="ssl_error_handler_title">خطا در نمایش محتوا</string>
 
 
 </resources>

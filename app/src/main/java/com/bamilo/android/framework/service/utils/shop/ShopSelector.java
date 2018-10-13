@@ -13,7 +13,6 @@ import com.bamilo.android.framework.service.tracking.AdjustTracker;
 import com.bamilo.android.framework.service.tracking.AnalyticsGoogle;
 import com.bamilo.android.framework.service.tracking.gtm.GTMManager;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 
 import java.util.Locale;
 
@@ -146,7 +145,6 @@ public final class ShopSelector {
     private static void setLocale(Context context, SharedPreferences preferences) {
         String language = preferences.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null);
         if (TextUtils.isNotEmpty(language)) {
-            Print.i(TAG, "ON SET LOCALE: language " + language);
             // Get language and country code
             countryCode = language;
             String[] languageCountry = language.split("_");
@@ -159,7 +157,6 @@ public final class ShopSelector {
             config.locale = locale;
             Resources res = context.getResources();
             res.updateConfiguration(config, res.getDisplayMetrics());
-            Print.i(TAG, "> SET LOCALE " + res.getConfiguration().toString() + " " + Locale.getDefault().toString());
         }
     }
 

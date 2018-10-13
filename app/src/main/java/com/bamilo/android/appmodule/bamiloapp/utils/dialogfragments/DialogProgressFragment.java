@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.R;
 
 /**
@@ -27,33 +26,24 @@ public class DialogProgressFragment extends DialogFragment {
      * Empty constructor
      */
     public DialogProgressFragment() {
-        // ...
     }
 
     /**
      *
      */
     public static DialogProgressFragment newInstance() {
-        Print.d(TAG, "NEW INSTANCE");
         return new DialogProgressFragment();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.DialogFragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Custom_Dialog_Progress);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-     */
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view;
         view = inflater.inflate(R.layout.dialog_progress, container);
@@ -61,10 +51,6 @@ public class DialogProgressFragment extends DialogFragment {
         return view;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
-     */
     @Override
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -88,14 +74,10 @@ public class DialogProgressFragment extends DialogFragment {
             super.show(manager, tag);
             // Trying fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/143/crash_reasons/38911893?type=crashes
             // Or try this solution http://dimitar.me/android-displaying-dialogs-from-background-threads/
-        } catch (IllegalStateException | WindowManager.BadTokenException ex) {
-            Print.e(TAG, "Error showing Dialog", ex);
+        } catch (IllegalStateException | WindowManager.BadTokenException ignored) {
         }
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Dialog#dismiss()
-     */
     @Override
     public void dismiss() {
         try {
@@ -107,10 +89,6 @@ public class DialogProgressFragment extends DialogFragment {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onPause()
-     */
     @Override
     public void onPause() {
         super.onPause();

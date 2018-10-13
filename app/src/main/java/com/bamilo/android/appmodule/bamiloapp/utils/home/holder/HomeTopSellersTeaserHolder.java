@@ -16,7 +16,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.output.Print;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.TeaserViewFactory;
 import com.bamilo.android.R;
@@ -42,9 +41,9 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder implements 
     public HomeTopSellersTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
         // Get section title
-        sectionTitle = (TextView) view.findViewById(R.id.home_teaser_top_seller_section_title);
+        sectionTitle = view.findViewById(R.id.home_teaser_top_seller_section_title);
         // Get horizontal container
-        horizontalListView = (HorizontalListView) view.findViewById(R.id.home_teaser_top_sellers_horizontal_list);
+        horizontalListView = view.findViewById(R.id.home_teaser_top_sellers_horizontal_list);
         horizontalListView.addItemDecoration(new VerticalSpaceItemDecoration(ITEMS_MARGIN));
         // Validate orientation
         horizontalListView.enableRtlSupport(isRtl);
@@ -64,7 +63,6 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder implements 
             else if (CollectionUtils.isNotEmpty(group.getData())) {
                 triggerGetRichRelevanceData(TargetLink.getIdFromTargetLink(group.getData().get(IntConstants.DEFAULT_POSITION).getTargetLink()));
             }
-        } else {
         }
     }
 
@@ -77,13 +75,8 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder implements 
         }
     }
 
-    /*
-     * ################# RESPONSE #################
-     */
-
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "SUCCESS RICH RELEVANCE");
         RichRelevance richRelevanceObject = (RichRelevance) baseResponse.getContentData();
         ArrayList<ProductRegular> richRelevanceTeaserObjects = richRelevanceObject.getRichRelevanceProducts();
         if (!CollectionUtils.isEmpty(richRelevanceTeaserObjects) && mParentClickListener != null && horizontalListView != null) {
@@ -96,7 +89,6 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder implements 
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ERROR RICH RELEVANCE");
         if (horizontalListView != null) {
             ((View) horizontalListView.getParent()).setVisibility(View.GONE);
         }

@@ -17,6 +17,7 @@ import android.widget.TextView
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
+import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.SSLErrorAlertDialog
 import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity
 import com.bamilo.android.appmodule.modernbamilo.product.descspec.DescSpecWebApi
 import com.bamilo.android.appmodule.modernbamilo.product.descspec.desc.pojo.GetDescriptionResponse
@@ -175,7 +176,11 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
 
     private var webViewClient: WebViewClient = object : WebViewClient() {
         override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-            handler.proceed()
+            context?.let { it ->
+                SSLErrorAlertDialog(it)
+                        .show(getString(R.string.ssl_error_handler_title), getString(R.string.ssl_error_handler_message), View.OnClickListener { handler.proceed() },
+                                View.OnClickListener { handler.cancel() })
+            }
         }
     }
 }
