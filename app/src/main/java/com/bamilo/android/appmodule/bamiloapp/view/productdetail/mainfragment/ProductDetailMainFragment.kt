@@ -3,7 +3,6 @@ package com.bamilo.android.appmodule.bamiloapp.view.productdetail.mainfragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Rect
 import android.os.Bundle
@@ -17,10 +16,8 @@ import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
-import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants
-import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
 import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.Item
 import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendManager
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager
@@ -31,7 +28,6 @@ import com.bamilo.android.appmodule.bamiloapp.utils.headerandmorebutton.morebutt
 import com.bamilo.android.appmodule.bamiloapp.utils.headerandmorebutton.recyclerheader.RecyclerHeaderItem
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory
-import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ImageSliderModel
@@ -308,6 +304,8 @@ class ProductDetailMainFragment : Fragment() {
         imageSliderModel.isWishList = product.isWishList
         imageSliderModel.images = product.image_list
         imageSliderModel.price = product.price.price
+        imageSliderModel.title = product.title
+
         imageSliderModel.category = product.breadcrumbs[0].target!!.split("::")[1]
 
         items.add(SliderItem(fragmentManager!!, imageSliderModel, pdvMainView))

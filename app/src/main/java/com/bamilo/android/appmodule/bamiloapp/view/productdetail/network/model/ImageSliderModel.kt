@@ -12,4 +12,5 @@ class ImageSliderModel{
     var isWishList : Boolean = false
     var shareUrl : String? = ""
     var category: String = ""
+    var title: String = ""
 }

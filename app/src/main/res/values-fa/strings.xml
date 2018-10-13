@@ -188,7 +188,7 @@
     <string name="section_title_notification">با ما در ارتباط باشید</string>
     <string name="server_error">خطا در برقراری ارتباط, مجدد تلاش کنید</string>
     <string name="server_error_title">مشکلی ایجاد شده است.</string>
-    <string name="share_checkout_this_product">این کالاهایی که یافته ام را نیز مشاهده کنید:</string>
+    <string name="share_checkout_this_product">را در بامیلو ببین.</string>
     <string name="share_subject">اشتراک گذاری %s</string>
     <string name="shipping">ارسال کالا</string>
     <string name="basket_label">سبد خرید</string>

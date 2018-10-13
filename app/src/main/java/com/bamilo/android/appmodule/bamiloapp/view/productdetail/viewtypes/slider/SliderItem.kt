@@ -2,23 +2,23 @@ package com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.slid
 
 import android.support.v4.app.FragmentManager
 import android.support.v4.view.PagerAdapter
-import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
+import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
-import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel
-import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel
-import com.bamilo.android.framework.components.ghostadapter.BindItem
-import com.bamilo.android.framework.components.ghostadapter.Binder
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager
-import com.bamilo.android.framework.service.tracking.TrackingPage
+import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel
+import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory
-import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ImageSliderModel
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.slider.DepthPageTransformer
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.slider.ProductSliderPagerAdapter
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.slider.SliderPresenter
+import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
+import com.bamilo.android.framework.components.ghostadapter.BindItem
+import com.bamilo.android.framework.components.ghostadapter.Binder
+import com.bamilo.android.framework.service.tracking.TrackingPage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,7 +54,7 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
 
         setupViewPager(holder)
         bindLikeButtonClickListener(holder)
-        holder.share.setOnClickListener { _ -> sliderPresenter.shareProduct(imageSliderModel.shareUrl) }
+        holder.share.setOnClickListener { _ -> sliderPresenter.shareProduct(imageSliderModel.title, imageSliderModel.shareUrl) }
         holder.isFilled = true
     }
 
