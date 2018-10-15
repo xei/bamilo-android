@@ -29,6 +29,11 @@ fun dpToPx(context: Context, dp: Float): Int {
     return Math.round(dp * scale)
 }
 
+fun pxToDp(context: Context, px: Int): Int {
+    val displayMetrics = context.resources.displayMetrics
+    return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+}
+
 fun screenHeight(context: Activity?): Int {
     if (context == null) {
         return -1

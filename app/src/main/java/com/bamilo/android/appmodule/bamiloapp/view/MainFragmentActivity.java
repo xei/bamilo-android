@@ -74,7 +74,6 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.ReviewWriteFragment
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.ReviewsFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.SessionForgotPasswordFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.SessionLoginEmailFragment;
-import com.bamilo.android.appmodule.bamiloapp.view.fragments.SessionRegisterFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.StaticPageFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.StaticWebViewPageFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.VariationsFragment;
@@ -91,6 +90,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailAc
 import com.bamilo.android.appmodule.bamiloapp.view.relatedproducts.RecommendProductsFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.subcategory.SubCategoryFilterFragment;
 import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet;
+import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet;
 import com.bamilo.android.framework.service.objects.checkout.CheckoutStepLogin;
 import com.bamilo.android.framework.service.objects.customer.Customer;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
@@ -424,8 +424,8 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = newFragmentInstance(SessionLoginEmailFragment.class, bundle);
                 break;
             case REGISTER:
-                fragment = newFragmentInstance(SessionRegisterFragment.class, bundle);
-                break;
+                new RegisterModalBottomSheet().show(getSupportFragmentManager(), "register");
+                return;
             case MOBILE_VERIFICATION:
                 fragment = newFragmentInstance(MobileVerificationFragment.class, bundle);
                 break;

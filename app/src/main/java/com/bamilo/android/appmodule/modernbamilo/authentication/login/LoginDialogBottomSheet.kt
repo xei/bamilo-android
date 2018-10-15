@@ -1,16 +1,23 @@
 package com.bamilo.android.appmodule.modernbamilo.authentication.login
 
+import android.app.Dialog
 import android.content.ContentValues
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
+import android.support.design.widget.BottomSheetBehavior
+import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.FragmentManager
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.Toast
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra
@@ -31,6 +38,9 @@ import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
 import com.bamilo.android.appmodule.modernbamilo.authentication.AuthenticationListener
+import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet
+import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
+import com.bamilo.android.appmodule.modernbamilo.util.dpToPx
 import com.bamilo.android.framework.service.objects.checkout.CheckoutStepLogin
 import com.bamilo.android.framework.service.pojo.BaseResponse
 import com.bamilo.android.framework.service.utils.Constants
@@ -50,7 +60,13 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
     private lateinit var emailOrPhoneTextInputLayout: TextInputLayout
     private lateinit var passwordTextInputLayout: TextInputLayout
 
+    private lateinit var rootView: ConstraintLayout
+
     private var authenticationListener: AuthenticationListener? = null
+
+    private var mBottomSheetFrameLayout: FrameLayout? = null
+
+    var height = 0
 
     companion object {
         @JvmStatic
@@ -63,16 +79,57 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    public fun setAuthenticationListener(authenticationListener: AuthenticationListener) {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+
+        dialog.setOnShowListener { d_ ->
+            val d = d_ as BottomSheetDialog
+            mBottomSheetFrameLayout = d.findViewById<View>(android.support.design.R.id.design_bottom_sheet) as FrameLayout?
+        }
+
+        return dialog
+    }
+
+    fun setAuthenticationListener(authenticationListener: AuthenticationListener) {
         this.authenticationListener = authenticationListener
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.bottomsheet_login, container, false).apply {
             findViews(this)
+            setOnFocusExpand()
             bindViewsClickListener(this)
 
             passwordEditText.transformationMethod = PasswordTransformationMethod()
+        }
+    }
+
+    private fun setInitialHeight(view: View) {
+        rootView.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        view.post {
+            context?.let {
+                setPeekHeight(dpToPx(it, 400f))
+            }
+        }
+    }
+
+    private fun setPeekHeight(peekHeight: Int) {
+        try {
+            BottomSheetBehavior.from(mBottomSheetFrameLayout!!).peekHeight = peekHeight
+        } catch (ignored: Exception) {
+        }
+    }
+
+    private fun setOnFocusExpand() {
+        emailOrPhoneEditText.clearFocus()
+        passwordEditText.clearFocus()
+        emailOrPhoneEditText.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) expandBottomSheet() }
+        passwordEditText.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) expandBottomSheet() }
+    }
+
+    private fun expandBottomSheet() {
+        mBottomSheetFrameLayout?.let {
+            BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_EXPANDED
         }
     }
 
@@ -83,6 +140,9 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
 
             emailOrPhoneTextInputLayout = it.findViewById(R.id.loginBottomSheet_til_emailOrPhone)
             passwordTextInputLayout = it.findViewById(R.id.loginBottomSheet_til_password)
+
+            rootView = it.findViewById(R.id.loginBottomSheet_relativeLayout_root)
+            setInitialHeight(it)
         }
     }
 
@@ -137,19 +197,26 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
                             if (baseResponse.hadSuccess()) {
                                 onLoginSuccessful(it)
                             } else {
-                                authenticationListener?.onAthenticatListener(false)
+                                context?.let { it2 ->
+                                    PoiziToast.with(it2)
+                                            ?.setGravity(Gravity.TOP)
+                                            ?.error(getString(R.string.email_password_invalid), Toast.LENGTH_SHORT)
+                                            ?.show()
+                                }
+                                authenticationListener?.onAuthenticationListener(false)
                             }
                         }
                     }
 
                     override fun onRequestError(baseResponse: BaseResponse<*>?) {
                         hideProgress()
-                        authenticationListener?.onAthenticatListener(false)
+                        authenticationListener?.onAuthenticationListener(false)
                         activity?.let {
-                            if (activity is BaseActivity) {
-                                (activity as BaseActivity).showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.email_password_invalid))
-                            } else if (activity is ProductDetailActivity) {
-                                (activity as ProductDetailActivity).showErrorMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.email_password_invalid))
+                            context?.let { it2 ->
+                                PoiziToast.with(it2)
+                                        ?.setGravity(Gravity.TOP)
+                                        ?.error(getString(R.string.email_password_invalid), Toast.LENGTH_SHORT)
+                                        ?.show()
                             }
                         }
                     }
@@ -192,7 +259,7 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
                 }
             }
         }
-        authenticationListener?.onAthenticatListener(true)
+        authenticationListener?.onAuthenticationListener(true)
 
         dismiss()
     }
@@ -215,13 +282,15 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun onSignUpClicked() {
+        RegisterModalBottomSheet().show(fragmentManager, "register")
+        dismiss()
     }
 
     private fun onForgetPasswordClicked() {
     }
 
     private fun onCloseClicked() {
-        authenticationListener?.onAthenticatListener(false)
+        authenticationListener?.onAuthenticationListener(false)
         dismiss()
     }
 }

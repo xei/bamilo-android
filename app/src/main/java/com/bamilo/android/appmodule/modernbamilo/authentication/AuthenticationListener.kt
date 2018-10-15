@@ -6,5 +6,5 @@ package com.bamilo.android.appmodule.modernbamilo.authentication
  * contact farshidabazari@gmail.com
  */
 interface AuthenticationListener {
-    fun onAthenticatListener(result: Boolean)
+    fun onAuthenticationListener(result: Boolean)
 }
