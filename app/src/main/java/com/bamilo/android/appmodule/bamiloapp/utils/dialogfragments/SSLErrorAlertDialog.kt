@@ -16,8 +16,16 @@ import com.bamilo.android.R
  */
 
 class SSLErrorAlertDialog(var context: Context) {
+    companion object {
+        @JvmStatic
+        var isShow = false
+    }
+
     @SuppressLint("InflateParams")
     fun show(title: String?, message: String?, positiveButton: View.OnClickListener, cancelButton: View.OnClickListener) {
+        if(isShow){
+            return
+        }
 
         val dialogBuilder = AlertDialog.Builder(context)
         val inflater = LayoutInflater.from(context)
@@ -35,13 +43,16 @@ class SSLErrorAlertDialog(var context: Context) {
         dialogView.findViewById<View>(R.id.tvAccept).setOnClickListener {
             alertDialog?.dismiss()
             positiveButton.onClick(dialogView)
+            isShow = false
         }
         dialogView.findViewById<View>(R.id.tvCancel).setOnClickListener {
             alertDialog?.dismiss()
             cancelButton.onClick(dialogView)
+            isShow = false
         }
 
         alertDialog = dialogBuilder.create()
         alertDialog.show()
+        isShow = true
     }
 }
