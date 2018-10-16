@@ -689,5 +689,6 @@
     <string name="ssl_error_handler_title">خطا در نمایش محتوا</string>
     <string name="insert_email_or_phone_number">ایمیل یا شماره موبایل را وارد کنید</string>
     <string name="insert_password">رمز عبور را وارد کنید</string>
+    <string name="registeration_failed_error">خطا در ثبت نام</string>
 
 </resources>

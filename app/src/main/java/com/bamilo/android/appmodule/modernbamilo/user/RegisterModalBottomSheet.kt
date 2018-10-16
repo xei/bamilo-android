@@ -10,13 +10,11 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.design.widget.TextInputLayout
 import android.text.method.PasswordTransformationMethod
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.ImageView
+import android.widget.*
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra
@@ -32,11 +30,11 @@ import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel
 import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel
-import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
 import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
 import com.bamilo.android.appmodule.modernbamilo.util.extension.makeErrorViewScrollable
 import com.bamilo.android.appmodule.modernbamilo.util.extension.setErrorTypeface
 import com.bamilo.android.appmodule.modernbamilo.util.typography.TypeFaceHelper
@@ -275,13 +273,17 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
                                             true))
                             TrackerManager.trackEvent(context, EventConstants.Signup, authEventModel)
 
-                            //todo show warning message
-                            //(activity as BaseActivity).showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login))
+                            context?.let {
+                                PoiziToast.with(it)
+                                        ?.setGravity(Gravity.TOP)
+                                        ?.success(getString(R.string.succes_login), Toast.LENGTH_SHORT)
+                                        ?.show()
+                            }
 
                             // Set facebook login
                             CustomerUtils.setChangePasswordVisibility(activity, false)
                             activity?.let {
-                                if(it is BaseActivity){
+                                if (it is BaseActivity) {
                                     it.onBackPressed()
                                     it.setupDrawerNavigation()
                                 }
@@ -333,7 +335,7 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
         when (eventType) {
             EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT, EventType.ADD_PRODUCT_BUNDLE -> {
                 activity?.let {
-                    if(it is BaseActivity){
+                    if (it is BaseActivity) {
                         it.updateCartInfo()
                     }
                 }
@@ -341,17 +343,19 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
             }
             EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT -> {
                 activity?.let {
-                    if(it is BaseActivity){
+                    if (it is BaseActivity) {
                         it.updateCartInfo()
                     }
                 }
                 return true
             }
             EventType.GUEST_LOGIN_EVENT, EventType.LOGIN_EVENT, EventType.AUTO_LOGIN_EVENT, EventType.FORGET_PASSWORD_EVENT, EventType.REMOVE_PRODUCT_FROM_WISH_LIST, EventType.ADD_PRODUCT_TO_WISH_LIST, EventType.ADD_VOUCHER, EventType.REMOVE_VOUCHER, EventType.SUBMIT_FORM -> {
-                // TODO show warning
-                /*if (baseResponse.eventTask == EventTask.ACTION_TASK) {
-                    showWarningMessage(WarningFactory.SUCCESS_MESSAGE, baseResponse.successMessage, eventType)
-                }*/
+                context?.let {
+                    PoiziToast.with(it)
+                            ?.setGravity(Gravity.TOP)
+                            ?.success(baseResponse.successMessage, Toast.LENGTH_SHORT)
+                            ?.show()
+                }
                 return true
             }
             else -> {
@@ -362,7 +366,7 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
 
     fun handleErrorEvent(response: BaseResponse<*>?): Boolean {
         // Validate priority
-        if(response == null){
+        if (response == null) {
             return false
         }
 
@@ -386,36 +390,36 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
         }// Case request error
     }
 
-    private fun showWarningMessage(@WarningFactory.WarningErrorType warningFact: Int, message: String?, eventType: EventType?) {
-        if (TextUtils.isNotEmpty(message)) {
-            // todo show warning
-            //(activity as BaseActivity).showWarningMessage(warningFact, message)
-        } else {
-            // todo show warning
-//            val id = MessagesUtils.getMessageId(eventType, true)
-//            if (id > 0) {
-//                (activity as BaseActivity).showWarningMessage(warningFact, (activity as BaseActivity).getString(id))
-//            }
-        }
-    }
-
     private fun handleNetworkError(errorCode: Int, eventTask: EventTask): Boolean {
         var result = true
         when (errorCode) {
             ErrorCode.HTTP_STATUS, ErrorCode.IO, ErrorCode.CONNECT_ERROR, ErrorCode.TIME_OUT -> if (eventTask == EventTask.ACTION_TASK) {
-                // TODO show error
+                context?.let {
+                    PoiziToast.with(it)
+                            ?.setGravity(Gravity.TOP)
+                            ?.error(getString(R.string.no_internet_access_warning_title), Toast.LENGTH_SHORT)
+                            ?.show()
+                }
             }
 
             ErrorCode.NO_CONNECTIVITY -> {
                 if (eventTask == EventTask.ACTION_TASK) {
-                    // TODO show warning
-                    //(activity as BaseActivity).showWarningMessage(WarningFactory.ERROR_MESSAGE,
-                    //(activity as BaseActivity).getString(R.string.no_internet_access_warning_title))
+                    context?.let {
+                        PoiziToast.with(it)
+                                ?.setGravity(Gravity.TOP)
+                                ?.error(getString(R.string.no_internet_access_warning_title), Toast.LENGTH_SHORT)
+                                ?.show()
+                    }
                 }
             }
 
             ErrorCode.SSL, ErrorCode.SERVER_IN_MAINTENANCE, ErrorCode.SERVER_OVERLOAD -> if (eventTask == EventTask.ACTION_TASK) {
-                // TODO show error
+                context?.let {
+                    PoiziToast.with(it)
+                            ?.setGravity(Gravity.TOP)
+                            ?.error(getString(R.string.server_in_maintenance_warning), Toast.LENGTH_SHORT)
+                            ?.show()
+                }
             }
             else -> result = false
         }
@@ -434,7 +438,12 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
                 true
             }
             else -> {
-                // todo Show warning messages
+                context?.let {
+                    PoiziToast.with(it)
+                            ?.setGravity(Gravity.TOP)
+                            ?.error(getString(R.string.registeration_failed_error), Toast.LENGTH_SHORT)
+                            ?.show()
+                }
                 false
             }
         }
