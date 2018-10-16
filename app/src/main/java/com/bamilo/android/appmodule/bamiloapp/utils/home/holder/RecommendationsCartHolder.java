@@ -40,7 +40,7 @@ public class RecommendationsCartHolder {
         horizontalListView.enableRtlSupport(true);
 
         view.findViewById(R.id.home_teaser_recommendation_section_more).setOnClickListener(
-                v -> gotoRecommendationFragment(v.getContext()));
+                v -> gotoRecommendationFragment(context));
     }
 
     private void gotoRecommendationFragment(Context context) {
