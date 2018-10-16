@@ -91,6 +91,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     private boolean isShowingNoPaymentNecessary;
     private boolean pageTracked = false;
     private PaymentMethodAdapter paymentMethodAdapter;
+    private int selectedPaymentMethodId;
 
     /**
      * Empty constructor
@@ -145,8 +146,8 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         super.onViewCreated(view, savedInstanceState);
 
         // Get containers
-        mPaymentContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
-        mScrollView = (RecyclerView) view.findViewById(R.id.payment_scroll);
+        mPaymentContainer = view.findViewById(R.id.checkout_payment_methods_container);
+        mScrollView = view.findViewById(R.id.payment_scroll);
         LinearLayoutManager llmanager = new LinearLayoutManager(getActivity());
         mScrollView.setLayoutManager(llmanager);
         mTotalContainer = view.findViewById(R.id.total_container);
@@ -154,7 +155,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         view.findViewById(R.id.payment_continue).setOnClickListener(this);
         super.setCheckoutStep(view, 3);
 
-        TextView step1 = (TextView)view.findViewById(R.id.step1);
+        TextView step1 = view.findViewById(R.id.step1);
         step1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,7 +163,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             }
         });
 
-        TextView step2 = (TextView)view.findViewById(R.id.step2);
+        TextView step2 = view.findViewById(R.id.step2);
         step2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,7 +246,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             if (paymentMethodAdapter.getSelectedId() == -1) {
                 showWarningErrorMessage(getString(R.string.please_select_a_payment_method));
             } else {
-                setMultistepConfirmation();
+                setMultistepPayment(PaymentAction);
                 getBaseActivity().hideKeyboard();
             }
         } else {
@@ -331,12 +332,12 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             case GET_MULTI_STEP_FINISH:
                 mOrderFinish = (PackagePurchaseEntity) baseResponse.getContentData();
                 setTotal(mOrderFinish.getTotal());
-                hideActivityProgress();
+                setMultistepConfirmation();
             break;
 
             case SET_MULTI_STEP_FINISH:
+                hideActivityProgress();
                 mCheckoutFinish = (CheckoutFinish) baseResponse.getContentData();
-//                TrackerDelegator.trackPurchase(mCheckoutFinish, BamiloApplication.INSTANCE.getCart());
                 switchToSubmittedPayment();
                 getBaseActivity().updateCartInfo();
             break;
@@ -388,7 +389,9 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
         triggerContentEventProgress(new GetStepPaymentHelper(), null, this);
     }
 
-    private void setMultistepPayment(String endpoint, ContentValues values) {
+    private void setMultistepPayment(String endpoint) {
+        ContentValues values = new ContentValues();
+        values.put(PaymentFieldName, selectedPaymentMethodId);
         triggerContentEventProgress(new SetStepPaymentHelper(), SetStepPaymentHelper.createBundle(endpoint, values), this);
     }
 
@@ -397,7 +400,7 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
     }
 
     private void bindPaymentMethods(MultiStepPayment payment) {
-        LinkedHashMap<String, String> paymentMethods = new LinkedHashMap<>();
+        LinkedHashMap<String, String> paymentMethods;
         ArrayList<PaymentMethod> methodList= new ArrayList<>();
         HashMap<String, PaymentInfo> paymentInfoMap = null;
         PaymentAction = payment.getForm().getAction();
@@ -413,15 +416,9 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
             }
 
             paymentMethodAdapter = new PaymentMethodAdapter(methodList, -1);
-            paymentMethodAdapter.mFragmentBridge = selectedId -> {
-                //int selectedId = ((PaymentMethodAdapter) mScrollView.getAdapter()).getSelectedId();
-                ContentValues values = new ContentValues();
-                values.put(PaymentFieldName, selectedId);
-                setMultistepPayment(PaymentAction, values);
-            };
+            paymentMethodAdapter.mFragmentBridge = selectedId -> this.selectedPaymentMethodId = selectedId;
             mScrollView.setAdapter(paymentMethodAdapter);
-        } catch (Exception ex) {
-
+        } catch (Exception ignored) {
         }
     }
 
@@ -483,8 +480,8 @@ public class NewCheckoutPaymentMethodsFragment extends NewBaseFragment implement
 
     private void setTotal(double total) {
         // Get views
-        TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
-        TextView quantityValue = (TextView) mTotalContainer.findViewById(R.id.total_quantity);
+        TextView totalValue = mTotalContainer.findViewById(R.id.total_value);
+        TextView quantityValue = mTotalContainer.findViewById(R.id.total_quantity);
         // Set views
         totalValue.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(total)));
         quantityValue.setText(R.string.cart_total_amount);
