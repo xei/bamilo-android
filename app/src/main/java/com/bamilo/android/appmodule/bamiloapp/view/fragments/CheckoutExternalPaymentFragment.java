@@ -16,6 +16,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
@@ -34,13 +35,15 @@ import com.bamilo.android.framework.service.pojo.RestConstants;
 import com.bamilo.android.framework.service.rest.AigHttpClient;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.HttpCookie;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 /**
