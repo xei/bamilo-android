@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsCheckout;
@@ -47,7 +48,7 @@ import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
-import com.emarsys.predict.RecommendedItem;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -535,7 +536,7 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
                 //relatedProductsView.removeView(recommendationsHolder.itemView);
                 // recommendations.setVisibility(View.GONE);
                 relatedProductsView.setVisibility(View.GONE);
-                btnContinueShopping.setVisibility(View.VISIBLE);
+//                btnContinueShopping.setVisibility(View.VISIBLE);
                 return;
             }
             btnContinueShopping.setVisibility(View.GONE);
