@@ -41,68 +41,98 @@
             app:locale="fa_IR"
             app:style="bold"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/loginBottomSheet_til_emailOrPhone"
+        <RelativeLayout
+            android:id="@+id/rlEmailAndPhoneRoot"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            app:errorEnabled="true"
-            app:errorTextAppearance="@style/error_appearance"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/loginText">
 
-            <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
-                android:id="@+id/loginBottomSheet_editText_emailOrPhone"
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/imgPerson"
+                android:layout_width="@dimen/dimen_20dp"
+                android:layout_height="@dimen/dimen_20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_outline_person_gray"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/loginBottomSheet_til_emailOrPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/dimen_8dp"
-                android:drawableRight="@drawable/ic_outline_person_gray"
-                android:gravity="right"
-                android:hint="@string/email_or_phone"
-                android:imeOptions="actionNext"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/secondary_text_color"
-                android:textSize="12sp"
-                android:theme="@style/authenticationEditTextStyle"
-                app:locale="fa_IR"/>
+                android:layout_toLeftOf="@id/imgPerson"
+                android:layout_marginTop="4dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/error_appearance">
 
-        </android.support.design.widget.TextInputLayout>
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                    android:id="@+id/loginBottomSheet_editText_emailOrPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:hint="@string/email_or_phone"
+                    android:imeOptions="actionNext"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="12sp"
+                    android:theme="@style/authenticationEditTextStyle"
+                    app:locale="fa_IR"
+                    tools:ignore="RtlSymmetry"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/loginBottomSheet_til_password"
+            </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlPasswordRoot"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            app:errorEnabled="true"
-            app:errorTextAppearance="@style/error_appearance"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginBottomSheet_til_emailOrPhone"
-            app:passwordToggleEnabled="true">
+            app:layout_constraintTop_toBottomOf="@+id/rlEmailAndPhoneRoot">
 
-            <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
-                android:id="@+id/loginBottomSheet_editText_password"
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/imgLock"
+                android:layout_width="@dimen/dimen_20dp"
+                android:layout_height="@dimen/dimen_20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_lock_gray"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/loginBottomSheet_til_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="11dp"
-                android:drawableRight="@drawable/ic_lock_gray"
-                android:gravity="right"
-                android:hint="@string/password"
-                android:imeOptions="actionDone"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/secondary_text_color"
-                android:textSize="12sp"
-                android:theme="@style/authenticationEditTextStyle"
-                app:locale="fa_IR"/>
+                android:layout_toLeftOf="@id/imgLock"
+                android:layout_marginTop="4dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/error_appearance"
+                app:passwordToggleEnabled="true">
 
-        </android.support.design.widget.TextInputLayout>
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                    android:id="@+id/loginBottomSheet_editText_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:hint="@string/password"
+                    android:imeOptions="actionDone"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="12sp"
+                    android:theme="@style/authenticationEditTextStyle"
+                    app:locale="fa_IR"
+                    tools:ignore="RtlSymmetry"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
 
         <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
             android:id="@+id/loginBottomSheet_textView_forgetPassword"
@@ -113,7 +143,7 @@
             android:textColor="@color/blue_link"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loginBottomSheet_til_password"
+            app:layout_constraintTop_toBottomOf="@id/rlPasswordRoot"
             app:locale="fa_IR"/>
 
         <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton

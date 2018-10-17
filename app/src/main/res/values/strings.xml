@@ -532,7 +532,7 @@
     <string name="error_isrequired">Is required</string>
     <string name="normal_string_regex" translatable="false">[0-9a-zA-Z-]*</string>
     <string name="email_regex" translatable="false">[a-zA-Z0-9äöüÄÖÜ_+.-]+@[a-zA-Z0-9äöüÄÖÜ][a-zA-Z0-9-äöüÄÖÜ.]+\\.([a-zA-Z]{2,6})</string>
-    <string name="email_password_invalid">email/password is not correct</string>
+    <string name="email_password_invalid">user name/password is not correct</string>
     <string name="address_next_button">Continue</string>
     <string name="payment_next_button">Continue and Payment</string>
     <string name="coupon_label">Coupon</string>
@@ -743,10 +743,14 @@
     <!-- Register Screen -->
     <string name="registerScreen_title">ثبت‌نام در بامیلو</string>
     <string name="registerScreen_hint_userId">آدرس ایمیل</string>
+    <string name="registerScreen_hint_userId_mandatory">آدرس ایمیل *</string>
     <string name="registerScreen_hint_password">گذرواژه</string>
+    <string name="registerScreen_hint_password_mandatory">گذرواژه *</string>
     <string name="registerScreen_hint_mobile">شماره تلفن همراه</string>
+    <string name="registerScreen_hint_mobile_mandatory">شماره تلفن همراه *</string>
     <string name="registerScreen_hint_nationalId">کد ملی</string>
-    <string name="registerScreen_btn_register">ثبت‌نام</string>
+    <string name="registerScreen_hint_nationalId_mandatory">کد ملی *</string>
+    <string name="registerScreen_btn_register">ثبت‌ نام</string>
     <string name="registerScreen_btn_goToLogin">حساب کاربری دارم</string>
     <string name="verifyPhoneNoScreen_title">کد بازیابی را ارسال کنید</string>
     <string name="verifyPhoneNoScreen_subtitle">کد تایید برای %s ارسال شده است</string>

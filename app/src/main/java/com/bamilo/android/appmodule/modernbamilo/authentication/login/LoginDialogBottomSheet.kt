@@ -34,7 +34,6 @@ import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel
 import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator
 import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTracker
-import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
 import com.bamilo.android.appmodule.modernbamilo.authentication.AuthenticationListener
@@ -197,10 +196,14 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
                             if (baseResponse.hadSuccess()) {
                                 onLoginSuccessful(it)
                             } else {
+                                var message = getString(R.string.email_password_invalid)
+                                if (!TextUtils.isEmpty(baseResponse.errorMessage)) {
+                                    message = baseResponse.errorMessage
+                                }
                                 context?.let { it2 ->
                                     PoiziToast.with(it2)
                                             ?.setGravity(Gravity.TOP)
-                                            ?.error(getString(R.string.email_password_invalid), Toast.LENGTH_SHORT)
+                                            ?.error(message, Toast.LENGTH_SHORT)
                                             ?.show()
                                 }
                                 authenticationListener?.onAuthenticationListener(false)
@@ -211,12 +214,18 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
                     override fun onRequestError(baseResponse: BaseResponse<*>?) {
                         hideProgress()
                         authenticationListener?.onAuthenticationListener(false)
-                        activity?.let {
-                            context?.let { it2 ->
-                                PoiziToast.with(it2)
-                                        ?.setGravity(Gravity.TOP)
-                                        ?.error(getString(R.string.email_password_invalid), Toast.LENGTH_SHORT)
-                                        ?.show()
+                        baseResponse?.let { br ->
+                            activity?.let {
+                                var message = getString(R.string.email_password_invalid)
+                                if (!TextUtils.isEmpty(br.errorMessage)) {
+                                    message = br.errorMessage
+                                }
+                                context?.let { it2 ->
+                                    PoiziToast.with(it2)
+                                            ?.setGravity(Gravity.TOP)
+                                            ?.error(message, Toast.LENGTH_SHORT)
+                                            ?.show()
+                                }
                             }
                         }
                     }
