@@ -19,6 +19,7 @@ import com.adjust.sdk.AdjustConfig;
 import com.adjust.sdk.AdjustEvent;
 import com.adjust.sdk.LogLevel;
 import com.adjust.sdk.OnAttributionChangedListener;
+import com.bamilo.android.BuildConfig;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ProductDetail;
 import com.bamilo.android.framework.service.Darwin;
@@ -167,14 +168,9 @@ public class AdjustTracker extends AbcBaseTracker {
      * initialized Adjust tracker
      */
     public static void initializeAdjust(final Context context) {
-        // Get adjust environment and log level
-        String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
-        LogLevel logLevel = LogLevel.INFO;
-        // Case dev
-        if (!context.getResources().getBoolean(R.bool.adjust_is_production_env)) {
-            environment = AdjustConfig.ENVIRONMENT_SANDBOX;
-            //logLevel = LogLevel.VERBOSE;
-        }
+        String environment = (BuildConfig.DEBUG) ? AdjustConfig.ENVIRONMENT_SANDBOX : AdjustConfig.ENVIRONMENT_PRODUCTION;
+        LogLevel logLevel = (BuildConfig.DEBUG) ? LogLevel.VERBOSE : LogLevel.SUPRESS;
+
         initializeAdjust(context, environment, logLevel);
     }
 
@@ -182,20 +178,22 @@ public class AdjustTracker extends AbcBaseTracker {
      * Initialized Adjust tracker
      */
     private static void initializeAdjust(final Context context, String environment, LogLevel logLevel) {
-        // Create adjust config
         AdjustConfig config = new AdjustConfig(context, getAppToken(context), environment);
+
         config.setLogLevel(logLevel);
+
         // Set pre install default tracker
         if (!TextUtils.isEmpty(context.getString(R.string.adjust_default_tracker))) {
             config.setDefaultTracker(context.getString(R.string.adjust_default_tracker));
         }
-        // Set listener
+
         config.setOnAttributionChangedListener(new OnAttributionChangedListener() {
             @Override
             public void onAttributionChanged(AdjustAttribution attribution) {
                 AdjustTracker.saveReAttributionInfoForGTM(context, attribution.adgroup, attribution.network, attribution.campaign, attribution.creative);
             }
         });
+
         // Create adjust using configs
         Adjust.onCreate(config);
     }
