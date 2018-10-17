@@ -573,7 +573,7 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun showErrorMessage(warningFact: Int, message: String) {
-        if (::warningFactory.isInitialized) {
+        if (::warningFactory.isInitialized && !android.text.TextUtils.isEmpty(message)) {
             warningFactory.showWarning(warningFact, message)
         }
     }
