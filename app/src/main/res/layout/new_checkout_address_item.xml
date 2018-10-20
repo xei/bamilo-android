@@ -37,21 +37,18 @@
             android:visibility="visible"
             android:background="@color/address_separator" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/buttons"
             android:layout_width="48dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:orientation="vertical"
-            android:layout_marginLeft="4dp"
-            android:weightSum="2">
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp" >
 
             <RelativeLayout
                 android:id="@+id/checkout_address_item_btn_edit_rl"
                 android:layout_width="48dp"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="48dp">
 
                 <ImageView
                     android:id="@+id/checkout_address_item_btn_edit"
@@ -63,14 +60,16 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/space"
                 android:layout_width="48dp"
-                android:layout_height="16dp" />
+                android:layout_height="16dp"
+                android:layout_below="@+id/checkout_address_item_btn_edit_rl" />
 
             <RelativeLayout
                 android:id="@+id/checkout_address_item_delete"
                 android:layout_width="48dp"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="48dp"
+                android:layout_below="@+id/space">
 
                 <ImageView
                     android:id="@+id/checkout_address_item_btn_delete"
@@ -80,7 +79,7 @@
                     android:padding="12dp"
                     android:src="@drawable/trash" />
             </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
         <!-- ITEM -->
         <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
