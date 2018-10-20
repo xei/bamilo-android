@@ -1,6 +1,7 @@
 package com.bamilo.android.appmodule.bamiloapp.view.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RecommendationsCartHolder;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RichRelevanceAdapter;
+import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity;
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton;
 import com.bamilo.android.appmodule.modernbamilo.userreview.UserReviewActivity;
 import com.bamilo.android.appmodule.modernbamilo.util.storage.SharedPreferencesHelperKt;
@@ -446,11 +448,17 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
      */
     private void onClickContinue() {
         // Goto home
-        if (BamiloApplication.CUSTOMER != null
-                && BamiloApplication.CUSTOMER.getIdAsString() != null) {
-            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
-                    FragmentController.ADD_TO_BACK_STACK);
-        }
+
+        Intent intent = new Intent(getContext(), MainFragmentActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        getBaseActivity().finish();
+
+//        if (BamiloApplication.CUSTOMER != null
+//                && BamiloApplication.CUSTOMER.getIdAsString() != null) {
+//            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+//                    FragmentController.ADD_TO_BACK_STACK);
+//        }
     }
 
     /*
@@ -536,7 +544,7 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
                 //relatedProductsView.removeView(recommendationsHolder.itemView);
                 // recommendations.setVisibility(View.GONE);
                 relatedProductsView.setVisibility(View.GONE);
-//                btnContinueShopping.setVisibility(View.VISIBLE);
+                btnContinueShopping.setVisibility(View.VISIBLE);
                 return;
             }
             btnContinueShopping.setVisibility(View.GONE);
