@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/fragmentDialogBottomsheetForgetPass_imageButton_close"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/ic_close_gray"
+            android:scaleType="fitXY"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/fragmentDialogBottomsheetForgetPass_textView_title"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:text="@string/forgetPassScreen_title"
+            android:gravity="center_vertical"
+            android:textColor="@color/grey4"
+            android:textSize="16sp"
+            android:layout_marginRight="24dp"
+            app:locale="fa_IR"
+            app:style="bold"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/fragmentDialogBottomsheetForgetPass_imageButton_close"/>
+
+        <EditText
+            android:focusable="true"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/fragmentDialogBottomsheetForgetPass_textInputLayout_userId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textAlignment="gravity"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_below="@+id/fragmentDialogBottomsheetForgetPass_textView_title"
+            android:layout_marginTop="16dp"
+            app:errorEnabled="true">
+
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                android:id="@+id/fragmentDialogBottomsheetForgetPass_xeiEditText_userId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/forgetPassScreen_hint_userId"
+                android:textSize="12sp"
+                android:inputType="textEmailAddress"
+                android:lines="1"
+                app:locale="fa_IR" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+            android:id="@+id/fragmentDialogBottomsheetForgetPass_bamiloActionButton_register"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@+id/fragmentDialogBottomsheetForgetPass_textInputLayout_userId"
+            android:layout_marginTop="24dp"
+            app:text="@string/forgetPassScreen_btn_recover"/>
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiButton
+            android:id="@+id/fragmentDialogBottomsheetForgetPass_xeiButton_goToLogin"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@+id/fragmentDialogBottomsheetForgetPass_bamiloActionButton_register"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/background_secondary_btn"
+            android:textColor="@color/grey3"
+            android:text="@string/forgetPassScreen_btn_register"/>
+        
+    </RelativeLayout>
+
+
+    </RelativeLayout>

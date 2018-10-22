@@ -4,10 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import com.emarsys.predict.RecommendedItem;
 import android.widget.TextView;
-import com.bamilo.android.framework.components.recycler.HorizontalListView;
-import com.bamilo.android.framework.components.recycler.VerticalSpaceItemDecoration;
+
+import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
@@ -15,7 +14,10 @@ import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.Recom
 import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendationsAdapter;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.TeaserViewFactory;
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
-import com.bamilo.android.R;
+import com.bamilo.android.framework.components.recycler.HorizontalListView;
+import com.bamilo.android.framework.components.recycler.VerticalSpaceItemDecoration;
+import com.emarsys.predict.RecommendedItem;
+
 import java.util.List;
 
 /**
@@ -55,14 +57,14 @@ public class RecommendationsHolder /*extends BaseTeaserViewHolder implements IRe
         sectionMore.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoRecommendationFragment(v);
+                gotoRecommendationFragment(context);
             }
         });
     }
 
-    private static void gotoRecommendationFragment(View v) {
-        if (v.getContext() instanceof BaseActivity) {
-            ((BaseActivity) v.getContext())
+    private static void gotoRecommendationFragment(Context context) {
+        if (context instanceof BaseActivity) {
+            ((BaseActivity) context)
                     .onSwitchFragment(FragmentType.MORE_RELATED_PRODUCTS, null,
                             FragmentController.ADD_TO_BACK_STACK);
         }

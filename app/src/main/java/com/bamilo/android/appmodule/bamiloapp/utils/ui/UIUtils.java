@@ -462,9 +462,8 @@ public class UIUtils {
     public static void shareApp(Context context) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        shareIntent
-                .putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.share_link));
-        context.startActivity(Intent.createChooser(shareIntent, "Share link using"));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.share_link_title) + "\n\n" + context.getResources().getString(R.string.share_link));
+        context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_app)));
 
         TrackerDelegator.trackAppShared();
     }

@@ -1,7 +1,6 @@
 package com.bamilo.android.appmodule.bamiloapp.app;
 
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -10,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -54,7 +54,7 @@ import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
 
-public class BamiloApplication extends Application {
+public class BamiloApplication extends MultiDexApplication {
     private static MainComponent component;
 
     private static final String TAG = BamiloApplication.class.getSimpleName();

@@ -9,12 +9,12 @@ import android.view.MotionEvent
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.PDVMainView
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.gallery.GalleryActivity
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.ProductWebApi
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Image
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ImageSliderModel
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.ProductWebApi
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper
-import com.bamilo.android.framework.service.pojo.RestConstants
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
+import com.bamilo.android.framework.service.pojo.RestConstants
 import retrofit2.Callback
 
 /**
@@ -45,17 +45,14 @@ class SliderPresenter(var context: Context,
                 .enqueue(callBack)
     }
 
-    fun shareProduct(shareUrl: String?) {
+    fun shareProduct(productTitle: String, shareUrl: String?) {
         try {
             val extraSubject = context.getString(R.string.share_subject, context.getString(R.string.app_name_placeholder))
-            val extraMsg =
-                    context.getString(R.string.share_checkout_this_product) + "\n" + shareUrl
+            val extraMsg = '\u200f' + productTitle + ' ' + context.getString(R.string.share_checkout_this_product) + "\n\n" + shareUrl
 
             val shareIntent = createShareIntent(extraSubject, extraMsg)
-            shareIntent.putExtra(RestConstants.SKU, productSku)
-            context.startActivity(shareIntent)
-        } catch (e: NullPointerException) {
-        }
+            context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_product)))
+        } catch (ignore: NullPointerException) {}
     }
 
     private fun createShareIntent(extraSubject: String, extraText: String): Intent {
@@ -64,6 +61,7 @@ class SliderPresenter(var context: Context,
         sharingIntent.type = "text/plain"
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, extraSubject)
         sharingIntent.putExtra(Intent.EXTRA_TEXT, extraText)
+        sharingIntent.putExtra(RestConstants.SKU, productSku)
         return sharingIntent
     }
 

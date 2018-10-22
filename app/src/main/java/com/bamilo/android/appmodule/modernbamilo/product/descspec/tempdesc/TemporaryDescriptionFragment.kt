@@ -135,7 +135,7 @@ class TemporaryDescriptionFragment : Fragment(), View.OnClickListener {
                             ?.replace("\u201c", "\"")
                             ?.replace("\u201d", "\"")
 
-                    mWebView.loadData("\u200f$formattedString", "text/html", "UTF-8")
+                    mWebView.loadData("\u200f$formattedString", "text/html; charset=UTF-8", null)
                 }
             }
 
