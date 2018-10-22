@@ -690,5 +690,6 @@
     <string name="insert_email_or_phone_number">ایمیل یا شماره موبایل را وارد کنید</string>
     <string name="insert_password">رمز عبور را وارد کنید</string>
     <string name="registeration_failed_error">خطا در ثبت نام</string>
+    <string name="verification_code_was_sent_to">کد تایید برای %s ارسال شده است</string>
 
 </resources>

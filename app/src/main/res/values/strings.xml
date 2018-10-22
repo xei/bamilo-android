@@ -759,5 +759,6 @@
     <string name="ssl_error_handler_message">به دلیل قدیمی بودن نسخه اندروید شما، بامیلو به اجازه شما برای نمایش این صفحه نیازمند است</string>
     <string name="ssl_error_handler_title">خطا در نمایش محتوا</string>
     <string name="registeration_failed_error">خطا در ثبت نام</string>
+    <string name="verification_code_was_sent_to">کد تایید برای %s ارسال شده است</string>
 
 </resources>

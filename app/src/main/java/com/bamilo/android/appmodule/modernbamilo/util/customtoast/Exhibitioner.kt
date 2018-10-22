@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.bamilo.android.R
+import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 
 /**
  * Created by FarshidAbz.
@@ -68,7 +69,7 @@ class Exhibitioner internal constructor(private val context: Context, private va
     }
 
     private fun initToastText(tvToastText: TextView) {
-        tvToastText.text = poiziToastOptionModel.message
+        tvToastText.text = poiziToastOptionModel.message?.persianizeDigitsInString()
         tvToastText.setTextColor(poiziToastOptionModel.textColor)
         tvToastText.typeface = poiziToastOptionModel.textTypeFace
         tvToastText.setTextSize(TypedValue.COMPLEX_UNIT_SP, poiziToastOptionModel.textSize.toFloat())

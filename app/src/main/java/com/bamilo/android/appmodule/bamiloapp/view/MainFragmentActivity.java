@@ -15,15 +15,11 @@ import android.util.Log;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
-import com.bamilo.android.appmodule.bamiloapp.constants.tracking.CategoryConstants;
-import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.factories.EmarsysEventFactory;
-import com.bamilo.android.appmodule.bamiloapp.helpers.EmailHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.NextStepStruct;
-import com.bamilo.android.appmodule.bamiloapp.helpers.session.LoginAutoHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
@@ -31,7 +27,6 @@ import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
 import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.DeepLinkManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
 import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTracker;
@@ -90,13 +85,11 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailAc
 import com.bamilo.android.appmodule.bamiloapp.view.relatedproducts.RecommendProductsFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.subcategory.SubCategoryFilterFragment;
 import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet;
+import com.bamilo.android.appmodule.modernbamilo.authentication.repository.AuthenticationRepo;
 import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet;
-import com.bamilo.android.framework.service.objects.checkout.CheckoutStepLogin;
-import com.bamilo.android.framework.service.objects.customer.Customer;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.TextUtils;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -123,10 +116,6 @@ public class MainFragmentActivity extends BaseActivity {
     public MainFragmentActivity() {
         super(NavigationAction.UNKNOWN, EnumSet.noneOf(MyMenuItem.class),
                 IntConstants.ACTION_BAR_NO_TITLE);
-    }
-
-    private void showMessage(String message) {
-        Log.i("AndroidBash", message);
     }
 
     @Override
@@ -551,66 +540,40 @@ public class MainFragmentActivity extends BaseActivity {
         }
 
         showProgress();
-        BamiloApplication.INSTANCE.sendRequest(new LoginAutoHelper(this),
-                LoginAutoHelper.createAutoLoginBundle(), new IResponseCallback() {
-                    @Override
-                    public void onRequestComplete(BaseResponse baseResponse) {
-                        dismissProgress();
-                        NextStepStruct nextStepStruct = (NextStepStruct) baseResponse
-                                .getContentData();
-                        FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
-                        // Case valid next step
-                        if (nextStepFromApi != FragmentType.UNKNOWN) {
-                            Customer customer = ((CheckoutStepLogin) nextStepStruct
-                                    .getCheckoutStepObject())
-                                    .getCustomer();
-                            // Tracking
-                            TrackerDelegator.trackLoginSuccessful(customer, true, false);
+        AuthenticationRepo.INSTANCE.autoLogin(this, new IResponseCallback() {
+            @Override
+            public void onRequestComplete(BaseResponse baseResponse) {
+                dismissProgress();
+                NextStepStruct nextStepStruct = (NextStepStruct) baseResponse
+                        .getContentData();
+                FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
 
-                            // Global Tracker
-                            MainEventModel authEventModel = new MainEventModel(
-                                    CategoryConstants.ACCOUNT,
-                                    EventActionKeys.LOGIN_SUCCESS,
-                                    Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                                    MainEventModel
-                                            .createAuthEventModelAttributes(
-                                                    Constants.LOGIN_METHOD_EMAIL,
-                                                    EmailHelper.getHost(customer.getEmail()),
-                                                    true));
-                            TrackerManager
-                                    .trackEvent(MainFragmentActivity.this, EventConstants.Login,
-                                            authEventModel);
+                if (nextStepFromApi != FragmentType.UNKNOWN) {
 
-                            EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(
-                                    getResources().getString(R.string.Emarsys_ContactFieldID)),
-                                    BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER
-                                            .getEmail() : null);
+                    FragmentType mParentFragmentType = (FragmentType) bundle
+                            .getSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE);
+                    FragmentType mNextStepFromParent = (FragmentType) bundle
+                            .getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
+                    boolean isInCheckoutProcess = bundle
+                            .getBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API);
 
-                            // Validate the next step
-                            FragmentType mParentFragmentType = (FragmentType) bundle
-                                    .getSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE);
-                            FragmentType mNextStepFromParent = (FragmentType) bundle
-                                    .getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
-                            boolean isInCheckoutProcess = bundle
-                                    .getBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API);
+                    CheckoutStepManager
+                            .validateLoggedNextStep(MainFragmentActivity.this,
+                                    isInCheckoutProcess,
+                                    mParentFragmentType, mNextStepFromParent,
+                                    nextStepFromApi,
+                                    bundle);
+                } else {
+                    setupDrawerNavigation();
+                }
+            }
 
-                            CheckoutStepManager
-                                    .validateLoggedNextStep(MainFragmentActivity.this,
-                                            isInCheckoutProcess,
-                                            mParentFragmentType, mNextStepFromParent,
-                                            nextStepFromApi,
-                                            bundle);
-                        } else {
-                            setupDrawerNavigation();
-                        }
-                    }
-
-                    @Override
-                    public void onRequestError(BaseResponse baseResponse) {
-                        dismissProgress();
-                        LoginDialogBottomSheet.Companion.show(getSupportFragmentManager(), bundle);
-                    }
-                });
+            @Override
+            public void onRequestError(BaseResponse baseResponse) {
+                dismissProgress();
+                LoginDialogBottomSheet.Companion.show(getSupportFragmentManager(), bundle);
+            }
+        });
     }
 
     /**

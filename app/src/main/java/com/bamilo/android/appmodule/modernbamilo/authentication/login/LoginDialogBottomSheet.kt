@@ -1,7 +1,6 @@
 package com.bamilo.android.appmodule.modernbamilo.authentication.login
 
 import android.app.Dialog
-import android.content.ContentValues
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomSheetBehavior
@@ -28,7 +27,6 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentCont
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
 import com.bamilo.android.appmodule.bamiloapp.helpers.EmailHelper
 import com.bamilo.android.appmodule.bamiloapp.helpers.NextStepStruct
-import com.bamilo.android.appmodule.bamiloapp.helpers.session.LoginHelper
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel
@@ -37,6 +35,7 @@ import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTrac
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
 import com.bamilo.android.appmodule.modernbamilo.authentication.AuthenticationListener
+import com.bamilo.android.appmodule.modernbamilo.authentication.repository.AuthenticationRepo
 import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
 import com.bamilo.android.appmodule.modernbamilo.util.dpToPx
@@ -184,11 +183,9 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun login() {
-        val values = ContentValues()
-        values.put("login[identifier]", emailOrPhoneEditText.text.toString())
-        values.put("login[password]", passwordEditText.text.toString())
-        BamiloApplication.INSTANCE.sendRequest(LoginHelper(context),
-                LoginHelper.createLoginBundle(values),
+        AuthenticationRepo.login(context,
+                emailOrPhoneEditText.text.toString(),
+                passwordEditText.text.toString(),
                 object : IResponseCallback {
                     override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
                         hideProgress()

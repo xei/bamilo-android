@@ -16,7 +16,7 @@ internal class PoiziToastOptionModel {
     private val defaultTextColor = Color.parseColor("#FFFFFF")
 
     @ColorInt
-    private val ERROR_COLOR = Color.parseColor("#e73d3d")
+    private val ERROR_COLOR = Color.parseColor("#e67879")
 
     @ColorInt
     private val INFO_COLOR = Color.parseColor("#0076FF")

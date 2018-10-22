@@ -20,7 +20,7 @@ internal object PoiziToastUtils {
 
     fun tint9PatchDrawableFrame(context: Context, @ColorInt tintColor: Int): Drawable {
         val toastDrawable = getDrawable(context, R.drawable.toast_frame) as NinePatchDrawable?
-        toastDrawable!!.colorFilter = PorterDuffColorFilter(tintColor, PorterDuff.Mode.DST_IN)
+        toastDrawable!!.colorFilter = PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
         return toastDrawable
     }
 

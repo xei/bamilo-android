@@ -78,6 +78,16 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
         holder.name.setText(method_name);
         holder.text.setText(method.getText());
 
+//        if (method_name.contains("پارسیان")) {
+//            holder.payment_logo.setVisibility(View.VISIBLE);
+//            holder.method_logo.setImageResource(R.drawable.parsian_logo);
+//        } else if (method_name.contains("سامان")) {
+//            holder.payment_logo.setVisibility(View.VISIBLE);
+//            holder.method_logo.setImageResource(R.drawable.saman_logo);
+//        } else {
+//            holder.payment_logo.setVisibility(View.GONE);
+//        }
+
         holder.checkBox.setVisibility(View.VISIBLE);
         holder.checkBox.setChecked(methodSelection.get(position).isSelected());
         holder.checkBox.setTag(R.string.address_item_key_1, new Integer(position));
@@ -98,30 +108,33 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdap
             mFragmentBridge.paymentMethodSelected(getSelectedId());
         }
 
-        holder.view.setOnClickListener(v -> {
-            holder.checkBox.setChecked(true);
-            RadioButton cb = holder.checkBox;
-            int clickedPos = holder.getAdapterPosition();
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.checkBox.setChecked(true);
+                RadioButton cb = holder.checkBox;
+                int clickedPos = holder.getAdapterPosition();
 
-            if (cb.isChecked()) {
-                if (lastChecked != null && clickedPos != lastCheckedPos) {
-                    lastChecked.setChecked(false);
-                    ((TextView) (lastChecked).getTag(R.id.text_field)).setVisibility(View.GONE);
-                    methodSelection.get(lastCheckedPos).setSelected(false);
-                    lastChecked = cb;
-                    lastCheckedPos = clickedPos;
-                    if (holder.text.getText().equals("")) {
-                        holder.text.setVisibility(View.GONE);
-                    } else {
-                        holder.text.setVisibility(View.VISIBLE);
+                if (cb.isChecked()) {
+                    if (lastChecked != null && clickedPos != lastCheckedPos) {
+                        lastChecked.setChecked(false);
+                        ((TextView) (lastChecked).getTag(R.id.text_field)).setVisibility(View.GONE);
+                        methodSelection.get(lastCheckedPos).setSelected(false);
+                        lastChecked = cb;
+                        lastCheckedPos = clickedPos;
+                        if (holder.text.getText().equals("")) {
+                            holder.text.setVisibility(View.GONE);
+                        } else {
+                            holder.text.setVisibility(View.VISIBLE);
+                        }
                     }
+                } else {
+                    lastChecked = null;
                 }
-            } else {
-                lastChecked = null;
-            }
 
-            methodSelection.get(clickedPos).setSelected(cb.isChecked());
-            mFragmentBridge.paymentMethodSelected(getSelectedId());
+                methodSelection.get(clickedPos).setSelected(cb.isChecked());
+                mFragmentBridge.paymentMethodSelected(getSelectedId());
+            }
         });
 
     }

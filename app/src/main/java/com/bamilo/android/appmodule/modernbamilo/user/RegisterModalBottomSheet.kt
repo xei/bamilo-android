@@ -33,6 +33,7 @@ import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
 import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet
+import com.bamilo.android.appmodule.modernbamilo.authentication.verification.VerificationFragmentBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
 import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
 import com.bamilo.android.appmodule.modernbamilo.util.extension.makeErrorViewScrollable
@@ -284,7 +285,6 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
                             CustomerUtils.setChangePasswordVisibility(activity, false)
                             activity?.let {
                                 if (it is BaseActivity) {
-                                    it.onBackPressed()
                                     it.setupDrawerNavigation()
                                 }
                             }
@@ -476,7 +476,13 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
         val phoneNumber = mMobileNoEditText.text.toString()
         val args = Bundle()
         args.putString(ConstantsIntentExtra.PHONE_NUMBER, phoneNumber)
-        (activity as BaseActivity).onSwitchFragment(FragmentType.MOBILE_VERIFICATION, args, false)
+
+        VerificationFragmentBottomSheet.newInstance(phoneNumber,
+                mNationalIdEditText.text.toString(),
+                mUserIdEditText.text.toString(),
+                mPasswordEditText.text.toString()).show(fragmentManager, "verifyPhone")
+
+//        (activity as BaseActivity).onSwitchFragment(FragmentType.MOBILE_VERIFICATION, args, false)
 
         val prefs = context!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE)
         val editor = prefs.edit()
