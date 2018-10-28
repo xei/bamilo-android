@@ -3,6 +3,7 @@ package com.bamilo.android.framework.service.rest;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.bamilo.android.BuildConfig;
 import com.bamilo.android.framework.service.rest.configs.AigRestContract;
 import com.bamilo.android.framework.service.rest.configs.HeaderConstants;
 import com.bamilo.android.framework.service.rest.errors.AigErrorHandler;
@@ -22,8 +23,6 @@ import retrofit.RestAdapter;
  */
 public class AigRestAdapter {
 
-    private static boolean isDebuggable = false;
-
     /**
      * Interface to perform a request
      */
@@ -41,7 +40,7 @@ public class AigRestAdapter {
     public static RestAdapter getRestAdapter(Request request) {
         // Create a rest adapter
         RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setLogLevel(isDebuggable ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
+                .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                 .setClient(AigHttpClient.getInstance())
                 .setEndpoint(request.getEndPoint())
                 .setRequestInterceptor(new HttpHeaderRequestInterceptor(request.getCache()));
@@ -51,14 +50,6 @@ public class AigRestAdapter {
                 .setErrorHandler(new AigErrorHandler());
         }
         return builder.build();
-    }
-
-    /**
-     * Enable the debug mode (DebugTools).
-     */
-    @SuppressWarnings("unused")
-    public static void enableDebug() {
-        isDebuggable = true;
     }
 
     /**

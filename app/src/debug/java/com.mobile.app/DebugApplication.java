@@ -20,20 +20,6 @@ public class DebugApplication extends BamiloApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        if (this.isDebuggable()) {
-
-            //Leakcanary
-            /*if (LeakCanary.isInAnalyzerProcess(this)) {
-                // This process is dedicated to LeakCanary for heap analysis.
-                // You should not init your app in this process.
-                return;
-            }
-            LeakCanary.install(this);*/
-
-            //AIG Rest Adapter
-            AigRestAdapter.enableDebug();
-        }
     }
 
     @Override
