@@ -739,6 +739,7 @@
     <string name="forget_password">فراموشی رمز عبور</string>
     <string name="insert_email_or_phone_number">ایمیل یا شماره موبایل را وارد کنید</string>
     <string name="insert_password">رمز عبور را وارد کنید</string>
+    <string name="invalid_email_or_phone_number">ایمیل یا شماره موبایل نامعتبر</string>
 
     <!-- Register Screen -->
     <string name="registerScreen_title">ثبت‌نام در بامیلو</string>

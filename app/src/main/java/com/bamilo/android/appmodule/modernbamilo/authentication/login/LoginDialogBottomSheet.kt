@@ -10,6 +10,7 @@ import android.support.design.widget.TextInputLayout
 import android.support.v4.app.FragmentManager
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
+import android.util.Patterns
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -271,11 +272,25 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun checkEmailOrPhoneValidation(): Boolean {
-        if (TextUtils.isEmpty(emailOrPhoneEditText.text)) {
+        if (TextUtils.isEmpty(emailOrPhoneEditText.text.toString())) {
             emailOrPhoneTextInputLayout.error = getString(R.string.insert_email_or_phone_number)
-            return false
         }
-        return true
+
+        if (isValidEmail(emailOrPhoneEditText.text.toString())) {
+            return true
+        }
+
+        if (emailOrPhoneEditText.text.toString().startsWith("09") && emailOrPhoneEditText.text.toString().length == 11) {
+            return true
+        }
+
+        emailOrPhoneTextInputLayout.error = getString(R.string.invalid_email_or_phone_number)
+
+        return false
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches())
     }
 
     private fun checkPasswordValidation(): Boolean {
