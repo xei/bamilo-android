@@ -36,6 +36,7 @@ import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTrac
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
 import com.bamilo.android.appmodule.modernbamilo.authentication.AuthenticationListener
+import com.bamilo.android.appmodule.modernbamilo.authentication.forgetpassword.ForgetPasswordBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.authentication.repository.AuthenticationRepo
 import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
@@ -308,6 +309,8 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun onForgetPasswordClicked() {
+        ForgetPasswordBottomSheet().show(fragmentManager, "forgetPassword")
+        dismiss()
     }
 
     private fun onCloseClicked() {
