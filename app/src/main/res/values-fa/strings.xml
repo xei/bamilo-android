@@ -77,7 +77,7 @@
     <string name="fallback_welcome">خوش آمدید به</string>
     <string name="fgt_pass">کلمه عبور خود را فراموش کرده ام</string>
     <string name="filters_label">فیلترها</string>
-    <string name="forgotpass_header">بازیابی کلمه عبور</string>
+    <string name="forgotpass_header">بازیابی رمز عبور</string>
     <string name="forgotten_password">لطفا پست الکترونیکی خود را وارد کنید</string>
     <string name="forgotten_password_examplemail">ایمیل</string>
     <string name="forgotten_password_sub_text">به منظور تغییر رمز عبور لینکی برای شما ارسال خواهد شد.</string>
@@ -692,5 +692,9 @@
     <string name="insert_password">رمز عبور را وارد کنید</string>
     <string name="registeration_failed_error">خطا در ثبت نام</string>
     <string name="verification_code_was_sent_to">کد تایید برای %s ارسال شده است</string>
+    <string name="insert_your_password">رمز عبور جدید خود را وارد کنید</string>
+    <string name="password_length_limit_message">رمز عبور باید حداقل ۶ حرف و حداکثر ۱۲ حرف باشد</string>
+    <string name="verify_new_password">تکرار رمز عبور جدید</string>
+    <string name="new_password_">رمز عبور جدید</string>
 
 </resources>

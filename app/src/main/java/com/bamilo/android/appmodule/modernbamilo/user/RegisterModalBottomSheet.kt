@@ -477,7 +477,9 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
         val args = Bundle()
         args.putString(ConstantsIntentExtra.PHONE_NUMBER, phoneNumber)
 
-        VerificationFragmentBottomSheet.newInstance(phoneNumber,
+        VerificationFragmentBottomSheet.newInstance(
+                VerificationFragmentBottomSheet.VerificationType.REGISTRATION,
+                phoneNumber,
                 mNationalIdEditText.text.toString(),
                 mUserIdEditText.text.toString(),
                 mPasswordEditText.text.toString()).show(fragmentManager, "verifyPhone")

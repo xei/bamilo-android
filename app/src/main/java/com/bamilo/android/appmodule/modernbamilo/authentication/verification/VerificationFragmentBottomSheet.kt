@@ -46,6 +46,12 @@ import java.util.*
  */
 
 class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCallback {
+    enum class VerificationType {
+        REGISTRATION,
+        CHANGE_PHONE,
+        FORGET_PASSWORD
+    }
+
     private val MOBILE_VERIFICATION_CODE_SENT_SUCCESSFULLY = "MOBILE_VERIFICATION_CODE_SENT_SUCCESSFULLY"
     private val MOBILE_VERIFICATION_DONE = "MOBILE_VERIFICATION_DONE"
     private val MOBILE_VERIFICATION_FAILED = "MOBILE_VERIFICATION_FAILED"
@@ -71,13 +77,17 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
 
     companion object {
         @JvmStatic
-        fun newInstance(phoneNumber: String,
-                        nationalCode: String,
-                        email: String,
-                        password: String): VerificationFragmentBottomSheet {
+        fun newInstance(verificationType: VerificationType,
+                        identifier: String,
+                        phoneNumber: String = "",
+                        nationalCode: String = "",
+                        email: String = "",
+                        password: String = ""): VerificationFragmentBottomSheet {
             val verificationFragmentBottomSheet = VerificationFragmentBottomSheet()
             val bundle = Bundle()
 
+            bundle.putString("verificationType", verificationType.name)
+            bundle.putString("identifier", identifier)
             bundle.putString("phoneNumber", phoneNumber)
             bundle.putString("nationalCode", nationalCode)
             bundle.putString("email", email)
