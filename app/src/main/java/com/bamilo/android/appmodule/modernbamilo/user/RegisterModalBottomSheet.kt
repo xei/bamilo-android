@@ -23,7 +23,6 @@ import com.bamilo.android.appmodule.bamiloapp.constants.tracking.CategoryConstan
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants
 import com.bamilo.android.appmodule.bamiloapp.controllers.LogOut
-import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
 import com.bamilo.android.appmodule.bamiloapp.helpers.EmailHelper
 import com.bamilo.android.appmodule.bamiloapp.helpers.session.RegisterHelper
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback
@@ -480,11 +479,10 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
         VerificationFragmentBottomSheet.newInstance(
                 VerificationFragmentBottomSheet.VerificationType.REGISTRATION,
                 phoneNumber,
+                phoneNumber,
                 mNationalIdEditText.text.toString(),
                 mUserIdEditText.text.toString(),
                 mPasswordEditText.text.toString()).show(fragmentManager, "verifyPhone")
-
-//        (activity as BaseActivity).onSwitchFragment(FragmentType.MOBILE_VERIFICATION, args, false)
 
         val prefs = context!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE)
         val editor = prefs.edit()
