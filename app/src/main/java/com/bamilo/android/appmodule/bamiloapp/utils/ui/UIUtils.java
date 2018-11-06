@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.bamilo.android.BuildConfig;
 import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.utils.Toast;
 import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
 import com.bamilo.android.framework.components.customfontviews.CheckBox;
@@ -463,6 +464,13 @@ public class UIUtils {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.share_link_title) + "\n\n" + context.getResources().getString(R.string.share_link));
+        String url = context.getResources().getString(R.string.share_link);
+        if (BamiloApplication.isCustomerLoggedIn()
+                && BamiloApplication.CUSTOMER != null
+                && BamiloApplication.CUSTOMER.getId() > 0) {
+            url += "?label=" + String.valueOf(BamiloApplication.CUSTOMER.getId());
+        }
+        shareIntent.putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.share_link_title) + "\n\n" + url);
         context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_app)));
 
         TrackerDelegator.trackAppShared();
