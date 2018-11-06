@@ -130,7 +130,7 @@ class ProductDetailActivity : BaseActivity(),
     private fun bindAddToCartClickListener() {
         binding.productDetailLinearLayoutAddToCart?.addToCartLinearLayoutAddToBasket?.setOnClickListener {
             if (!canAddToCart()) {
-                productDetailPresenter.showBottomSheet()
+                productDetailPresenter.showBottomSheet(ChooseVariationBottomSheetHandler.CTAType.ADD_TO_CART)
                 return@setOnClickListener
             }
             if (productHasSizeVariation() && !TextUtils.isEmpty(sizeVariation.simple_sku)) {
@@ -146,7 +146,7 @@ class ProductDetailActivity : BaseActivity(),
     private fun bindBuyNowClickListener() {
         binding.productDetailLinearLayoutAddToCart?.addToCartLinearLayoutBuyNow?.setOnClickListener {
             if (!canAddToCart()) {
-                productDetailPresenter.showBottomSheet()
+                productDetailPresenter.showBottomSheet(ChooseVariationBottomSheetHandler.CTAType.BUY_NOW)
                 return@setOnClickListener
             }
             if (productHasSizeVariation() && !TextUtils.isEmpty(sizeVariation.simple_sku)) {

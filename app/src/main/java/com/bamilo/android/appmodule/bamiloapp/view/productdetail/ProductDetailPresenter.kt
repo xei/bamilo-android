@@ -20,8 +20,8 @@ class ProductDetailPresenter(var context: Context, binding: ActivityProductDetai
         chooseVariationBottomSheetHandler.fillChooseVariationBottomSheet(product)
     }
 
-    fun showBottomSheet() {
-        chooseVariationBottomSheetHandler.showBottomSheet()
+    fun showBottomSheet(CTAType: ChooseVariationBottomSheetHandler.CTAType) {
+        chooseVariationBottomSheetHandler.showBottomSheet(CTAType)
     }
 
     fun hideBottomSheet() {
