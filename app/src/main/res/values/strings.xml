@@ -532,7 +532,7 @@
     <string name="error_isrequired">Is required</string>
     <string name="normal_string_regex" translatable="false">[0-9a-zA-Z-]*</string>
     <string name="email_regex" translatable="false">[a-zA-Z0-9äöüÄÖÜ_+.-]+@[a-zA-Z0-9äöüÄÖÜ][a-zA-Z0-9-äöüÄÖÜ.]+\\.([a-zA-Z]{2,6})</string>
-    <string name="email_password_invalid">user name/password is not correct</string>
+    <string name="email_password_invalid">نام کاربری/رمز عبور نادرست است</string>
     <string name="address_next_button">Continue</string>
     <string name="payment_next_button">Continue and Payment</string>
     <string name="coupon_label">Coupon</string>
@@ -765,5 +765,7 @@
     <string name="password_length_limit_message">رمز عبور باید حداقل ۶ حرف و حداکثر ۱۲ حرف باشد</string>
     <string name="verify_new_password">تکرار رمز عبور جدید</string>
     <string name="new_password_">رمز عبور جدید</string>
+    <string name="submit_verify_code">ثبت کد تایید</string>
+    <string name="edit_phone_number">ویرایش شماره تماس</string>
 
 </resources>

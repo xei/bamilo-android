@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.modernbamilo.authentication.login
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -120,10 +121,12 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setOnFocusExpand() {
         emailOrPhoneEditText.clearFocus()
         passwordEditText.clearFocus()
         emailOrPhoneEditText.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) expandBottomSheet() }
+
         passwordEditText.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) expandBottomSheet() }
     }
 
@@ -195,14 +198,10 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
                             if (baseResponse.hadSuccess()) {
                                 onLoginSuccessful(it)
                             } else {
-                                var message = getString(R.string.email_password_invalid)
-                                if (!TextUtils.isEmpty(baseResponse.errorMessage)) {
-                                    message = baseResponse.errorMessage
-                                }
                                 context?.let { it2 ->
                                     PoiziToast.with(it2)
                                             ?.setGravity(Gravity.TOP)
-                                            ?.error(message, Toast.LENGTH_SHORT)
+                                            ?.error(getString(R.string.email_password_invalid), Toast.LENGTH_SHORT)
                                             ?.show()
                                 }
                                 authenticationListener?.onAuthenticationListener(false)
@@ -213,16 +212,12 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
                     override fun onRequestError(baseResponse: BaseResponse<*>?) {
                         hideProgress()
                         authenticationListener?.onAuthenticationListener(false)
-                        baseResponse?.let { br ->
+                        baseResponse?.let {
                             activity?.let {
-                                var message = getString(R.string.email_password_invalid)
-                                if (!TextUtils.isEmpty(br.errorMessage)) {
-                                    message = br.errorMessage
-                                }
                                 context?.let { it2 ->
                                     PoiziToast.with(it2)
                                             ?.setGravity(Gravity.TOP)
-                                            ?.error(message, Toast.LENGTH_SHORT)
+                                            ?.error(getString(R.string.email_password_invalid), Toast.LENGTH_SHORT)
                                             ?.show()
                                 }
                             }
@@ -278,10 +273,12 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
         }
 
         if (isValidEmail(emailOrPhoneEditText.text.toString())) {
+            emailOrPhoneTextInputLayout.error = null
             return true
         }
 
         if (emailOrPhoneEditText.text.toString().startsWith("09") && emailOrPhoneEditText.text.toString().length == 11) {
+            emailOrPhoneTextInputLayout.error = null
             return true
         }
 
@@ -300,6 +297,7 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
             return false
         }
 
+        passwordTextInputLayout.error = null
         return true
     }
 

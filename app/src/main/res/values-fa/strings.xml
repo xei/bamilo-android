@@ -696,5 +696,5 @@
     <string name="password_length_limit_message">رمز عبور باید حداقل ۶ حرف و حداکثر ۱۲ حرف باشد</string>
     <string name="verify_new_password">تکرار رمز عبور جدید</string>
     <string name="new_password_">رمز عبور جدید</string>
-
+    <string name="edit_phone_number">ویرایش شماره تماس</string>
 </resources>

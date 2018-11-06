@@ -29,6 +29,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailAc
 import com.bamilo.android.appmodule.bamiloapp.view.widget.PinEntryInput
 import com.bamilo.android.appmodule.modernbamilo.authentication.repository.AuthenticationRepo
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
 import com.bamilo.android.appmodule.modernbamilo.util.dpToPx
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
@@ -60,7 +61,7 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
     private var tokenReceiveTime: Long = 0
     private var mTokenCountDownHandler: Handler? = null
     private var mTokenCountDownRunnable: Runnable? = null
-    private val tokenResendDelay = (2 * 60 * 1000).toLong()
+    private var tokenResendDelay = (2 * 60 * 1000).toLong()
 
     private lateinit var verificationCodeSentToPhoneTextView: TextView
     private lateinit var editPhoneTextView: TextView
@@ -114,6 +115,7 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
         rootView = inflater.inflate(R.layout.fragment_mobile_verification, container, false)
         findViews()
         bindClickListeners()
+
         phoneNumber = arguments?.getString("phoneNumber")
         verificationCodeSentToPhoneTextView.text =
                 String.format(getString(R.string.verification_code_was_sent_to),
@@ -139,8 +141,10 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
 
     private fun bindClickListeners() {
         btnSubmitToken.setOnClickListener { submitToken() }
-        tvResendToken.setOnClickListener { sendVerificationCode(arguments?.getString("phoneNumber"), null) }
-        editPhoneTextView.setOnClickListener { }
+        tvResendToken.setOnClickListener {
+            startTimer()
+            sendVerificationCode(arguments?.getString("phoneNumber"), null) }
+        editPhoneTextView.setOnClickListener { onSignUpClicked() }
     }
 
     private fun setInitialHeight() = rootView.post {
@@ -180,6 +184,12 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
     }
 
     private fun startTimer() {
+        tvResendToken.visibility = View.GONE
+        tvResendTokenNotice.visibility = View.VISIBLE
+
+        tokenResendDelay = (2 * 60 * 1000).toLong()
+        tokenReceiveTime = 0
+
         mTokenCountDownHandler = Handler()
         mTokenCountDownRunnable = object : Runnable {
             override fun run() {
@@ -187,6 +197,8 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
                 if (now - tokenReceiveTime > tokenResendDelay) {
                     tvResendToken.visibility = View.VISIBLE
                     tvResendTokenNotice.visibility = View.GONE
+                    mTokenCountDownHandler = null
+                    mTokenCountDownRunnable = null
                 } else {
                     val remaining = (tokenResendDelay - (now - tokenReceiveTime)) / 1000
                     tvResendTokenNotice.text = String.format(Locale("fa"), "%d:%02d", remaining / 60, remaining % 60)
@@ -353,6 +365,11 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
                 it.setupDrawerNavigation()
             }
         }
+        dismiss()
+    }
+
+    private fun onSignUpClicked() {
+        RegisterModalBottomSheet().show(fragmentManager, "register")
         dismiss()
     }
 

@@ -64,7 +64,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/verificationDialog_textView_verifyCodeSentTo"
         app:locale="fa_IR"
-        tools:text="?????? ????? ????"/>
+        android:text="@string/edit_phone_number"/>
 
     <com.bamilo.android.appmodule.bamiloapp.view.widget.PinEntryInput
         android:id="@+id/etPin"
@@ -138,6 +138,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvResendToken"
         app:layout_goneMarginTop="24dp"
-        app:text="@string/verifyPhoneNoScreen_btn_next"/>
+        app:text="@string/submit_verify_code"/>
 
 </android.support.constraint.ConstraintLayout>
