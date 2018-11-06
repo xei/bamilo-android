@@ -33,6 +33,14 @@ public class ProductRegular extends ProductBase {
     private String mCategoryName;
     private boolean hasFreeShipping;
 
+    public String getBadge() {
+        return badge;
+    }
+    public void setBadge(String badge) {
+        this.badge = badge;
+    }
+    private String badge;
+
     /**
      * Empty constructor
      */
@@ -51,6 +59,7 @@ public class ProductRegular extends ProductBase {
     }
 
     private boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
+        badge = jsonObject.optString("badge");
         // Mandatory
         mName = jsonObject.optString(RestConstants.NAME);
         // TODO: Remove this line when all app parses brand_entity object. For now happens just in PDV
@@ -186,6 +195,7 @@ public class ProductRegular extends ProductBase {
 
     protected ProductRegular(Parcel in) {
         super(in);
+        badge = in.readString();
         mName = in.readString();
         mImageUrl = in.readString();
         mCategories = in.readString();
@@ -204,6 +214,7 @@ public class ProductRegular extends ProductBase {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
+        dest.writeString(badge);
         dest.writeString(mName);
         dest.writeString(mImageUrl);
         dest.writeString(mCategories);

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_grid_item_highlight"
-    card_view:cardCornerRadius="0dp"
+    app:cardCornerRadius="0dp"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
     android:layout_marginRight="4dp"
@@ -156,6 +156,22 @@
             android:layout_alignParentTop="true"
             android:padding="@dimen/margin_padding_xl"
             android:src="@drawable/selector_favorite" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/defCatalogItemGrid_xeiTextView_specialBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:background="@drawable/background_badge_special_catalog"
+            android:textSize="10sp"
+            android:textColor="@color/grey3"
+            tools:visibility="visible"
+            app:locale="fa_IR"
+            app:style="bold" />
 
 
     </RelativeLayout>

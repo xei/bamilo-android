@@ -35,6 +35,8 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
     public ImageView headerImage;
     public ImageView shopFirst;
     public RelativeLayout price_rl;
+    public TextView specialBadge;
+
 
     /**
      * Constructor
@@ -57,6 +59,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
         ratingContainer = (ViewGroup)view.findViewById(R.id.rating_container);
         shopFirst = (ImageView)view.findViewById(R.id.item_shop_first);
         price_rl = (RelativeLayout)view.findViewById(R.id.item_regprice_rl);
+        specialBadge = view.findViewById(R.id.defCatalogItemGrid_xeiTextView_specialBadge);
     }
 }
 
