@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.bamiloapp.controllers;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -71,7 +72,7 @@ public class LogOut {
     /**
      * Clear cart data from memory and other components.
      */
-    public static void cleanCustomerData(BaseActivity baseActivity) {
+    public static void cleanCustomerData(Activity activity) {
         // Clear cookies, cart, credentials
         AigHttpClient.getInstance().clearCookieStore();
         // Clean wish list
@@ -80,7 +81,9 @@ public class LogOut {
         BamiloApplication.INSTANCE.setCart(null);
         BamiloApplication.INSTANCE.getCustomerUtils().clearCredentials();
         // Update layouts to clean cart info
-        baseActivity.updateCartInfo();
+        if(activity instanceof BaseActivity) {
+            ((BaseActivity) activity).updateCartInfo();
+        }
         // Tracking
         TrackerDelegator.clearTransactionCount();
     }

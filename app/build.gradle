@@ -179,7 +179,16 @@ android {
                            'src/main/res/drawables/selectors',
                            'src/main/res/drawables/icon',
                            'src/main/res/drawables/background',
-                           'src/main/res/drawables/other', 'src/main/res/layouts/moderbamilo', 'src/main/res/layouts', 'src/main/res/layouts/modernbamilo/', 'src/main/res/layouts/update/']
+                           'src/main/res/drawables/other',
+                           'src/main/res/layouts/moderbamilo',
+                           'src/main/res/layouts',
+                           'src/main/res/layouts/modernbamilo/',
+                           'src/main/res/layouts/update/',
+                           'src/main/res/layouts/authentication',
+                           'src/main/res/layouts/authentication/register',
+                           'src/main/res/layouts/authentication/login',
+                           'src/main/res/layouts/authentication/forgetpassword',
+                           'src/main/res/layouts/authentication/verification']
         }
     }
 }

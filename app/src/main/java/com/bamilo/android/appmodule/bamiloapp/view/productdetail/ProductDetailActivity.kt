@@ -27,6 +27,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.R
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.SimpleProduct
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.seller.SellersListFragment
 import com.bamilo.android.appmodule.modernbamilo.app.BaseActivity
+import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.product.comment.CommentViewModel
 import com.bamilo.android.appmodule.modernbamilo.product.comment.CommentsFragment
 import com.bamilo.android.appmodule.modernbamilo.product.comment.submit.startSubmitRateActivity
@@ -550,13 +551,8 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun loginUser() {
-        val intent = Intent(this, MainFragmentActivity::class.java)
-
-        val bundle = Bundle()
-        bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true)
-
-        intent.putExtra("pdv_login_bundle", bundle)
-        startActivity(intent)
+        LoginDialogBottomSheet()
+                .show(supportFragmentManager, "LoginDialogBottomSheet")
     }
 
     override fun showOutOfStock() {

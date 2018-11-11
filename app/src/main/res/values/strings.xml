@@ -532,7 +532,7 @@
     <string name="error_isrequired">Is required</string>
     <string name="normal_string_regex" translatable="false">[0-9a-zA-Z-]*</string>
     <string name="email_regex" translatable="false">[a-zA-Z0-9äöüÄÖÜ_+.-]+@[a-zA-Z0-9äöüÄÖÜ][a-zA-Z0-9-äöüÄÖÜ.]+\\.([a-zA-Z]{2,6})</string>
-    <string name="email_password_invalid">email/password is not correct</string>
+    <string name="email_password_invalid">نام کاربری/رمز عبور نادرست است</string>
     <string name="address_next_button">Continue</string>
     <string name="payment_next_button">Continue and Payment</string>
     <string name="coupon_label">Coupon</string>
@@ -735,14 +735,24 @@
     <string name="getLatestApk">دریافت به‌روز رسانی</string>
     <string name="buy_it_now">همین الان بخر</string>
     <string name="product_added_to_cart">محصول با موفقیت به سبد خرید اضافه شد</string>
+    <string name="login_to_account">ورود به حساب کاربری</string>
+    <string name="email_or_phone">ایمیل یا شمارهٔ موبایل</string>
+    <string name="forget_password">فراموشی رمز عبور</string>
+    <string name="insert_email_or_phone_number">ایمیل یا شماره موبایل را وارد کنید</string>
+    <string name="insert_password">رمز عبور را وارد کنید</string>
+    <string name="invalid_email_or_phone_number">ایمیل یا شماره موبایل نامعتبر</string>
 
     <!-- Register Screen -->
     <string name="registerScreen_title">ثبت‌نام در بامیلو</string>
     <string name="registerScreen_hint_userId">آدرس ایمیل</string>
+    <string name="registerScreen_hint_userId_mandatory">آدرس ایمیل *</string>
     <string name="registerScreen_hint_password">گذرواژه</string>
+    <string name="registerScreen_hint_password_mandatory">گذرواژه *</string>
     <string name="registerScreen_hint_mobile">شماره تلفن همراه</string>
+    <string name="registerScreen_hint_mobile_mandatory">شماره تلفن همراه *</string>
     <string name="registerScreen_hint_nationalId">کد ملی</string>
-    <string name="registerScreen_btn_register">ثبت‌نام</string>
+    <string name="registerScreen_hint_nationalId_mandatory">کد ملی *</string>
+    <string name="registerScreen_btn_register">ثبت‌ نام</string>
     <string name="registerScreen_btn_goToLogin">حساب کاربری دارم</string>
     <string name="verifyPhoneNoScreen_title">کد بازیابی را ارسال کنید</string>
     <string name="verifyPhoneNoScreen_subtitle">کد تایید برای %s ارسال شده است</string>
@@ -757,6 +767,14 @@
 
     <string name="ssl_error_handler_message">به دلیل قدیمی بودن نسخه اندروید شما، بامیلو به اجازه شما برای نمایش این صفحه نیازمند است</string>
     <string name="ssl_error_handler_title">خطا در نمایش محتوا</string>
+    <string name="registeration_failed_error">خطا در ثبت نام</string>
+    <string name="verification_code_was_sent_to">کد تایید برای %s ارسال شده است</string>
+    <string name="insert_your_password">رمز عبور جدید خود را وارد کنید</string>
+    <string name="password_length_limit_message">رمز عبور باید حداقل ۶ حرف و حداکثر ۱۲ حرف باشد</string>
+    <string name="verify_new_password">تکرار رمز عبور جدید</string>
+    <string name="new_password_">رمز عبور جدید</string>
+    <string name="submit_verify_code">ثبت کد تایید</string>
+    <string name="edit_phone_number">ویرایش شماره تماس</string>
 
     <string name="share_app">به اشتراک گذاری اپلیکیشن با استفاده از…</string>
     <string name="share_product">به اشتراک گذاری محصول با استفاده از…</string>

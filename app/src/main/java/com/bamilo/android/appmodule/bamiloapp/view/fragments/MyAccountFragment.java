@@ -142,65 +142,10 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onStart()
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onResume()
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(TARGETS_TAG, targets);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.view.fragments.MyFragment#onPause()
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.view.fragments.MyFragment#onStop()
-     */
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onDestroyView()
-     */
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     private void triggerFaqAndTerms() {
@@ -220,7 +165,6 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
                 getActivity(), myAccountOptions);
 
         new AdapterBuilder(optionsList, myAccountSettingsAdapter, this).buildLayout();
-
     }
 
     /**

@@ -215,22 +215,27 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isForceUpdateFragmentVisible() && !isOptionalUpdateFragmentVisible()) {
-            checkForUpdate();
-        }
+        initialBamilo();
+//        if (!isForceUpdateFragmentVisible() && !isOptionalUpdateFragmentVisible()) {
+//            checkForUpdate();
+//        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         shouldHandleEvent = false;
-        call.cancel();
+        if (call != null) {
+            call.cancel();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        call.cancel();
+        if (call != null) {
+            call.cancel();
+        }
 
         shouldHandleEvent = false;
 

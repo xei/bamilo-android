@@ -1,6 +1,5 @@
 package com.bamilo.android.appmodule.bamiloapp.view.newfragments;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,39 +12,27 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
+import android.widget.TextView;
+import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.adapters.CartItemAdapter;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
+import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
+import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys;
+import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
+import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
+import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.helpers.cart.GetShoppingCartItemsHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.cart.ShoppingCartAddMultipleItemsHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.cart.ShoppingCartChangeItemQuantityHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.cart.ShoppingCartRemoveItemHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.wishlist.AddToWishListHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.wishlist.RemoveFromWishListHelper;
+import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
+import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
 import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
 import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
 import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModelFactory;
-import android.widget.TextView;
-import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
-import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys;
-import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
-import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
-import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
-import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
-import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
-import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
-import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
-import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
-import com.bamilo.android.framework.service.pojo.BaseResponse;
-import com.bamilo.android.framework.service.tracking.AdjustTracker;
-import com.bamilo.android.framework.service.tracking.TrackingPage;
-import com.bamilo.android.framework.service.utils.CollectionUtils;
-import com.bamilo.android.framework.service.utils.DarwinRegex;
-import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
-import com.bamilo.android.framework.service.utils.EventType;
-import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.Toast;
@@ -59,9 +46,20 @@ import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.product.UIProductUtils;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.ErrorLayoutFactory;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
-import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.WishListFragment;
-
+import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet;
+import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
+import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
+import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
+import com.bamilo.android.framework.service.pojo.BaseResponse;
+import com.bamilo.android.framework.service.tracking.AdjustTracker;
+import com.bamilo.android.framework.service.tracking.TrackingPage;
+import com.bamilo.android.framework.service.utils.CollectionUtils;
+import com.bamilo.android.framework.service.utils.DarwinRegex;
+import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
+import com.bamilo.android.framework.service.utils.EventType;
+import com.bamilo.android.framework.service.utils.TextUtils;
+import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -69,56 +67,51 @@ import java.util.List;
 
 /**
  * @author sergiopereira
- *
  */
 public class NewShoppingCartFragment extends NewBaseFragment implements IResponseCallback {
 
     private static final String TAG = NewShoppingCartFragment.class.getSimpleName();
-
     private static final String cartValue = "";
+
     private long mBeginRequestMillis;
-    // DROID-10
     private long mGABeginRequestMillis;
-    private PurchaseCartItem mQuantityChangedItem;
+
     private List<PurchaseCartItem> items;
-    private ViewGroup mCartItemsContainer;
+
     private View mTotalContainer;
+    private View mCallToOrderButton;
+    private View mCheckoutButton;
+    private View mClickedFavourite;
+
     private ViewGroup mDiscountContainer;
     private ViewGroup mDiscountContainerShadow;
-    private View mCheckoutButton;
-    private View mCallToOrderButton;
-    private View mFreeShippingView;
+
     private DialogListFragment dialogList;
-    private RecyclerView mCartRecycler;
-    private int mCartItemsCount;
     private DialogGenericFragment dialogLogout;
-/* DROID-63
-    private TextView mCouponButton;
-    private EditText mVoucherView;
-    private String mVoucherCode;
-*/
+
+    private RecyclerView mCartRecycler;
+    private AppBarLayout.LayoutParams startParams;
+
     private String mItemRemovedSku;
     private String mPhone2Call = "";
-    private double mItemRemovedPriceTracking = 0d;
-    private long mItemRemovedQuantity;
-    private double mItemRemovedRating;
-    private String mItemRemovedCartValue;
     private String mItemsToCartDeepLink;
+    private String mItemRemovedCartValue;
+
+    private double mItemRemovedPriceTracking = 0d;
+    private double mItemRemovedRating;
+
+    private long mItemRemovedQuantity;
+
+    private int mCartItemsCount;
     private int selectedPosition;
     private int crrQuantity;
 
-    View mClickedFavourite;
-    private AppBarLayout.LayoutParams  startParams;
     private boolean pageTracked = false;
-    //RecommendManager recommendManager;
 
     private SimpleEventModel removeFromWishListEventModel;
     private MainEventModel removeFromCartEventModel;
     private MainEventModel addToWishListEventModel;
 
-    /**
-     * Empty constructor
-     */
     public NewShoppingCartFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.BASKET_INDICATOR),
                 NavigationAction.BASKET,
@@ -128,32 +121,19 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get arguments
+
         Bundle arguments = getArguments();
         if (arguments != null) {
             mItemsToCartDeepLink = arguments.getString(ConstantsIntentExtra.DATA);
             arguments.remove(ConstantsIntentExtra.DATA);
         }
 
-/* DROID-63
-        // Get saved state
-        if(savedInstanceState != null) {
-            mVoucherCode = savedInstanceState.getString(ConstantsIntentExtra.ARG_1);
-        }
-*/
-
         selectedPosition = 0;
-        //recommendManager = new RecommendManager();
 
-        // Track screen
-        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CART.getName()), getString(R.string.gaScreen),
+        BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CART.getName()),
+                getString(R.string.gaScreen),
                 "",
                 getLoadTime());
         TrackerManager.trackScreen(getContext(), screenModel, false);
@@ -162,7 +142,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get and set views
         mCartRecycler = view.findViewById(R.id.shoppingcart_list);
         mCartRecycler.setHasFixedSize(true);
 
@@ -178,7 +157,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
 
     RecyclerView.OnScrollListener scrollChanged = new RecyclerView.OnScrollListener() {
         @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             mTotalContainer.setVisibility(View.VISIBLE);
             SetAnimation(mTotalContainer, View.VISIBLE);
@@ -187,92 +166,52 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 mDiscountContainer.setVisibility(View.VISIBLE);
                 SetAnimation(mDiscountContainer, View.VISIBLE);
                 SetAnimation(mDiscountContainerShadow, View.VISIBLE);
-                LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());
+                LinearLayoutManager layoutManager = ((LinearLayoutManager) mCartRecycler
+                        .getLayoutManager());
                 int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
 
-                if (lastVisiblePosition >= mCartItemsCount)
-                {
-                    //mTotalContainer.setVisibility(View.GONE);
-                    //mDiscountContainer.setVisibility(View.GONE);
-                    //mDiscountContainerShadow.setVisibility(View.GONE);
+                if (lastVisiblePosition >= mCartItemsCount) {
                     SetAnimation(mTotalContainer, View.GONE);
                     SetAnimation(mDiscountContainer, View.GONE);
                     SetAnimation(mDiscountContainerShadow, View.GONE);
                 }
-            }
-            else
-            {
-                //mDiscountContainer.setVisibility(View.GONE);
-                //mDiscountContainerShadow.setVisibility(View.GONE);
-
+            } else {
                 SetAnimation(mDiscountContainer, View.GONE);
                 SetAnimation(mDiscountContainerShadow, View.GONE);
             }
         }
-
-
     };
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
 
     @Override
     public void onResume() {
         super.onResume();
         final Bundle args = getArguments();
-        if(args != null) {
-            if(args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)){
+        if (args != null) {
+            if (args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)) {
                 String mClickedSku = args.getString(AddToWishListHelper.ADD_TO_WISHLIST);
-                if(BamiloApplication.isCustomerLoggedIn() && mClickedSku != null && mClickedSku.trim()!=""){
+                if (BamiloApplication.isCustomerLoggedIn() && mClickedSku != null
+                        && !mClickedSku.trim().equals("")) {
                     triggerAddToWishList(mClickedSku);
-                    //TrackerDelegator.trackAddToFavorites(mClicked);
                 }
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
-            }
-            else if(args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)){
+            } else if (args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)) {
                 String mClickedSku = args.getString(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
-                if(BamiloApplication.isCustomerLoggedIn() && mClickedSku != null && mClickedSku.trim()!=""){
+                if (BamiloApplication.isCustomerLoggedIn() && mClickedSku != null
+                        && !mClickedSku.trim().equals("")) {
                     triggerRemoveFromWishList(mClickedSku);
-                    //TrackerDelegator.trackRemoveFromFavorites(mClicked);
                 }
                 args.remove(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
             }
-
         }
+
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();
-        // Case deep link
-        if (!TextUtils.isEmpty(mItemsToCartDeepLink)) addItemsToCart(mItemsToCartDeepLink);
-        // Case normal
-        else triggerGetShoppingCart();
-        /*Toolbar toolbar = (Toolbar) getBaseActivity().findViewById(R.id.toolbar);  // or however you need to do it for your code
-        startParams = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-        AppBarLayout.LayoutParams params = startParams;
-        params.setScrollFlags(0);*/
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-/* DROID-63
-        if(mVoucherView != null) {
-            mVoucherCode = mVoucherView.getText().toString();
+        if (!TextUtils.isEmpty(mItemsToCartDeepLink)) {
+            addItemsToCart(mItemsToCartDeepLink);
+        } else {
+            triggerGetShoppingCart();
         }
-*/
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-/* DROID-63
-        // Save the voucher code
-        if(mVoucherView != null) {
-            mVoucherCode = mVoucherView.getText().toString();
-            outState.putString(ConstantsIntentExtra.ARG_1, mVoucherCode);
-        }
-*/
     }
 
     @Override
@@ -298,10 +237,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         onResume();
     }
 
-    /*
-     * ####### LAYOUT #######
-     */
-
     /**
      * Set the ShoppingCart layout using inflate
      */
@@ -311,9 +246,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         mDiscountContainer = view.findViewById(R.id.discount_container);
         mDiscountContainerShadow = view.findViewById(R.id.discount_container_shadow);
 
-
         // Get free shipping
-        mFreeShippingView = view.findViewById(R.id.cart_total_text_shipping);
+        View freeShippingView = view.findViewById(R.id.cart_total_text_shipping);
     }
 
     /**
@@ -324,12 +258,13 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         TextView totalValue = mTotalContainer.findViewById(R.id.total_value);
         TextView quantityValue = mTotalContainer.findViewById(R.id.total_quantity);
         // Set views
-        totalValue.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(cart.getTotal())));
-        quantityValue.setText(StringExtKt.persianizeDigitsInString(TextUtils.getResourceString(getBaseActivity(), R.string.cart_total_quantity, cart.getCartCount())));
-
+        totalValue.setText(StringExtKt
+                .persianizeDigitsInString(CurrencyFormatter.formatCurrency(cart.getTotal())));
+        quantityValue.setText(StringExtKt.persianizeDigitsInString(TextUtils
+                .getResourceString(getBaseActivity(), R.string.cart_total_quantity,
+                        cart.getCartCount())));
 
         mTotalContainer.setVisibility(View.VISIBLE);
-
     }
 
     /**
@@ -337,60 +272,59 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      */
     public void showNoItems() {
         showErrorFragment(ErrorLayoutFactory.CART_EMPTY_LAYOUT,
-                v -> getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK));
+                v -> getBaseActivity()
+                        .onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
+                                FragmentController.ADD_TO_BACK_STACK));
         getBaseActivity().hideKeyboard();
     }
-
-
-    /*
-     * ####### LISTENER #######
-     */
-
 
     @Override
     public void onClick(View view) {
         // Get id
         int id = view.getId();
         // Case next button
-        if(id == R.id.checkout_button) {
+        if (id == R.id.checkout_button) {
             onClickCheckoutButton();
         }
         // Case super
-        else super.onClick(view);
+        else {
+            super.onClick(view);
+        }
     }
-
 
     /**
      * Process the click on checkout button.
      */
     private void onClickCheckoutButton() {
-
-        //recommendManager.sendPurchaseRecommend();
-        //sendRecommend();
+        if (!BamiloApplication.isCustomerLoggedIn()) {
+            if (!BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+                LoginDialogBottomSheet
+                        .Companion
+                        .show(getFragmentManager(), null)
+                        .setAuthenticationListener(result -> {
+                            if (result) {
+                                onClickCheckoutButton();
+                            }
+                        });
+                return;
+            }
+        }
 
         if (items != null && items.size() > 0) {
 
             SimpleEventModel sem = SimpleEventModelFactory.createModelForCheckoutStart(items);
             TrackerManager.trackEvent(getContext(), EventConstants.CheckoutStart, sem);
-
             Bundle bundle = new Bundle();
-            bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
-        // Case invalid cart
-        else {
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
+        } else {
             String title = getString(R.string.basket_label);
             String message = getString(R.string.shoppingcart_alert_message_no_items);
             String buttonText = getString(R.string.ok_label);
-            DialogGenericFragment.createInfoDialog(title, message, buttonText).show(getActivity().getSupportFragmentManager(), null);
+            DialogGenericFragment.createInfoDialog(title, message, buttonText)
+                    .show(getActivity().getSupportFragmentManager(), null);
         }
     }
-
-
-
-    /*
-     * ####### TRIGGERS #######
-     */
 
     /**
      * Trigger to get cart items validating FavouritesFragment state is completed
@@ -404,7 +338,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      */
     private void triggerRemoveItem(PurchaseCartItem item) {
 
-        removeFromCartEventModel = new MainEventModel(getString(TrackingPage.CART.getName()), EventActionKeys.REMOVE_FROM_CART,
+        removeFromCartEventModel = new MainEventModel(getString(TrackingPage.CART.getName()),
+                EventActionKeys.REMOVE_FROM_CART,
                 item.getSku(), (long) item.getPrice(),
                 MainEventModel.createRemoveFromCartEventModelAttributes(item.getSku()));
 
@@ -418,15 +353,16 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         } else {
             mItemRemovedCartValue = cartValue;
         }
-        triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU()), this);
+        triggerContentEventProgress(new ShoppingCartRemoveItemHelper(),
+                ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU()), this);
     }
-
 
     /**
      * Trigger to add all items to cart (Deep link).
      */
     private void triggerAddAllItems(ArrayList<String> values) {
-        triggerContentEventProgress(new ShoppingCartAddMultipleItemsHelper(), ShoppingCartAddMultipleItemsHelper.createBundle(values), this);
+        triggerContentEventProgress(new ShoppingCartAddMultipleItemsHelper(),
+                ShoppingCartAddMultipleItemsHelper.createBundle(values), this);
     }
 
     /**
@@ -437,16 +373,18 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         item.setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         mGABeginRequestMillis = System.currentTimeMillis();
-        mQuantityChangedItem = item;
+        PurchaseCartItem quantityChangedItem = item;
         //
-        triggerContentEventProgress(new ShoppingCartChangeItemQuantityHelper(), ShoppingCartChangeItemQuantityHelper.createBundle(item.getConfigSimpleSKU(), quantity), this);
+        triggerContentEventProgress(new ShoppingCartChangeItemQuantityHelper(),
+                ShoppingCartChangeItemQuantityHelper
+                        .createBundle(item.getConfigSimpleSKU(), quantity), this);
     }
 
     /**
      *
      */
     private void releaseVars() {
-        mCartItemsContainer = null;
+        ViewGroup cartItemsContainer = null;
         mCheckoutButton = null;
         dialogList = null;
     }
@@ -472,24 +410,13 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         }
     }
 
-    /*
-     * ####### RESPONSES #######
-     */
-
-    /**
-     *
-     */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        // Validate fragment visibility
-/* DROID-63*/
         if (isOnStoppingProcess) {
             return;
         }
         // Update cart info
         super.handleSuccessEvent(baseResponse);
-
-
 
         Bundle params;
         EventType eventType = baseResponse.getEventType();
@@ -502,7 +429,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 // Update value
                 updateWishListValue(false);
                 if (removeFromWishListEventModel != null) {
-                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, removeFromWishListEventModel);
+                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList,
+                            removeFromWishListEventModel);
                 }
                 break;
 
@@ -513,15 +441,16 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 // Update value
                 updateWishListValue(true);
                 if (addToWishListEventModel != null) {
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, addToWishListEventModel);
+                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList,
+                            addToWishListEventModel);
                 }
                 break;
 
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 if (removeFromCartEventModel != null) {
-                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromCart, removeFromCartEventModel);
+                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromCart,
+                            removeFromCartEventModel);
                 }
-                //Print.i(TAG, "code1removing and tracking" + itemRemoved_price);
                 params = new Bundle();
                 params.putString(TrackerDelegator.SKU_KEY, mItemRemovedSku);
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
@@ -531,15 +460,15 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 params.putDouble(TrackerDelegator.RATING_KEY, mItemRemovedRating);
                 params.putString(TrackerDelegator.CARTVALUE_KEY, mItemRemovedCartValue);
                 TrackerDelegator.trackProductRemoveFromCart(params);
-                // DROID-10 TrackerDelegator.trackLoadTiming(params);
-//                TrackerDelegator.trackScreenLoadTiming(R.string.gaRemoveItemFromShoppingCart, mGABeginRequestMillis, mItemRemovedSku);
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                 hideActivityProgress();
                 break;
+
             case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 hideActivityProgress();
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                 break;
+
             case GET_SHOPPING_CART_ITEMS_EVENT:
                 hideActivityProgress();
                 PurchaseEntity purchaseEntity = (PurchaseEntity) baseResponse.getContentData();
@@ -549,7 +478,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 displayShoppingCart(purchaseEntity);
                 if (!pageTracked) {
                     // Track screen timing
-                    BaseScreenModel screenModel = new BaseScreenModel(getString(TrackingPage.CART.getName()), getString(R.string.gaScreen),
+                    BaseScreenModel screenModel = new BaseScreenModel(
+                            getString(TrackingPage.CART.getName()), getString(R.string.gaScreen),
                             "",
                             getLoadTime());
                     TrackerManager.trackScreenTiming(getContext(), screenModel);
@@ -560,35 +490,27 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 onAddItemsToShoppingCartRequestSuccess(baseResponse);
                 break;
             default:
-                PurchaseEntity defPurchaseEntity = (PurchaseEntity) baseResponse.getMetadata().getData();
+                PurchaseEntity defPurchaseEntity = (PurchaseEntity) baseResponse.getMetadata()
+                        .getData();
                 displayShoppingCart(defPurchaseEntity);
                 break;
         }
 
-        if(items != null && items.size() > 0) {
-            mCartRecycler.post(new Runnable() {
-                @Override
-                public void run() {
-                    mCartRecycler.scrollToPosition(items.size());
-                }
-            });
+        if (items != null && items.size() > 0) {
+            mCartRecycler.post(() -> mCartRecycler.scrollToPosition(items.size()));
         }
-
-
     }
 
-
-    /**
-     *
-     */
-    private void onAddItemsToShoppingCartRequestSuccess(BaseResponse baseResponse){
+    private void onAddItemsToShoppingCartRequestSuccess(BaseResponse baseResponse) {
         hideActivityProgress();
-        ShoppingCartAddMultipleItemsHelper.AddMultipleStruct addMultipleStruct = (ShoppingCartAddMultipleItemsHelper.AddMultipleStruct) baseResponse.getContentData();
+        ShoppingCartAddMultipleItemsHelper.AddMultipleStruct addMultipleStruct = (ShoppingCartAddMultipleItemsHelper.AddMultipleStruct) baseResponse
+                .getContentData();
 
         if (addMultipleStruct.getErrorMessages() != null) {
             ArrayList<String> notAdded = addMultipleStruct.getErrorMessages();
             if (!notAdded.isEmpty()) {
-                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE,
+                        getString(R.string.some_products_not_added));
             }
         }
 
@@ -597,20 +519,11 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             displayShoppingCart(BamiloApplication.INSTANCE.getCart());
         }
 
-        if(items != null && items.size() > 0) {
-            mCartRecycler.post(new Runnable() {
-                @Override
-                public void run() {
-                    mCartRecycler.scrollToPosition(items.size());
-                }
-            });
+        if (items != null && items.size() > 0) {
+            mCartRecycler.post(() -> mCartRecycler.scrollToPosition(items.size()));
         }
     }
 
-
-    /**
-     *
-     */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
 
@@ -621,10 +534,10 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         hideActivityProgress();
         EventType eventType = baseResponse.getEventType();
 
-        // Validate generic errors
         if (super.handleErrorEvent(baseResponse)) {
-            if(eventType == EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT ){
-                items.get(selectedPosition).setQuantity(crrQuantity); //restarts the previous position for load selected quantity before the error
+            if (eventType == EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT) {
+                items.get(selectedPosition).setQuantity(
+                        crrQuantity);
             }
             return;
         }
@@ -649,20 +562,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         mGABeginRequestMillis = System.currentTimeMillis();
     }
 
-    /*private void sendRecommend() {
-        *//*recommendedAdapter.clear();
-        recommendedAdapter.notifyDataSetChanged();
-        recyclerView.invalidate();*//*
-
-        recommendManager.sendCartRecommend(new RecommendListCompletionHandler() {
-            @Override
-            public void onRecommendedRequestComplete(String category, List<RecommendedItem> data) {
-
-            }
-        });
-
-    }*/
-
     /**
      * Display shopping cart info
      */
@@ -681,20 +580,19 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         // Case valid state
         items = cart.getCartItems();
         mCartItemsCount = items.size();
-        CartItemAdapter mItemsAdapter = new CartItemAdapter(getBaseActivity(), items, onQuantityChangeClickListener, onRemoveItemClickListener, cart, onClickWishListButton, onProdcutClickListener);
+        CartItemAdapter mItemsAdapter = new CartItemAdapter(getBaseActivity(), items,
+                onQuantityChangeClickListener, onRemoveItemClickListener, cart,
+                onClickWishListButton, onProdcutClickListener);
         mItemsAdapter.baseFragment = this;
         mCartRecycler.setAdapter(mItemsAdapter);
         setTotal(cart);
         setDiscount(cart);
 
-        LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());
+        LinearLayoutManager layoutManager = ((LinearLayoutManager) mCartRecycler
+                .getLayoutManager());
         int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
 
-        if (lastVisiblePosition >= mCartItemsCount)
-        {
-            //mTotalContainer.setVisibility(View.GONE);
-            //mDiscountContainer.setVisibility(View.GONE);
-            //mDiscountContainerShadow.setVisibility(View.GONE);
+        if (lastVisiblePosition >= mCartItemsCount) {
             SetAnimation(mTotalContainer, View.GONE);
             SetAnimation(mDiscountContainer, View.GONE);
             SetAnimation(mDiscountContainerShadow, View.GONE);
@@ -710,45 +608,47 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         mCartRecycler.removeOnScrollListener(scrollChanged);
         mDiscountContainer.removeAllViews();
 
-
-        View totalView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.new_shopping_basket_discount_element,
-                mDiscountContainer, false);
+        View totalView = LayoutInflater.from(getBaseActivity())
+                .inflate(R.layout.new_shopping_basket_discount_element,
+                        mDiscountContainer, false);
         TextView labelT = totalView.findViewById(R.id.discount_label);
         TextView valueT = totalView.findViewById(R.id.discount_amount);
         labelT.setText(R.string.cart_total_amount);
-        valueT.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted())));
+        valueT.setText(StringExtKt.persianizeDigitsInString(
+                CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted())));
         mDiscountContainer.addView(totalView);
 
-        View discountView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.new_shopping_basket_discount_element,
-                mDiscountContainer, false);
+        View discountView = LayoutInflater.from(getBaseActivity())
+                .inflate(R.layout.new_shopping_basket_discount_element,
+                        mDiscountContainer, false);
         TextView label = discountView.findViewById(R.id.discount_label);
         TextView value = discountView.findViewById(R.id.discount_amount);
         label.setText(R.string.cart_total_discount);
-        value.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted()+cart.getShippingValue()-cart.getTotal())));
+        value.setText(StringExtKt.persianizeDigitsInString(CurrencyFormatter.formatCurrency(
+                cart.getSubTotalUnDiscounted() + cart.getShippingValue() - cart.getTotal())));
         mDiscountContainer.addView(discountView);
 
-        LinearLayoutManager layoutManager = ((LinearLayoutManager)mCartRecycler.getLayoutManager());
+        LinearLayoutManager layoutManager = ((LinearLayoutManager) mCartRecycler
+                .getLayoutManager());
         int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1 && cart.getCartItems().size() > 1) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1
+                && cart.getCartItems().size() > 1) {
             mCartRecycler.addOnScrollListener(scrollChanged);
         }
 
-        if (cart.getCartItems().size() == 1)
-        {
+        if (cart.getCartItems().size() == 1) {
             mTotalContainer.setVisibility(View.GONE);
         }
-
     }
-
 
     /**
      * Fill view item with PurchaseCartItem data
      */
-
-    public View createCartItemView(final int position, ViewGroup parent, LayoutInflater mInflater, final PurchaseCartItem item) {
+    public View createCartItemView(final int position, ViewGroup parent, LayoutInflater mInflater,
+            final PurchaseCartItem item) {
         View view = mInflater.inflate(R.layout.shopping_cart_product_container, parent, false);
-        Log.d( TAG, "getView: productName = " + item.getName());
+        Log.d(TAG, "getView: productName = " + item.getName());
         // Get item
         ImageView productView = view.findViewById(R.id.image_view);
         View pBar = view.findViewById(R.id.image_loading_progress);
@@ -770,28 +670,19 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         // Show shop first overlay message
         UIProductUtils.showShopFirstOverlayMessage(this, item, shopFirstImage);
         // Image
-        //RocketImageLoader.instance.loadImage(imageUrl, productView, pBar, R.drawable.no_image_small);
-        ImageManager.getInstance().loadImage(imageUrl, productView, pBar, R.drawable.no_image_large, false);
+        ImageManager.getInstance()
+                .loadImage(imageUrl, productView, pBar, R.drawable.no_image_large, false);
         // Price
         UIProductUtils.setPriceRules(item, priceView);
         // Delete
         deleteBtn.setTag(R.id.position, position);
-        deleteBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteSelectedElements(view);
-            }
-        });
+        deleteBtn.setOnClickListener(this::deleteSelectedElements);
         // Quantity
-        quantityBtn.setText(StringExtKt.persianizeDigitsInString(String.valueOf(item.getQuantity())));
-        if(item.getMaxQuantity() > 1) {
+        quantityBtn
+                .setText(StringExtKt.persianizeDigitsInString(String.valueOf(item.getQuantity())));
+        if (item.getMaxQuantity() > 1) {
             quantityBtn.setEnabled(true);
-            quantityBtn.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showQuantityDialog(position);
-                }
-            });
+            quantityBtn.setOnClickListener(v -> showQuantityDialog(position));
         } else {
             quantityBtn.setEnabled(false);
             if (DeviceInfoHelper.isPosJellyBean()) {
@@ -803,13 +694,10 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         }
         // Save the position to process the click on item
         view.setTag(R.id.target_sku, item.getSku());
-        view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    goToProductDetails((String) v.getTag(R.id.target_sku));
-                } catch (NullPointerException e) {
-                }
+        view.setOnClickListener(v -> {
+            try {
+                goToProductDetails((String) v.getTag(R.id.target_sku));
+            } catch (NullPointerException ignored) {
             }
         });
 
@@ -825,7 +713,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -857,41 +746,41 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         OnDialogListListener listener = new OnDialogListListener() {
             @Override
             public void onDialogListItemSelect(int quantity, String value) {
-                if(quantity != crrQuantity -1){
-                    triggerChangeItemQuantityInShoppingCart(position, quantity+1);
+                if (quantity != crrQuantity - 1) {
+                    triggerChangeItemQuantityInShoppingCart(position, quantity + 1);
                 }
-                if(dialogList != null) {
+                if (dialogList != null) {
                     dialogList.dismissAllowingStateLoss();
                     dialogList = null;
                 }
             }
+
             @Override
             public void onDismiss() {
             }
         };
-        dialogList = DialogListFragment.newInstance(this, listener, getString(R.string.choose_quantity), quantities, crrQuantity - 1);
+        dialogList = DialogListFragment
+                .newInstance(this, listener, getString(R.string.choose_quantity), quantities,
+                        crrQuantity - 1);
         dialogList.show(getActivity().getSupportFragmentManager(), null);
     }
 
-
     OnClickListener onQuantityChangeClickListener = view -> {
         //if (view.getTag() == null) return;
-        int max = (int)view.getTag(R.id.item_max);
-        int position = (int)view.getTag(R.id.item_position);
-        int quantity = (int)view.getTag(R.id.item_quantity);
-        int addValue = (int)view.getTag(R.id.item_change);
+        int max = (int) view.getTag(R.id.item_max);
+        int position = (int) view.getTag(R.id.item_position);
+        int quantity = (int) view.getTag(R.id.item_quantity);
+        int addValue = (int) view.getTag(R.id.item_change);
         quantity += addValue;
-        if (quantity>max)
-        {
-            CustomToastView.makeText(getBaseActivity(), String.format(getResources().getString( R.string.reached_max_quantity), max), Toast.LENGTH_LONG).show();
+        if (quantity > max) {
+            CustomToastView.makeText(getBaseActivity(),
+                    String.format(getResources().getString(R.string.reached_max_quantity), max),
+                    Toast.LENGTH_LONG).show();
             return;
         }
-        if (quantity == 0)
-        {
-            //Toast.makeText(getBaseActivity(), R.string.reached_min_quantity, Toast.LENGTH_LONG).show();
+        if (quantity == 0) {
             return;
         }
-
 
         triggerChangeItemQuantityInShoppingCart(position, quantity);
     };
@@ -899,7 +788,6 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
     OnClickListener onRemoveItemClickListener = new OnClickListener() {
         @Override
         public void onClick(final View view) {
-            //if (view.getTag() == null) return;
             dialogLogout = DialogGenericFragment.newInstance(true, false,
                     getString(R.string.remove_item_from_cart_title),
                     getString(R.string.remove_item_from_cart_question),
@@ -907,32 +795,34 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                     getString(R.string.yes_label),
                     v -> {
                         if (v.getId() == R.id.button2) {
-                            int position = (int)view.getTag(R.id.item_position);
+                            int position = (int) view.getTag(R.id.item_position);
                             PurchaseCartItem item = items.get(position);
                             triggerRemoveItem(item);
                         }
                         dialogLogout.dismiss();
                     });
             dialogLogout.show(getBaseActivity().getSupportFragmentManager(), null);
-
-
         }
     };
 
     private void triggerAddToWishList(String sku) {
-        addToWishListEventModel = new MainEventModel(getString(TrackingPage.CART.getName()), EventActionKeys.ADD_TO_WISHLIST,
+        addToWishListEventModel = new MainEventModel(getString(TrackingPage.CART.getName()),
+                EventActionKeys.ADD_TO_WISHLIST,
                 sku, SimpleEventModel.NO_VALUE,
                 MainEventModel.createAddToWishListEventModelAttributes(null, null, false));
         if (items != null) {
             for (PurchaseCartItem item : items) {
                 if (item.getSku().equals(sku)) {
                     addToWishListEventModel.value = (long) item.getPrice();
-                    addToWishListEventModel.customAttributes = MainEventModel.createAddToWishListEventModelAttributes(item.getSku(), item.getCategoryKey(), true);
+                    addToWishListEventModel.customAttributes = MainEventModel
+                            .createAddToWishListEventModelAttributes(item.getSku(),
+                                    item.getCategoryKey(), true);
                     break;
                 }
             }
         }
-        triggerContentEventProgress(new AddToWishListHelper(), AddToWishListHelper.createBundle(sku), this);
+        triggerContentEventProgress(new AddToWishListHelper(),
+                AddToWishListHelper.createBundle(sku), this);
     }
 
     private void triggerRemoveFromWishList(String sku) {
@@ -949,85 +839,73 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 }
             }
         }
-        triggerContentEventProgress(new RemoveFromWishListHelper(), RemoveFromWishListHelper.createBundle(sku), this);
+        triggerContentEventProgress(new RemoveFromWishListHelper(),
+                RemoveFromWishListHelper.createBundle(sku), this);
     }
 
     OnClickListener onClickWishListButton = new OnClickListener() {
         @Override
         public void onClick(View view) {
-        // Validate customer is logged in
-            mClickedFavourite = (View)view.getTag(R.id.cart_fav_icon);
-        String mProductSku = (String)view.getTag(R.id.sku);
-        if (BamiloApplication.isCustomerLoggedIn()) {
-            try {
-                // Get item
-                if (mClickedFavourite.isSelected()) {
-                    triggerRemoveFromWishList(mProductSku);
-                    //TrackerDelegator.trackRemoveFromFavorites(mProduct);
-                } else {
-                    triggerAddToWishList(mProductSku);
-                    //TrackerDelegator.trackAddToFavorites(mProduct);
+            // Validate customer is logged in
+            mClickedFavourite = (View) view.getTag(R.id.cart_fav_icon);
+            String mProductSku = (String) view.getTag(R.id.sku);
+            if (BamiloApplication.isCustomerLoggedIn()) {
+                try {
+                    // Get item
+                    if (mClickedFavourite.isSelected()) {
+                        triggerRemoveFromWishList(mProductSku);
+                    } else {
+                        triggerAddToWishList(mProductSku);
+                    }
+                } catch (NullPointerException ignored) {
                 }
-            } catch (NullPointerException e) {
-            }
-        } else {
-            // Save values to end action after login
-            final Bundle args = getArguments();
-            if(args != null) {
-                if (mClickedFavourite.isSelected()) {
-                    args.putString(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST, mProductSku);
-                } else {
-                    args.putString(AddToWishListHelper.ADD_TO_WISHLIST, mProductSku);
+            } else {
+                // Save values to end action after login
+                final Bundle args = getArguments();
+                if (args != null) {
+                    if (mClickedFavourite.isSelected()) {
+                        args.putString(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST, mProductSku);
+                    } else {
+                        args.putString(AddToWishListHelper.ADD_TO_WISHLIST, mProductSku);
+                    }
                 }
-            }
 
-            // Goto login
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                // Goto login
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE,
+                        FragmentController.ADD_TO_BACK_STACK);
+            }
         }
-    }};
+    };
 
     /**
      * Method used to update the wish list value.
      */
     private void updateWishListValue(boolean value) {
         try {
-            //boolean value = mProduct.isWishList();
-            if (mClickedFavourite != null)
+            if (mClickedFavourite != null) {
                 mClickedFavourite.setSelected(value);
-
-           // mWishListButton.setSelected(value);
-        } catch (NullPointerException e) {
+            }
+        } catch (NullPointerException ignored) {
         }
     }
 
-
-
-
-    OnClickListener onProdcutClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            String sku = (String)view.getTag(R.id.target_sku);
-            if (!TextUtils.isEmpty(sku)) {
-                Bundle bundle = new Bundle();
-                bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
-                bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
-                bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-            }
+    OnClickListener onProdcutClickListener = view -> {
+        String sku = (String) view.getTag(R.id.target_sku);
+        if (!TextUtils.isEmpty(sku)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     };
 
-
-    private void SetAnimation(View view, int visibility)
-    {
-        if (visibility == View.GONE)
-        {
+    private void SetAnimation(View view, int visibility) {
+        if (visibility == View.GONE) {
             view.animate().alpha(0.0f).setDuration(400);
-        }
-        else
-        {
+        } else {
             view.animate().alpha(1.0f).setDuration(400);
         }
     }
-
 }
