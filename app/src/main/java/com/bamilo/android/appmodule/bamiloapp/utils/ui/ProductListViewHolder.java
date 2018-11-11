@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 
@@ -35,6 +36,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
     public ImageView headerImage;
     public ImageView shopFirst;
     public RelativeLayout price_rl;
+    public LinearLayout price_ll;
     public TextView specialBadge;
 
 
@@ -59,6 +61,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
         ratingContainer = (ViewGroup)view.findViewById(R.id.rating_container);
         shopFirst = (ImageView)view.findViewById(R.id.item_shop_first);
         price_rl = (RelativeLayout)view.findViewById(R.id.item_regprice_rl);
+        price_ll = view.findViewById(R.id.rlDiscount);
         specialBadge = view.findViewById(R.id.defCatalogItemGrid_xeiTextView_specialBadge);
     }
 }

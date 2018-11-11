@@ -59,7 +59,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         // Set prices
         setProductPrice(holder, item);
 
-        if (item.getBadge()!= null && !item.getBadge().isEmpty()) {
+
+        if (item.getBadge()!= null && !item.getBadge().isEmpty() && !item.getBadge().equals("null")) {
             holder.specialBadge.setText(item.getBadge());
             holder.specialBadge.setVisibility(View.VISIBLE);
         } else {

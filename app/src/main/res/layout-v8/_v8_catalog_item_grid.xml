@@ -164,6 +164,7 @@
                     android:layout_marginTop="@dimen/margin_padding_l"
                     android:gravity="center"
                     android:text="@string/new_arrival_badge"
+                    android:textColor="@color/grey3"
                     android:visibility="gone"
                     tools:visibility="visible" />
 
