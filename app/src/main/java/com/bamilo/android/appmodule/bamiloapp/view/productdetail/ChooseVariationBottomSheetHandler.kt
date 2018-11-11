@@ -25,6 +25,11 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
                                         private var binding: ActivityProductDetailBinding,
                                         private var pdvMainView: PDVMainView) {
 
+    enum class CTAType {
+        BUY_NOW,
+        ADD_TO_CART
+    }
+
     private var bottomSheetBehavior: BottomSheetBehavior<View> =
             BottomSheetBehavior
                     .from(binding.chooseVariationRelativeLayoutLayout!!
@@ -152,8 +157,21 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
         bottomSheetAdapter.setItems(bottomSheetItems)
     }
 
-    fun showBottomSheet() {
+    fun showBottomSheet(ctaType: CTAType) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        if (ctaType == CTAType.ADD_TO_CART) {
+            binding.chooseVariationRelativeLayoutLayout?.root?.findViewById<View>(R.id.addToCart_linearLayout_addToBasket)
+                    ?.visibility = View.VISIBLE
+
+            binding.chooseVariationRelativeLayoutLayout?.root?.findViewById<View>(R.id.addToCart_linearLayout_buyNow)
+                    ?.visibility = View.GONE
+        } else {
+            binding.chooseVariationRelativeLayoutLayout?.root?.findViewById<View>(R.id.addToCart_linearLayout_addToBasket)
+                    ?.visibility = View.GONE
+
+            binding.chooseVariationRelativeLayoutLayout?.root?.findViewById<View>(R.id.addToCart_linearLayout_buyNow)
+                    ?.visibility = View.VISIBLE
+        }
     }
 
     fun hideBottomSheet() {

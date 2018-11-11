@@ -102,15 +102,69 @@
 
         </LinearLayout>
 
-        <include
+        <RelativeLayout
             android:id="@+id/pdvChooseVariation_linearLayout_addToCart"
-            layout="@layout/pdv_add_to_cart"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginLeft="@dimen/dimen_8dp"
             android:layout_marginTop="@dimen/dimen_32dp"
             android:layout_marginRight="@dimen/dimen_8dp"
-            android:layout_marginBottom="@dimen/dimen_8dp" />
+            android:layout_marginBottom="@dimen/dimen_8dp"
+            android:baselineAligned="false"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/addToCart_linearLayout_addToBasket"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_blue_gradient"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/ic_cart_add" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dimen_8dp"
+                    android:layout_marginRight="@dimen/dimen_8dp"
+                    android:text="@string/add_to_shopping_cart"
+                    android:textSize="14sp"
+                    app:locale="fa_IR" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/addToCart_linearLayout_buyNow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_btn_orange"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/ic_buy_now" />
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dimen_8dp"
+                    android:layout_marginRight="@dimen/dimen_8dp"
+                    android:text="@string/buy_it_now"
+                    android:textSize="14sp"
+                    app:locale="fa_IR" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </LinearLayout>
 </layout>
