@@ -47,6 +47,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.ComboFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.EditProfileFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.FilterMainFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.FrontPageFragment;
+import com.bamilo.android.appmodule.bamiloapp.view.fragments.HomeFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.InnerShopFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.ItemTrackingFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.MobileVerificationFragment;
@@ -303,7 +304,7 @@ public class MainFragmentActivity extends BaseActivity {
                     popBackStack(FragmentType.HOME.toString());
                     return;
                 }
-                fragment = newFragmentInstance(FrontPageFragment.class, bundle);
+                fragment = newFragmentInstance(HomeFragment.class, bundle);
                 break;
             case CATALOG_SELLER:
             case CATALOG_BRAND:

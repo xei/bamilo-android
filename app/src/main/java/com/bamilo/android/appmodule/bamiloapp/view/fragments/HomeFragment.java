@@ -8,6 +8,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
+import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.modernbamilo.util.storage.SharedPreferencesHelperKt;
 import com.bamilo.android.core.modules.HomeModule;
 import com.bamilo.android.core.presentation.HomePresenter;
@@ -23,6 +25,7 @@ import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
 import com.bamilo.android.framework.service.objects.home.TeaserCampaign;
 import com.bamilo.android.framework.service.objects.home.type.TeaserGroupType;
+import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
 import com.bamilo.android.framework.service.utils.NetworkConnectivity;
 import com.bamilo.android.appmodule.bamiloapp.utils.ColorSequenceHolder;
@@ -36,6 +39,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.components.SliderViewComponen
 import com.bamilo.android.appmodule.bamiloapp.view.components.TileViewComponent;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -56,7 +60,11 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
     private boolean isFragmentVisibleToUser = false;
 
     public HomeFragment() {
-        super(true, R.layout.fragment_home);
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET),
+                NavigationAction.HOME,
+                R.layout.fragment_home,
+                IntConstants.ACTION_BAR_NO_TITLE,
+                NO_ADJUST_CONTENT);
     }
 
     @Override
