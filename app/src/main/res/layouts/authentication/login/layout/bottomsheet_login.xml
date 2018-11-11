@@ -60,6 +60,13 @@
                 android:layout_centerVertical="true"
                 app:srcCompat="@drawable/ic_outline_person_gray"/>
 
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                android:id="@+id/focus"
+                android:focusable="true"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:locale="fa_IR"/>
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/loginBottomSheet_til_emailOrPhone"
                 android:layout_width="match_parent"

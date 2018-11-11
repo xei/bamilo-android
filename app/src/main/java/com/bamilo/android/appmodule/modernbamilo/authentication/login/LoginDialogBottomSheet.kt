@@ -39,6 +39,8 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailAc
 import com.bamilo.android.appmodule.modernbamilo.authentication.AuthenticationListener
 import com.bamilo.android.appmodule.modernbamilo.authentication.forgetpassword.ForgetPasswordBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.authentication.repository.AuthenticationRepo
+import com.bamilo.android.appmodule.modernbamilo.customview.XeiButton
+import com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
 import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
 import com.bamilo.android.appmodule.modernbamilo.util.dpToPx
@@ -66,6 +68,8 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
     private var authenticationListener: AuthenticationListener? = null
 
     private var mBottomSheetFrameLayout: FrameLayout? = null
+
+    private lateinit var focus:XeiEditText
 
     var height = 0
 
@@ -125,9 +129,10 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
     private fun setOnFocusExpand() {
         emailOrPhoneEditText.clearFocus()
         passwordEditText.clearFocus()
+        focus.requestFocus()
         emailOrPhoneEditText.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) expandBottomSheet() }
 
-        passwordEditText.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) expandBottomSheet() }
+//        passwordEditText.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) expandBottomSheet() }
     }
 
     private fun expandBottomSheet() {
@@ -143,6 +148,8 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
 
             emailOrPhoneTextInputLayout = it.findViewById(R.id.loginBottomSheet_til_emailOrPhone)
             passwordTextInputLayout = it.findViewById(R.id.loginBottomSheet_til_password)
+
+            focus = it.findViewById(R.id.focus)
 
             rootView = it.findViewById(R.id.loginBottomSheet_relativeLayout_root)
             setInitialHeight(it)
