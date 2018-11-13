@@ -304,6 +304,11 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
             return false
         }
 
+        if (passwordEditText.text.length < 6) {
+            passwordTextInputLayout.error = getString(R.string.invalid_password)
+            return false
+        }
+
         passwordTextInputLayout.error = null
         return true
     }

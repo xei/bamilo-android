@@ -13,6 +13,7 @@ import com.bamilo.android.R
  */
 class ReturnPolicyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var isFilled = false
+    var view: View = itemView.findViewById(R.id.returnPolicy_cardView_view)
     var title: TextView = itemView.findViewById(R.id.returnPolicy_textView_returnPolicyText)
     var icon: AppCompatImageView = itemView.findViewById(R.id.returnPolicy_appImageView_returnPolicyIcon)
 }

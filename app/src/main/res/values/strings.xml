@@ -739,15 +739,16 @@
     <string name="email_or_phone">ایمیل یا شمارهٔ موبایل</string>
     <string name="forget_password">فراموشی رمز عبور</string>
     <string name="insert_email_or_phone_number">ایمیل یا شماره موبایل را وارد کنید</string>
-    <string name="insert_password">رمز عبور را وارد کنید</string>
+    <string name="insert_password">کلمه عبور را وارد کنید</string>
+    <string name="invalid_password">کلمه عبور نامعتبر است</string>
     <string name="invalid_email_or_phone_number">ایمیل یا شماره موبایل نامعتبر</string>
 
     <!-- Register Screen -->
     <string name="registerScreen_title">ثبت‌نام در بامیلو</string>
     <string name="registerScreen_hint_userId">آدرس ایمیل</string>
     <string name="registerScreen_hint_userId_mandatory">آدرس ایمیل *</string>
-    <string name="registerScreen_hint_password">گذرواژه</string>
-    <string name="registerScreen_hint_password_mandatory">گذرواژه *</string>
+    <string name="registerScreen_hint_password">کلمه عبور</string>
+    <string name="registerScreen_hint_password_mandatory">کلمه عبور *</string>
     <string name="registerScreen_hint_mobile">شماره تلفن همراه</string>
     <string name="registerScreen_hint_mobile_mandatory">شماره تلفن همراه *</string>
     <string name="registerScreen_hint_nationalId">کد ملی</string>
@@ -759,8 +760,8 @@
     <string name="verifyPhoneNoScreen_btn_resend">ارسال مجدد کد</string>
     <string name="verifyPhoneNoScreen_btn_next">مرحله بعد</string>
 
-    <string name="forgetPassScreen_title">فراموشی گذرواژه</string>
-    <string name="forgetPassScreen_btn_recover">بازیابی گذرواژه</string>
+    <string name="forgetPassScreen_title">فراموشی کلمه عبور</string>
+    <string name="forgetPassScreen_btn_recover">بازیابی کلمه عبور</string>
     <string name="forgetPassScreen_btn_register">ثبت نام</string>
     <string name="forgetPassScreen_hint_userId">ایمیل یا شماره موبایل</string>
 
