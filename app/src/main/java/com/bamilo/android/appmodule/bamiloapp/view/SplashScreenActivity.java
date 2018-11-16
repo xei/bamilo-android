@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -57,6 +58,9 @@ import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.crashlytics.android.Crashlytics;
 import com.pushwoosh.Pushwoosh;
 import com.pushwoosh.exception.PushwooshException;
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -99,10 +103,21 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     boolean waitForForceUpdate = true;
     private OptionalUpdateBottomSheet mOptionalUpdateBottomSheet;
 
+
+    private static final long TIMESTAMP_BLACKFRIDAY_BEGIN = 1542672000000L; // Nov 20
+    private static final long TIMESTAMP_BLACKFRIDAY_END = 1543190400000L;   // Nov 26
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash_screen);
+
+        long mCurrentTimeStamp = Calendar.getInstance().getTimeInMillis();
+        if (TIMESTAMP_BLACKFRIDAY_BEGIN < mCurrentTimeStamp && mCurrentTimeStamp < TIMESTAMP_BLACKFRIDAY_END ) {
+            setContentView(R.layout.launch_screen_black_friday);
+        } else {
+            setContentView(R.layout.splash_screen);
+        }
+
     }
 
     private void checkForUpdate() {
