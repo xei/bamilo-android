@@ -104,15 +104,14 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private OptionalUpdateBottomSheet mOptionalUpdateBottomSheet;
 
 
-    private static final long TIMESTAMP_BLACKFRIDAY_BEGIN = 1542672000000L; // Nov 20
-    private static final long TIMESTAMP_BLACKFRIDAY_END = 1543190400000L;   // Nov 26
+    private static final long TIMESTAMP_BLACKFRIDAY_END = 1543104000000L;   // Nov 25
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         long mCurrentTimeStamp = Calendar.getInstance().getTimeInMillis();
-        if (TIMESTAMP_BLACKFRIDAY_BEGIN < mCurrentTimeStamp && mCurrentTimeStamp < TIMESTAMP_BLACKFRIDAY_END ) {
+        if (mCurrentTimeStamp < TIMESTAMP_BLACKFRIDAY_END ) {
             setContentView(R.layout.launch_screen_black_friday);
         } else {
             setContentView(R.layout.splash_screen);
