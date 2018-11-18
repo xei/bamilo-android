@@ -84,7 +84,7 @@
     <string name="close_app">Close App</string>
     <string name="confirm_order_loosing_order">If you go back again your order will be invalidated and you will be repositioned on the homepage. \nOrder number:</string>
     <string name="confirm_order_loosing_order_title">Warning:</string>
-    <string name="continue_shopping">Continue Shopping</string>
+    <string name="continue_shopping">ادامه خرید</string>
     <string name="create_addresses_success">Created addresses successfully.</string>
     <string name="done_label">Done</string>
     <string name="dynamic_errortext"> is not correct</string>
