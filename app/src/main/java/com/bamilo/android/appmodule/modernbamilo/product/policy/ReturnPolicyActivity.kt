@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatImageView
 import android.view.View
 import android.webkit.SslErrorHandler
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageButton
@@ -79,6 +80,11 @@ class ReturnPolicyActivity : AppCompatActivity(), View.OnClickListener {
                     .show(getString(R.string.ssl_error_handler_title), getString(R.string.ssl_error_handler_message), View.OnClickListener { handler.proceed() },
                             View.OnClickListener { handler.cancel() })
         }
+
+        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+            return true
+        }
+
     }
 
     private fun initWebView() {

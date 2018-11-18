@@ -28,7 +28,7 @@ class ReturnPolicyItem(private var returnPolicy: ReturnPolicy) {
         holder.title.text = returnPolicy.title
         holder.isFilled = true
 
-        holder.view.setOnClickListener {
+        holder.temsAndPolicy.setOnClickListener {
             returnPolicy.cms_key?.run {
                 ReturnPolicyActivity.startReturnPolicyActivity(
                         holder.view.context, returnPolicy.cms_key!!,
