@@ -29,13 +29,15 @@ class ReturnPolicyItem(private var returnPolicy: ReturnPolicy) {
         holder.title.text = returnPolicy.title
         holder.isFilled = true
 
-        holder.temsAndPolicy.setOnClickListener {
-            returnPolicy.cms_key?.run {
-                it.visibility = View.VISIBLE
-                ReturnPolicyActivity.startReturnPolicyActivity(
-                        holder.view.context, returnPolicy.cms_key!!,
-                        (if(returnPolicy.title != null)returnPolicy.title else "")!!
-                )
+        returnPolicy.cms_key?.run {
+            holder.temsAndPolicy.apply {
+                visibility = View.VISIBLE
+                setOnClickListener {
+                    ReturnPolicyActivity.startReturnPolicyActivity(
+                            holder.view.context, returnPolicy.cms_key!!,
+                            (if(returnPolicy.title != null)returnPolicy.title else "")!!
+                    )
+                }
             }
         }
     }
