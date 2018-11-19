@@ -47,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/xeiTextView"
         app:locale="fa_IR"
-        tools:text="?? ?????? ???? ??????????? ????? ??? ???"/>
+        tools:text="kkkkkkkkkkkkkk"/>
 
     <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
         android:id="@+id/verificationDialog_textView_editPhone"
@@ -103,7 +103,7 @@
         app:layout_constraintTop_toBottomOf="@+id/etPin"
         app:locale="fa_IR"
         app:style="bold"
-        tools:text="?:??"/>
+        tools:text=""/>
 
     <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
         android:id="@+id/tvResendToken"
