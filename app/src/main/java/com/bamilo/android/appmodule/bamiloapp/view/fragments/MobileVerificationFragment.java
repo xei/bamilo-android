@@ -91,7 +91,7 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
         // TODO: 8/28/18 farshid
 //        HoloFontLoader.applyDefaultFont(view);
 
-        TextView tvPhoneNumber = view.findViewById(R.id.tvPhoneNumber);
+        TextView tvPhoneNumber = view.findViewById(R.id.verificationDialog_textView_verifyCodeSentTo);
 
         tvPhoneNumber.setText( getString(R.string.verifyPhoneNoScreen_subtitle, StringExtKt.persianizeNumberString(phoneNumber)));
 
