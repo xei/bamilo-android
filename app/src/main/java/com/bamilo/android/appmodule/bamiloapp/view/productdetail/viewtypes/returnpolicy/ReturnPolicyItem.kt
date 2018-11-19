@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.returnpolicy
 
+import android.view.View
 import com.bamilo.android.framework.components.ghostadapter.BindItem
 import com.bamilo.android.framework.components.ghostadapter.Binder
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager
@@ -30,6 +31,7 @@ class ReturnPolicyItem(private var returnPolicy: ReturnPolicy) {
 
         holder.temsAndPolicy.setOnClickListener {
             returnPolicy.cms_key?.run {
+                it.visibility = View.VISIBLE
                 ReturnPolicyActivity.startReturnPolicyActivity(
                         holder.view.context, returnPolicy.cms_key!!,
                         (if(returnPolicy.title != null)returnPolicy.title else "")!!
