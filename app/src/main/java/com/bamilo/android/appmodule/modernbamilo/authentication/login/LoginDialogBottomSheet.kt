@@ -167,7 +167,7 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun onLoginClicked() {
-        if (!checkEmailOrPhoneValidation() or !checkPasswordValidation()) {
+        if (!checkEmailOrPhoneValidation() || !checkPasswordValidation()) {
             return
         }
 
@@ -300,12 +300,12 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun checkPasswordValidation(): Boolean {
-        if (TextUtils.isEmpty(passwordEditText.text)) {
+        if (passwordEditText.text.toString().isEmpty()) {
             passwordTextInputLayout.error = getString(R.string.insert_password)
             return false
         }
 
-        if (passwordEditText.text.length < 6) {
+        if (passwordEditText.text.toString().length < 6) {
             passwordTextInputLayout.error = getString(R.string.invalid_password)
             return false
         }
