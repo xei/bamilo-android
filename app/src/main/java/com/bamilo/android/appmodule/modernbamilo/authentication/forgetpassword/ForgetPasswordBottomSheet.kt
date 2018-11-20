@@ -67,7 +67,7 @@ class ForgetPasswordBottomSheet : BottomSheetDialogFragment() {
 
                                     PoiziToast
                                             .with(ctx)
-                                            ?.error(getString(R.string.error_forgotpassword_title),
+                                            ?.error(response.message(),
                                                     Toast.LENGTH_SHORT)
                                             ?.show()
                                     return
