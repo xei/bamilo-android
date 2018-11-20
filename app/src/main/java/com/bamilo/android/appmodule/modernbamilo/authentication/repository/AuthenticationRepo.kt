@@ -41,9 +41,9 @@ object AuthenticationRepo {
                 .enqueue(callBack)
     }
 
-    public fun resetPassword(context: Context, resetPasswordRequestModel: ResetPasswordRequestModel, callBack: Callback<ResponseWrapper<ForgetPasswordRequestModel>>) {
+    public fun resetPassword(context: Context, identifier: String, newPass: String, callBack: Callback<ResponseWrapper<ForgetPasswordRequestModel>>) {
         RetrofitHelper.makeWebApi(context, AuthenticationServer::class.java)
-                .resetPassword(resetPasswordRequestModel)
+                .resetPassword(identifier, newPass)
                 .enqueue(callBack)
     }
 

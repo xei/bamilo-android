@@ -11,6 +11,7 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.BottomSheetDialogFragment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -27,17 +28,21 @@ import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
 import com.bamilo.android.appmodule.bamiloapp.view.widget.PinEntryInput
+import com.bamilo.android.appmodule.modernbamilo.authentication.forgetpassword.ForgetPasswordBottomSheet
+import com.bamilo.android.appmodule.modernbamilo.authentication.forgetpassword.NewPasswordBottomSheetDialogFragment
 import com.bamilo.android.appmodule.modernbamilo.authentication.repository.AuthenticationRepo
+import com.bamilo.android.appmodule.modernbamilo.authentication.repository.response.ForgetPasswordRequestModel
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
-import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
 import com.bamilo.android.appmodule.modernbamilo.util.dpToPx
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
+import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
+import com.bamilo.android.framework.components.METLengthChecker
 import com.bamilo.android.framework.service.pojo.BaseResponse
-import com.bamilo.android.framework.service.utils.ApiConstants
-import com.bamilo.android.framework.service.utils.Constants
-import com.bamilo.android.framework.service.utils.CustomerUtils
-import com.bamilo.android.framework.service.utils.EventType
+import com.bamilo.android.framework.service.utils.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 /**
@@ -111,6 +116,46 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
         return dialog
     }
 
+    private fun verify(identifier: String, verification: String) {
+        // forgetPasswordBottomSheet_editText_emailOrPhone.text.toString()
+        if (TextUtils.isEmpty(verification)) {
+            PoiziToast
+                    .with(context!!)
+                    ?.error(getString(R.string.error_forgotpassword_title),
+                            Toast.LENGTH_SHORT)
+                    ?.show()
+            return
+        }
+
+        context?.let { ctx ->
+
+            AuthenticationRepo.verifyPassword(ctx,
+                    identifier,
+                    verification, object : Callback<ResponseWrapper<ForgetPasswordRequestModel>> {
+                override fun onFailure(call: Call<ResponseWrapper<ForgetPasswordRequestModel>>, t: Throwable) {
+                    hideProgress()
+                    PoiziToast
+                            .with(ctx)
+                            ?.error(getString(R.string.error_forgotpassword_title),
+                                    Toast.LENGTH_SHORT)
+                            ?.show()
+                }
+
+                override fun onResponse(call: Call<ResponseWrapper<ForgetPasswordRequestModel>>, response: Response<ResponseWrapper<ForgetPasswordRequestModel>>) {
+                    hideProgress()
+
+                    response.body()?.success?.run {
+                        if (this) NewPasswordBottomSheetDialogFragment.newInstance(identifier).show(fragmentManager, "newPassword")
+                        dismiss()
+                    }
+
+                }
+
+            })
+
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_mobile_verification, container, false)
         findViews()
@@ -119,7 +164,7 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
         phoneNumber = arguments?.getString("phoneNumber")
         verificationCodeSentToPhoneTextView.text =
                 String.format(getString(R.string.verification_code_was_sent_to),
-                        arguments?.getString("phoneNumber")).persianizeDigitsInString()
+                        arguments?.getString("identifier")).persianizeDigitsInString()
 
         startTimer()
         initPinView()
@@ -144,7 +189,7 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
         tvResendToken.setOnClickListener {
             startTimer()
             sendVerificationCode(arguments?.getString("phoneNumber"), null) }
-        editPhoneTextView.setOnClickListener { onSignUpClicked() }
+        editPhoneTextView.setOnClickListener { onChangePhoneNoClicked() }
     }
 
     private fun setInitialHeight() = rootView.post {
@@ -161,6 +206,24 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
     }
 
     private fun submitToken() {
+
+        if (etPin.length() < 6) {
+            context?.let { it2 ->
+                PoiziToast.with(it2)
+                        ?.setGravity(Gravity.TOP)
+                        ?.error("کد بازیابی نادرست است.", Toast.LENGTH_SHORT)
+                        ?.show()
+            }
+            return
+        }
+
+
+        if (arguments?.getString("verificationType").equals("FORGET_PASSWORD")) {
+            verify(arguments?.getString("identifier").toString(), etPin.text!!.toString())
+            return
+        }
+
+
         val token = etPin.text!!.toString()
         if (token.length < etPin.maxLength) {
             etPin.requestFocus()
@@ -174,7 +237,10 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                btnSubmitToken.isEnabled = charSequence.length == etPin.maxLength
+//                btnSubmitToken.isEnabled = charSequence.length == etPin.maxLength
+                if (charSequence.length == etPin.maxLength) {
+                    submitToken()
+                }
             }
 
             override fun afterTextChanged(editable: Editable) {}
@@ -338,38 +404,38 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
                 })
     }
 
-    private fun login() {
-        AuthenticationRepo.autoLogin(context,
-                object : IResponseCallback {
-                    override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
-                        hideProgress()
-                        baseResponse?.let {
-                            if (baseResponse.hadSuccess()) {
-                                onLoginSuccessful()
-                            }
-                        }
-                    }
+//    private fun login() {
+//        AuthenticationRepo.autoLogin(context,
+//                object : IResponseCallback {
+//                    override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
+//                        hideProgress()
+//                        baseResponse?.let {
+//                            if (baseResponse.hadSuccess()) {
+//                                onLoginSuccessful()
+//                            }
+//                        }
+//                    }
+//
+//                    override fun onRequestError(baseResponse: BaseResponse<*>?) {
+//                    }
+//                })
+//    }
 
-                    override fun onRequestError(baseResponse: BaseResponse<*>?) {
-                    }
-                })
-    }
+//    private fun onLoginSuccessful() {
+//        activity?.let {
+//            CustomerUtils.setChangePasswordVisibility(it, false)
+//        }
+//
+//        activity?.let {
+//            if (it is BaseActivity) {
+//                it.setupDrawerNavigation()
+//            }
+//        }
+//        dismiss()
+//    }
 
-    private fun onLoginSuccessful() {
-        activity?.let {
-            CustomerUtils.setChangePasswordVisibility(it, false)
-        }
-
-        activity?.let {
-            if (it is BaseActivity) {
-                it.setupDrawerNavigation()
-            }
-        }
-        dismiss()
-    }
-
-    private fun onSignUpClicked() {
-        RegisterModalBottomSheet().show(fragmentManager, "register")
+    private fun onChangePhoneNoClicked() {
+        ForgetPasswordBottomSheet().show(fragmentManager, "forgetPassword")
         dismiss()
     }
 

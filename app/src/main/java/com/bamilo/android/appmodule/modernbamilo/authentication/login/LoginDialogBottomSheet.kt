@@ -38,6 +38,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
 import com.bamilo.android.appmodule.modernbamilo.authentication.AuthenticationListener
 import com.bamilo.android.appmodule.modernbamilo.authentication.forgetpassword.ForgetPasswordBottomSheet
+import com.bamilo.android.appmodule.modernbamilo.authentication.forgetpassword.NewPasswordBottomSheetDialogFragment
 import com.bamilo.android.appmodule.modernbamilo.authentication.repository.AuthenticationRepo
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiButton
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText

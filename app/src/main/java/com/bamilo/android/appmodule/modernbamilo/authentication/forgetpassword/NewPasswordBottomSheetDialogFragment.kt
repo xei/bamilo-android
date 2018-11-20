@@ -7,10 +7,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.modernbamilo.authentication.repository.AuthenticationRepo
 import com.bamilo.android.appmodule.modernbamilo.authentication.repository.response.ForgetPasswordRequestModel
+import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
 import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import kotlinx.android.synthetic.main.bottomsheet_forget_password.*
@@ -20,6 +22,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class NewPasswordBottomSheetDialogFragment : BottomSheetDialogFragment() {
+
+    private lateinit var mSignUpButton: BamiloActionButton
+
     companion object {
         @JvmStatic
         fun newInstance(identifier: String): NewPasswordBottomSheetDialogFragment {
@@ -32,21 +37,17 @@ class NewPasswordBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.bottomsheet_new_password, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        forgetPasswordBottomSheet_button_signUp.setOnClickListener { changePasswordClicked() }
+        val view =  inflater.inflate(R.layout.bottomsheet_new_password, container, false)
+        mSignUpButton = view.findViewById(R.id.newPasswordBottomSheet_bamiloButton_newPassword)
+        mSignUpButton.setOnClickListener {changePasswordClicked()}
+        return view
     }
 
     private fun changePasswordClicked() {
         if (isInputValid())
-            if (!TextUtils.isEmpty(newPasswordBottomSheet_editText_newPassword.text) &&
-                    !TextUtils.isEmpty(newPasswordBottomSheet_editText_verifyNewPassword.text)) {
+            if (!TextUtils.isEmpty(newPasswordBottomSheet_editText_newPassword.text)) {
                 AuthenticationRepo.resetPassword(context!!,
-                        ResetPasswordRequestModel(arguments?.getString("identifier")!!, ""),
+                        arguments?.getString("identifier")!!, newPasswordBottomSheet_editText_newPassword.text.toString(),
                         object : Callback<ResponseWrapper<ForgetPasswordRequestModel>> {
 
                             override fun onFailure(call: Call<ResponseWrapper<ForgetPasswordRequestModel>>, t: Throwable) {
@@ -60,12 +61,17 @@ class NewPasswordBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
                             override fun onResponse(call: Call<ResponseWrapper<ForgetPasswordRequestModel>>,
                                                     response: Response<ResponseWrapper<ForgetPasswordRequestModel>>) {
-                                context?.let {
-                                    PoiziToast.with(it)
-                                            ?.setGravity(Gravity.TOP)
-                                            ?.success(it.getString(R.string.password_changed), Toast.LENGTH_SHORT)
-                                            ?.show()
+
+                                if (response.isSuccessful) {
+                                    context?.let {
+                                        PoiziToast.with(it)
+                                                ?.setGravity(Gravity.TOP)
+                                                ?.success(it.getString(R.string.password_changed), Toast.LENGTH_SHORT)
+                                                ?.show()
+                                    }
+                                    dismiss()
                                 }
+
                             }
 
                         })
@@ -73,21 +79,10 @@ class NewPasswordBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun isInputValid(): Boolean {
-        if (!TextUtils.isEmpty(newPasswordBottomSheet_editText_newPassword.text) &&
-                !TextUtils.isEmpty(newPasswordBottomSheet_editText_verifyNewPassword.text)) {
-            if (newPasswordBottomSheet_editText_newPassword.text == newPasswordBottomSheet_editText_verifyNewPassword.text) {
-                return true
-            }
-
-            newPasswordBottomSheet_til_newPassword.error = getString(R.string.form_passwordsnomatch)
-            newPasswordBottomSheet_til_verifyNewPassword.error = getString(R.string.form_passwordsnomatch)
-
+        if (newPasswordBottomSheet_editText_newPassword.text.toString().isEmpty()) {
+            newPasswordBottomSheet_til_newPassword.error = getString(R.string.insert_password)
             return false
         }
-
-        newPasswordBottomSheet_til_newPassword.error = getString(R.string.insert_password)
-        newPasswordBottomSheet_til_verifyNewPassword.error = getString(R.string.insert_password)
-
-        return false
+        return true
     }
 }

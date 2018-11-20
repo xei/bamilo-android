@@ -16,13 +16,14 @@ interface AuthenticationServer {
             Call<ResponseWrapper<ForgetPasswordRequestModel>>
 
     @FormUrlEncoded
-    @POST("customer/forgotpasswordreset/")
-    fun resetPassword(@Body resetPasswordRequestModel: ResetPasswordRequestModel):
-            Call<ResponseWrapper<ForgetPasswordRequestModel>>
-
-    @FormUrlEncoded
     @POST("customer/forgotpasswordverify/")
     fun verifyPassword(@Field(value = "identifier", encoded = false) identifier: String,
                        @Field(value = "verification", encoded = false) verificationCode: String):
+            Call<ResponseWrapper<ForgetPasswordRequestModel>>
+
+    @FormUrlEncoded
+    @POST("customer/forgotpasswordreset/")
+    fun resetPassword(@Field(value = "identifier", encoded = false) identifier: String,
+                      @Field(value = "new_password", encoded = false) newPassword: String):
             Call<ResponseWrapper<ForgetPasswordRequestModel>>
 }

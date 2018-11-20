@@ -42,26 +42,14 @@ class ForgetPasswordBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun recoverPassword() {
-        showProgress()
-
-        context?.let { ctx ->
-            AuthenticationRepo.forgetPasswordRequest(ctx,
-                    forgetPasswordBottomSheet_editText_emailOrPhone.text.toString(),
-                    object : Callback<ResponseWrapper<ForgetPasswordRequestModel>> {
-                        override fun onFailure(call: Call<ResponseWrapper<ForgetPasswordRequestModel>>, t: Throwable) {
-                            hideProgress()
-
-                            PoiziToast
-                                    .with(ctx)
-                                    ?.error(getString(R.string.error_forgotpassword_title),
-                                            Toast.LENGTH_SHORT)
-                                    ?.show()
-                        }
-
-                        override fun onResponse(call: Call<ResponseWrapper<ForgetPasswordRequestModel>>,
-                                                response: Response<ResponseWrapper<ForgetPasswordRequestModel>>) {
-
-                            if (!response.isSuccessful) {
+        val identifier = forgetPasswordBottomSheet_editText_emailOrPhone.text.toString()
+        if (!identifier.isEmpty()) {
+            showProgress()
+            context?.let { ctx ->
+                AuthenticationRepo.forgetPasswordRequest(ctx,
+                        identifier,
+                        object : Callback<ResponseWrapper<ForgetPasswordRequestModel>> {
+                            override fun onFailure(call: Call<ResponseWrapper<ForgetPasswordRequestModel>>, t: Throwable) {
                                 hideProgress()
 
                                 PoiziToast
@@ -69,77 +57,63 @@ class ForgetPasswordBottomSheet : BottomSheetDialogFragment() {
                                         ?.error(getString(R.string.error_forgotpassword_title),
                                                 Toast.LENGTH_SHORT)
                                         ?.show()
-                                return
                             }
 
-                            response.body()?.metadata?.nextStepVerification?.let {
-                                if (it) {
-                                    verifyAndShowVerificationView(response.body()?.metadata?.verification)
-                                } else {
+                            override fun onResponse(call: Call<ResponseWrapper<ForgetPasswordRequestModel>>,
+                                                    response: Response<ResponseWrapper<ForgetPasswordRequestModel>>) {
+
+                                if (!response.isSuccessful) {
                                     hideProgress()
 
                                     PoiziToast
                                             .with(ctx)
-                                            ?.success(getString(R.string.forgotten_password_sub_text),
+                                            ?.error(getString(R.string.error_forgotpassword_title),
                                                     Toast.LENGTH_SHORT)
                                             ?.show()
-
-                                    dismiss()
+                                    return
                                 }
-                                return
+
+                                response.body()?.metadata?.nextStepVerification?.let {
+                                    if (it) {
+                                        showVerificationView()
+                                        dismiss()
+                                    } else {
+                                        hideProgress()
+
+                                        PoiziToast
+                                                .with(ctx)
+                                                ?.success(getString(R.string.forgotten_password_sub_text),
+                                                        Toast.LENGTH_SHORT)
+                                                ?.show()
+
+                                        dismiss()
+                                    }
+                                    return
+                                }
+
+                                hideProgress()
+
+                                PoiziToast
+                                        .with(ctx)
+                                        ?.error(getString(R.string.error_forgotpassword_title),
+                                                Toast.LENGTH_SHORT)
+                                        ?.show()
+
+                                dismiss()
                             }
 
-                            hideProgress()
-
-                            PoiziToast
-                                    .with(ctx)
-                                    ?.error(getString(R.string.error_forgotpassword_title),
-                                            Toast.LENGTH_SHORT)
-                                    ?.show()
-
-                            dismiss()
-                        }
-
-                    })
+                        })
+            }
+        } else {
+            forgetPasswordBottomSheet_til_emailOrPhone.error = "ایمیل یا شماره موبایل را وارد کنید"
         }
     }
 
-    private fun verifyAndShowVerificationView(verification: String?) {
-        if (TextUtils.isEmpty(verification)) {
-            PoiziToast
-                    .with(context!!)
-                    ?.error(getString(R.string.error_forgotpassword_title),
-                            Toast.LENGTH_SHORT)
-                    ?.show()
-            return
-        }
-
-        context?.let { ctx ->
-
-            AuthenticationRepo.verifyPassword(ctx,
-                    forgetPasswordBottomSheet_editText_emailOrPhone.text.toString(),
-                    verification!!, object : Callback<ResponseWrapper<ForgetPasswordRequestModel>> {
-                override fun onFailure(call: Call<ResponseWrapper<ForgetPasswordRequestModel>>, t: Throwable) {
-                    hideProgress()
-                    PoiziToast
-                            .with(ctx)
-                            ?.error(getString(R.string.error_forgotpassword_title),
-                                    Toast.LENGTH_SHORT)
-                            ?.show()
-                }
-
-                override fun onResponse(call: Call<ResponseWrapper<ForgetPasswordRequestModel>>, response: Response<ResponseWrapper<ForgetPasswordRequestModel>>) {
-                    hideProgress()
-
-                    VerificationFragmentBottomSheet.newInstance(
-                            VerificationFragmentBottomSheet.VerificationType.FORGET_PASSWORD,
-                            forgetPasswordBottomSheet_editText_emailOrPhone.text.toString())
-                            .show(fragmentManager, "verifyPhone")
-                }
-
-            })
-
-        }
+    private fun showVerificationView() {
+        VerificationFragmentBottomSheet.newInstance(
+                VerificationFragmentBottomSheet.VerificationType.FORGET_PASSWORD,
+                forgetPasswordBottomSheet_editText_emailOrPhone.text.toString())
+                .show(fragmentManager, "verifyPhone")
     }
 
     private fun showProgress() {
