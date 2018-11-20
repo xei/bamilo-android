@@ -44,6 +44,8 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
     private TextView tvResendToken;
     private TextView tvResendTokenNotice;
 
+    private TextView editPhone;
+
     private String fragmentTagToPopFromBackStack;
 
 
@@ -100,6 +102,19 @@ public class MobileVerificationFragment extends BaseFragment implements IRespons
         final PinEntryInput etPin = view.findViewById(R.id.etPin);
 
         final int tokenMaxLength = etPin.getMaxLength();
+
+        editPhone = view.findViewById(R.id.verificationDialog_textView_editPhone);
+        editPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    getActivity().onBackPressed();
+                } catch (Exception e) {
+
+                }
+
+            }
+        });
 
         tvResendTokenNotice = view.findViewById(R.id.tvResendTokenNotice);
         tvResendTokenNotice.setText(null);
