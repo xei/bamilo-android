@@ -17,6 +17,11 @@
         <item name="android:layout_marginRight">5dp</item>
     </style>
 
+    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 
     <!-- TEXT STYLES -->
 

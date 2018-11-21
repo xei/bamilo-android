@@ -74,6 +74,7 @@
                 android:layout_toLeftOf="@id/imgPerson"
                 android:layout_marginTop="4dp"
                 app:errorEnabled="true"
+                app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
                 app:errorTextAppearance="@style/error_appearance">
 
                 <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
@@ -118,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/imgLock"
                 android:layout_marginTop="4dp"
+                app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
                 app:errorEnabled="true"
                 app:errorTextAppearance="@style/error_appearance"
                 app:passwordToggleEnabled="true">
