@@ -166,7 +166,7 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
 
     private fun openLoginScreen() {
         fragmentManager?.let {
-            LoginDialogBottomSheet.show(it, null)
+            LoginDialogBottomSheet.show(it, null, null)
         }
 
         dismiss()

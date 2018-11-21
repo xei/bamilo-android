@@ -132,7 +132,7 @@ class ForgetPasswordBottomSheet : BottomSheetDialogFragment() {
 
     private fun openLoginScreen() {
         fragmentManager?.let {
-            LoginDialogBottomSheet.show(it, null)
+            LoginDialogBottomSheet.show(it, null, null)
         }
 
         dismiss()

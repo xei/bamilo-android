@@ -300,7 +300,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
             if (!BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
                 LoginDialogBottomSheet
                         .Companion
-                        .show(getFragmentManager(), null)
+                        .show(getFragmentManager(), null, null)
                         .setAuthenticationListener(result -> {
                             if (result) {
                                 onClickCheckoutButton();

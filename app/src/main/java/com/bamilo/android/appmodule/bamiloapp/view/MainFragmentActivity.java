@@ -536,7 +536,7 @@ public class MainFragmentActivity extends BaseActivity {
 
     private void triggerAutoLogin(Bundle bundle) {
         if (!BamiloApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-            LoginDialogBottomSheet.Companion.show(getSupportFragmentManager(), bundle);
+            LoginDialogBottomSheet.Companion.show(getSupportFragmentManager(), bundle, null);
             return;
         }
 
@@ -572,7 +572,7 @@ public class MainFragmentActivity extends BaseActivity {
             @Override
             public void onRequestError(BaseResponse baseResponse) {
                 dismissProgress();
-                LoginDialogBottomSheet.Companion.show(getSupportFragmentManager(), bundle);
+                LoginDialogBottomSheet.Companion.show(getSupportFragmentManager(), bundle, null);
             }
         });
     }

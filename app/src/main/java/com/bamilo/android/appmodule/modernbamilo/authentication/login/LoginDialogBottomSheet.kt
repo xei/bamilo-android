@@ -50,6 +50,7 @@ import com.bamilo.android.framework.service.pojo.BaseResponse
 import com.bamilo.android.framework.service.utils.Constants
 import com.bamilo.android.framework.service.utils.CustomerUtils
 import com.crashlytics.android.Crashlytics
+import kotlin.math.log
 
 /**
  * Created by Farshid
@@ -74,12 +75,17 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
 
     var height = 0
 
+    interface OnLoginListener { fun onLoggedIn() }
+    private var mOnLoginListener: OnLoginListener? = null
+
     companion object {
         @JvmStatic
-        fun show(fragmentManager: FragmentManager, bundle: Bundle?): LoginDialogBottomSheet {
+        fun show(fragmentManager: FragmentManager, bundle: Bundle?, loginListener: OnLoginListener?): LoginDialogBottomSheet {
             val loginDialogBottomSheet = LoginDialogBottomSheet()
             loginDialogBottomSheet.arguments = bundle
             loginDialogBottomSheet.show(fragmentManager, "login")
+
+            loginDialogBottomSheet.mOnLoginListener = loginListener
 
             return loginDialogBottomSheet
         }
@@ -271,6 +277,8 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
             }
         }
         authenticationListener?.onAuthenticationListener(true)
+
+        mOnLoginListener?.onLoggedIn()
 
         dismiss()
     }

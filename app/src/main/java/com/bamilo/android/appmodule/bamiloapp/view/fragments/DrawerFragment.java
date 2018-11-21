@@ -13,6 +13,8 @@ import android.view.View.OnClickListener;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.controllers.LogOut;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
+import com.bamilo.android.appmodule.bamiloapp.utils.Toast;
+import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.objects.home.type.TeaserGroupType;
 import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
@@ -158,7 +160,18 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
 
-                getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, null, true);
+                if (BamiloApplication.isCustomerLoggedIn()) {
+                    getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, null, true);
+                } else {
+                    if (getFragmentManager() != null) {
+                        LoginDialogBottomSheet.Companion.show(getFragmentManager(), null, () -> getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, null, true));
+                    } else if (getContext() != null) {
+                        Toast.makeText(getContext(), "ابتدا باید لاگین کنید", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+
             }
         }));
         mDrawerItems.add(new DrawerItem(true));
@@ -167,7 +180,17 @@ public class DrawerFragment extends BaseFragment implements OnClickListener {
             public void onClick(View v) {
                 getBaseActivity().closeNavigationDrawer();
 
-                getBaseActivity().onSwitchFragment(FragmentType.WISH_LIST, null, true);
+                if (BamiloApplication.isCustomerLoggedIn()) {
+                    getBaseActivity().onSwitchFragment(FragmentType.WISH_LIST, null, true);
+                } else {
+                    if (getFragmentManager() != null) {
+                        LoginDialogBottomSheet.Companion.show(getFragmentManager(), null, () -> getBaseActivity().onSwitchFragment(FragmentType.WISH_LIST, null, true));
+                    } else if (getContext() != null) {
+                        Toast.makeText(getContext(), "ابتدا باید لاگین کنید", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
             }
         }));
         mDrawerItems.add(new DrawerItem(R.drawable.drawer_recently_viewed, R.string.drawer_recently_viewed, false, 0, R.color.drawer_defaultcolor, new OnClickListener() {
