@@ -61,45 +61,39 @@ class ForgetPasswordBottomSheet : BottomSheetDialogFragment() {
 
                             override fun onResponse(call: Call<ResponseWrapper<ForgetPasswordRequestModel>>,
                                                     response: Response<ResponseWrapper<ForgetPasswordRequestModel>>) {
+                                response.body()?.run {
+                                    if (success) {
 
-                                if (!response.isSuccessful) {
-                                    hideProgress()
+                                        if (metadata.nextStepVerification) {
+                                            // The user is using the phone number
+                                            showVerificationView()
 
-                                    PoiziToast
-                                            .with(ctx)
-                                            ?.error(response.message(),
-                                                    Toast.LENGTH_SHORT)
-                                            ?.show()
-                                    return
-                                }
+                                            dismiss()
+                                        } else {
+                                            // The user is using the email address
+                                            hideProgress()
 
-                                response.body()?.metadata?.nextStepVerification?.let {
-                                    if (it) {
-                                        showVerificationView()
-                                        dismiss()
+                                            PoiziToast
+                                                    .with(ctx)
+                                                    ?.success(getString(R.string.forgotten_password_sub_text),
+                                                            Toast.LENGTH_SHORT)
+                                                    ?.show()
+
+                                            dismiss()
+                                        }
+
                                     } else {
                                         hideProgress()
 
-                                        PoiziToast
-                                                .with(ctx)
-                                                ?.success(getString(R.string.forgotten_password_sub_text),
-                                                        Toast.LENGTH_SHORT)
-                                                ?.show()
-
-                                        dismiss()
+                                        messages.validate?.get(0)!!["identifier"]?.let {
+                                            PoiziToast
+                                                    .with(ctx)
+                                                    ?.error(it,
+                                                            Toast.LENGTH_SHORT)
+                                                    ?.show()
+                                        }
                                     }
-                                    return
                                 }
-
-                                hideProgress()
-
-                                PoiziToast
-                                        .with(ctx)
-                                        ?.error(getString(R.string.error_forgotpassword_title),
-                                                Toast.LENGTH_SHORT)
-                                        ?.show()
-
-                                dismiss()
                             }
 
                         })
