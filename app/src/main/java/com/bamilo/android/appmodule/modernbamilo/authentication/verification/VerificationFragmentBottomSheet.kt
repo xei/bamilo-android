@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bamilo.android.R
@@ -33,6 +34,7 @@ import com.bamilo.android.appmodule.modernbamilo.authentication.forgetpassword.N
 import com.bamilo.android.appmodule.modernbamilo.authentication.repository.AuthenticationRepo
 import com.bamilo.android.appmodule.modernbamilo.authentication.repository.response.ForgetPasswordRequestModel
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
 import com.bamilo.android.appmodule.modernbamilo.util.dpToPx
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
@@ -68,6 +70,7 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
     private var mTokenCountDownRunnable: Runnable? = null
     private var tokenResendDelay = (2 * 60 * 1000).toLong()
 
+    private lateinit var mCloseBtn: ImageView
     private lateinit var verificationCodeSentToPhoneTextView: TextView
     private lateinit var editPhoneTextView: TextView
     private lateinit var tvResendToken: TextView
@@ -182,9 +185,11 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
         tvResendTokenNotice = rootView.findViewById(R.id.tvResendTokenNotice)
         etPin = rootView.findViewById(R.id.etPin)
         btnSubmitToken = rootView.findViewById(R.id.btnSubmitToken)
+        mCloseBtn = rootView.findViewById(R.id.verificationDialog_appImage_close)
     }
 
     private fun bindClickListeners() {
+        mCloseBtn.setOnClickListener { dismiss() }
         btnSubmitToken.setOnClickListener { submitToken() }
         tvResendToken.setOnClickListener {
             startTimer()
@@ -435,7 +440,11 @@ class VerificationFragmentBottomSheet : BottomSheetDialogFragment(), IResponseCa
 //    }
 
     private fun onChangePhoneNoClicked() {
-        ForgetPasswordBottomSheet().show(fragmentManager, "forgetPassword")
+
+        when (arguments?.getString("verificationType")) {
+            VerificationType.FORGET_PASSWORD.name -> ForgetPasswordBottomSheet().show(fragmentManager, "forgetPassword")
+            VerificationType.REGISTRATION.name -> RegisterModalBottomSheet().show(fragmentManager, "registration")
+        }
         dismiss()
     }
 
