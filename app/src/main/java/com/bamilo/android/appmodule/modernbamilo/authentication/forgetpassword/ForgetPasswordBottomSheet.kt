@@ -85,7 +85,7 @@ class ForgetPasswordBottomSheet : BottomSheetDialogFragment() {
                                     } else {
                                         hideProgress()
 
-                                        messages.validate?.get(0)!!["identifier"]?.let {
+                                        messages.validate?.get(0)!!["message"]?.let {
                                             PoiziToast
                                                     .with(ctx)
                                                     ?.error(it,
