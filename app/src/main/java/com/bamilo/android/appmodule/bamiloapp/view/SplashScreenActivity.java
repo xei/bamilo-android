@@ -110,12 +110,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        long mCurrentTimeStamp = Calendar.getInstance().getTimeInMillis();
-        if (mCurrentTimeStamp < TIMESTAMP_BLACKFRIDAY_END ) {
-            setContentView(R.layout.launch_screen_black_friday);
-        } else {
+//        long mCurrentTimeStamp = Calendar.getInstance().getTimeInMillis();
+//        if (mCurrentTimeStamp < TIMESTAMP_BLACKFRIDAY_END ) {
+//            setContentView(R.layout.launch_screen_black_friday);
+//        } else {
             setContentView(R.layout.splash_screen);
-        }
+//        }
 
     }
 
