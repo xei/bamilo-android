@@ -13,6 +13,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.botto
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.android.databinding.ActivityProductDetailBinding
 import com.bamilo.android.framework.components.ghostadapter.GhostAdapter
+import java.lang.Exception
 import java.util.*
 
 
@@ -131,12 +132,16 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
         bottomSheetAdapter.removeAll()
         bottomSheetItems.clear()
 
-        product.image_list.let {
-            ImageManager.getInstance().loadImage(it[0].medium, binding.chooseVariationRelativeLayoutLayout!!
-                    .chooseVariationAppImageViewProductImage,
-                    null,
-                    R.drawable.no_image_large,
-                    false)
+        try {
+            product.image_list.let {
+                ImageManager.getInstance().loadImage(it[0].medium, binding.chooseVariationRelativeLayoutLayout!!
+                        .chooseVariationAppImageViewProductImage,
+                        null,
+                        R.drawable.no_image_large,
+                        false)
+            }
+        } catch (ioobe: Exception) {
+
         }
 
         binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewTitle.text = product.title
