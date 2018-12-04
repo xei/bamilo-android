@@ -42,8 +42,16 @@ class ForgetPasswordBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun recoverPassword() {
+        forgetPasswordBottomSheet_til_emailOrPhone.error = null
         val identifier = forgetPasswordBottomSheet_editText_emailOrPhone.text.toString()
         if (!identifier.isEmpty()) {
+
+            if(identifier.length != 11 && (!identifier.contains("@") ||!identifier.contains("."))) {
+                forgetPasswordBottomSheet_til_emailOrPhone.error = "ایمیل یا شماره موبایل معتبر نمی‌باشد!"
+                return
+            }
+
+
             showProgress()
             context?.let { ctx ->
                 AuthenticationRepo.forgetPasswordRequest(ctx,
