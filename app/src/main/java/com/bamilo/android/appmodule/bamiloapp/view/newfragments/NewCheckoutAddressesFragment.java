@@ -209,12 +209,18 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         fun(baseResponse);
     }
 
+    boolean kos = true;
+
     private void fun(BaseResponse baseResponse) {
 
         if (baseResponse == null) {
             fabNewAddress.show();
             super.showAddresses(null, mSelectedAddress);
             hideActivityProgress();
+            if(kos) {
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                kos = false;
+            }
             return;
         }
 
