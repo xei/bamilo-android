@@ -85,12 +85,14 @@ class ForgetPasswordBottomSheet : BottomSheetDialogFragment() {
                                     } else {
                                         hideProgress()
 
-                                        messages.validate?.get(0)!!["message"]?.let {
-                                            PoiziToast
-                                                    .with(ctx)
-                                                    ?.error(it,
-                                                            Toast.LENGTH_SHORT)
-                                                    ?.show()
+                                        messages.validate?.run {
+                                            get(0)["message"]?.let {
+                                                PoiziToast
+                                                        .with(ctx)
+                                                        ?.error(it,
+                                                                Toast.LENGTH_SHORT)
+                                                        ?.show()
+                                            }
                                         }
                                     }
                                 }
