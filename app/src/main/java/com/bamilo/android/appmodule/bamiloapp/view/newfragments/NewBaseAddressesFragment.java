@@ -100,6 +100,20 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
 
      */
     protected void showAddresses(Addresses addresses, int mSelectedAddressId) {
+
+        if (addresses == null) {
+            ArrayList<Address> addressList = new ArrayList<>();
+            AddressAdapter mAddressAdapter = new AddressAdapter(addressList, mIsCheckout, mSelectedAddressId, onClickDeleteAddressButton, this);
+            mAddressAdapter.baseFragment = this;
+            mAddressView.removeAllViews();
+            mAddressView.setAdapter(mAddressAdapter);
+
+            showFragmentContentContainer();
+
+
+            return;
+        }
+
         // Save addresses
         mAddresses = addresses;
         Address tmp = new Address();
