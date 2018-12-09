@@ -513,6 +513,7 @@ class ProductDetailActivity : BaseActivity(),
                     stars[4].count.toFloat()))
         }
         binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.GONE
+        binding.productDetailLinearLayoutGotoCardAfterAdded?.root?.visibility = View.GONE
     }
 
     override fun onShowSpecificComment(review: Review) {
