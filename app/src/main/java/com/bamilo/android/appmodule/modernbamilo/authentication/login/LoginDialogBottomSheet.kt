@@ -203,8 +203,8 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
 
     private fun login() {
         AuthenticationRepo.login(context,
-                emailOrPhoneEditText.text.toString(),
-                passwordEditText.text.toString(),
+                emailOrPhoneEditText.text.toString().trim(),
+                passwordEditText.text.toString().trim(),
                 object : IResponseCallback {
                     override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
                         hideProgress()
@@ -284,16 +284,17 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun checkEmailOrPhoneValidation(): Boolean {
-        if (TextUtils.isEmpty(emailOrPhoneEditText.text.toString())) {
+        var idValue = emailOrPhoneEditText.text.toString().trim()
+        if (TextUtils.isEmpty(idValue)) {
             emailOrPhoneTextInputLayout.error = getString(R.string.insert_email_or_phone_number)
         }
 
-        if (isValidEmail(emailOrPhoneEditText.text.toString())) {
+        if (isValidEmail(idValue)) {
             emailOrPhoneTextInputLayout.error = null
             return true
         }
 
-        if (emailOrPhoneEditText.text.toString().startsWith("09") && emailOrPhoneEditText.text.toString().length == 11) {
+        if (emailOrPhoneEditText.text.toString().trim().startsWith("09") && idValue.length == 11) {
             emailOrPhoneTextInputLayout.error = null
             return true
         }
