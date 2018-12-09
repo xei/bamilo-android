@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.modernbamilo.product.policy
 
+import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.BaseModel
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import retrofit2.Call
 import retrofit2.http.GET
@@ -12,4 +13,4 @@ interface ReturnPolicyWebApi {
 
 }
 
-data class GetReturnPolicyResponse(val returnPolicy: String)
+data class GetReturnPolicyResponse(val returnPolicy: String) : BaseModel()
