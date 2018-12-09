@@ -130,6 +130,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:hint="@string/password"
+                    android:inputType="textPassword"
                     android:imeOptions="actionDone"
                     android:maxLines="1"
                     android:singleLine="true"

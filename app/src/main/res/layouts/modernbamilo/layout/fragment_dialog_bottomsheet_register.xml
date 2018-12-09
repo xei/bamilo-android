@@ -156,6 +156,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
+                    android:inputType="textPassword"
                     android:hint="@string/registerScreen_hint_password_mandatory"
                     app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
                     android:lines="1"
