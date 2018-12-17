@@ -79,6 +79,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Custom"
         tools:replace="android:allowBackup">
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
         <activity
             android:name=".appmodule.bamiloapp.view.SplashScreenActivity"
             android:resizeableActivity="false"
