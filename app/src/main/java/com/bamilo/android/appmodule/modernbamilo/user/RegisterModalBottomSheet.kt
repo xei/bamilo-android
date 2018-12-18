@@ -174,10 +174,10 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
 
     /******************************************* Legacy Code ***************************************/
     private fun isInputDataValid(): Boolean {
-        var result = validateField(context, getString(R.string.national_id), mNationalIdTextInputLayout, mNationalIdEditText.text.toString(), true, 10, 10, getString(R.string.normal_string_regex), "")
-        result = validateField(context, getString(R.string.email_address), mUserIdTextInputLayout, mUserIdEditText.text.toString(), true, 0, 0, getString(R.string.email_regex), resources.getString(R.string.error_invalid_email)) && result
-        result = validateField(context, getString(R.string.password), mPasswordTextInputLayout, mPasswordEditText.text.toString(), true, 6, 0, null, "") && result
-        result = validateField(context, getString(R.string.mobile_number), mMobileNoTextInputLayout, mMobileNoEditText.text.toString(), true, 0, 0, getString(R.string.cellphone_regex), "") && result
+        var result = validateField(context, getString(R.string.national_id), mNationalIdTextInputLayout, mNationalIdEditText.text.toString().trim(), true, 10, 10, getString(R.string.normal_string_regex), "")
+        result = validateField(context, getString(R.string.email_address), mUserIdTextInputLayout, mUserIdEditText.text.toString().trim(), true, 0, 0, getString(R.string.email_regex), resources.getString(R.string.error_invalid_email)) && result
+        result = validateField(context, getString(R.string.password), mPasswordTextInputLayout, mPasswordEditText.text.toString().trim(), true, 6, 0, null, "") && result
+        result = validateField(context, getString(R.string.mobile_number), mMobileNoTextInputLayout, mMobileNoEditText.text.toString().trim(), true, 0, 0, getString(R.string.cellphone_regex), "") && result
         return result
     }
 
@@ -213,10 +213,10 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
     }
 
     private fun register() = triggerRegister(ApiConstants.USER_REGISTRATION_API_PATH, ContentValues().apply {
-        put("customer[national_id]", mNationalIdEditText.text.toString())
-        put("customer[email]", mUserIdEditText.text.toString())
-        put("customer[password]", mPasswordEditText.text.toString())
-        put("customer[phone]", mMobileNoEditText.text.toString())
+        put("customer[national_id]", mNationalIdEditText.text.toString().trim())
+        put("customer[email]", mUserIdEditText.text.toString().trim())
+        put("customer[password]", mPasswordEditText.text.toString().trim())
+        put("customer[phone]", mMobileNoEditText.text.toString().trim())
     })
 
     private fun showProgress() {
