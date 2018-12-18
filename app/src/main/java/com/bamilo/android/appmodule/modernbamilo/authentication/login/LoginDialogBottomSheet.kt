@@ -228,6 +228,9 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
                             msgs["identifier"]?.let { idMsg ->
                                 emailOrPhoneTextInputLayout.error = idMsg
                             }
+                            msgs["password"]?.let { idMsg ->
+                                passwordTextInputLayout.error = idMsg
+                            }
                         }
 
                     }
