@@ -472,7 +472,7 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
 
     private fun navigateToVerificationFragment() {
         phoneVerificationOnGoing = true
-        val phoneNumber = mMobileNoEditText.text.toString()
+        val phoneNumber = mMobileNoEditText.text.toString().trim()
         val args = Bundle()
         args.putString(ConstantsIntentExtra.PHONE_NUMBER, phoneNumber)
 
@@ -480,9 +480,9 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
                 VerificationFragmentBottomSheet.VerificationType.REGISTRATION,
                 phoneNumber,
                 phoneNumber,
-                mNationalIdEditText.text.toString(),
-                mUserIdEditText.text.toString(),
-                mPasswordEditText.text.toString()).show(fragmentManager, "verifyPhone")
+                mNationalIdEditText.text.toString().trim(),
+                mUserIdEditText.text.toString().trim(),
+                mPasswordEditText.text.toString().trim()).show(fragmentManager, "verifyPhone")
 
         val prefs = context!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE)
         val editor = prefs.edit()
