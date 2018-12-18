@@ -38,9 +38,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
 import com.bamilo.android.appmodule.modernbamilo.authentication.AuthenticationListener
 import com.bamilo.android.appmodule.modernbamilo.authentication.forgetpassword.ForgetPasswordBottomSheet
-import com.bamilo.android.appmodule.modernbamilo.authentication.forgetpassword.NewPasswordBottomSheetDialogFragment
 import com.bamilo.android.appmodule.modernbamilo.authentication.repository.AuthenticationRepo
-import com.bamilo.android.appmodule.modernbamilo.customview.XeiButton
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
 import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
@@ -50,7 +48,6 @@ import com.bamilo.android.framework.service.pojo.BaseResponse
 import com.bamilo.android.framework.service.utils.Constants
 import com.bamilo.android.framework.service.utils.CustomerUtils
 import com.crashlytics.android.Crashlytics
-import kotlin.math.log
 
 /**
  * Created by Farshid
@@ -226,16 +223,13 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
                     override fun onRequestError(baseResponse: BaseResponse<*>?) {
                         hideProgress()
                         authenticationListener?.onAuthenticationListener(false)
-                        baseResponse?.let {
-                            activity?.let {
-                                context?.let { it2 ->
-                                    PoiziToast.with(it2)
-                                            ?.setGravity(Gravity.TOP)
-                                            ?.error(getString(R.string.email_password_invalid), Toast.LENGTH_SHORT)
-                                            ?.show()
-                                }
+
+                        baseResponse?.validateMessages?.let { msgs ->
+                            msgs["identifier"]?.let { idMsg ->
+                                emailOrPhoneTextInputLayout.error = idMsg
                             }
                         }
+
                     }
                 })
     }
