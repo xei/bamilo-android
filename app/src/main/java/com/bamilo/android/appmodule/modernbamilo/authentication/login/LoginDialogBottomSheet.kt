@@ -223,16 +223,10 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
                     override fun onRequestError(baseResponse: BaseResponse<*>?) {
                         hideProgress()
                         authenticationListener?.onAuthenticationListener(false)
-
-                        baseResponse?.validateMessages?.let { msgs ->
-                            msgs["identifier"]?.let { idMsg ->
-                                emailOrPhoneTextInputLayout.error = idMsg
-                            }
-                            msgs["password"]?.let { idMsg ->
-                                passwordTextInputLayout.error = idMsg
-                            }
+                        baseResponse?.validateMessages?.run {
+                            this["identifier"]?.let { emailOrPhoneTextInputLayout.error = it }
+                            this["password"]?.let { passwordTextInputLayout.error = it }
                         }
-
                     }
                 })
     }
