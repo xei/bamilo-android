@@ -35,8 +35,8 @@ public class SearchSuggestionClient {
                 e.printStackTrace();
             }
         } else if(searchTerm.length() >= 2) {
-            if(useAlgolia){
-                new AlgoliaHelper(context, responseCallback).getSuggestions(searchTerm);
+            if(false){
+//                new AlgoliaHelper(context, responseCallback).getSuggestions(searchTerm);
             } else {
 
                 BamiloApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(searchTerm), responseCallback);
