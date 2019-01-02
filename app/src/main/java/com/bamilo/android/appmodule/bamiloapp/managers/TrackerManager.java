@@ -66,7 +66,7 @@ public final class TrackerManager {
     public static void trackScreenTiming(Context context, BaseScreenModel screenModel) {
         for (IBaseTracker tracker : trackers.values()) {
             if (tracker instanceof IScreenTracker) {
-                ((IScreenTracker) tracker).trackScreenTiming(context, screenModel);
+//                ((IScreenTracker) tracker).trackScreenTiming(context, screenModel);
             }
         }
     }
