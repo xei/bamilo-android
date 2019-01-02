@@ -48,6 +48,7 @@ import com.bamilo.android.appmodule.bamiloapp.utils.ui.ErrorLayoutFactory;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.WishListFragment;
 import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
 import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
@@ -313,7 +314,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         if (items != null && items.size() > 0) {
 
             SimpleEventModel sem = SimpleEventModelFactory.createModelForCheckoutStart(items);
-            TrackerManager.trackEvent(getContext(), EventConstants.CheckoutStart, sem);
+//            TrackerManager.trackEvent(getContext(), EventConstants.CheckoutStart, sem);
+            EventTracker.INSTANCE.startCheckout((long) BamiloApplication.INSTANCE.getCart().getTotal());
             Bundle bundle = new Bundle();
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, bundle,
                     FragmentController.ADD_TO_BACK_STACK);
@@ -429,8 +431,9 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 // Update value
                 updateWishListValue(false);
                 if (removeFromWishListEventModel != null) {
-                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList,
-                            removeFromWishListEventModel);
+                    EventTracker.INSTANCE.removeFromWishList(removeFromWishListEventModel.label);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList,
+//                            removeFromWishListEventModel);
                 }
                 break;
 
@@ -441,15 +444,17 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 // Update value
                 updateWishListValue(true);
                 if (addToWishListEventModel != null) {
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList,
-                            addToWishListEventModel);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList,
+//                            addToWishListEventModel);
+                    EventTracker.INSTANCE.addToWishList(addToWishListEventModel.label);
                 }
                 break;
 
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 if (removeFromCartEventModel != null) {
-                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromCart,
-                            removeFromCartEventModel);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromCart,
+//                            removeFromCartEventModel);
+                    EventTracker.INSTANCE.removeFromCart(removeFromCartEventModel.label, removeFromCartEventModel.value);
                 }
                 params = new Bundle();
                 params.putString(TrackerDelegator.SKU_KEY, mItemRemovedSku);

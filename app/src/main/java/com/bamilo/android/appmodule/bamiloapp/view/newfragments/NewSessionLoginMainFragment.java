@@ -29,8 +29,9 @@ import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
-import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTracker;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
+import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents;
 import com.bamilo.android.framework.service.objects.checkout.CheckoutStepLogin;
 import com.bamilo.android.framework.service.objects.customer.Customer;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
@@ -223,12 +224,14 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                                     .createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL,
                                             EmailHelper.getHost(customer.getEmail()),
                                             true));
-                    TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
 
-                    EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(
-                            getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),
-                            BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER
-                                    .getEmail() : null);
+                    EventTracker.INSTANCE.login(String.valueOf(customer.getId()), TrackingEvents.LoginType.LOGIN_WITH_EMAIL, true);
+
+//                    EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(
+//                            getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),
+//                            BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER
+//                                    .getEmail() : null);
 
                     // Validate the next step
                     CheckoutStepManager

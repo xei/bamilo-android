@@ -12,6 +12,8 @@ import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
 import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
+import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents;
 import com.bamilo.android.framework.components.recycler.DividerItemDecoration;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys;
@@ -43,6 +45,7 @@ import com.bamilo.android.appmodule.bamiloapp.utils.ui.ErrorLayoutFactory;
 import com.bamilo.android.R;
 
 import java.util.EnumSet;
+import java.util.Objects;
 
 /**
  * WishList fragment with pagination.
@@ -422,7 +425,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             removeFromWishListEventModel.action = EventActionKeys.REMOVE_FROM_WISHLIST;
             removeFromWishListEventModel.label = sku;
             removeFromWishListEventModel.value = SimpleEventModel.NO_VALUE;
-            TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, removeFromWishListEventModel);
+//            TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, removeFromWishListEventModel);
+            EventTracker.INSTANCE.removeFromWishList(sku);
 
             // Trigger to remove
             triggerRemoveFromWishList(sku);
@@ -520,7 +524,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                         addToCartEventModel.customAttributes =
                                 MainEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label, 0, true);
                     }
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
+                    EventTracker.INSTANCE.addToCart(addToCartEventModel.label,
+                            (long) ((WishListGridAdapter)Objects.requireNonNull(mListView.getAdapter())).getItem(mSelectedPositionToDelete).getPrice(),
+                            TrackingEvents.AddToCartType.ADD_TO_CART_BTN);
                 }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:

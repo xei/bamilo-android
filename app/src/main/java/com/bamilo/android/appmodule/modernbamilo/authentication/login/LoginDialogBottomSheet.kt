@@ -33,13 +33,14 @@ import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel
 import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator
-import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTracker
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
 import com.bamilo.android.appmodule.modernbamilo.authentication.AuthenticationListener
 import com.bamilo.android.appmodule.modernbamilo.authentication.forgetpassword.ForgetPasswordBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.authentication.repository.AuthenticationRepo
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker
+import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents
 import com.bamilo.android.appmodule.modernbamilo.user.RegisterModalBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
 import com.bamilo.android.appmodule.modernbamilo.util.dpToPx
@@ -248,15 +249,20 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
         TrackerDelegator.trackLoginSuccessful(customer, false, false)
         Crashlytics.setUserEmail(BamiloApplication.CUSTOMER.email)
 
-        val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
-                Constants.LOGIN_METHOD_EMAIL, customer.id.toLong(),
-                MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.email),
-                        true))
+//        val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
+//                Constants.LOGIN_METHOD_EMAIL, customer.id.toLong(),
+//                MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.email),
+//                        true))
+//        TrackerManager.trackEvent(context, EventConstants.Login, authEventModel)
 
-        TrackerManager.trackEvent(context, EventConstants.Login, authEventModel)
+        EventTracker.login(
+                userId = BamiloApplication.CUSTOMER.email,
+                loginType = TrackingEvents.LoginType.LOGIN_WITH_EMAIL,
+                succeed = true
+        )
 
-        EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(context!!.resources.getString(R.string.Emarsys_ContactFieldID)),
-                if (BamiloApplication.CUSTOMER != null) BamiloApplication.CUSTOMER.email else null)
+//        EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(context!!.resources.getString(R.string.Emarsys_ContactFieldID)),
+//                if (BamiloApplication.CUSTOMER != null) BamiloApplication.CUSTOMER.email else null)
 
         activity?.let {
             if (it is BaseActivity) {

@@ -15,6 +15,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.I
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.slider.DepthPageTransformer
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.slider.ProductSliderPagerAdapter
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.slider.SliderPresenter
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import com.bamilo.android.framework.components.ghostadapter.BindItem
 import com.bamilo.android.framework.components.ghostadapter.Binder
@@ -97,17 +98,19 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
 
         pdvMainView.trackAddFromWishList()
 
-        val addToWishListEventModel =
-                MainEventModel(holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName()),
-                        EventActionKeys.ADD_TO_WISHLIST,
-                        imageSliderModel.productSku,
-                        imageSliderModel.price.toLong(),
-                        MainEventModel.createAddToWishListEventModelAttributes(imageSliderModel.productSku,
-                                imageSliderModel.category, true))
+        EventTracker.addToWishList(sku = imageSliderModel.productSku)
 
-        TrackerManager.trackEvent(holder!!.itemView.context,
-                EventConstants.AddToWishList,
-                addToWishListEventModel)
+//        val addToWishListEventModel =
+//                MainEventModel(holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName()),
+//                        EventActionKeys.ADD_TO_WISHLIST,
+//                        imageSliderModel.productSku,
+//                        imageSliderModel.price.toLong(),
+//                        MainEventModel.createAddToWishListEventModelAttributes(imageSliderModel.productSku,
+//                                imageSliderModel.category, true))
+//
+//        TrackerManager.trackEvent(holder!!.itemView.context,
+//                EventConstants.AddToWishList,
+//                addToWishListEventModel)
     }
 
     private fun itemRemovedFromWishList() {
@@ -120,13 +123,15 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
         imageSliderModel.isWishList = false
         holder!!.like.isChecked = false
 
-        val sem = SimpleEventModel().apply {
-            category = holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName())
-            action = EventActionKeys.REMOVE_FROM_WISHLIST
-            label = imageSliderModel.productSku
-            value = imageSliderModel.price.toLong()
-        }
-        TrackerManager.trackEvent(holder!!.itemView.context, EventConstants.RemoveFromWishList, sem)
+        EventTracker.removeFromWishList(imageSliderModel.productSku)
+
+//        val sem = SimpleEventModel().apply {
+//            category = holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName())
+//            action = EventActionKeys.REMOVE_FROM_WISHLIST
+//            label = imageSliderModel.productSku
+//            value = imageSliderModel.price.toLong()
+//        }
+//        TrackerManager.trackEvent(holder!!.itemView.context, EventConstants.RemoveFromWishList, sem)
     }
 
     private fun setupViewPager(holder: SliderHolder) {

@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
-import com.emarsys.predict.RecommendedItem
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
 import com.bamilo.android.framework.components.ghostadapter.GhostAdapter
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra
@@ -17,7 +16,6 @@ import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment
-import com.bamilo.android.appmodule.bamiloapp.view.relatedproducts.viewtypes.RelatedProductsItem
 import com.bamilo.android.core.service.model.EventType
 import com.bamilo.android.core.service.model.ServerResponse
 import kotlinx.android.synthetic.main.fragment_related_products.view.*
@@ -61,7 +59,7 @@ class RecommendProductsFragment : BaseFragment(EnumSet.of(MyMenuItem.UP_BUTTON_B
 
     private lateinit var rootView: View
 
-    private var mRecommendProductViewModel: RecommendProductViewModel? = null
+//    private var mRecommendProductViewModel: RecommendProductViewModel? = null
 
     private var itemId: String = ""
     private var logic: String = ""
@@ -102,7 +100,7 @@ class RecommendProductsFragment : BaseFragment(EnumSet.of(MyMenuItem.UP_BUTTON_B
         super.onViewCreated(view, savedInstanceState)
         rootView = view
         initRecyclerView()
-        getRelatedProducts()
+//        getRelatedProducts()
     }
 
     private fun initRecyclerView() {
@@ -118,40 +116,40 @@ class RecommendProductsFragment : BaseFragment(EnumSet.of(MyMenuItem.UP_BUTTON_B
      * @property logic and
      * @property itemId if logic is "related"
      * */
-    private fun getRelatedProducts() {
-        if (mRecommendProductViewModel == null) {
-            mRecommendProductViewModel = ViewModelProviders.of(this).get(RecommendProductViewModel::class.java)
-        }
-        mRecommendProductViewModel!!.getProductList(itemId, logic)
-                .observe(this,
-                        Observer<List<RecommendedItem>?> { data: List<RecommendedItem>? ->
-                            updateUi(data)
-                        })
-    }
+//    private fun getRelatedProducts() {
+//        if (mRecommendProductViewModel == null) {
+//            mRecommendProductViewModel = ViewModelProviders.of(this).get(RecommendProductViewModel::class.java)
+//        }
+//        mRecommendProductViewModel!!.getProductList(itemId, logic)
+//                .observe(this,
+//                        Observer<List<RecommendedItem>?> { data: List<RecommendedItem>? ->
+//                            updateUi(data)
+//                        })
+//    }
 
     /**
      * fill recyclerview and ghost adapter to
      * show recommended items to user
      * */
-    private fun updateUi(data: List<RecommendedItem>?) {
-        data?.forEach { recommendedItem: RecommendedItem ->
-            val relatedProductsItem = RelatedProductsItem(recommendedItem)
-            relatedProductsItem.setOnItemClickListener(object : OnItemClickListener {
-                override fun onItemClicked(obj: Any) {
-                    gotoProductDetailPage(obj as RecommendedItem)
-                }
-            })
-            items.add(relatedProductsItem)
-        }
-        mGhostAdapter.setItems(items)
-    }
+//    private fun updateUi(data: List<RecommendedItem>?) {
+//        data?.forEach { recommendedItem: RecommendedItem ->
+//            val relatedProductsItem = RelatedProductsItem(recommendedItem)
+//            relatedProductsItem.setOnItemClickListener(object : OnItemClickListener {
+//                override fun onItemClicked(obj: Any) {
+//                    gotoProductDetailPage(obj as RecommendedItem)
+//                }
+//            })
+//            items.add(relatedProductsItem)
+//        }
+//        mGhostAdapter.setItems(items)
+//    }
 
-    private fun gotoProductDetailPage(recommendedItem: RecommendedItem) {
-        val bundle = Bundle()
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, recommendedItem.data["item"].toString())
-        bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true)
-        (context as BaseActivity).onSwitchFragment(FragmentType.PRODUCT_DETAILS,
-                bundle,
-                FragmentController.ADD_TO_BACK_STACK)
-    }
+//    private fun gotoProductDetailPage(recommendedItem: RecommendedItem) {
+//        val bundle = Bundle()
+//        bundle.putString(ConstantsIntentExtra.CONTENT_ID, recommendedItem.data["item"].toString())
+//        bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true)
+//        (context as BaseActivity).onSwitchFragment(FragmentType.PRODUCT_DETAILS,
+//                bundle,
+//                FragmentController.ADD_TO_BACK_STACK)
+//    }
 }

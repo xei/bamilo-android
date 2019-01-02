@@ -1,8 +1,6 @@
 package com.bamilo.android.appmodule.bamiloapp.utils.ui;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -16,20 +14,12 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.emarsys.predict.RecommendedItem;
-import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
-import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
-import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
-import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendManager;
-import com.bamilo.android.appmodule.bamiloapp.preferences.CountryPersistentConfigs;
-import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RecommendationsCartHolder;
-import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity;
+
 import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.preferences.CountryPersistentConfigs;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.List;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -85,7 +75,7 @@ public class ErrorLayoutFactory {
     private final View mErrorLayout;
 
     private int actualError;
-    RecommendationsCartHolder recommendationsTeaserHolder;
+//    RecommendationsCartHolder recommendationsTeaserHolder;
 
     /**
      * Create a new instance of ErrorLayoutFactory.
@@ -143,8 +133,8 @@ public class ErrorLayoutFactory {
                 break;
             case CART_EMPTY_LAYOUT:
                 new Builder()
-                        .setDetailMessage(R.drawable.ico_empty_cart_rtl, R.string.order_no_items)
-                        .showRecommendation("PERSONAL");
+                        .setDetailMessage(R.drawable.ico_empty_cart_rtl, R.string.order_no_items);
+//                        .showRecommendation("PERSONAL");
                 break;
             case CONTINUE_SHOPPING_LAYOUT:
                 new Builder()
@@ -167,8 +157,8 @@ public class ErrorLayoutFactory {
             case NO_FAVOURITES_LAYOUT:
                 new Builder()
                         .setDetailMessage(R.drawable.ic_saved_empty,
-                                R.string.no_saved_items_subtitle)
-                        .showRecommendation("POPULAR");
+                                R.string.no_saved_items_subtitle);
+//                        .showRecommendation("POPULAR");
                 break;
             case NO_RECENT_SEARCHES_LAYOUT:
                 new Builder()
@@ -373,12 +363,12 @@ public class ErrorLayoutFactory {
             return this;
         }
 
-        private Builder showRecommendation(String type) {
-            View recommendations = mErrorLayout.findViewById(R.id.recommendation_view);
-            recommendations.setVisibility(View.VISIBLE);
-            sendRecommend(mErrorLayout.getContext(), type);
-            return this;
-        }
+//        private Builder showRecommendation(String type) {
+//            View recommendations = mErrorLayout.findViewById(R.id.recommendation_view);
+//            recommendations.setVisibility(View.VISIBLE);
+////            sendRecommend(mErrorLayout.getContext(), type);
+//            return this;
+//        }
 
         private Builder setButtonMessage(@StringRes int message) {
             ((TextView) mErrorLayout.findViewById(R.id.fragment_root_error_button_message))
@@ -451,43 +441,43 @@ public class ErrorLayoutFactory {
         }
     }
 
-    private void sendRecommend(final Context context, String type) {
-
-        RecommendListCompletionHandler recommendListCompletionHandler = (category, data) -> {
-            if (data == null || data.size() == 0) {
-                View recommendations = mErrorLayout.findViewById(R.id.recommendation_view);
-                recommendations.setVisibility(View.GONE);
-                return;
-            }
-            try {
-                if (recommendationsTeaserHolder != null) {
-                    ((ViewGroup) mErrorLayout).removeView(recommendationsTeaserHolder.itemView);
-                }
-                recommendationsTeaserHolder = new RecommendationsCartHolder(context,
-                        mErrorLayout
-                                .findViewById(R.id.recommendation_view), null);
-
-                recommendationsTeaserHolder.onBind(data);
-
-                ((ViewGroup) mErrorLayout).addView(recommendationsTeaserHolder.itemView,
-                        ((ViewGroup) mErrorLayout).getChildCount() - 1);
-
-            } catch (Exception ignored) {
-
-            }
-
-        };
-
-        RecommendManager recommendManager = new RecommendManager();
-        switch (type) {
-            case "POPULAR":
-                recommendManager.sendPopularRecommend(15, recommendListCompletionHandler);
-                break;
-
-            case "PERSONAL":
-            default:
-                recommendManager.sendPersonalRecommend(15, recommendListCompletionHandler);
-                break;
-        }
-    }
+//    private void sendRecommend(final Context context, String type) {
+//
+//        RecommendListCompletionHandler recommendListCompletionHandler = (category, data) -> {
+//            if (data == null || data.size() == 0) {
+//                View recommendations = mErrorLayout.findViewById(R.id.recommendation_view);
+//                recommendations.setVisibility(View.GONE);
+//                return;
+//            }
+//            try {
+//                if (recommendationsTeaserHolder != null) {
+//                    ((ViewGroup) mErrorLayout).removeView(recommendationsTeaserHolder.itemView);
+//                }
+//                recommendationsTeaserHolder = new RecommendationsCartHolder(context,
+//                        mErrorLayout
+//                                .findViewById(R.id.recommendation_view), null);
+//
+//                recommendationsTeaserHolder.onBind(data);
+//
+//                ((ViewGroup) mErrorLayout).addView(recommendationsTeaserHolder.itemView,
+//                        ((ViewGroup) mErrorLayout).getChildCount() - 1);
+//
+//            } catch (Exception ignored) {
+//
+//            }
+//
+//        };
+//
+//        RecommendManager recommendManager = new RecommendManager();
+//        switch (type) {
+//            case "POPULAR":
+//                recommendManager.sendPopularRecommend(15, recommendListCompletionHandler);
+//                break;
+//
+//            case "PERSONAL":
+//            default:
+//                recommendManager.sendPersonalRecommend(15, recommendListCompletionHandler);
+//                break;
+//        }
+//    }
 }

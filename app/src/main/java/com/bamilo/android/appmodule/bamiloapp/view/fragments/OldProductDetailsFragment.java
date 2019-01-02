@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
@@ -28,8 +29,6 @@ import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.datamanagement.DataManager;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.bamilo.android.appmodule.bamiloapp.helpers.address.GetCitiesHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.address.GetRegionsHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.cart.ShoppingCartAddItemHelper;
@@ -51,13 +50,11 @@ import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.DeepLinkManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogSimpleListFragment;
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
-import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.HomeRecommendationsGridTeaserHolder;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.product.UIProductUtils;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UIUtils;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
 import com.bamilo.android.framework.components.customfontviews.CheckBox;
-import android.widget.TextView;
 import com.bamilo.android.framework.service.database.BrandsTableHelper;
 import com.bamilo.android.framework.service.database.LastViewedTableHelper;
 import com.bamilo.android.framework.service.objects.addresses.AddressCities;
@@ -87,7 +84,6 @@ import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
 import com.bamilo.android.framework.service.utils.shop.CurrencyFormatter;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
-import com.emarsys.predict.RecommendedItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -136,8 +132,8 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
     private Spinner mRegionSpinner;
     private Spinner mCitySpinner;
     private TextView mDeliveryTimeTextView;
-    private RecommendManager recommendManager;
-    HomeRecommendationsGridTeaserHolder recommendationsGridTeaserHolder;
+//    private RecommendManager recommendManager;
+//    HomeRecommendationsGridTeaserHolder recommendationsGridTeaserHolder;
     private boolean recommendationsTeaserHolderAdded = false;
     private AddressRegions mRegions;
     private AddressCities mCities;
@@ -295,7 +291,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
                     sem.action = EventActionKeys.REMOVE_FROM_WISHLIST;
                     sem.label = mClicked.getSku();
                     sem.value = (long) mClicked.getPrice();
-                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, sem);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, sem);
 
                     triggerRemoveFromWishList(mClicked.getSku());
                 }
@@ -305,7 +301,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         }
 
         if (mProduct != null) {
-            sendRecommend();
+//            sendRecommend();
         }
 
     }
@@ -504,7 +500,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         mProduct = product;
         mCompleteProductSku = product.getSku();
 
-        sendRecommend();
+//        sendRecommend();
         // Set layout
         setTitle();
         setSlideShow();
@@ -527,7 +523,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
         MainEventModel viewProductEventModel = new MainEventModel(mNavSource, EventActionKeys.VIEW_PRODUCT, mProduct.getSku(),
                 (long) mProduct.getPrice(), MainEventModel.createViewProductEventModelAttributes(mProduct.getCategoryKey(),
                 (long) mProduct.getPrice()));
-        TrackerManager.trackEvent(getContext(), EventConstants.ViewProduct, viewProductEventModel);
+//        TrackerManager.trackEvent(getContext(), EventConstants.ViewProduct, viewProductEventModel);
     }
 
     /**
@@ -1017,7 +1013,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
                     // Global Tracker
                     SimpleEventModel sem = new SimpleEventModel(getString(TrackingPage.PDV.getName()),
                             EventActionKeys.REMOVE_FROM_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice());
-                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, sem);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, sem);
                 } else {
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
@@ -1059,7 +1055,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
                     // Global Tracker
                     SimpleEventModel sem = new SimpleEventModel(getString(TrackingPage.PDV.getName()),
                             EventActionKeys.REMOVE_FROM_WISHLIST, mProduct.getSku(), (long) mProduct.getPrice());
-                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, sem);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, sem);
                 } else {
                     triggerAddToWishList(mProduct.getSku());
                     TrackerDelegator.trackAddToFavorites(mProduct);
@@ -1269,7 +1265,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
                         addToCartEventModel.customAttributes = MainEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label,
                                 0, true);
                     }
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
                 }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
@@ -1289,7 +1285,7 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
                     if (mProduct != null) {
                         addToWishListEventModel.customAttributes = MainEventModel.createAddToWishListEventModelAttributes(mProduct.getSku(), mProduct.getCategoryKey(), true);
                     }
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, addToWishListEventModel);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList, addToWishListEventModel);
                 }
                 break;
             case GET_PRODUCT_DETAIL:
@@ -1673,75 +1669,75 @@ public class OldProductDetailsFragment extends BaseFragment implements IResponse
 
     }
 
-    private void sendRecommend() {
-
-        RecommendListCompletionHandler handler = (category, data) -> {
-            LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
-
-            if (recommendationsGridTeaserHolder == null) {
-                recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
-            }
-            if (recommendationsGridTeaserHolder != null) {
-                try {
-
-
-                    // Set view
-                    mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
-
-                    recommendationsGridTeaserHolder.onBind(data);
-                    // Add to container
-
-                    mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount() - 1);
-                } catch (Exception ex) {
-
-                }
-                // Save
-                //mViewHolders.add(holder);
-                recommendationsTeaserHolderAdded = true;
-
-            }
-        };
-
-
-//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseActivity());
-//        String logic = sharedPref.getString("", "RELATED");
-//        RecommendManager recommendManager = new RecommendManager();
-//        Item item = recommendManager.getCartItem(mProduct);
-//        recommendManager.sendRelatedRecommend(item.getRecommendedItem(),
-//                null,
-//                item.getItemID(),
-//                null,
-//                handler);
+//    private void sendRecommend() {
+//
+//        RecommendListCompletionHandler handler = (category, data) -> {
+//            LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+//
+//            if (recommendationsGridTeaserHolder == null) {
+//                recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
+//            }
+//            if (recommendationsGridTeaserHolder != null) {
+//                try {
 //
 //
-
-        /*recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
-            @Override
-            public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
-                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
-
-                if (recommendationsGridTeaserHolder == null ) {
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
-                }
-                if (recommendationsGridTeaserHolder != null ) {
-                    mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
-
-                    // Set view
-                    recommendationsGridTeaserHolder.onBind(data);
-                    // Add to container
-                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
-                        mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount()-1);
-
-                    // Save
-                    //mViewHolders.add(holder);
-                    recommendationsTeaserHolderAdded = true;
-
-                }
-
-            }
-        });*/
-    }
+//                    // Set view
+//                    mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
+//                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.recommendation_grid, mRelatedProductsView, false), null);
+//
+//                    recommendationsGridTeaserHolder.onBind(data);
+//                    // Add to container
+//
+//                    mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount() - 1);
+//                } catch (Exception ex) {
+//
+//                }
+//                // Save
+//                //mViewHolders.add(holder);
+//                recommendationsTeaserHolderAdded = true;
+//
+//            }
+//        };
+//
+//
+////        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseActivity());
+////        String logic = sharedPref.getString("", "RELATED");
+////        RecommendManager recommendManager = new RecommendManager();
+////        Item item = recommendManager.getCartItem(mProduct);
+////        recommendManager.sendRelatedRecommend(item.getRecommendedItem(),
+////                null,
+////                item.getItemID(),
+////                null,
+////                handler);
+////
+////
+//
+//        /*recommendManager.sendHomeRecommend(new RecommendListCompletionHandler() {
+//            @Override
+//            public void onRecommendedRequestComplete(final String category, final List<RecommendedItem> data) {
+//                LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+//
+//                if (recommendationsGridTeaserHolder == null ) {
+//                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
+//                }
+//                if (recommendationsGridTeaserHolder != null ) {
+//                    mRelatedProductsView.removeView(recommendationsGridTeaserHolder.itemView);
+//
+//                    // Set view
+//                    recommendationsGridTeaserHolder.onBind(data);
+//                    // Add to container
+//                    recommendationsGridTeaserHolder = new HomeRecommendationsGridTeaserHolder(getBaseActivity(), inflater.inflate(R.layout.home_teaser_recommendation_grid, mRelatedProductsView, false), null);
+//                        mRelatedProductsView.addView(recommendationsGridTeaserHolder.itemView, mRelatedProductsView.getChildCount()-1);
+//
+//                    // Save
+//                    //mViewHolders.add(holder);
+//                    recommendationsTeaserHolderAdded = true;
+//
+//                }
+//
+//            }
+//        });*/
+//    }
 
     public static void clearSelectedRegionCityId() {
         selectedCityId = null;

@@ -18,8 +18,6 @@ import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.Item
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendManager
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel
 import com.bamilo.android.appmodule.bamiloapp.utils.OnItemClickListener
@@ -36,12 +34,12 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.P
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.SimpleProduct
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.breadcrumbs.BreadcrumbListItem
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.primaryinfo.PrimaryInfoItem
-import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.recommendation.RecommendationItem
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.returnpolicy.ReturnPolicyItem
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.review.ReviewsItem
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.seller.SellerItem
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.slider.SliderItem
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.variation.VariationsItem
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.android.databinding.FragmentPdvMainViewBinding
 import com.bamilo.android.framework.components.ghostadapter.GhostAdapter
@@ -49,7 +47,6 @@ import com.bamilo.android.framework.service.database.BrandsTableHelper
 import com.bamilo.android.framework.service.database.LastViewedTableHelper
 import com.bamilo.android.framework.service.tracking.AdjustTracker
 import com.bamilo.android.framework.service.tracking.TrackingPage
-import com.emarsys.predict.RecommendedItem
 
 
 /**
@@ -285,11 +282,15 @@ class ProductDetailMainFragment : Fragment() {
     private fun addItemsToAdapter() {
         adapter.setItems(items)
 
-        val viewProductEventModel = MainEventModel(getString(TrackingPage.PDV.getName()), EventActionKeys.VIEW_PRODUCT, product.sku,
-                product.price.price.toLong(),
-                MainEventModel.createViewProductEventModelAttributes("categoryUrlKey",
-                        product.price.price.toLong()))
-        TrackerManager.trackEvent(context, EventConstants.ViewProduct, viewProductEventModel)
+//        val viewProductEventModel = MainEventModel(getString(TrackingPage.PDV.getName()), EventActionKeys.VIEW_PRODUCT, product.sku,
+//                product.price.price.toLong(),
+//                MainEventModel.createViewProductEventModelAttributes("categoryUrlKey",
+//                        product.price.price.toLong()))
+//        TrackerManager.trackEvent(context, EventConstants.ViewProduct, viewProductEventModel)
+        EventTracker.contentView(
+                sku = product.sku,
+                category = product.breadcrumbs[0].target?.split("::")!![1]
+        )
 
         val params = Bundle()
         params.putSerializable(AdjustTracker.PRODUCT, product)
@@ -371,7 +372,7 @@ class ProductDetailMainFragment : Fragment() {
                 addProductToLastViewDatabase()
                 pdvMainView.onProductReceived(it)
 
-                getRecommendedProducts()
+//                getRecommendedProducts()
 
             } else if (context != null) {
                 pdvMainView.showErrorMessage(WarningFactory.ERROR_MESSAGE,
@@ -387,36 +388,36 @@ class ProductDetailMainFragment : Fragment() {
         BrandsTableHelper.updateBrandCounter(product.brand)
     }
 
-    private fun getRecommendedProducts() {
-        val recommendManager = RecommendManager()
-        recommendManager.sendRelatedRecommend(getRecommendationItem(),
-                null,
-                product.sku,
-                null,
-                6)
-        { _, data ->
-            if (isAdded && context != null) {
-                recommendedItems = data
-                if (data != null) {
-                    addHeader(getString(R.string.related_products))
-
-                    itemPositionToChangeGridSpanCount = items.size - 2
-                    itemPositionToChangeGridSpanCountToDefault = itemPositionToChangeGridSpanCount
-
-                    for (i in 0 until data.size) {
-                        if (i > 5) {
-                            break
-                        }
-                        itemPositionToChangeGridSpanCountToDefault++
-                        recommendationAdapterItems.add(RecommendationItem(data[i], product.price.currency, pdvMainView))
-                    }
-
-                    addSeeMoreRecommendItem()
-                    addRecommendItemsToAdapter()
-                }
-            }
-        }
-    }
+//    private fun getRecommendedProducts() {
+//        val recommendManager = RecommendManager()
+//        recommendManager.sendRelatedRecommend(getRecommendationItem(),
+//                null,
+//                product.sku,
+//                null,
+//                6)
+//        { _, data ->
+//            if (isAdded && context != null) {
+//                recommendedItems = data
+//                if (data != null) {
+//                    addHeader(getString(R.string.related_products))
+//
+//                    itemPositionToChangeGridSpanCount = items.size - 2
+//                    itemPositionToChangeGridSpanCountToDefault = itemPositionToChangeGridSpanCount
+//
+//                    for (i in 0 until data.size) {
+//                        if (i > 5) {
+//                            break
+//                        }
+//                        itemPositionToChangeGridSpanCountToDefault++
+//                        recommendationAdapterItems.add(RecommendationItem(data[i], product.price.currency, pdvMainView))
+//                    }
+//
+//                    addSeeMoreRecommendItem()
+//                    addRecommendItemsToAdapter()
+//                }
+//            }
+//        }
+//    }
 
     private fun addRecommendItemsToAdapter() {
         if (adapter.itemCount > 0) {
@@ -434,25 +435,25 @@ class ProductDetailMainFragment : Fragment() {
         }))
     }
 
-    private fun getRecommendationItem(): RecommendedItem? {
-        val item = Item().apply {
-            brand = product.brand
-
-            if (product.breadcrumbs.size > 0) {
-                product.breadcrumbs[0].target?.let {
-                    category = it.split("::")[1]
-                }
-            }
-
-            image = product.image
-            isAvailable = product.has_stock
-            itemID = product.sku
-            price = product.price.price.toDouble()
-            title = product.title
-        }
-
-        return item.recommendedItem
-    }
+//    private fun getRecommendationItem(): RecommendedItem? {
+//        val item = Item().apply {
+//            brand = product.brand
+//
+//            if (product.breadcrumbs.size > 0) {
+//                product.breadcrumbs[0].target?.let {
+//                    category = it.split("::")[1]
+//                }
+//            }
+//
+//            image = product.image
+//            isAvailable = product.has_stock
+//            itemID = product.sku
+//            price = product.price.price.toDouble()
+//            title = product.title
+//        }
+//
+//        return item.recommendedItem
+//    }
 
     private fun bindToolbarClickListener() {
         binding.pdvAppImageViewBack.setOnClickListener { _ -> pdvMainView.onBackButtonClicked() }

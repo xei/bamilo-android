@@ -34,6 +34,8 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailAc
 import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.authentication.verification.VerificationFragmentBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker
+import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents
 import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
 import com.bamilo.android.appmodule.modernbamilo.util.extension.makeErrorViewScrollable
 import com.bamilo.android.appmodule.modernbamilo.util.extension.setErrorTypeface
@@ -267,11 +269,17 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
                                 customerEmail = BamiloApplication.CUSTOMER.email
                             }
 
-                            val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
-                                    Constants.LOGIN_METHOD_EMAIL, customerId,
-                                    MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, if (customerEmail != null) EmailHelper.getHost(customerEmail) else "",
-                                            true))
-                            TrackerManager.trackEvent(context, EventConstants.Signup, authEventModel)
+                            EventTracker.register(
+                                    userId = BamiloApplication.CUSTOMER.id.toString(),
+                                    registrationType = TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
+                                    succeed = true
+                            )
+
+//                            val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
+//                                    Constants.LOGIN_METHOD_EMAIL, customerId,
+//                                    MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, if (customerEmail != null) EmailHelper.getHost(customerEmail) else "",
+//                                            true))
+//                            TrackerManager.trackEvent(context, EventConstants.Signup, authEventModel)
 
                             context?.let {
                                 PoiziToast.with(it)
@@ -312,10 +320,16 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
                 val eventType = baseResponse?.eventType
                 if (eventType == EventType.REGISTER_ACCOUNT_EVENT) {
                     // Tracking
-                    val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
-                            Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-                            MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false))
-                    TrackerManager.trackEvent(context, EventConstants.Signup, authEventModel)
+//                    val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
+//                            Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+//                            MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false))
+//                    TrackerManager.trackEvent(context, EventConstants.Signup, authEventModel)
+
+                    EventTracker.register(
+                            userId = BamiloApplication.CUSTOMER.id.toString(),
+                            registrationType = TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
+                            succeed = false
+                    )
 
                     showValidateMessages(baseResponse)
                     activity?.let {

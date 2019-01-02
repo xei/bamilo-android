@@ -144,20 +144,20 @@
             android:name=".appmodule.bamiloapp.view.RedirectInfoActivity"
             android:resizeableActivity="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.pushwoosh.DeepLinkActivity"
-            android:resizeableActivity="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+        <!--<activity-->
+            <!--android:name="com.pushwoosh.DeepLinkActivity"-->
+            <!--android:resizeableActivity="false"-->
+            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data android:scheme="@string/PW_TESTDEVICE_DEEPLINK" />
-                <data android:scheme="@string/PW_TESTDEVICE_DEEPLINK_LOWERCASE" />
-            </intent-filter>
-        </activity>
+                <!--<data android:scheme="@string/PW_TESTDEVICE_DEEPLINK" />-->
+                <!--<data android:scheme="@string/PW_TESTDEVICE_DEEPLINK_LOWERCASE" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
         <activity
             android:name=".appmodule.bamiloapp.view.productdetail.ProductDetailActivity"
             android:launchMode="singleTop"
@@ -184,15 +184,15 @@
 
         <!-- pushwoosh -->
 
-        <meta-data
-            android:name="com.pushwoosh.notification_service_extension"
-            android:value="com.bamilo.android.appmodule.bamiloapp.extlibraries.pushwoosh.PushwooshNotificationServiceExtension" />
-        <meta-data
-            android:name="com.pushwoosh.appid"
-            android:value="@string/pushwoosh_app_id" />
-        <meta-data
-            android:name="com.pushwoosh.senderid"
-            android:value="@string/fcm_sender_id" />
+        <!--<meta-data-->
+            <!--android:name="com.pushwoosh.notification_service_extension"-->
+            <!--android:value="com.bamilo.android.appmodule.bamiloapp.extlibraries.pushwoosh.PushwooshNotificationServiceExtension" />-->
+        <!--<meta-data-->
+            <!--android:name="com.pushwoosh.appid"-->
+            <!--android:value="@string/pushwoosh_app_id" />-->
+        <!--<meta-data-->
+            <!--android:name="com.pushwoosh.senderid"-->
+            <!--android:value="@string/fcm_sender_id" />-->
 
         <!-- <meta-data -->
         <!-- android:name="PW_NOTIFICATION_RECEIVER" -->
@@ -254,9 +254,9 @@
         <!-- android:name="io.fabric.ApiKey" -->
         <!-- android:value="${crashlyticsApiKey}"/> -->
 
-        <receiver
-            android:name=".appmodule.bamiloapp.extlibraries.emarsys.NotificationReceiver"
-            android:enabled="true" />
+        <!--<receiver-->
+            <!--android:name=".appmodule.bamiloapp.extlibraries.emarsys.NotificationReceiver"-->
+            <!--android:enabled="true" />-->
 
         <!-- Emarsys Engage -->
         <!-- <service -->
@@ -267,13 +267,13 @@
         <!-- </intent-filter> -->
         <!-- </service> -->
 
-        <service
-            android:name="com.emarsys.mobileengage.service.MobileEngageInstanceIdService"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
+        <!--<service-->
+            <!--android:name="com.emarsys.mobileengage.service.MobileEngageInstanceIdService"-->
+            <!--tools:ignore="ExportedService">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.firebase.INSTANCE_ID_EVENT" />-->
+            <!--</intent-filter>-->
+        <!--</service>-->
 
         <activity android:name=".appmodule.modernbamilo.product.policy.ReturnPolicyActivity"></activity>
     </application>

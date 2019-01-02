@@ -21,8 +21,6 @@ import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.bamilo.android.appmodule.bamiloapp.helpers.products.GetCatalogPageHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.search.SearchHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.wishlist.AddToWishListHelper;
@@ -48,6 +46,7 @@ import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.CatalogPageT
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogSortListFragment;
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.ErrorLayoutFactory;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
 import com.bamilo.android.framework.service.objects.catalog.Catalog;
 import com.bamilo.android.framework.service.objects.catalog.CatalogPage;
 import com.bamilo.android.framework.service.objects.catalog.FeaturedBox;
@@ -992,15 +991,18 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 if (removeFromWishListEventModel != null) {
-                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList,
-                            removeFromWishListEventModel);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList,
+//                            removeFromWishListEventModel);
+                    EventTracker.INSTANCE.removeFromWishList(removeFromWishListEventModel.label);
+
                 }
                 updateWishListProduct();
                 break;
             case ADD_PRODUCT_TO_WISH_LIST:
                 if (addToWishListEventModel != null) {
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList,
-                            addToWishListEventModel);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList,
+//                            addToWishListEventModel);
+                    EventTracker.INSTANCE.addToWishList(removeFromWishListEventModel.label);
                 }
                 updateWishListProduct();
                 break;
@@ -1026,7 +1028,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
         }
         // Get the catalog
         CatalogPage catalogPage = ((Catalog) baseResponse.getMetadata().getData()).getCatalogPage();
-        sendRecommend(catalogPage);
+//        sendRecommend(catalogPage);
         // Case valid success response
         if (catalogPage != null && catalogPage.hasProducts()) {
             // Mark to reload an initial catalog
@@ -1049,7 +1051,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
                         MainEventModel.createSearchEventModelAttributes(mMainCategory,
                                 SearchHelper.getSearchTermsCommaSeparated(
                                         catalogPage.getSearchTerm())));
-                TrackerManager.trackEvent(getContext(), EventConstants.Search, searchEventModel);
+//                TrackerManager.trackEvent(getContext(), EventConstants.Search, searchEventModel);
+                EventTracker.INSTANCE.search(catalogPage.getSearchTerm());
 
                 int actionBarHeight = 180;
                 TypedValue tv = new TypedValue();
@@ -1286,16 +1289,16 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
 
     }
 
-    private void sendRecommend(CatalogPage catalogPage) {
-        RecommendManager recommendManager = new RecommendManager();
-        RecommendListCompletionHandler handler = (category, data) -> {
-        };
-
-        ArrayList<String> categories = catalogPage.getBreadcrumb();
-        if (categories != null && categories.size() > 0) {
-            String category = android.text.TextUtils.join(">", categories);
-            recommendManager
-                    .sendCategoryRecommend(catalogPage.getSearchTerm(), category, 6, handler);
-        }
-    }
+//    private void sendRecommend(CatalogPage catalogPage) {
+//        RecommendManager recommendManager = new RecommendManager();
+//        RecommendListCompletionHandler handler = (category, data) -> {
+//        };
+//
+//        ArrayList<String> categories = catalogPage.getBreadcrumb();
+//        if (categories != null && categories.size() > 0) {
+//            String category = android.text.TextUtils.join(">", categories);
+//            recommendManager
+//                    .sendCategoryRecommend(catalogPage.getSearchTerm(), category, 6, handler);
+//        }
+//    }
 }

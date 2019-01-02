@@ -11,19 +11,17 @@ import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.di.components.DaggerMainComponent;
 import com.bamilo.android.appmodule.bamiloapp.di.components.MainComponent;
 import com.bamilo.android.appmodule.bamiloapp.di.modules.AndroidModule;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.AndroidStorage;
 import com.bamilo.android.appmodule.bamiloapp.helpers.SuperBaseHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.preferences.PersistentSessionStore;
 import com.bamilo.android.appmodule.bamiloapp.preferences.ShopPreferences;
 import com.bamilo.android.appmodule.bamiloapp.utils.CheckVersion;
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
 import com.bamilo.android.framework.service.Darwin;
 import com.bamilo.android.framework.service.database.DarwinDatabaseHelper;
 import com.bamilo.android.framework.service.database.SearchRecentQueriesTableHelper;
@@ -44,10 +42,6 @@ import com.bamilo.android.framework.service.utils.SingletonMap;
 import com.bamilo.android.framework.service.utils.cache.WishListCache;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.crashlytics.android.Crashlytics;
-import com.emarsys.mobileengage.MobileEngage;
-import com.emarsys.mobileengage.MobileEngageStatusListener;
-import com.emarsys.mobileengage.config.MobileEngageConfig;
-import com.emarsys.predict.Session;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -100,16 +94,17 @@ public class BamiloApplication extends MultiDexApplication {
         component = createComponent();
 
         // Setup Emarsys Mobile Engage
-        MobileEngageConfig config = new MobileEngageConfig.Builder()
-                .application(this)
-                .credentials(getString(R.string.Emarsys_ApplicationCode), getString(R.string.Emarsys_ApplicationPassword))
-                .statusListener(getStatusListener())
-                .statusListener(getStatusListener())
-                .disableDefaultChannel()
-                .build();
-        MobileEngage.setup(config);
+//        MobileEngageConfig config = new MobileEngageConfig.Builder()
+//                .application(this)
+//                .credentials(getString(R.string.Emarsys_ApplicationCode), getString(R.string.Emarsys_ApplicationPassword))
+//                .statusListener(getStatusListener())
+//                .statusListener(getStatusListener())
+//                .disableDefaultChannel()
+//                .build();
+//        MobileEngage.setup(config);
 
         initFirebaseCrashlytics();
+        initAnalyticsPlatforms();
 
         // Save instance
         INSTANCE = this;
@@ -129,12 +124,12 @@ public class BamiloApplication extends MultiDexApplication {
 
         //ShopSelector.setLocaleOnOrientationChanged();
 
-        Session.initialize(new AndroidStorage(this));
+//        Session.initialize(new AndroidStorage(this));
 
-        Session session = Session.getInstance();
+//        Session session = Session.getInstance();
         // Identifies the merchant account (here the emarsys demo merchant 1A65B5CB868AFF1E).
         // Replace it with your own Merchant Id before run.
-        session.setMerchantId(getApplicationContext().getResources().getString(R.string.Emarsys_MerchantId));
+//        session.setMerchantId(getApplicationContext().getResources().getString(R.string.Emarsys_MerchantId));
 
         //DataSource.initWithContext(getApplicationContext());
 
@@ -148,20 +143,6 @@ public class BamiloApplication extends MultiDexApplication {
             Darwin.initialize(getApplicationContext(), SHOP_ID);
             getCustomerUtils();
         }
-    }
-
-    private MobileEngageStatusListener getStatusListener() {
-        return new MobileEngageStatusListener() {
-            @Override
-            public void onError(String id, Exception error) {
-                Log.e(TAG, error.getMessage(), error);
-            }
-
-            @Override
-            public void onStatusLog(String id, String message) {
-                Log.i(TAG, message);
-            }
-        };
     }
 
     private MainComponent createComponent() {
@@ -316,6 +297,10 @@ public class BamiloApplication extends MultiDexApplication {
 
     private void initFirebaseCrashlytics() {
         Fabric.with(this, new Crashlytics());
+    }
+
+    private void initAnalyticsPlatforms() {
+        EventTracker.INSTANCE.initialize(this);
     }
 
     public void addSkuToHomepageTrackingItemsSkus(String sku) {

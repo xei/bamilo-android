@@ -24,6 +24,8 @@ import com.bamilo.android.appmodule.bamiloapp.helpers.SuperBaseHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.cart.ClearShoppingCartHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
+import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents;
 import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
@@ -103,7 +105,13 @@ public class BankActivity extends Activity {
                     // Track Purchase
                     MainEventModel purchaseEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
                             MainEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), true));
-                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
+//                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
+
+                    EventTracker.INSTANCE.purchase(
+                            (long) cart.getTotal(),
+                            TrackingEvents.PaymentType.IPG,
+                            true
+                    );
 
                     btnOrderDetails.setVisibility(View.INVISIBLE);
                     btnReturn.setVisibility(View.VISIBLE);
@@ -117,7 +125,12 @@ public class BankActivity extends Activity {
                     // Track Purchase
                     MainEventModel purchaseEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
                             MainEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), false));
-                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
+//                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
+                    EventTracker.INSTANCE.purchase(
+                            (long) cart.getTotal(),
+                            TrackingEvents.PaymentType.IPG,
+                            true
+                    );
 
                     // Track Checkout Finish
                     SimpleEventModel sem = new SimpleEventModel();
@@ -133,7 +146,12 @@ public class BankActivity extends Activity {
                         sem.label = android.text.TextUtils.join(",", skus);
                         sem.value = (long) cart.getTotal();
                     }
-                    TrackerManager.trackEvent(this, EventConstants.CheckoutFinished, sem);
+//                    TrackerManager.trackEvent(this, EventConstants.CheckoutFinished, sem);
+                    EventTracker.INSTANCE.purchase(
+                            (long) cart.getTotal(),
+                            TrackingEvents.PaymentType.IPG,
+                            true
+                    );
 
                     launchInfo.setText(R.string.thank_you_order_title);
                     tvOrderInfo.setVisibility(View.VISIBLE);
