@@ -102,7 +102,7 @@ public class BamiloApplication extends MultiDexApplication {
         initFirebaseCrashlytics();
         initAnalyticsPlatforms();
 
-        sendFcmTokenToWebEngage(this);
+        sendFcmTokenToWebEngage();
 
         // Setup Emarsys Mobile Engage
 //        MobileEngageConfig config = new MobileEngageConfig.Builder()
@@ -317,7 +317,7 @@ public class BamiloApplication extends MultiDexApplication {
     /**
      * This will ensure that changes in user’s Firebase token are communicated to WebEngage.
      */
-    private void sendFcmTokenToWebEngage (Context context) {
+    private void sendFcmTokenToWebEngage () {
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {

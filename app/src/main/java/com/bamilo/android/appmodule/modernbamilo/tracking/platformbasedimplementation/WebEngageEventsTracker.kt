@@ -3,6 +3,7 @@ package com.bamilo.android.appmodule.modernbamilo.tracking.platformbasedimplemen
 import android.app.Application
 import android.content.Context
 import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import com.bamilo.android.BuildConfig
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.modernbamilo.tracking.TAG_DEBUG
@@ -24,7 +25,7 @@ object WebEngageEventsTracker : TrackingEvents {
                 .setLocationTrackingStrategy(LocationTrackingStrategy.ACCURACY_CITY)    // might need to check PackageManager().hasSystemFeature() because of the permission in the Manifest.xml
                 .setPushLargeIcon(R.mipmap.ic_launcher)
                 .setPushSmallIcon(R.drawable.ic_stat_notifications)
-                .setPushAccentColor(Color.parseColor("#ff0000"))
+                .setPushAccentColor(ContextCompat.getColor(context, R.color.colorAccent))
                 .build()
 
         try {
