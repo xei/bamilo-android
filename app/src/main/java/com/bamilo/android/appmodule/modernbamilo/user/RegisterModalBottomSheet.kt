@@ -271,6 +271,8 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
 
                             EventTracker.register(
                                     userId = BamiloApplication.CUSTOMER.id.toString(),
+                                    emailAddress = BamiloApplication.CUSTOMER.email,
+                                    phoneNumber = BamiloApplication.CUSTOMER.phoneNumber,
                                     registrationType = TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
                                     succeed = true
                             )
@@ -327,6 +329,8 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
 
                     EventTracker.register(
                             userId = BamiloApplication.CUSTOMER.id.toString(),
+                            emailAddress = BamiloApplication.CUSTOMER.email,
+                            phoneNumber = BamiloApplication.CUSTOMER.phoneNumber,
                             registrationType = TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
                             succeed = false
                     )

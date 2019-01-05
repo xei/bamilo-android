@@ -271,8 +271,10 @@ public class MainFragmentActivity extends BaseActivity {
 //                        .getString(R.string.Emarsys_ContactFieldID)),
 //                BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
 
-        String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : "UNKNOWN";
-        EventTracker.INSTANCE.login(userId, TrackingEvents.LoginType.LOGIN_WITH_EMAIL, true);
+        String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : null;
+        String emailAddress = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null;
+        String phoneNumber = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getPhoneNumber() : null;
+        EventTracker.INSTANCE.login(userId, emailAddress, phoneNumber, TrackingEvents.LoginType.LOGIN_WITH_EMAIL, true);
 
     }
 

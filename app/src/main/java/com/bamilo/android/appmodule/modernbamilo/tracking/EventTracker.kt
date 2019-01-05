@@ -34,9 +34,9 @@ object EventTracker : TrackingEvents {
         }
     }
 
-    override fun register(userId: String, registrationType: TrackingEvents.RegistrationType, succeed: Boolean) {
+    override fun register(userId: String?, emailAddress: String?, phoneNumber: String?, registrationType: TrackingEvents.RegistrationType, succeed: Boolean) {
         for (observer in mTrackingObservers) {
-            observer.register(userId, registrationType, succeed)
+            observer.register(userId, emailAddress, phoneNumber, registrationType, succeed)
         }
 
         Logger.log(
@@ -49,9 +49,9 @@ object EventTracker : TrackingEvents {
         )
     }
 
-    override fun login(userId: String, loginType: TrackingEvents.LoginType, succeed: Boolean) {
+    override fun login(userId: String?, emailAddress: String?, phoneNumber: String?, loginType: TrackingEvents.LoginType, succeed: Boolean) {
         for (observer in mTrackingObservers) {
-            observer.login(userId, loginType, succeed)
+            observer.login(userId, emailAddress, phoneNumber, loginType, succeed)
         }
 
         Logger.log(

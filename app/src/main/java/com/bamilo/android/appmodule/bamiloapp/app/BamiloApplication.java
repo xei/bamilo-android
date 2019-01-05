@@ -90,8 +90,10 @@ public class BamiloApplication extends MultiDexApplication {
 
         MultiDex.install(this);
 
-        // init dagger component
-        component = createComponent();
+        INSTANCE = this;
+
+        initFirebaseCrashlytics();
+        initAnalyticsPlatforms();
 
         // Setup Emarsys Mobile Engage
 //        MobileEngageConfig config = new MobileEngageConfig.Builder()
@@ -103,11 +105,11 @@ public class BamiloApplication extends MultiDexApplication {
 //                .build();
 //        MobileEngage.setup(config);
 
-        initFirebaseCrashlytics();
-        initAnalyticsPlatforms();
 
-        // Save instance
-        INSTANCE = this;
+
+        // init dagger component
+        component = createComponent();
+
         // Init image loader
         //RocketImageLoader.init(getApplicationContext());
         ImageManager.initialize(getApplicationContext());

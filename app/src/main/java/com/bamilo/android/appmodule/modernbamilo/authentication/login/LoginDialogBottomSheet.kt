@@ -256,7 +256,9 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
 //        TrackerManager.trackEvent(context, EventConstants.Login, authEventModel)
 
         EventTracker.login(
-                userId = BamiloApplication.CUSTOMER.email,
+                userId = BamiloApplication.CUSTOMER.id.toString(),
+                emailAddress = BamiloApplication.CUSTOMER.email,
+                phoneNumber = BamiloApplication.CUSTOMER.phoneNumber,
                 loginType = TrackingEvents.LoginType.LOGIN_WITH_EMAIL,
                 succeed = true
         )

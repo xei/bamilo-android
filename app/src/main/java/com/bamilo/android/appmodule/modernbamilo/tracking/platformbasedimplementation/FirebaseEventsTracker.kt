@@ -21,10 +21,12 @@ object FirebaseEventsTracker : TrackingEvents {
         Logger.log("Firebase Events Tracker is initialized.", TAG_DEBUG)
     }
 
-    override fun register(userId: String, registrationType: TrackingEvents.RegistrationType, succeed: Boolean) {
+    override fun register(userId: String?, emailAddress: String?, phoneNumber: String?, registrationType: TrackingEvents.RegistrationType, succeed: Boolean) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.SIGN_UP, Bundle().apply {
-                putString(TrackingEvents.ParamsKeys.USER_ID, userId)
+                userId?.run { putString(TrackingEvents.ParamsKeys.USER_ID, userId) }
+                emailAddress.run { putString(TrackingEvents.ParamsKeys.USER_EMAIL_ADDRESS, emailAddress) }
+                phoneNumber.run { putString(TrackingEvents.ParamsKeys.USER_PHONE_NUMBER, phoneNumber) }
                 putString(TrackingEvents.ParamsKeys.REGISTRATION_TYPE, registrationType.value)
                 putBoolean(FirebaseAnalytics.Param.SUCCESS, succeed)
             })
@@ -36,10 +38,12 @@ object FirebaseEventsTracker : TrackingEvents {
         }
     }
 
-    override fun login(userId: String, loginType: TrackingEvents.LoginType, succeed: Boolean) {
+    override fun login(userId: String?, emailAddress: String?, phoneNumber: String?, loginType: TrackingEvents.LoginType, succeed: Boolean) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.LOGIN, Bundle().apply {
-                putString(TrackingEvents.ParamsKeys.USER_ID, userId)
+                userId?.run { putString(TrackingEvents.ParamsKeys.USER_ID, userId) }
+                emailAddress.run { putString(TrackingEvents.ParamsKeys.USER_EMAIL_ADDRESS, emailAddress) }
+                phoneNumber.run { putString(TrackingEvents.ParamsKeys.USER_PHONE_NUMBER, phoneNumber) }
                 putString(TrackingEvents.ParamsKeys.LOGIN_TYPE, loginType.value)
                 putBoolean(FirebaseAnalytics.Param.SUCCESS, succeed)
             })

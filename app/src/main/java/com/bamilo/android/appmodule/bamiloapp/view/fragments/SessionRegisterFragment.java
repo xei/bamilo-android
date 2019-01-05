@@ -279,8 +279,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                     Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
                     MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
 //            TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
-            String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : "UNKNOWN";
-            EventTracker.INSTANCE.register(userId, TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL, false);
+            String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "UNKNOWN";
+            String emailAddress = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : "UNKNOWN";
+            String phoneNumber = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getPhoneNumber() : "UNKNOWN";
+            EventTracker.INSTANCE.register(userId, emailAddress, phoneNumber, TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL, false);
         }
     }
 
@@ -334,8 +336,11 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                         MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, customerEmail != null ? EmailHelper.getHost(customerEmail) : "",
                                 true));
 //                TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
-                String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : "UNKNOWN";
-                EventTracker.INSTANCE.register(userId, TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL, false);
+                String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : null;
+                String emailAddress = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null;
+                String phoneNumber = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getPhoneNumber() : null;
+
+                EventTracker.INSTANCE.register(userId, emailAddress,phoneNumber, TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL, false);
 
                 // Set facebook login
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
@@ -368,8 +373,11 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                         Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
                         MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
 //                TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
-                String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : "UNKNOWN";
-                EventTracker.INSTANCE.register(userId, TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL, false);
+
+                String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "UNKNOWN";
+                String emailAddress = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : "UNKNOWN";
+                String phoneNumber = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getPhoneNumber() : "UNKNOWN";
+                EventTracker.INSTANCE.register(userId, emailAddress, phoneNumber, TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL, false);
                 // Validate and show errors
                 showFragmentContentContainer();
                 // Show validate messages

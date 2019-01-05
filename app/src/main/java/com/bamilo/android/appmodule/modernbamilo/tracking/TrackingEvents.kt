@@ -11,8 +11,8 @@ interface TrackingEvents {
     fun initialize(context: Context)
 
     // Account
-    fun register(userId: String, registrationType: RegistrationType, succeed: Boolean)
-    fun login(userId: String, loginType: LoginType, succeed: Boolean)
+    fun register(userId: String?, emailAddress: String?, phoneNumber: String?, registrationType: RegistrationType, succeed: Boolean)
+    fun login(userId: String?, emailAddress: String?, phoneNumber: String?, loginType: LoginType, succeed: Boolean)
     fun logout()
     fun editProfile()
     fun addAddress()
@@ -87,6 +87,8 @@ interface TrackingEvents {
 
     object ParamsKeys {
         const val USER_ID = "user_id"
+        const val USER_EMAIL_ADDRESS = "user_email_address"
+        const val USER_PHONE_NUMBER = "user_phone_number"
         const val SUCCEED = "succeed"
         const val QUERY = "query"
         const val SKU = "sku"

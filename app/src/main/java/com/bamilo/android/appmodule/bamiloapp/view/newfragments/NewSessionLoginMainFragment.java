@@ -226,7 +226,12 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                                             true));
 //                    TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
 
-                    EventTracker.INSTANCE.login(String.valueOf(customer.getId()), TrackingEvents.LoginType.LOGIN_WITH_EMAIL, true);
+                    EventTracker.INSTANCE.login(
+                            String.valueOf(customer.getId()),
+                            String.valueOf(customer.getEmail()),
+                            String.valueOf(customer.getPhoneNumber()),
+                            TrackingEvents.LoginType.LOGIN_WITH_EMAIL,
+                            true);
 
 //                    EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(
 //                            getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),

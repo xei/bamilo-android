@@ -9,7 +9,6 @@ import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents
 import com.bamilo.android.appmodule.modernbamilo.util.logging.LogType
 import com.bamilo.android.appmodule.modernbamilo.util.logging.Logger
 import com.webengage.sdk.android.*
-import java.lang.ClassCastException
 
 
 object WebEngageEventsTracker : TrackingEvents {
@@ -20,13 +19,15 @@ object WebEngageEventsTracker : TrackingEvents {
     override fun initialize(context: Context) {
         val webEngageConfig = WebEngageConfig.Builder()
                 .setWebEngageKey(context.getString(R.string.webEngage_licence_code))
-                .setDebugMode(BuildConfig.DEBUG)
+                .setDebugMode(BuildConfig.DEBUG)    // enable/disable logs
+                .setLocationTrackingStrategy(LocationTrackingStrategy.ACCURACY_CITY)    // might need to check PackageManager().hasSystemFeature() because of the permission in the Manifest.xml
                 .build()
 
         try {
             (context as Application).registerActivityLifecycleCallbacks(WebEngageActivityLifeCycleCallbacks(context, webEngageConfig))
         } catch (cce: ClassCastException) {
-            Logger.log(message = "WebEngage must be impleented in the Application class!", logType = LogType.ERROR)
+            Logger.log(message = "WebEngage must initialize in the Application class!", logType = LogType.ERROR)
+            return
         }
 
 
@@ -41,19 +42,22 @@ object WebEngageEventsTracker : TrackingEvents {
                 TAG_DEBUG)
     }
 
-    override fun register(userId: String, registrationType: TrackingEvents.RegistrationType, succeed: Boolean) {
+    /**
+     * The String phoneNumber must be in E.164 format, eg. +551155256325, +917850009678.
+     */
+    override fun register(userId: String?, emailAddress: String?, phoneNumber: String?, registrationType: TrackingEvents.RegistrationType, succeed: Boolean) {
         mUser?.run {
-            login(userId)
-            when (registrationType) {
-                TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL -> setEmail(userId)
-                TrackingEvents.RegistrationType.REGISTER_WITH_PHONE -> setPhoneNumber(userId)
-            }
+            userId?.run { login(userId) }
+            emailAddress?.run { mUser?.setEmail(emailAddress) }
+            phoneNumber?.run { mUser?.setPhoneNumber(phoneNumber) }
         }
 
         mAnalytics?.run {
             track(TrackingEvents.EventsKeys.REGISTER,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.USER_ID, userId)
+                        userId?.run { put(TrackingEvents.ParamsKeys.USER_ID, userId) }
+                        emailAddress?.run { put(TrackingEvents.ParamsKeys.USER_EMAIL_ADDRESS, emailAddress) }
+                        phoneNumber?.run { put(TrackingEvents.ParamsKeys.USER_PHONE_NUMBER, phoneNumber) }
                         put(TrackingEvents.ParamsKeys.REGISTRATION_TYPE, registrationType.value)
                         put(TrackingEvents.ParamsKeys.SUCCEED, succeed)
                     }
@@ -61,19 +65,22 @@ object WebEngageEventsTracker : TrackingEvents {
         }
     }
 
-    override fun login(userId: String, loginType: TrackingEvents.LoginType, succeed: Boolean) {
+    /**
+     * The String phoneNumber must be in E.164 format, eg. +551155256325, +917850009678.
+     */
+    override fun login(userId: String?, emailAddress: String?, phoneNumber: String?, loginType: TrackingEvents.LoginType, succeed: Boolean) {
         mUser?.run {
-            login(userId)
-            when (loginType) {
-                TrackingEvents.LoginType.LOGIN_WITH_EMAIL -> mUser?.setEmail(userId)
-                TrackingEvents.LoginType.LOGIN_WITH_PHONE -> mUser?.setPhoneNumber(userId)
-            }
+            userId?.run { login(userId) }
+            emailAddress?.run { mUser?.setEmail(emailAddress) }
+            phoneNumber?.run { mUser?.setPhoneNumber(phoneNumber) }
         }
 
         mAnalytics?.run {
             track(TrackingEvents.EventsKeys.LOGIN,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.USER_ID, userId)
+                        userId?.run { put(TrackingEvents.ParamsKeys.USER_ID, userId) }
+                        emailAddress?.run { put(TrackingEvents.ParamsKeys.USER_EMAIL_ADDRESS, emailAddress) }
+                        phoneNumber?.run { put(TrackingEvents.ParamsKeys.USER_PHONE_NUMBER, phoneNumber) }
                         put(TrackingEvents.ParamsKeys.LOGIN_TYPE, loginType.value)
                         put(TrackingEvents.ParamsKeys.SUCCEED, succeed)
             })
