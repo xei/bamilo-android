@@ -1,6 +1,7 @@
 package com.bamilo.android.appmodule.modernbamilo.tracking
 
 import android.content.Context
+import android.content.Intent
 import com.bamilo.android.appmodule.modernbamilo.tracking.platformbasedimplementation.FirebaseEventsTracker
 import com.bamilo.android.appmodule.modernbamilo.tracking.platformbasedimplementation.WebEngageEventsTracker
 import com.bamilo.android.appmodule.modernbamilo.util.logging.Logger
@@ -31,6 +32,12 @@ object EventTracker : TrackingEvents {
                 it.initialize(context)
                 add(it)
             }
+        }
+    }
+
+    override fun install(intent: Intent) {
+        for (observer in mTrackingObservers) {
+            observer.install(intent)
         }
     }
 
