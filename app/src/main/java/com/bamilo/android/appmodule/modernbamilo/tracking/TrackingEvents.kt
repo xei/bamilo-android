@@ -1,6 +1,7 @@
 package com.bamilo.android.appmodule.modernbamilo.tracking
 
 import android.content.Context
+import android.content.Intent
 
 /**
  * This interface contains all the events that we want to track by event tracker platforms.
@@ -9,6 +10,9 @@ interface TrackingEvents {
 
     // The following function is not an event, but it must be implemented for each platform
     fun initialize(context: Context)
+
+    // Attribution tracking
+    fun install(intent: Intent)
 
     // Account
     fun register(userId: String?, emailAddress: String?, phoneNumber: String?, registrationType: RegistrationType, succeed: Boolean)

@@ -2,6 +2,7 @@ package com.bamilo.android.appmodule.modernbamilo.tracking.platformbasedimplemen
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.support.v4.content.ContextCompat
 import com.bamilo.android.BuildConfig
 import com.bamilo.android.R
@@ -44,6 +45,10 @@ object WebEngageEventsTracker : TrackingEvents {
                         .append(context.getString(R.string.webEngage_licence_code))
                         .toString(),
                 TAG_DEBUG)
+    }
+
+    override fun install(intent: Intent) {
+        mAnalytics?.installed(intent)
     }
 
     /**

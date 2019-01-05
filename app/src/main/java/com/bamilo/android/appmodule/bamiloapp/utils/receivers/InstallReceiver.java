@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.adjust.sdk.AdjustReferrerReceiver;
+import com.bamilo.android.appmodule.modernbamilo.tracking.platformbasedimplementation.WebEngageEventsTracker;
 import com.google.android.gms.analytics.CampaignTrackingReceiver;
 import com.bamilo.android.framework.service.tracking.gtm.GTMManager;
 
@@ -20,6 +21,9 @@ public class InstallReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        WebEngageEventsTracker.INSTANCE.install(intent);
+
         Bundle bundle = intent.getExtras();
         
         if(bundle != null) {

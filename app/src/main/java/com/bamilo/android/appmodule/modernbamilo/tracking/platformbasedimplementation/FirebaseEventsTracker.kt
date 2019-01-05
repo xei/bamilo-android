@@ -1,6 +1,7 @@
 package com.bamilo.android.appmodule.modernbamilo.tracking.platformbasedimplementation
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import com.bamilo.android.appmodule.modernbamilo.tracking.TAG_DEBUG
 import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents
@@ -19,6 +20,10 @@ object FirebaseEventsTracker : TrackingEvents {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
         Logger.log("Firebase Events Tracker is initialized.", TAG_DEBUG)
+    }
+
+    override fun install(intent: Intent) {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun register(userId: String?, emailAddress: String?, phoneNumber: String?, registrationType: TrackingEvents.RegistrationType, succeed: Boolean) {
