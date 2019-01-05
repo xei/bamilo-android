@@ -2,7 +2,6 @@ package com.bamilo.android.appmodule.modernbamilo.tracking.platformbasedimplemen
 
 import android.app.Application
 import android.content.Context
-import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import com.bamilo.android.BuildConfig
 import com.bamilo.android.R
@@ -289,6 +288,15 @@ object WebEngageEventsTracker : TrackingEvents {
 
     override fun searchSuggestionTapped() {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun hitScreenNavigationForInAppMessaging(screenName: String, screenData: Map<String, Any>?) {
+        if (screenData != null) {
+            mAnalytics?.screenNavigated(screenName, screenData)
+        } else {
+            mAnalytics?.screenNavigated(screenName)
+        }
+
     }
 
 }
