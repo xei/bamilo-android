@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.bamilo.android.appmodule.bamiloapp.di.components.DaggerMainComponent;
 import com.bamilo.android.appmodule.bamiloapp.di.components.MainComponent;
@@ -42,9 +43,15 @@ import com.bamilo.android.framework.service.utils.SingletonMap;
 import com.bamilo.android.framework.service.utils.cache.WishListCache;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.webengage.sdk.android.WebEngage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -94,6 +101,8 @@ public class BamiloApplication extends MultiDexApplication {
 
         initFirebaseCrashlytics();
         initAnalyticsPlatforms();
+
+        sendFcmTokenToWebEngage(this);
 
         // Setup Emarsys Mobile Engage
 //        MobileEngageConfig config = new MobileEngageConfig.Builder()
@@ -303,6 +312,19 @@ public class BamiloApplication extends MultiDexApplication {
 
     private void initAnalyticsPlatforms() {
         EventTracker.INSTANCE.initialize(this);
+    }
+
+    /**
+     * This will ensure that changes in user’s Firebase token are communicated to WebEngage.
+     */
+    private void sendFcmTokenToWebEngage (Context context) {
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String deviceToken = instanceIdResult.getToken();
+                WebEngage.get().setRegistrationID(deviceToken);
+            }
+        });
     }
 
     public void addSkuToHomepageTrackingItemsSkus(String sku) {
