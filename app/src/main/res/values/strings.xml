@@ -142,7 +142,7 @@
     <string name="my_account">My Account</string>
     <string name="my_order_confirm_button">Confirm Order</string>
     <string name="my_order_coupon_label">Coupon</string>
-    <string name="my_order_details_label">Order Details</string>
+    <!--<string name="my_order_details_label">Order Details</string>-->
     <string name="my_order_history_label">My Order History</string>
     <string name="my_order_is_same">Billing to same billingAddress</string>
     <string name="my_order_label">My Order</string>
@@ -164,7 +164,7 @@
     <string name="or_text">OR</string>
     <string name="order_no_items">You have no items in the cart</string>
     <string name="order_status_label">Order Status</string>
-    <string name="order_success">Your order has been successfully registered.\n You can check the status through Order Details.</string>
+    <!--<string name="order_success">Your order has been successfully registered.\n You can check the status through Order Details.</string>-->
     <string name="order_summary_label">Order Summary</string>
     <string name="order_summary_shipping_fee_label">Shipping Fee:</string>
     <string name="order_summary_shipping_method">Shipping Method</string>
@@ -247,7 +247,7 @@
     <string name="submit_text">Your comment has been submited and is now subject to approval.</string>
     <string name="succes_login">You are logged in</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
-    <string name="thank_you_order_title">Thank You!</string>
+    <!--<string name="thank_you_order_title">Thank You!</string>-->
     <string name="try_again">Retry</string>
     <string name="try_again_retry">Try Again</string>
     <string name="upgrade_forced_text">We found something that we needed to fix to improve your shopping experience on %s! You will need to update the Application before you continue using it.</string>
@@ -369,7 +369,7 @@
     <string name="recent_searches_empty">You don\'t have yet any recent searches.</string>
     <string name="items_in_your_order">Items in your order</string>
     <string name="delivered_label">Delivered</string>
-    <string name="order_number">Order N.º %s</string>
+    <!--<string name="order_number">Order N.º %s</string>-->
     <string name="billing">Billing</string>
     <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="first_slash_second_placeholder">%1$s / %2$s</string>
