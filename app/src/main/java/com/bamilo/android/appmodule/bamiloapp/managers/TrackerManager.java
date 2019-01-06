@@ -54,11 +54,11 @@ public final class TrackerManager {
             boolean trackTiming) {
         for (IBaseTracker tracker : trackers.values()) {
             if (tracker instanceof IScreenTracker) {
-                if (trackTiming) {
-                    ((IScreenTracker) tracker).trackScreenAndTiming(context, screenModel);
-                } else {
+//                if (trackTiming) {
+//                    ((IScreenTracker) tracker).trackScreenAndTiming(context, screenModel);
+//                } else {
                     ((IScreenTracker) tracker).trackScreen(context, screenModel);
-                }
+//                }
             }
         }
     }
