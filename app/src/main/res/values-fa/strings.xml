@@ -641,7 +641,7 @@
         <item quantity="other">لطفا دلیل لغو کالاها را انتخاب کنید</item>
     </plurals>
 
-    <string name="rules_and_terms">قوانین و شرایط</string>
+    <string name="rules_and_terms">مشاهده</string>
     <string name="no_score_submited">هنوز امتیازی ثبت نشده است</string>
     <string name="seller_score">امتیاز فروشنده</string>
     <string name="of_number">از %1$d</string>
