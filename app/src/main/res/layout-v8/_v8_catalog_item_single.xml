@@ -132,7 +132,7 @@
                 android:paddingRight="8dp"
                 android:background="@drawable/background_badge_special_catalog"
                 android:textSize="10sp"
-                android:textColor="@color/grey3"
+                android:textColor="@color/grey2"
                 tools:visibility="visible"
                 app:locale="fa_IR"
                 app:style="bold" />
