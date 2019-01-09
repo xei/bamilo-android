@@ -79,35 +79,35 @@ android {
         }
 
         // Third-party store tracking
-        playstore {
-            initWith buildTypes.release
-            versionNameSuffix " - PlayStore"
-            resValue "string", "adjust_default_tracker", "y0ks09"
-        }
-
-        cafebazaar {
-            initWith buildTypes.release
-            versionNameSuffix " - CafeBazaar"
-            resValue "string", "adjust_default_tracker", "laaz894"
-        }
-
-        iranapps {
-            initWith buildTypes.release
-            versionNameSuffix " - IranApps"
-            resValue "string", "adjust_default_tracker", "u4t9izr"
-        }
-
-        myket {
-            initWith buildTypes.release
-            versionNameSuffix " - Myket"
-            resValue "string", "adjust_default_tracker", "ghb0pwx"
-        }
-
-        avvalmarket {
-            initWith buildTypes.release
-            versionNameSuffix " - AvvalMarket"
-            resValue "string", "adjust_default_tracker", "4ao5tdc"
-        }
+//        playstore {
+//            initWith buildTypes.release
+//            versionNameSuffix " - PlayStore"
+//            resValue "string", "adjust_default_tracker", "y0ks09"
+//        }
+//
+//        cafebazaar {
+//            initWith buildTypes.release
+//            versionNameSuffix " - CafeBazaar"
+//            resValue "string", "adjust_default_tracker", "laaz894"
+//        }
+//
+//        iranapps {
+//            initWith buildTypes.release
+//            versionNameSuffix " - IranApps"
+//            resValue "string", "adjust_default_tracker", "u4t9izr"
+//        }
+//
+//        myket {
+//            initWith buildTypes.release
+//            versionNameSuffix " - Myket"
+//            resValue "string", "adjust_default_tracker", "ghb0pwx"
+//        }
+//
+//        avvalmarket {
+//            initWith buildTypes.release
+//            versionNameSuffix " - AvvalMarket"
+//            resValue "string", "adjust_default_tracker", "4ao5tdc"
+//        }
 
         // Marketing Campaigns Build Variants:
         campaign_adventure_1 {
