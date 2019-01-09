@@ -182,13 +182,13 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
 
-        <!--<service-->
-            <!--android:name=".appmodule.modernbamilo.pushnotification.PushNotificationService"-->
-            <!--android:stopWithTask="false">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-            <!--</intent-filter>-->
-        <!--</service>-->
+        <service
+            android:name=".appmodule.modernbamilo.pushnotification.PushNotificationService"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
