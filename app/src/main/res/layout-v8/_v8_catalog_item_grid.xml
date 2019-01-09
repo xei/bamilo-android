@@ -14,6 +14,8 @@
 
     <RelativeLayout style="@style/grid_row_style">
 
+
+
         <include
             android:id="@+id/image_loadable"
             layout="@layout/_def_gen_image_loadable"
@@ -33,6 +35,24 @@
             android:padding="@dimen/dimen_8dp"
             android:src="@drawable/selector_favorite"
             android:visibility="visible" />
+
+        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+            android:id="@+id/defCatalogItemGrid_xeiTextView_specialBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:background="@drawable/background_badge_special_catalog"
+            android:textSize="10sp"
+            android:textColor="@color/grey2"
+            tools:visibility="visible"
+            app:locale="fa_IR"
+            app:style="bold" />
 
 
         <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
@@ -167,23 +187,6 @@
                     android:textColor="@color/grey3"
                     android:visibility="gone"
                     tools:visibility="visible" />
-
-                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
-                    android:id="@+id/defCatalogItemGrid_xeiTextView_specialBadge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="8dp"
-                    android:layout_below="@+id/new_arrival_badge"
-                    android:layout_alignParentLeft="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:background="@drawable/background_badge_special_catalog"
-                    android:textSize="10sp"
-                    android:textColor="@color/grey3"
-                    tools:visibility="visible"
-                    app:locale="fa_IR"
-                    app:style="bold" />
 
             </RelativeLayout>
         </LinearLayout>
