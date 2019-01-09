@@ -245,7 +245,7 @@ dependencies {
 
     implementation 'com.adjust.sdk:adjust-android:4.14.0'
     implementation 'com.webengage:android-sdk:3.+'
-    implementation 'com.pushwoosh:pushwoosh:5.8.6'
+//    implementation 'com.pushwoosh:pushwoosh:5.8.6'
 //    implementation 'com.algolia:algoliasearch-android:2.6.0@aar'
 //    implementation 'com.scarabresearch:predictsdk:1.0.6'
 //    implementation 'com.emarsys:mobile-engage-sdk:1.6.0'

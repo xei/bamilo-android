@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+
 import com.adjust.sdk.Adjust;
 import com.bamilo.android.BuildConfig;
 import com.bamilo.android.R;
@@ -56,12 +56,9 @@ import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.crashlytics.android.Crashlytics;
-import com.pushwoosh.Pushwoosh;
-import com.pushwoosh.exception.PushwooshException;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -163,7 +160,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private void initialBamilo() {
         waitForForceUpdate = false;
-        initPushwoosh();
+//        initPushwoosh();
 
         DeviceInfoHelper.setOrientationForHandsetDevices(this);
         mMainMapImage = findViewById(R.id.splashMap);
@@ -777,17 +774,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 .showRedirectInfoActivity(this, redirect);
     }
 
-    private void initPushwoosh() {
-        Pushwoosh.getInstance().registerForPushNotifications(
-                result -> {
-                    if (result.isSuccess()) {
-                        String token = result.getData();
-                        Adjust.setPushToken(token, SplashScreenActivity.this);
-                        Crashlytics.setUserIdentifier(Pushwoosh.getInstance().getHwid());
-                    } else {
-                        PushwooshException exception = result.getException();
-                        // handle registration error
-                    }
-                });
-    }
+//    private void initPushwoosh() {
+//        Pushwoosh.getInstance().registerForPushNotifications(
+//                result -> {
+//                    if (result.isSuccess()) {
+//                        String token = result.getData();
+//                        Adjust.setPushToken(token, SplashScreenActivity.this);
+//                        Crashlytics.setUserIdentifier(Pushwoosh.getInstance().getHwid());
+//                    } else {
+//                        PushwooshException exception = result.getException();
+//                        // handle registration error
+//                    }
+//                });
+//    }
 }

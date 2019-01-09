@@ -1,6 +1,8 @@
 package com.bamilo.android.appmodule.bamiloapp.managers;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.bamilo.android.appmodule.bamiloapp.models.BaseEventModel;
 import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.tracking.IBaseTracker;

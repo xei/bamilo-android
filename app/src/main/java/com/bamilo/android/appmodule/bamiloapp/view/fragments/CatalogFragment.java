@@ -898,6 +898,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
             for (ProductRegular item : mCatalogPage.getProducts()) {
                 if (item.getSku().equals(sku)) {
                     addToWishListEventModel.value = (long) item.getPrice();
+                    addToWishListEventModel.label =  item.getSku();
                     break;
                 }
             }
@@ -993,7 +994,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
                 if (removeFromWishListEventModel != null) {
 //                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList,
 //                            removeFromWishListEventModel);
-                    EventTracker.INSTANCE.removeFromWishList(removeFromWishListEventModel.label);
+                    try {
+                        EventTracker.INSTANCE.removeFromWishList(removeFromWishListEventModel.label);
+                    }catch (Exception e) {
+
+                    }
+
 
                 }
                 updateWishListProduct();
@@ -1002,7 +1008,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
                 if (addToWishListEventModel != null) {
 //                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList,
 //                            addToWishListEventModel);
-                    EventTracker.INSTANCE.addToWishList(removeFromWishListEventModel.label);
+                    try {
+                        EventTracker.INSTANCE.addToWishList(removeFromWishListEventModel.label);
+                    }catch (Exception e) {
+
+                    }
+
                 }
                 updateWishListProduct();
                 break;

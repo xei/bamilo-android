@@ -261,21 +261,17 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
                         if (baseResponse.successMessages != null && baseResponse.successMessages!!.containsKey("CUSTOMER_REGISTRATION_STEP_1_VALIDATED")) {
                             navigateToVerificationFragment()
                         } else {
-                            // Tracking
-                            var customerId = SimpleEventModel.NO_VALUE
-                            var customerEmail: String? = ""
                             if (BamiloApplication.CUSTOMER != null) {
-                                customerId = BamiloApplication.CUSTOMER.id.toLong()
-                                customerEmail = BamiloApplication.CUSTOMER.email
+                                EventTracker.register(
+                                        userId = BamiloApplication.CUSTOMER.id.toString(),
+                                        emailAddress = BamiloApplication.CUSTOMER.email,
+                                        phoneNumber = BamiloApplication.CUSTOMER.phoneNumber,
+                                        registrationType = TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
+                                        succeed = true
+                                )
                             }
 
-                            EventTracker.register(
-                                    userId = BamiloApplication.CUSTOMER.id.toString(),
-                                    emailAddress = BamiloApplication.CUSTOMER.email,
-                                    phoneNumber = BamiloApplication.CUSTOMER.phoneNumber,
-                                    registrationType = TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
-                                    succeed = true
-                            )
+
 
 //                            val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
 //                                    Constants.LOGIN_METHOD_EMAIL, customerId,
@@ -327,13 +323,18 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
 //                            MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false))
 //                    TrackerManager.trackEvent(context, EventConstants.Signup, authEventModel)
 
-                    EventTracker.register(
-                            userId = BamiloApplication.CUSTOMER.id.toString(),
-                            emailAddress = BamiloApplication.CUSTOMER.email,
-                            phoneNumber = BamiloApplication.CUSTOMER.phoneNumber,
-                            registrationType = TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
-                            succeed = false
-                    )
+                    try {
+                        EventTracker.register(
+                                userId = BamiloApplication.CUSTOMER.id.toString(),
+                                emailAddress = BamiloApplication.CUSTOMER.email,
+                                phoneNumber = BamiloApplication.CUSTOMER.phoneNumber,
+                                registrationType = TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
+                                succeed = false
+                        )
+                    } catch (e: Exception) {
+
+                    }
+
 
                     showValidateMessages(baseResponse)
                     activity?.let {
