@@ -459,7 +459,11 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
                     }
 //                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
-                    EventTracker.INSTANCE.addToCart(addToCartEventModel.label, (long) mProducts.get(position).getPrice(), EventTracker.AddToCartType.ADD_TO_CART_BTN);
+                    try {
+                        EventTracker.INSTANCE.addToCart(addToCartEventModel.label, (long) mProducts.get(position).getPrice(), EventTracker.AddToCartType.ADD_TO_CART_BTN);
+                    } catch (Exception e) {
+
+                    }
                 }
                 break;
             case VALIDATE_PRODUCTS:

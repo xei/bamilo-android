@@ -525,9 +525,14 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                                 MainEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label, 0, true);
                     }
 //                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
-                    EventTracker.INSTANCE.addToCart(addToCartEventModel.label,
-                            (long) ((WishListGridAdapter)Objects.requireNonNull(mListView.getAdapter())).getItem(mSelectedPositionToDelete).getPrice(),
-                            TrackingEvents.AddToCartType.ADD_TO_CART_BTN);
+                    try {
+                        EventTracker.INSTANCE.addToCart(addToCartEventModel.label,
+                                (long) ((WishListGridAdapter)Objects.requireNonNull(mListView.getAdapter())).getItem(mSelectedPositionToDelete).getPrice(),
+                                TrackingEvents.AddToCartType.ADD_TO_CART_BTN);
+                    } catch (Exception e) {
+
+                    }
+
                 }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
