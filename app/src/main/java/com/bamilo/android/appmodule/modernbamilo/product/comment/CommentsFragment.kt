@@ -249,7 +249,7 @@ class CommentsFragment : Fragment(), View.OnClickListener {
 
                     mCommentsListRecyclerView.adapter?.notifyDataSetChanged()
 
-                    it.pagination.run {
+                    it.pagination?.run {
                         mLoadedCommentsPage++
                         if (currentPage == totalPagesCount) {
                             mPaginationOnScrollListener.isAllCommentsLoaded = true
