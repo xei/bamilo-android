@@ -20,7 +20,7 @@ object EventTracker : TrackingEvents {
         mTrackingObservers.run {
             FirebaseEventsTracker.let {
                 it.initialize(context)
-                add(it)
+//                add(it)
             }
 
 //            AdjustEventsTracker.let {
@@ -30,7 +30,7 @@ object EventTracker : TrackingEvents {
 //
             WebEngageEventsTracker.let {
                 it.initialize(context)
-                add(it)
+//                add(it)
             }
         }
     }
