@@ -79,35 +79,35 @@ android {
         }
 
         // Third-party store tracking
-        playstore {
-            initWith buildTypes.release
-            versionNameSuffix " - PlayStore"
-            resValue "string", "adjust_default_tracker", "y0ks09"
-        }
-
-        cafebazaar {
-            initWith buildTypes.release
-            versionNameSuffix " - CafeBazaar"
-            resValue "string", "adjust_default_tracker", "laaz894"
-        }
-
-        iranapps {
-            initWith buildTypes.release
-            versionNameSuffix " - IranApps"
-            resValue "string", "adjust_default_tracker", "u4t9izr"
-        }
-
-        myket {
-            initWith buildTypes.release
-            versionNameSuffix " - Myket"
-            resValue "string", "adjust_default_tracker", "ghb0pwx"
-        }
-
-        avvalmarket {
-            initWith buildTypes.release
-            versionNameSuffix " - AvvalMarket"
-            resValue "string", "adjust_default_tracker", "4ao5tdc"
-        }
+//        playstore {
+//            initWith buildTypes.release
+//            versionNameSuffix " - PlayStore"
+//            resValue "string", "adjust_default_tracker", "y0ks09"
+//        }
+//
+//        cafebazaar {
+//            initWith buildTypes.release
+//            versionNameSuffix " - CafeBazaar"
+//            resValue "string", "adjust_default_tracker", "laaz894"
+//        }
+//
+//        iranapps {
+//            initWith buildTypes.release
+//            versionNameSuffix " - IranApps"
+//            resValue "string", "adjust_default_tracker", "u4t9izr"
+//        }
+//
+//        myket {
+//            initWith buildTypes.release
+//            versionNameSuffix " - Myket"
+//            resValue "string", "adjust_default_tracker", "ghb0pwx"
+//        }
+//
+//        avvalmarket {
+//            initWith buildTypes.release
+//            versionNameSuffix " - AvvalMarket"
+//            resValue "string", "adjust_default_tracker", "4ao5tdc"
+//        }
 
         // Marketing Campaigns Build Variants:
         campaign_adventure_1 {
@@ -155,13 +155,13 @@ android {
             versionNameSuffix ' Staging'
             buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_STAGING}v${STAGING_VERSION_WEBAPI}/\""
 
-            resValue "string", "pushwoosh_app_id", PUSHWOOSH_APPID_STAGING
+            resValue "string", "webEngage_licence_code", WEBENGAGE_LICENSE_CODE_STAGING
         }
 
         live {
             buildConfigField "String", "URL_WEBAPI", "\"${URL_WEBAPI_PRODUCTION}v${LIVE_VERSION_WEBAPI}/\""
 
-            resValue "string", "pushwoosh_app_id", PUSHWOOSH_APPID_LIVE
+            resValue "string", "webEngage_licence_code", WEBENGAGE_LICENSE_CODE_LIVE
         }
     }
 
@@ -179,7 +179,16 @@ android {
                            'src/main/res/drawables/selectors',
                            'src/main/res/drawables/icon',
                            'src/main/res/drawables/background',
-                           'src/main/res/drawables/other', 'src/main/res/layouts/moderbamilo', 'src/main/res/layouts', 'src/main/res/layouts/modernbamilo/', 'src/main/res/layouts/update/']
+                           'src/main/res/drawables/other',
+                           'src/main/res/layouts/moderbamilo',
+                           'src/main/res/layouts',
+                           'src/main/res/layouts/modernbamilo/',
+                           'src/main/res/layouts/update/',
+                           'src/main/res/layouts/authentication',
+                           'src/main/res/layouts/authentication/register',
+                           'src/main/res/layouts/authentication/login',
+                           'src/main/res/layouts/authentication/forgetpassword',
+                           'src/main/res/layouts/authentication/verification']
         }
     }
 }
@@ -222,6 +231,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
+    implementation 'com.squareup.okhttp:okhttp:2.7.5'
 
     implementation 'com.google.dagger:dagger-android:2.11'
     implementation 'com.google.dagger:dagger-android-support:2.11'
@@ -232,13 +242,13 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.2.1'
     //Bamilo Framework
     implementation 'com.squareup.retrofit:retrofit:1.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.8.0' // Don't update!
 
     implementation 'com.adjust.sdk:adjust-android:4.14.0'
-    implementation 'com.algolia:algoliasearch-android:2.6.0@aar'
-    implementation 'com.pushwoosh:pushwoosh:5.8.6'
-    implementation 'com.scarabresearch:predictsdk:1.0.6'
-    implementation 'com.emarsys:mobile-engage-sdk:1.6.0'
+    implementation 'com.webengage:android-sdk:3.+'
+//    implementation 'com.pushwoosh:pushwoosh:5.8.6'
+//    implementation 'com.algolia:algoliasearch-android:2.6.0@aar'
+//    implementation 'com.scarabresearch:predictsdk:1.0.6'
+//    implementation 'com.emarsys:mobile-engage-sdk:1.6.0'
 
     //other libraries
     implementation 'com.romandanylyk:pageindicatorview:1.0.1@aar'

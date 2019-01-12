@@ -17,6 +17,11 @@
         <item name="android:layout_marginRight">5dp</item>
     </style>
 
+    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 
     <!-- TEXT STYLES -->
 
@@ -361,6 +366,17 @@
     <style name="TextInputLayoutErrorTextAppearance" parent="@style/TextAppearance.Design.Error">
         <item name="android:textColor">@color/red_error</item>
         <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="authenticationEditTextStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/gray_3</item>
+        <item name="colorControlActivated">@color/gray_4</item>
+        <item name="colorControlHighlight">@color/gray_4</item>
+    </style>
+
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/tubin_red</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
 </resources>

@@ -84,7 +84,7 @@
     <string name="close_app">Close App</string>
     <string name="confirm_order_loosing_order">If you go back again your order will be invalidated and you will be repositioned on the homepage. \nOrder number:</string>
     <string name="confirm_order_loosing_order_title">Warning:</string>
-    <string name="continue_shopping">Continue Shopping</string>
+    <string name="continue_shopping">ادامه خرید</string>
     <string name="create_addresses_success">Created addresses successfully.</string>
     <string name="done_label">Done</string>
     <string name="dynamic_errortext"> is not correct</string>
@@ -142,7 +142,7 @@
     <string name="my_account">My Account</string>
     <string name="my_order_confirm_button">Confirm Order</string>
     <string name="my_order_coupon_label">Coupon</string>
-    <string name="my_order_details_label">Order Details</string>
+    <string name="my_order_details_label">جزییات سفارش</string>
     <string name="my_order_history_label">My Order History</string>
     <string name="my_order_is_same">Billing to same billingAddress</string>
     <string name="my_order_label">My Order</string>
@@ -164,7 +164,7 @@
     <string name="or_text">OR</string>
     <string name="order_no_items">You have no items in the cart</string>
     <string name="order_status_label">Order Status</string>
-    <string name="order_success">Your order has been successfully registered.\n You can check the status through Order Details.</string>
+    <string name="order_success">سفارش شما با موفقیت ثبت شد.</string>
     <string name="order_summary_label">Order Summary</string>
     <string name="order_summary_shipping_fee_label">Shipping Fee:</string>
     <string name="order_summary_shipping_method">Shipping Method</string>
@@ -247,7 +247,7 @@
     <string name="submit_text">Your comment has been submited and is now subject to approval.</string>
     <string name="succes_login">You are logged in</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
-    <string name="thank_you_order_title">Thank You!</string>
+    <string name="thank_you_order_title">با تشکر از شما!</string>
     <string name="try_again">Retry</string>
     <string name="try_again_retry">Try Again</string>
     <string name="upgrade_forced_text">We found something that we needed to fix to improve your shopping experience on %s! You will need to update the Application before you continue using it.</string>
@@ -369,7 +369,7 @@
     <string name="recent_searches_empty">You don\'t have yet any recent searches.</string>
     <string name="items_in_your_order">Items in your order</string>
     <string name="delivered_label">Delivered</string>
-    <string name="order_number">Order N.º %s</string>
+    <string name="order_number">شماره سفارش: ‎%s‎</string>
     <string name="billing">Billing</string>
     <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="first_slash_second_placeholder">%1$s / %2$s</string>
@@ -532,7 +532,7 @@
     <string name="error_isrequired">Is required</string>
     <string name="normal_string_regex" translatable="false">[0-9a-zA-Z-]*</string>
     <string name="email_regex" translatable="false">[a-zA-Z0-9äöüÄÖÜ_+.-]+@[a-zA-Z0-9äöüÄÖÜ][a-zA-Z0-9-äöüÄÖÜ.]+\\.([a-zA-Z]{2,6})</string>
-    <string name="email_password_invalid">email/password is not correct</string>
+    <string name="email_password_invalid">نام کاربری/رمز عبور نادرست است</string>
     <string name="address_next_button">Continue</string>
     <string name="payment_next_button">Continue and Payment</string>
     <string name="coupon_label">Coupon</string>
@@ -569,7 +569,7 @@
     <string name="drawer_rateus">امتیازدهی به برنامه</string>
     <string name="call_center_number" translatable="false">tel:02141687000</string>
 
-    <string name="share_link_title" translatable="false">اپلیکیشن بامیلو را دانلود کنید:</string>
+    <string name="share_link_title" translatable="false">اپلیکیشن بامیلو را دانلود کن و تخفیف بگیر!</string>
     <string name="share_link" translatable="false">https://app.adjust.com/eq8uike</string>
     <string name="payment_successful" translatable="false">پرداخت شما با موفقیت انجام شد</string>
     <string name="payment_unsuccessful">پرداخت شما ناموفق بود</string>
@@ -735,28 +735,47 @@
     <string name="getLatestApk">دریافت به‌روز رسانی</string>
     <string name="buy_it_now">همین الان بخر</string>
     <string name="product_added_to_cart">محصول با موفقیت به سبد خرید اضافه شد</string>
+    <string name="login_to_account">ورود به حساب کاربری</string>
+    <string name="email_or_phone">ایمیل یا شمارهٔ موبایل</string>
+    <string name="forget_password">فراموشی رمز عبور</string>
+    <string name="insert_email_or_phone_number">ایمیل یا شماره موبایل را وارد کنید</string>
+    <string name="insert_password">کلمه عبور را وارد کنید</string>
+    <string name="invalid_password">کلمه عبور نامعتبر است</string>
+    <string name="invalid_email_or_phone_number">ایمیل یا شماره موبایل نامعتبر</string>
 
     <!-- Register Screen -->
     <string name="registerScreen_title">ثبت‌نام در بامیلو</string>
     <string name="registerScreen_hint_userId">آدرس ایمیل</string>
-    <string name="registerScreen_hint_password">گذرواژه</string>
+    <string name="registerScreen_hint_userId_mandatory">آدرس ایمیل *</string>
+    <string name="registerScreen_hint_password">کلمه عبور</string>
+    <string name="registerScreen_hint_password_mandatory">کلمه عبور *</string>
     <string name="registerScreen_hint_mobile">شماره تلفن همراه</string>
+    <string name="registerScreen_hint_mobile_mandatory">شماره تلفن همراه *</string>
     <string name="registerScreen_hint_nationalId">کد ملی</string>
-    <string name="registerScreen_btn_register">ثبت‌نام</string>
+    <string name="registerScreen_hint_nationalId_mandatory">کد ملی *</string>
+    <string name="registerScreen_btn_register">ثبت‌ نام</string>
     <string name="registerScreen_btn_goToLogin">حساب کاربری دارم</string>
     <string name="verifyPhoneNoScreen_title">کد بازیابی را ارسال کنید</string>
     <string name="verifyPhoneNoScreen_subtitle">کد تایید برای %s ارسال شده است</string>
     <string name="verifyPhoneNoScreen_btn_resend">ارسال مجدد کد</string>
     <string name="verifyPhoneNoScreen_btn_next">مرحله بعد</string>
 
-    <string name="forgetPassScreen_title">فراموشی گذرواژه</string>
-    <string name="forgetPassScreen_btn_recover">بازیابی گذرواژه</string>
+    <string name="forgetPassScreen_title">فراموشی کلمه عبور</string>
+    <string name="forgetPassScreen_btn_recover">بازیابی کلمه عبور</string>
     <string name="forgetPassScreen_btn_register">ثبت نام</string>
     <string name="forgetPassScreen_hint_userId">ایمیل یا شماره موبایل</string>
 
 
     <string name="ssl_error_handler_message">به دلیل قدیمی بودن نسخه اندروید شما، بامیلو به اجازه شما برای نمایش این صفحه نیازمند است</string>
     <string name="ssl_error_handler_title">خطا در نمایش محتوا</string>
+    <string name="registeration_failed_error">خطا در ثبت نام</string>
+    <string name="verification_code_was_sent_to">کد تایید برای %s ارسال شده است</string>
+    <string name="insert_your_password">رمز عبور جدید خود را وارد کنید</string>
+    <string name="password_length_limit_message">رمز عبور باید حداقل ۶ حرف و حداکثر ۱۲ حرف باشد</string>
+    <string name="verify_new_password">تکرار رمز عبور جدید</string>
+    <string name="new_password_">رمز عبور جدید</string>
+    <string name="submit_verify_code">ثبت کد تایید</string>
+    <string name="edit_phone_number">ویرایش شماره تماس</string>
 
     <string name="share_app">به اشتراک گذاری اپلیکیشن با استفاده از…</string>
     <string name="share_product">به اشتراک گذاری محصول با استفاده از…</string>

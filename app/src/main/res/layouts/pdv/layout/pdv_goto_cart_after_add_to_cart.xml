@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/dimen_12dp"
                 android:layout_gravity="center"
-                android:text="@string/buy_it_now"
+                android:text="@string/payment_next_button"
                 android:textSize="14sp"
                 app:layout_constraintRight_toLeftOf="@+id/appCompatImageView"
                 app:layout_constraintTop_toTopOf="parent"

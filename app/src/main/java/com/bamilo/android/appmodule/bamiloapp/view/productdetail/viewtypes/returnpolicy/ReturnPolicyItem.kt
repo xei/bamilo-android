@@ -1,10 +1,12 @@
 package com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.returnpolicy
 
+import android.view.View
 import com.bamilo.android.framework.components.ghostadapter.BindItem
 import com.bamilo.android.framework.components.ghostadapter.Binder
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ReturnPolicy
+import com.bamilo.android.appmodule.modernbamilo.product.policy.ReturnPolicyActivity
 
 /**
  * Created by Farshid
@@ -26,5 +28,17 @@ class ReturnPolicyItem(private var returnPolicy: ReturnPolicy) {
 
         holder.title.text = returnPolicy.title
         holder.isFilled = true
+
+        returnPolicy.cms_key?.run {
+            holder.temsAndPolicy.apply {
+                visibility = View.VISIBLE
+                setOnClickListener {
+                    ReturnPolicyActivity.startReturnPolicyActivity(
+                            holder.view.context, returnPolicy.cms_key!!,
+                            (if(returnPolicy.title != null)returnPolicy.title else "")!!
+                    )
+                }
+            }
+        }
     }
 }

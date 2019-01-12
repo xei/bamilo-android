@@ -80,7 +80,6 @@ import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.CustomToastView;
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogGenericFragment;
 import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogProgressFragment;
-import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTracker;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.ConfirmationCartMessageView;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.FixedDrawerDrawable;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UITabLayoutUtils;
@@ -89,6 +88,8 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment.Keyboa
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.DrawerFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.OldProductDetailsFragment;
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTrackerKt;
 import com.bamilo.android.appmodule.modernbamilo.util.extension.StringExtKt;
 import com.bamilo.android.appmodule.modernbamilo.util.typography.TypeFaceHelper;
 import com.bamilo.android.framework.components.recycler.HorizontalSpaceItemDecoration;
@@ -361,7 +362,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
                 sem.action = EventActionKeys.VOICE_SEARCH;
                 sem.label = text.get(0);
                 sem.value = SimpleEventModel.NO_VALUE;
-                TrackerManager.trackEvent(this, EventConstants.SearchBarSearched, sem);
+//                TrackerManager.trackEvent(this, EventConstants.SearchBarSearched, sem);
+                EventTracker.INSTANCE.search(text.get(0));
 
                 fireSearch(text.get(0));
             }
@@ -957,7 +959,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
                 sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
                 sem.label = searchTerm;
                 sem.value = SimpleEventModel.NO_VALUE;
-                TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchBarSearched, sem);
+//                TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchBarSearched, sem);
+                EventTracker.INSTANCE.search(searchTerm);
 
                 fireSearch(searchTerm);
                 return true;
@@ -1076,7 +1079,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
         sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
         sem.label = suggestion.getResult();
         sem.value = SimpleEventModel.NO_VALUE;
-        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
+//        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
 
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
@@ -1105,7 +1108,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
         sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
         sem.label = suggestion.getResult();
         sem.value = SimpleEventModel.NO_VALUE;
-        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
+//        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DATA, null);
@@ -1124,7 +1127,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
         sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
         sem.label = suggestion.getResult();
         sem.value = SimpleEventModel.NO_VALUE;
-        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
+//        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
 
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
@@ -1150,7 +1153,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
         sem.action = EventActionKeys.SEARCH_BAR_SEARCH;
         sem.label = suggestion.getResult();
         sem.value = SimpleEventModel.NO_VALUE;
-        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
+//        TrackerManager.trackEvent(BaseActivity.this, EventConstants.SearchSuggestions, sem);
 
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
@@ -1603,18 +1606,17 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
         SearchRecentQueriesTableHelper.deleteAllRecentQueries();
         mSearchListView.setAdapter(null);
 
+        EventTracker.INSTANCE.logout();
         // Global Tracker
-        MainEventModel authEventModel =
-                new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGOUT, null,
-                        SimpleEventModel.NO_VALUE,
-                        MainEventModel.createAuthEventModelAttributes(null, null, true));
-        TrackerManager.trackEvent(this, EventConstants.Logout, authEventModel);
-
+//        MainEventModel authEventModel =
+//                new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGOUT, null,
+//                        SimpleEventModel.NO_VALUE,
+//                        MainEventModel.createAuthEventModelAttributes(null, null, true));
+//        TrackerManager.trackEvent(this, EventConstants.Logout, authEventModel);
         //Mobile Engage API
         //https://help.emarsys.com/hc/en-us/articles/115002410625
         //App Logout
-        EmarsysTracker.getInstance().trackEventAppLogout();
-
+//        EmarsysTracker.getInstance().trackEventAppLogout();
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
         // Goto Home
@@ -1800,14 +1802,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
                                         Constants.LOGIN_METHOD_EMAIL,
                                         EmailHelper.getHost(customer.getEmail()),
                                         true));
-                        TrackerManager.trackEvent(BaseActivity.this, EventConstants.Login,
-                                authEventModel);
 
-                        EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(
-                                BaseActivity.this.getResources()
-                                        .getString(R.string.Emarsys_ContactFieldID)),
-                                BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER
-                                        .getEmail() : null);
 
                         // Track
                         Bundle params = new Bundle();

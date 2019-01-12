@@ -1,101 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/verificationDialog_appImage_close"
+        android:layout_width="@dimen/dimen_40dp"
+        android:layout_height="@dimen/dimen_40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:padding="@dimen/dimen_8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_close_gray"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/xeiTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="کد تایید را وارد کنید"
+        android:textColor="@color/gray_2"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:locale="fa_IR"
+        app:style="bold"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/verificationDialog_textView_verifyCodeSentTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@color/primary_text_color"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/xeiTextView"
+        app:locale="fa_IR"
+        tools:text="kkkkkkkkkkkkkk"/>
+
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/verificationDialog_textView_editPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@color/blue_link"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verificationDialog_textView_verifyCodeSentTo"
+        app:locale="fa_IR"
+        android:text="@string/edit_phone_number"/>
+
+    <com.bamilo.android.appmodule.bamiloapp.view.widget.PinEntryInput
+        android:id="@+id/etPin"
+        android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp"
+        android:cursorVisible="false"
+        android:digits="1234567890"
+        android:inputType="number"
+        android:maxLength="6"
+        android:textColor="@color/secondary_text_color"
+        android:textIsSelectable="false"
+        android:textSize="21sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verificationDialog_textView_editPhone"
+        app:pinAnimationType="fromBottom"
+        app:pinCharacterSpacing="4dp"
+        app:pinLineColors="@color/gray_4"/>
 
-        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
-            app:locale="fa_IR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="48dp"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:text="@string/verifyPhoneNoScreen_title"
-            android:textColor="@color/gray_2" />
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvResendTokenNotice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:textColor="@color/primary_text_color"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPin"
+        app:locale="fa_IR"
+        app:style="bold"
+        tools:text=""/>
 
-        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
-            app:locale="fa_IR"
-            android:id="@+id/tvPhoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:textColor="@color/gray_1"
-            android:textSize="14sp"
-            tools:text="۰۹۱۹۴۵۳۹۵۲۱" />
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+        android:id="@+id/tvResendToken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="?attr/selectableItemBackground"
+        android:text="@string/verifyPhoneNoScreen_btn_resend"
+        android:textColor="@color/blue_link"
+        android:textSize="@dimen/dimen_12sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvResendTokenNotice"
+        app:layout_goneMarginTop="@dimen/dimen_12dp"
+        app:locale="fa_IR"
+        tools:visibility="visible"/>
 
-        <com.bamilo.android.appmodule.bamiloapp.view.widget.PinEntryInput
-            android:id="@+id/etPin"
-            android:layout_width="220sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="64dp"
-            android:cursorVisible="false"
-            android:digits="1234567890"
-            android:inputType="number"
-            android:maxLength="6"
-            android:textColor="@color/gray_2"
-            android:textIsSelectable="false"
-            android:textSize="20sp"
-            app:pinAnimationType="fromBottom"
-            app:pinCharacterSpacing="4dp"
-            app:pinLineColors="@color/gray_4" />
+    <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+        android:id="@+id/btnSubmitToken"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="@dimen/dimen_16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvResendToken"
+        app:layout_goneMarginTop="24dp"
+        app:text="@string/submit_verify_code"/>
 
-        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
-            app:locale="fa_IR"
-            android:id="@+id/tvResendTokenNotice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="@string/verification_token_receive_notice"
-            android:textColor="@color/gray_2" />
-
-
-        <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
-            android:id="@+id/tvResendToken"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:paddingBottom="4dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            app:locale="fa_IR"
-            android:paddingTop="4dp"
-            android:text="@string/verifyPhoneNoScreen_btn_resend"
-            android:textColor="@color/pantone2995cp"
-            android:visibility="gone" />
-
-
-
-        <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
-            android:id="@+id/btnSubmitToken"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="36dp"
-            android:enabled="false"
-            android:paddingBottom="16dp"
-            android:paddingTop="16dp"
-            app:text="@string/verifyPhoneNoScreen_btn_next" />
-
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</android.support.constraint.ConstraintLayout>

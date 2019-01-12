@@ -23,7 +23,6 @@
 
     <!-- SERVER CONFS -->
     <string name="global_server_restbase_path" translatable="false">@string/global_restbase_path</string>
-    <string name="global_server_api_version" translatable="false">@string/global_api_version</string>
 
     <!-- USER PREFERENCES -->
     <item name="default_vibrate" type="bool">false</item>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
@@ -10,7 +10,7 @@
     android:layout_marginRight="6dp"
     android:layout_marginTop="3dp"
     android:background="@drawable/selector_grid_item_highlight"
-    card_view:cardCornerRadius="0dp">
+    app:cardCornerRadius="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -121,6 +121,22 @@
                 android:textSize="15sp"
                 tools:text="Discount" />
 
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
+                android:id="@+id/defCatalogItemGrid_xeiTextView_specialBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:background="@drawable/background_badge_special_catalog"
+                android:textSize="10sp"
+                android:textColor="@color/grey2"
+                tools:visibility="visible"
+                app:locale="fa_IR"
+                app:style="bold" />
+
             <RelativeLayout
                 android:id="@+id/item_regprice_rl"
                 android:layout_width="wrap_content"
@@ -160,6 +176,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignStart="@id/item_brand"
             android:visibility="gone" />
+
+
 
 
     </RelativeLayout>

@@ -213,7 +213,7 @@ public class ItemTrackingListAdapter extends
                                     .onCancelItemButtonClicked(view, item1);
                         }
                     });
-                } else if (item.getCancellation().getNotCancelableReasonType() != null &&
+                } else if (item.getCancellation().isCancelable() && item.getCancellation().getNotCancelableReasonType() != null &&
                         !item.getCancellation().getNotCancelableReasonType()
                                 .equals(Cancellation.REASON_TYPE_IS_CANCELED)
                         && CollectionUtils.isNotEmpty(item.getHistories()) &&

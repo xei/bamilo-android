@@ -5,148 +5,227 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#fff">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-        
+
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/fragmentDialogBottomsheetRegister_imageButton_close"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            app:srcCompat="@drawable/ic_close_gray"
-            android:scaleType="fitXY"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            />
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/ic_close_gray"/>
 
         <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
             android:id="@+id/fragmentDialogBottomsheetRegister_textView_title"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:text="@string/registerScreen_title"
+            android:layout_marginRight="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/fragmentDialogBottomsheetRegister_imageButton_close"
             android:gravity="center_vertical"
+            android:text="@string/registerScreen_title"
             android:textColor="@color/grey4"
             android:textSize="16sp"
-            android:layout_marginRight="24dp"
             app:locale="fa_IR"
-            app:style="bold"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/fragmentDialogBottomsheetRegister_imageButton_close"/>
+            app:style="bold"/>
 
         <EditText
-            android:focusable="true"
             android:layout_width="0dp"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            android:focusable="true"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/fragmentDialogBottomsheetRegister_textInputLayout_userId"
+        <RelativeLayout
+            android:id="@+id/rlEmailRoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
-            android:textAlignment="gravity"
-            android:layout_marginRight="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_below="@+id/fragmentDialogBottomsheetRegister_textView_title"
             android:layout_marginTop="16dp"
-            app:errorEnabled="true">
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_below="@+id/fragmentDialogBottomsheetRegister_textView_title">
 
-            <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
-                android:id="@+id/fragmentDialogBottomsheetRegister_xeiEditText_userId"
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/imgPerson"
+                android:layout_width="@dimen/dimen_20dp"
+                android:layout_height="@dimen/dimen_20dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="18dp"
+                app:srcCompat="@drawable/ic_mail_outline_gary"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/fragmentDialogBottomsheetRegister_textInputLayout_userId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/registerScreen_hint_userId"
-                android:textSize="12sp"
-                android:inputType="textEmailAddress"
-                android:lines="1"
-                app:locale="fa_IR" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_toLeftOf="@id/imgPerson"
+                android:gravity="right"
+                app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+                android:textAlignment="gravity"
+                app:errorEnabled="true">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/fragmentDialogBottomsheetRegister_textInputLayout_password"
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                    android:id="@+id/fragmentDialogBottomsheetRegister_xeiEditText_userId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/registerScreen_hint_userId_mandatory"
+                    android:inputType="textEmailAddress"
+                    android:lines="1"
+                    android:textSize="12sp"
+                    app:locale="fa_IR"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlPhoneRoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="24dp"
             android:layout_marginLeft="24dp"
-            android:layout_below="@+id/fragmentDialogBottomsheetRegister_textInputLayout_userId"
-            app:passwordToggleEnabled="true"
-            app:errorEnabled="true">
+            android:layout_marginRight="24dp"
+            android:layout_below="@+id/rlEmailRoot">
 
-            <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
-                android:id="@+id/fragmentDialogBottomsheetRegister_xeiEditText_password"
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/imgPhone"
+                android:layout_width="@dimen/dimen_20dp"
+                android:layout_height="@dimen/dimen_20dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="18dp"
+                app:srcCompat="@drawable/ic_phone_gray"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_toLeftOf="@id/imgPhone"
+                android:id="@+id/fragmentDialogBottomsheetRegister_textInputLayout_mobileNo"
                 android:layout_width="match_parent"
+                app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
                 android:layout_height="wrap_content"
-                android:hint="@string/registerScreen_hint_password"
-                android:textSize="12sp"
-                android:lines="1"
-                app:locale="fa_IR" />
-        </android.support.design.widget.TextInputLayout>
+                app:errorEnabled="true">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/fragmentDialogBottomsheetRegister_textInputLayout_mobileNo"
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                    android:id="@+id/fragmentDialogBottomsheetRegister_xeiEditText_mobileNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:hint="@string/registerScreen_hint_mobile_mandatory"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:maxLength="11"
+                    android:textAlignment="gravity"
+                    android:textSize="12sp"
+                    app:locale="fa_IR"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlPasswordRoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="24dp"
             android:layout_marginLeft="24dp"
-            android:layout_below="@+id/fragmentDialogBottomsheetRegister_textInputLayout_password"
-            app:errorEnabled="true">
+            android:layout_marginRight="24dp"
+            android:layout_below="@+id/rlPhoneRoot">
 
-            <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
-                android:id="@+id/fragmentDialogBottomsheetRegister_xeiEditText_mobileNo"
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/imgLock"
+                android:layout_width="@dimen/dimen_20dp"
+                android:layout_height="@dimen/dimen_20dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="18dp"
+                app:srcCompat="@drawable/ic_lock_gray"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/fragmentDialogBottomsheetRegister_textInputLayout_password"
                 android:layout_width="match_parent"
+                app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
                 android:layout_height="wrap_content"
-                android:hint="@string/registerScreen_hint_mobile"
-                android:inputType="phone"
-                android:textSize="12sp"
-                android:lines="1"
-                android:maxLength="11"
-                app:locale="fa_IR" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_toLeftOf="@id/imgLock"
+                app:errorEnabled="true"
+                app:passwordToggleEnabled="true">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/fragmentDialogBottomsheetRegister_textInputLayout_nationalId"
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                    android:id="@+id/fragmentDialogBottomsheetRegister_xeiEditText_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:inputType="textPassword"
+                    android:hint="@string/registerScreen_hint_password_mandatory"
+                    app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+                    android:lines="1"
+                    android:textAlignment="gravity"
+                    android:textSize="12sp"
+                    app:locale="fa_IR"/>
+
+            </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlNationalCodeRoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="24dp"
             android:layout_marginLeft="24dp"
-            android:layout_below="@+id/fragmentDialogBottomsheetRegister_textInputLayout_mobileNo"
-            android:layout_marginTop="16dp"
-            app:errorEnabled="true">
+            android:layout_marginRight="24dp"
+            android:layout_below="@+id/rlPasswordRoot">
 
-            <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
-                android:id="@+id/fragmentDialogBottomsheetRegister_xeiEditText_nationalId"
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/imgCard"
+                android:layout_width="@dimen/dimen_20dp"
+                android:layout_height="@dimen/dimen_20dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="18dp"
+                app:srcCompat="@drawable/ic_outline_person_gray"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/fragmentDialogBottomsheetRegister_textInputLayout_nationalId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/registerScreen_hint_nationalId"
-                android:inputType="phone"
-                android:textSize="12sp"
-                android:lines="1"
-                android:maxLength="10"
-                app:locale="fa_IR" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_toLeftOf="@id/imgCard"
+                app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+                app:errorEnabled="true">
+
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                    android:id="@+id/fragmentDialogBottomsheetRegister_xeiEditText_nationalId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:hint="@string/registerScreen_hint_nationalId_mandatory"
+                    android:inputType="numberDecimal"
+                    android:lines="1"
+                    android:maxLength="10"
+                    android:textAlignment="gravity"
+                    android:textSize="12sp"
+                    app:locale="fa_IR"/>
+
+            </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
 
         <com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
             android:id="@+id/fragmentDialogBottomsheetRegister_bamiloActionButton_register"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_below="@+id/fragmentDialogBottomsheetRegister_textInputLayout_nationalId"
+            android:layout_height="48dp"
             android:layout_marginTop="24dp"
+            android:layout_below="@+id/rlNationalCodeRoot"
             app:text="@string/registerScreen_btn_register"/>
 
         <com.bamilo.android.appmodule.modernbamilo.customview.XeiButton
             android:id="@+id/fragmentDialogBottomsheetRegister_xeiButton_goToLogin"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
             android:layout_below="@+id/fragmentDialogBottomsheetRegister_bamiloActionButton_register"
-            android:layout_marginTop="24dp"
             android:background="@drawable/background_secondary_btn"
-            android:textColor="@color/grey3"
-            android:text="@string/registerScreen_btn_goToLogin"/>
-        
-    </RelativeLayout>
-
+            android:text="@string/registerScreen_btn_goToLogin"
+            android:textColor="@color/grey3"/>
 
     </RelativeLayout>
+
+</RelativeLayout>

@@ -1,8 +1,10 @@
 package com.bamilo.android.appmodule.modernbamilo.product.comment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,6 +13,9 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import com.bamilo.android.R
+import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra
+import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
+import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
 import com.bamilo.android.appmodule.modernbamilo.util.logging.LogType
 import com.bamilo.android.appmodule.modernbamilo.util.logging.Logger
@@ -55,6 +60,7 @@ class CommentsFragment : Fragment(), View.OnClickListener {
     private lateinit var mToolbarTitleTextView: TextView
     private lateinit var mCommentsListRecyclerView: RecyclerView
     private lateinit var mSubmitCommentButton: BamiloActionButton
+    private lateinit var mCartButton: AppCompatImageView
 
     private lateinit var mPaginationOnScrollListener: PaginationOnScrollListener
     private var mLoadedCommentsPage = 0
@@ -200,11 +206,13 @@ class CommentsFragment : Fragment(), View.OnClickListener {
         mToolbarTitleTextView = rootView.findViewById(R.id.layoutToolbar_xeiTextView_title)
         mCommentsListRecyclerView = rootView.findViewById(R.id.activityComments_recyclerView_commentsList)
         mSubmitCommentButton = rootView.findViewById(R.id.activityComments_button_submitComment)
+        mCartButton = rootView.findViewById(R.id.layoutToolbar_appCompatImageView_whiteCart)
     }
 
     private fun setOnClickListeners() {
         mCloseBtnImageButton.setOnClickListener(this)
         mSubmitCommentButton.setOnClickListener(this)
+        mCartButton.setOnClickListener(this)
     }
 
     private fun initRecyclerView() = mCommentsListRecyclerView.run {
@@ -241,7 +249,7 @@ class CommentsFragment : Fragment(), View.OnClickListener {
 
                     mCommentsListRecyclerView.adapter?.notifyDataSetChanged()
 
-                    it.pagination.run {
+                    it.pagination?.run {
                         mLoadedCommentsPage++
                         if (currentPage == totalPagesCount) {
                             mPaginationOnScrollListener.isAllCommentsLoaded = true
@@ -270,8 +278,15 @@ class CommentsFragment : Fragment(), View.OnClickListener {
         when (clickedView?.id) {
             R.id.layoutToolbar_imageButton_close -> activity?.onBackPressed()
             R.id.activityComments_button_submitComment -> listener?.onSubmitCommentButtonClicked()
+            R.id.layoutToolbar_appCompatImageView_whiteCart -> openCart()
         }
     }
+
+    private fun openCart() = startActivity(
+            Intent(context, MainFragmentActivity::class.java).apply {
+                putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.SHOPPING_CART)
+                putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false)
+            })
 
     /**
      * This class is responsible to implements pagination logic and load data lazily.

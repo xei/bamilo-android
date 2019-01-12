@@ -26,6 +26,8 @@ import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
 import com.bamilo.android.appmodule.bamiloapp.pojo.DynamicForm;
 import com.bamilo.android.appmodule.bamiloapp.preferences.CountryPersistentConfigs;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
+import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents;
 import com.bamilo.android.framework.service.forms.Form;
 import com.bamilo.android.framework.service.forms.FormInputType;
 import com.bamilo.android.framework.service.objects.checkout.CheckoutStepLogin;
@@ -39,10 +41,10 @@ import com.bamilo.android.framework.service.utils.TextUtils;
 import com.bamilo.android.appmodule.bamiloapp.utils.LoginHeaderComponent;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.appmodule.bamiloapp.utils.tracking.emarsys.EmarsysTracker;
 import com.bamilo.android.R;
 
 import java.util.EnumSet;
+import java.util.Objects;
 
 /**
  * Class used to represent the form login via email.
@@ -344,9 +346,24 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                         Constants.LOGIN_METHOD_EMAIL, customer.getId(),
                         MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
                                 true));
-                TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
+                EventTracker.INSTANCE.login(
+                        Objects.requireNonNull(EmailHelper.getHost(customer.getIdAsString())),
+                        Objects.requireNonNull(EmailHelper.getHost(customer.getEmail())),
+                        Objects.requireNonNull(EmailHelper.getHost(customer.getPhoneNumber())),
+                        TrackingEvents.LoginType.LOGIN_WITH_EMAIL,
+                        true);
 
-                EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
+//                TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
+
+//                EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
+
+                EventTracker.INSTANCE.login(
+                        String.valueOf(customer.getId()),
+                        String.valueOf(customer.getEmail()),
+                        String.valueOf(customer.getPhoneNumber()),
+                        TrackingEvents.LoginType.LOGIN_WITH_EMAIL,
+                        true);
+
 
                 // Finish
                 getActivity().onBackPressed();
@@ -379,12 +396,17 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         // Case login event
         else if (eventType == EventType.LOGIN_EVENT) {
             // Tracking
-            MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
-                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-                    MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
-            TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
+//            MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_FAILED,
+//                    Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+//                    MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
+//            TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
+            String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : null;
+            String emailAddress = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null;
+            String phoneNumber = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getPhoneNumber() : null;
+            EventTracker.INSTANCE.login(userId, emailAddress, phoneNumber, TrackingEvents.LoginType.LOGIN_WITH_EMAIL, true);
 
-            EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
+//            EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
+
 
             // Validate and show errors
             showFragmentContentContainer();

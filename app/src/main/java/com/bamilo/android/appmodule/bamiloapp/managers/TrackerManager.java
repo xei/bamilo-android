@@ -1,11 +1,15 @@
 package com.bamilo.android.appmodule.bamiloapp.managers;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.bamilo.android.appmodule.bamiloapp.models.BaseEventModel;
 import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.tracking.IBaseTracker;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.tracking.IEventTracker;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.tracking.IScreenTracker;
+import com.bamilo.android.appmodule.modernbamilo.tracking.platformbasedimplementation.WebEngageEventsTracker;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
@@ -54,11 +58,12 @@ public final class TrackerManager {
             boolean trackTiming) {
         for (IBaseTracker tracker : trackers.values()) {
             if (tracker instanceof IScreenTracker) {
-                if (trackTiming) {
-                    ((IScreenTracker) tracker).trackScreenAndTiming(context, screenModel);
-                } else {
+//                if (trackTiming) {
+//                    ((IScreenTracker) tracker).trackScreenAndTiming(context, screenModel);
+//                } else {
                     ((IScreenTracker) tracker).trackScreen(context, screenModel);
-                }
+                WebEngageEventsTracker.INSTANCE.hitScreenNavigationForInAppMessaging(screenModel.screenName, null);
+//                }
             }
         }
     }
@@ -66,7 +71,7 @@ public final class TrackerManager {
     public static void trackScreenTiming(Context context, BaseScreenModel screenModel) {
         for (IBaseTracker tracker : trackers.values()) {
             if (tracker instanceof IScreenTracker) {
-                ((IScreenTracker) tracker).trackScreenTiming(context, screenModel);
+//                ((IScreenTracker) tracker).trackScreenTiming(context, screenModel);
             }
         }
     }

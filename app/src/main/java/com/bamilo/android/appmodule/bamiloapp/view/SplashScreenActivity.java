@@ -18,6 +18,7 @@ import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+
 import com.adjust.sdk.Adjust;
 import com.bamilo.android.BuildConfig;
 import com.bamilo.android.R;
@@ -55,9 +56,9 @@ import com.bamilo.android.framework.service.utils.DeviceInfoHelper;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.shop.ShopSelector;
 import com.crashlytics.android.Crashlytics;
-import com.pushwoosh.Pushwoosh;
-import com.pushwoosh.exception.PushwooshException;
+
 import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -99,10 +100,20 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     boolean waitForForceUpdate = true;
     private OptionalUpdateBottomSheet mOptionalUpdateBottomSheet;
 
+
+    private static final long TIMESTAMP_BLACKFRIDAY_END = 1543104000000L;   // Nov 25
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash_screen);
+
+//        long mCurrentTimeStamp = Calendar.getInstance().getTimeInMillis();
+//        if (mCurrentTimeStamp < TIMESTAMP_BLACKFRIDAY_END ) {
+//            setContentView(R.layout.launch_screen_black_friday);
+//        } else {
+            setContentView(R.layout.splash_screen);
+//        }
+
     }
 
     private void checkForUpdate() {
@@ -149,7 +160,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private void initialBamilo() {
         waitForForceUpdate = false;
-        initPushwoosh();
+//        initPushwoosh();
 
         DeviceInfoHelper.setOrientationForHandsetDevices(this);
         mMainMapImage = findViewById(R.id.splashMap);
@@ -215,6 +226,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     protected void onResume() {
         super.onResume();
+        initialBamilo();
         if (!isForceUpdateFragmentVisible() && !isOptionalUpdateFragmentVisible()) {
             checkForUpdate();
         }
@@ -224,13 +236,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onStop() {
         super.onStop();
         shouldHandleEvent = false;
-        call.cancel();
+        if (call != null) {
+            call.cancel();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        call.cancel();
+        if (call != null) {
+            call.cancel();
+        }
 
         shouldHandleEvent = false;
 
@@ -758,17 +774,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 .showRedirectInfoActivity(this, redirect);
     }
 
-    private void initPushwoosh() {
-        Pushwoosh.getInstance().registerForPushNotifications(
-                result -> {
-                    if (result.isSuccess()) {
-                        String token = result.getData();
-                        Adjust.setPushToken(token, SplashScreenActivity.this);
-                        Crashlytics.setUserIdentifier(Pushwoosh.getInstance().getHwid());
-                    } else {
-                        PushwooshException exception = result.getException();
-                        // handle registration error
-                    }
-                });
-    }
+//    private void initPushwoosh() {
+//        Pushwoosh.getInstance().registerForPushNotifications(
+//                result -> {
+//                    if (result.isSuccess()) {
+//                        String token = result.getData();
+//                        Adjust.setPushToken(token, SplashScreenActivity.this);
+//                        Crashlytics.setUserIdentifier(Pushwoosh.getInstance().getHwid());
+//                    } else {
+//                        PushwooshException exception = result.getException();
+//                        // handle registration error
+//                    }
+//                });
+//    }
 }

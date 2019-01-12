@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,8 +17,6 @@ import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendManager;
 import com.bamilo.android.appmodule.bamiloapp.helpers.cart.ClearShoppingCartHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.teasers.GetRichRelevanceHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
@@ -31,10 +28,11 @@ import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
 import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
-import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RecommendationsCartHolder;
 import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RichRelevanceAdapter;
 import com.bamilo.android.appmodule.bamiloapp.view.MainFragmentActivity;
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
+import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents;
 import com.bamilo.android.appmodule.modernbamilo.userreview.UserReviewActivity;
 import com.bamilo.android.appmodule.modernbamilo.util.storage.SharedPreferencesHelperKt;
 import com.bamilo.android.framework.components.customfontviews.Button;
@@ -81,8 +79,8 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
 
     private static final int ITEMS_MARGIN = 6;
 
-    RecommendManager recommendManager;
-    RecommendationsCartHolder recommendationsHolder;
+//    RecommendManager recommendManager;
+//    RecommendationsCartHolder recommendationsHolder;
 
     private PurchaseEntity oldCart = null;
     private BamiloActionButton btnContinueShopping;
@@ -114,7 +112,7 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
         // Get values
         getBundleValues(savedInstanceState);
 
-        recommendManager = new RecommendManager();
+//        recommendManager = new RecommendManager();
 
         TrackEvent();
         trackHomePageItemPurchaseEvent();
@@ -139,7 +137,12 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
             sem.label = android.text.TextUtils.join(",", skus);
             sem.value = (long) cart.getTotal();
         }
-        TrackerManager.trackEvent(getContext(), EventConstants.CheckoutFinished, sem);
+//        TrackerManager.trackEvent(getContext(), EventConstants.CheckoutFinished, sem);
+        EventTracker.INSTANCE.purchase(
+                (long) cart.getTotal(),
+                (paymentMethod.equals("COD")) ? TrackingEvents.PaymentType.COD : TrackingEvents.PaymentType.IPG,
+                true
+        );
     }
 
     private void trackHomePageItemPurchaseEvent() {
@@ -150,7 +153,12 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
             sem.action = EventConstants.Purchased;
             sem.label = SharedPreferencesHelperKt.
                     getHomePageItemsPurchaseTrackLabel(getContext());
-            TrackerManager.trackEvent(getContext(), EventConstants.Purchased, sem);
+//            TrackerManager.trackEvent(getContext(), EventConstants.Purchased, sem);
+            EventTracker.INSTANCE.purchase(
+                    (long) BamiloApplication.INSTANCE.getCart().getTotal(),
+                    (paymentMethod.equals("COD")) ? TrackingEvents.PaymentType.COD : TrackingEvents.PaymentType.IPG,
+                    true
+            );
         }
 
         BamiloApplication.INSTANCE.clearHomepageTrackingItemsSkus();
@@ -245,19 +253,25 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
                 MainEventModel.createPurchaseEventModelAttributes(categories.toString(),
                         (long) cart.getTotal(), true));
 
-        TrackerManager.trackEvent(getContext(), EventConstants.Purchase, purchaseEventModel);
+//        TrackerManager.trackEvent(getContext(), EventConstants.Purchase, purchaseEventModel);
+        EventTracker.INSTANCE.purchase(
+                (long) cart.getTotal(),
+                (paymentMethod.equals("COD")) ? TrackingEvents.PaymentType.COD : TrackingEvents.PaymentType.IPG,
+                true
+        );
+
 
         // Related Products
         relatedProductsView = view.findViewById(R.id.related_container);
 
         // Show
-        sendRecommend(cart);
+        //sendRecommend(cart);
         oldCart = cart;
 
         // Clean cart
         triggerClearCart();
 
-        recommendManager.sendPurchaseRecommend();
+//        recommendManager.sendPurchaseRecommend();
         BamiloApplication.INSTANCE.setCart(null);
 
         //Show Order Number
@@ -493,7 +507,7 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
         switch (eventType) {
             case GET_RICH_RELEVANCE_EVENT:
                 richRelevance = (RichRelevance) baseResponse.getContentData();
-                sendRecommend(BamiloApplication.INSTANCE.getCart());
+//                sendRecommend(BamiloApplication.INSTANCE.getCart());
                 //setRelatedItems();
                 showFragmentContentContainer();
                 break;
@@ -533,57 +547,57 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
         }
     }
 
-    private void sendRecommend(PurchaseEntity cart) {
-
-        RecommendListCompletionHandler handler = (category, data) -> {
-            if (!isAdded()) {
-                return;
-            }
-
-            if (data == null || data.size() == 0) {
-                //relatedProductsView.removeView(recommendationsHolder.itemView);
-                // recommendations.setVisibility(View.GONE);
-                relatedProductsView.setVisibility(View.GONE);
-                btnContinueShopping.setVisibility(View.VISIBLE);
-                return;
-            }
-            btnContinueShopping.setVisibility(View.GONE);
-            relatedProductsView.setVisibility(View.VISIBLE);
-            LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
-
-            if (recommendationsHolder == null) {
-                recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(),
-                        inflater.inflate(R.layout.recommendation_cart,
-                                relatedProductsView,
-                                false),
-                        null);
-            }
-            try {
-                // Set view
-                relatedProductsView.removeView(recommendationsHolder.itemView);
-                recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(),
-                        inflater.inflate(R.layout.recommendation_cart, relatedProductsView,
-                                false), null);
-
-                recommendationsHolder.onBind(data);
-                // Add to container
-
-                relatedProductsView.addView(recommendationsHolder.itemView,
-                        relatedProductsView.getChildCount() - 1);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        };
-
-        if (cart == null) {
-            return;
-        }
-
-        if (cart.getCartCount() == 1) {
-            recommendManager
-                    .sendAlsoBoughtRecommend(null, cart.getCartItems().get(0).getSku(), 6, handler);
-        } else {
-            recommendManager.sendPersonalRecommend(6, handler);
-        }
-    }
+//    private void sendRecommend(PurchaseEntity cart) {
+//
+//        RecommendListCompletionHandler handler = (category, data) -> {
+//            if (!isAdded()) {
+//                return;
+//            }
+//
+//            if (data == null || data.size() == 0) {
+//                //relatedProductsView.removeView(recommendationsHolder.itemView);
+//                // recommendations.setVisibility(View.GONE);
+//                relatedProductsView.setVisibility(View.GONE);
+//                btnContinueShopping.setVisibility(View.VISIBLE);
+//                return;
+//            }
+//            btnContinueShopping.setVisibility(View.GONE);
+//            relatedProductsView.setVisibility(View.VISIBLE);
+//            LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+//
+//            if (recommendationsHolder == null) {
+//                recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(),
+//                        inflater.inflate(R.layout.recommendation_cart,
+//                                relatedProductsView,
+//                                false),
+//                        null);
+//            }
+//            try {
+//                // Set view
+//                relatedProductsView.removeView(recommendationsHolder.itemView);
+//                recommendationsHolder = new RecommendationsCartHolder(getBaseActivity(),
+//                        inflater.inflate(R.layout.recommendation_cart, relatedProductsView,
+//                                false), null);
+//
+//                recommendationsHolder.onBind(data);
+//                // Add to container
+//
+//                relatedProductsView.addView(recommendationsHolder.itemView,
+//                        relatedProductsView.getChildCount() - 1);
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//        };
+//
+//        if (cart == null) {
+//            return;
+//        }
+//
+//        if (cart.getCartCount() == 1) {
+//            recommendManager
+//                    .sendAlsoBoughtRecommend(null, cart.getCartItems().get(0).getSku(), 6, handler);
+//        } else {
+//            recommendManager.sendPersonalRecommend(6, handler);
+//        }
+//    }
 }

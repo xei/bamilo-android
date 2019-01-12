@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +24,8 @@ import com.bamilo.android.appmodule.bamiloapp.helpers.SuperBaseHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.cart.ClearShoppingCartHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
+import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents;
 import com.bamilo.android.framework.service.objects.cart.PurchaseCartItem;
 import com.bamilo.android.framework.service.objects.cart.PurchaseEntity;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
@@ -102,11 +105,18 @@ public class BankActivity extends Activity {
                     // Track Purchase
                     MainEventModel purchaseEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
                             MainEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), true));
-                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
+//                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
+
+                    EventTracker.INSTANCE.purchase(
+                            (long) cart.getTotal(),
+                            TrackingEvents.PaymentType.IPG,
+                            true
+                    );
 
                     btnOrderDetails.setVisibility(View.INVISIBLE);
                     btnReturn.setVisibility(View.VISIBLE);
                     launchInfo.setText(R.string.payment_unsuccessful);
+                    launchInfo.setGravity(Gravity.CENTER);
                     launchInfo.setTextColor(ContextCompat.getColor(this, R.color.black_800));
                     launchInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                     checkout_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_reject_checkout));
@@ -115,7 +125,12 @@ public class BankActivity extends Activity {
                     // Track Purchase
                     MainEventModel purchaseEventModel = new MainEventModel(null, null, null, SimpleEventModel.NO_VALUE,
                             MainEventModel.createPurchaseEventModelAttributes(categories.toString(), (long) cart.getTotal(), false));
-                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
+//                    TrackerManager.trackEvent(this, EventConstants.Purchase, purchaseEventModel);
+                    EventTracker.INSTANCE.purchase(
+                            (long) cart.getTotal(),
+                            TrackingEvents.PaymentType.IPG,
+                            true
+                    );
 
                     // Track Checkout Finish
                     SimpleEventModel sem = new SimpleEventModel();
@@ -131,7 +146,12 @@ public class BankActivity extends Activity {
                         sem.label = android.text.TextUtils.join(",", skus);
                         sem.value = (long) cart.getTotal();
                     }
-                    TrackerManager.trackEvent(this, EventConstants.CheckoutFinished, sem);
+//                    TrackerManager.trackEvent(this, EventConstants.CheckoutFinished, sem);
+                    EventTracker.INSTANCE.purchase(
+                            (long) cart.getTotal(),
+                            TrackingEvents.PaymentType.IPG,
+                            true
+                    );
 
                     launchInfo.setText(R.string.thank_you_order_title);
                     tvOrderInfo.setVisibility(View.VISIBLE);

@@ -17,6 +17,8 @@ import com.bamilo.android.appmodule.bamiloapp.helpers.address.SetDefaultShipping
 import com.bamilo.android.appmodule.bamiloapp.helpers.checkout.GetStepAddressesHelper;
 import com.bamilo.android.appmodule.bamiloapp.helpers.checkout.SetStepAddressesHelper;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
+import com.bamilo.android.appmodule.bamiloapp.utils.Toast;
+import com.bamilo.android.framework.service.objects.addresses.Addresses;
 import com.bamilo.android.framework.service.objects.checkout.MultiStepAddresses;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.rest.errors.ErrorCode;
@@ -154,8 +156,13 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         @Override
         public void onClick(View view) {
             // Validate the is same check box
-            int selectedId = ((AddressAdapter) mAddressView.getAdapter()).getSelectedId();
-            triggerSetMultiStepAddresses(selectedId, selectedId);
+            try {
+                int selectedId = ((AddressAdapter) mAddressView.getAdapter()).getSelectedId();
+                triggerSetMultiStepAddresses(selectedId, selectedId);
+            } catch (Exception e) {
+                Toast.makeText(getContext(), "آدرس ارسال را انتخاب کنید", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
 
@@ -199,6 +206,24 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }*/
+        fun(baseResponse);
+    }
+
+    boolean kos = true;
+
+    private void fun(BaseResponse baseResponse) {
+
+        if (baseResponse == null) {
+            fabNewAddress.show();
+            super.showAddresses(null, mSelectedAddress);
+            hideActivityProgress();
+            if(kos) {
+                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                kos = false;
+            }
+            return;
+        }
+
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_MULTI_STEP_ADDRESSES:
@@ -245,6 +270,61 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+
+        try {
+            if (baseResponse.getError().getMessage().contains("JSONException")) {
+                fun(null);
+                return;
+            }
+        } catch (Exception e) {
+            fun(null);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            return;
+        }
+
         hideActivityProgress();
         if (isOnStoppingProcess) {
             return;

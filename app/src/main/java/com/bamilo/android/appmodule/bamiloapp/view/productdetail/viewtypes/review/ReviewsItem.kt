@@ -92,7 +92,7 @@ class ReviewsItem(private var reviews: Reviews, var sku: String, private var pdv
         recyclerItems.clear()
         adapter.removeAll()
 
-        recyclerItems.add(AddReviewItem(sku))
+        recyclerItems.add(AddReviewItem(sku, pdvMainView))
         adapter.setItems(recyclerItems)
     }
 

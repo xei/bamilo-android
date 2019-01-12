@@ -185,7 +185,14 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
             UIProductUtils.setPriceRules(item, holder.price, holder.discount);
             UIProductUtils.setDiscountRules(item, holder.percentage);
             if (!item.hasDiscount()) {
-                holder.price_rl.setVisibility(View.GONE);
+                if (holder.price_ll != null) {
+                    holder.price_ll.setVisibility(View.GONE);
+                }
+
+                if (holder.price_ll != null) {
+                    holder.price_ll.setVisibility(View.GONE);
+                }
+
             }
         } else {
             super.setProductPrice(holder, item);

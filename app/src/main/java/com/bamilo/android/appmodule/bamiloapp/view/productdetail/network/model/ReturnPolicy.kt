@@ -5,4 +5,5 @@ import java.io.Serializable
 class ReturnPolicy : Serializable {
     var icon: String? = null
     var title: String? = null
+    var cms_key: String? = null
 }

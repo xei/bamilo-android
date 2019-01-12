@@ -136,7 +136,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         gender_spinner = (Spinner) view.findViewById(R.id.address_gender);
 
         cellphone = (EditText) view.findViewById(R.id.address_cell);
-        cellphone.setText(BamiloApplication.CUSTOMER.getPhoneNumber());
+        if(BamiloApplication.CUSTOMER.getPhoneNumber() != null && !BamiloApplication.CUSTOMER.getPhoneNumber().equals("null")) {
+            cellphone.setText(BamiloApplication.CUSTOMER.getPhoneNumber());
+        }
 
         address = (EditText) view.findViewById(R.id.address_direction);
         address_spinner = (Spinner) view.findViewById(R.id.address_state);

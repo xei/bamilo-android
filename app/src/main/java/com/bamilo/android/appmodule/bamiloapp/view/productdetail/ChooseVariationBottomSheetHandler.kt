@@ -13,6 +13,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.viewtypes.botto
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeDigitsInString
 import com.bamilo.android.databinding.ActivityProductDetailBinding
 import com.bamilo.android.framework.components.ghostadapter.GhostAdapter
+import java.lang.Exception
 import java.util.*
 
 
@@ -24,6 +25,11 @@ import java.util.*
 class ChooseVariationBottomSheetHandler(private var context: Context,
                                         private var binding: ActivityProductDetailBinding,
                                         private var pdvMainView: PDVMainView) {
+
+    enum class CTAType {
+        BUY_NOW,
+        ADD_TO_CART
+    }
 
     private var bottomSheetBehavior: BottomSheetBehavior<View> =
             BottomSheetBehavior
@@ -126,12 +132,16 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
         bottomSheetAdapter.removeAll()
         bottomSheetItems.clear()
 
-        product.image_list.let {
-            ImageManager.getInstance().loadImage(it[0].medium, binding.chooseVariationRelativeLayoutLayout!!
-                    .chooseVariationAppImageViewProductImage,
-                    null,
-                    R.drawable.no_image_large,
-                    false)
+        try {
+            product.image_list.let {
+                ImageManager.getInstance().loadImage(it[0].medium, binding.chooseVariationRelativeLayoutLayout!!
+                        .chooseVariationAppImageViewProductImage,
+                        null,
+                        R.drawable.no_image_large,
+                        false)
+            }
+        } catch (ioobe: Exception) {
+
         }
 
         binding.chooseVariationRelativeLayoutLayout!!.chooseVariationTextViewTitle.text = product.title
@@ -152,8 +162,21 @@ class ChooseVariationBottomSheetHandler(private var context: Context,
         bottomSheetAdapter.setItems(bottomSheetItems)
     }
 
-    fun showBottomSheet() {
+    fun showBottomSheet(ctaType: CTAType) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        if (ctaType == CTAType.ADD_TO_CART) {
+            binding.chooseVariationRelativeLayoutLayout?.root?.findViewById<View>(R.id.addToCart_linearLayout_addToBasket)
+                    ?.visibility = View.VISIBLE
+
+            binding.chooseVariationRelativeLayoutLayout?.root?.findViewById<View>(R.id.addToCart_linearLayout_buyNow)
+                    ?.visibility = View.GONE
+        } else {
+            binding.chooseVariationRelativeLayoutLayout?.root?.findViewById<View>(R.id.addToCart_linearLayout_addToBasket)
+                    ?.visibility = View.GONE
+
+            binding.chooseVariationRelativeLayoutLayout?.root?.findViewById<View>(R.id.addToCart_linearLayout_buyNow)
+                    ?.visibility = View.VISIBLE
+        }
     }
 
     fun hideBottomSheet() {

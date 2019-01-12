@@ -8,13 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
 import android.widget.TextView;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.RecommendationWidgetType;
+
+import com.bamilo.android.R;
+import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.R;
 
 import java.util.ArrayList;
 
@@ -35,7 +34,7 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private Context mContext;
 
     private final ArrayList<DrawerItem> mDataSet;
-    private RecommendationWidgetType recommendationWidgetType;
+//    private RecommendationWidgetType recommendationWidgetType;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

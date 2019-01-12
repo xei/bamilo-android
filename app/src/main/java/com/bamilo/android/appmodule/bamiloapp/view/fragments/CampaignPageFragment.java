@@ -40,6 +40,7 @@ import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.DialogSimple
 import com.bamilo.android.appmodule.bamiloapp.utils.imageloader.ImageManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.product.UIProductUtils;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.ErrorLayoutFactory;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
 import com.bamilo.android.framework.components.absspinner.IcsAdapterView;
 import com.bamilo.android.framework.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.bamilo.android.framework.components.recycler.DividerItemDecoration;

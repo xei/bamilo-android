@@ -10,13 +10,11 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.design.widget.TextInputLayout
 import android.text.method.PasswordTransformationMethod
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.ImageView
+import android.widget.*
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra
@@ -25,18 +23,20 @@ import com.bamilo.android.appmodule.bamiloapp.constants.tracking.CategoryConstan
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants
 import com.bamilo.android.appmodule.bamiloapp.controllers.LogOut
-import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController
-import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType
 import com.bamilo.android.appmodule.bamiloapp.helpers.EmailHelper
 import com.bamilo.android.appmodule.bamiloapp.helpers.session.RegisterHelper
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel
 import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel
-import com.bamilo.android.appmodule.bamiloapp.utils.MessagesUtils
-import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory
 import com.bamilo.android.appmodule.bamiloapp.view.BaseActivity
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity
+import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet
+import com.bamilo.android.appmodule.modernbamilo.authentication.verification.VerificationFragmentBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker
+import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents
+import com.bamilo.android.appmodule.modernbamilo.util.customtoast.PoiziToast
 import com.bamilo.android.appmodule.modernbamilo.util.extension.makeErrorViewScrollable
 import com.bamilo.android.appmodule.modernbamilo.util.extension.setErrorTypeface
 import com.bamilo.android.appmodule.modernbamilo.util.typography.TypeFaceHelper
@@ -69,8 +69,8 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
 
-        dialog.setOnShowListener { dialog ->
-            val d = dialog as BottomSheetDialog
+        dialog.setOnShowListener { d_ ->
+            val d = d_ as BottomSheetDialog
             mBottomSheetFrameLayout = d.findViewById<View>(android.support.design.R.id.design_bottom_sheet) as FrameLayout?
         }
 
@@ -78,7 +78,7 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view =  inflater.inflate(R.layout.fragment_dialog_bottomsheet_register, container, false)
+        val view = inflater.inflate(R.layout.fragment_dialog_bottomsheet_register, container, false)
 
         findViews(view)
         initTextInputLayouts()
@@ -141,13 +141,15 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
     private fun setPeekHeight(peekHeight: Int) {
         try {
             BottomSheetBehavior.from(mBottomSheetFrameLayout!!).peekHeight = peekHeight
-        } catch (ignored: Exception) {}
+        } catch (ignored: Exception) {
+        }
     }
 
     private fun expandBottomSheet() {
         try {
             BottomSheetBehavior.from(mBottomSheetFrameLayout!!).state = BottomSheetBehavior.STATE_EXPANDED
-        } catch (ignored: Exception) {}
+        } catch (ignored: Exception) {
+        }
     }
 
     override fun onClick(clickedView: View?) {
@@ -165,16 +167,19 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
     }
 
     private fun openLoginScreen() {
-        // TODO: open login bottomsheet
+        fragmentManager?.let {
+            LoginDialogBottomSheet.show(it, null, null)
+        }
+
         dismiss()
     }
 
     /******************************************* Legacy Code ***************************************/
-    private fun isInputDataValid() : Boolean {
-        var result = validateField(context, getString(R.string.national_id), mNationalIdTextInputLayout, mNationalIdEditText.text.toString(), true, 10, 10, getString(R.string.normal_string_regex), "")
-        result = validateField(context, getString(R.string.email_address), mUserIdTextInputLayout, mUserIdEditText.text.toString(), true, 0, 0, getString(R.string.email_regex), resources.getString(R.string.error_invalid_email)) && result
-        result = validateField(context, getString(R.string.password), mPasswordTextInputLayout, mPasswordEditText.text.toString(), true, 6, 0, null, "") && result
-        result = validateField(context, getString(R.string.mobile_number), mMobileNoTextInputLayout, mMobileNoEditText.text.toString(), true, 0, 0, getString(R.string.cellphone_regex), "") && result
+    private fun isInputDataValid(): Boolean {
+        var result = validateField(context, getString(R.string.national_id), mNationalIdTextInputLayout, mNationalIdEditText.text.toString().trim(), true, 10, 10, getString(R.string.normal_string_regex), "")
+        result = validateField(context, getString(R.string.email_address), mUserIdTextInputLayout, mUserIdEditText.text.toString().trim(), true, 0, 0, getString(R.string.email_regex), resources.getString(R.string.error_invalid_email)) && result
+        result = validateField(context, getString(R.string.password), mPasswordTextInputLayout, mPasswordEditText.text.toString().trim(), true, 6, 0, null, "") && result
+        result = validateField(context, getString(R.string.mobile_number), mMobileNoTextInputLayout, mMobileNoEditText.text.toString().trim(), true, 0, 0, getString(R.string.cellphone_regex), "") && result
         return result
     }
 
@@ -205,147 +210,194 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
             if (!result) {
                 til.error = errorMessage
             }
-        }// Case no match regex
-        // Case too long
-        // Case too short
+        }
         return result
     }
 
     private fun register() = triggerRegister(ApiConstants.USER_REGISTRATION_API_PATH, ContentValues().apply {
-            put("customer[national_id]", mNationalIdEditText.text.toString())
-            put("customer[email]", mUserIdEditText.text.toString())
-            put("customer[password]", mPasswordEditText.text.toString())
-            put("customer[phone]", mMobileNoEditText.text.toString())
-        })
-
-    private fun triggerRegister(endpoint: String, values: ContentValues) =
-    // Show progress
-    // TODO: use farshid functions
-//            showActivityProgress()
-    // Request
-    BamiloApplication.INSTANCE.sendRequest(RegisterHelper(), RegisterHelper.createBundle(endpoint, values), object: IResponseCallback {
-        override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
-            // Validate fragment visibility
-            if (isOnStoppingProcess || activity == null) {
-                return
-            }
-            handleSuccessEvent(baseResponse)
-            // Validate event
-            val eventType = baseResponse?.eventType
-            when (eventType) {
-
-                EventType.REGISTER_ACCOUNT_EVENT -> {
-                    if (activity != null) {
-                        (activity as BaseActivity).dismissProgress()
-                    }
-                    if (baseResponse.successMessages != null && baseResponse.successMessages!!.containsKey("CUSTOMER_REGISTRATION_STEP_1_VALIDATED")) {
-                        navigateToVerificationFragment()
-                    } else {
-                        // Tracking
-                        var customerId = SimpleEventModel.NO_VALUE
-                        var customerEmail: String? = ""
-                        if (BamiloApplication.CUSTOMER != null) {
-                            customerId = BamiloApplication.CUSTOMER.id.toLong()
-                            customerEmail = BamiloApplication.CUSTOMER.email
-                        }
-                        val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
-                                Constants.LOGIN_METHOD_EMAIL, customerId,
-                                MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, if (customerEmail != null) EmailHelper.getHost(customerEmail) else "",
-                                        true))
-                        TrackerManager.trackEvent(context, EventConstants.Signup, authEventModel)
-                        //                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.SignUp, EmarsysEventFactory.signup("email", EmailHelper.getHost(BamiloApplication.CUSTOMER.getEmail()), true));
-                        // Notify user
-                        (activity as BaseActivity).showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login))
-                        // Finish
-                        activity!!.onBackPressed()
-                        // Set facebook login
-                        CustomerUtils.setChangePasswordVisibility(activity, false)
-                        (activity as BaseActivity).setupDrawerNavigation()
-                    }
-                }
-                else -> {
-                    if (activity != null) {
-                        (activity as BaseActivity).dismissProgress()
-                    }
-                }
-            }
-        }
-
-        var isOnStoppingProcess = false
-
-        override fun onRequestError(baseResponse: BaseResponse<*>?) {
-            if (activity != null) {
-                (activity as BaseActivity).dismissProgress()
-            }
-            // Validate fragment visibility
-            if (isOnStoppingProcess) {
-                return
-            }
-            // Validate error o super
-            if (handleErrorEvent(baseResponse)) {
-                return
-            }
-            // Validate event
-            val eventType = baseResponse?.eventType
-            when (eventType) {
-
-                EventType.REGISTER_ACCOUNT_EVENT -> {
-                    if (activity != null) {
-                        (activity as BaseActivity).dismissProgress()
-                    }
-                    // Tracking
-                    val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
-                            Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
-                            MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false))
-                    TrackerManager.trackEvent(context, EventConstants.Signup, authEventModel)
-
-                    // Validate and show errors
-//                    showFragmentContentContainer()
-                    // Show validate messages
-                    showValidateMessages(baseResponse)
-                    (activity as BaseActivity).extraTabLayout.visibility = View.VISIBLE
-                }
-
-                else -> {
-                }
-            }
-        }
+        put("customer[national_id]", mNationalIdEditText.text.toString().trim())
+        put("customer[email]", mUserIdEditText.text.toString().trim())
+        put("customer[password]", mPasswordEditText.text.toString().trim())
+        put("customer[phone]", mMobileNoEditText.text.toString().trim())
     })
 
+    private fun showProgress() {
+        activity?.let {
+            if (it is BaseActivity) {
+                it.showProgress()
+            } else if (it is ProductDetailActivity) {
+                it.showProgressView()
+            }
+        }
+    }
+
+    private fun hideProgress() {
+        activity?.let {
+            if (it is BaseActivity) {
+                it.dismissProgress()
+            } else if (it is ProductDetailActivity) {
+                it.dismissProgressView()
+            }
+        }
+    }
+
+    private fun triggerRegister(endpoint: String, values: ContentValues) {
+        showProgress()
+        BamiloApplication.INSTANCE.sendRequest(RegisterHelper(), RegisterHelper.createBundle(endpoint, values), object : IResponseCallback {
+            override fun onRequestComplete(baseResponse: BaseResponse<*>?) {
+                hideProgress()
+                // Validate fragment visibility
+                if (isOnStoppingProcess || activity == null) {
+                    return
+                }
+
+                handleSuccessEvent(baseResponse)
+
+                // Validate event
+                val eventType = baseResponse?.eventType
+                when (eventType) {
+
+                    EventType.REGISTER_ACCOUNT_EVENT -> {
+                        if (baseResponse.successMessages != null && baseResponse.successMessages!!.containsKey("CUSTOMER_REGISTRATION_STEP_1_VALIDATED")) {
+                            navigateToVerificationFragment()
+                        } else {
+                            if (BamiloApplication.CUSTOMER != null) {
+                                EventTracker.register(
+                                        userId = BamiloApplication.CUSTOMER.id.toString(),
+                                        emailAddress = BamiloApplication.CUSTOMER.email,
+                                        phoneNumber = BamiloApplication.CUSTOMER.phoneNumber,
+                                        registrationType = TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
+                                        succeed = true
+                                )
+                            }
+
+
+
+//                            val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_SUCCESS,
+//                                    Constants.LOGIN_METHOD_EMAIL, customerId,
+//                                    MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, if (customerEmail != null) EmailHelper.getHost(customerEmail) else "",
+//                                            true))
+//                            TrackerManager.trackEvent(context, EventConstants.Signup, authEventModel)
+
+                            context?.let {
+                                PoiziToast.with(it)
+                                        ?.setGravity(Gravity.TOP)
+                                        ?.success(getString(R.string.succes_login), Toast.LENGTH_SHORT)
+                                        ?.show()
+                            }
+
+                            // Set facebook login
+                            CustomerUtils.setChangePasswordVisibility(activity, false)
+                            activity?.let {
+                                if (it is BaseActivity) {
+                                    it.setupDrawerNavigation()
+                                }
+                            }
+
+                            dismiss()
+                        }
+                    }
+                    else -> {
+                    }
+                }
+            }
+
+            var isOnStoppingProcess = false
+
+            override fun onRequestError(baseResponse: BaseResponse<*>?) {
+                hideProgress()
+                // Validate fragment visibility
+                if (isOnStoppingProcess) {
+                    return
+                }
+                // Validate error o super
+                if (handleErrorEvent(baseResponse)) {
+                    return
+                }
+                // Validate event
+                val eventType = baseResponse?.eventType
+                if (eventType == EventType.REGISTER_ACCOUNT_EVENT) {
+                    // Tracking
+//                    val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
+//                            Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
+//                            MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false))
+//                    TrackerManager.trackEvent(context, EventConstants.Signup, authEventModel)
+
+                    try {
+                        EventTracker.register(
+                                userId = BamiloApplication.CUSTOMER.id.toString(),
+                                emailAddress = BamiloApplication.CUSTOMER.email,
+                                phoneNumber = BamiloApplication.CUSTOMER.phoneNumber,
+                                registrationType = TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
+                                succeed = false
+                        )
+                    } catch (e: Exception) {
+
+                    }
+
+
+                    showValidateMessages(baseResponse)
+                    activity?.let {
+                        if (it is BaseActivity) {
+                            it.extraTabLayout.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            }
+        })
+    }
+
     fun handleSuccessEvent(baseResponse: BaseResponse<*>?): Boolean {
-        // Validate event
         val eventType = baseResponse?.eventType
 
         when (eventType) {
             EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT, EventType.ADD_PRODUCT_BUNDLE -> {
-                (activity as BaseActivity).updateCartInfo()
+                activity?.let {
+                    if (it is BaseActivity) {
+                        it.updateCartInfo()
+                    }
+                }
                 return true
             }
             EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT -> {
-                (activity as BaseActivity).updateCartInfo()
+                activity?.let {
+                    if (it is BaseActivity) {
+                        it.updateCartInfo()
+                    }
+                }
                 return true
             }
             EventType.GUEST_LOGIN_EVENT, EventType.LOGIN_EVENT, EventType.AUTO_LOGIN_EVENT, EventType.FORGET_PASSWORD_EVENT, EventType.REMOVE_PRODUCT_FROM_WISH_LIST, EventType.ADD_PRODUCT_TO_WISH_LIST, EventType.ADD_VOUCHER, EventType.REMOVE_VOUCHER, EventType.SUBMIT_FORM -> {
-                if (baseResponse.eventTask == EventTask.ACTION_TASK) {
-                    showWarningMessage(WarningFactory.SUCCESS_MESSAGE, baseResponse.successMessage, eventType)
+                context?.let {
+                    PoiziToast.with(it)
+                            ?.setGravity(Gravity.TOP)
+                            ?.success(baseResponse.successMessage, Toast.LENGTH_SHORT)
+                            ?.show()
                 }
                 return true
             }
             else -> {
+                return false
             }
         }
-        return false
     }
 
     fun handleErrorEvent(response: BaseResponse<*>?): Boolean {
         // Validate priority
-        if (!response!!.isPriority) {
+        if (response == null) {
             return false
         }
-        // Hide keyboard if error screen shows
-        if ((activity as BaseActivity) != null) {
-            (activity as BaseActivity).hideKeyboard()
+
+        if (!response.isPriority) {
+            return false
         }
+
+        activity?.let {
+            if (it is BaseActivity) {
+                it.hideKeyboard()
+            }
+        }
+
         // Validate error code
         val errorCode = response.error.code
         // Case network error
@@ -356,51 +408,36 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
         }// Case request error
     }
 
-    private fun showWarningMessage(@WarningFactory.WarningErrorType warningFact: Int, message: String?, eventType: EventType?) {
-        if (TextUtils.isNotEmpty(message)) {
-            (activity as BaseActivity).showWarningMessage(warningFact, message)
-        } else {
-            val id = MessagesUtils.getMessageId(eventType, true)
-            if (id > 0) {
-                (activity as BaseActivity).showWarningMessage(warningFact, (activity as BaseActivity).getString(id))
-            }
-        }
-    }
-
     private fun handleNetworkError(errorCode: Int, eventTask: EventTask): Boolean {
         var result = true
         when (errorCode) {
             ErrorCode.HTTP_STATUS, ErrorCode.IO, ErrorCode.CONNECT_ERROR, ErrorCode.TIME_OUT -> if (eventTask == EventTask.ACTION_TASK) {
-                (activity as BaseActivity).showWarningMessage(WarningFactory.ERROR_MESSAGE,
-                        (activity as BaseActivity).getString(R.string.network_timeout_error))
-                if ((activity as BaseActivity) != null) {
-                    (activity as BaseActivity).dismissProgress()
+                context?.let {
+                    PoiziToast.with(it)
+                            ?.setGravity(Gravity.TOP)
+                            ?.error(getString(R.string.no_internet_access_warning_title), Toast.LENGTH_SHORT)
+                            ?.show()
                 }
-//                showFragmentContentContainer()
-            } else {
-//                showFragmentNetworkErrorRetry()
             }
-            ErrorCode.NO_CONNECTIVITY ->
-                // Show no network layout
+
+            ErrorCode.NO_CONNECTIVITY -> {
                 if (eventTask == EventTask.ACTION_TASK) {
-                    (activity as BaseActivity).showWarningMessage(WarningFactory.ERROR_MESSAGE,
-                            (activity as BaseActivity).getString(R.string.no_internet_access_warning_title))
-                    if ((activity as BaseActivity) != null) {
-                        (activity as BaseActivity).dismissProgress()
+                    context?.let {
+                        PoiziToast.with(it)
+                                ?.setGravity(Gravity.TOP)
+                                ?.error(getString(R.string.no_internet_access_warning_title), Toast.LENGTH_SHORT)
+                                ?.show()
                     }
-//                    showFragmentContentContainer()
-                } else {
-//                    showFragmentNoNetworkRetry()
                 }
+            }
+
             ErrorCode.SSL, ErrorCode.SERVER_IN_MAINTENANCE, ErrorCode.SERVER_OVERLOAD -> if (eventTask == EventTask.ACTION_TASK) {
-                (activity as BaseActivity).showWarningMessage(WarningFactory.ERROR_MESSAGE,
-                        (activity as BaseActivity).getString(R.string.server_in_maintenance_warning))
-                if ((activity as BaseActivity) != null) {
-                    (activity as BaseActivity).dismissProgress()
+                context?.let {
+                    PoiziToast.with(it)
+                            ?.setGravity(Gravity.TOP)
+                            ?.error(getString(R.string.server_in_maintenance_warning), Toast.LENGTH_SHORT)
+                            ?.show()
                 }
-//                showFragmentContentContainer()
-            } else {
-//                showFragmentServerMaintenanceRetry()
             }
             else -> result = false
         }
@@ -408,43 +445,24 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
     }
 
     private fun handleRequestError(errorCode: Int, response: BaseResponse<*>): Boolean {
-        when (errorCode) {
+        return when (errorCode) {
             ErrorCode.ERROR_PARSING_SERVER_DATA -> {
-//                showFragmentServerMaintenanceRetry()
-                return true
+                true
             }
             ErrorCode.CUSTOMER_NOT_LOGGED_IN -> {
-                // Clean all customer data
-                LogOut.cleanCustomerData(activity as BaseActivity)
-                // Goto login
-                (activity as BaseActivity).onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE,
-                        FragmentController.ADD_TO_BACK_STACK)
-                return true
+                LogOut.cleanCustomerData(activity)
+                openLoginScreen()
+                dismiss()
+                true
             }
             else -> {
-                // Show warning messages
-                handleErrorTaskEvent(response.errorMessage, response.eventTask,
-                        response.eventType)
-                return false
-            }
-        }
-    }
-
-    private fun handleErrorTaskEvent(errorMessage: String, eventTask: EventTask,
-                             eventType: EventType) {
-        if (eventTask == EventTask.ACTION_TASK) {
-            when (eventType) {
-                // Case form submission
-                EventType.REVIEW_RATING_PRODUCT_EVENT, EventType.LOGIN_EVENT, EventType.GUEST_LOGIN_EVENT, EventType.REGISTER_ACCOUNT_EVENT, EventType.EDIT_USER_DATA_EVENT, EventType.CHANGE_PASSWORD_EVENT, EventType.FORGET_PASSWORD_EVENT, EventType.CREATE_ADDRESS_EVENT, EventType.EDIT_ADDRESS_EVENT, EventType.SET_MULTI_STEP_SHIPPING, EventType.SET_MULTI_STEP_PAYMENT, EventType.SUBMIT_FORM -> {
-                    // If the error message is empty used the showFormValidateMessages(form)
-                    if (TextUtils.isEmpty(errorMessage)) {
-                        return
-                    }
-                    showWarningMessage(WarningFactory.ERROR_MESSAGE, errorMessage, eventType)
+                context?.let {
+                    PoiziToast.with(it)
+                            ?.setGravity(Gravity.TOP)
+                            ?.error(getString(R.string.registeration_failed_error), Toast.LENGTH_SHORT)
+                            ?.show()
                 }
-                // Case other tasks
-
-                else -> showWarningMessage(WarningFactory.ERROR_MESSAGE, errorMessage, eventType)
+                false
             }
         }
     }
@@ -463,14 +481,7 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
                     "email" -> mUserIdTextInputLayout.error = map[key].toString()
                     "password" -> mPasswordTextInputLayout.error = map[key].toString()
                     "phone" -> mMobileNoTextInputLayout.error = map[key].toString()
-                }// TODO: 8/28/18 farshid
-                //                        HoloFontLoader.applyDefaultFont(tilNationalId);
-                // TODO: 8/28/18 farshid
-                //                        HoloFontLoader.applyDefaultFont(tilEmail);
-                // TODO: 8/28/18 farshid
-                //                        HoloFontLoader.applyDefaultFont(tilPassword);
-                // TODO: 8/28/18 farshid
-                //                        HoloFontLoader.applyDefaultFont(tilPhoneNumber);
+                }
             }
         }
     }
@@ -479,13 +490,18 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
     private var phoneVerificationOnGoing: Boolean = false
 
     private fun navigateToVerificationFragment() {
-//        showGhostFragmentContentContainer()
-//        showFragmentLoading()
         phoneVerificationOnGoing = true
-        val phoneNumber = mMobileNoEditText.text.toString()
+        val phoneNumber = mMobileNoEditText.text.toString().trim()
         val args = Bundle()
         args.putString(ConstantsIntentExtra.PHONE_NUMBER, phoneNumber)
-        (activity as BaseActivity).onSwitchFragment(FragmentType.MOBILE_VERIFICATION, args, false)
+
+        VerificationFragmentBottomSheet.newInstance(
+                VerificationFragmentBottomSheet.VerificationType.REGISTRATION,
+                phoneNumber,
+                phoneNumber,
+                mNationalIdEditText.text.toString().trim(),
+                mUserIdEditText.text.toString().trim(),
+                mPasswordEditText.text.toString().trim()).show(fragmentManager, "verifyPhone")
 
         val prefs = context!!.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE)
         val editor = prefs.edit()
@@ -494,8 +510,5 @@ open class RegisterModalBottomSheet : BottomSheetDialogFragment(), View.OnClickL
 
         dismiss()
     }
-
-
     /******************************************* Legacy Code ***************************************/
-
 }

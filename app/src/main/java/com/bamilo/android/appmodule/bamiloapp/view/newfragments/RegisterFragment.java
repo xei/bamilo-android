@@ -30,6 +30,8 @@ import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
+import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.tracking.TrackingPage;
@@ -284,7 +286,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
             MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
                     Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
                     MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
-            TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
+//            TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
         }
     }
 
@@ -327,7 +329,13 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                             Constants.LOGIN_METHOD_EMAIL, customerId,
                             MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, customerEmail != null ? EmailHelper.getHost(customerEmail) : "",
                                     true));
-                    TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
+                    EventTracker.INSTANCE.register(
+                            String.valueOf(customerId),
+                            customerEmail,
+                            null,
+                            TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
+                            true);
 //                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.SignUp, EmarsysEventFactory.signup("email", EmailHelper.getHost(BamiloApplication.CUSTOMER.getEmail()), true));
                     // Notify user
                     getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
@@ -381,7 +389,8 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                 MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.SIGNUP_FAILED,
                         Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
                         MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
-                TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
+//                TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
+                EventTracker.INSTANCE.register(null, null, null, TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL, false);
 
                 // Validate and show errors
                 showFragmentContentContainer();

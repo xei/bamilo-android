@@ -46,7 +46,7 @@
         android:id="@+id/rowPackageSectionHeader_xeiTextView_dropShipMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvPackageTitle"
+        android:layout_below="@+id/tvPackageDeliveryDelayReason"
         android:layout_marginTop="8dp"
         android:textColor="@color/gray_6"
         app:locale="fa_IR"

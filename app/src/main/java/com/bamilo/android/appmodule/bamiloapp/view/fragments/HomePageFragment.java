@@ -10,14 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bamilo.android.appmodule.bamiloapp.helpers.teasers.GetHomeHelper;
-import com.emarsys.predict.RecommendedItem;
+import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendListCompletionHandler;
-import com.bamilo.android.appmodule.bamiloapp.extlibraries.emarsys.predict.recommended.RecommendManager;
+import com.bamilo.android.appmodule.bamiloapp.helpers.teasers.GetHomeHelper;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
+import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
+import com.bamilo.android.appmodule.bamiloapp.utils.home.TeaserViewFactory;
+import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.BaseTeaserViewHolder;
+import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.HomeMainTeaserHolder;
+import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.HomeNewsletterTeaserHolder;
 import com.bamilo.android.framework.service.Darwin;
 import com.bamilo.android.framework.service.database.CategoriesTableHelper;
 import com.bamilo.android.framework.service.objects.home.HomePageObject;
@@ -31,15 +34,8 @@ import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.EventType;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.appmodule.bamiloapp.utils.deeplink.TargetLink;
-import com.bamilo.android.appmodule.bamiloapp.utils.home.TeaserViewFactory;
-import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.BaseTeaserViewHolder;
-import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.HomeMainTeaserHolder;
-import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.HomeNewsletterTeaserHolder;
-import com.bamilo.android.appmodule.bamiloapp.utils.home.holder.RecommendationsHolder;
-import com.bamilo.android.R;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class used to show the home page.
@@ -56,7 +52,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     private HomePageObject mHomePage;
 
     private NestedScrollView mScrollView;
-    RecommendationsHolder recommendationsTeaserHolder;
+//    RecommendationsHolder recommendationsTeaserHolder;
     private boolean recommendationsTeaserHolderAdded = false;
 
     private ArrayList<BaseTeaserViewHolder> mViewHolders;
@@ -73,7 +69,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     //DROID-10
     private long mGABeginRequestMillis;
-    private RecommendManager recommendManager;
+//    private RecommendManager recommendManager;
 
     /**
      * Empty constructor
@@ -306,8 +302,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             mContainer.addView(viewHolder.itemView);
         }
 
-        recommendManager = new RecommendManager();
-        sendRecommend();
+//        recommendManager = new RecommendManager();
+//        sendRecommend();
 
         showFragmentContentContainer();
 
@@ -334,8 +330,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             }
         }
 
-        recommendManager = new RecommendManager();
-        sendRecommend();
+//        recommendManager = new RecommendManager();
+//        sendRecommend();
 
         showFragmentContentContainer();
     }
@@ -582,33 +578,33 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         }
     }
 
-    private void sendRecommend() {
-        recommendManager.sendHomeRecommend((category, data) -> {
-            if (data == null || data.size() == 0) {
-                return;
-            }
-            LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
-
-            if (recommendationsTeaserHolder == null) {
-                recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(),
-                        inflater.inflate(R.layout.recommendation, mContainer, false), null);
-            }
-            if (recommendationsTeaserHolder != null) {
-                try {
-                    // Set view
-                    mContainer.removeView(recommendationsTeaserHolder.itemView);
-                    recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(),
-                            inflater.inflate(R.layout.recommendation, mContainer, false), null);
-                    recommendationsTeaserHolder.onBind(data);
-                    //recommendationsTeaserHolder.itemView.
-                    mContainer.addView(recommendationsTeaserHolder.itemView,
-                            mContainer.getChildCount() - 1);
-                } catch (Exception ex) {
-                    int tmp = 1;
-                }
-
-                recommendationsTeaserHolderAdded = true;
-            }
-        });
-    }
+//    private void sendRecommend() {
+//        recommendManager.sendHomeRecommend((category, data) -> {
+//            if (data == null || data.size() == 0) {
+//                return;
+//            }
+//            LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+//
+//            if (recommendationsTeaserHolder == null) {
+//                recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(),
+//                        inflater.inflate(R.layout.recommendation, mContainer, false), null);
+//            }
+//            if (recommendationsTeaserHolder != null) {
+//                try {
+//                    // Set view
+//                    mContainer.removeView(recommendationsTeaserHolder.itemView);
+//                    recommendationsTeaserHolder = new RecommendationsHolder(getBaseActivity(),
+//                            inflater.inflate(R.layout.recommendation, mContainer, false), null);
+//                    recommendationsTeaserHolder.onBind(data);
+//                    //recommendationsTeaserHolder.itemView.
+//                    mContainer.addView(recommendationsTeaserHolder.itemView,
+//                            mContainer.getChildCount() - 1);
+//                } catch (Exception ex) {
+//                    int tmp = 1;
+//                }
+//
+//                recommendationsTeaserHolderAdded = true;
+//            }
+//        });
+//    }
 }

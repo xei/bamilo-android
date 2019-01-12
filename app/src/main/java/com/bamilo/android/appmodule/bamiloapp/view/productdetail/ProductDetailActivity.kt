@@ -27,12 +27,15 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.R
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.SimpleProduct
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.seller.SellersListFragment
 import com.bamilo.android.appmodule.modernbamilo.app.BaseActivity
+import com.bamilo.android.appmodule.modernbamilo.authentication.login.LoginDialogBottomSheet
 import com.bamilo.android.appmodule.modernbamilo.product.comment.CommentViewModel
 import com.bamilo.android.appmodule.modernbamilo.product.comment.CommentsFragment
 import com.bamilo.android.appmodule.modernbamilo.product.comment.submit.startSubmitRateActivity
 import com.bamilo.android.appmodule.modernbamilo.product.descspec.spec.SpecificationFragment
 import com.bamilo.android.appmodule.modernbamilo.product.descspec.tempdesc.TemporaryDescriptionFragment
 import com.bamilo.android.appmodule.modernbamilo.product.sellerslist.view.SellersListAdapter
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker
+import com.bamilo.android.appmodule.modernbamilo.tracking.TrackingEvents
 import com.bamilo.android.appmodule.modernbamilo.util.storage.*
 import com.bamilo.android.databinding.ActivityProductDetailBinding
 import com.bamilo.android.framework.service.pojo.BaseResponse
@@ -130,7 +133,7 @@ class ProductDetailActivity : BaseActivity(),
     private fun bindAddToCartClickListener() {
         binding.productDetailLinearLayoutAddToCart?.addToCartLinearLayoutAddToBasket?.setOnClickListener {
             if (!canAddToCart()) {
-                productDetailPresenter.showBottomSheet()
+                productDetailPresenter.showBottomSheet(ChooseVariationBottomSheetHandler.CTAType.ADD_TO_CART)
                 return@setOnClickListener
             }
             if (productHasSizeVariation() && !TextUtils.isEmpty(sizeVariation.simple_sku)) {
@@ -146,7 +149,7 @@ class ProductDetailActivity : BaseActivity(),
     private fun bindBuyNowClickListener() {
         binding.productDetailLinearLayoutAddToCart?.addToCartLinearLayoutBuyNow?.setOnClickListener {
             if (!canAddToCart()) {
-                productDetailPresenter.showBottomSheet()
+                productDetailPresenter.showBottomSheet(ChooseVariationBottomSheetHandler.CTAType.BUY_NOW)
                 return@setOnClickListener
             }
             if (productHasSizeVariation() && !TextUtils.isEmpty(sizeVariation.simple_sku)) {
@@ -330,6 +333,12 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     private fun trackAddToCartEvent(addedFromBuyNowButton: Boolean) {
+        EventTracker.addToCart(
+                sku = sku!!,
+                amount = productDetail.price.price.toLong(),
+                addToCartType = if (!addedFromBuyNowButton) TrackingEvents.AddToCartType.ADD_TO_CART_BTN else TrackingEvents.AddToCartType.BUY_NOW_BTN
+        )
+
         TrackerDelegator.trackProductAddedToCart(productDetail)
 
         val addToCartEventModel: MainEventModel = getAddToCartEventModel(addedFromBuyNowButton)
@@ -341,12 +350,6 @@ class ProductDetailActivity : BaseActivity(),
         } else {
             addToCartEventModel.customAttributes = MainEventModel.createAddToCartEventModelAttributes(addToCartEventModel.label,
                     0, true)
-        }
-
-        if (addedFromBuyNowButton) {
-            TrackerManager.trackEvent(this, EventConstants.BuyNow, addToCartEventModel)
-        } else {
-            TrackerManager.trackEvent(this, EventConstants.AddToCart, addToCartEventModel)
         }
     }
 
@@ -435,7 +438,7 @@ class ProductDetailActivity : BaseActivity(),
                 0,
                 null)
 
-        TrackerManager.trackEvent(this, EventConstants.RATE_TAPPED, viewCommentsModel)
+//        TrackerManager.trackEvent(this, EventConstants.RATE_TAPPED, viewCommentsModel)
     }
 
     override fun onBackButtonClicked() {
@@ -462,38 +465,38 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun onShowOtherSeller() {
-        val viewOtherSellerModel = MainEventModel(getString(TrackingPage.PDV.getName()),
-                EventActionKeys.OTHER_SELLERS_TAPPED,
-                sku,
-                0,
-                null)
+//        val viewOtherSellerModel = MainEventModel(getString(TrackingPage.PDV.getName()),
+//                EventActionKeys.OTHER_SELLERS_TAPPED,
+//                sku,
+//                0,
+//                null)
 
-        TrackerManager.trackEvent(this, EventConstants.OTHER_SELLERS_TAPPED, viewOtherSellerModel)
+//        TrackerManager.trackEvent(this, EventConstants.OTHER_SELLERS_TAPPED, viewOtherSellerModel)
 
         displaySelectedScreen(FragmentTag.OTHER_SELLERS)
         binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.GONE
     }
 
     override fun onShowDesAndSpecPage() {
-        val viewDescView = MainEventModel(getString(TrackingPage.PDV.getName()),
-                EventActionKeys.DESCRIPTION_TAPPED,
-                sku,
-                0,
-                null)
+//        val viewDescView = MainEventModel(getString(TrackingPage.PDV.getName()),
+//                EventActionKeys.DESCRIPTION_TAPPED,
+//                sku,
+//                0,
+//                null)
 
-        TrackerManager.trackEvent(this, EventConstants.DESCRIPTION_TAPPED, viewDescView)
+//        TrackerManager.trackEvent(this, EventConstants.DESCRIPTION_TAPPED, viewDescView)
 
         displaySelectedScreen(FragmentTag.DESCRIPTION, true)
     }
 
     override fun onShowSpecsAndSpecPage() {
-        val viewSpecsModel = MainEventModel(getString(TrackingPage.PDV.getName()),
-                EventActionKeys.SPECIFICATIONS_TAPPED,
-                sku,
-                0,
-                null)
+//        val viewSpecsModel = MainEventModel(getString(TrackingPage.PDV.getName()),
+//                EventActionKeys.SPECIFICATIONS_TAPPED,
+//                sku,
+//                0,
+//                null)
 
-        TrackerManager.trackEvent(this, EventConstants.SPECIFICATIONS_TAPPED, viewSpecsModel)
+//        TrackerManager.trackEvent(this, EventConstants.SPECIFICATIONS_TAPPED, viewSpecsModel)
 
         displaySelectedScreen(FragmentTag.SPECIFICATIONS, true)
     }
@@ -512,6 +515,7 @@ class ProductDetailActivity : BaseActivity(),
                     stars[4].count.toFloat()))
         }
         binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.GONE
+        binding.productDetailLinearLayoutGotoCardAfterAdded?.root?.visibility = View.GONE
     }
 
     override fun onShowSpecificComment(review: Review) {
@@ -537,26 +541,21 @@ class ProductDetailActivity : BaseActivity(),
         if (!BamiloApplication.isCustomerLoggedIn()) {
             loginUser()
         } else {
-            val viewAddReviewModel = MainEventModel(getString(TrackingPage.PDV.getName()),
-                    EventActionKeys.ADD_REVIEW_TAPPED,
-                    sku,
-                    0,
-                    null)
+//            val viewAddReviewModel = MainEventModel(getString(TrackingPage.PDV.getName()),
+//                    EventActionKeys.ADD_REVIEW_TAPPED,
+//                    sku,
+//                    0,
+//                    null)
 
-            TrackerManager.trackEvent(this, EventConstants.ADD_REVIEW_TAPPED, viewAddReviewModel)
+//            TrackerManager.trackEvent(this, EventConstants.ADD_REVIEW_TAPPED, viewAddReviewModel)
 
             startSubmitRateActivity(this, sku!!)
         }
     }
 
     override fun loginUser() {
-        val intent = Intent(this, MainFragmentActivity::class.java)
-
-        val bundle = Bundle()
-        bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true)
-
-        intent.putExtra("pdv_login_bundle", bundle)
-        startActivity(intent)
+        LoginDialogBottomSheet()
+                .show(supportFragmentManager, "LoginDialogBottomSheet")
     }
 
     override fun showOutOfStock() {
@@ -661,13 +660,18 @@ class ProductDetailActivity : BaseActivity(),
 
         productDetailPresenter.fillChooseVariationBottomSheet(productDetail)
 
-        val viewProductEventModel = MainEventModel("category",
-                EventActionKeys.VIEW_PRODUCT,
-                sku,
-                product.price.price.replace(",", "").toLong(),
-                MainEventModel.createViewProductEventModelAttributes("category uri key",
-                        product.price.price.replace(",", "").toLong()))
-        TrackerManager.trackEvent(this, EventConstants.ViewProduct, viewProductEventModel)
+        EventTracker.contentView(
+                sku = sku!!,
+                category = productDetail.breadcrumbs[0].target?.split("::")!![1]
+        )
+
+//        val viewProductEventModel = MainEventModel("category",
+//                EventActionKeys.VIEW_PRODUCT,
+//                sku,
+//                product.price.price.replace(",", "").toLong(),
+//                MainEventModel.createViewProductEventModelAttributes("category uri key",
+//                        product.price.price.replace(",", "").toLong()))
+//        TrackerManager.trackEvent(this, EventConstants.ViewProduct, viewProductEventModel)
     }
 
     override fun onCartClicked() {

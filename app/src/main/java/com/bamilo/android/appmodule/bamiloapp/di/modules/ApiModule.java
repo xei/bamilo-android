@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import com.bamilo.android.BuildConfig;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.AigPersistentHttpCookie;
 import com.bamilo.android.core.service.model.JsonConstants;
@@ -54,10 +56,7 @@ public class ApiModule {
     @Singleton
     @Named("apiBaseUrl")
     public HttpUrl provideApiBaseUrl(Context context) {
-        String baseUrl = String
-                .format("https://%s/%s/", context.getString(R.string.single_shop_country_url),
-                        context.getString(R.string.global_api_version));
-        return HttpUrl.parse(baseUrl);
+        return HttpUrl.parse(BuildConfig.URL_WEBAPI);
     }
 
     @Provides

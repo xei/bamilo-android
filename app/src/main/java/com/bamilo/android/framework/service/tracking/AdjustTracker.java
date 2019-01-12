@@ -216,11 +216,11 @@ public class AdjustTracker extends AbcBaseTracker {
 
     @Override
     public void debugMode(@NonNull Context context, boolean enable) {
-        if (enable) {
-            initializeAdjust(context, AdjustConfig.ENVIRONMENT_SANDBOX, LogLevel.VERBOSE);
-        } else {
-            initializeAdjust(context, AdjustConfig.ENVIRONMENT_SANDBOX, LogLevel.INFO);
-        }
+//        if (enable) {
+//            initializeAdjust(context, AdjustConfig.ENVIRONMENT_SANDBOX, LogLevel.VERBOSE);
+//        } else {
+//            initializeAdjust(context, AdjustConfig.ENVIRONMENT_SANDBOX, LogLevel.INFO);
+//        }
     }
 
     /*

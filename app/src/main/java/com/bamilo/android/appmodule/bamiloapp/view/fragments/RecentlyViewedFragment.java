@@ -11,6 +11,8 @@ import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.models.BaseScreenModel;
 import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
 import android.widget.TextView;
+
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
 import com.bamilo.android.framework.components.recycler.DividerItemDecoration;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys;
@@ -456,7 +458,12 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                                 .createAddToCartEventModelAttributes(addToCartEventModel.label, 0, true);
 
                     }
-                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
+//                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
+                    try {
+                        EventTracker.INSTANCE.addToCart(addToCartEventModel.label, (long) mProducts.get(position).getPrice(), EventTracker.AddToCartType.ADD_TO_CART_BTN);
+                    } catch (Exception e) {
+
+                    }
                 }
                 break;
             case VALIDATE_PRODUCTS:

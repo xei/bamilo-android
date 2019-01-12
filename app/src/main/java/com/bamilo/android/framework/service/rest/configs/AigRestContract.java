@@ -2,7 +2,9 @@ package com.bamilo.android.framework.service.rest.configs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
+import com.bamilo.android.BuildConfig;
 import com.bamilo.android.R;
 import com.bamilo.android.framework.service.Darwin;
 import com.bamilo.android.framework.service.utils.DarwinRegex;
@@ -50,7 +52,9 @@ public class AigRestContract {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(sharedPrefs);
         setRestScheme(context, sharedPrefs);
-        setRestBasePath(context, R.string.global_server_api_version);
+        String[] chunkedUrl = BuildConfig.URL_WEBAPI.split("/");
+        String rbp = chunkedUrl[3] + "/" + chunkedUrl[4];
+        setRestBasePath(context, rbp);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
         setUserLanguageCode(sharedPrefs);
@@ -61,7 +65,7 @@ public class AigRestContract {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(context, R.string.global_server_host);
         setRestScheme(context, sharedPrefs);
-        setRestBasePath(context, R.string.global_server_restbase_path);
+        setRestBasePath(context, context.getResources().getString(R.string.global_server_restbase_path));
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
         setUserLanguageCode(sharedPrefs);
@@ -72,7 +76,9 @@ public class AigRestContract {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(requestHost);
         setRestScheme(context, sharedPrefs);
-        setRestBasePath(context, R.string.global_server_api_version);
+        String[] chunkedUrl = BuildConfig.URL_WEBAPI.split("/");
+        String rbp = chunkedUrl[3] + "/" + chunkedUrl[4];
+        setRestBasePath(context, rbp);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
         setUserLanguageCode(sharedPrefs);
@@ -102,8 +108,8 @@ public class AigRestContract {
         USE_ONLY_HTTP = context.getResources().getBoolean(R.bool.is_force_http);
     }
 
-    private static void setRestBasePath(Context context, int stringId) {
-        REST_BASE_PATH = context.getResources().getString(stringId);
+    private static void setRestBasePath(Context context, String restBasePath) {
+        REST_BASE_PATH = restBasePath;
         if (TextUtils.isEmpty(REST_BASE_PATH)) {
             throw new RuntimeException("The rest base path has to be set and not being empty!");
         }
