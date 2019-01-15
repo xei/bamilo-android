@@ -645,23 +645,21 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         showErrorLayout(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
     }
 
-    protected void showErrorLayout(@ErrorLayoutFactory.LayoutErrorType int type,
-            OnClickListener onClickListener) {
-        // Show no network
-        if (mErrorFallBackStub instanceof ViewStub) {
-            mErrorFallBackStub = ((ViewStub) mErrorFallBackStub).inflate();
-            mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup) mErrorFallBackStub);
-            mErrorLayoutFactory.showErrorLayout(type);
-        } else {
-            mErrorLayoutFactory.showErrorLayout(type);
-        }
-        // Set view
+    protected void showErrorLayout(@ErrorLayoutFactory.LayoutErrorType int type, OnClickListener onClickListener) {
+
         try {
+            // Show no network
+            if (mErrorFallBackStub instanceof ViewStub) {
+                mErrorFallBackStub = ((ViewStub) mErrorFallBackStub).inflate();
+                mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup) mErrorFallBackStub);
+                mErrorLayoutFactory.showErrorLayout(type);
+            } else {
+                mErrorLayoutFactory.showErrorLayout(type);
+            }
             View retryButton = findViewById(R.id.fragment_root_error_button);
             retryButton.setOnClickListener(onClickListener);
             retryButton.setTag(R.id.fragment_root_error_button, type);
-        } catch (NullPointerException ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     @Override
