@@ -125,24 +125,16 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
     }
 
     private void TrackEvent() {
-        SimpleEventModel sem = getSimpleEventModel();
-
         PurchaseEntity cart = BamiloApplication.INSTANCE.getCart();
         if (cart != null && cart.getCartItems() != null) {
-            ArrayList<PurchaseCartItem> cartItems = cart.getCartItems();
-            List<String> skus = new ArrayList<>();
-            for (PurchaseCartItem item : cartItems) {
-                skus.add(item.getSku());
-            }
-            sem.label = android.text.TextUtils.join(",", skus);
-            sem.value = (long) cart.getTotal();
+            EventTracker.INSTANCE.purchase(
+                    (long) cart.getTotal(),
+                    cart.getCartCount(),
+                    cart.getCouponCode(),
+                    orderNumber,
+                    (paymentMethod.equals("COD")) ? TrackingEvents.PaymentMethod.COD : TrackingEvents.PaymentMethod.IPG, ""
+            );
         }
-//        TrackerManager.trackEvent(getContext(), EventConstants.CheckoutFinished, sem);
-        EventTracker.INSTANCE.purchase(
-                (long) cart.getTotal(),
-                (paymentMethod.equals("COD")) ? TrackingEvents.PaymentType.COD : TrackingEvents.PaymentType.IPG,
-                true
-        );
     }
 
     private void trackHomePageItemPurchaseEvent() {
@@ -153,12 +145,17 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
             sem.action = EventConstants.Purchased;
             sem.label = SharedPreferencesHelperKt.
                     getHomePageItemsPurchaseTrackLabel(getContext());
-//            TrackerManager.trackEvent(getContext(), EventConstants.Purchased, sem);
-            EventTracker.INSTANCE.purchase(
-                    (long) BamiloApplication.INSTANCE.getCart().getTotal(),
-                    (paymentMethod.equals("COD")) ? TrackingEvents.PaymentType.COD : TrackingEvents.PaymentType.IPG,
-                    true
-            );
+
+            try {
+                EventTracker.INSTANCE.purchase(
+                        (long) BamiloApplication.INSTANCE.getCart().getTotal(),
+                        BamiloApplication.INSTANCE.getCart().getCartCount(),
+                        BamiloApplication.INSTANCE.getCart().getCouponCode(),
+                        orderNumber,
+                        (paymentMethod.equals("COD")) ? TrackingEvents.PaymentMethod.COD : TrackingEvents.PaymentMethod.IPG, ""
+                );
+            } catch (Exception ignored) {}
+
         }
 
         BamiloApplication.INSTANCE.clearHomepageTrackingItemsSkus();
@@ -253,12 +250,15 @@ public class CheckoutThanksFragment extends BaseFragment implements TargetLink.O
                 MainEventModel.createPurchaseEventModelAttributes(categories.toString(),
                         (long) cart.getTotal(), true));
 
-//        TrackerManager.trackEvent(getContext(), EventConstants.Purchase, purchaseEventModel);
-        EventTracker.INSTANCE.purchase(
-                (long) cart.getTotal(),
-                (paymentMethod.equals("COD")) ? TrackingEvents.PaymentType.COD : TrackingEvents.PaymentType.IPG,
-                true
-        );
+        if (cart != null && cart.getCartItems() != null) {
+            EventTracker.INSTANCE.purchase(
+                    (long) cart.getTotal(),
+                    cart.getCartCount(),
+                    cart.getCouponCode(),
+                    orderNumber,
+                    (paymentMethod.equals("COD")) ? TrackingEvents.PaymentMethod.COD : TrackingEvents.PaymentMethod.IPG, ""
+            );
+        }
 
 
         // Related Products

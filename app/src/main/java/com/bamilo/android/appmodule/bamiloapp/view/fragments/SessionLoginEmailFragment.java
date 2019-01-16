@@ -341,28 +341,14 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                 // Set hide change password
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
-                // Tracking
-                MainEventModel authEventModel = new MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
-                        Constants.LOGIN_METHOD_EMAIL, customer.getId(),
-                        MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.getEmail()),
-                                true));
-                EventTracker.INSTANCE.login(
-                        Objects.requireNonNull(EmailHelper.getHost(customer.getIdAsString())),
-                        Objects.requireNonNull(EmailHelper.getHost(customer.getEmail())),
-                        Objects.requireNonNull(EmailHelper.getHost(customer.getPhoneNumber())),
-                        TrackingEvents.LoginType.LOGIN_WITH_EMAIL,
-                        true);
 
-//                TrackerManager.trackEvent(getContext(), EventConstants.Login, authEventModel);
 
-//                EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
 
                 EventTracker.INSTANCE.login(
                         String.valueOf(customer.getId()),
                         String.valueOf(customer.getEmail()),
                         String.valueOf(customer.getPhoneNumber()),
-                        TrackingEvents.LoginType.LOGIN_WITH_EMAIL,
-                        true);
+                        TrackingEvents.LoginMethod.LOGIN_WITH_EMAIL);
 
 
                 // Finish
@@ -403,7 +389,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
             String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : null;
             String emailAddress = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null;
             String phoneNumber = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getPhoneNumber() : null;
-            EventTracker.INSTANCE.login(userId, emailAddress, phoneNumber, TrackingEvents.LoginType.LOGIN_WITH_EMAIL, true);
+            EventTracker.INSTANCE.login(userId, emailAddress, phoneNumber, TrackingEvents.LoginMethod.LOGIN_WITH_EMAIL);
 
 //            EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null);
 

@@ -69,7 +69,7 @@
 //
 //        mSuggestionsStruct = new SuggestionsStruct();
 //        ArrayList<String> attributesToRetrieve = new ArrayList<>();
-//        attributesToRetrieve.add(RestConstants.SKU);
+//        attributesToRetrieve.add(RestConstants.ITEM_SKU);
 //        attributesToRetrieve.add(RestConstants.BRAND);
 //        attributesToRetrieve.add(RestConstants.LOCALIZABLE_ATTRIBUTES+"."+ ShopSelector.getCountryCode()+"."+RestConstants.NAME);
 //
@@ -206,7 +206,7 @@
 //                String brand = product.getJSONObject(RestConstants.BRAND).getString(RestConstants.NAME);
 //                suggestion.setQuery(query);
 //                suggestion.setResult(String.format(mContext.getString(R.string.first_space_second_placeholder),brand,  name));
-//                suggestion.setTarget(product.getString(RestConstants.SKU));
+//                suggestion.setTarget(product.getString(RestConstants.ITEM_SKU));
 //                suggestion.setType(Suggestion.SUGGESTION_PRODUCT);
 //                suggestions.add(suggestion);
 //            }

@@ -47,37 +47,55 @@ object WebEngageEventsTracker : TrackingEvents {
                 TAG_DEBUG)
     }
 
+    /**
+     * hit an [intent] as the install referer to measure user attribution.
+     */
     override fun install(intent: Intent) {
         mAnalytics?.installed(intent)
     }
 
+    override fun appOpen(appOpenMethod: TrackingEvents.AppOpenMethod) {
+        mAnalytics?.run {
+            track(WebEngageCustomEventKeys.OPEN_APP,
+                    HashMap<String, Any>().apply {
+                        put(TrackingEvents.ParamsKeys.APP_OPEN_METHOD, appOpenMethod.value)
+                    })
+        }
+    }
+
+    override fun inviteFriends() {
+        mAnalytics?.track(WebEngageCustomEventKeys.INVITE_FRIENDS)
+    }
+
     /**
-     * The String phoneNumber must be in E.164 format, eg. +551155256325, +917850009678.
+     * The [userId] is needed to login in WebEngage.
+     * The [phoneNumber] must be a string in E.164 format, eg. +551155256325, +917850009678.
      */
-    override fun register(userId: String?, emailAddress: String?, phoneNumber: String?, registrationType: TrackingEvents.RegistrationType, succeed: Boolean) {
+    override fun signUp(userId: String?, emailAddress: String?, phoneNumber: String?, signUpMethod: TrackingEvents.SignUpMethod) {
         mUser?.run {
-            userId?.run { login(userId) }
+            userId?.run {
+                (userId) }
             emailAddress?.run { mUser?.setEmail(emailAddress) }
             phoneNumber?.run { mUser?.setPhoneNumber(phoneNumber) }
         }
 
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.REGISTER,
+            track(WebEngageCustomEventKeys.SIGN_UP,
                     HashMap<String, Any>().apply {
                         userId?.run { put(TrackingEvents.ParamsKeys.USER_ID, userId) }
                         emailAddress?.run { put(TrackingEvents.ParamsKeys.USER_EMAIL_ADDRESS, emailAddress) }
                         phoneNumber?.run { put(TrackingEvents.ParamsKeys.USER_PHONE_NUMBER, phoneNumber) }
-                        put(TrackingEvents.ParamsKeys.REGISTRATION_TYPE, registrationType.value)
-                        put(TrackingEvents.ParamsKeys.SUCCEED, succeed)
+                        put(TrackingEvents.ParamsKeys.SIGN_UP_METHOD, signUpMethod.value)
                     }
             )
         }
     }
 
     /**
+     * The [userId] is needed to login in WebEngage.
      * The String phoneNumber must be in E.164 format, eg. +551155256325, +917850009678.
      */
-    override fun login(userId: String?, emailAddress: String?, phoneNumber: String?, loginType: TrackingEvents.LoginType, succeed: Boolean) {
+    override fun login(userId: String?, emailAddress: String?, phoneNumber: String?, loginMethod: TrackingEvents.LoginMethod) {
         mUser?.run {
             userId?.run { login(userId) }
             emailAddress?.run { mUser?.setEmail(emailAddress) }
@@ -85,214 +103,194 @@ object WebEngageEventsTracker : TrackingEvents {
         }
 
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.LOGIN,
+            track(WebEngageCustomEventKeys.LOGIN,
                     HashMap<String, Any>().apply {
                         userId?.run { put(TrackingEvents.ParamsKeys.USER_ID, userId) }
                         emailAddress?.run { put(TrackingEvents.ParamsKeys.USER_EMAIL_ADDRESS, emailAddress) }
                         phoneNumber?.run { put(TrackingEvents.ParamsKeys.USER_PHONE_NUMBER, phoneNumber) }
-                        put(TrackingEvents.ParamsKeys.LOGIN_TYPE, loginType.value)
-                        put(TrackingEvents.ParamsKeys.SUCCEED, succeed)
+                        put(TrackingEvents.ParamsKeys.LOGIN_METHOD, loginMethod.value)
             })
         }
     }
 
     override fun logout() {
         mUser?.logout()
-        mAnalytics?.track(TrackingEvents.EventsKeys.LOGOUT)
+        mAnalytics?.track(WebEngageCustomEventKeys.LOGOUT)
     }
 
-    override fun editProfile() {
-        mAnalytics?.track(TrackingEvents.EventsKeys.EDIT_PROFILE)
-    }
+//    override fun editProfile() {
+//        mAnalytics?.track(WebEngageCustomEventKeys.EDIT_PROFILE)
+//    }
+//
+//    override fun addAddress() {
+//        mAnalytics?.track(WebEngageCustomEventKeys.ADD_ADDRESS)
+//    }
+//
+//    override fun editAddress() {
+//        mAnalytics?.track(WebEngageCustomEventKeys.EDIT_ADDRESS)
+//    }
+//
+//    override fun removeAddress() {
+//        mAnalytics?.track(WebEngageCustomEventKeys.REMOVE_ADDRESS)
+//    }
 
-    override fun addAddress() {
-        mAnalytics?.track(TrackingEvents.EventsKeys.ADD_ADDRESS)
-    }
-
-    override fun editAddress() {
-        mAnalytics?.track(TrackingEvents.EventsKeys.EDIT_ADDRESS)
-    }
-
-    override fun removeAddress() {
-        mAnalytics?.track(TrackingEvents.EventsKeys.REMOVE_ADDRESS)
-    }
-
-    override fun addToCart(sku: String, amount: Long, addToCartType: TrackingEvents.AddToCartType) {
+    override fun addToCart(id: String, sku: String, title: String, categoryId: String, categoryUrl: String, amount: Long, quantity: Int) {
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.ADD_TO_CART,
+            track(WebEngageCustomEventKeys.ADD_TO_CART,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.SKU, sku)
-                        put(TrackingEvents.ParamsKeys.AMOUNT, amount)
-                        put(TrackingEvents.ParamsKeys.ADD_TO_CART_TYPE, addToCartType.value)
+                        put(TrackingEvents.ParamsKeys.ITEM_ID, id)
+                        put(TrackingEvents.ParamsKeys.ITEM_SKU, sku)
+                        put(TrackingEvents.ParamsKeys.ITEM_NAME, title)
+                        put(TrackingEvents.ParamsKeys.ITEM_CATEGORY, categoryId)
+                        put(TrackingEvents.ParamsKeys.ITEM_CATEGORY_URL, categoryUrl)
+                        put(TrackingEvents.ParamsKeys.PRICE, amount)
+                        put(TrackingEvents.ParamsKeys.QUANTITY, quantity)
                     })
         }
     }
 
-    override fun removeFromCart(sku: String, amount: Long) {
+    override fun removeFromCart(id: String, sku: String, title: String, categoryId: String, categoryUrl: String, amount: Long, quantity: Int) {
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.REMOVE_FROM_CART,
+            track(WebEngageCustomEventKeys.REMOVE_FROM_CART,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.SKU, sku)
-                        put(TrackingEvents.ParamsKeys.AMOUNT, amount)
+                        put(TrackingEvents.ParamsKeys.ITEM_ID, id)
+                        put(TrackingEvents.ParamsKeys.ITEM_SKU, sku)
+                        put(TrackingEvents.ParamsKeys.ITEM_NAME, title)
+                        put(TrackingEvents.ParamsKeys.ITEM_CATEGORY, categoryId)
+                        put(TrackingEvents.ParamsKeys.ITEM_CATEGORY_URL, categoryUrl)
+                        put(TrackingEvents.ParamsKeys.PRICE, amount)
+                        put(TrackingEvents.ParamsKeys.QUANTITY, quantity)
                     })
         }
     }
 
-    override fun startCheckout(basketValue: Long) {
+    override fun beginCheckout(basketValue: Long, numberOfBasketItems: Int) {
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.START_CHECKOUT,
+            track(WebEngageCustomEventKeys.START_CHECKOUT,
                     HashMap<String, Any>().apply {
                         put(TrackingEvents.ParamsKeys.BASKET_VALUE, basketValue)
+                        put(TrackingEvents.ParamsKeys.NO_OF_ITEMS, numberOfBasketItems)
                     })
         }
     }
 
-    override fun purchase(amount: Long, paymentType: TrackingEvents.PaymentType, succeed: Boolean) {
+    override fun purchase(value: Long, numberOfItems: Int, coupon: String, transactionId: String, paymentMethod: TrackingEvents.PaymentMethod, cityName: String) {
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.PURCHASE,
+            track(WebEngageCustomEventKeys.PURCHASE,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.AMOUNT, amount)
-                        put(TrackingEvents.ParamsKeys.PAYMENT_TYPE, paymentType.value)
-                        put(TrackingEvents.ParamsKeys.SUCCEED, succeed)
+                        put(TrackingEvents.ParamsKeys.VALUE, value)
+                        put(TrackingEvents.ParamsKeys.NO_OF_ITEMS, numberOfItems)
+                        put(TrackingEvents.ParamsKeys.COUPON, coupon)
+                        put(TrackingEvents.ParamsKeys.TRANSACTION_ID, transactionId)
+                        put(TrackingEvents.ParamsKeys.PAYMENT_METHOD, paymentMethod.value)
+                        put(TrackingEvents.ParamsKeys.CITY_NAME, cityName)
                     })
         }
     }
 
-    override fun cancelOrder() {
-        mAnalytics?.track(TrackingEvents.EventsKeys.CANCEL_ORDER)
+    override fun cancelOrder(transaction_id: String, value: Long, quantity: Int) {
+        mAnalytics?.track(WebEngageCustomEventKeys.CANCEL_ORDER,
+                HashMap<String, Any>().apply {
+                    put(TrackingEvents.ParamsKeys.TRANSACTION_ID, transaction_id)
+                    put(TrackingEvents.ParamsKeys.VALUE, value)
+                    put(TrackingEvents.ParamsKeys.QUANTITY, quantity)
+                })
     }
 
-    override fun conductSurvey() {
-        mAnalytics?.track(TrackingEvents.EventsKeys.CONDUCT_SURVEY)
-    }
+//    override fun conductSurvey() {
+//        mAnalytics?.track(TrackingEvents.EventsKeys.CONDUCT_SURVEY)
+//    }
 
-    override fun openApp(openAppType: TrackingEvents.OpenAppType) {
+    override fun search(searchTerm: String) {
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.OPEN_APP,
+            track(WebEngageCustomEventKeys.SEARCH,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.OPEN_APP_TYPE, openAppType.value)
+                        put(TrackingEvents.ParamsKeys.SEARCH_TERM, searchTerm)
                     })
         }
     }
 
-    override fun inviteFriends() {
-        mAnalytics?.track(TrackingEvents.EventsKeys.INVITE_FRIENDS)
+    override fun sortProductsList(sortingMethodKey: String) {
+        mAnalytics?.track(WebEngageCustomEventKeys.SORT_PRODUCT_LIST,
+                HashMap<String, Any>().apply {
+                    put(TrackingEvents.ParamsKeys.SORTING_METHOD_KEY, sortingMethodKey)
+                })
     }
 
-    override fun search(query: String) {
+    override fun viewProduct(id: String, sku: String, title: String, amount: Long, categoryId: String, categoryUrl: String, brandId: String?, brandTitle: String?) {
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.SEARCH,
+            track(WebEngageCustomEventKeys.CONTENT_VIEW,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.QUERY, query)
+                        put(TrackingEvents.ParamsKeys.ITEM_ID, id)
+                        put(TrackingEvents.ParamsKeys.ITEM_SKU, sku)
+                        put(TrackingEvents.ParamsKeys.ITEM_NAME, title)
+                        put(TrackingEvents.ParamsKeys.PRICE, amount)
+                        put(TrackingEvents.ParamsKeys.ITEM_CATEGORY, categoryId)
+                        put(TrackingEvents.ParamsKeys.ITEM_CATEGORY_URL, categoryUrl)
+                        brandId?.let { put(TrackingEvents.ParamsKeys.ITEM_BRAND, brandId) }
+                        brandTitle?.let { put(TrackingEvents.ParamsKeys.ITEM_BRAND_NAME, brandTitle) }
                     })
         }
     }
 
-    override fun contentView(sku: String, category: String) {
+    override fun viewProductGallery(id: String) {}
+
+    override fun shareProduct(id: String) {
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.CONTENT_VIEW,
+            track(WebEngageCustomEventKeys.SHARE,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.SKU, sku)
-                        put(TrackingEvents.ParamsKeys.CATEGORY, category)
+                        put(TrackingEvents.ParamsKeys.ITEM_ID, id)
                     })
         }
     }
 
-    override fun share(sku: String) {
+    override fun addToWishList(id: String, title: String, amount: Long, categoryId: String, quantity: Int) {
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.SHARE,
+            track(WebEngageCustomEventKeys.ADD_TO_WISH_LIST,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.SKU, sku)
+                        put(TrackingEvents.ParamsKeys.ITEM_ID, id)
+                        put(TrackingEvents.ParamsKeys.ITEM_NAME, title)
+                        put(TrackingEvents.ParamsKeys.PRICE, amount)
+                        put(TrackingEvents.ParamsKeys.ITEM_CATEGORY, categoryId)
+                        put(TrackingEvents.ParamsKeys.QUANTITY, quantity)
                     })
         }
     }
 
-    override fun addToWishList(sku: String) {
+    override fun removeFromWishList(id: String, title: String, amount: Long, categoryId: String, quantity: Int) {
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.ADD_TO_WISH_LIST,
+            track(WebEngageCustomEventKeys.REMOVE_FROM_WISH_LIST,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.SKU, sku)
+                        put(TrackingEvents.ParamsKeys.ITEM_ID, id)
+                        put(TrackingEvents.ParamsKeys.ITEM_NAME, title)
+                        put(TrackingEvents.ParamsKeys.PRICE, amount)
+                        put(TrackingEvents.ParamsKeys.ITEM_CATEGORY, categoryId)
+                        put(TrackingEvents.ParamsKeys.QUANTITY, quantity)
                     })
         }
     }
 
-    override fun removeFromWishList(sku: String) {
+    override fun addProductReview(id: String, title: String, amount: Long, categoryId: String) {
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.REMOVE_FROM_WISH_LIST,
+            track(WebEngageCustomEventKeys.ADD_REVIEW,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.SKU, sku)
+                        put(TrackingEvents.ParamsKeys.ITEM_ID, id)
+                        put(TrackingEvents.ParamsKeys.ITEM_NAME, title)
+                        put(TrackingEvents.ParamsKeys.PRICE, amount)
+                        put(TrackingEvents.ParamsKeys.ITEM_CATEGORY, categoryId)
                     })
         }
     }
 
-    override fun addReview(sku: String) {
+    override fun notifyMe(id: String, title: String, categoryId: String) {
         mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.ADD_REVIEW,
+            track(WebEngageCustomEventKeys.NOTIFY_ME,
                     HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.SKU, sku)
+                        put(TrackingEvents.ParamsKeys.ITEM_ID, id)
+                        put(TrackingEvents.ParamsKeys.ITEM_NAME, title)
+                        put(TrackingEvents.ParamsKeys.ITEM_CATEGORY, categoryId)
                     })
         }
-    }
-
-    override fun notifyMe(sku: String) {
-        mAnalytics?.run {
-            track(TrackingEvents.EventsKeys.NOTIFY_ME,
-                    HashMap<String, Any>().apply {
-                        put(TrackingEvents.ParamsKeys.SKU, sku)
-                    })
-        }
-    }
-
-    override fun openHomeScreen() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun openProductDetailsScreen() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun openProductListScreen() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun openCartScreen() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun searchFiltered() {
-        mAnalytics?.track(TrackingEvents.EventsKeys.SEARCH_FILTERED)
-    }
-
-    override fun searchBarSearched() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun purchaseBehaviour() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun itemTapped() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun catalogViewChanged() {
-        mAnalytics?.track(TrackingEvents.EventsKeys.CATALOG_VIEW_CHANGED)
-    }
-
-    override fun catalogSortChanged() {
-        mAnalytics?.track(TrackingEvents.EventsKeys.CATALOG_SORT_CHANGED)
-    }
-
-    override fun callToOrderTapped() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun buyNowTapped() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun searchSuggestionTapped() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     fun hitScreenNavigationForInAppMessaging(screenName: String, screenData: Map<String, Any>?) {
@@ -302,6 +300,32 @@ object WebEngageEventsTracker : TrackingEvents {
             mAnalytics?.screenNavigated(screenName)
         }
 
+    }
+
+    private object WebEngageCustomEventKeys {
+        const val OPEN_APP = "app_opened"
+        const val INVITE_FRIENDS = "user_friends_invited"
+        const val SIGN_UP = "user_signed_up"
+        const val LOGIN = "user_logged_in"
+        const val LOGOUT = "user_logged_out"
+//        const val EDIT_PROFILE = "user_profile_edited"
+//        const val ADD_ADDRESS = "user_address_added"
+//        const val EDIT_ADDRESS = "user_address_edited"
+//        const val REMOVE_ADDRESS = "user_address_removed"
+        const val ADD_TO_CART = "cart_item_added"
+        const val REMOVE_FROM_CART = "cart_item_removed"
+        const val START_CHECKOUT = "cart_checkout_started"
+        const val PURCHASE = "cart_checkout_completed"
+//        const val CONDUCT_SURVEY = "survey_conducted"
+        const val SEARCH = "searched"
+        const val CONTENT_VIEW = "product_viewed"
+        const val CANCEL_ORDER = "purchase_refunded"
+        const val SHARE = "product_shared"
+        const val ADD_TO_WISH_LIST = "product_added_to_wishlist"
+        const val REMOVE_FROM_WISH_LIST = "remove_from_wish_list"
+        const val ADD_REVIEW = "product_review_added"
+        const val NOTIFY_ME = "product_stock_subscribed"
+        const val SORT_PRODUCT_LIST = "product_list_sorted"
     }
 
 }

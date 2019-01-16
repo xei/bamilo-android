@@ -255,7 +255,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                     String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : null;
                     String emailAddress = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null;
                     String phoneNumber = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getPhoneNumber() : null;
-                    EventTracker.INSTANCE.login(userId, emailAddress, phoneNumber, TrackingEvents.LoginType.LOGIN_WITH_EMAIL, true);
+                    EventTracker.INSTANCE.login(userId, emailAddress, phoneNumber, TrackingEvents.LoginMethod.LOGIN_WITH_EMAIL);
 
                     TrackerDelegator.trackLoginSuccessful(customer, true, false);
 
@@ -315,7 +315,7 @@ public class LoginFragment extends NewBaseFragment implements IResponseCallback 
                 String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : "UNKNOWN";
                 String emailAddress = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : "UNKNOWN";
                 String phoneNumber = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getPhoneNumber() : "UNKNOWN";
-                EventTracker.INSTANCE.login(userId, emailAddress, phoneNumber, TrackingEvents.LoginType.LOGIN_WITH_EMAIL, true);
+                EventTracker.INSTANCE.login(userId, emailAddress, phoneNumber, TrackingEvents.LoginMethod.LOGIN_WITH_EMAIL);
 
                 if (isInCheckoutProcess) {
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, null, FragmentController.ADD_TO_BACK_STACK);

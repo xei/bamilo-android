@@ -98,7 +98,12 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
 
         pdvMainView.trackAddFromWishList()
 
-        EventTracker.addToWishList(sku = imageSliderModel.productSku)
+        EventTracker.addToWishList(
+                id = imageSliderModel.productSku,
+                title = imageSliderModel.title,
+                amount = imageSliderModel.price.toLong(),
+                categoryId = imageSliderModel.category
+        )
 
 //        val addToWishListEventModel =
 //                MainEventModel(holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName()),
@@ -123,7 +128,12 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
         imageSliderModel.isWishList = false
         holder!!.like.isChecked = false
 
-        EventTracker.removeFromWishList(imageSliderModel.productSku)
+        EventTracker.removeFromWishList(
+                id = imageSliderModel.productSku,
+                title = imageSliderModel.title,
+                amount = imageSliderModel.price.toLong(),
+                categoryId = imageSliderModel.category
+        )
 
 //        val sem = SimpleEventModel().apply {
 //            category = holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName())

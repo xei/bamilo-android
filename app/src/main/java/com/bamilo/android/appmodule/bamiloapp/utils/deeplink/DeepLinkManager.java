@@ -362,7 +362,7 @@ public class DeepLinkManager {
 
 
     /**
-     * Method used to create a bundle for PDV view with the respective product SKU and size. JUMIA://ng/d/HO525HLAC8VKAFRAMZ?size=6.5
+     * Method used to create a bundle for PDV view with the respective product ITEM_SKU and size. JUMIA://ng/d/HO525HLAC8VKAFRAMZ?size=6.5
      *
      * @param segments The list of segments from URI.
      * @param data The URI.
@@ -370,7 +370,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processPdvLink(List<String> segments, Uri data) {
-        // Get SKU
+        // Get ITEM_SKU
         String sku = segments.get(PATH_DATA_POS);
         // Get simple
         String size = data.getQueryParameter(PDV_SIZE_TAG);

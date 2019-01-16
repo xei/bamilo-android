@@ -287,9 +287,16 @@ class ProductDetailMainFragment : Fragment() {
 //                MainEventModel.createViewProductEventModelAttributes("categoryUrlKey",
 //                        product.price.price.toLong()))
 //        TrackerManager.trackEvent(context, EventConstants.ViewProduct, viewProductEventModel)
-        EventTracker.contentView(
+
+        EventTracker.viewProduct(
+                id = "",
                 sku = product.sku,
-                category = product.breadcrumbs[0].target?.split("::")!![1]
+                title = product.title,
+                amount = product.price.price.toLong(),
+                categoryId = "",
+                categoryUrl = product.breadcrumbs[0].target?.split("::")!![1],
+                brandId = null,
+                brandTitle = product.brand
         )
 
         val params = Bundle()

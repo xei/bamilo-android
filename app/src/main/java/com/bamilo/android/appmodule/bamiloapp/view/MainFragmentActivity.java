@@ -13,15 +13,11 @@ import android.support.v4.widget.DrawerLayout;
 import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
-import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
-import com.bamilo.android.appmodule.bamiloapp.factories.EmarsysEventFactory;
 import com.bamilo.android.appmodule.bamiloapp.helpers.NextStepStruct;
 import com.bamilo.android.appmodule.bamiloapp.interfaces.IResponseCallback;
 import com.bamilo.android.appmodule.bamiloapp.managers.TrackerManager;
-import com.bamilo.android.appmodule.bamiloapp.models.MainEventModel;
-import com.bamilo.android.appmodule.bamiloapp.models.SimpleEventModel;
 import com.bamilo.android.appmodule.bamiloapp.utils.CheckoutStepManager;
 import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
 import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
@@ -105,7 +101,7 @@ import static com.bamilo.android.appmodule.bamiloapp.view.fragments.FilterMainFr
 public class MainFragmentActivity extends BaseActivity {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
-    private EmarsysEventFactory.OpenAppEventSourceType mAppOpenSource;
+//    private EmarsysEventFactory.OpenAppEventSourceType mAppOpenSource;
 
     private BaseFragment fragment;
 
@@ -149,15 +145,8 @@ public class MainFragmentActivity extends BaseActivity {
                             FragmentController.ADD_TO_BACK_STACK);
                 }
             } else {
-//                MainEventModel appOpenedEventModel = new MainEventModel(null, null, null,
-//                        SimpleEventModel.NO_VALUE,
-//                        MainEventModel.createAppOpenEventModelAttributes(
-//                                EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK
-//                                        .toString()));
-//                TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened,
-//                        appOpenedEventModel);
-                EventTracker.INSTANCE.openApp(TrackingEvents.OpenAppType.DEEP_LINK);
-                mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
+                EventTracker.INSTANCE.appOpen(TrackingEvents.AppOpenMethod.DEEP_LINK);
+//                mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;
             }
         } else {
             mCurrentFragmentType = (FragmentType) savedInstanceState
@@ -251,20 +240,20 @@ public class MainFragmentActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
 
-        if (mAppOpenSource
-                != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION
-                && mAppOpenSource
-                != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
-//            MainEventModel appOpenedEventModel = new MainEventModel(null, null, null,
-//                    SimpleEventModel.NO_VALUE,
-//                    MainEventModel.createAppOpenEventModelAttributes(
-//                            EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT
-//                                    .toString()));
-//            TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened,
-//                    appOpenedEventModel);
-            EventTracker.INSTANCE.openApp(TrackingEvents.OpenAppType.LAUNCHER);
-        }
-        mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_NONE;
+//        if (mAppOpenSource
+//                != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_PUSH_NOTIFICATION
+//                && mAppOpenSource
+//                != EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK) {
+////            MainEventModel appOpenedEventModel = new MainEventModel(null, null, null,
+////                    SimpleEventModel.NO_VALUE,
+////                    MainEventModel.createAppOpenEventModelAttributes(
+////                            EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DIRECT
+////                                    .toString()));
+////            TrackerManager.trackEvent(getApplicationContext(), EventConstants.AppOpened,
+////                    appOpenedEventModel);
+//            EventTracker.INSTANCE.openApp(TrackingEvents.OpenAppType.LAUNCHER);
+//        }
+//        mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_NONE;
 
 //        EmarsysTracker.getInstance().trackEventAppLogin(
 //                Integer.parseInt(getApplicationContext().getResources()
@@ -274,7 +263,7 @@ public class MainFragmentActivity extends BaseActivity {
         String userId = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getIdAsString() : null;
         String emailAddress = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getEmail() : null;
         String phoneNumber = BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER.getPhoneNumber() : null;
-        EventTracker.INSTANCE.login(userId, emailAddress, phoneNumber, TrackingEvents.LoginType.LOGIN_WITH_EMAIL, true);
+        EventTracker.INSTANCE.login(userId, emailAddress, phoneNumber, TrackingEvents.LoginMethod.LOGIN_WITH_EMAIL);
 
     }
 

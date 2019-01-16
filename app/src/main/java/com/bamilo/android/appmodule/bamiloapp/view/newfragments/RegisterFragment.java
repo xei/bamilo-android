@@ -330,12 +330,11 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                             MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, customerEmail != null ? EmailHelper.getHost(customerEmail) : "",
                                     true));
 //                    TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
-                    EventTracker.INSTANCE.register(
+                    EventTracker.INSTANCE.signUp (
                             String.valueOf(customerId),
                             customerEmail,
                             null,
-                            TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL,
-                            true);
+                            TrackingEvents.SignUpMethod.REGISTER_WITH_EMAIL);
 //                TrackerManager.trackEvent(getBaseActivity(), EmarsysEventConstants.SignUp, EmarsysEventFactory.signup("email", EmailHelper.getHost(BamiloApplication.CUSTOMER.getEmail()), true));
                     // Notify user
                     getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
@@ -390,7 +389,7 @@ public class RegisterFragment extends NewBaseFragment implements IResponseCallba
                         Constants.LOGIN_METHOD_EMAIL, SimpleEventModel.NO_VALUE,
                         MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, "", false));
 //                TrackerManager.trackEvent(getContext(), EventConstants.Signup, authEventModel);
-                EventTracker.INSTANCE.register(null, null, null, TrackingEvents.RegistrationType.REGISTER_WITH_EMAIL, false);
+                EventTracker.INSTANCE.signUp(null, null, null, TrackingEvents.SignUpMethod.REGISTER_WITH_EMAIL);
 
                 // Validate and show errors
                 showFragmentContentContainer();

@@ -312,10 +312,9 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         }
 
         if (items != null && items.size() > 0) {
-
-            SimpleEventModel sem = SimpleEventModelFactory.createModelForCheckoutStart(items);
-//            TrackerManager.trackEvent(getContext(), EventConstants.CheckoutStart, sem);
-            EventTracker.INSTANCE.startCheckout((long) BamiloApplication.INSTANCE.getCart().getTotal());
+            EventTracker.INSTANCE.beginCheckout(
+                    (long) BamiloApplication.INSTANCE.getCart().getTotal(),
+                    BamiloApplication.INSTANCE.getCart().getCartCount());
             Bundle bundle = new Bundle();
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, bundle,
                     FragmentController.ADD_TO_BACK_STACK);
@@ -431,7 +430,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 // Update value
                 updateWishListValue(false);
                 if (removeFromWishListEventModel != null) {
-                    EventTracker.INSTANCE.removeFromWishList(removeFromWishListEventModel.label);
+                    EventTracker.INSTANCE.removeFromWishList(removeFromWishListEventModel.label, "", 0, "", 1);
 //                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList,
 //                            removeFromWishListEventModel);
                 }
@@ -446,7 +445,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 if (addToWishListEventModel != null) {
 //                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList,
 //                            addToWishListEventModel);
-                    EventTracker.INSTANCE.addToWishList(addToWishListEventModel.label);
+                    EventTracker.INSTANCE.addToWishList(addToWishListEventModel.label, "", 0, "", 1);
                 }
                 break;
 
@@ -454,7 +453,8 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
                 if (removeFromCartEventModel != null) {
 //                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromCart,
 //                            removeFromCartEventModel);
-                    EventTracker.INSTANCE.removeFromCart(removeFromCartEventModel.label, removeFromCartEventModel.value);
+
+                    EventTracker.INSTANCE.removeFromCart(removeFromCartEventModel.label, "", "","", "", removeFromCartEventModel.value, 1);
                 }
                 params = new Bundle();
                 params.putString(TrackerDelegator.SKU_KEY, mItemRemovedSku);

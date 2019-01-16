@@ -333,10 +333,14 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     private fun trackAddToCartEvent(addedFromBuyNowButton: Boolean) {
+
         EventTracker.addToCart(
+                id = "",
                 sku = sku!!,
-                amount = productDetail.price.price.toLong(),
-                addToCartType = if (!addedFromBuyNowButton) TrackingEvents.AddToCartType.ADD_TO_CART_BTN else TrackingEvents.AddToCartType.BUY_NOW_BTN
+                title = productDetail.title,
+                categoryId = "",
+                categoryUrl = productDetail.breadcrumbs[0].target?.split("::")!![1],
+                amount = productDetail.price.price.toLong()
         )
 
         TrackerDelegator.trackProductAddedToCart(productDetail)
@@ -660,9 +664,15 @@ class ProductDetailActivity : BaseActivity(),
 
         productDetailPresenter.fillChooseVariationBottomSheet(productDetail)
 
-        EventTracker.contentView(
+        EventTracker.viewProduct(
+                id = "",
                 sku = sku!!,
-                category = productDetail.breadcrumbs[0].target?.split("::")!![1]
+                title = "",
+                amount = 1,
+                categoryId = "",
+                categoryUrl = productDetail.breadcrumbs[0].target?.split("::")!![1],
+                brandId = null,
+                brandTitle = productDetail.brand
         )
 
 //        val viewProductEventModel = MainEventModel("category",

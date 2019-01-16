@@ -995,7 +995,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
 //                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList,
 //                            removeFromWishListEventModel);
                     try {
-                        EventTracker.INSTANCE.removeFromWishList(removeFromWishListEventModel.label);
+                        EventTracker.INSTANCE.removeFromWishList(
+                                removeFromWishListEventModel.label,
+                                "",
+                                0,
+                                "",
+                                1
+                        );
                     }catch (Exception e) {
 
                     }
@@ -1009,7 +1015,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
 //                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList,
 //                            addToWishListEventModel);
                     try {
-                        EventTracker.INSTANCE.addToWishList(removeFromWishListEventModel.label);
+                        EventTracker.INSTANCE.addToWishList(
+                                removeFromWishListEventModel.label,
+                                mWishListItemClicked.getName(),
+                                (long) mWishListItemClicked.getPrice(),
+                                mWishListItemClicked.getCategoryId(),
+                                1
+                        );
                     }catch (Exception e) {
 
                     }
