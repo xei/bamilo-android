@@ -780,5 +780,19 @@
     <string name="share_app">به اشتراک گذاری اپلیکیشن با استفاده از…</string>
     <string name="share_product">به اشتراک گذاری محصول با استفاده از…</string>
 
+    <string name="warranty_column">ضمانت:</string>
+    <string name="close_bracket">\u200f)</string>
+    <string name="open_bracket">\u200f(</string>
+    <string name="fulfilled_">تامین کننده: </string>
+    <string name="collaboration_period_">مدت همکاری: </string>
+    <string name="seller_score">امتیاز فروشنده</string>
+    <string name="of_number">از %1$d</string>
+    <string name="fulfilled">تامین کننده</string>
+    <string name="percent_sign">%</string>
+    <string name="seller_info_rate_from_score">از %d امتیاز</string>
+    <string name="seller_info_rate_from">%s از %d</string>
+    <string name="tehran_delivery_time">تهران</string>
+    <string name="special_price_filter">تخفیف</string>
+    <string name="user_greeting">سلام %1$s</string>
 
 </resources>
