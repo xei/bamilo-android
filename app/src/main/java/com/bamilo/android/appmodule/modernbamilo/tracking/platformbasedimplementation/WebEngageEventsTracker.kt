@@ -322,7 +322,7 @@ object WebEngageEventsTracker : TrackingEvents {
         const val CANCEL_ORDER = "purchase_refunded"
         const val SHARE = "product_shared"
         const val ADD_TO_WISH_LIST = "product_added_to_wishlist"
-        const val REMOVE_FROM_WISH_LIST = "remove_from_wish_list"
+        const val REMOVE_FROM_WISH_LIST = "product_removed_from_wishlist"
         const val ADD_REVIEW = "product_review_added"
         const val NOTIFY_ME = "product_stock_subscribed"
         const val SORT_PRODUCT_LIST = "product_list_sorted"
