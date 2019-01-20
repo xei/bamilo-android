@@ -29,7 +29,7 @@ interface TrackingEvents {
     fun addToCart(id: String, sku: String, title: String, categoryId: String, categoryUrl: String, amount: Long, quantity: Int = 1)
     fun removeFromCart(id: String, sku: String, title: String, categoryId: String, categoryUrl: String, amount: Long, quantity: Int = 1)
     fun beginCheckout(basketValue: Long, numberOfBasketItems: Int)
-    fun purchase(value: Long, numberOfItems: Int, coupon: String, transactionId: String, paymentMethod: PaymentMethod, cityName: String)
+    fun purchase(value: Long, numberOfItems: Int, coupon: String?, transactionId: String, paymentMethod: PaymentMethod, cityName: String)
     fun cancelOrder(transaction_id: String, value: Long, quantity: Int)
 //    fun conductSurvey()
 

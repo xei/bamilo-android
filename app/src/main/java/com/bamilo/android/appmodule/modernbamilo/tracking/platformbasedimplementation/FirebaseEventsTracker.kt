@@ -137,12 +137,12 @@ object FirebaseEventsTracker : TrackingEvents {
         }
     }
 
-    override fun purchase(value: Long, numberOfItems: Int, coupon: String, transactionId: String, paymentMethod: TrackingEvents.PaymentMethod, cityName: String) {
+    override fun purchase(value: Long, numberOfItems: Int, coupon: String?, transactionId: String, paymentMethod: TrackingEvents.PaymentMethod, cityName: String) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, Bundle().apply {
                 putLong(FirebaseAnalytics.Param.VALUE, value)
                 putInt(TrackingEvents.ParamsKeys.NO_OF_ITEMS, numberOfItems)
-                putString(FirebaseAnalytics.Param.COUPON, coupon)
+                coupon?.let { putString(FirebaseAnalytics.Param.COUPON, it) }
                 putString(FirebaseAnalytics.Param.TRANSACTION_ID, coupon)
                 putString(TrackingEvents.ParamsKeys.PAYMENT_METHOD, paymentMethod.value)
                 putString(TrackingEvents.ParamsKeys.CITY_NAME, cityName)

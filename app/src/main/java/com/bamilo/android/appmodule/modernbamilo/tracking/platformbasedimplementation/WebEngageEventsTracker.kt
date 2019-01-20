@@ -174,13 +174,13 @@ object WebEngageEventsTracker : TrackingEvents {
         }
     }
 
-    override fun purchase(value: Long, numberOfItems: Int, coupon: String, transactionId: String, paymentMethod: TrackingEvents.PaymentMethod, cityName: String) {
+    override fun purchase(value: Long, numberOfItems: Int, coupon: String?, transactionId: String, paymentMethod: TrackingEvents.PaymentMethod, cityName: String) {
         mAnalytics?.run {
             track(WebEngageCustomEventKeys.PURCHASE,
                     HashMap<String, Any>().apply {
                         put(TrackingEvents.ParamsKeys.VALUE, value)
                         put(TrackingEvents.ParamsKeys.NO_OF_ITEMS, numberOfItems)
-                        put(TrackingEvents.ParamsKeys.COUPON, coupon)
+                        coupon?.let { put(TrackingEvents.ParamsKeys.COUPON, it) }
                         put(TrackingEvents.ParamsKeys.TRANSACTION_ID, transactionId)
                         put(TrackingEvents.ParamsKeys.PAYMENT_METHOD, paymentMethod.value)
                         put(TrackingEvents.ParamsKeys.CITY_NAME, cityName)

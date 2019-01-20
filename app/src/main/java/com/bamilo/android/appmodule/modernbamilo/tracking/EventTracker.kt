@@ -258,7 +258,7 @@ object EventTracker : TrackingEvents {
      * [paymentMethod] can be MPG (Mobile Payment Gateway), IPG (Internet Payment Gateway) or COD (Cash on Delivery)
      * [cityName] is the name of city where order is submitted.
      */
-    override fun purchase(value: Long, numberOfItems: Int, coupon: String, transactionId: String, paymentMethod: TrackingEvents.PaymentMethod, cityName: String) {
+    override fun purchase(value: Long, numberOfItems: Int, coupon: String?, transactionId: String, paymentMethod: TrackingEvents.PaymentMethod, cityName: String) {
         for (observer in mTrackingObservers) {
             observer.purchase(value, numberOfItems, coupon, transactionId, paymentMethod, cityName)
         }
