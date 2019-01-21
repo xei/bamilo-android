@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".appmodule.bamiloapp.view.fragments.EditProfileFragment">
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -40,7 +42,7 @@
                 android:clickable="true"
                 android:focusable="true">
 
-                <TextView
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/tvPhoneNumberTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -66,7 +68,7 @@
                     android:alpha="0.6"
                     android:src="@drawable/black_arrow_right_rtl" />
 
-                <TextView
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/tvPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -77,7 +79,7 @@
                     android:textColor="@color/gray_5"
                     android:textSize="14sp" />
 
-                <TextView
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/tvPhoneNumberError"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -102,15 +104,17 @@
                 android:theme="@style/RegistrationFormEditTextTheme"
                 app:errorTextAppearance="@style/TextInputLayoutErrorTextAppearance">
 
-                <EditText
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
                     android:id="@+id/etFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="right|center_vertical"
                     android:hint="@string/first_name"
+                    android:imeOptions="actionNext"
                     android:inputType="textPersonName"
                     android:textSize="14sp"
-                    android:theme="@style/RegistrationFormEditTextTheme" />
+                    android:theme="@style/RegistrationFormEditTextTheme"
+                    app:locale="fa_IR" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -123,15 +127,17 @@
                 android:theme="@style/RegistrationFormEditTextTheme"
                 app:errorTextAppearance="@style/TextInputLayoutErrorTextAppearance">
 
-                <EditText
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
                     android:id="@+id/etLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="right|center_vertical"
                     android:hint="@string/last_name"
+                    android:imeOptions="actionDone"
                     android:inputType="textPersonName"
                     android:textSize="14sp"
-                    android:theme="@style/RegistrationFormEditTextTheme" />
+                    android:theme="@style/RegistrationFormEditTextTheme"
+                    app:locale="fa_IR" />
             </android.support.design.widget.TextInputLayout>
 
             <RelativeLayout
@@ -141,7 +147,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp">
 
-                <TextView
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/tvGenderTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -172,17 +178,18 @@
                 android:layout_marginTop="16dp"
                 android:theme="@style/RegistrationFormEditTextTheme">
 
-                <EditText
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
                     android:enabled="false"
-                    android:gravity="right"
+                    android:gravity="right|center_vertical"
                     android:hint="@string/email_address"
                     android:inputType="none"
                     android:textSize="14sp"
-                    android:theme="@style/RegistrationFormEditTextTheme" />
+                    android:theme="@style/RegistrationFormEditTextTheme"
+                    app:locale="fa_IR" />
             </android.support.design.widget.TextInputLayout>
 
             <RelativeLayout
@@ -196,7 +203,7 @@
                 android:clickable="true"
                 android:focusable="true">
 
-                <TextView
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/tvBirthdayTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -222,7 +229,7 @@
                     android:alpha="0.6"
                     android:src="@drawable/black_arrow_right_rtl" />
 
-                <TextView
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/tvBirthday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -245,16 +252,18 @@
                 android:theme="@style/RegistrationFormEditTextTheme"
                 app:errorTextAppearance="@style/TextInputLayoutErrorTextAppearance">
 
-                <EditText
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
                     android:id="@+id/etNationalId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="right|center_vertical"
                     android:hint="@string/national_id"
+                    android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="10"
                     android:textSize="14sp"
-                    android:theme="@style/RegistrationFormEditTextTheme" />
+                    android:theme="@style/RegistrationFormEditTextTheme"
+                    app:locale="fa_IR" />
             </android.support.design.widget.TextInputLayout>
 
             <RelativeLayout
@@ -263,7 +272,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp">
 
-                <TextView
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/tvCardNumberTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -295,7 +304,7 @@
                     app:keep_hint="true"
                     app:mask="@string/card_number_mask" />
 
-                <TextView
+                <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/tvCardNumberError"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -304,7 +313,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="16dp"
                     android:paddingRight="4dp"
-                    android:text="@string/phone_number_is_required"
+                    android:text="@string/card_number_isnt_valid"
                     android:textColor="@color/red_error"
                     android:textSize="11sp"
                     android:visibility="gone" />

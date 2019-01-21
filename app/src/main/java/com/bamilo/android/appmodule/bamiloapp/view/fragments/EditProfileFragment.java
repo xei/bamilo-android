@@ -15,10 +15,10 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText;
 import com.bamilo.android.core.modules.ProfileModule;
 import com.bamilo.android.core.presentation.ProfilePresenter;
 import com.bamilo.android.core.service.model.EventType;
@@ -71,7 +71,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
     @Inject
     ProfilePresenter presenter;
 
-    private EditText etFirstName, etLastName, etEmail, etNationalId;
+    private XeiEditText etFirstName, etLastName, etEmail, etNationalId;
     private MaskedEditText metCardNumber;
     private TextView tvBirthday, tvPhoneNumber, tvWarningMessage, tvPhoneNumberError, tvCardNumberError;
     private TextInputLayout tilNationalId, tilFirstName, tilLastName;
