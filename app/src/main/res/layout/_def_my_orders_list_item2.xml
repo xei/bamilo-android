@@ -55,7 +55,7 @@
         android:layout_height="@dimen/dimen_36dp"
         android:layout_gravity="center_vertical"
         android:padding="8dp"
-        android:src="@drawable/ic_arrow_forward_gray" />
+        android:src="@drawable/ic_arrow_left_gray" />
 
 
 </LinearLayout>
