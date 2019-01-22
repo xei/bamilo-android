@@ -555,7 +555,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 "",
                 baseResponse.getError().getCode(),
                 baseResponse.getErrorMessage(),
-                ConnectivityHelperFunctionsKt.getIpAddress(),
+                ConnectivityHelperFunctionsKt.getIpAddress(this),
                 connectionMethod,
                 ConnectivityHelperFunctionsKt.getNetworkOperatorName(this),
                 ConnectivityHelperFunctionsKt.isVpnConnected(),
