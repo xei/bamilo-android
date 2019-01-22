@@ -145,8 +145,8 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                     persianDatePicker = PersianDatePickerDialogHelper
                             .newInstance(getContext(),
                                     defaultDate,
-                                    defaultDate.getYear(),
-                                    defaultDate.getYear() + BIRTHDAY_LOWER_BOUND_DIFF);
+                                    null,
+                                    1300);
                     persianDatePicker.setOnDateSelectedListener(EditProfileFragment.this);
                 }
 
