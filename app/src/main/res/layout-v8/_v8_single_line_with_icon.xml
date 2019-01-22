@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/component_container"
     style="@style/SingleLineGroupStyle"
-    android:gravity="right|center_vertical"
+    android:gravity="center"
     android:layoutDirection="ltr"
     tools:ignore="UnusedAttribute"
     tools:layout_height="@dimen/dimen_48dp"
@@ -11,12 +11,21 @@
 
     <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
         android:id="@+id/tx_single_line_text"
-        style="@style/SingleLineList.WithIcon"
+        style="@style/TextBase.List.Black"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dimen_48dp"
+        android:layout_marginLeft="@dimen/dimen_8dp"
+        android:layout_marginRight="@dimen/dimen_4dp"
+        android:layout_weight="1"
+        android:gravity="right|center_vertical"
         tools:text="Item" />
 
     <ImageView
         android:id="@+id/icon_start"
-        style="@style/SingleLineListIconStartRTL"
+        android:layout_width="@dimen/dimen_16dp"
+        android:layout_height="@dimen/dimen_16dp"
+        android:layout_marginLeft="@dimen/dimen_4dp"
+        android:layout_marginRight="@dimen/dimen_8dp"
         android:visibility="invisible" />
 
 
