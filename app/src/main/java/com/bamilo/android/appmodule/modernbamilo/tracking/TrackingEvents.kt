@@ -46,6 +46,9 @@ interface TrackingEvents {
     fun addProductReview(id: String, title: String, amount: Long, categoryId: String)
     fun notifyMe(id: String, title: String, categoryId: String)
 
+    // Monitoring
+    fun failRequest(request: String, errorCode: Int, errorMessage: String, ipAddress: String, connectionMethod: String, operatorName: String, vpn: Boolean, apiLevel: Int, apiVersion: String)
+
 
     object ParamsKeys {
         const val APP_OPEN_METHOD = "app_open_method"

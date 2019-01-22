@@ -504,4 +504,13 @@ object EventTracker : TrackingEvents {
         )
     }
 
+    /**
+     * This method is a temporary event call to track an issue reported by Product department.
+     */
+    override fun failRequest(request: String, errorCode: Int, errorMessage: String, ipAddress: String, connectionMethod: String, operatorName: String, vpn: Boolean, apiLevel: Int, apiVersion: String) {
+        for (observer in mTrackingObservers) {
+            observer.failRequest(request, errorCode, errorMessage, ipAddress, connectionMethod, operatorName, vpn, apiLevel, apiVersion)
+        }
+    }
+
 }

@@ -302,6 +302,12 @@ object WebEngageEventsTracker : TrackingEvents {
 
     }
 
+    /**
+     * We are not going to measure this in WebEngage.
+     */
+    override fun failRequest(request: String, errorCode: Int, errorMessage: String, ipAddress: String, connectionMethod: String, operatorName: String, vpn: Boolean, apiLevel: Int, apiVersion: String) {
+    }
+
     private object WebEngageCustomEventKeys {
         const val OPEN_APP = "app_opened"
         const val INVITE_FRIENDS = "user_friends_invited"

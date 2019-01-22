@@ -252,6 +252,22 @@ object FirebaseEventsTracker : TrackingEvents {
         }
     }
 
+    override fun failRequest(request: String, errorCode: Int, errorMessage: String, ipAddress: String, connectionMethod: String, operatorName: String, vpn: Boolean, apiLevel: Int, apiVersion: String) {
+        mFirebaseAnalytics?.run {
+            logEvent(FirebaseCustomEventKeys.FAIL_REQUEST, Bundle().apply {
+                putString("request", request)
+                putInt("error_code", errorCode)
+                putString("error_message", errorMessage)
+                putString("ip_address", ipAddress)
+                putString("connection_method", connectionMethod)
+                putString("operator_name", operatorName)
+                putBoolean("vpn", vpn)
+                putInt("api_level", apiLevel)
+                putString("api_version", apiVersion)
+            })
+        }
+    }
+
     private object FirebaseCustomEventKeys {
         const val INVITE_FRIENDS = "invite_friends"
         const val LOGOUT = "logout"
@@ -264,6 +280,7 @@ object FirebaseEventsTracker : TrackingEvents {
         const val ADD_REVIEW = "add_product_review"
         const val NOTIFY_ME = "subscribe_to_product_stock"
         const val SORT_PRODUCT_LIST = "sort_product_list"
+        const val FAIL_REQUEST = "fail_request"
     }
 
 }
