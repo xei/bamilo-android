@@ -816,6 +816,34 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
                 new SimpleEventModel(CategoryConstants.CATALOG, EventActionKeys.CATALOG_SORT,
                         mSelectedSort.toString(), SimpleEventModel.NO_VALUE);
         TrackerManager.trackEvent(getContext(), EventConstants.CatalogSortChanged, sem);
+
+
+        String sortingKey = null;
+        switch(mSelectedSort) {
+            case NAME:
+                sortingKey = "name";
+                break;
+            case BRAND:
+                sortingKey = "brand";
+                break;
+            case NEW_IN:
+                sortingKey = "newest";
+                break;
+            case PRICE_UP:
+                sortingKey = "price-asc";
+                break;
+            case POPULARITY:
+                sortingKey = "popularity";
+                break;
+            case PRICE_DOWN:
+                sortingKey = "price-desc";
+                break;
+            case BEST_RATING:
+                sortingKey = "score";
+                break;
+        }
+        EventTracker.INSTANCE.sortProductsList(sortingKey);
+
     }
 
     @Override

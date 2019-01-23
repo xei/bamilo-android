@@ -609,11 +609,28 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun trackRemoveFromWishList() {
-        TrackerDelegator.trackRemoveFromFavorites(productDetail)
+        try {
+            EventTracker.removeFromWishList(
+                    sku!!,
+                    title.toString(),
+                    productDetail.price.price.toLong(),
+                    productDetail.breadcrumbs[0].title!!)
+        } catch (e: java.lang.Exception) {
+
+        }
+
     }
 
     override fun trackAddFromWishList() {
-        TrackerDelegator.trackAddToFavorites(productDetail)
+        try {
+            EventTracker.addToWishList(
+                    sku!!,
+                    title.toString(),
+                    productDetail.price.price.toLong(),
+                    productDetail.breadcrumbs[0].title!!)
+        } catch (e: java.lang.Exception) {
+
+        }
     }
 
     override fun onShowMoreRelatedProducts() {

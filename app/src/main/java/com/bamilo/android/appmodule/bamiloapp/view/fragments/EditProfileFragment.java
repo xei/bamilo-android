@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
 import com.bamilo.android.core.modules.ProfileModule;
 import com.bamilo.android.core.presentation.ProfilePresenter;
 import com.bamilo.android.core.service.model.EventType;
@@ -236,6 +237,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                     getBaseActivity().hideKeyboard();
                     hideErrors();
                     presenter.submitProfile(NetworkConnectivity.isConnected(getContext()), userProfile);
+                    EventTracker.INSTANCE.editProfile();
                 }
             }
         });

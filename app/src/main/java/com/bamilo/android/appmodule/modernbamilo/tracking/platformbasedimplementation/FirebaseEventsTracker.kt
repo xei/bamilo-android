@@ -76,29 +76,29 @@ object FirebaseEventsTracker : TrackingEvents {
         }
     }
 
-//    override fun editProfile() {
-//        mFirebaseAnalytics?.run {
-//            logEvent(FirebaseCustomEventKeys.EDIT_PROFILE, null)
-//        }
-//    }
-//
-//    override fun addAddress() {
-//        mFirebaseAnalytics?.run {
-//            logEvent(FirebaseCustomEventKeys.ADD_ADDRESS, null)
-//        }
-//    }
-//
-//    override fun editAddress() {
-//        mFirebaseAnalytics?.run {
-//            logEvent(FirebaseCustomEventKeys.EDIT_ADDRESS, null)
-//        }
-//    }
-//
-//    override fun removeAddress() {
-//        mFirebaseAnalytics?.run {
-//            logEvent(FirebaseCustomEventKeys.REMOVE_ADDRESS, null)
-//        }
-//    }
+    override fun editProfile() {
+        mFirebaseAnalytics?.run {
+            logEvent(FirebaseCustomEventKeys.EDIT_PROFILE, null)
+        }
+    }
+
+    override fun addAddress() {
+        mFirebaseAnalytics?.run {
+            logEvent(FirebaseCustomEventKeys.ADD_ADDRESS, null)
+        }
+    }
+
+    override fun editAddress() {
+        mFirebaseAnalytics?.run {
+            logEvent(FirebaseCustomEventKeys.EDIT_ADDRESS, null)
+        }
+    }
+
+    override fun removeAddress() {
+        mFirebaseAnalytics?.run {
+            logEvent(FirebaseCustomEventKeys.REMOVE_ADDRESS, null)
+        }
+    }
 
     override fun addToCart(id: String, sku: String, title: String, categoryId: String, categoryUrl: String, amount: Long, quantity: Int) {
         mFirebaseAnalytics?.run {
@@ -271,10 +271,10 @@ object FirebaseEventsTracker : TrackingEvents {
     private object FirebaseCustomEventKeys {
         const val INVITE_FRIENDS = "invite_friends"
         const val LOGOUT = "logout"
-//        const val EDIT_PROFILE = "edit_profile"
-//        const val ADD_ADDRESS = "add_address"
-//        const val EDIT_ADDRESS = "edit_address"
-//        const val REMOVE_ADDRESS = "remove_address"
+        const val EDIT_PROFILE = "edit_profile"
+        const val ADD_ADDRESS = "add_address"
+        const val EDIT_ADDRESS = "edit_address"
+        const val REMOVE_ADDRESS = "remove_address"
 //        const val CONDUCT_SURVEY = "conduct_survey"
         const val REMOVE_FROM_WISH_LIST = "remove_from_wishlist"
         const val ADD_REVIEW = "add_product_review"
