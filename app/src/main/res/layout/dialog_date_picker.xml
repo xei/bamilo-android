@@ -4,109 +4,116 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:paddingTop="16dp">
+    android:paddingTop="@dimen/dimen_24dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".appmodule.bamiloapp.utils.dialogfragments.PersianDatePickerDialogHelper">
 
-    <TextView
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
         android:id="@+id/tvDayTitle"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="@dimen/dimen_8dp"
+        android:layout_marginRight="@dimen/dimen_8dp"
         android:background="@drawable/date_picker_dialog_titles_bg"
         android:gravity="center"
-        android:paddingBottom="4dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="4dp"
+        android:paddingLeft="@dimen/dimen_12dp"
+        android:paddingTop="@dimen/dimen_4dp"
+        android:paddingRight="@dimen/dimen_12dp"
+        android:paddingBottom="@dimen/dimen_4dp"
         android:text="@string/profile_bd_day"
         android:textColor="@color/gray_2"
         android:textSize="12sp"
-        app:layout_constraintLeft_toLeftOf="@+id/nbDay"
-        app:layout_constraintRight_toRightOf="@id/nbDay" />
+        app:layout_constraintBottom_toTopOf="@id/nbDay"
+        app:layout_constraintLeft_toLeftOf="@id/nbDay"
+        app:layout_constraintRight_toRightOf="@id/nbDay"
+        app:layout_constraintTop_toTopOf="parent"
+        app:locale="fa_IR" />
 
-    <TextView
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
         android:id="@+id/tvMonthTitle"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="@dimen/dimen_8dp"
+        android:layout_marginRight="@dimen/dimen_8dp"
         android:background="@drawable/date_picker_dialog_titles_bg"
         android:gravity="center"
-        android:paddingBottom="4dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="4dp"
+        android:paddingLeft="@dimen/dimen_12dp"
+        android:paddingTop="@dimen/dimen_4dp"
+        android:paddingRight="@dimen/dimen_12dp"
+        android:paddingBottom="@dimen/dimen_4dp"
         android:text="@string/profile_bd_month"
         android:textColor="@color/gray_2"
         android:textSize="12sp"
-        app:layout_constraintLeft_toLeftOf="@+id/nbMonth"
+        app:layout_constraintBottom_toTopOf="@id/nbMonth"
+        app:layout_constraintLeft_toLeftOf="@id/nbMonth"
         app:layout_constraintRight_toRightOf="@id/nbMonth"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:locale="fa_IR" />
 
-    <TextView
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
         android:id="@+id/tvYearTitle"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="@dimen/dimen_8dp"
+        android:layout_marginRight="@dimen/dimen_8dp"
         android:background="@drawable/date_picker_dialog_titles_bg"
         android:gravity="center"
-        android:paddingBottom="4dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="4dp"
+        android:paddingLeft="@dimen/dimen_12dp"
+        android:paddingTop="@dimen/dimen_4dp"
+        android:paddingRight="@dimen/dimen_12dp"
+        android:paddingBottom="@dimen/dimen_4dp"
         android:text="@string/profile_bd_year"
         android:textColor="@color/gray_2"
         android:textSize="12sp"
-        app:layout_constraintLeft_toLeftOf="@+id/nbYear"
+        app:layout_constraintBottom_toTopOf="@id/nbYear"
+        app:layout_constraintLeft_toLeftOf="@id/nbYear"
         app:layout_constraintRight_toRightOf="@id/nbYear"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:locale="fa_IR" />
 
     <com.bamilo.android.appmodule.bamiloapp.view.components.CustomFontNumberPicker
         android:id="@+id/nbDay"
-        android:layout_width="wrap_content"
+        android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
         android:theme="@style/DatePickerNumberPickerTheme"
-        app:layout_constraintBottom_toTopOf="@+id/btnOk"
-        app:layout_constraintRight_toLeftOf="@+id/nbMonth"
-        app:layout_constraintTop_toBottomOf="@+id/tvDayTitle" />
+        app:layout_constraintBottom_toTopOf="@id/btnOk"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/nbMonth"
+        app:layout_constraintTop_toBottomOf="@id/tvDayTitle" />
 
     <com.bamilo.android.appmodule.bamiloapp.view.components.CustomFontNumberPicker
         android:id="@+id/nbMonth"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
         android:theme="@style/DatePickerNumberPickerTheme"
-        app:layout_constraintBottom_toTopOf="@+id/btnOk"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMonthTitle" />
+        app:layout_constraintBottom_toTopOf="@id/btnOk"
+        app:layout_constraintLeft_toRightOf="@id/nbDay"
+        app:layout_constraintRight_toLeftOf="@id/nbYear"
+        app:layout_constraintTop_toBottomOf="@id/tvMonthTitle" />
 
     <com.bamilo.android.appmodule.bamiloapp.view.components.CustomFontNumberPicker
         android:id="@+id/nbYear"
-        android:layout_width="wrap_content"
+        android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
         android:theme="@style/DatePickerNumberPickerTheme"
-        app:layout_constraintBottom_toTopOf="@+id/btnOk"
-        app:layout_constraintLeft_toRightOf="@+id/nbMonth"
-        app:layout_constraintTop_toBottomOf="@+id/tvYearTitle" />
+        app:layout_constraintBottom_toTopOf="@id/btnOk"
+        app:layout_constraintLeft_toRightOf="@id/nbMonth"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvYearTitle" />
 
-    <android.support.v7.widget.AppCompatButton
+    <com.bamilo.android.appmodule.modernbamilo.customview.XeiButton
         android:id="@+id/btnOk"
-        style="@style/Button_Action_Secondary"
-        android:layout_width="0dp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_8dp"
         android:text="@string/ok_label"
+        android:textColor="@color/button_secondary_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
+        app:locale="fa_IR"
+        app:style="bold"/>
 </android.support.constraint.ConstraintLayout>

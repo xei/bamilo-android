@@ -1,24 +1,26 @@
 package com.bamilo.android.appmodule.bamiloapp.view.fragments;
 
 import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bamilo.android.R;
+import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
+import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsSharedPrefs;
+import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
+import com.bamilo.android.appmodule.bamiloapp.utils.JalaliCalendar;
+import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
+import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
+import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.PersianDatePickerDialogHelper;
+import com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText;
 import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
 import com.bamilo.android.core.modules.ProfileModule;
 import com.bamilo.android.core.presentation.ProfilePresenter;
@@ -27,20 +29,12 @@ import com.bamilo.android.core.service.model.ServerResponse;
 import com.bamilo.android.core.service.model.UserProfileResponse;
 import com.bamilo.android.core.service.model.data.profile.UserProfile;
 import com.bamilo.android.core.view.ProfileView;
-import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.framework.components.absspinner.PromptSpinnerAdapter;
-import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsSharedPrefs;
-import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.framework.service.objects.customer.Customer;
 import com.bamilo.android.framework.service.utils.CollectionUtils;
 import com.bamilo.android.framework.service.utils.Constants;
 import com.bamilo.android.framework.service.utils.NetworkConnectivity;
 import com.bamilo.android.framework.service.utils.TextUtils;
-import com.bamilo.android.appmodule.bamiloapp.utils.JalaliCalendar;
-import com.bamilo.android.appmodule.bamiloapp.utils.MyMenuItem;
-import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
-import com.bamilo.android.appmodule.bamiloapp.utils.dialogfragments.PersianDatePickerDialogHelper;
-import com.bamilo.android.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,7 +47,6 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 import br.com.sapereaude.maskedEditText.MaskedEditText;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Created by mohsen on 2/17/18.
@@ -72,7 +65,7 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
     @Inject
     ProfilePresenter presenter;
 
-    private EditText etFirstName, etLastName, etEmail, etNationalId;
+    private XeiEditText etFirstName, etLastName, etEmail, etNationalId;
     private MaskedEditText metCardNumber;
     private TextView tvBirthday, tvPhoneNumber, tvWarningMessage, tvPhoneNumberError, tvCardNumberError;
     private TextInputLayout tilNationalId, tilFirstName, tilLastName;
@@ -146,8 +139,8 @@ public class EditProfileFragment extends BaseFragment implements ProfileView, Pe
                     persianDatePicker = PersianDatePickerDialogHelper
                             .newInstance(getContext(),
                                     defaultDate,
-                                    defaultDate.getYear(),
-                                    defaultDate.getYear() + BIRTHDAY_LOWER_BOUND_DIFF);
+                                    null,
+                                    1300);
                     persianDatePicker.setOnDateSelectedListener(EditProfileFragment.this);
                 }
 
