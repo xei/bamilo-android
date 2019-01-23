@@ -102,6 +102,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        app:expandIndicator="@string/more_3dot"
+        app:expandToggleType="TextView"
         app:maxCollapsedLines="3"
         app:animDuration="200"
         app:layout_constraintEnd_toEndOf="parent"
