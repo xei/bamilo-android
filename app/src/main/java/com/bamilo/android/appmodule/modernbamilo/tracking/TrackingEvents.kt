@@ -20,10 +20,10 @@ interface TrackingEvents {
     fun signUp(userId: String?, emailAddress: String?, phoneNumber: String?, signUpMethod: SignUpMethod)
     fun login(userId: String?, emailAddress: String?, phoneNumber: String?, loginMethod: LoginMethod)
     fun logout()
-//    fun editProfile()
-//    fun addAddress()
-//    fun editAddress()
-//    fun removeAddress()
+    fun editProfile()
+    fun addAddress()
+    fun editAddress()
+    fun removeAddress()
 
     // Purchase
     fun addToCart(id: String, sku: String, title: String, categoryId: String, categoryUrl: String, amount: Long, quantity: Int = 1)
@@ -45,6 +45,9 @@ interface TrackingEvents {
     fun removeFromWishList(id: String, title: String, amount: Long, categoryId: String, quantity: Int = 1)
     fun addProductReview(id: String, title: String, amount: Long, categoryId: String)
     fun notifyMe(id: String, title: String, categoryId: String)
+
+    // Monitoring
+    fun failRequest(request: String, errorCode: Int, errorMessage: String, ipAddress: String, connectionMethod: String, operatorName: String, vpn: Boolean, apiLevel: Int, apiVersion: String)
 
 
     object ParamsKeys {

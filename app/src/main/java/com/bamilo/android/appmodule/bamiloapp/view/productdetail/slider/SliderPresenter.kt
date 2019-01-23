@@ -12,10 +12,12 @@ import com.bamilo.android.appmodule.bamiloapp.view.productdetail.gallery.Gallery
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.ProductWebApi
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.Image
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.network.model.ImageSliderModel
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper
 import com.bamilo.android.framework.service.pojo.RestConstants
 import retrofit2.Callback
+import java.lang.Exception
 
 /**
  * Created by Farshid since 6/19/2018. contact farshidabazari@gmail.com
@@ -52,7 +54,10 @@ class SliderPresenter(var context: Context,
 
             val shareIntent = createShareIntent(extraSubject, extraMsg)
             context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_product)))
-        } catch (ignore: NullPointerException) {}
+
+            EventTracker.shareProduct(productSku)
+
+        } catch (ignore: Exception) {}
     }
 
     private fun createShareIntent(extraSubject: String, extraText: String): Intent {

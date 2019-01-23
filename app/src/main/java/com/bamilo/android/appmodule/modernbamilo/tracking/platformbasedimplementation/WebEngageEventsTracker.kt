@@ -102,37 +102,37 @@ object WebEngageEventsTracker : TrackingEvents {
             phoneNumber?.run { mUser?.setPhoneNumber(phoneNumber) }
         }
 
-        mAnalytics?.run {
-            track(WebEngageCustomEventKeys.LOGIN,
-                    HashMap<String, Any>().apply {
-                        userId?.run { put(TrackingEvents.ParamsKeys.USER_ID, userId) }
-                        emailAddress?.run { put(TrackingEvents.ParamsKeys.USER_EMAIL_ADDRESS, emailAddress) }
-                        phoneNumber?.run { put(TrackingEvents.ParamsKeys.USER_PHONE_NUMBER, phoneNumber) }
-                        put(TrackingEvents.ParamsKeys.LOGIN_METHOD, loginMethod.value)
-            })
-        }
+//        mAnalytics?.run {
+//            track(WebEngageCustomEventKeys.LOGIN,
+//                    HashMap<String, Any>().apply {
+//                        userId?.run { put(TrackingEvents.ParamsKeys.USER_ID, userId) }
+//                        emailAddress?.run { put(TrackingEvents.ParamsKeys.USER_EMAIL_ADDRESS, emailAddress) }
+//                        phoneNumber?.run { put(TrackingEvents.ParamsKeys.USER_PHONE_NUMBER, phoneNumber) }
+//                        put(TrackingEvents.ParamsKeys.LOGIN_METHOD, loginMethod.value)
+//            })
+//        }
     }
 
     override fun logout() {
         mUser?.logout()
-        mAnalytics?.track(WebEngageCustomEventKeys.LOGOUT)
+//        mAnalytics?.track(WebEngageCustomEventKeys.LOGOUT)
     }
 
-//    override fun editProfile() {
-//        mAnalytics?.track(WebEngageCustomEventKeys.EDIT_PROFILE)
-//    }
-//
-//    override fun addAddress() {
-//        mAnalytics?.track(WebEngageCustomEventKeys.ADD_ADDRESS)
-//    }
-//
-//    override fun editAddress() {
-//        mAnalytics?.track(WebEngageCustomEventKeys.EDIT_ADDRESS)
-//    }
-//
-//    override fun removeAddress() {
-//        mAnalytics?.track(WebEngageCustomEventKeys.REMOVE_ADDRESS)
-//    }
+    override fun editProfile() {
+        mAnalytics?.track(WebEngageCustomEventKeys.EDIT_PROFILE)
+    }
+
+    override fun addAddress() {
+        mAnalytics?.track(WebEngageCustomEventKeys.ADD_ADDRESS)
+    }
+
+    override fun editAddress() {
+        mAnalytics?.track(WebEngageCustomEventKeys.EDIT_ADDRESS)
+    }
+
+    override fun removeAddress() {
+        mAnalytics?.track(WebEngageCustomEventKeys.REMOVE_ADDRESS)
+    }
 
     override fun addToCart(id: String, sku: String, title: String, categoryId: String, categoryUrl: String, amount: Long, quantity: Int) {
         mAnalytics?.run {
@@ -302,16 +302,22 @@ object WebEngageEventsTracker : TrackingEvents {
 
     }
 
+    /**
+     * We are not going to measure this in WebEngage.
+     */
+    override fun failRequest(request: String, errorCode: Int, errorMessage: String, ipAddress: String, connectionMethod: String, operatorName: String, vpn: Boolean, apiLevel: Int, apiVersion: String) {
+    }
+
     private object WebEngageCustomEventKeys {
         const val OPEN_APP = "app_opened"
         const val INVITE_FRIENDS = "user_friends_invited"
         const val SIGN_UP = "user_signed_up"
-        const val LOGIN = "user_logged_in"
-        const val LOGOUT = "user_logged_out"
-//        const val EDIT_PROFILE = "user_profile_edited"
-//        const val ADD_ADDRESS = "user_address_added"
-//        const val EDIT_ADDRESS = "user_address_edited"
-//        const val REMOVE_ADDRESS = "user_address_removed"
+//        const val LOGIN = "user_logged_in"
+//        const val LOGOUT = "user_logged_out"
+        const val EDIT_PROFILE = "user_profile_edited"
+        const val ADD_ADDRESS = "user_address_added"
+        const val EDIT_ADDRESS = "user_address_edited"
+        const val REMOVE_ADDRESS = "user_address_removed"
         const val ADD_TO_CART = "cart_item_added"
         const val REMOVE_FROM_CART = "cart_item_removed"
         const val START_CHECKOUT = "cart_checkout_started"
@@ -322,7 +328,7 @@ object WebEngageEventsTracker : TrackingEvents {
         const val CANCEL_ORDER = "purchase_refunded"
         const val SHARE = "product_shared"
         const val ADD_TO_WISH_LIST = "product_added_to_wishlist"
-        const val REMOVE_FROM_WISH_LIST = "remove_from_wish_list"
+        const val REMOVE_FROM_WISH_LIST = "product_removed_from_wishlist"
         const val ADD_REVIEW = "product_review_added"
         const val NOTIFY_ME = "product_stock_subscribed"
         const val SORT_PRODUCT_LIST = "product_list_sorted"

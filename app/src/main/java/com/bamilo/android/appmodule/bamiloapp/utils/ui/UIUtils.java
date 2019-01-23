@@ -33,6 +33,7 @@ import com.bamilo.android.R;
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication;
 import com.bamilo.android.appmodule.bamiloapp.utils.Toast;
 import com.bamilo.android.appmodule.bamiloapp.utils.TrackerDelegator;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
 import com.bamilo.android.framework.components.customfontviews.CheckBox;
 import com.bamilo.android.framework.service.pojo.IntConstants;
 import com.bamilo.android.framework.service.utils.Constants;
@@ -473,6 +474,6 @@ public class UIUtils {
         shareIntent.putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.share_link_title) + "\n\n" + url);
         context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_app)));
 
-        TrackerDelegator.trackAppShared();
+        EventTracker.INSTANCE.inviteFriends();
     }
 }

@@ -26,6 +26,8 @@ import com.bamilo.android.appmodule.bamiloapp.utils.NavigationAction;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton;
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
+import com.bamilo.android.framework.components.customfontviews.EditText;
 import com.bamilo.android.framework.service.objects.addresses.Address;
 import com.bamilo.android.framework.service.objects.addresses.AddressCity;
 import com.bamilo.android.framework.service.objects.addresses.AddressPostalCode;
@@ -302,6 +304,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             triggerEditAddress(action, values);
             triggerDefaultAddressForm(Integer.parseInt(id));
         }
+        EventTracker.INSTANCE.editAddress();
     }
 
     /*

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,8 +42,10 @@ import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStar
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.GetStartupConfigsResponseKt;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.LaunchWebApi;
 import com.bamilo.android.appmodule.modernbamilo.launch.model.webservice.VersionStatus;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
 import com.bamilo.android.appmodule.modernbamilo.update.ForceUpdateBottomSheet;
 import com.bamilo.android.appmodule.modernbamilo.update.OptionalUpdateBottomSheet;
+import com.bamilo.android.appmodule.modernbamilo.util.ConnectivityHelperFunctionsKt;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.RetrofitHelper;
 import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrapper;
 import com.bamilo.android.framework.service.Darwin;
@@ -540,6 +543,25 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         } else {
             handleRequestError(errorCode);
         }
+
+        String connectionMethod;
+        if(ConnectivityHelperFunctionsKt.getConnectionType(this) == ConnectivityManager.TYPE_WIFI) {
+            connectionMethod = "wifi";
+        } else {
+            connectionMethod = ConnectivityHelperFunctionsKt.getConnectionSubType(this);
+        }
+
+        EventTracker.INSTANCE.failRequest(
+                "",
+                baseResponse.getError().getCode(),
+                baseResponse.getErrorMessage(),
+                ConnectivityHelperFunctionsKt.getIpAddress(this),
+                connectionMethod,
+                ConnectivityHelperFunctionsKt.getNetworkOperatorName(this),
+                ConnectivityHelperFunctionsKt.isVpnConnected(),
+                Build.VERSION.SDK_INT,
+                BuildConfig.URL_WEBAPI
+        );
     }
 
     /**
