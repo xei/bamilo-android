@@ -20,10 +20,10 @@ interface TrackingEvents {
     fun signUp(userId: String?, emailAddress: String?, phoneNumber: String?, signUpMethod: SignUpMethod)
     fun login(userId: String?, emailAddress: String?, phoneNumber: String?, loginMethod: LoginMethod)
     fun logout()
-//    fun editProfile()
-//    fun addAddress()
-//    fun editAddress()
-//    fun removeAddress()
+    fun editProfile()
+    fun addAddress()
+    fun editAddress()
+    fun removeAddress()
 
     // Purchase
     fun addToCart(id: String, sku: String, title: String, categoryId: String, categoryUrl: String, amount: Long, quantity: Int = 1)

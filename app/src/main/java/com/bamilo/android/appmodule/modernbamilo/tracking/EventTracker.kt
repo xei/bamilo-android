@@ -128,49 +128,49 @@ object EventTracker : TrackingEvents {
         )
     }
 
-//    override fun editProfile() {
-//        for (observer in mTrackingObservers) {
-//            observer.editProfile()
-//        }
-//
-//        Logger.log(
-//                StringBuilder("Event \"Edit Profile\" is called.").toString(),
-//                TAG_DEBUG
-//        )
-//    }
-//
-//    override fun addAddress() {
-//        for (observer in mTrackingObservers) {
-//            observer.addAddress()
-//        }
-//
-//        Logger.log(
-//                StringBuilder("Event \"Add Address\" is called.").toString(),
-//                TAG_DEBUG
-//        )
-//    }
-//
-//    override fun editAddress() {
-//        for (observer in mTrackingObservers) {
-//            observer.editAddress()
-//        }
-//
-//        Logger.log(
-//                StringBuilder("Event \"Edit Address\" is called.").toString(),
-//                TAG_DEBUG
-//        )
-//    }
-//
-//    override fun removeAddress() {
-//        for (observer in mTrackingObservers) {
-//            observer.removeAddress()
-//        }
-//
-//        Logger.log(
-//                StringBuilder("Event \"Remove Address\" is called.").toString(),
-//                TAG_DEBUG
-//        )
-//    }
+    override fun editProfile() {
+        for (observer in mTrackingObservers) {
+            observer.editProfile()
+        }
+
+        Logger.log(
+                StringBuilder("Event \"Edit Profile\" is called.").toString(),
+                TAG_DEBUG
+        )
+    }
+
+    override fun addAddress() {
+        for (observer in mTrackingObservers) {
+            observer.addAddress()
+        }
+
+        Logger.log(
+                StringBuilder("Event \"Add Address\" is called.").toString(),
+                TAG_DEBUG
+        )
+    }
+
+    override fun editAddress() {
+        for (observer in mTrackingObservers) {
+            observer.editAddress()
+        }
+
+        Logger.log(
+                StringBuilder("Event \"Edit Address\" is called.").toString(),
+                TAG_DEBUG
+        )
+    }
+
+    override fun removeAddress() {
+        for (observer in mTrackingObservers) {
+            observer.removeAddress()
+        }
+
+        Logger.log(
+                StringBuilder("Event \"Remove Address\" is called.").toString(),
+                TAG_DEBUG
+        )
+    }
 
     /**
      * This method will call when the user adds some numbers of a product to their cart successfully.

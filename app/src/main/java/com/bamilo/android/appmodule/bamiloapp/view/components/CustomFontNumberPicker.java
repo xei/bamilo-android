@@ -4,7 +4,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.NumberPicker;
+
+import com.bamilo.android.appmodule.modernbamilo.util.typography.TypeFaceHelper;
 
 /**
  * Created by mohsen on 3/5/18.
@@ -26,34 +29,36 @@ public class CustomFontNumberPicker extends NumberPicker {
     @Override
     public void addView(View child) {
         super.addView(child);
-        initFont(child);
+        updateView(child);
     }
 
     @Override
     public void addView(View child, int index) {
         super.addView(child, index);
-        initFont(child);
+        updateView(child);
     }
 
     @Override
     public void addView(View child, int width, int height) {
         super.addView(child, width, height);
-        initFont(child);
+        updateView(child);
     }
 
     @Override
     public void addView(View child, ViewGroup.LayoutParams params) {
         super.addView(child, params);
-        initFont(child);
+        updateView(child);
     }
 
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         super.addView(child, index, params);
-        initFont(child);
+        updateView(child);
     }
 
-    private void initFont(View view) {
-//        HoloFontLoader.applyDefaultFont(view);
+    private void updateView(View view) {
+        if (!isInEditMode())
+            if (view instanceof EditText)
+                ((EditText) view).setTypeface(TypeFaceHelper.getInstance(getContext()).getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_REGULAR));
     }
 }
