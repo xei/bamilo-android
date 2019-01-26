@@ -25,15 +25,19 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp" />
 
-
-        <ImageView
+        <com.bamilo.android.framework.components.widget.likebutton.SparkButton
             android:id="@+id/image_is_favourite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:padding="@dimen/margin_padding_xl"
-            android:src="@drawable/selector_favorite" />
+            android:layout_margin="@dimen/dimen_4dp"
+            app:sparkbutton_activeImage="@drawable/ic_heart_orange"
+            app:sparkbutton_animationSpeed="1"
+            app:sparkbutton_iconSize="28dp"
+            app:sparkbutton_inActiveImage="@drawable/ic_heart_gray"
+            app:sparkbutton_primaryColor="@color/spark_primary_color"
+            app:sparkbutton_secondaryColor="@color/spark_secondary_color" />
 
         <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
             android:id="@+id/item_name"

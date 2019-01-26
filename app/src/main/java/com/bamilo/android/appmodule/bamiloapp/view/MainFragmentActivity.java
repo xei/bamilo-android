@@ -349,8 +349,10 @@ public class MainFragmentActivity extends BaseActivity {
                 break;
             case PRODUCT_DETAILS:
                 // Create instance
-                ProductDetailActivity
-                        .start(this, bundle.getString(ConstantsIntentExtra.CONTENT_ID));
+                ProductDetailActivity.start(this,
+                        bundle.getString(ConstantsIntentExtra.CONTENT_ID),
+                        bundle.getInt(ConstantsIntentExtra.PRODUCT_POSITION)
+                );
                 return;
             case PRODUCT_INFO:
                 fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);

@@ -45,7 +45,7 @@
             android:layout_marginRight="@dimen/dimen_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:sparkbutton_activeImage="@drawable/ic_heart_red"
+            app:sparkbutton_activeImage="@drawable/ic_heart_orange"
             app:sparkbutton_animationSpeed="1"
             app:sparkbutton_iconSize="28dp"
             app:sparkbutton_inActiveImage="@drawable/ic_heart_gray"
