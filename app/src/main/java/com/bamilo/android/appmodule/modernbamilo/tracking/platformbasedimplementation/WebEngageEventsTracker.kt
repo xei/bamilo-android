@@ -24,7 +24,7 @@ object WebEngageEventsTracker : TrackingEvents {
                 .setDebugMode(BuildConfig.DEBUG)    // enable/disable logs
                 .setLocationTrackingStrategy(LocationTrackingStrategy.ACCURACY_CITY)    // might need to check PackageManager().hasSystemFeature() because of the permission in the Manifest.xml
                 .setPushLargeIcon(R.mipmap.ic_launcher)
-                .setPushSmallIcon(R.drawable.ic_stat_notifications)
+                .setPushSmallIcon(R.drawable.ic_stat_notify_push)
                 .setPushAccentColor(ContextCompat.getColor(context, R.color.colorAccent))
                 .build()
 
