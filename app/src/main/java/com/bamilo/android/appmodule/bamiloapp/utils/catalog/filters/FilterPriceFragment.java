@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.bamiloapp.utils.catalog.filters;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText;
 import com.bamilo.android.framework.components.RangeSeekBar;
 import com.bamilo.android.framework.components.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.bamilo.android.framework.components.customfontviews.EditText;
@@ -29,8 +31,8 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     private static final String TAG = FilterPriceFragment.class.getSimpleName();
 
     private TextView mRangeValues;
-    private EditText mMinValueTxt;
-    private EditText mMaxValueTxt;
+    private XeiEditText mMinValueTxt;
+    private XeiEditText mMaxValueTxt;
 
     private int mMin;
 
