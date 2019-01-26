@@ -128,4 +128,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
             }
         }
     }
+
+    public void updateFavorite(int position) {
+        notifyItemChanged(position);
+    }
 }

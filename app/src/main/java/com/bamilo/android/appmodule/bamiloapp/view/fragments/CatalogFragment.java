@@ -19,6 +19,7 @@ import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.CategoryConstants;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
+import com.bamilo.android.appmodule.bamiloapp.controllers.ProductListAdapter;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.helpers.products.GetCatalogPageHelper;
@@ -594,6 +595,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
                     product.getBrandName() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
+            bundle.putInt(ConstantsIntentExtra.PRODUCT_POSITION, position);
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
                     FragmentController.ADD_TO_BACK_STACK);
@@ -640,6 +642,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
         if (mWishListItemClicked != null && mGridView != null && mGridView.getAdapter() != null) {
             mGridView.getAdapter().notifyDataSetChanged();
         }
+    }
+
+    /**
+     * After favouriting a product in ProductDetail we have to update it's favourite icon in Catalog too
+     */
+    public void updateProduct(int position) {
+        if (mGridView != null && mGridView.getAdapter() != null && mGridView.getAdapter() instanceof ProductListAdapter)
+            ((ProductListAdapter) mGridView.getAdapter()).updateFavorite(position);
     }
 
     /*
