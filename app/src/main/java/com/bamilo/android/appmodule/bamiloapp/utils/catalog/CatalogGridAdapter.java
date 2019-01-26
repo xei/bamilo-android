@@ -226,7 +226,13 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
     protected void setFavourite(ProductListViewHolder holder, ProductRegular item, int position) {
         // Set favourite data
         super.setFavourite(holder, item, position);
-        holder.favourite.setOnClickListener(this);
+        holder.favourite.setOnClickListener(v -> {
+            holder.favourite.setChecked(!item.isWishList());
+            //holder.favourite.setSelected(!item.isWishList());
+            holder.favourite.playAnimation();
+
+            mOnViewHolderClicked.onViewHolderItemClick(v, this, (Integer) v.getTag(R.id.position));
+        });
     }
 
     /**

@@ -903,7 +903,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
                 }
             }
         }
-        triggerContentEventProgress(new AddToWishListHelper(),
+        triggerContentEventNoLoading(new AddToWishListHelper(),
                 AddToWishListHelper.createBundle(sku), this);
     }
 
@@ -924,7 +924,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
                 }
             }
         }
-        triggerContentEventProgress(new RemoveFromWishListHelper(),
+        triggerContentEventNoLoading(new RemoveFromWishListHelper(),
                 RemoveFromWishListHelper.createBundle(sku), this);
     }
 
