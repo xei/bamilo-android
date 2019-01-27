@@ -175,7 +175,7 @@ public class ProductRegular extends ProductBase {
 
     public int getBrandId(){ return mBrand.getId();}
 
-    public String getBrandName(){ return mBrand.getName();}
+    public String getBrandName(){ return mBrand == null ? "" : mBrand.getName();}
 
     public String getCategoryKey() {
         return mCategoryUrlKey;

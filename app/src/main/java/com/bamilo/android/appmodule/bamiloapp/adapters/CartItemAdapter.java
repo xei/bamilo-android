@@ -132,7 +132,12 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             vh.cart_item_name.setText(item.getName());
             vh.cart_item_name.setTag(R.id.target_sku, item.getSku());
             vh.cart_item_image.setTag(R.id.target_sku, item.getSku());
-            vh.cart_item_brand.setText(item.getBrandName());
+            if (android.text.TextUtils.isEmpty(item.getBrandName()))
+                vh.cart_item_brand.setVisibility(View.INVISIBLE);
+            else {
+                vh.cart_item_brand.setVisibility(View.VISIBLE);
+                vh.cart_item_brand.setText(item.getBrandName());
+            }
             vh.cart_item_name.setOnClickListener(mOnProductClickListener);
             vh.cart_item_image.setOnClickListener(mOnProductClickListener);
             vh.cart_item_option1_value.setText("");
