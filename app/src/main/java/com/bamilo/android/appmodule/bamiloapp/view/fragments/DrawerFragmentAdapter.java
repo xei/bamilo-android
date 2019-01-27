@@ -124,7 +124,7 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             HeaderViewHolder vh = (HeaderViewHolder) holder;
             vh.material_drawer_account_header_name.setText(item.getUserName());
             vh.material_drawer_account_header_email.setText(TextUtils.makeDigitsEnglish(item.getEmail()));
-            if (item.getGender().equals("female")) {
+            if (item.getGender() != null && item.getGender().equals("female")) {
                 vh.material_drawer_account_header_current.setImageResource(R.drawable.drawer_profile_woman);
             } else {
                 vh.material_drawer_account_header_current.setImageResource(R.drawable.drawer_profile_man);
