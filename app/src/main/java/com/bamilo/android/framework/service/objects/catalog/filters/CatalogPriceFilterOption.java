@@ -24,11 +24,11 @@ import org.json.JSONObject;
  */
 public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilterOptionInterface, Parcelable {
 
-    private int min;
-    private int max;
-    private int interval;
-    private int rangeMin;
-    private int rangeMax;
+    private long min;
+    private long max;
+    private long interval;
+    private long rangeMin;
+    private long rangeMax;
     private PriceFilterCheckBoxOption checkBoxOption;
 
     public CatalogPriceFilterOption(){}
@@ -50,16 +50,16 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         JSONObject optionsJsonObject = jsonObject.getJSONObject(RestConstants.OPTION);
-        min = optionsJsonObject.getInt(RestConstants.MIN);
-        max = optionsJsonObject.getInt(RestConstants.MAX);
-        interval = optionsJsonObject.getInt(RestConstants.INTERVAL);
+        min = optionsJsonObject.getLong(RestConstants.MIN);
+        max = optionsJsonObject.getLong(RestConstants.MAX);
+        interval = optionsJsonObject.getLong(RestConstants.INTERVAL);
         JSONObject selectedJsonObject = jsonObject.optJSONObject(RestConstants.SELECTED);
         if (selectedJsonObject == null) {
             rangeMin = min;
             rangeMax = max;
         } else {
-            rangeMin = selectedJsonObject.optInt(RestConstants.LOWER_VALUE);
-            rangeMax = selectedJsonObject.optInt(RestConstants.UPPER_VALUE);
+            rangeMin = selectedJsonObject.optLong(RestConstants.LOWER_VALUE);
+            rangeMax = selectedJsonObject.optLong(RestConstants.UPPER_VALUE);
         }
         JSONObject specialPrice = jsonObject.getJSONObject(RestConstants.SPECIAL_PRICE);
         checkBoxOption = new PriceFilterCheckBoxOption(specialPrice);
@@ -77,31 +77,31 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
     }
 
 
-    public int getMin() {
+    public long getMin() {
         return min;
     }
 
-    public int getMax() {
+    public long getMax() {
         return max;
     }
 
-    public int getInterval() {
+    public long getInterval() {
         return interval;
     }
 
-    public int getRangeMin() {
+    public long getRangeMin() {
         return rangeMin;
     }
 
-    public void setRangeMin(int rangeMin) {
+    public void setRangeMin(long rangeMin) {
         this.rangeMin = rangeMin;
     }
 
-    public int getRangeMax() {
+    public long getRangeMax() {
         return rangeMax;
     }
 
-    public void setRangeMax(int rangeMax) {
+    public void setRangeMax(long rangeMax) {
         this.rangeMax = rangeMax;
     }
 
@@ -126,20 +126,20 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.min);
-        dest.writeInt(this.max);
-        dest.writeInt(this.interval);
-        dest.writeInt(this.rangeMin);
-        dest.writeInt(this.rangeMax);
+        dest.writeLong(this.min);
+        dest.writeLong(this.max);
+        dest.writeLong(this.interval);
+        dest.writeLong(this.rangeMin);
+        dest.writeLong(this.rangeMax);
         dest.writeParcelable(this.checkBoxOption, flags);
     }
 
     protected CatalogPriceFilterOption(Parcel in) {
-        this.min = in.readInt();
-        this.max = in.readInt();
-        this.interval = in.readInt();
-        this.rangeMin = in.readInt();
-        this.rangeMax = in.readInt();
+        this.min = in.readLong();
+        this.max = in.readLong();
+        this.interval = in.readLong();
+        this.rangeMin = in.readLong();
+        this.rangeMax = in.readLong();
         this.checkBoxOption = in.readParcelable(PriceFilterCheckBoxOption.class.getClassLoader());
     }
 
