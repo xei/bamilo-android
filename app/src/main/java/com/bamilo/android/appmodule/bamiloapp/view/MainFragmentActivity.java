@@ -144,6 +144,7 @@ public class MainFragmentActivity extends BaseActivity {
                     onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
                             FragmentController.ADD_TO_BACK_STACK);
                 }
+                EventTracker.INSTANCE.appOpen(TrackingEvents.AppOpenMethod.LAUNCHER);
             } else {
                 EventTracker.INSTANCE.appOpen(TrackingEvents.AppOpenMethod.DEEP_LINK);
 //                mAppOpenSource = EmarsysEventFactory.OpenAppEventSourceType.OPEN_APP_SOURCE_DEEPLINK;

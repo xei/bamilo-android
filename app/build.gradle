@@ -73,8 +73,7 @@ android {
                     'proguard-rules-ghostadapter.pro',
                     'proguard-rules-glide.pro',
                     'proguard-rules-logs.pro',
-                    'proguard-rules-retrofit.pro',
-                    'proguard-rules-pushwoosh.pro'
+                    'proguard-rules-retrofit.pro'
         }
 
         // Third-party store tracking
