@@ -9,6 +9,7 @@ import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.helpers.address.GetMyAddressesHelper;
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
 import com.bamilo.android.framework.service.objects.addresses.Addresses;
 import com.bamilo.android.framework.service.pojo.BaseResponse;
 import com.bamilo.android.framework.service.utils.EventType;
@@ -116,6 +117,7 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
         Bundle bundle = new Bundle();
         bundle.putInt(ConstantsIntentExtra.ARG_1, addressId);
         getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        EventTracker.INSTANCE.editAddress();
     }
 
     /**
@@ -124,6 +126,7 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
     @Override
     protected void onClickCreateAddressButton() {
         getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        EventTracker.INSTANCE.addAddress();
     }
 
     /*

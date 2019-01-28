@@ -85,8 +85,10 @@ import com.bamilo.android.appmodule.bamiloapp.utils.ui.FixedDrawerDrawable;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.UITabLayoutUtils;
 import com.bamilo.android.appmodule.bamiloapp.utils.ui.WarningFactory;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment.KeyboardState;
+import com.bamilo.android.appmodule.bamiloapp.view.fragments.CatalogFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.DrawerFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.OldProductDetailsFragment;
+import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity;
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
 import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
 import com.bamilo.android.appmodule.modernbamilo.tracking.EventTrackerKt;
@@ -349,7 +351,14 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESULT_SPEECH) {
+        if (requestCode == ProductDetailActivity.RC_PRODUCT_DETAIL) {
+            if (resultCode == RESULT_OK && data != null) {
+                int positionToUpdate = data.getIntExtra(ConstantsIntentExtra.PRODUCT_POSITION, -1);
+                Fragment catalogFragment = getSupportFragmentManager().findFragmentByTag(mFragmentController.getLastEntry());
+                if (catalogFragment instanceof CatalogFragment && positionToUpdate > -1)
+                    ((CatalogFragment) catalogFragment).updateProduct(positionToUpdate);
+            }
+        } else if (requestCode == RESULT_SPEECH) {
             if (resultCode == RESULT_OK && null != data) {
 
                 ArrayList<String> text = data

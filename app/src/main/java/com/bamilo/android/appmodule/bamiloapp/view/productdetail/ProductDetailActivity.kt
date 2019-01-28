@@ -1,10 +1,12 @@
 package com.bamilo.android.appmodule.bamiloapp.view.productdetail
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.bamiloapp.app.BamiloApplication
@@ -65,11 +67,15 @@ class ProductDetailActivity : BaseActivity(),
      * create a bundle of requirements
      **/
     companion object {
+        public const val RC_PRODUCT_DETAIL = 1001
+
         @JvmStatic
-        fun start(invokerContext: Context, sku: String) {
+        fun start(invokerContext: Context, sku: String, position: Int) {
             val intent = Intent(invokerContext, ProductDetailActivity::class.java)
             intent.putExtra("sku", sku)
-            invokerContext.startActivity(intent)
+            intent.putExtra(ConstantsIntentExtra.PRODUCT_POSITION, position)
+            (invokerContext as? AppCompatActivity)?.startActivityForResult(intent, RC_PRODUCT_DETAIL)
+                    ?: invokerContext.startActivity(intent)
         }
     }
 
@@ -333,10 +339,14 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     private fun trackAddToCartEvent(addedFromBuyNowButton: Boolean) {
+
         EventTracker.addToCart(
+                id = "",
                 sku = sku!!,
-                amount = productDetail.price.price.toLong(),
-                addToCartType = if (!addedFromBuyNowButton) TrackingEvents.AddToCartType.ADD_TO_CART_BTN else TrackingEvents.AddToCartType.BUY_NOW_BTN
+                title = productDetail.title,
+                categoryId = "",
+                categoryUrl = productDetail.breadcrumbs[0].target?.split("::")!![1],
+                amount = productDetail.price.price.toLong()
         )
 
         TrackerDelegator.trackProductAddedToCart(productDetail)
@@ -605,11 +615,28 @@ class ProductDetailActivity : BaseActivity(),
     }
 
     override fun trackRemoveFromWishList() {
-        TrackerDelegator.trackRemoveFromFavorites(productDetail)
+        try {
+            EventTracker.removeFromWishList(
+                    sku!!,
+                    title.toString(),
+                    productDetail.price.price.toLong(),
+                    productDetail.breadcrumbs[0].title!!)
+        } catch (e: java.lang.Exception) {
+
+        }
+
     }
 
     override fun trackAddFromWishList() {
-        TrackerDelegator.trackAddToFavorites(productDetail)
+        try {
+            EventTracker.addToWishList(
+                    sku!!,
+                    title.toString(),
+                    productDetail.price.price.toLong(),
+                    productDetail.breadcrumbs[0].title!!)
+        } catch (e: java.lang.Exception) {
+
+        }
     }
 
     override fun onShowMoreRelatedProducts() {
@@ -660,9 +687,15 @@ class ProductDetailActivity : BaseActivity(),
 
         productDetailPresenter.fillChooseVariationBottomSheet(productDetail)
 
-        EventTracker.contentView(
+        EventTracker.viewProduct(
+                id = "",
                 sku = sku!!,
-                category = productDetail.breadcrumbs[0].target?.split("::")!![1]
+                title = "",
+                amount = 1,
+                categoryId = "",
+                categoryUrl = productDetail.breadcrumbs[0].target?.split("::")!![1],
+                brandId = null,
+                brandTitle = productDetail.brand
         )
 
 //        val viewProductEventModel = MainEventModel("category",
@@ -678,6 +711,12 @@ class ProductDetailActivity : BaseActivity(),
         gotoCartFragment()
         binding.productDetailLinearLayoutAddToCart?.root?.visibility = View.VISIBLE
         binding.productDetailLinearLayoutGotoCardAfterAdded?.root?.visibility = View.GONE
+    }
+
+    override fun onLikeClicked() {
+        setResult(Activity.RESULT_OK, Intent().apply {
+            putExtra(ConstantsIntentExtra.PRODUCT_POSITION, intent.getIntExtra(ConstantsIntentExtra.PRODUCT_POSITION, -1))
+        })
     }
 
     enum class FragmentTag {

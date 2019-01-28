@@ -20,6 +20,7 @@ import com.bamilo.android.appmodule.modernbamilo.util.retrofit.pojo.ResponseWrap
 import com.bamilo.android.framework.components.ghostadapter.BindItem
 import com.bamilo.android.framework.components.ghostadapter.Binder
 import com.bamilo.android.framework.service.tracking.TrackingPage
+import com.bamilo.android.framework.service.utils.cache.WishListCache
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -78,6 +79,7 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
                 }
 
                 override fun onResponse(call: Call<ResponseWrapper<Any>>?, response: Response<ResponseWrapper<Any>>?) {
+                    pdvMainView.onLikeClicked()
                     if (imageSliderModel.isWishList) {
                         itemRemovedFromWishList()
                     } else {
@@ -95,10 +97,16 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
 
         imageSliderModel.isWishList = true
         holder!!.like.isChecked = true
+        WishListCache.add(imageSliderModel.productSku)
 
         pdvMainView.trackAddFromWishList()
 
-        EventTracker.addToWishList(sku = imageSliderModel.productSku)
+        EventTracker.addToWishList(
+                id = imageSliderModel.productSku,
+                title = imageSliderModel.title,
+                amount = imageSliderModel.price.toLong(),
+                categoryId = imageSliderModel.category
+        )
 
 //        val addToWishListEventModel =
 //                MainEventModel(holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName()),
@@ -122,8 +130,14 @@ class SliderItem(private var supportFragmentManager: FragmentManager,
 
         imageSliderModel.isWishList = false
         holder!!.like.isChecked = false
+        WishListCache.remove(imageSliderModel.productSku)
 
-        EventTracker.removeFromWishList(imageSliderModel.productSku)
+        EventTracker.removeFromWishList(
+                id = imageSliderModel.productSku,
+                title = imageSliderModel.title,
+                amount = imageSliderModel.price.toLong(),
+                categoryId = imageSliderModel.category
+        )
 
 //        val sem = SimpleEventModel().apply {
 //            category = holder!!.itemView.context.getString(TrackingPage.PRODUCT_DETAIL.getName())

@@ -19,6 +19,7 @@ import com.bamilo.android.appmodule.bamiloapp.constants.ConstantsIntentExtra;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.CategoryConstants;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventActionKeys;
 import com.bamilo.android.appmodule.bamiloapp.constants.tracking.EventConstants;
+import com.bamilo.android.appmodule.bamiloapp.controllers.ProductListAdapter;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentController;
 import com.bamilo.android.appmodule.bamiloapp.controllers.fragments.FragmentType;
 import com.bamilo.android.appmodule.bamiloapp.helpers.products.GetCatalogPageHelper;
@@ -594,6 +595,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
                     product.getBrandName() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
+            bundle.putInt(ConstantsIntentExtra.PRODUCT_POSITION, position);
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
                     FragmentController.ADD_TO_BACK_STACK);
@@ -640,6 +642,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
         if (mWishListItemClicked != null && mGridView != null && mGridView.getAdapter() != null) {
             mGridView.getAdapter().notifyDataSetChanged();
         }
+    }
+
+    /**
+     * After favouriting a product in ProductDetail we have to update it's favourite icon in Catalog too
+     */
+    public void updateProduct(int position) {
+        if (mGridView != null && mGridView.getAdapter() != null && mGridView.getAdapter() instanceof ProductListAdapter)
+            ((ProductListAdapter) mGridView.getAdapter()).updateFavorite(position);
     }
 
     /*
@@ -816,6 +826,34 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
                 new SimpleEventModel(CategoryConstants.CATALOG, EventActionKeys.CATALOG_SORT,
                         mSelectedSort.toString(), SimpleEventModel.NO_VALUE);
         TrackerManager.trackEvent(getContext(), EventConstants.CatalogSortChanged, sem);
+
+
+        String sortingKey = null;
+        switch(mSelectedSort) {
+            case NAME:
+                sortingKey = "name";
+                break;
+            case BRAND:
+                sortingKey = "brand";
+                break;
+            case NEW_IN:
+                sortingKey = "newest";
+                break;
+            case PRICE_UP:
+                sortingKey = "price-asc";
+                break;
+            case POPULARITY:
+                sortingKey = "popularity";
+                break;
+            case PRICE_DOWN:
+                sortingKey = "price-desc";
+                break;
+            case BEST_RATING:
+                sortingKey = "score";
+                break;
+        }
+        EventTracker.INSTANCE.sortProductsList(sortingKey);
+
     }
 
     @Override
@@ -903,7 +941,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
                 }
             }
         }
-        triggerContentEventProgress(new AddToWishListHelper(),
+        triggerContentEventNoLoading(new AddToWishListHelper(),
                 AddToWishListHelper.createBundle(sku), this);
     }
 
@@ -924,7 +962,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
                 }
             }
         }
-        triggerContentEventProgress(new RemoveFromWishListHelper(),
+        triggerContentEventNoLoading(new RemoveFromWishListHelper(),
                 RemoveFromWishListHelper.createBundle(sku), this);
     }
 
@@ -995,7 +1033,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
 //                    TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList,
 //                            removeFromWishListEventModel);
                     try {
-                        EventTracker.INSTANCE.removeFromWishList(removeFromWishListEventModel.label);
+                        EventTracker.INSTANCE.removeFromWishList(
+                                removeFromWishListEventModel.label,
+                                "",
+                                0,
+                                "",
+                                1
+                        );
                     }catch (Exception e) {
 
                     }
@@ -1009,7 +1053,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback,
 //                    TrackerManager.trackEvent(getContext(), EventConstants.AddToWishList,
 //                            addToWishListEventModel);
                     try {
-                        EventTracker.INSTANCE.addToWishList(removeFromWishListEventModel.label);
+                        EventTracker.INSTANCE.addToWishList(
+                                removeFromWishListEventModel.label,
+                                mWishListItemClicked.getName(),
+                                (long) mWishListItemClicked.getPrice(),
+                                mWishListItemClicked.getCategoryId(),
+                                1
+                        );
                     }catch (Exception e) {
 
                     }

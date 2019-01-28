@@ -426,7 +426,13 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             removeFromWishListEventModel.label = sku;
             removeFromWishListEventModel.value = SimpleEventModel.NO_VALUE;
 //            TrackerManager.trackEvent(getContext(), EventConstants.RemoveFromWishList, removeFromWishListEventModel);
-            EventTracker.INSTANCE.removeFromWishList(sku);
+            EventTracker.INSTANCE.removeFromWishList(
+                    sku,
+                    "",
+                    0,
+                    "",
+                    1
+            );
 
             // Trigger to remove
             triggerRemoveFromWishList(sku);
@@ -526,9 +532,17 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                     }
 //                    TrackerManager.trackEvent(getContext(), EventConstants.AddToCart, addToCartEventModel);
                     try {
-                        EventTracker.INSTANCE.addToCart(addToCartEventModel.label,
-                                (long) ((WishListGridAdapter)Objects.requireNonNull(mListView.getAdapter())).getItem(mSelectedPositionToDelete).getPrice(),
-                                TrackingEvents.AddToCartType.ADD_TO_CART_BTN);
+                        EventTracker.INSTANCE.addToCart(
+                                "",
+                                addToCartEventModel.label,
+                                "",
+                                "",
+                                "",
+                                (long) ((WishListGridAdapter)Objects
+                                        .requireNonNull(mListView.getAdapter()))
+                                        .getItem(mSelectedPositionToDelete)
+                                        .getPrice(),
+                                1);
                     } catch (Exception e) {
 
                     }

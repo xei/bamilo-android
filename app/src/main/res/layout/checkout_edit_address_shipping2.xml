@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".appmodule.bamiloapp.view.fragments.EditAddressFragment">
 
     <!-- TITLE -->
 
@@ -83,17 +85,31 @@
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
-                <com.bamilo.android.framework.components.customfontviews.EditText
-                    android:id="@+id/address_direction"
-                    style="@style/BlueFormTextField"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="255"
-                    android:hint="@string/delivery_address"
-                    android:inputType="textPersonName"
-                    android:minEms="2"
-                    android:text=""
-                    android:textColor="?attr/colorPrimary" />
+                    android:layout_marginTop="@dimen/margin_small"
+                    app:errorEnabled="false"
+                    app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                        android:id="@+id/address_direction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="255"
+                        android:gravity="right|center_vertical"
+                        android:hint="@string/delivery_address"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
+                        android:minEms="2"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/grey4"
+                        android:textSize="12sp"
+                        android:theme="@style/authenticationEditTextStyle"
+                        app:locale="fa_IR" />
+                </android.support.design.widget.TextInputLayout>
 
                 <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/address_text_error"
@@ -104,18 +120,32 @@
                     android:textSize="@dimen/dimen_10dp"
                     android:visibility="gone" />
 
-                <com.bamilo.android.framework.components.customfontviews.EditText
-                    android:id="@+id/address_postal_code"
-                    style="@style/BlueFormTextField"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/deliver_postal_code"
-                    android:inputType="number"
-                    android:maxLength="10"
-                    android:minEms="10"
-                    android:text=""
-                    android:textColor="?attr/colorPrimary" />
+                    android:layout_marginTop="@dimen/margin_small"
+                    app:errorEnabled="false"
+                    app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                        android:id="@+id/address_postal_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="right|center_vertical"
+                        android:hint="@string/deliver_postal_code"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:minEms="10"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/grey4"
+                        android:textSize="12sp"
+                        android:theme="@style/authenticationEditTextStyle"
+                        app:locale="fa_IR" />
+                </android.support.design.widget.TextInputLayout>
 
                 <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/address_postal_code_error"
@@ -143,17 +173,31 @@
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:paddingRight="@dimen/dimen_10dp">
 
-                <com.bamilo.android.framework.components.customfontviews.EditText
-                    android:id="@+id/address_name"
-                    style="@style/BlueFormTextField"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="50"
-                    android:hint="@string/first_name"
-                    android:inputType="textPersonName"
-                    android:minEms="2"
-                    android:text=""
-                    android:textColor="?attr/colorPrimary" />
+                    android:layout_marginTop="@dimen/margin_small"
+                    app:errorEnabled="false"
+                    app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                        android:id="@+id/address_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="50"
+                        android:gravity="right|center_vertical"
+                        android:hint="@string/first_name"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
+                        android:minEms="2"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/grey4"
+                        android:textSize="12sp"
+                        android:theme="@style/authenticationEditTextStyle"
+                        app:locale="fa_IR" />
+                </android.support.design.widget.TextInputLayout>
 
                 <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/address_name_error"
@@ -164,17 +208,31 @@
                     android:textSize="@dimen/dimen_10dp"
                     android:visibility="gone" />
 
-                <com.bamilo.android.framework.components.customfontviews.EditText
-                    android:id="@+id/address_family"
-                    style="@style/BlueFormTextField"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="50"
-                    android:hint="@string/last_name"
-                    android:inputType="textPersonName"
-                    android:minEms="2"
-                    android:text=""
-                    android:textColor="?attr/colorPrimary" />
+                    android:layout_marginTop="@dimen/margin_small"
+                    app:errorEnabled="false"
+                    app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                        android:id="@+id/address_family"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="50"
+                        android:gravity="right|center_vertical"
+                        android:hint="@string/last_name"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
+                        android:minEms="2"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/grey4"
+                        android:textSize="12sp"
+                        android:theme="@style/authenticationEditTextStyle"
+                        app:locale="fa_IR" />
+                </android.support.design.widget.TextInputLayout>
 
                 <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/address_last_name_error"
@@ -185,18 +243,31 @@
                     android:textSize="@dimen/dimen_10dp"
                     android:visibility="gone" />
 
-
-                <com.bamilo.android.framework.components.customfontviews.EditText
-                    android:id="@+id/address_cell"
-                    style="@style/BlueFormTextField"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="13"
-                    android:hint="@string/cellphone"
-                    android:inputType="numberDecimal"
-                    android:minEms="2"
-                    android:text=""
-                    android:textColor="?attr/colorPrimary" />
+                    android:layout_marginTop="@dimen/margin_small"
+                    app:errorEnabled="false"
+                    app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+                    <com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText
+                        android:id="@+id/address_cell"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="13"
+                        android:gravity="right|center_vertical"
+                        android:hint="@string/cellphone"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"
+                        android:minEms="2"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/grey4"
+                        android:textSize="12sp"
+                        android:theme="@style/authenticationEditTextStyle"
+                        app:locale="fa_IR" />
+                </android.support.design.widget.TextInputLayout>
 
                 <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/address_cellphone_error"

@@ -88,6 +88,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
     protected void setFavourite(ProductListViewHolder holder, ProductRegular item, int position) {
         // Set favourite data
         holder.favourite.setTag(R.id.position, position);
+        holder.favourite.setChecked(item.isWishList());
         holder.favourite.setSelected(item.isWishList());
     }
 
@@ -126,5 +127,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
                 holder.reviews.setText("");
             }
         }
+    }
+
+    public void updateFavorite(int position) {
+        notifyItemChanged(position);
     }
 }

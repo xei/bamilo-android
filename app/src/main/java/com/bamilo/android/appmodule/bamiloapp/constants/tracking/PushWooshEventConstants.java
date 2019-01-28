@@ -19,7 +19,7 @@
 //    public static String Source = "Source";
 //    public static String CategoryUrlKey = "CategoryUrlKey";
 //    public static String Keywords = "Keywords";
-//    public static String SKU = "SKU";
+//    public static String ITEM_SKU = "ITEM_SKU";
 //    public static String Categories = "Categories";
 //
 //    //Events

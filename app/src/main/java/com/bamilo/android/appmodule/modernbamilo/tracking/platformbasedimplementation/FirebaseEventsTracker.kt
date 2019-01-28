@@ -22,18 +22,34 @@ object FirebaseEventsTracker : TrackingEvents {
         Logger.log("Firebase Events Tracker is initialized.", TAG_DEBUG)
     }
 
+    /**
+     * Don't call this method!
+     */
     override fun install(intent: Intent) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // This event is measured automatically by Firebase SDK
     }
 
-    override fun register(userId: String?, emailAddress: String?, phoneNumber: String?, registrationType: TrackingEvents.RegistrationType, succeed: Boolean) {
+    override fun appOpen(appOpenMethod: TrackingEvents.AppOpenMethod) {
+        mFirebaseAnalytics?.run {
+            logEvent(FirebaseAnalytics.Event.APP_OPEN, Bundle().apply {
+                putString(TrackingEvents.ParamsKeys.APP_OPEN_METHOD, appOpenMethod.value)
+            })
+        }
+    }
+
+    override fun inviteFriends() {
+        mFirebaseAnalytics?.run {
+            logEvent(FirebaseCustomEventKeys.INVITE_FRIENDS, null)
+        }
+    }
+
+    override fun signUp(userId: String?, emailAddress: String?, phoneNumber: String?, signUpMethod: TrackingEvents.SignUpMethod) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.SIGN_UP, Bundle().apply {
                 userId?.run { putString(TrackingEvents.ParamsKeys.USER_ID, userId) }
                 emailAddress.run { putString(TrackingEvents.ParamsKeys.USER_EMAIL_ADDRESS, emailAddress) }
                 phoneNumber.run { putString(TrackingEvents.ParamsKeys.USER_PHONE_NUMBER, phoneNumber) }
-                putString(TrackingEvents.ParamsKeys.REGISTRATION_TYPE, registrationType.value)
-                putBoolean(FirebaseAnalytics.Param.SUCCESS, succeed)
+                putString(TrackingEvents.ParamsKeys.SIGN_UP_METHOD, signUpMethod.value)
             })
 
             // Set User's Properties:
@@ -43,225 +59,228 @@ object FirebaseEventsTracker : TrackingEvents {
         }
     }
 
-    override fun login(userId: String?, emailAddress: String?, phoneNumber: String?, loginType: TrackingEvents.LoginType, succeed: Boolean) {
+    override fun login(userId: String?, emailAddress: String?, phoneNumber: String?, loginMethod: TrackingEvents.LoginMethod) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.LOGIN, Bundle().apply {
                 userId?.run { putString(TrackingEvents.ParamsKeys.USER_ID, userId) }
                 emailAddress.run { putString(TrackingEvents.ParamsKeys.USER_EMAIL_ADDRESS, emailAddress) }
                 phoneNumber.run { putString(TrackingEvents.ParamsKeys.USER_PHONE_NUMBER, phoneNumber) }
-                putString(TrackingEvents.ParamsKeys.LOGIN_TYPE, loginType.value)
-                putBoolean(FirebaseAnalytics.Param.SUCCESS, succeed)
+                putString(TrackingEvents.ParamsKeys.LOGIN_METHOD, loginMethod.value)
             })
         }
     }
 
     override fun logout() {
         mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.LOGOUT, null)
+            logEvent(FirebaseCustomEventKeys.LOGOUT, null)
         }
     }
 
     override fun editProfile() {
         mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.EDIT_PROFILE, null)
+            logEvent(FirebaseCustomEventKeys.EDIT_PROFILE, null)
         }
     }
 
     override fun addAddress() {
         mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.ADD_ADDRESS, null)
+            logEvent(FirebaseCustomEventKeys.ADD_ADDRESS, null)
         }
     }
 
     override fun editAddress() {
         mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.EDIT_ADDRESS, null)
+            logEvent(FirebaseCustomEventKeys.EDIT_ADDRESS, null)
         }
     }
 
     override fun removeAddress() {
         mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.REMOVE_ADDRESS, null)
+            logEvent(FirebaseCustomEventKeys.REMOVE_ADDRESS, null)
         }
     }
 
-    override fun addToCart(sku: String, amount: Long, addToCartType: TrackingEvents.AddToCartType) {
+    override fun addToCart(id: String, sku: String, title: String, categoryId: String, categoryUrl: String, amount: Long, quantity: Int) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.ADD_TO_CART, Bundle().apply {
-                putString(FirebaseAnalytics.Param.ITEM_ID, sku)
-                putLong(TrackingEvents.ParamsKeys.AMOUNT, amount)
-                putString(TrackingEvents.ParamsKeys.ADD_TO_CART_TYPE, addToCartType.value)
+                putString(FirebaseAnalytics.Param.ITEM_ID, id)
+                putString(TrackingEvents.ParamsKeys.ITEM_SKU, sku)
+                putString(FirebaseAnalytics.Param.ITEM_NAME, title)
+                putString(FirebaseAnalytics.Param.ITEM_CATEGORY, categoryId)
+                putString(TrackingEvents.ParamsKeys.ITEM_CATEGORY_URL, categoryUrl)
+                putLong(FirebaseAnalytics.Param.PRICE, amount)
+                putInt(FirebaseAnalytics.Param.QUANTITY, quantity)
             })
         }
     }
 
-    override fun removeFromCart(sku: String, amount: Long) {
+    override fun removeFromCart(id: String, sku: String, title: String, categoryId: String, categoryUrl: String, amount: Long, quantity: Int) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.REMOVE_FROM_CART, Bundle().apply {
-                putString(FirebaseAnalytics.Param.ITEM_ID, sku)
-                putLong(TrackingEvents.ParamsKeys.AMOUNT, amount)
+                putString(FirebaseAnalytics.Param.ITEM_ID, id)
+                putString(TrackingEvents.ParamsKeys.ITEM_SKU, sku)
+                putString(FirebaseAnalytics.Param.ITEM_NAME, title)
+                putString(FirebaseAnalytics.Param.ITEM_CATEGORY, categoryId)
+                putString(TrackingEvents.ParamsKeys.ITEM_CATEGORY_URL, categoryUrl)
+                putLong(FirebaseAnalytics.Param.PRICE, amount)
+                putInt(FirebaseAnalytics.Param.QUANTITY, quantity)
             })
         }
     }
 
-    override fun startCheckout(basketValue: Long) {
+    override fun beginCheckout(basketValue: Long, numberOfBasketItems: Int) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, Bundle().apply {
-                putLong(TrackingEvents.ParamsKeys.BASKET_VALUE, basketValue)
+                putLong(FirebaseAnalytics.Param.VALUE, basketValue)
+                putInt(TrackingEvents.ParamsKeys.NO_OF_ITEMS, numberOfBasketItems)
             })
         }
     }
 
-    override fun purchase(amount: Long, paymentType: TrackingEvents.PaymentType, succeed: Boolean) {
+    override fun purchase(value: Long, numberOfItems: Int, coupon: String?, transactionId: String, paymentMethod: TrackingEvents.PaymentMethod, cityName: String) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, Bundle().apply {
-                putLong(TrackingEvents.ParamsKeys.AMOUNT, amount)
-                putString(TrackingEvents.ParamsKeys.PAYMENT_TYPE, paymentType.value)
-                putBoolean(FirebaseAnalytics.Param.SUCCESS, succeed)
+                putLong(FirebaseAnalytics.Param.VALUE, value)
+                putInt(TrackingEvents.ParamsKeys.NO_OF_ITEMS, numberOfItems)
+                coupon?.let { putString(FirebaseAnalytics.Param.COUPON, it) }
+                putString(FirebaseAnalytics.Param.TRANSACTION_ID, coupon)
+                putString(TrackingEvents.ParamsKeys.PAYMENT_METHOD, paymentMethod.value)
+                putString(TrackingEvents.ParamsKeys.CITY_NAME, cityName)
             })
         }
     }
 
-    override fun cancelOrder() {
+    override fun cancelOrder(transaction_id: String, value: Long, quantity: Int) {
         mFirebaseAnalytics?.run {
-            logEvent(FirebaseAnalytics.Event.PURCHASE_REFUND, null)
-        }
-    }
-
-    override fun conductSurvey() {
-        mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.CONDUCT_SURVEY, null)
-        }
-    }
-
-    override fun openApp(openAppType: TrackingEvents.OpenAppType) {
-        mFirebaseAnalytics?.run {
-            logEvent(FirebaseAnalytics.Event.APP_OPEN, Bundle().apply {
-                putString(TrackingEvents.ParamsKeys.OPEN_APP_TYPE, openAppType.value)
+            logEvent(FirebaseAnalytics.Event.PURCHASE_REFUND, Bundle().apply {
+                putString(FirebaseAnalytics.Param.TRANSACTION_ID, transaction_id)
+                putLong(FirebaseAnalytics.Param.VALUE, value)
+                putInt(FirebaseAnalytics.Param.QUANTITY, quantity)
             })
         }
     }
 
-    override fun inviteFriends() {
-        mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.INVITE_FRIENDS, null)
-        }
-    }
+//    override fun conductSurvey() {
+//        mFirebaseAnalytics?.run {
+//            logEvent(TrackingEvents.EventsKeys.CONDUCT_SURVEY, null)
+//        }
+//    }
 
-    override fun search(query: String) {
+    override fun search(searchTerm: String) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.SEARCH, Bundle().apply {
-                putString(FirebaseAnalytics.Param.SEARCH_TERM, query)
+                putString(FirebaseAnalytics.Param.SEARCH_TERM, searchTerm)
             })
         }
     }
 
-    override fun contentView(sku: String, category: String) {
+    override fun sortProductsList(sortingMethodKey: String) {
+        mFirebaseAnalytics?.run {
+            logEvent(FirebaseCustomEventKeys.SORT_PRODUCT_LIST, Bundle().apply {
+                putString(TrackingEvents.ParamsKeys.SORTING_METHOD_KEY, sortingMethodKey)
+            })
+        }
+    }
+
+    override fun viewProduct(id: String, sku: String, title: String, amount: Long, categoryId: String, categoryUrl: String, brandId: String?, brandTitle: String?) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.VIEW_ITEM, Bundle().apply {
-                putString(FirebaseAnalytics.Param.ITEM_ID, sku)
-                putString(TrackingEvents.ParamsKeys.CATEGORY, category)
+                putString(FirebaseAnalytics.Param.ITEM_ID, id)
+                putString(TrackingEvents.ParamsKeys.ITEM_SKU, sku)
+                putString(FirebaseAnalytics.Param.ITEM_NAME, title)
+                putLong(FirebaseAnalytics.Param.PRICE, amount)
+                putString(FirebaseAnalytics.Param.ITEM_CATEGORY, categoryId)
+                putString(TrackingEvents.ParamsKeys.ITEM_CATEGORY_URL, categoryUrl)
+                putString(TrackingEvents.ParamsKeys.ITEM_BRAND, brandId)
+                putString(TrackingEvents.ParamsKeys.ITEM_BRAND_NAME, brandTitle)
             })
         }
     }
 
-    override fun share(sku: String) {
+    override fun viewProductGallery(id: String) {}
+
+    override fun shareProduct(id: String) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.SHARE, Bundle().apply {
-                putString(FirebaseAnalytics.Param.ITEM_ID, sku)
+                putString(FirebaseAnalytics.Param.ITEM_ID, id)
             })
         }
     }
 
-    override fun addToWishList(sku: String) {
+    override fun addToWishList(id: String, title: String, amount: Long, categoryId: String, quantity: Int) {
         mFirebaseAnalytics?.run {
             logEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST, Bundle().apply {
-                putString(FirebaseAnalytics.Param.ITEM_ID, sku)
+                putString(FirebaseAnalytics.Param.ITEM_ID, id)
+                putString(FirebaseAnalytics.Param.ITEM_NAME, title)
+                putLong(FirebaseAnalytics.Param.PRICE, amount)
+                putString(FirebaseAnalytics.Param.ITEM_CATEGORY, categoryId)
+                putInt(FirebaseAnalytics.Param.QUANTITY, quantity)
             })
         }
     }
 
-    override fun removeFromWishList(sku: String) {
+    override fun removeFromWishList(id: String, title: String, amount: Long, categoryId: String, quantity: Int) {
         mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.REMOVE_FROM_WISH_LIST, Bundle().apply {
-                putString(FirebaseAnalytics.Param.ITEM_ID, sku)
+            logEvent(FirebaseCustomEventKeys.REMOVE_FROM_WISH_LIST, Bundle().apply {
+                putString(FirebaseAnalytics.Param.ITEM_ID, id)
+                putString(FirebaseAnalytics.Param.ITEM_NAME, title)
+                putLong(FirebaseAnalytics.Param.PRICE, amount)
+                putString(FirebaseAnalytics.Param.ITEM_CATEGORY, categoryId)
+                putInt(FirebaseAnalytics.Param.QUANTITY, quantity)
             })
         }
     }
 
-    override fun addReview(sku: String) {
+    override fun addProductReview(id: String, title: String, amount: Long, categoryId: String) {
         mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.ADD_REVIEW, Bundle().apply {
-                putString(FirebaseAnalytics.Param.ITEM_ID, sku)
+            logEvent(FirebaseCustomEventKeys.ADD_REVIEW, Bundle().apply {
+                putString(FirebaseAnalytics.Param.ITEM_ID, id)
+                putString(FirebaseAnalytics.Param.ITEM_NAME, title)
+                putLong(FirebaseAnalytics.Param.PRICE, amount)
+                putString(FirebaseAnalytics.Param.ITEM_CATEGORY, categoryId)
             })
         }
     }
 
-    override fun notifyMe(sku: String) {
+    override fun notifyMe(id: String, title: String, categoryId: String) {
         mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.NOTIFY_ME, Bundle().apply {
-                putString(FirebaseAnalytics.Param.ITEM_ID, sku)
+            logEvent(FirebaseCustomEventKeys.NOTIFY_ME, Bundle().apply {
+                putString(FirebaseAnalytics.Param.ITEM_ID, id)
+                putString(FirebaseAnalytics.Param.ITEM_NAME, title)
+                putString(FirebaseAnalytics.Param.ITEM_CATEGORY, categoryId)
             })
         }
     }
 
-    override fun openHomeScreen() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun openProductDetailsScreen() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun openProductListScreen() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun openCartScreen() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun searchFiltered() {
+    override fun failRequest(request: String, errorCode: Int, errorMessage: String, ipAddress: String, connectionMethod: String, operatorName: String, vpn: Boolean, apiLevel: Int, apiVersion: String) {
         mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.SEARCH_FILTERED, null)
+            logEvent(FirebaseCustomEventKeys.FAIL_REQUEST, Bundle().apply {
+                putString("request", request)
+                putInt("error_code", errorCode)
+                putString("error_message", errorMessage)
+                putString("ip_address", ipAddress)
+                putString("connection_method", connectionMethod)
+                putString("operator_name", operatorName)
+                putBoolean("vpn", vpn)
+                putInt("api_level", apiLevel)
+                putString("api_version", apiVersion)
+            })
         }
     }
 
-    override fun searchBarSearched() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private object FirebaseCustomEventKeys {
+        const val INVITE_FRIENDS = "invite_friends"
+        const val LOGOUT = "logout"
+        const val EDIT_PROFILE = "edit_profile"
+        const val ADD_ADDRESS = "add_address"
+        const val EDIT_ADDRESS = "edit_address"
+        const val REMOVE_ADDRESS = "remove_address"
+//        const val CONDUCT_SURVEY = "conduct_survey"
+        const val REMOVE_FROM_WISH_LIST = "remove_from_wishlist"
+        const val ADD_REVIEW = "add_product_review"
+        const val NOTIFY_ME = "subscribe_to_product_stock"
+        const val SORT_PRODUCT_LIST = "sort_product_list"
+        const val FAIL_REQUEST = "fail_request"
     }
-
-    override fun purchaseBehaviour() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun itemTapped() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun catalogViewChanged() {
-        mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.CATALOG_VIEW_CHANGED, null)
-        }
-    }
-
-    override fun catalogSortChanged() {
-        mFirebaseAnalytics?.run {
-            logEvent(TrackingEvents.EventsKeys.CATALOG_SORT_CHANGED, null)
-        }
-    }
-
-    override fun callToOrderTapped() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun buyNowTapped() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun searchSuggestionTapped() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
 
 }

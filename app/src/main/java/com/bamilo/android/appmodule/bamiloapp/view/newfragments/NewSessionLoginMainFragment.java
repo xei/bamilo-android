@@ -230,13 +230,7 @@ public class NewSessionLoginMainFragment extends NewBaseFragment implements IRes
                             String.valueOf(customer.getId()),
                             String.valueOf(customer.getEmail()),
                             String.valueOf(customer.getPhoneNumber()),
-                            TrackingEvents.LoginType.LOGIN_WITH_EMAIL,
-                            true);
-
-//                    EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(
-//                            getContext().getResources().getString(R.string.Emarsys_ContactFieldID)),
-//                            BamiloApplication.CUSTOMER != null ? BamiloApplication.CUSTOMER
-//                                    .getEmail() : null);
+                            TrackingEvents.LoginMethod.LOGIN_WITH_EMAIL);
 
                     // Validate the next step
                     CheckoutStepManager

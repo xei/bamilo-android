@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.bamilo.android.R
 import com.bamilo.android.appmodule.modernbamilo.app.BaseActivity
 import com.bamilo.android.appmodule.modernbamilo.customview.BamiloActionButton
+import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker
 import com.bamilo.android.appmodule.modernbamilo.util.extension.persianizeNumberString
 import com.bamilo.android.appmodule.modernbamilo.util.logging.LogType
 import com.bamilo.android.appmodule.modernbamilo.util.logging.Logger
@@ -112,6 +113,12 @@ class SubmitRateActivity : BaseActivity(), View.OnClickListener {
             override fun onResponse(call: Call<ResponseWrapper<Boolean>>?, response: Response<ResponseWrapper<Boolean>>?) {
                 if (response?.body()?.success != null && response.body()?.success!!) {
                     Toast.makeText(this@SubmitRateActivity, resources.getText(R.string.submitRate_succeed), Toast.LENGTH_LONG).show()
+                    EventTracker.addProductReview(
+                            id = mProductId,
+                            title = "",
+                            amount = 0,
+                            categoryId = ""
+                    )
                     Logger.log("SubmitRate request succeed!", TAG_DEBUG, LogType.INFO)
                     finish()
                 } else {

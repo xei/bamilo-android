@@ -249,22 +249,12 @@ class LoginDialogBottomSheet : BottomSheetDialogFragment() {
         TrackerDelegator.trackLoginSuccessful(customer, false, false)
         Crashlytics.setUserEmail(BamiloApplication.CUSTOMER.email)
 
-//        val authEventModel = MainEventModel(CategoryConstants.ACCOUNT, EventActionKeys.LOGIN_SUCCESS,
-//                Constants.LOGIN_METHOD_EMAIL, customer.id.toLong(),
-//                MainEventModel.createAuthEventModelAttributes(Constants.LOGIN_METHOD_EMAIL, EmailHelper.getHost(customer.email),
-//                        true))
-//        TrackerManager.trackEvent(context, EventConstants.Login, authEventModel)
-
         EventTracker.login(
                 userId = BamiloApplication.CUSTOMER.id.toString(),
                 emailAddress = BamiloApplication.CUSTOMER.email,
                 phoneNumber = BamiloApplication.CUSTOMER.phoneNumber,
-                loginType = TrackingEvents.LoginType.LOGIN_WITH_EMAIL,
-                succeed = true
+                loginMethod = TrackingEvents.LoginMethod.LOGIN_WITH_EMAIL
         )
-
-//        EmarsysTracker.getInstance().trackEventAppLogin(Integer.parseInt(context!!.resources.getString(R.string.Emarsys_ContactFieldID)),
-//                if (BamiloApplication.CUSTOMER != null) BamiloApplication.CUSTOMER.email else null)
 
         activity?.let {
             if (it is BaseActivity) {

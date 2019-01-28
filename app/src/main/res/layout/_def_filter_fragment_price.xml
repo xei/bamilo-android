@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,7 +10,8 @@
     android:paddingEnd="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingStart="16dp">
+    android:paddingStart="16dp"
+    tools:context=".appmodule.bamiloapp.utils.catalog.filters.FilterPriceFragment">
 
             <!-- RANGE VALUES -->
 
@@ -49,14 +51,16 @@
                 android:visibility="gone" />-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="3"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/dimen_4dp">
         <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
             android:layout_width="0dp"
             android:text="از"
             android:layout_weight="0.5"
-            android:paddingTop="@dimen/dimen_20dp"
+            android:gravity="center"
             android:textColor="@color/black_900"
             android:layout_height="40dp"
             android:textAlignment="center" />
@@ -65,22 +69,25 @@
             android:inputType="numberDecimal"
             android:layout_width="0dp"
             android:digits="0123456789.,"
-            android:layout_height="45dp"
-            android:fontFamily="@string/bamilo_regular_font"
-            android:gravity="left|start"
-            android:layout_gravity="left|start"
+            android:layout_height="@dimen/dimen_32dp"
+            android:theme="@style/RegistrationFormEditTextTheme"
+            android:gravity="left|center_vertical"
+            android:background="@drawable/round_background_gray_8dp"
             android:textColor="@color/black"
-            android:maxLength="10"
+            android:maxLength="15"
             android:textSize="14sp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="@dimen/dimen_4dp"
+            android:paddingLeft="@dimen/dimen_8dp"
+            android:paddingRight="@dimen/dimen_8dp"
+            android:layout_marginBottom="@dimen/dimen_4dp"
             android:layout_weight="2"
-            android:singleLine="true"
-            android:textAlignment="textStart" />
+            android:imeOptions="actionDone"
+            app:locale="fa_IR" />
         <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
             android:layout_width="0dp"
             android:text="ریال"
             android:layout_weight="0.5"
-            android:paddingTop="@dimen/dimen_20dp"
+            android:gravity="center"
             android:textColor="@color/black_900"
             android:layout_height="40dp"
             android:textAlignment="center" />
@@ -90,14 +97,16 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="3"
+        android:layout_marginTop="@dimen/dimen_4dp"
+        android:gravity="center">
         <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
             android:layout_width="0dp"
             android:text="تا"
             android:layout_weight="0.5"
-            android:paddingTop="@dimen/dimen_20dp"
+            android:gravity="center"
             android:textColor="@color/black_900"
             android:layout_height="40dp"
             android:textAlignment="center" />
@@ -106,23 +115,27 @@
             android:inputType="numberDecimal"
             android:layout_width="0dp"
             android:digits="0123456789.,"
-            android:layout_height="45dp"
-            android:fontFamily="@string/bamilo_regular_font"
+            android:layout_height="@dimen/dimen_32dp"
+            android:theme="@style/RegistrationFormEditTextTheme"
             android:gravity="left|start"
-            android:layout_gravity="left|start"
+            android:layout_gravity="left|center_vertical"
+            android:background="@drawable/round_background_gray_8dp"
             android:textColor="@color/black"
-            android:maxLength="10"
+            android:maxLength="15"
+            android:layout_marginTop="@dimen/dimen_4dp"
+            android:paddingLeft="@dimen/dimen_8dp"
+            android:paddingRight="@dimen/dimen_8dp"
             android:textSize="14sp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="@dimen/dimen_4dp"
             android:layout_weight="2"
-            android:singleLine="true"
-            android:textAlignment="textStart" />
+            android:imeOptions="actionDone"
+            app:locale="fa_IR" />
 
         <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
             android:layout_width="0dp"
             android:text="ریال"
             android:layout_weight="0.5"
-            android:paddingTop="@dimen/dimen_20dp"
+            android:gravity="center"
             android:textColor="@color/black_900"
             android:layout_height="40dp"
             android:textAlignment="center" />

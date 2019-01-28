@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import android.widget.TextView;
 import com.bamilo.android.R;
+import com.bamilo.android.framework.components.widget.likebutton.SparkButton;
 
 /**
  * Provide a reference to the views for each data item.<br>
@@ -32,7 +33,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
     public TextView percentage;
     public TextView reviews;
     public TextView newArrivalBadge;
-    public ImageView favourite;
+    public SparkButton favourite;
     public ImageView headerImage;
     public ImageView shopFirst;
     public RelativeLayout price_rl;
@@ -56,7 +57,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
         percentage = (TextView) view.findViewById(R.id.discount_percentage);
         reviews = (TextView) view.findViewById(R.id.item_reviews);
         newArrivalBadge = (TextView) view.findViewById(R.id.new_arrival_badge);
-        favourite = (ImageView) view.findViewById(R.id.image_is_favourite);
+        favourite = (SparkButton) view.findViewById(R.id.image_is_favourite);
         headerImage = (ImageView) view.findViewById(R.id.catalog_header_image);
         ratingContainer = (ViewGroup)view.findViewById(R.id.rating_container);
         shopFirst = (ImageView)view.findViewById(R.id.item_shop_first);

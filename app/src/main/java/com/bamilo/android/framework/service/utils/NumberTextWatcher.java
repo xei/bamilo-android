@@ -1,5 +1,6 @@
 package com.bamilo.android.framework.service.utils;
 
+import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextWatcher;
 
@@ -17,9 +18,9 @@ public class NumberTextWatcher implements TextWatcher {
     private DecimalFormat dfnd;
     private boolean hasFractionalPart;
 
-    private EditText et;
+    private AppCompatEditText et;
 
-    public NumberTextWatcher(EditText et) {
+    public NumberTextWatcher(AppCompatEditText et) {
         df = new DecimalFormat("#,###,##");
         df.setDecimalSeparatorAlwaysShown(true);
         dfnd = new DecimalFormat("#,###");

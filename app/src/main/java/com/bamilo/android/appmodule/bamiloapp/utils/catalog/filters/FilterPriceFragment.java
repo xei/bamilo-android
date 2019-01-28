@@ -1,5 +1,6 @@
 package com.bamilo.android.appmodule.bamiloapp.utils.catalog.filters;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bamilo.android.appmodule.modernbamilo.customview.XeiEditText;
 import com.bamilo.android.framework.components.RangeSeekBar;
 import com.bamilo.android.framework.components.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.bamilo.android.framework.components.customfontviews.EditText;
@@ -24,25 +26,25 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.FilterMainFragment;
  * @author sergiopereira
  *
  */
-public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBarChangeListener<Integer> {
+public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBarChangeListener<Long> {
 
     private static final String TAG = FilterPriceFragment.class.getSimpleName();
 
     private TextView mRangeValues;
-    private EditText mMinValueTxt;
-    private EditText mMaxValueTxt;
+    private XeiEditText mMinValueTxt;
+    private XeiEditText mMaxValueTxt;
 
-    private int mMin;
+    private long mMin;
 
-    private int mMax;
+    private long mMax;
 
-    private int mCurrMinValue ,mMinRang;
+    private long mCurrMinValue ,mMinRang;
 
-    private int mCurrMaxValue, mMaxRang;
+    private long mCurrMaxValue, mMaxRang;
 
-    private RangeSeekBar<Integer> mRangeBar;
+    private RangeSeekBar<Long> mRangeBar;
 
-    private int mInterval;
+    private long mInterval;
 
     private CatalogPriceFilter mFilter;
 
@@ -93,7 +95,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
                 if (mymax<=mMaxRang &&Integer.MAX_VALUE>mymax) {
 
                     setIntervalText(mCurrMaxValue,(int) mymax.longValue());
-                    mRangeBar.setSelectedMaxValue(getMaxIntervalValue((int) mymax.longValue()));
+                    mRangeBar.setSelectedMaxValue(getMaxIntervalValue(mymax.longValue()));
                     mCurrMaxValue =mymax.intValue() ;
                     mFilter.getOption().setRangeMin(mCurrMinValue);
                     mFilter.getOption().setRangeMax(mCurrMaxValue);
@@ -167,7 +169,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     }
 
     @Override
-    public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+    public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Long minValue, Long maxValue) {
         mCurrMinValue = getMinRealValue(minValue);
         mCurrMaxValue = getMaxRealValue(maxValue);
         setIntervalText(mCurrMinValue, mCurrMaxValue);
@@ -216,7 +218,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
      * @return max interval value
      * @author sergiopereira
      */
-    private int getMaxIntervalValue(int max){
+    private long getMaxIntervalValue(long max){
         return (mInterval != 0) ? max / mInterval : max;   
     }
 
@@ -226,7 +228,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
      * @return min interval value
      * @author sergiopereira
      */
-    private int getMinIntervalValue(int min){
+    private long getMinIntervalValue(long min){
         return (mInterval != 0) ? min / mInterval : min;   
     }
     
@@ -236,7 +238,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
      * @return min real value
      * @author sergiopereira
      */
-    private int getMinRealValue(int min){
+    private long getMinRealValue(long min){
         return (mInterval != 0) ? min * mInterval : min;   
     }
     
@@ -246,7 +248,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
      * @return min real value
      * @author sergiopereira
      */
-    private int getMaxRealValue(int max){
+    private long getMaxRealValue(long max){
         return (mInterval != 0) ? max * mInterval : max;   
     }
 
@@ -255,7 +257,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         processOnClickClean();
     }
 
-    protected void setIntervalText(@IntRange(from = 0) int minValue, int maxValue) {
+    protected void setIntervalText(@IntRange(from = 0) long minValue, long maxValue) {
         mRangeValues.setText(CurrencyFormatter.formatCurrencyPattern(minValue + " - " + maxValue));
     }
 
