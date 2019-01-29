@@ -210,6 +210,12 @@ public class DailyDealViewComponent extends BaseViewComponent<DailyDealViewCompo
         this.mDealItem = content;
     }
 
+    public void destroy() {
+        paused = true;
+        mHandler.removeCallbacks(mCountDownRunnable);
+        mHandler = null;
+    }
+
     public void pause() {
         paused = true;
     }
