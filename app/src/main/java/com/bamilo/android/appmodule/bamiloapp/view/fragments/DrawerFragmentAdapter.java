@@ -184,7 +184,7 @@ public class DrawerFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         public ImageView material_drawer_account_header_current;
         public XeiTextView material_drawer_account_header_name;
-        public android.widget.TextView material_drawer_account_header_email;
+        public XeiTextView material_drawer_account_header_email;
 
 
         private HeaderViewHolder(View view) {
