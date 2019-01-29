@@ -1543,7 +1543,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
         for (int i = 0; i < customView.getChildCount(); i++) {
             if (customView.getChildAt(i) instanceof TextView) {
                 ((TextView) customView.getChildAt(i)).setTypeface(TypeFaceHelper.getInstance(this)
-                        .getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_REGULAR));
+                        .getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_BOLD));
             }
         }
     }
@@ -1556,7 +1556,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
         for (int i = 0; i < customView.getChildCount(); i++) {
             if (customView.getChildAt(i) instanceof TextView) {
                 ((TextView) customView.getChildAt(i)).setTypeface(TypeFaceHelper.getInstance(this)
-                        .getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_REGULAR));
+                        .getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_BOLD));
             }
         }
     }

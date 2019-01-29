@@ -84,6 +84,7 @@
 
                 <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                     android:id="@+id/pdv_textView_title"
+                    style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="56dp"
@@ -95,7 +96,9 @@
                     android:singleLine="true"
                     android:textAlignment="gravity"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    app:locale="fa_IR"
+                    app:style="bold" />
 
             </RelativeLayout>
 
