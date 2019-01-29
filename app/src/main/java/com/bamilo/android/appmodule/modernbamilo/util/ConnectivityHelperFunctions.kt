@@ -12,14 +12,34 @@ import java.util.*
 
 private const val TAG_DEBUG = "ConnectivityHelper"
 
-fun getConnectionType(context: Context)
-        = (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo.type
+fun getConnectionType(context: Context): Int {
+    try {
+        return (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo.type
+    } catch (e: Exception) {
+        return 0
+    }
 
-fun getConnectionSubType(context: Context)
-        = (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo.subtypeName
+}
 
-fun getNetworkOperatorName(context: Context) =
-        (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkOperatorName
+
+fun getConnectionSubType(context: Context) : String {
+    try {
+        return (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo.subtypeName
+    } catch (e: Exception) {
+        return ""
+    }
+
+}
+
+fun getNetworkOperatorName(context: Context) :String {
+    try {
+        return (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkOperatorName
+    } catch (e: Exception) {
+        return ""
+    }
+
+}
+
 
 fun isVpnConnected(): Boolean {
     val networkList = ArrayList<String>()
@@ -36,6 +56,11 @@ fun isVpnConnected(): Boolean {
 }
 
 fun getIpAddress(context: Context) : String {
-    val wm = context.getSystemService(WIFI_SERVICE) as WifiManager?
-    return wm!!.connectionInfo.ipAddress.toString()
+    try {
+        val wm = context.getSystemService(WIFI_SERVICE) as WifiManager?
+        return wm!!.connectionInfo.ipAddress.toString()
+    } catch (e: Exception) {
+        return ""
+    }
+
 }
