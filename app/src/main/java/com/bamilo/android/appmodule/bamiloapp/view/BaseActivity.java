@@ -1040,6 +1040,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
                 mSearchOverlay.setVisibility(View.GONE);
                 getWindow().setSoftInputMode(restoreSoftInputMode);
                 hideKeyboard();
+                invalidateOptionsMenu();
                 return true;
             }
         });
