@@ -123,6 +123,7 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
     public void onResume() {
         super.onResume();
         SharedPreferencesHelperKt.clearTrackHomepagePurchase(getContext());
+        startDealComponentsTimer();
     }
 
     private void injectDependencies() {
@@ -142,6 +143,27 @@ public class HomeFragment extends BaseFragment implements SliderViewComponent.On
     public void onDestroyView() {
         homePresenter.destroy();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        destroyDealComponentsTimer();
+    }
+
+    private void startDealComponentsTimer() {
+        if (dailyDealViewComponents != null) {
+            for (DailyDealViewComponent component : dailyDealViewComponents)
+                component.start();
+        }
+    }
+
+    private void destroyDealComponentsTimer() {
+        if (dailyDealViewComponents != null) {
+            for (DailyDealViewComponent component : dailyDealViewComponents) {
+                component.destroy();
+            }
+        }
     }
 
     private void stopDealComponentsTimer() {

@@ -276,10 +276,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     /**
      * Method used to remove the selected position.
      */
-    private void removeSelectedPosition() {
+    public void removeSelectedPosition(int position) {
         try {
             WishListGridAdapter adapter = (WishListGridAdapter) mListView.getAdapter();
-            ProductMultiple item = adapter.getItem(mSelectedPositionToDelete);
+            ProductMultiple item = adapter.getItem(position);
             adapter.remove(item);
             // Case empty
             if(adapter.isEmpty()) {
@@ -402,8 +402,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      */
     public void onItemClick(View view) {
         String sku = (String) view.getTag(R.id.target_sku);
+        int position = (int) view.getTag(R.id.target_position);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
+        bundle.putInt(ConstantsIntentExtra.PRODUCT_POSITION, position);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -551,7 +553,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 // Remove selected position
-                removeSelectedPosition();
+                removeSelectedPosition(mSelectedPositionToDelete);
                 break;
             case GET_WISH_LIST:
                 if (!pageTracked) {

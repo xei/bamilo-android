@@ -44,11 +44,12 @@
                 android:textColor="#ffffff"
                 android:textSize="14sp" />
 
-            <TextView
+            <com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView
                 android:id="@+id/material_drawer_account_header_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                app:locale="fa_IR"
                 app:fontFamily="sans-serif"
                 android:gravity="right"
                 android:lines="1"

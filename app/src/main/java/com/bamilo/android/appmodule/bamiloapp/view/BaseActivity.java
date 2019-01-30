@@ -88,6 +88,7 @@ import com.bamilo.android.appmodule.bamiloapp.view.fragments.BaseFragment.Keyboa
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.CatalogFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.DrawerFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.fragments.OldProductDetailsFragment;
+import com.bamilo.android.appmodule.bamiloapp.view.fragments.WishListFragment;
 import com.bamilo.android.appmodule.bamiloapp.view.productdetail.ProductDetailActivity;
 import com.bamilo.android.appmodule.modernbamilo.customview.XeiTextView;
 import com.bamilo.android.appmodule.modernbamilo.tracking.EventTracker;
@@ -354,9 +355,13 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
         if (requestCode == ProductDetailActivity.RC_PRODUCT_DETAIL) {
             if (resultCode == RESULT_OK && data != null) {
                 int positionToUpdate = data.getIntExtra(ConstantsIntentExtra.PRODUCT_POSITION, -1);
-                Fragment catalogFragment = getSupportFragmentManager().findFragmentByTag(mFragmentController.getLastEntry());
-                if (catalogFragment instanceof CatalogFragment && positionToUpdate > -1)
-                    ((CatalogFragment) catalogFragment).updateProduct(positionToUpdate);
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(mFragmentController.getLastEntry());
+                if (positionToUpdate > -1) {
+                    if (fragment instanceof CatalogFragment)
+                        ((CatalogFragment) fragment).updateProduct(positionToUpdate);
+                    else if (fragment instanceof WishListFragment)
+                        ((WishListFragment) fragment).removeSelectedPosition(positionToUpdate);
+                }
             }
         } else if (requestCode == RESULT_SPEECH) {
             if (resultCode == RESULT_OK && null != data) {
@@ -1035,6 +1040,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
                 mSearchOverlay.setVisibility(View.GONE);
                 getWindow().setSoftInputMode(restoreSoftInputMode);
                 hideKeyboard();
+                invalidateOptionsMenu();
                 return true;
             }
         });
@@ -1538,7 +1544,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
         for (int i = 0; i < customView.getChildCount(); i++) {
             if (customView.getChildAt(i) instanceof TextView) {
                 ((TextView) customView.getChildAt(i)).setTypeface(TypeFaceHelper.getInstance(this)
-                        .getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_REGULAR));
+                        .getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_BOLD));
             }
         }
     }
@@ -1551,7 +1557,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements
         for (int i = 0; i < customView.getChildCount(); i++) {
             if (customView.getChildAt(i) instanceof TextView) {
                 ((TextView) customView.getChildAt(i)).setTypeface(TypeFaceHelper.getInstance(this)
-                        .getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_REGULAR));
+                        .getTypeFace(TypeFaceHelper.FONT_IRAN_SANS_BOLD));
             }
         }
     }
